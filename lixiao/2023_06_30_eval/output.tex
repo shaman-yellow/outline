@@ -1,0 +1,503 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Results of Molecular Docking},
+  pdfauthor={Huang Lichuang in Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatletter \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Results of Molecular Docking}
+\author{Huang Lichuang in Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\hypertarget{ux8bbeux8ba1ux6d41ux7a0b}{%
+\section{设计流程}\label{ux8bbeux8ba1ux6d41ux7a0b}}
+
+\hypertarget{ux5df2ux6709ux6570ux636e}{%
+\subsection{已有数据}\label{ux5df2ux6709ux6570ux636e}}
+
+已筛选的Hubgenes；药方的中药和相应成分，以及对应靶点。
+
+\hypertarget{ux5206ux5b50ux5bf9ux63a5}{%
+\subsection{分子对接}\label{ux5206ux5b50ux5bf9ux63a5}}
+
+步骤：
+
+\begin{itemize}
+\tightlist
+\item
+  从已有数据得到成分和靶点数据，根据筛选的Hubgenes预处理，得到可能的药物分子和靶点的结合。
+\item
+  从Uniprot 网站（\url{https://www.uniprot.org/}）或 RCSB PDB（\url{https://www.rcsb.org/}）获取靶点蛋白的结构。
+\item
+  从PubChem \url{https://pubchem.ncbi.nlm.nih.gov/} 获取药物分子结构。
+\item
+  以AutoDock Vina 1.2.0\textsuperscript{\protect\hyperlink{ref-AutodockVina1Eberha2021}{1}} （\url{http://vina.scripps.edu}），在Python下使用，批量对接多个分子和靶点。
+\item
+  将结果可视化或输出成表格。
+\end{itemize}
+
+\hypertarget{ux5206ux6790ux548cux7ed3ux679c}{%
+\section{分析和结果}\label{ux5206ux6790ux548cux7ed3ux679c}}
+
+以下分析和上述设计思路可能有所不同。
+
+除了AutoDock Vina （\url{http://vina.scripps.edu}）, 还会用到 ADFR 工具组（\url{https://ccsb.scripps.edu/adfr/}），Python 的 Meeko ，或其它工具。
+
+流程请参考文献\textsuperscript{\protect\hyperlink{ref-ComputationalPForli2016}{2}} 或者 \url{https://autodock-vina.readthedocs.io/en/latest/docking_basic.html}。
+
+\hypertarget{ux4e2dux836fux548cux6210ux5206ux548cux9776ux70b9ux6570ux636eux7684ux9884ux5904ux7406}{%
+\subsection{中药和成分和靶点数据的预处理}\label{ux4e2dux836fux548cux6210ux5206ux548cux9776ux70b9ux6570ux636eux7684ux9884ux5904ux7406}}
+
+\hypertarget{ux6574ux7406ux6765ux81ea-herb-ux7f51ux7ad9ux7684ux6570ux636e}{%
+\subsubsection{整理来自 HERB 网站的数据}\label{ux6574ux7406ux6765ux81ea-herb-ux7f51ux7ad9ux7684ux6570ux636e}}
+
+从网站 \url{http://herb.ac.cn/Download/} 获取成分信息。
+
+药方的化合物成分信息概览，共有1097个唯一成分：
+\textbf{(对应文件为 \texttt{./all\_ingredients\_info.xlsx})}
+
+\begin{verbatim}
+## # A tibble: 1,231 x 4
+##    herb_id    Ingredient.id Ingredient.name                                                                       Ingredient.alias
+##    <chr>      <chr>         <chr>                                                                                 <chr>           
+##  1 HERB000872 HBIN004123    2,3-isopropylidene cyasterone                                                         NA              
+##  2 HERB000872 HBIN004124    2,3-isopropylidene isocyasterone                                                      NA              
+##  3 HERB000872 HBIN004406    24-hydroxycyasterone                                                                  NA              
+##  4 HERB000872 HBIN009103    3-O-[α-L-rhamnopyranosyl-(1→3)β-D-glucopyranosiduronic acid]-28-O-β-D-glucopyranosyl~ NA              
+##  5 HERB000872 HBIN009104    3-O-[α-L-rhamnopyranosyl-(1→3)β-D-glucopyranosiduronic acid] oleanolic acid           NA              
+##  6 HERB000872 HBIN009108    3-O-[α-L-rhamnopyranosyl-(1→3)-(n-butyl-β-D-glucopyranosiduronate}-28-O-β-D-glucopyr~ NA              
+##  7 HERB000872 HBIN009160    3-O-[β-D-glucopyranosiduronic acid]-28-O-β-D-glucopyranosyl oleanolic acid            NA              
+##  8 HERB000872 HBIN009161    3-O-(β-D-glucopyranosiduronic acid) oleanolic acid                                    oleanolic acid-~
+##  9 HERB000872 HBIN009164    3-O-[β-D-glucopyranosyl-(1→2)-α-L-rhamnopyranosyl-(1→3)β-D-glucopyranosiduronic acid~ NA              
+## 10 HERB000872 HBIN009222    3-O-β-D-glucopyranosyl oleanolic acid                                                 28-O-β-D-glucop~
+## # i 1,221 more rows
+\end{verbatim}
+
+\hypertarget{ux6839ux636e-bindingdb-ux6570ux636eux5e93ux7b5bux9009ux836fux7269ux548cux9776ux70b9ux7684ux7ed3ux5408ux53efux80fd}{%
+\subsubsection{根据 BindingDB 数据库筛选药物和靶点的结合可能}\label{ux6839ux636e-bindingdb-ux6570ux636eux5e93ux7b5bux9009ux836fux7269ux548cux9776ux70b9ux7684ux7ed3ux5408ux53efux80fd}}
+
+BindingDB 数据库记录了化合物和成分的亲和信息： \url{https://www.bindingdb.org/rwd/bind/chemsearch/marvin/Download.jsp}。
+
+下载相关数据，以供后续筛选化合物和靶点。
+
+\hypertarget{ux83b7ux53d6ux836fux7269ux5206ux5b50ux7ed3ux6784ux6570ux636eux548cux9884ux5904ux7406}{%
+\subsection{获取药物分子结构数据和预处理}\label{ux83b7ux53d6ux836fux7269ux5206ux5b50ux7ed3ux6784ux6570ux636eux548cux9884ux5904ux7406}}
+
+\hypertarget{par}{%
+\subsubsection{根据 BindingDB 提供的结合可能筛选药物分子}\label{par}}
+
+PubChem CID 连接到 PubChem 数据库\textsuperscript{\protect\hyperlink{ref-PubchemSubstanKimS2015}{3}}。
+
+根据整理的药方成分的 PubChem CID 信息和 BindingDB 数据的 PubChem CID 信息过滤化合物。
+
+\textbf{注意：} 药方统计有1097个唯一成分，而包含PubChem ID 的化合物共有7个。
+
+以下为包含PubChem ID的化合物的概览：
+
+\begin{verbatim}
+## # A tibble: 796 x 3
+##    Ingredient.id Ingredient.name                        PubChem_id
+##    <chr>         <chr>                                       <int>
+##  1 HBIN000177    10-o-acetylgeniposide                     6324916
+##  2 HBIN000280    11,13-Eicosadienoic acid, methyl ester    5365674
+##  3 HBIN000328    1,1,6-trimethyl-2H-naphthalene             121677
+##  4 HBIN000391    11-deoxyglycyrrhetic acid                12305517
+##  5 HBIN000392    11-deoxyglycyrrhetinic acid              12305517
+##  6 HBIN000573    1,2,3,4,6-pentagalloylglucose               65238
+##  7 HBIN000643    1,2,4-benzenetriol                          10787
+##  8 HBIN001070    1,3,5-trihydroxyxanthone                  5281663
+##  9 HBIN001080    13657-68-6                               14106072
+## 10 HBIN001307    13-Tetradecenyl acetate                    521718
+## # i 786 more rows
+\end{verbatim}
+
+这些数据结合 BindingDB 数据进一步过滤。
+
+以下为 BindingDB 中记录有上述化合物的条目，包含了靶点蛋白的信息：
+\textbf{(对应文件为 \texttt{BindingDB\_data\_filter\_by\_herb\_compounds.csv})}
+
+\begin{verbatim}
+## # A tibble: 3,909 x 2
+##    PubChem_id pdb_id                                                                                                              
+##         <int> <chr>                                                                                                               
+##  1     689043 "1IVO,1M14,1M17,1MOX,1XKK,1Z9I,2GS2,2GS6,2ITW,2ITX,2ITY,2J5E,2J5F,2J6M,2N5S,2RF9,2RGP,3B2V,3BEL,3GOP,3POZ,3QWQ,3VJO~
+##  2    5280443 "1G3N,1JOW,1XO2,2EUF,2F2C,3NUP,3NUX,4AUA,4EZ5,4TTH,5L2I,5L2S,5L2T,6OQL,6OQO"                                        
+##  3    5280343 "1G3N,1JOW,1XO2,2EUF,2F2C,3NUP,3NUX,4AUA,4EZ5,4TTH,5L2I,5L2S,5L2T,6OQL,6OQO"                                        
+##  4    5281607 "1G3N,1JOW,1XO2,2EUF,2F2C,3NUP,3NUX,4AUA,4EZ5,4TTH,5L2I,5L2S,5L2T,6OQL,6OQO"                                        
+##  5    5280863 "1G3N,1JOW,1XO2,2EUF,2F2C,3NUP,3NUX,4AUA,4EZ5,4TTH,5L2I,5L2S,5L2T,6OQL,6OQO"                                        
+##  6    5280443 "1UNG,1UNH,1UNL,3O0G,7VDP,7VDQ,7VDR,7VDS"                                                                           
+##  7    5280343 "1UNG,1UNH,1UNL,3O0G,7VDP,7VDQ,7VDR,7VDS"                                                                           
+##  8    5281607 "1UNG,1UNH,1UNL,3O0G,7VDP,7VDQ,7VDR,7VDS"                                                                           
+##  9    5280863 "1UNG,1UNH,1UNL,3O0G,7VDP,7VDQ,7VDR,7VDS"                                                                           
+## 10    5280443 ""                                                                                                                  
+## # i 3,899 more rows
+\end{verbatim}
+
+将上述数据结合 MCC top 10 靶点蛋白的注释数据（包含PDB ID）进一步过滤。
+
+(靶点蛋白的 PDB ID 的获取，参考 \ref{pdbID})
+
+现在，已有化合物（PubChem CID）和对应的靶点蛋白（PDB ID）的信息：
+
+\begin{verbatim}
+## $`370`
+## [1] "1CXW" "1GEN" "1RTG"
+## 
+## $`370`
+## [1] "1C5G" "1DVN" "1LJ5" "4AQH"
+## 
+## $`73111`
+## [1] "1C5G" "1DVN" "1LJ5" "4AQH"
+## 
+## $`5280704`
+##  [1] "2AZ5" "3ALQ" "3IT8" "3L9J" "4G3Y" "4TWT" "5M2I" "5M2J" "5M2M" "5MU8" "5WUX" "5YOY" "6OOY" "6OOZ" "6X81" "6X82" "6X83" "6X85"
+## [19] "6X86" "7JRA"
+## 
+## $`66065`
+## [1] "1IL6" "1P9M" "2IL6" "4CNI" "4J4L" "4NI7" "4NI9" "4O9H" "4ZS7"
+## 
+## $`66065`
+##  [1] "2AZ5" "3ALQ" "3IT8" "3L9J" "4G3Y" "4TWT" "5M2I" "5M2J" "5M2M" "5MU8" "5WUX" "5YOY" "6OOY" "6OOZ" "6X81" "6X82" "6X83" "6X85"
+## [19] "6X86" "7JRA"
+## 
+## $`6476139`
+## [1] "1CXW" "1GEN" "1RTG"
+## 
+## $`5280343`
+## [1] "1CXW" "1GEN" "1RTG"
+## 
+## $`5280343`
+##  [1] "1L6J" "2OVX" "2OVZ" "2OW0" "2OW1" "2OW2" "4H1Q" "4H82" "4HMA" "4WZV" "5TH6" "5TH9" "6ESM"
+## 
+## $`689043`
+##  [1] "1L6J" "2OVX" "2OVZ" "2OW0" "2OW1" "2OW2" "4H1Q" "4H82" "4HMA" "4WZV" "5TH6" "5TH9" "6ESM"
+## 
+## $`689043`
+## [1] "1CXW" "1GEN" "1RTG"
+## 
+## $`689043`
+##  [1] "1L6J" "2OVX" "2OVZ" "2OW0" "2OW1" "2OW2" "4H1Q" "4H82" "4HMA" "4WZV" "5TH6" "5TH9" "6ESM"
+## 
+## $`5280343`
+##  [1] "1L6J" "2OVX" "2OVZ" "2OW0" "2OW1" "2OW2" "4H1Q" "4H82" "4HMA" "4WZV" "5TH6" "5TH9" "6ESM"
+\end{verbatim}
+
+\hypertarget{ux83b7ux53d6ux5316ux5408ux7269ux5206ux5b50ux7684-sdf-ux6570ux636e}{%
+\subsubsection{获取化合物分子的 SDF 数据}\label{ux83b7ux53d6ux5316ux5408ux7269ux5206ux5b50ux7684-sdf-ux6570ux636e}}
+
+通过 PubChem ID 使用 PubChem API 获取官方 .sdf 文件（\url{https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest/}）\textsuperscript{\protect\hyperlink{ref-AnUpdateOnPuKimS2018}{4}}。
+
+所有 .sdf 文件被整合。
+\textbf{(对应文件为 \texttt{./SDFs/all\_compounds.sdf})}
+
+\hypertarget{ux9884ux5904ux7406ux5316ux5408ux7269ux7684ux7ed3ux6784ux6570ux636e}{%
+\subsubsection{预处理化合物的结构数据}\label{ux9884ux5904ux7406ux5316ux5408ux7269ux7684ux7ed3ux6784ux6570ux636e}}
+
+使用 Python 的 Meeko 转化 .sdf 数据为 .pdbqt。
+
+共有 7 个化合物被成功转化。
+\textbf{(对应文件为 \texttt{./pdbqt})}
+
+\hypertarget{ux83b7ux53d6ux9776ux70b9ux86cbux767dux6570ux636e}{%
+\subsection{获取靶点蛋白数据}\label{ux83b7ux53d6ux9776ux70b9ux86cbux767dux6570ux636e}}
+
+\hypertarget{pdbID}{%
+\subsubsection{获取 MCC top 10 蛋白的PDB ID}\label{pdbID}}
+
+使用 R \texttt{BiomaRt} 获取MCC 筛选的Top 10 蛋白的 PDB ID。
+
+结果如下：
+\textbf{(对应文件为 \texttt{MCC\_tops\_PDB\_ID.csv})}
+
+\begin{verbatim}
+## # A tibble: 215 x 2
+##    hgnc_symbol pdb  
+##    <chr>       <chr>
+##  1 TNF         4Y6O 
+##  2 TNF         3L9J 
+##  3 TNF         1A8M 
+##  4 TNF         1TNF 
+##  5 TNF         2AZ5 
+##  6 TNF         2E7A 
+##  7 TNF         2TUN 
+##  8 TNF         2ZJC 
+##  9 TNF         2ZPX 
+## 10 TNF         3ALQ 
+## # i 205 more rows
+\end{verbatim}
+
+\textbf{注意}，一个蛋白对应多种结构，对应有多个 PDB ID：
+
+\begin{verbatim}
+## Data of 10 
+##   +++  Protein   1 +++
+##   IL6
+##     Sum: 12
+##       pdb: 1P9M, 5FUC, 1ALU, 1IL6, ...
+## 
+##   +++  Protein   2 +++
+##   IL1B
+##     Sum: 59
+##       pdb: 3O4O, 4DEP, 1HIB, 1I1B, ...
+## 
+##   +++  Protein   3 +++
+##   TNF
+##     Sum: 39
+##       pdb: 4Y6O, 3L9J, 1A8M, 1TNF, ...
+## 
+##   +++  Protein   4 +++
+##   MMP9
+##     Sum: 25
+##       pdb: 1GKC, 1GKD, 1ITV, 1L6J, ...
+## 
+##   +++  Protein   5 +++
+##   CXCL8
+##     Sum: 18
+##       pdb: 1ILP, 1ILQ, 6XMN, 6LFM, ...
+## 
+##   +++  Protein   6 +++
+##   TGFB1
+##     Sum: 
+##       No data.
+##   +++  Protein   7 +++
+##   MMP2
+##     Sum: 11
+##       pdb: 3AYU, 1CK7, 1CXW, 1EAK, ...
+## 
+##   +++  Protein   8 +++
+##   IL10
+##     Sum: 8
+##       pdb: 1J7V, 1Y6K, 6X93, 1ILK, ...
+## 
+##   +++  Protein   9 +++
+##   ICAM1
+##     Sum: 14
+##       pdb: 1MQ8, 3TCX, 1D3E, 1D3I, ...
+## 
+##   +++  Protein   10 +++
+##   SERPINE1
+##     Sum: 29
+##       pdb: 5BRR, 5ZLZ, 3PB1, 1OC0, ...
+\end{verbatim}
+
+\hypertarget{ux6839ux636e-bindingdb-ux6570ux636eux63d0ux4f9bux7684ux7ed3ux5408ux53efux80fdux7b5bux9009ux9776ux70b9ux86cbux767dux7ed3ux6784}{%
+\subsubsection{根据 BindingDB 数据提供的结合可能筛选靶点蛋白结构}\label{ux6839ux636e-bindingdb-ux6570ux636eux63d0ux4f9bux7684ux7ed3ux5408ux53efux80fdux7b5bux9009ux9776ux70b9ux86cbux767dux7ed3ux6784}}
+
+由于同一个蛋白对应多个名称，根据 BindingDB 提供的结合可能筛选，减少计算量。
+
+此步骤已经在 @ref\{par\} 中同步实现。
+
+\hypertarget{ux83b7ux53d6ux9776ux70b9ux86cbux767dux7684-pdb-ux6587ux4ef6}{%
+\subsubsection{获取靶点蛋白的 PDB 文件}\label{ux83b7ux53d6ux9776ux70b9ux86cbux767dux7684-pdb-ux6587ux4ef6}}
+
+使用 RCSB PDB 提供的 API 获取 .pdb 文件。共有49个。
+\url{https://www.rcsb.org/docs/programmatic-access/batch-downloads-with-shell-script}
+
+\textbf{(对应文件为 \texttt{./protein\_pdb})}
+
+\hypertarget{ux6839ux636eux79cdux65cfux8fc7ux6ee4ux9776ux70b9ux86cbux767d}{%
+\subsubsection{根据种族过滤靶点蛋白}\label{ux6839ux636eux79cdux65cfux8fc7ux6ee4ux9776ux70b9ux86cbux767d}}
+
+PDB 文件中记录有种族信息，根据种族（人种）过滤靶点蛋白（Regex match: ``ORGANISM\_SCIENTIFIC: HOMO SAPIENS;''）。
+
+过滤前有 215 个文件，过滤后有 49 个文件。
+
+\hypertarget{ux9884ux5904ux7406ux9776ux70b9ux86cbux767d-pdb-ux6587ux4ef6}{%
+\subsubsection{预处理靶点蛋白 PDB 文件}\label{ux9884ux5904ux7406ux9776ux70b9ux86cbux767d-pdb-ux6587ux4ef6}}
+
+使用 ADFR 工具给受体蛋白加氢并转化为 .pdbqt 文件。成功获取48个文件。
+
+\textbf{(对应文件为 \texttt{./protein\_pdbqt})}
+
+\hypertarget{ux4f7fux7528autodock-vinaux5206ux5b50ux5bf9ux63a5}{%
+\subsection{使用AutoDock Vina分子对接}\label{ux4f7fux7528autodock-vinaux5206ux5b50ux5bf9ux63a5}}
+
+\hypertarget{ux6240ux6709ux5206ux5b50ux548cux9776ux70b9ux86cbux767dux7ed3ux5408ux7684ux53efux80fdux6027}{%
+\subsubsection{所有分子和靶点蛋白结合的可能性}\label{ux6240ux6709ux5206ux5b50ux548cux9776ux70b9ux86cbux767dux7ed3ux5408ux7684ux53efux80fdux6027}}
+
+结合 \ref{par} 得到的对应关系以及最终获得的化合物和靶点蛋白的 .pdbqt 文件，共有以下121结合可能：
+
+\begin{verbatim}
+## # A tibble: 121 x 2
+##    Ligand Receptor
+##    <chr>  <chr>   
+##  1 370    1cxw    
+##  2 370    1gen    
+##  3 370    1rtg    
+##  4 370    1c5g    
+##  5 370    1dvn    
+##  6 370    1lj5    
+##  7 370    4aqh    
+##  8 73111  1c5g    
+##  9 73111  1dvn    
+## 10 73111  1lj5    
+## # i 111 more rows
+\end{verbatim}
+
+\hypertarget{ux4f7fux7528-autodock-vina-ux5206ux5b50ux5bf9ux63a5}{%
+\subsubsection{使用 AutoDock Vina 分子对接}\label{ux4f7fux7528-autodock-vina-ux5206ux5b50ux5bf9ux63a5}}
+
+该步骤包括使用 ADFR 工具计算 affinity maps \url{https://ccsb.scripps.edu/adfr/}。
+
+尽管已经通过多种方式筛选了化合物和蛋白的结合，依然有 121 种可能性。
+
+vina 的一次计算时间约 0.5 分钟到数小时不等；此处设定了计算时间限制（3600 秒），超出时间限制将被强制取消。
+
+所有可能都被计算，中途可能强制取消。结果文件和计算需要的分子或蛋白信息都被存储。
+\textbf{(对应文件为 \texttt{./vina\_space})}
+子目录的命名规则为：``PubChem ID'' + ``\_into\_'' + ``PDB ID''。
+子目录下的更多文件的解释请参考：\url{https://autodock-vina.readthedocs.io/en/latest/docking_basic.html}
+
+在121次计算中：
+
+\begin{itemize}
+\tightlist
+\item
+  成功计算（76次）
+\item
+  或时间限制或软件原因失败（45次）。
+\end{itemize}
+
+对接的结果概览（Affinity 单位为 kcal/mol，值越低，结合程度越好）：
+\textbf{(对应文件为 \texttt{./results\_of\_batch\_docking.csv})}
+
+\begin{verbatim}
+## # A tibble: 76 x 9
+##    PDB_ID PubChem_id Affinity dir                          file                    Combn Ingredient.id Ingredient.name hgnc_symbol
+##    <chr>       <int>    <dbl> <chr>                        <chr>                   <chr> <chr>         <chr>           <chr>      
+##  1 1lj5        73111    -8.94 vina_space/73111_into_1lj5   vina_space/73111_into_~ 7311~ HBIN043755    sennoside a     SERPINE1   
+##  2 6x81      5280704    -7.81 vina_space/5280704_into_6x81 vina_space/5280704_int~ 5280~ HBIN021590    Cosmetin        TNF        
+##  3 6x82      5280704    -7.2  vina_space/5280704_into_6x82 vina_space/5280704_int~ 5280~ HBIN021590    Cosmetin        TNF        
+##  4 6ooz      5280704    -7.05 vina_space/5280704_into_6ooz vina_space/5280704_int~ 5280~ HBIN021590    Cosmetin        TNF        
+##  5 6ooy      5280704    -6.90 vina_space/5280704_into_6ooy vina_space/5280704_int~ 5280~ HBIN021590    Cosmetin        TNF        
+##  6 6x81        66065    -6.13 vina_space/66065_into_6x81   vina_space/66065_into_~ 6606~ HBIN017919    bergenin        TNF        
+##  7 3it8      5280704    -6.10 vina_space/5280704_into_3it8 vina_space/5280704_int~ 5280~ HBIN021590    Cosmetin        TNF        
+##  8 6ooz        66065    -6.02 vina_space/66065_into_6ooz   vina_space/66065_into_~ 6606~ HBIN017919    bergenin        TNF        
+##  9 6x83      5280704    -6.00 vina_space/5280704_into_6x83 vina_space/5280704_int~ 5280~ HBIN021590    Cosmetin        TNF        
+## 10 6x85      5280704    -6.00 vina_space/5280704_into_6x85 vina_space/5280704_int~ 5280~ HBIN021590    Cosmetin        TNF        
+## # i 66 more rows
+\end{verbatim}
+
+可视化如下（根据靶点蛋白去重复）：
+\textbf{(对应文件为 \texttt{./figs/Docking\_Affinity.pdf})}
+
+\begin{figure}
+\centering
+\includegraphics{./figs/Docking_Affinity.pdf}
+\caption{\label{fig:fig2}Molecular Docking Affinity}
+\end{figure}
+
+\hypertarget{ux5bf9ux63a5ux53efux89c6ux5316}{%
+\subsubsection{对接可视化}\label{ux5bf9ux63a5ux53efux89c6ux5316}}
+
+使用 PyMol 工具将结果可视化\textsuperscript{\protect\hyperlink{ref-LigandDockingSeelig2010}{5}}。
+（对应文件存储在 \texttt{vina\_space} 目录下，png 文件，共 76 个）。
+在 Figure \ref{fig:fig2} 中展示的结果被保存在 \texttt{./figs} 文件夹。
+\textbf{(对应文件为 \texttt{./figs/66065\_into\_6x81.png}, \texttt{./figs})}
+
+以下 Figure \ref{fig:fig2} 展示 Figure \ref{fig:fig3} 中排名最高的结果：
+
+\def\@captype{figure}
+\includegraphics[width=9.29in]{thesis_fig/73111_into_1lj5} \caption{Visualization of Molecular docking}\label{fig:fig3}
+\makeatletter
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-AutodockVina1Eberha2021}{}%
+1. Eberhardt, J., Santos-Martins, D., Tillack, A. F. \& Forli, S. AutoDock vina 1.2.0: New docking methods, expanded force field, and python bindings. \emph{Journal of Chemical Information and Modeling} \textbf{61}, 3891--3898 (2021).
+
+\leavevmode\hypertarget{ref-ComputationalPForli2016}{}%
+2. Forli, S. \emph{et al.} Computational proteinligand docking and virtual drug screening with the autodock suite. \emph{Nature Protocols} \textbf{11}, (2016).
+
+\leavevmode\hypertarget{ref-PubchemSubstanKimS2015}{}%
+3. Kim, S. \emph{et al.} PubChem substance and compound databases. \emph{Nucleic Acids Research} (2015).
+
+\leavevmode\hypertarget{ref-AnUpdateOnPuKimS2018}{}%
+4. Kim, S., Thiessen, P. A., Cheng, T., Yu, B. \& Bolton, E. E. An update on pug-rest: RESTful interface for programmatic access to pubchem. \emph{Nucleic Acids Research} \textbf{46}, (2018).
+
+\leavevmode\hypertarget{ref-LigandDockingSeelig2010}{}%
+5. Seeliger, D. \& Groot, B. L. de. Ligand docking and binding site analysis with pymol and autodock/vina. \emph{Journal of Computer-Aided Molecular Design} \textbf{24}, (2010).
+\end{cslreferences}
+
+\end{document}

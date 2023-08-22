@@ -1,0 +1,1421 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{ux5206ux6790ux5185ux5bb9ux8bc4ux4f30}{%
+\section{分析内容评估}\label{ux5206ux6790ux5185ux5bb9ux8bc4ux4f30}}
+
+<<<<<<< HEAD
+筛出（瘢痕增生）能够与TCF-AS1结合又能与TCF4结合的RNA结合蛋白，关于预期结果和交付内容的补充：
+=======
+根据客户需求和提供的数据，筛出（瘢痕增生）能够与TCF-AS1结合又能与TCF4结合的RNA结合蛋白。
+结果请参考 \ref{con}
+
+\hypertarget{ux7814ux7a76ux8bbeux8ba1ux6d41ux7a0bux56fe}{%
+\section{研究设计流程图}\label{ux7814ux7a76ux8bbeux8ba1ux6d41ux7a0bux56fe}}
+
+\includegraphics[width=\linewidth]{output_files/figure-latex/unnamed-chunk-4-1}
+
+\hypertarget{ux6750ux6599ux548cux65b9ux6cd5}{%
+\section{材料和方法}\label{ux6750ux6599ux548cux65b9ux6cd5}}
+>>>>>>> bcd1ae0 (Thu Aug 17 06:03:20 PM CST 2023)
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  初步处理客户提供的数据（由于客户未提供数据，情况不明）。
+\item
+  使用客户提供的数据筛选基因（预计使用WGCNA\textsuperscript{\protect\hyperlink{ref-WgcnaAnRPacLangfe2008}{1}} 的方法，但客户未提供数据，情况不明），与 TCF4-AS1 lncRNA 和 TCF4mRNA 具有共表达关系。若使用WGCNA分析，将得到相关分析结果的可视化图和表格（请参考 \ref{demo}）。
+\item
+  视情况选择合适的预测工具\textsuperscript{\protect\hyperlink{ref-ICatIRapidArmaos2021}{2}--\protect\hyperlink{ref-RckAccurateAOrenst2016}{5}}，预测蛋白和RNA的结合程度，并可视化为图表。
+\item
+  最后整理成完整分析报告（形式为本 pdf 文档），并附含上述分析的图表信息，参考文献等。
+\end{enumerate}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+<<<<<<< HEAD
+=======
+\hypertarget{ux4e0bux8f7dux53c2ux8003ux57faux56e0ux7ec4ux6ce8ux91caux6587ux4ef6}{%
+\subsection{下载参考基因组注释文件}\label{ux4e0bux8f7dux53c2ux8003ux57faux56e0ux7ec4ux6ce8ux91caux6587ux4ef6}}
+
+下载 cDNA 和 ncRNA 参考基因注释。
+\url{https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/}
+
+\hypertarget{fastq-ux9884ux5904ux7406}{%
+\subsection{fastq 预处理}\label{fastq-ux9884ux5904ux7406}}
+
+\hypertarget{ux6570ux636eux8d28ux63a7}{%
+\subsubsection{数据质控}\label{ux6570ux636eux8d28ux63a7}}
+
+使用 fastp 去接头和去低质量的碱基
+
+此为 fastp 处理时生成的报告文件。
+`Reports fastq files processed with fastp' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./fastp\_report})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./fastp\_report共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item CT1-CT1\_combined\_R.html
+\item CT2-CT2\_combined\_R.html
+\item CT3-CT3\_combined\_R.html
+\item CUR1\_R.html
+\item CUR2\_R.html
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux4f7fux7528-kallisto-ux6bd4ux5bf9-fastq-ux5230ux53c2ux8003ux57faux56e0ux5ea7}{%
+\subsection{使用 kallisto 比对 fastq 到参考基因座}\label{ux4f7fux7528-kallisto-ux6bd4ux5bf9-fastq-ux5230ux53c2ux8003ux57faux56e0ux5ea7}}
+
+kallisto 提供了快速且准确的 fastq 比对到参考基因座的方法\textsuperscript{\protect\hyperlink{ref-NearOptimalPrBray2016}{1}} (\url{http://pachterlab.github.io/kallisto/manual.html})。
+
+\hypertarget{ux9274ux5b9a-mrna}{%
+\subsubsection{鉴定 mRNA}\label{ux9274ux5b9a-mrna}}
+
+使用 kallisto 将 fastq 与 hg38 的 cDNA 数据比对。
+
+主要为子目录下的 abundance.tsv 文件。
+`Refer to mRNA' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./quant\_hg38\_mrna})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./quant\_hg38\_mrna共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item CT1-CT1\_combined\_R
+\item CT2-CT2\_combined\_R
+\item CT3-CT3\_combined\_R
+\item CUR1\_R
+\item CUR2\_R
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux9274ux5b9a-ncrna}{%
+\subsubsection{鉴定 ncRNA}\label{ux9274ux5b9a-ncrna}}
+
+使用 kallisto 将 fastq 与 hg38 的 ncRNA 数据比对。
+
+主要为子目录下的 abundance.tsv 文件。
+`Refer to ncRNA' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./quant\_hg38\_ncrna})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./quant\_hg38\_ncrna共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item CT1-CT1\_combined\_R
+\item CT2-CT2\_combined\_R
+\item CT3-CT3\_combined\_R
+\item CUR1\_R
+\item CUR2\_R
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\subsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+\hypertarget{ux8bfbux53d6ux5e76ux5408ux5e76ux4e0dux540cux6837ux672c-rna-ux5b9aux91cfux6570ux636e}{%
+\subsubsection{读取并合并不同样本 RNA 定量数据}\label{ux8bfbux53d6ux5e76ux5408ux5e76ux4e0dux540cux6837ux672c-rna-ux5b9aux91cfux6570ux636e}}
+
+Table \ref{tab:merged-mrna}为表格merged mrna概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/merged-mrna.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有207249行7列，以下预览的表格可能省略部分数据；表格含有207249个唯一`target\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:merged-mrna}Merged mrna}\tabularnewline
+\toprule
+targe\ldots{} & CT1-C\ldots{} & CT2-C\ldots{} & CT3-C\ldots{} & CUR1\_R & CUR2\_R & CUR3\_R\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+targe\ldots{} & CT1-C\ldots{} & CT2-C\ldots{} & CT3-C\ldots{} & CUR1\_R & CUR2\_R & CUR3\_R\tabularnewline
+\midrule
+\endhead
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:merged-ncrna}为表格merged ncrna概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/merged-ncrna.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有68492行7列，以下预览的表格可能省略部分数据；表格含有68492个唯一`target\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:merged-ncrna}Merged ncrna}\tabularnewline
+\toprule
+targe\ldots{} & CT1-C\ldots{} & CT2-C\ldots{} & CT3-C\ldots{} & CUR1\_R & CUR2\_R & CUR3\_R\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+targe\ldots{} & CT1-C\ldots{} & CT2-C\ldots{} & CT3-C\ldots{} & CUR1\_R & CUR2\_R & CUR3\_R\tabularnewline
+\midrule
+\endhead
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 2496.34 & 3798.65 & 11014.8 & 2845.62 & 3811.47 & 10121.3\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0.166667 & 0 & 0.333333 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0.5 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 3 & 7 & 5 & 4 & 6 & 9\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5408ux5e76-mrna-ux548c-ncrna-ux6570ux636e}{%
+\subsubsection{合并 mRNA 和 ncRNA 数据}\label{ux5408ux5e76-mrna-ux548c-ncrna-ux6570ux636e}}
+
+在这里，将 mRNA 数据和 ncRNA 数据按照列（样品）合并。
+
+Table \ref{tab:merged-data-of-mRNA-and-ncRNA}为表格merged data of mRNA and ncRNA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/merged-data-of-mRNA-and-ncRNA.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有275741行7列，以下预览的表格可能省略部分数据；表格含有275741个唯一`target\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:merged-data-of-mRNA-and-ncRNA}Merged data of mRNA and ncRNA}\tabularnewline
+\toprule
+targe\ldots{} & CT1-C\ldots{} & CT2-C\ldots{} & CT3-C\ldots{} & CUR1\_R & CUR2\_R & CUR3\_R\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+targe\ldots{} & CT1-C\ldots{} & CT2-C\ldots{} & CT3-C\ldots{} & CUR1\_R & CUR2\_R & CUR3\_R\tabularnewline
+\midrule
+\endhead
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+ENST0\ldots{} & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux4f7fux7528-biomart-ux83b7ux53d6ux57faux56e0ux6ce8ux91ca}{%
+\subsubsection{\texorpdfstring{使用 \texttt{biomaRt} 获取基因注释}{使用 biomaRt 获取基因注释}}\label{ux4f7fux7528-biomart-ux83b7ux53d6ux57faux56e0ux6ce8ux91ca}}
+
+使用 R包 \texttt{biomaRt} 获取 mRNA 和 ncRNA 的注释。
+
+Table \ref{tab:annotation-mRNA}为表格annotation mRNA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/annotation-mRNA.tsv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有275741行8列，以下预览的表格可能省略部分数据；表格含有275741个唯一`ensembl\_transcript\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:annotation-mRNA}Annotation mRNA}\tabularnewline
+\toprule
+ensem\ldots\ldots1 & ensem\ldots\ldots2 & entre\ldots{} & hgnc\_\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensem\ldots\ldots1 & ensem\ldots\ldots2 & entre\ldots{} & hgnc\_\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endhead
+ENST0\ldots{} & ENSG0\ldots{} & 4535 & MT-ND1 & MT & 3307 & 4262 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4536 & MT-ND2 & MT & 4470 & 5511 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4512 & MT-CO1 & MT & 5904 & 7445 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4513 & MT-CO2 & MT & 7586 & 8269 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4509 & MT-ATP8 & MT & 8366 & 8572 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4508 & MT-ATP6 & MT & 8527 & 9207 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4514 & MT-CO3 & MT & 9207 & 9990 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4537 & MT-ND3 & MT & 10059 & 10404 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4539 & MT-ND4L & MT & 10470 & 10766 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4538 & MT-ND4 & MT & 10760 & 12137 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4540 & MT-ND5 & MT & 12337 & 14148 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4541 & MT-ND6 & MT & 14149 & 14673 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4519 & MT-CYB & MT & 14747 & 15887 & mitoc\ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 10272\ldots{} & & KI270\ldots{} & 4612 & 29626 &\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 10272\ldots{} & & KI270\ldots{} & 4612 & 29626 &\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{diff}{%
+\subsubsection{\texorpdfstring{使用 \texttt{limma} 差异分析}{使用 limma 差异分析}}\label{diff}}
+
+Figure \ref{fig:filter-low-expression-genes}为图filter low expression genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/filter-low-expression-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/filter-low-expression-genes.pdf}
+\caption{Filter low expression genes}\label{fig:filter-low-expression-genes}
+\end{center}
+
+Figure \ref{fig:nomalize-genes-expression}为图nomalize genes expression概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/nomalize-genes-expression.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/nomalize-genes-expression.pdf}
+\caption{Nomalize genes expression}\label{fig:nomalize-genes-expression}
+\end{center}
+
+线形回归拟合 \texttt{model.matrix(\textasciitilde{}\ 0\ +\ group)}\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{2},\protect\hyperlink{ref-AGuideToCreaLawC2020}{8}}，并统计检验。
+
+Table \ref{tab:linear-regression-and-contrast-fit-results}为表格linear regression and contrast fit results概览。
+根据 P.Value (0.05) 和 \textbar log2FC\textbar{} (0.3) 过滤得到结果。
+
+\textbf{(对应文件为 \texttt{Figure+Table/linear-regression-and-contrast-fit-results.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有7204行14列，以下预览的表格可能省略部分数据；表格含有7204个唯一`ensembl\_transcript\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:linear-regression-and-contrast-fit-results}Linear regression and contrast fit results}\tabularnewline
+\toprule
+ensem\ldots\ldots1 & ensem\ldots\ldots2 & entre\ldots{} & hgnc\_\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & logFC & AveExpr & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensem\ldots\ldots1 & ensem\ldots\ldots2 & entre\ldots{} & hgnc\_\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & logFC & AveExpr & \ldots{}\tabularnewline
+\midrule
+\endhead
+ENST0\ldots{} & ENSG0\ldots{} & 23657 & SLC7A11 & 4 & 13816\ldots{} & 13824\ldots{} & solut\ldots{} & 1.096\ldots{} & 6.693\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 2316 & FLNA & X & 15434\ldots{} & 15437\ldots{} & filam\ldots{} & -0.60\ldots{} & 10.38\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 1728 & NQO1 & 16 & 69706996 & 69726668 & NAD(P\ldots{} & 1.540\ldots{} & 7.379\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 3486 & IGFBP3 & 7 & 45912245 & 45921874 & insul\ldots{} & -1.77\ldots{} & 5.925\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 3880 & KRT19 & 17 & 41523617 & 41528308 & kerat\ldots{} & -1.40\ldots{} & 5.649\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & NA & & 16 & 69709874 & 69710583 & novel\ldots{} & 1.519\ldots{} & 4.998\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 682 & BSG & 19 & 571277 & 583494 & basig\ldots{} & -1.89\ldots{} & 6.649\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 3488 & IGFBP5 & 2 & 21667\ldots{} & 21669\ldots{} & insul\ldots{} & -1.63\ldots{} & 6.279\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 128239 & IQGAP3 & HG251\ldots{} & 83962 & 131161 & IQ mo\ldots{} & -1.08\ldots{} & 5.548\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 128239 & IQGAP3 & 1 & 15652\ldots{} & 15657\ldots{} & IQ mo\ldots{} & -1.08\ldots{} & 5.548\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 1728 & NQO1 & 16 & 69706996 & 69726668 & NAD(P\ldots{} & 1.374\ldots{} & 5.529\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 4176 & MCM7 & 7 & 10009\ldots{} & 10010\ldots{} & minic\ldots{} & -1.04\ldots{} & 6.143\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 9537 & TP53I11 & 11 & 44885903 & 44951306 & tumor\ldots{} & -1.01\ldots{} & 5.866\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 1728 & NQO1 & 16 & 69706996 & 69726668 & NAD(P\ldots{} & 1.757\ldots{} & 3.238\ldots{} & \ldots{}\tabularnewline
+ENST0\ldots{} & ENSG0\ldots{} & 994 & CDC25B & 20 & 3786772 & 3806121 & cell \ldots{} & -0.80\ldots{} & 6.245\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:volcano-plot-of-differential-expression-genes}为图volcano plot of differential expression genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/volcano-plot-of-differential-expression-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/volcano-plot-of-differential-expression-genes.pdf}
+\caption{Volcano plot of differential expression genes}\label{fig:volcano-plot-of-differential-expression-genes}
+\end{center}
+
+\hypertarget{ux57faux56e0ux5171ux8868ux8fbeux5206ux6790}{%
+\subsection{基因共表达分析}\label{ux57faux56e0ux5171ux8868ux8fbeux5206ux6790}}
+
+\hypertarget{ux5efaux7acbux57faux56e0ux5171ux8868ux8fbeux6a21ux5757}{%
+\subsubsection{建立基因共表达模块}\label{ux5efaux7acbux57faux56e0ux5171ux8868ux8fbeux6a21ux5757}}
+
+将上述（\ref{diff}, Fig. \ref{fig:nomalize-genes-expression}）
+标准化过的\textbf{差异表达}基因数据
+(Tab. \ref{tab:linear-regression-and-contrast-fit-results})
+用于 WGCNA 分析\textsuperscript{\protect\hyperlink{ref-WgcnaAnRPacLangfe2008}{3}}。
+
+Figure \ref{fig:cluster-sample}为图cluster sample概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/cluster-sample.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/cluster-sample.pdf}
+\caption{Cluster sample}\label{fig:cluster-sample}
+\end{center}
+
+由于样本数量较少，没有明显合适的 `soft threshold'。这里，选择 `soft threshold' 为 3。
+
+Figure \ref{fig:pick-soft-thereshold}为图pick soft thereshold概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/pick-soft-thereshold.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/pick-soft-thereshold.pdf}
+\caption{Pick soft thereshold}\label{fig:pick-soft-thereshold}
+\end{center}
+
+Figure \ref{fig:gene-modules}为图gene modules概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/gene-modules.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/gene-modules.pdf}
+\caption{Gene modules}\label{fig:gene-modules}
+\end{center}
+
+\hypertarget{ux5171ux8868ux8fbeux6a21ux5757ux548cux57faux56e0ux7684ux5173ux8054ux6027}{%
+\subsubsection{共表达模块和基因的关联性}\label{ux5171ux8868ux8fbeux6a21ux5757ux548cux57faux56e0ux7684ux5173ux8054ux6027}}
+
+计算 `gene module' 和 genes 之间的关联性（module membership）。
+
+Table \ref{tab:module-membership}为表格module membership概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/module-membership.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有11853行15列，以下预览的表格可能省略部分数据；表格含有6009个唯一`gene'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllllll@{}}
+\caption{\label{tab:module-membership}Module membership}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+gene\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+module\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+cor\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+pvalue\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+-log2\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+signi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+sign\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+p.adjust\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensem\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+entre\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgnc\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+chrom\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+start\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+gene\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+module\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+cor\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+pvalue\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+-log2\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+signi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+sign\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+p.adjust\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensem\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+entre\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgnc\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+chrom\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+start\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.84\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0346\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4.853\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.078\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2101\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ESRRA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+11\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+64305497\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.89\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0166\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.912\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.061\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+64847\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SPATA20\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+17\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+50543058\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.85\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0319\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4.970\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.076\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+64847\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SPATA20\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+17\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+50543058\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.82\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0471\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4.408\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.088\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+57414\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RHBDD2\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+7\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+75842602\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.89\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0171\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.869\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.062\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+57414\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RHBDD2\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+7\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+75842602\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME3\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.85\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0305\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.035\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.075\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3675\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ITGA3\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+17\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+50055968\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.96\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.002\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+8.965\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.039\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2067\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ERCC1\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+19\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+45407334\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.82\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0435\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4.522\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.086\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2067\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ERCC1\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+19\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+45407334\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME3\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.86\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0287\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.122\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.073\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2067\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ERCC1\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+19\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+45407334\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.86\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0294\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.088\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.074\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+8635\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RNASET2\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+16692\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.99\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+3e-04\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+11.70\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.001\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+**\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.022\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5010\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CLDN11\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+17041\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.9\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.015\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.058\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.059\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5010\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CLDN11\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+17041\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME3\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.95\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0038\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+8.039\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.046\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5010\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CLDN11\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+17041\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.9\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.014\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.158\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.058\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+84957\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RELT\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+11\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+73376399\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.85\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0311\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.006\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.075\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+84957\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RELT\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+11\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+73376399\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{tcf4-ux6240ux5728ux7684ux57faux56e0ux8868ux8fbeux6a21ux5757}{%
+\subsubsection{TCF4 所在的基因表达模块}\label{tcf4-ux6240ux5728ux7684ux57faux56e0ux8868ux8fbeux6a21ux5757}}
+
+确认TCF4 或 TCF-AS1 所在基因模块。
+
+Table \ref{tab:TCF4-in-modules-memberships}为表格TCF4 in modules memberships概览。
+TCF4 所在基因模块为 `ME1' 和 `ME2'。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TCF4-in-modules-memberships.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4行15列，以下预览的表格可能省略部分数据；表格含有3个唯一`gene'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllllll@{}}
+\caption{\label{tab:TCF4-in-modules-memberships}TCF4 in modules memberships}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+gene\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+module\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+cor\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+pvalue\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+-log2\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+signi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+sign\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+p.adjust\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensem\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+entre\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgnc\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+chrom\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+start\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+gene\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+module\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+cor\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+pvalue\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+-log2\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+signi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+sign\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+p.adjust\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensem\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+entre\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgnc\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+chrom\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+start\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.85\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.033\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4.921\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.077\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6925\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TCF4\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+55222185\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.89\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0171\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.869\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.062\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6925\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TCF4\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+55222185\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.86\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0292\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.097\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.074\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6925\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TCF4\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+55222185\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENST0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ME2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+-0.83\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+0.0412\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4.601\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\textless{} 0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+*\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.084\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6925\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TCF4\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+55222185\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux9884ux6d4b-rna-ux548c-ux86cbux767dux8d28ux7684ux7ed3ux5408ux7387}{%
+\subsection{预测 RNA 和 蛋白质的结合率}\label{ux9884ux6d4b-rna-ux548c-ux86cbux767dux8d28ux7684ux7ed3ux5408ux7387}}
+
+\hypertarget{ux83b7ux53d6-fasta-ux6570ux636e}{%
+\subsubsection{获取 fasta 数据}\label{ux83b7ux53d6-fasta-ux6570ux636e}}
+
+过滤 Tab. \ref{tab:module-membership} 数据，根据 p.adjust \textless{} 0.05, 以及 module 为 `ME1' 和 `ME2'。
+随后，使用 \texttt{biomaRt} 获取基因对应的蛋白质的序列，同时，获取 TCF4 和 TCF-AS1 的序列；将这些序列转化为 `fasta'
+格式（数量大于 500 个的 `fasta' 文件被切分）。
+
+\hypertarget{ux4f7fux7528-catrapid-omics-v2.1-ux9884ux6d4b-rbps}{%
+\subsubsection{使用 `catRAPID omics v2.1' 预测 RBPs}\label{ux4f7fux7528-catrapid-omics-v2.1-ux9884ux6d4b-rbps}}
+
+\hypertarget{ux4e0aux4f20-catrapid-ux670dux52a1ux5668}{%
+\paragraph{上传 catRAPID 服务器}\label{ux4e0aux4f20-catrapid-ux670dux52a1ux5668}}
+
+catRAPID omics v2.1\textsuperscript{\protect\hyperlink{ref-ICatIRapidArmaos2021}{4}} 可同时计算多对 RNA 和蛋白质的结合（一次最多接受 500 个序列）。
+
+结果可见于服务器：
+
+\begin{itemize}
+\tightlist
+\item
+  \url{http://crg-webservice.s3.amazonaws.com/submissions/2023-08/729560/output/index.html?unlock=c9f3fccec3}
+\item
+  \url{http://crg-webservice.s3.amazonaws.com/submissions/2023-08/729563/output/index.html?unlock=77c11a2b6a}
+\item
+  \url{http://crg-webservice.s3.amazonaws.com/submissions/2023-08/729565/output/index.html?unlock=6449ff7496}
+\end{itemize}
+
+\hypertarget{ux7ed3ux679cux6574ux7406}{%
+\paragraph{结果整理}\label{ux7ed3ux679cux6574ux7406}}
+
+Table \ref{tab:all-results-include-positive-or-negtive}为表格all results include positive or negtive概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/all-results-include-positive-or-negtive.tsv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有162666行13列，以下预览的表格可能省略部分数据；表格含有1291个唯一`Protein\_ID'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:all-results-include-positive-or-negtive}All results include positive or negtive}\tabularnewline
+\toprule
+Prote\ldots{} & RNA\_ID & rnaFr\ldots\ldots3 & rnaFr\ldots\ldots4 & Annot\ldots{} & Inter\ldots{} & Z\_score & RBP\_P\ldots{} & RNA\_B\ldots{} & numof\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Prote\ldots{} & RNA\_ID & rnaFr\ldots\ldots3 & rnaFr\ldots\ldots4 & Annot\ldots{} & Inter\ldots{} & Z\_score & RBP\_P\ldots{} & RNA\_B\ldots{} & numof\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endhead
+ERCC5 & TCF4 & 6973 & 7306 & - & 119.58 & 1.47 & 0.43 & PF007\ldots{} & 2 & \ldots{}\tabularnewline
+DLG3 & TCF4 & 6973 & 7306 & - & 115.51 & 1.34 & 0.5 & PF006\ldots{} & 7 & \ldots{}\tabularnewline
+NRDC & TCF4 & 6973 & 7306 & - & 114.44 & 1.3 & 0.51 & PF161\ldots{} & 3 & \ldots{}\tabularnewline
+INCENP & TCF4 & 6973 & 7306 & - & 112.79 & 1.25 & 0.63 & PF121\ldots{} & 2 & \ldots{}\tabularnewline
+ERC1 & TCF4 & 6973 & 7306 & - & 107.5 & 1.08 & 0.29 & PF101\ldots{} & 2 & \ldots{}\tabularnewline
+DLG3 & TCF4.AS1 & 251 & 302 & - & 105.42 & 5.79 & 0.5 & PF006\ldots{} & 7 & \ldots{}\tabularnewline
+KIF2C & TCF4 & 2201 & 2534 & - & 105.19 & 1.01 & 0.41 & PF002\ldots{} & 2 & \ldots{}\tabularnewline
+ERCC5 & TCF4.AS1 & 251 & 302 & - & 103.23 & 5.65 & 0.43 & PF007\ldots{} & 2 & \ldots{}\tabularnewline
+GTSE1 & TCF4 & 6973 & 7306 & - & 103.09 & 0.94 & 0.41 & PF15259 & 1 & \ldots{}\tabularnewline
+LIG1 & TCF4 & 6973 & 7306 & - & 102.39 & 0.92 & 0.43 & PF010\ldots{} & 3 & \ldots{}\tabularnewline
+DLG3 & TCF4.AS1 & 276 & 327 & - & 102.28 & 5.59 & 0.5 & PF006\ldots{} & 7 & \ldots{}\tabularnewline
+FILIP1L & TCF4 & 6973 & 7306 & - & 101.81 & 0.9 & 0.29 & PF09727 & 1 & \ldots{}\tabularnewline
+TPX2 & TCF4 & 6973 & 7306 & - & 101.34 & 0.89 & 1 & PF122\ldots{} & 3 & \ldots{}\tabularnewline
+KIF15 & TCF4 & 6973 & 7306 & - & 101.24 & 0.88 & 0.37 & PF002\ldots{} & 3 & \ldots{}\tabularnewline
+NUP107 & TCF4 & 6973 & 7306 & - & 100.24 & 0.85 & 0.23 & PF04121 & 1 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+关于结果表格和各类评分的解释可以参考： \url{http://service.tartaglialab.com/static_files/shared/documentation_omics2.html}。
+
+接下来，按照不同条件筛选结果：
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{RBP\_Propensity\ ==\ 1},
+\item
+  \texttt{Interaction\_Propensity\ \textgreater{}\ 0},
+\item
+  \texttt{numof.RNA.Binding\_Domains\_Instances\ \textgreater{}\ 0},
+\item
+  \texttt{numof.RNA\_Binding\_Motifs\_Instances\ \textgreater{}\ 0}
+\end{itemize}
+
+Figure \ref{fig:intersects-of-sets-of-filtering-conditions}为图intersects of sets of filtering conditions概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersects-of-sets-of-filtering-conditions.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersects-of-sets-of-filtering-conditions.pdf}
+\caption{Intersects of sets of filtering conditions}\label{fig:intersects-of-sets-of-filtering-conditions}
+\end{center}
+
+可以发现，将四个数据集取交集，能得到包含少量数据的结果。
+
+Table \ref{tab:top-candidates}为表格top candidates概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/top-candidates.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有47行13列，以下预览的表格可能省略部分数据；表格含有10个唯一`Protein\_ID'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:top-candidates}Top candidates}\tabularnewline
+\toprule
+Prote\ldots{} & RNA\_ID & rnaFr\ldots\ldots3 & rnaFr\ldots\ldots4 & Annot\ldots{} & Inter\ldots{} & Z\_score & RBP\_P\ldots{} & RNA\_B\ldots{} & numof\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Prote\ldots{} & RNA\_ID & rnaFr\ldots\ldots3 & rnaFr\ldots\ldots4 & Annot\ldots{} & Inter\ldots{} & Z\_score & RBP\_P\ldots{} & RNA\_B\ldots{} & numof\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endhead
+PPIG & TCF4 & 6973 & 7306 & - & 70.11 & -0.1 & 1 & PF00160 & 1 & \ldots{}\tabularnewline
+LARP4 & TCF4 & 2367 & 2700 & - & 46.53 & -0.85 & 1 & PF05383 & 1 & \ldots{}\tabularnewline
+PPIG & TCF4 & 5313 & 5646 & - & 33.58 & -1.26 & 1 & PF00160 & 1 & \ldots{}\tabularnewline
+LARP4 & TCF4 & 2325 & 2658 & - & 26.88 & -1.47 & 1 & PF05383 & 1 & \ldots{}\tabularnewline
+LARP4 & TCF4 & 6973 & 7306 & - & 26.8 & -1.47 & 1 & PF05383 & 1 & \ldots{}\tabularnewline
+CPEB2 & TCF4 & 3363 & 3696 & - & 25.41 & -1.52 & 1 & PF163\ldots{} & 3 & \ldots{}\tabularnewline
+CPEB2 & TCF4 & 167 & 500 & - & 23.38 & -1.58 & 1 & PF163\ldots{} & 3 & \ldots{}\tabularnewline
+CPEB2 & TCF4 & 3031 & 3364 & - & 19.65 & -1.7 & 1 & PF163\ldots{} & 3 & \ldots{}\tabularnewline
+CPEB2 & TCF4 & 209 & 542 & - & 16.25 & -1.81 & 1 & PF163\ldots{} & 3 & \ldots{}\tabularnewline
+PPIG & TCF4 & 5355 & 5688 & - & 8.39 & -2.06 & 1 & PF00160 & 1 & \ldots{}\tabularnewline
+CPEB2 & TCF4 & 3321 & 3654 & - & 7.93 & -2.07 & 1 & PF163\ldots{} & 3 & \ldots{}\tabularnewline
+PPIG & TCF4 & 5479 & 5812 & - & 5.62 & -2.15 & 1 & PF00160 & 1 & \ldots{}\tabularnewline
+IGF2BP1 & TCF4 & 2325 & 2658 & - & 42.85 & -0.96 & 1 & PF000\ldots{} & 2 & \ldots{}\tabularnewline
+IGF2BP1 & TCF4 & 2159 & 2492 & - & 37.92 & -1.12 & 1 & PF000\ldots{} & 2 & \ldots{}\tabularnewline
+PCBP2 & TCF4 & 2159 & 2492 & - & 34.91 & -1.22 & 1 & PF00013 & 1 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Tab. \ref{tab:top-candidates} 包含 RBPs 与 TCF4 结合或 TCF-AS1 结合的可能性，以下取它们的交集。
+
+Figure \ref{fig:unique-candidate-of-RBP-binding-with-TCF4-and-TCF-AS1}为图unique candidate of RBP binding with TCF4 and TCF AS1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/unique-candidate-of-RBP-binding-with-TCF4-and-TCF-AS1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/unique-candidate-of-RBP-binding-with-TCF4-and-TCF-AS1.pdf}
+\caption{Unique candidate of RBP binding with TCF4 and TCF AS1}\label{fig:unique-candidate-of-RBP-binding-with-TCF4-and-TCF-AS1}
+\end{center}
+
+Fig. \ref{fig:unique-candidate-of-RBP-binding-with-TCF4-and-TCF-AS1} 中包含的蛋白的 `symbol' 为：
+
+\begin{verbatim}
+## $TCF4
+##  [1] "PPIG"    "LARP4"   "CPEB2"   "IGF2BP1" "PCBP2"   "YTHDF3"  "HNRNPH1" "KHDRBS3" "MBNL1"   "DAZAP1" 
+## 
+## $TCF4.AS1
+## [1] "HNRNPH1"
+\end{verbatim}
+
+\hypertarget{con}{%
+\section{结论}\label{con}}
+
+将 RNA-seq 数据结合差异分析、基因共表达分析，并利用 catRAPID 工具预测 RBPs，成功筛选出一批 RBPs。
+随后，根据 RBP 倾向（\texttt{RBP\_Propensity}）、结合倾向（\texttt{Interaction\_Propensity}）等条件筛选，
+获得唯一 RBP：HNRNPH1
+
+>>>>>>> bcd1ae0 (Thu Aug 17 06:03:20 PM CST 2023)
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-WgcnaAnRPacLangfe2008}{}%
+1. Langfelder, P. \& Horvath, S. WGCNA: An r package for weighted correlation network analysis. \emph{BMC Bioinformatics} \textbf{9}, (2008).
+
+\leavevmode\hypertarget{ref-ICatIRapidArmaos2021}{}%
+2. Armaos, A., Colantoni, A., Proietti, G., Rupert, J. \& Tartaglia, G. G. \textless i\textgreater cat\textless/i\textgreater RAPID\textless i\textgreater omics v2.0\textless/i\textgreater: Going deeper and wider in the prediction of proteinRNA interactions. \emph{Nucleic Acids Research} \textbf{49}, (2021).
+
+\leavevmode\hypertarget{ref-RbpTstlIsATPeng2022}{}%
+3. Peng, X. \emph{et al.} RBP-tstl is a two-stage transfer learning framework for genome-scale prediction of rna-binding proteins. \emph{Briefings in Bioinformatics} \textbf{23}, (2022).
+
+\leavevmode\hypertarget{ref-IntegratingTheSuYu2019}{}%
+4. Su, Y., Luo, Y., Zhao, X., Liu, Y. \& Peng, J. Integrating thermodynamic and sequence contexts improves protein-rna binding prediction. \emph{PLOS Computational Biology} \textbf{15}, (2019).
+
+\leavevmode\hypertarget{ref-RckAccurateAOrenst2016}{}%
+5. Orenstein, Y., Wang, Y. \& Berger, B. RCK: Accurate and efficient inference of sequence- and structure-based proteinRNA binding models from rnacompete data. \emph{Bioinformatics} \textbf{32}, (2016).
+\end{cslreferences}
+
+\end{document}

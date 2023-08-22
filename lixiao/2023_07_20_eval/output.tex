@@ -1,0 +1,289 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Report of Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Report of Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{test}{%
+\section{test}\label{test}}
+
+Figure \ref{fig:test}为图test概览。
+
+\textbf{(对应文件为 \texttt{../2023\_06\_30\_eval/figs/370\_into\_1cxw.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{../2023_06_30_eval/figs/370_into_1cxw.png}
+\caption{Test}\label{fig:test}
+\end{center}
+
+Figure \ref{fig:report-test}为图report test概览。
+
+\textbf{(对应文件为 \texttt{../2023\_06\_25\_fix/figs/MCC\_top10.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{../2023_06_25_fix/figs/MCC_top10.pdf}
+\caption{Report test}\label{fig:report-test}
+\end{center}
+
+Figure \ref{fig:test-figure-out-of-line}为图test figure out of line概览。
+
+\textbf{(对应文件为 \texttt{../2023\_06\_30\_eval/figs/5280343\_into\_5th6.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{../2023_06_30_eval/figs/5280343_into_5th6.png}
+\caption{Test figure out of line}\label{fig:test-figure-out-of-line}
+\end{center}
+
+Figure \ref{fig:plot-with-ggplot2}为图plot with ggplot2概览。
+
+\textbf{(对应文件为 \texttt{figs/plot-with-ggplot2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{figs/plot-with-ggplot2.pdf}
+\caption{Plot with ggplot2}\label{fig:plot-with-ggplot2}
+\end{center}
+
+Table \ref{tab:mtcars}为表格mtcars概览。
+test
+
+\textbf{(对应文件为 \texttt{tabs/mtcars.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有32行11列，以下预览的表格可能省略部分数据；表格含有25个唯一`mpg'。
+show time\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:mtcars}Mtcars}\tabularnewline
+\toprule
+mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb\tabularnewline
+\midrule
+\endhead
+21 & 6 & 160 & 110 & 3.9 & 2.62 & 16.46 & 0 & 1 & 4 & 4\tabularnewline
+21 & 6 & 160 & 110 & 3.9 & 2.875 & 17.02 & 0 & 1 & 4 & 4\tabularnewline
+22.8 & 4 & 108 & 93 & 3.85 & 2.32 & 18.61 & 1 & 1 & 4 & 1\tabularnewline
+21.4 & 6 & 258 & 110 & 3.08 & 3.215 & 19.44 & 1 & 0 & 3 & 1\tabularnewline
+18.7 & 8 & 360 & 175 & 3.15 & 3.44 & 17.02 & 0 & 0 & 3 & 2\tabularnewline
+18.1 & 6 & 225 & 105 & 2.76 & 3.46 & 20.22 & 1 & 0 & 3 & 1\tabularnewline
+14.3 & 8 & 360 & 245 & 3.21 & 3.57 & 15.84 & 0 & 0 & 3 & 4\tabularnewline
+24.4 & 4 & 146.7 & 62 & 3.69 & 3.19 & 20 & 1 & 0 & 4 & 2\tabularnewline
+22.8 & 4 & 140.8 & 95 & 3.92 & 3.15 & 22.9 & 1 & 0 & 4 & 2\tabularnewline
+19.2 & 6 & 167.6 & 123 & 3.92 & 3.44 & 18.3 & 1 & 0 & 4 & 4\tabularnewline
+17.8 & 6 & 167.6 & 123 & 3.92 & 3.44 & 18.9 & 1 & 0 & 4 & 4\tabularnewline
+16.4 & 8 & 275.8 & 180 & 3.07 & 4.07 & 17.4 & 0 & 0 & 3 & 3\tabularnewline
+17.3 & 8 & 275.8 & 180 & 3.07 & 3.73 & 17.6 & 0 & 0 & 3 & 3\tabularnewline
+15.2 & 8 & 275.8 & 180 & 3.07 & 3.78 & 18 & 0 & 0 & 3 & 3\tabularnewline
+10.4 & 8 & 472 & 205 & 2.93 & 5.25 & 17.98 & 0 & 0 & 3 & 4\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{verbatim}
+## Warning: Removed 63 rows containing missing values (`geom_point()`).
+\end{verbatim}
+
+Figure \ref{fig:heatdata}为图heatdata概览。
+
+\textbf{(对应文件为 \texttt{figs/heatdata.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{figs/heatdata.pdf}
+\caption{Heatdata}\label{fig:heatdata}
+\end{center}
+
+这是自己的文件
+`Custom function' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{../../ahr\_sig})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹../../ahr\_sig共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item analysis\_data.1.R
+\item analysis\_data.10.R
+\item analysis\_data.11.R
+\item analysis\_data.12.R
+\item analysis\_data.13.R
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+`List of mtcars' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{list-of-mtcars})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹list-of-mtcars共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_mtcars.csv
+\item 2\_mtcars.csv
+\item 3\_iris.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+`List of test ggplot' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{list-of-test-ggplot})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹list-of-test-ggplot共包含1个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_point.pdf
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Figure \ref{fig:grob}为图grob概览。
+
+\textbf{(对应文件为 \texttt{figs/grob.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{figs/grob.pdf}
+\caption{Grob}\label{fig:grob}
+\end{center}
+
+\hypertarget{ux751fux4fe1ux8bc4ux4f30}{%
+\section{生信评估}\label{ux751fux4fe1ux8bc4ux4f30}}
+
+关于转录组数据库筛选肌少症、癌症（结直肠癌）、化疗共同的通路，是否要串连三个要素（肌少症，结直肠癌，化疗）？
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  使用公共数据库，可行：
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \tightlist
+  \item
+    筛选 GEO 至少两个数据集，一个肌少症，另一个结直肠癌症。后者最好包含化疗前后的两组数据。如果 GEO 数据库不存在结直肠癌化疗前后的合适数据，可能需要筛选三个数据集供处理。
+  \item
+    消除批次效应（不同来源的数据的各种无关因素带来的影响）。
+  \item
+    筛选共通基因，有两种方法：
+
+    \begin{enumerate}
+    \def\labelenumiii{\arabic{enumiii}.}
+    \tightlist
+    \item
+      一般法，多重比对，取交集。
+    \item
+      WGCNA\textsuperscript{\protect\hyperlink{ref-WgcnaAnRPacLangfe2008}{1}} 法，对多个数据集进行一致性分析，寻找关键基因模块。
+    \item
+      联合法，联合上述两种方法。
+    \end{enumerate}
+  \item
+    根据基因筛选结果，通路富集分析。
+  \end{enumerate}
+\item
+  使用自备数据集，可行。可以更有针对性的设计实验分组，避免批次效应，分析结果更可靠；但针对性越强，成本越高。
+\end{enumerate}
+
+工作量：视数据集的多少和分析复杂程度，需要2-3天。
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-WgcnaAnRPacLangfe2008}{}%
+1. Langfelder, P. \& Horvath, S. WGCNA: An r package for weighted correlation network analysis. \emph{BMC Bioinformatics} \textbf{9}, (2008).
+\end{cslreferences}
+
+\end{document}
