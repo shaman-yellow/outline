@@ -90,42 +90,39 @@
 
 \listoftables
 
-\hypertarget{ux5206ux6790ux5185ux5bb9ux8bc4ux4f30}{%
-\section{分析内容评估}\label{ux5206ux6790ux5185ux5bb9ux8bc4ux4f30}}
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
 
-<<<<<<< HEAD
-筛出（瘢痕增生）能够与TCF-AS1结合又能与TCF4结合的RNA结合蛋白，关于预期结果和交付内容的补充：
-=======
-根据客户需求和提供的数据，筛出（瘢痕增生）能够与TCF-AS1结合又能与TCF4结合的RNA结合蛋白。
-结果请参考 \ref{con}
+根据客户需求和提供的数据，筛出（瘢痕增生）能够与 TCF-AS1 结合又能与 TCF4 结合的 RNA 结合蛋白。
+结果请参考 \ref{dis}
 
-\hypertarget{ux7814ux7a76ux8bbeux8ba1ux6d41ux7a0bux56fe}{%
-\section{研究设计流程图}\label{ux7814ux7a76ux8bbeux8ba1ux6d41ux7a0bux56fe}}
+\hypertarget{route}{%
+\section{研究设计流程图}\label{route}}
 
 \includegraphics[width=\linewidth]{output_files/figure-latex/unnamed-chunk-4-1}
 
-\hypertarget{ux6750ux6599ux548cux65b9ux6cd5}{%
-\section{材料和方法}\label{ux6750ux6599ux548cux65b9ux6cd5}}
->>>>>>> bcd1ae0 (Thu Aug 17 06:03:20 PM CST 2023)
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  初步处理客户提供的数据（由于客户未提供数据，情况不明）。
+  获取参考注释基因。
 \item
-  使用客户提供的数据筛选基因（预计使用WGCNA\textsuperscript{\protect\hyperlink{ref-WgcnaAnRPacLangfe2008}{1}} 的方法，但客户未提供数据，情况不明），与 TCF4-AS1 lncRNA 和 TCF4mRNA 具有共表达关系。若使用WGCNA分析，将得到相关分析结果的可视化图和表格（请参考 \ref{demo}）。
+  初步处理客户提供的数据（fastp 质控、kallisto\textsuperscript{\protect\hyperlink{ref-NearOptimalPrBray2016}{1}} 对比到参考基因座等）。
 \item
-  视情况选择合适的预测工具\textsuperscript{\protect\hyperlink{ref-ICatIRapidArmaos2021}{2}--\protect\hyperlink{ref-RckAccurateAOrenst2016}{5}}，预测蛋白和RNA的结合程度，并可视化为图表。
+  使用 limma 差异分析\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{2}}。
 \item
-  最后整理成完整分析报告（形式为本 pdf 文档），并附含上述分析的图表信息，参考文献等。
+  使用 WGCNA 方法\textsuperscript{\protect\hyperlink{ref-WgcnaAnRPacLangfe2008}{3}}，从差异基因中筛选与 TCF4-AS1 lncRNA 和 TCF4mRNA 具有共表达关系的基
+  因。
+\item
+  视情况选择合适的预测工具\textsuperscript{\protect\hyperlink{ref-ICatIRapidArmaos2021}{4}--\protect\hyperlink{ref-RckAccurateAOrenst2016}{7}}，预测蛋白和 RNA 的结合程度，并可视化为图表。
 \end{enumerate}
 
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
 
-<<<<<<< HEAD
-=======
 \hypertarget{ux4e0bux8f7dux53c2ux8003ux57faux56e0ux7ec4ux6ce8ux91caux6587ux4ef6}{%
 \subsection{下载参考基因组注释文件}\label{ux4e0bux8f7dux53c2ux8003ux57faux56e0ux7ec4ux6ce8ux91caux6587ux4ef6}}
 
@@ -138,7 +135,7 @@
 \hypertarget{ux6570ux636eux8d28ux63a7}{%
 \subsubsection{数据质控}\label{ux6570ux636eux8d28ux63a7}}
 
-使用 fastp 去接头和去低质量的碱基
+使用fastp去接头和去低质量的碱基
 
 此为 fastp 处理时生成的报告文件。
 `Reports fastq files processed with fastp' 数据已全部提供。
@@ -1038,7 +1035,7 @@ RELT\strut
 确认TCF4 或 TCF-AS1 所在基因模块。
 
 Table \ref{tab:TCF4-in-modules-memberships}为表格TCF4 in modules memberships概览。
-TCF4 所在基因模块为 `ME1' 和 `ME2'。
+TCF4 所在基因模块为 `ME1' 和 `ME2'（TCF4 和 TCF-AS1不存在共表达关系）。
 
 \textbf{(对应文件为 \texttt{Figure+Table/TCF4-in-modules-memberships.csv})}
 
@@ -1231,12 +1228,6 @@ TCF4\strut
 \bottomrule
 \end{longtable}
 
-\hypertarget{ux9884ux6d4b-rna-ux548c-ux86cbux767dux8d28ux7684ux7ed3ux5408ux7387}{%
-\subsection{预测 RNA 和 蛋白质的结合率}\label{ux9884ux6d4b-rna-ux548c-ux86cbux767dux8d28ux7684ux7ed3ux5408ux7387}}
-
-\hypertarget{ux83b7ux53d6-fasta-ux6570ux636e}{%
-\subsubsection{获取 fasta 数据}\label{ux83b7ux53d6-fasta-ux6570ux636e}}
-
 过滤 Tab. \ref{tab:module-membership} 数据，根据 p.adjust \textless{} 0.05, 以及 module 为 `ME1' 和 `ME2'。
 随后，使用 \texttt{biomaRt} 获取基因对应的蛋白质的序列，同时，获取 TCF4 和 TCF-AS1 的序列；将这些序列转化为 `fasta'
 格式（数量大于 500 个的 `fasta' 文件被切分）。
@@ -1388,34 +1379,42 @@ Fig. \ref{fig:unique-candidate-of-RBP-binding-with-TCF4-and-TCF-AS1} 中包含�
 ## [1] "HNRNPH1"
 \end{verbatim}
 
-\hypertarget{con}{%
-\section{结论}\label{con}}
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
 
 将 RNA-seq 数据结合差异分析、基因共表达分析，并利用 catRAPID 工具预测 RBPs，成功筛选出一批 RBPs。
 随后，根据 RBP 倾向（\texttt{RBP\_Propensity}）、结合倾向（\texttt{Interaction\_Propensity}）等条件筛选，
 获得唯一 RBP：HNRNPH1
 
->>>>>>> bcd1ae0 (Thu Aug 17 06:03:20 PM CST 2023)
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
 \addcontentsline{toc}{section}{Reference}
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-NearOptimalPrBray2016}{}%
+1. Bray, N. L., Pimentel, H., Melsted, P. \& Pachter, L. Near-optimal probabilistic rna-seq quantification. \emph{Nature Biotechnology} \textbf{34}, (2016).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+2. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
 \leavevmode\hypertarget{ref-WgcnaAnRPacLangfe2008}{}%
-1. Langfelder, P. \& Horvath, S. WGCNA: An r package for weighted correlation network analysis. \emph{BMC Bioinformatics} \textbf{9}, (2008).
+3. Langfelder, P. \& Horvath, S. WGCNA: An r package for weighted correlation network analysis. \emph{BMC Bioinformatics} \textbf{9}, (2008).
 
 \leavevmode\hypertarget{ref-ICatIRapidArmaos2021}{}%
-2. Armaos, A., Colantoni, A., Proietti, G., Rupert, J. \& Tartaglia, G. G. \textless i\textgreater cat\textless/i\textgreater RAPID\textless i\textgreater omics v2.0\textless/i\textgreater: Going deeper and wider in the prediction of proteinRNA interactions. \emph{Nucleic Acids Research} \textbf{49}, (2021).
+4. Armaos, A., Colantoni, A., Proietti, G., Rupert, J. \& Tartaglia, G. G. \textless i\textgreater cat\textless/i\textgreater RAPID\textless i\textgreater omics v2.0\textless/i\textgreater: Going deeper and wider in the prediction of proteinRNA interactions. \emph{Nucleic Acids Research} \textbf{49}, (2021).
 
 \leavevmode\hypertarget{ref-RbpTstlIsATPeng2022}{}%
-3. Peng, X. \emph{et al.} RBP-tstl is a two-stage transfer learning framework for genome-scale prediction of rna-binding proteins. \emph{Briefings in Bioinformatics} \textbf{23}, (2022).
+5. Peng, X. \emph{et al.} RBP-tstl is a two-stage transfer learning framework for genome-scale prediction of rna-binding proteins. \emph{Briefings in Bioinformatics} \textbf{23}, (2022).
 
 \leavevmode\hypertarget{ref-IntegratingTheSuYu2019}{}%
-4. Su, Y., Luo, Y., Zhao, X., Liu, Y. \& Peng, J. Integrating thermodynamic and sequence contexts improves protein-rna binding prediction. \emph{PLOS Computational Biology} \textbf{15}, (2019).
+6. Su, Y., Luo, Y., Zhao, X., Liu, Y. \& Peng, J. Integrating thermodynamic and sequence contexts improves protein-rna binding prediction. \emph{PLOS Computational Biology} \textbf{15}, (2019).
 
 \leavevmode\hypertarget{ref-RckAccurateAOrenst2016}{}%
-5. Orenstein, Y., Wang, Y. \& Berger, B. RCK: Accurate and efficient inference of sequence- and structure-based proteinRNA binding models from rnacompete data. \emph{Bioinformatics} \textbf{32}, (2016).
+7. Orenstein, Y., Wang, Y. \& Berger, B. RCK: Accurate and efficient inference of sequence- and structure-based proteinRNA binding models from rnacompete data. \emph{Bioinformatics} \textbf{32}, (2016).
+
+\leavevmode\hypertarget{ref-AGuideToCreaLawC2020}{}%
+8. Law, C. W. \emph{et al.} A guide to creating design matrices for gene expression experiments. \emph{F1000Research} \textbf{9}, 1444 (2020).
 \end{cslreferences}
 
 \end{document}

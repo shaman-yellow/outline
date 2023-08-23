@@ -1,0 +1,1212 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{title}{%
+\section{Title}\label{title}}
+
+结合 scRNA-seq 和 bulk RNA-seq 探究昼夜节律基因对于 ccRCC 的预后评估价值
+
+（主题：昼夜节律，肿瘤，预后单细胞分析）\textsuperscript{\protect\hyperlink{ref-SingleCellTraHeLe2022}{1}}
+
+\hypertarget{abstract}{%
+\section{Abstract}\label{abstract}}
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+生物体的行为和新陈代谢每 24 小时就会出现有节奏的波动，以预测环境的变化。这种节律时钟受到环境信息的外部和内部信号影响。最重要的外部时间是光，特别是光暗循环。所有这些信号共同改变某些基因的表达水平以及控制生理过程的代谢物或激素的产生，其改变会导致健康损害。事实上，生物钟（circadian clock，CC）可以调节：细胞周期进展、DNA 修复机制、线粒体功能障碍、代谢重编程、免疫系统\textsuperscript{\protect\hyperlink{ref-ChronotherapyAmiama2022}{2}}。CC 的改变是多种慢性疾病的危险因素，例如神经退行性疾病、糖尿病和癌症等\textsuperscript{\protect\hyperlink{ref-ChronotherapyAmiama2022}{2},\protect\hyperlink{ref-CancerAndTheShafi2019}{3}}。事实上，CC基因表达的改变可能导致常见恶性肿瘤的发生。虽然 CC 基因在正常生理中的功能已经被充分阐明，但CC基因在癌症中的改变研究仍然缺乏，例如肾细胞癌（Renal Cell Carcinoma，RCC），这使得其在肿瘤细胞中的功能的清晰度和描述存在空白\textsuperscript{\protect\hyperlink{ref-RoleOfClockGSanton2023}{4}}。CC 基因和昼夜节律在 RCC 患者中的作用是一个较新研究领域，特别是考虑到昼夜节律在抗癌治疗中的影响的新发现。在肾细胞癌中，目前治疗方法缺乏有效的疗效或耐药性生物标志物，这强烈支持探索一系列可能影响患者治疗结果的临床和行为变量的必要性\textsuperscript{\protect\hyperlink{ref-RoleOfClockGSanton2023}{4}}。
+
+本研究通过分析肾癌单细胞测序数据集\textsuperscript{\protect\hyperlink{ref-IntegrativeSinYuZh2023}{5}}，继标准的单细胞处理流程\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{6},\protect\hyperlink{ref-ComprehensiveIStuart2019}{7}}，囊括细胞群鉴定\textsuperscript{\protect\hyperlink{ref-SupervisedClasPliner2019}{8},\protect\hyperlink{ref-ReferenceBasedAran2019}{9}}，拟时序分析\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{10},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{11}}，加权基因共表达分析\textsuperscript{\protect\hyperlink{ref-WgcnaAnRPacLangfe2008}{12}}，差异性分析，通路分析\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{13}}，以多种方法筛选关键CC基因\textsuperscript{\protect\hyperlink{ref-EfsAnEnsemblNeuman2017}{14}}，并筛选 top genes\textsuperscript{\protect\hyperlink{ref-EfsAnEnsemblNeuman2017}{14}}，借助 LASSO 回归建立预后模型，表征肿瘤发展和预后效果，并在随后进行生存分析、细胞通讯分析\textsuperscript{\protect\hyperlink{ref-InferenceAndAJinS2021}{15}}等，较为深入的探讨了昼夜节律在肾细胞癌（主要为 Clear cell renal cell carcinoma，ccRCC）中的作用。
+
+\hypertarget{methods}{%
+\section{Methods}\label{methods}}
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+\hypertarget{seurat-ux9884ux5904ux7406-gse-ux6570ux636e}{%
+\subsection{Seurat 预处理 GSE 数据}\label{seurat-ux9884ux5904ux7406-gse-ux6570ux636e}}
+
+\hypertarget{ux7ec6ux80deux805aux7c7bux4e0eux5deeux5f02ux8868ux8fbe}{%
+\subsubsection{细胞聚类与差异表达}\label{ux7ec6ux80deux805aux7c7bux4e0eux5deeux5f02ux8868ux8fbe}}
+
+\hypertarget{ux7ec6ux80deux7fa4ux6ce8ux91ca}{%
+\subsubsection{细胞群注释}\label{ux7ec6ux80deux7fa4ux6ce8ux91ca}}
+
+\hypertarget{monocle3-ux62dfux65f6ux5e8fux5206ux6790-ccrcc}{%
+\subsection{Monocle3 拟时序分析 ccRCC}\label{monocle3-ux62dfux65f6ux5e8fux5206ux6790-ccrcc}}
+
+\hypertarget{ux62dfux65f6ux5e8fux8f68ux8ff9}{%
+\subsubsection{拟时序轨迹}\label{ux62dfux65f6ux5e8fux8f68ux8ff9}}
+
+\hypertarget{ux8f68ux8ff9ux56feux7684ux5deeux5f02ux8868ux8fbe}{%
+\subsubsection{轨迹图的差异表达}\label{ux8f68ux8ff9ux56feux7684ux5deeux5f02ux8868ux8fbe}}
+
+\hypertarget{wgcna-ux5bfbux627eux5173ux952eux57faux56e0}{%
+\subsection{WGCNA 寻找关键基因}\label{wgcna-ux5bfbux627eux5173ux952eux57faux56e0}}
+
+\hypertarget{ux57faux56e0ux6570ux636eux5e93}{%
+\subsubsection{基因数据库}\label{ux57faux56e0ux6570ux636eux5e93}}
+
+\hypertarget{ux5171ux8868ux8fbeux6a21ux5757ux4e0eux663eux8457ux57faux56e0}{%
+\subsubsection{共表达模块与显著基因}\label{ux5171ux8868ux8fbeux6a21ux5757ux4e0eux663eux8457ux57faux56e0}}
+
+\hypertarget{ux901aux8defux5bccux96c6}{%
+\subsubsection{通路富集}\label{ux901aux8defux5bccux96c6}}
+
+\hypertarget{cellchat-ux7ec6ux80deux901aux8baf}{%
+\subsection{CellChat 细胞通讯}\label{cellchat-ux7ec6ux80deux901aux8baf}}
+
+\hypertarget{tcga-rna-seq-ux9884ux540eux6a21ux578b}{%
+\subsection{TCGA RNA-seq 预后模型}\label{tcga-rna-seq-ux9884ux540eux6a21ux578b}}
+
+\hypertarget{feature-selection}{%
+\subsubsection{Feature selection}\label{feature-selection}}
+
+\hypertarget{survival}{%
+\subsubsection{Survival}\label{survival}}
+
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
+
+\hypertarget{ux9644ux5206ux6790ux6d41ux7a0b}{%
+\section{附：分析流程}\label{ux9644ux5206ux6790ux6d41ux7a0b}}
+
+\hypertarget{ux65b9ux6848}{%
+\subsection{方案}\label{ux65b9ux6848}}
+
+\begin{itemize}
+\tightlist
+\item
+  筛选数据集
+\item
+  Seurat 分析
+
+  \begin{itemize}
+  \tightlist
+  \item
+    数据预处理QC
+  \item
+    消除批次效应
+  \item
+    数据降维、聚类
+  \item
+    差异表达分析
+  \item
+    细胞群鉴定
+  \end{itemize}
+\item
+  Monocle 分析
+
+  \begin{itemize}
+  \tightlist
+  \item
+    细胞轨迹图
+  \item
+    拟时序分析
+  \end{itemize}
+\item
+  MSigDB
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://bioinf.wehi.edu.au/software/MSigDB/}
+  \item
+    \url{https://www.gsea-msigdb.org/gsea/msigdb}
+  \end{itemize}
+\item
+  WGCNA 分析
+
+  \begin{itemize}
+  \tightlist
+  \item
+    预处理上述筛选的数据
+  \item
+    共表达基因模块
+  \item
+    结合 CRDscore 加权分析
+  \end{itemize}
+\item
+  Clusterprofiler
+
+  \begin{itemize}
+  \tightlist
+  \item
+    通路富集分析
+  \end{itemize}
+\item
+  EFS
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Feature selection
+  \end{itemize}
+\item
+  LASSO
+
+  \begin{itemize}
+  \tightlist
+  \item
+    regression
+  \end{itemize}
+\item
+  Cellchat 分析
+
+  \begin{itemize}
+  \tightlist
+  \item
+    聚焦于上述筛选的关键基因
+  \item
+    目标基因所在细胞和其他细胞的通讯
+  \item
+    目标基因的通路（Role）
+  \item
+    \ldots{}
+  \end{itemize}
+\item
+  Survival
+\end{itemize}
+
+\hypertarget{ux6d41ux7a0bux8bbeux8ba1}{%
+\subsection{流程设计}\label{ux6d41ux7a0bux8bbeux8ba1}}
+
+\includegraphics[width=\linewidth]{output_files/figure-latex/unnamed-chunk-5-1}
+
+\hypertarget{ux5206ux6790}{%
+\subsection{分析}\label{ux5206ux6790}}
+
+\hypertarget{ux6570ux636eux6765ux6e90}{%
+\subsubsection{数据来源}\label{ux6570ux636eux6765ux6e90}}
+
+重新分析来源于 GSE207493\textsuperscript{\protect\hyperlink{ref-IntegrativeSinYuZh2023}{5}} 的数据。
+关于 clear cell renal cell carcinoma（ccRCC）\textsuperscript{\protect\hyperlink{ref-ClearCellRenaJonasc2020}{16}}。
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Preliminary sequencing results (bcl files) were
+converted to FASTQ files with Cell Ranger V3.0 and
+CellRanger ATAC V1.2.0
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    The CellRanger (10X Genomics) secondary analysis
+pipeline was used to generate a digital gene expression
+matrix
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    Normalization and additional analysis by Seurat and
+Signac R package
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Assembly: GRCh38 for human data
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.4
+:}
+
+\vspace{0.5em}
+
+    Supplementary files format and content: The barcodes,
+genes, expression matrix files for scRNA-seq. The
+peaks.bed, singlecell.csv and fragments.tsv.gz files for
+scATAC-seq.
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux6570ux636eux9884ux5904ux7406-seruat}{%
+\subsubsection{数据预处理 Seruat}\label{ux6570ux636eux9884ux5904ux7406-seruat}}
+
+GSE207493 数据集共 19 个样本，随机选择 9 个样本用于分析。
+根据以下流程预处理，消除批次效应。
+
+\begin{itemize}
+\tightlist
+\item
+  \url{https://satijalab.org/seurat/articles/sctransform_vignette}
+\item
+  \url{https://satijalab.org/seurat/articles/integration_introduction}
+\end{itemize}
+
+Figure \ref{fig:Normalization-pca-samples}为图Normalization pca samples概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Normalization-pca-samples.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Normalization-pca-samples.pdf}
+\caption{Normalization pca samples}\label{fig:Normalization-pca-samples}
+\end{center}
+
+Figure \ref{fig:pca-rank}为图pca rank概览。
+根据图示，使用 1-5 个 PC 进行 UMAP 聚类。
+
+\textbf{(对应文件为 \texttt{Figure+Table/pca-rank.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/pca-rank.pdf}
+\caption{Pca rank}\label{fig:pca-rank}
+\end{center}
+
+Figure \ref{fig:seurat-cluster-UMAP}为图seurat cluster UMAP概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/seurat-cluster-UMAP.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/seurat-cluster-UMAP.pdf}
+\caption{Seurat cluster UMAP}\label{fig:seurat-cluster-UMAP}
+\end{center}
+
+\hypertarget{ux5deeux5f02ux8868ux8fbe}{%
+\subsubsection{差异表达}\label{ux5deeux5f02ux8868ux8fbe}}
+
+对 UMAP 聚类结果进行差异表达分析。
+
+Table \ref{tab:Differential-expressed-genes}为表格Differential expressed genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Differential-expressed-genes.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有11469行8列，以下预览的表格可能省略部分数据；表格含有27个唯一`cluster'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:Differential-expressed-genes}Differential expressed genes}\tabularnewline
+\toprule
+rownames & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & cluster & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & cluster & gene\tabularnewline
+\midrule
+\endhead
+EFHD2 & 0 & 4.667\ldots{} & 0.722 & 0.335 & 0 & 0 & EFHD2\tabularnewline
+CD247 & 0 & 4.354\ldots{} & 0.814 & 0.295 & 0 & 0 & CD247\tabularnewline
+PRF1 & 0 & 4.061\ldots{} & 0.768 & 0.218 & 0 & 0 & PRF1\tabularnewline
+AKNA & 0 & 3.938\ldots{} & 0.774 & 0.329 & 0 & 0 & AKNA\tabularnewline
+KLRD1 & 0 & 3.743\ldots{} & 0.583 & 0.16 & 0 & 0 & KLRD1\tabularnewline
+FGFBP2 & 0 & 3.741\ldots{} & 0.524 & 0.113 & 0 & 0 & FGFBP2\tabularnewline
+GZMB & 0 & 3.594\ldots{} & 0.617 & 0.15 & 0 & 0 & GZMB\tabularnewline
+GZMM & 0 & 3.304\ldots{} & 0.755 & 0.269 & 0 & 0 & GZMM\tabularnewline
+NKG7 & 0 & 3.245\ldots{} & 0.976 & 0.244 & 0 & 0 & NKG7\tabularnewline
+PYHIN1 & 0 & 3.227\ldots{} & 0.823 & 0.287 & 0 & 0 & PYHIN1\tabularnewline
+TXK & 0 & 3.213\ldots{} & 0.638 & 0.196 & 0 & 0 & TXK\tabularnewline
+STK17B & 0 & 3.198\ldots{} & 0.855 & 0.401 & 0 & 0 & STK17B\tabularnewline
+MYO1F & 0 & 3.195\ldots{} & 0.755 & 0.37 & 0 & 0 & MYO1F\tabularnewline
+GZMH & 0 & 3.042\ldots{} & 0.775 & 0.211 & 0 & 0 & GZMH\tabularnewline
+HCST & 0 & 2.978\ldots{} & 0.924 & 0.409 & 0 & 0 & HCST\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux7ec6ux80deux7fa4ux6ce8ux91ca-1}{%
+\subsubsection{细胞群注释}\label{ux7ec6ux80deux7fa4ux6ce8ux91ca-1}}
+
+获取原作者的研究\textsuperscript{\protect\hyperlink{ref-IntegrativeSinYuZh2023}{5}}数据（补充材料），将差异表达基因映射到 UMAP 图中。
+
+Table \ref{tab:Original-differential-expressed-genes-DEG}为表格Original differential expressed genes DEG概览。
+该表格为原作者的研究数据。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Original-differential-expressed-genes-DEG.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有18602行7列，以下预览的表格可能省略部分数据；表格含有22个唯一`cluster'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Original-differential-expressed-genes-DEG}Original differential expressed genes DEG}\tabularnewline
+\toprule
+p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & cluster & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & cluster & gene\tabularnewline
+\midrule
+\endhead
+0 & 3.780\ldots{} & 0.961 & 0.224 & 0 & ccRCC 1 & CRYAB\tabularnewline
+0 & 3.216\ldots{} & 0.978 & 0.141 & 0 & ccRCC 1 & CD24\tabularnewline
+0 & 3.133\ldots{} & 0.941 & 0.19 & 0 & ccRCC 1 & TMEM176A\tabularnewline
+0 & 3.085\ldots{} & 0.962 & 0.271 & 0 & ccRCC 1 & NDUFA4L2\tabularnewline
+0 & 3.068\ldots{} & 0.895 & 0.152 & 0 & ccRCC 1 & SPP1\tabularnewline
+0 & 3.048\ldots{} & 0.846 & 0.109 & 0 & ccRCC 1 & HILPDA\tabularnewline
+0 & 2.887\ldots{} & 0.914 & 0.162 & 0 & ccRCC 1 & NNMT\tabularnewline
+0 & 2.865\ldots{} & 0.907 & 0.103 & 0 & ccRCC 1 & RARRES2\tabularnewline
+0 & 2.861\ldots{} & 0.927 & 0.131 & 0 & ccRCC 1 & KRT18\tabularnewline
+0 & 2.805\ldots{} & 0.949 & 0.232 & 0 & ccRCC 1 & ATP1B1\tabularnewline
+0 & 2.649\ldots{} & 0.836 & 0.104 & 0 & ccRCC 1 & ANGPTL4\tabularnewline
+0 & 2.625\ldots{} & 0.921 & 0.221 & 0 & ccRCC 1 & TMEM176B\tabularnewline
+0 & 2.617\ldots{} & 0.953 & 0.273 & 0 & ccRCC 1 & CYB5A\tabularnewline
+0 & 2.602\ldots{} & 0.93 & 0.201 & 0 & ccRCC 1 & VEGFA\tabularnewline
+0 & 2.559\ldots{} & 0.886 & 0.096 & 0 & ccRCC 1 & KRT8\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+重新映射的算法：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  将 UMAP 聚类结果中的每一个类群的 DEG 与原 DEG 数据比对
+\item
+  优先保留所有细胞类型
+\item
+  将最优比对结果注释（覆盖最多原 DEG）
+\end{enumerate}
+
+Figure \ref{fig:map-cell-types-in-UMAP}为图map cell types in UMAP概览。
+根据原作者的差异表达基因和对应的细胞类型，映射到 UMAP 图中。
+
+\textbf{(对应文件为 \texttt{Figure+Table/map-cell-types-in-UMAP.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/map-cell-types-in-UMAP.pdf}
+\caption{Map cell types in UMAP}\label{fig:map-cell-types-in-UMAP}
+\end{center}
+
+根据原作者研究\textsuperscript{\protect\hyperlink{ref-IntegrativeSinYuZh2023}{5}}，`ccRCC 4' 关联 epithelial cells 分化，为肿瘤的早期阶段。
+
+\hypertarget{ux62dfux65f6ux5e8fux5206ux6790-monocle3}{%
+\subsubsection{拟时序分析 Monocle3}\label{ux62dfux65f6ux5e8fux5206ux6790-monocle3}}
+
+选择 ccRCC 1, ccRCC 2, ccRCC 3, ccRCC 4 作为分支数据，将 Seurat 的结果以 Monocle3 做拟时序分析。
+
+Figure \ref{fig:pseudotime-of-ccRCC-cells}为图pseudotime of ccRCC cells概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/pseudotime-of-ccRCC-cells.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/pseudotime-of-ccRCC-cells.pdf}
+\caption{Pseudotime of ccRCC cells}\label{fig:pseudotime-of-ccRCC-cells}
+\end{center}
+
+在拟时序轨迹中寻找差异基因（\texttt{graph\_test}）。
+
+Table \ref{tab:differential-expressed-genes-in-trajectory}为表格differential expressed genes in trajectory概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/differential-expressed-genes-in-trajectory.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有24823行6列，以下预览的表格可能省略部分数据；表格含有24823个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:differential-expressed-genes-in-trajectory}Differential expressed genes in trajectory}\tabularnewline
+\toprule
+rownames & status & p\_value & moran\ldots{} & morans\_I & q\_value\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & status & p\_value & moran\ldots{} & morans\_I & q\_value\tabularnewline
+\midrule
+\endhead
+AL627\ldots{} & OK & 0.519\ldots{} & -0.04\ldots{} & -0.00\ldots{} & 0.699\ldots{}\tabularnewline
+AL669\ldots{} & OK & 0.283\ldots{} & 0.571\ldots{} & 0.001\ldots{} & 0.449\ldots{}\tabularnewline
+FAM87B & OK & 0.567\ldots{} & -0.17\ldots{} & -0.00\ldots{} & 0.699\ldots{}\tabularnewline
+LINC0\ldots{} & OK & 0.457\ldots{} & 0.106\ldots{} & 0.000\ldots{} & 0.656\ldots{}\tabularnewline
+FAM41C & OK & 0.306\ldots{} & 0.506\ldots{} & 0.001\ldots{} & 0.476\ldots{}\tabularnewline
+AL645\ldots{} & OK & 0.610\ldots{} & -0.28\ldots{} & -0.00\ldots{} & 0.709\ldots{}\tabularnewline
+AL645\ldots{} & OK & 0.719\ldots{} & -0.57\ldots{} & -0.00\ldots{} & 0.769\ldots{}\tabularnewline
+SAMD11 & OK & 0.419\ldots{} & 0.203\ldots{} & 0.000\ldots{} & 0.614\ldots{}\tabularnewline
+NOC2L & OK & 0.316\ldots{} & 0.476\ldots{} & 0.001\ldots{} & 0.490\ldots{}\tabularnewline
+KLHL17 & OK & 0.350\ldots{} & 0.382\ldots{} & 0.001\ldots{} & 0.534\ldots{}\tabularnewline
+PLEKHN1 & OK & 0.477\ldots{} & 0.056\ldots{} & 2.300\ldots{} & 0.680\ldots{}\tabularnewline
+PERM1 & OK & 0.850\ldots{} & -1.03\ldots{} & -0.00\ldots{} & 0.868\ldots{}\tabularnewline
+AL645\ldots{} & OK & 0.251\ldots{} & 0.669\ldots{} & 0.002\ldots{} & 0.406\ldots{}\tabularnewline
+HES4 & OK & 2.821\ldots{} & 9.635\ldots{} & 0.035\ldots{} & 1.934\ldots{}\tabularnewline
+ISG15 & OK & 1.840\ldots{} & 7.865\ldots{} & 0.029\ldots{} & 1.051\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux83b7ux53d6ux663cux591cux8282ux5f8bux76f8ux5173ux57faux56e0ux96c6ux548cux6ce8ux91ca}{%
+\subsubsection{获取昼夜节律相关基因集和注释}\label{ux83b7ux53d6ux663cux591cux8282ux5f8bux76f8ux5173ux57faux56e0ux96c6ux548cux6ce8ux91ca}}
+
+从 \url{https://www.genecards.org/} genecards 检索 circadian 相关基因。
+从 \url{https://bioinf.wehi.edu.au/software/MSigDB/} 获取 C2 基因集合 (curated gene sets)。
+以 \texttt{biomaRt} 注释这些基因（无法获取注释的基因不再用于后续分析）。
+
+检查 C2 基因集关于 circadian 的来源数据（Fig. \ref{fig:intersect-of-sources-of-c2-genes}）。
+关于 UpSet 图\textsuperscript{\protect\hyperlink{ref-SetsAndIntersLexA2014}{17}}。
+
+Figure \ref{fig:intersect-of-sources-of-c2-genes}为图intersect of sources of c2 genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersect-of-sources-of-c2-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersect-of-sources-of-c2-genes.pdf}
+\caption{Intersect of sources of c2 genes}\label{fig:intersect-of-sources-of-c2-genes}
+\end{center}
+
+Table \ref{tab:annotation-of-c2-gene-set}为表格annotation of c2 gene set概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/annotation-of-c2-gene-set.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有59行7列，以下预览的表格可能省略部分数据；表格含有59个唯一`ensembl\_gene\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:annotation-of-c2-gene-set}Annotation of c2 gene set}\tabularnewline
+\toprule
+ensem\ldots{} & entre\ldots{} & hgnc\_\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensem\ldots{} & entre\ldots{} & hgnc\_\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endhead
+ENSG0\ldots{} & 10135 & NAMPT & 7 & 10624\ldots{} & 10628\ldots{} & nicot\ldots{}\tabularnewline
+ENSG0\ldots{} & 10499 & NCOA2 & 8 & 70109782 & 70403808 & nucle\ldots{}\tabularnewline
+ENSG0\ldots{} & 10891 & PPARGC1A & 4 & 23755041 & 23904089 & PPARG\ldots{}\tabularnewline
+ENSG0\ldots{} & 11091 & WDR5 & 9 & 13413\ldots{} & 13415\ldots{} & WD re\ldots{}\tabularnewline
+ENSG0\ldots{} & 1111 & CHEK1 & 11 & 12562\ldots{} & 12567\ldots{} & check\ldots{}\tabularnewline
+ENSG0\ldots{} & 1374 & CPT1A & 11 & 68754620 & 68844410 & carni\ldots{}\tabularnewline
+ENSG0\ldots{} & 1385 & CREB1 & 2 & 20752\ldots{} & 20760\ldots{} & cAMP \ldots{}\tabularnewline
+ENSG0\ldots{} & 1386 & ATF2 & 2 & 17507\ldots{} & 17516\ldots{} & activ\ldots{}\tabularnewline
+ENSG0\ldots{} & 1387 & CREBBP & 16 & 3725054 & 3880713 & CREB \ldots{}\tabularnewline
+ENSG0\ldots{} & 1407 & CRY1 & 12 & 10699\ldots{} & 10709\ldots{} & crypt\ldots{}\tabularnewline
+ENSG0\ldots{} & 1408 & CRY2 & 11 & 45847118 & 45883248 & crypt\ldots{}\tabularnewline
+ENSG0\ldots{} & 1453 & CSNK1D & 17 & 82239023 & 82273700 & casei\ldots{}\tabularnewline
+ENSG0\ldots{} & 1454 & CSNK1E & 22 & 38290691 & 38318084 & casei\ldots{}\tabularnewline
+ENSG0\ldots{} & 1628 & DBP & 19 & 48630030 & 48637379 & D-box\ldots{}\tabularnewline
+ENSG0\ldots{} & 2033 & EP300 & 22 & 41092592 & 41180077 & E1A b\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:annotation-of-genecards-gene-set}为表格annotation of genecards gene set概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/annotation-of-genecards-gene-set.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1145行7列，以下预览的表格可能省略部分数据；表格含有1084个唯一`ensembl\_gene\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:annotation-of-genecards-gene-set}Annotation of genecards gene set}\tabularnewline
+\toprule
+ensem\ldots{} & entre\ldots{} & hgnc\_\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensem\ldots{} & entre\ldots{} & hgnc\_\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endhead
+ENSG0\ldots{} & 15 & AANAT & 17 & 76453351 & 76470117 & aralk\ldots{}\tabularnewline
+ENSG0\ldots{} & 18 & ABAT & 16 & 8674596 & 8784575 & 4-ami\ldots{}\tabularnewline
+ENSG0\ldots{} & 5243 & ABCB1 & 7 & 87503017 & 87713323 & ATP b\ldots{}\tabularnewline
+ENSG0\ldots{} & 22 & ABCB7 & X & 75051048 & 75156732 & ATP b\ldots{}\tabularnewline
+ENSG0\ldots{} & 51099 & ABHD5 & 3 & 43690108 & 43734371 & abhyd\ldots{}\tabularnewline
+ENSG0\ldots{} & 31 & ACACA & HSCHR\ldots{} & 1320988 & 1645974 & acety\ldots{}\tabularnewline
+ENSG0\ldots{} & 31 & ACACA & 17 & 37084992 & 37406836 & acety\ldots{}\tabularnewline
+ENSG0\ldots{} & 35 & ACADS & 12 & 12072\ldots{} & 12074\ldots{} & acyl-\ldots{}\tabularnewline
+ENSG0\ldots{} & 1636 & ACE & 17 & 63477061 & 63498380 & angio\ldots{}\tabularnewline
+ENSG0\ldots{} & 43 & ACHE & 7 & 10088\ldots{} & 10089\ldots{} & acety\ldots{}\tabularnewline
+ENSG0\ldots{} & 87 & ACTN1 & 14 & 68874128 & 68979440 & actin\ldots{}\tabularnewline
+ENSG0\ldots{} & 81 & ACTN4 & HG26\_\ldots{} & 57285 & 141225 & actin\ldots{}\tabularnewline
+ENSG0\ldots{} & 81 & ACTN4 & 19 & 38647649 & 38731589 & actin\ldots{}\tabularnewline
+ENSG0\ldots{} & 100 & ADA & 20 & 44584896 & 44652252 & adeno\ldots{}\tabularnewline
+ENSG0\ldots{} & 103 & ADAR & 1 & 15458\ldots{} & 15462\ldots{} & adeno\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6570ux636eux6574ux5907}{%
+\subsubsection{数据整备}\label{ux6570ux636eux6574ux5907}}
+
+在以上分析中，我们得到了一系列的基因数据集结果。
+
+Figure \ref{fig:intersects-all-used-gene-sets}为图intersects all used gene sets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersects-all-used-gene-sets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersects-all-used-gene-sets.pdf}
+\caption{Intersects all used gene sets}\label{fig:intersects-all-used-gene-sets}
+\end{center}
+
+\hypertarget{ux52a0ux6743ux57faux56e0ux5171ux8868ux8fbe-wgcna}{%
+\subsubsection{加权基因共表达 WGCNA}\label{ux52a0ux6743ux57faux56e0ux5171ux8868ux8fbe-wgcna}}
+
+\hypertarget{ux8ba1ux7b97ux57faux56e0ux5171ux8868ux8fbeux6a21ux5757}{%
+\paragraph{计算基因共表达模块}\label{ux8ba1ux7b97ux57faux56e0ux5171ux8868ux8fbeux6a21ux5757}}
+
+使用 Fig. \ref{fig:intersects-all-used-gene-sets} 中的 \texttt{DB\_Genecards\_ensembl} 基因集的基因，
+过滤单细胞的数据（过滤 Seurat 对象）用以 WGCNA 分析。
+
+Figure \ref{fig:selection-of-soft-threshold}为图selection of soft threshold概览。
+选择阈值为 2。
+
+\textbf{(对应文件为 \texttt{Figure+Table/selection-of-soft-threshold.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/selection-of-soft-threshold.pdf}
+\caption{Selection of soft threshold}\label{fig:selection-of-soft-threshold}
+\end{center}
+
+建立基因共表达模块。
+
+Figure \ref{fig:gene-modules}为图gene modules概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/gene-modules.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/gene-modules.pdf}
+\caption{Gene modules}\label{fig:gene-modules}
+\end{center}
+
+\hypertarget{crd}{%
+\paragraph{计算 CRDscore}\label{crd}}
+
+为了对共表达的基因进行加权评估，需要 `trait' 数据。
+计算细胞的 CRDscore\textsuperscript{\protect\hyperlink{ref-SingleCellTraHeLe2022}{1}} 作为拟 trait 数据。
+该计算以 Fig. \ref{fig:intersects-all-used-gene-sets} 中的 \texttt{DB\_Curated\_gene\_sets} 为基准。
+
+Figure \ref{fig:CRDscore-distribution}为图CRDscore distribution概览。
+计算的 CRDscore 的数据分布。
+
+\textbf{(对应文件为 \texttt{Figure+Table/CRDscore-distribution.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/CRDscore-distribution.pdf}
+\caption{CRDscore distribution}\label{fig:CRDscore-distribution}
+\end{center}
+
+\hypertarget{weighted}{%
+\paragraph{筛选高权重基因}\label{weighted}}
+
+根据 CRDscore 对基因加权分析。
+
+Table \ref{tab:module-membership}为表格module membership概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/module-membership.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有502行7列，以下预览的表格可能省略部分数据；表格含有181个唯一`gene'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:module-membership}Module membership}\tabularnewline
+\toprule
+gene & module & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+gene & module & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endhead
+ABCB1 & ME0 & -0.03 & 0.0142 & 6.137\ldots{} & \textless{} 0.05 & *\tabularnewline
+ABHD5 & ME0 & -0.04 & 0.003 & 8.380\ldots{} & \textless{} 0.05 & *\tabularnewline
+ACE & ME0 & 0.17 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+ACTN1 & ME0 & -0.06 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+ACTN4 & ME0 & 0.07 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+ADA & ME0 & 0.29 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+AGT & ME0 & -0.35 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+AHNAK & ME0 & -0.04 & 0.0032 & 8.287\ldots{} & \textless{} 0.05 & *\tabularnewline
+AHR & ME0 & 0.07 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+APMAP & ME0 & 0.19 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+APOE & ME0 & 0.12 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+APP & ME0 & -0.14 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+ARL4A & ME0 & 0.06 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+ASS1 & ME0 & -0.03 & 0.0138 & 6.179\ldots{} & \textless{} 0.05 & *\tabularnewline
+ATM & ME0 & 0.18 & 0 & Inf & \textless{} 0.001 & **\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:gene-significant}为表格gene significant概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/gene-significant.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有155行8列，以下预览的表格可能省略部分数据；表格含有155个唯一`gene'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:gene-significant}Gene significant}\tabularnewline
+\toprule
+gene & trait & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign & p.adjust\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+gene & trait & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign & p.adjust\tabularnewline
+\midrule
+\endhead
+ABHD5 & CRDscore & -0.09 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+ACE & CRDscore & -0.07 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+ACTN1 & CRDscore & -0.03 & 0.0124 & 6.333\ldots{} & \textless{} 0.05 & * & 0.015\ldots{}\tabularnewline
+ADA & CRDscore & -0.14 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+AGT & CRDscore & 0.19 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+APMAP & CRDscore & -0.06 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+APOE & CRDscore & -0.06 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+APP & CRDscore & 0.11 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+ARL4A & CRDscore & -0.07 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+ATM & CRDscore & -0.06 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+B2M & CRDscore & 0.22 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+BHLHE40 & CRDscore & -0.26 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+BHLHE41 & CRDscore & 0.04 & 0.0094 & 6.733\ldots{} & \textless{} 0.05 & * & 0.011\ldots{}\tabularnewline
+BTG1 & CRDscore & -0.15 & 0 & Inf & \textless{} 0.001 & ** & 0\tabularnewline
+CAVIN3 & CRDscore & 0.03 & 0.0274 & 5.189\ldots{} & \textless{} 0.05 & * & 0.032\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+取 Tab. \ref{tab:module-membership} 和 Tab. \ref{tab:gene-significant} 的交集。
+
+Figure \ref{fig:intersect-of-gene-significant-and-module-membership}为图intersect of gene significant and module membership概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersect-of-gene-significant-and-module-membership.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersect-of-gene-significant-and-module-membership.pdf}
+\caption{Intersect of gene significant and module membership}\label{fig:intersect-of-gene-significant-and-module-membership}
+\end{center}
+
+\hypertarget{ux901aux8defux5bccux96c6ux5206ux6790-clusterprofiler}{%
+\subsubsection{通路富集分析 Clusterprofiler}\label{ux901aux8defux5bccux96c6ux5206ux6790-clusterprofiler}}
+
+取 \ref{fig:intersect-of-gene-significant-and-module-membership} 的交集基因，做通路富集分析。
+
+Figure \ref{fig:kegg-enrich}为图kegg enrich概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/kegg-enrich.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/kegg-enrich.pdf}
+\caption{Kegg enrich}\label{fig:kegg-enrich}
+\end{center}
+
+KEGG 富集结果显示，基因集与肿瘤（proteoglycans in cancer）相关，同时，与抗原抗体反应相关。
+
+Figure \ref{fig:go-enrich}为图go enrich概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/go-enrich.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/go-enrich.pdf}
+\caption{Go enrich}\label{fig:go-enrich}
+\end{center}
+
+（BP, MF, CC: Biological Process, Molecular Function, and Cellular Component groups）
+
+GO 富集结果显示，这些基因与 节律过程（rhythmic process），昼夜节律（circadian rhythm）相关，
+并且和缺氧、氧化水平等与肿瘤微环境的通路相关联。
+
+这些结果验证了昼夜节律对于 ccRCC 发展的影响，以及预后诊断以及治疗的可能。
+
+\hypertarget{feature-selection-ux548cux6784ux5efaux9884ux540eux6a21ux578b-lasso}{%
+\subsubsection{Feature selection 和构建预后模型 (LASSO)}\label{feature-selection-ux548cux6784ux5efaux9884ux540eux6a21ux578b-lasso}}
+
+\url{https://portal.gdc.cancer.gov/}
+
+\hypertarget{tcga-ux6570ux636eux83b7ux53d6}{%
+\paragraph{TCGA 数据获取}\label{tcga-ux6570ux636eux83b7ux53d6}}
+
+以 \texttt{TCGAbiolinks} 下载 TCGA (RNA) 数据（KIRC）\textsuperscript{\protect\hyperlink{ref-TcgabiolinksAColapr2015}{18}}。
+\url{https://www.bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html}
+
+Table \ref{tab:downloaded-RNA-seq-data-of-ccRCC-in-TCGA}为表格downloaded RNA seq data of ccRCC in TCGA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/downloaded-RNA-seq-data-of-ccRCC-in-TCGA.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有533行29列，以下预览的表格可能省略部分数据；表格含有533个唯一`id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:downloaded-RNA-seq-data-of-ccRCC-in-TCGA}Downloaded RNA seq data of ccRCC in TCGA}\tabularnewline
+\toprule
+id & data\_\ldots\ldots2 & cases & access & file\_\ldots\ldots5 & submi\ldots{} & data\_\ldots\ldots7 & type & file\_\ldots\ldots9 & creat\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+id & data\_\ldots\ldots2 & cases & access & file\_\ldots\ldots5 & submi\ldots{} & data\_\ldots\ldots7 & type & file\_\ldots\ldots9 & creat\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endhead
+21702\ldots{} & TSV & TCGA-\ldots{} & open & c3b9c\ldots{} & 1907e\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4228535 & 2021-\ldots{} & \ldots{}\tabularnewline
+44dad\ldots{} & TSV & TCGA-\ldots{} & open & e4497\ldots{} & d70f0\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4231641 & 2021-\ldots{} & \ldots{}\tabularnewline
+c1215\ldots{} & TSV & TCGA-\ldots{} & open & 55599\ldots{} & bbbda\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4229992 & 2021-\ldots{} & \ldots{}\tabularnewline
+b6052\ldots{} & TSV & TCGA-\ldots{} & open & 78855\ldots{} & 96835\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4238896 & 2021-\ldots{} & \ldots{}\tabularnewline
+7b34b\ldots{} & TSV & TCGA-\ldots{} & open & 59857\ldots{} & 65612\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4244120 & 2021-\ldots{} & \ldots{}\tabularnewline
+4845a\ldots{} & TSV & TCGA-\ldots{} & open & 49c74\ldots{} & 52cd1\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4247550 & 2021-\ldots{} & \ldots{}\tabularnewline
+41cc6\ldots{} & TSV & TCGA-\ldots{} & open & 87ac9\ldots{} & ec8a9\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4242354 & 2021-\ldots{} & \ldots{}\tabularnewline
+51a84\ldots{} & TSV & TCGA-\ldots{} & open & 6b83b\ldots{} & 391f3\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4229064 & 2021-\ldots{} & \ldots{}\tabularnewline
+2b5b6\ldots{} & TSV & TCGA-\ldots{} & open & 0416b\ldots{} & 3199c\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4253460 & 2021-\ldots{} & \ldots{}\tabularnewline
+afe81\ldots{} & TSV & TCGA-\ldots{} & open & bbae6\ldots{} & 70241\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4249550 & 2021-\ldots{} & \ldots{}\tabularnewline
+99ad8\ldots{} & TSV & TCGA-\ldots{} & open & 6a8e0\ldots{} & 48dfe\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4251551 & 2021-\ldots{} & \ldots{}\tabularnewline
+af5c0\ldots{} & TSV & TCGA-\ldots{} & open & 4c1f1\ldots{} & 79a53\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4239264 & 2021-\ldots{} & \ldots{}\tabularnewline
+8ebdb\ldots{} & TSV & TCGA-\ldots{} & open & c045b\ldots{} & 736cd\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4243590 & 2021-\ldots{} & \ldots{}\tabularnewline
+5226a\ldots{} & TSV & TCGA-\ldots{} & open & fc526\ldots{} & d0d1c\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4246857 & 2021-\ldots{} & \ldots{}\tabularnewline
+131cc\ldots{} & TSV & TCGA-\ldots{} & open & af4b5\ldots{} & 69aee\ldots{} & Trans\ldots{} & gene\_\ldots{} & 4263556 & 2021-\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux9884ux5904ux7406-tcga-rna-ux6570ux636e}{%
+\paragraph{预处理 TCGA RNA 数据}\label{ux9884ux5904ux7406-tcga-rna-ux6570ux636e}}
+
+使用 \texttt{edgeR} 预处理 RNA 数据。
+
+\begin{itemize}
+\tightlist
+\item
+  过滤低表达的基因。
+\item
+  表达量归一化。
+\end{itemize}
+
+Figure \ref{fig:tcga-rna-data-filter}为图tcga rna data filter概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tcga-rna-data-filter.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/tcga-rna-data-filter.pdf}
+\caption{Tcga rna data filter}\label{fig:tcga-rna-data-filter}
+\end{center}
+
+Figure \ref{fig:tcga-rna-data-normalize}为图tcga rna data normalize概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tcga-rna-data-normalize.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/tcga-rna-data-normalize.pdf}
+\caption{Tcga rna data normalize}\label{fig:tcga-rna-data-normalize}
+\end{center}
+
+\hypertarget{efs}{%
+\paragraph{EFS}\label{efs}}
+
+并随机分成两组数据（4:1），以备训练和验证。
+
+在使用 LASSO 回归之前，这里预先对基因集进行了过滤。
+
+\begin{itemize}
+\tightlist
+\item
+  以 Fig. \ref{fig:intersect-of-gene-significant-and-module-membership} (\ref{weighted}) 中的交集的基因过滤 TCGA KIRC （即，ccRCC）的表达数据
+\item
+  使用 EFS\textsuperscript{\protect\hyperlink{ref-EfsAnEnsemblNeuman2017}{14}} 处理训练数据集，筛选 top30 features。
+\end{itemize}
+
+Figure \ref{fig:random-split-the-datasets}为图random split the datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/random-split-the-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/random-split-the-datasets.pdf}
+\caption{Random split the datasets}\label{fig:random-split-the-datasets}
+\end{center}
+
+Figure \ref{fig:EFS-top30-genes}为图EFS top30 genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/EFS-top30-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/EFS-top30-genes.pdf}
+\caption{EFS top30 genes}\label{fig:EFS-top30-genes}
+\end{center}
+
+确认 top30 基因是否属于差异表达基因。
+
+Figure \ref{fig:Top30-genes-intersect-with-DEG}为图Top30 genes intersect with DEG概览。
+其中 25 个属于差异表达基因。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Top30-genes-intersect-with-DEG.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Top30-genes-intersect-with-DEG.pdf}
+\caption{Top30 genes intersect with DEG}\label{fig:Top30-genes-intersect-with-DEG}
+\end{center}
+
+\hypertarget{lasso-ux56deux5f52}{%
+\paragraph{LASSO 回归}\label{lasso-ux56deux5f52}}
+
+以训练数据集的 Top30 基因进行 LASSO 回归。以十倍交叉验证选择最优 Lambda 值。
+
+Figure \ref{fig:LASSO-model}为图LASSO model概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LASSO-model.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LASSO-model.pdf}
+\caption{LASSO model}\label{fig:LASSO-model}
+\end{center}
+
+Figure \ref{fig:LASSO-coefficents}为图LASSO coefficents概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LASSO-coefficents.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LASSO-coefficents.pdf}
+\caption{LASSO coefficents}\label{fig:LASSO-coefficents}
+\end{center}
+
+ROC 结果显示，AUC 为 0.69，高于随机分类器，Fig. \ref{fig:LASSO-coefficents} 所示基因对于预后具有一定的诊断参考价值。
+
+Figure \ref{fig:LASSO-ROC}为图LASSO ROC概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LASSO-ROC.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LASSO-ROC.pdf}
+\caption{LASSO ROC}\label{fig:LASSO-ROC}
+\end{center}
+
+\hypertarget{ux62dfux65f6ux5e8fux5206ux6790ux57faux56e0ux8f6cux5f52-monocle3}{%
+\subsubsection{拟时序分析基因转归 Monocle3}\label{ux62dfux65f6ux5e8fux5206ux6790ux57faux56e0ux8f6cux5f52-monocle3}}
+
+\hypertarget{top30p}{%
+\paragraph{Top 30 in pseudotime}\label{top30p}}
+
+对 Top 30 的基因在拟时序分析中追踪其表达量变化。
+
+Figure \ref{fig:top-30-genes-in-pseudotime-part-1}为图top 30 genes in pseudotime part 1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/top-30-genes-in-pseudotime-part-1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/top-30-genes-in-pseudotime-part-1.pdf}
+\caption{Top 30 genes in pseudotime part 1}\label{fig:top-30-genes-in-pseudotime-part-1}
+\end{center}
+
+Figure \ref{fig:top-30-genes-in-pseudotime-part-2}为图top 30 genes in pseudotime part 2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/top-30-genes-in-pseudotime-part-2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/top-30-genes-in-pseudotime-part-2.pdf}
+\caption{Top 30 genes in pseudotime part 2}\label{fig:top-30-genes-in-pseudotime-part-2}
+\end{center}
+
+Figure \ref{fig:top-30-genes-in-pseudotime-part3}为图top 30 genes in pseudotime part3概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/top-30-genes-in-pseudotime-part3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/top-30-genes-in-pseudotime-part3.pdf}
+\caption{Top 30 genes in pseudotime part3}\label{fig:top-30-genes-in-pseudotime-part3}
+\end{center}
+
+\hypertarget{sp3}{%
+\paragraph{Specific genes in Pseudotime}\label{sp3}}
+
+在 \ref{top30p} 中发现，有三个基因表现出明显的曲线变化趋势。
+
+\begin{itemize}
+\tightlist
+\item
+  PGK1，呈上升曲线
+\item
+  KCNQ1OT1，呈 S 变化曲线
+\item
+  PEBP1，呈上升曲线
+\end{itemize}
+
+Figure \ref{fig:Specific-genes-in-pseudotime}为图Specific genes in pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Specific-genes-in-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Specific-genes-in-pseudotime.pdf}
+\caption{Specific genes in pseudotime}\label{fig:Specific-genes-in-pseudotime}
+\end{center}
+
+\hypertarget{ux751fux5b58ux5206ux6790-survival}{%
+\subsubsection{生存分析 Survival}\label{ux751fux5b58ux5206ux6790-survival}}
+
+为了进一步验证上述结果（\ref{sp3}），以 TCGA 的数据做生存分析。
+结果显示，三者对于 ccRCC 的风险评估均有显著性意义。
+
+Figure \ref{fig:Survival-analysis-of-PGK1}为图Survival analysis of PGK1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Survival-analysis-of-PGK1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Survival-analysis-of-PGK1.pdf}
+\caption{Survival analysis of PGK1}\label{fig:Survival-analysis-of-PGK1}
+\end{center}
+
+Figure \ref{fig:Survival-analysis-of-KCNQ1OT1}为图Survival analysis of KCNQ1OT1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Survival-analysis-of-KCNQ1OT1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Survival-analysis-of-KCNQ1OT1.pdf}
+\caption{Survival analysis of KCNQ1OT1}\label{fig:Survival-analysis-of-KCNQ1OT1}
+\end{center}
+
+Figure \ref{fig:Survival-analysis-of-PEBP1}为图Survival analysis of PEBP1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Survival-analysis-of-PEBP1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Survival-analysis-of-PEBP1.pdf}
+\caption{Survival analysis of PEBP1}\label{fig:Survival-analysis-of-PEBP1}
+\end{center}
+
+\hypertarget{ux7ec6ux80deux901aux8baf-cellchat}{%
+\subsubsection{细胞通讯 CellChat}\label{ux7ec6ux80deux901aux8baf-cellchat}}
+
+使用 \texttt{DB\_Genecards\_ensembl} (Fig. \ref{fig:intersects-all-used-gene-sets}) 基因集的基因进行细胞通讯分析。该基因集来源于 Genecards，暗示了这些基因与昼夜节律之间的关联性。
+
+Figure \ref{fig:cell-communication-heatmap-of-TNF-signiling}为图cell communication heatmap of TNF signiling概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/cell-communication-heatmap-of-TNF-signiling.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/cell-communication-heatmap-of-TNF-signiling.pdf}
+\caption{Cell communication heatmap of TNF signiling}\label{fig:cell-communication-heatmap-of-TNF-signiling}
+\end{center}
+
+Figure \ref{fig:gene-expression-of-TNF-signiling}为图gene expression of TNF signiling概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/gene-expression-of-TNF-signiling.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/gene-expression-of-TNF-signiling.pdf}
+\caption{Gene expression of TNF signiling}\label{fig:gene-expression-of-TNF-signiling}
+\end{center}
+
+Figure \ref{fig:role-of-TNF-signiling}为图role of TNF signiling概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/role-of-TNF-signiling.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/role-of-TNF-signiling.pdf}
+\caption{Role of TNF signiling}\label{fig:role-of-TNF-signiling}
+\end{center}
+
+Figure \ref{fig:cell-communication-of-TNF-signiling}为图cell communication of TNF signiling概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/cell-communication-of-TNF-signiling.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/cell-communication-of-TNF-signiling.pdf}
+\caption{Cell communication of TNF signiling}\label{fig:cell-communication-of-TNF-signiling}
+\end{center}
+
+细胞通讯结果显示，昼夜相关基因与 TNF （肿瘤坏死因子）通路相关。但是，细胞通讯图并不显示免疫细胞与 ccRCC 细胞之间的交互关系，这提示昼夜节律基因并不直接作用于 ccRCC 细胞，但是通过作用于免役细胞间接生效。其中，Monocytes 可能是关键细胞（TNFRSF1B 高表达）。
+
+\hypertarget{ux5176ux4ed6}{%
+\subsection{其他}\label{ux5176ux4ed6}}
+
+\href{review\%20of\%20EMT,\%20MET\%20or\%20EMP\%5B@EpithelialMeseLuWe2019\%5D}{mda}: cc review: 33384351 (science), 36291855\textsuperscript{\protect\hyperlink{ref-ChronotherapyAmiama2022}{2}}, 31300477 (cancer res)\textsuperscript{\protect\hyperlink{ref-CancerAndTheShafi2019}{3}}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-SingleCellTraHeLe2022}{}%
+1. He, L. \emph{et al.} Single-cell transcriptomic analysis reveals circadian rhythm disruption associated with poor prognosis and drug-resistance in lung adenocarcinoma. \emph{Journal of Pineal Research} \textbf{73}, (2022).
+
+\leavevmode\hypertarget{ref-ChronotherapyAmiama2022}{}%
+2. Amiama-Roig, A., Verdugo-Sivianes, E. M., Carnero, A. \& Blanco, J.-R. Chronotherapy: Circadian rhythms and their influence in cancer therapy. \emph{Cancers} \textbf{14}, (2022).
+
+\leavevmode\hypertarget{ref-CancerAndTheShafi2019}{}%
+3. Shafi, A. A. \& Knudsen, K. E. Cancer and the circadian clock. \emph{Cancer Research} \textbf{79}, (2019).
+
+\leavevmode\hypertarget{ref-RoleOfClockGSanton2023}{}%
+4. Santoni, M. \emph{et al.} Role of clock genes and circadian rhythm in renal cell carcinoma: Recent evidence and therapeutic consequences. \emph{Cancers} \textbf{15}, (2023).
+
+\leavevmode\hypertarget{ref-IntegrativeSinYuZh2023}{}%
+5. Yu, Z. \emph{et al.} Integrative single-cell analysis reveals transcriptional and epigenetic regulatory features of clear cell renal cell carcinoma. \emph{Cancer Research} \textbf{83}, (2023).
+
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+6. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
+7. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-SupervisedClasPliner2019}{}%
+8. Pliner, H. A., Shendure, J. \& Trapnell, C. Supervised classification enables rapid annotation of cell atlases. \emph{Nature Methods} \textbf{16}, (2019).
+
+\leavevmode\hypertarget{ref-ReferenceBasedAran2019}{}%
+9. Aran, D. \emph{et al.} Reference-based analysis of lung single-cell sequencing reveals a transitional profibrotic macrophage. \emph{Nature Immunology} \textbf{20}, (2019).
+
+\leavevmode\hypertarget{ref-ReversedGraphQiuX2017}{}%
+10. Qiu, X. \emph{et al.} Reversed graph embedding resolves complex single-cell trajectories. \emph{Nature Methods} \textbf{14}, (2017).
+
+\leavevmode\hypertarget{ref-TheDynamicsAnTrapne2014}{}%
+11. Trapnell, C. \emph{et al.} The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. \emph{Nature Biotechnology} \textbf{32}, (2014).
+
+\leavevmode\hypertarget{ref-WgcnaAnRPacLangfe2008}{}%
+12. Langfelder, P. \& Horvath, S. WGCNA: An r package for weighted correlation network analysis. \emph{BMC Bioinformatics} \textbf{9}, (2008).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+13. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-EfsAnEnsemblNeuman2017}{}%
+14. Neumann, U., Genze, N. \& Heider, D. EFS: An ensemble feature selection tool implemented as r-package and web-application. \emph{BioData Mining} \textbf{10}, 21 (2017).
+
+\leavevmode\hypertarget{ref-InferenceAndAJinS2021}{}%
+15. Jin, S. \emph{et al.} Inference and analysis of cell-cell communication using cellchat. \emph{Nature Communications} \textbf{12}, (2021).
+
+\leavevmode\hypertarget{ref-ClearCellRenaJonasc2020}{}%
+16. Jonasch, E., Walker, C. L. \& Rathmell, W. K. Clear cell renal cell carcinoma ontogeny and mechanisms of lethality. \emph{Nature Reviews Nephrology} \textbf{17}, (2020).
+
+\leavevmode\hypertarget{ref-SetsAndIntersLexA2014}{}%
+17. Lex, A. \& Gehlenborg, N. Sets and intersections. \emph{Nature Methods} \textbf{11}, (2014).
+
+\leavevmode\hypertarget{ref-TcgabiolinksAColapr2015}{}%
+18. Colaprico, A. \emph{et al.} TCGAbiolinks: An r/bioconductor package for integrative analysis of tcga data. \emph{Nucleic Acids Research} \textbf{44}, (2015).
+\end{cslreferences}
+
+\end{document}
