@@ -113,26 +113,33 @@
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
-\hypertarget{seurat-ux9884ux5904ux7406-gse-ux6570ux636e}{%
-\subsection{Seurat 预处理 GSE 数据}\label{seurat-ux9884ux5904ux7406-gse-ux6570ux636e}}
+\hypertarget{ux5206ux6790-scrna-seq-ux6570ux636eux805aux7126ux4e8e-ccrcc}{%
+\subsection{分析 scRNA-seq 数据聚焦于 ccRCC}\label{ux5206ux6790-scrna-seq-ux6570ux636eux805aux7126ux4e8e-ccrcc}}
 
-\hypertarget{ux7ec6ux80deux805aux7c7bux4e0eux5deeux5f02ux8868ux8fbe}{%
-\subsubsection{细胞聚类与差异表达}\label{ux7ec6ux80deux805aux7c7bux4e0eux5deeux5f02ux8868ux8fbe}}
+为了研究昼夜节律和相关基因对 ccRCC 的影响，选择 GSE207493 为分析对象\textsuperscript{\protect\hyperlink{ref-IntegrativeSinYuZh2023}{5}}。该数据集共19个样本数据，为减少计算时间，随机选择9个样本，以 Seurat 整合数据集，消除批次效应。Fig. \ref{fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC}a 为各个样本在 PC1、PC2 上的分布。随后，根据Fig. \ref{fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC}b 所示，选择PC1-PC5作为主要成分，进行 UMAP 降维和聚类。聚类结果如 Fig. \ref{fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC}c 所示。为了注释 UMAP 的聚类结果，此处获取了 Yu 等人注释的 Markder 基因（见Tab. \ref{tab:Original-differential-expressed-genes-DEG}），将其重新映射到 UMAP 结果中，即 Fig. \ref{fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC}d。随后的分析，聚焦于 ccRCC1-4。
 
-\hypertarget{ux7ec6ux80deux7fa4ux6ce8ux91ca}{%
-\subsubsection{细胞群注释}\label{ux7ec6ux80deux7fa4ux6ce8ux91ca}}
+Figure \ref{fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC}为图MAIN Preprocess GEO samples and annotate cell typle for focusing on ccRCC概览。
 
-\hypertarget{monocle3-ux62dfux65f6ux5e8fux5206ux6790-ccrcc}{%
-\subsection{Monocle3 拟时序分析 ccRCC}\label{monocle3-ux62dfux65f6ux5e8fux5206ux6790-ccrcc}}
+\textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
 
-\hypertarget{ux62dfux65f6ux5e8fux8f68ux8ff9}{%
-\subsubsection{拟时序轨迹}\label{ux62dfux65f6ux5e8fux8f68ux8ff9}}
-
-\hypertarget{ux8f68ux8ff9ux56feux7684ux5deeux5f02ux8868ux8fbe}{%
-\subsubsection{轨迹图的差异表达}\label{ux8f68ux8ff9ux56feux7684ux5deeux5f02ux8868ux8fbe}}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig1.pdf}
+\caption{MAIN Preprocess GEO samples and annotate cell typle for focusing on ccRCC}\label{fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC}
+\end{center}
 
 \hypertarget{wgcna-ux5bfbux627eux5173ux952eux57faux56e0}{%
 \subsection{WGCNA 寻找关键基因}\label{wgcna-ux5bfbux627eux5173ux952eux57faux56e0}}
+
+Figure \ref{fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes}为图MAIN Weighting the genes correlation network with CRDscore for finding critical genes概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig2.pdf}
+\caption{MAIN Weighting the genes correlation network with CRDscore for finding critical genes}\label{fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes}
+\end{center}
 
 \hypertarget{ux57faux56e0ux6570ux636eux5e93}{%
 \subsubsection{基因数据库}\label{ux57faux56e0ux6570ux636eux5e93}}
@@ -146,14 +153,44 @@
 \hypertarget{cellchat-ux7ec6ux80deux901aux8baf}{%
 \subsection{CellChat 细胞通讯}\label{cellchat-ux7ec6ux80deux901aux8baf}}
 
+Figure \ref{fig:MAIN-Explore-cell-communications-for-finding-critical-cell-types-and-signaling}为图MAIN Explore cell communications for finding critical cell types and signaling概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig3.pdf}
+\caption{MAIN Explore cell communications for finding critical cell types and signaling}\label{fig:MAIN-Explore-cell-communications-for-finding-critical-cell-types-and-signaling}
+\end{center}
+
 \hypertarget{tcga-rna-seq-ux9884ux540eux6a21ux578b}{%
 \subsection{TCGA RNA-seq 预后模型}\label{tcga-rna-seq-ux9884ux540eux6a21ux578b}}
 
 \hypertarget{feature-selection}{%
 \subsubsection{Feature selection}\label{feature-selection}}
 
+Figure \ref{fig:MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset}为图MAIN Perform Feature selection and LASSO regression on TCGA dataset概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig4.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig4.pdf}
+\caption{MAIN Perform Feature selection and LASSO regression on TCGA dataset}\label{fig:MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset}
+\end{center}
+
 \hypertarget{survival}{%
 \subsubsection{Survival}\label{survival}}
+
+Figure \ref{fig:MAIN-Survival-analysis-for-validation}为图MAIN Survival analysis for validation概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig5.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig5.pdf}
+\caption{MAIN Survival analysis for validation}\label{fig:MAIN-Survival-analysis-for-validation}
+\end{center}
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
@@ -251,8 +288,6 @@
     目标基因所在细胞和其他细胞的通讯
   \item
     目标基因的通路（Role）
-  \item
-    \ldots{}
   \end{itemize}
 \item
   Survival
@@ -261,7 +296,7 @@
 \hypertarget{ux6d41ux7a0bux8bbeux8ba1}{%
 \subsection{流程设计}\label{ux6d41ux7a0bux8bbeux8ba1}}
 
-\includegraphics[width=\linewidth]{output_files/figure-latex/unnamed-chunk-5-1}
+\includegraphics[width=\linewidth]{output_files/figure-latex/unnamed-chunk-14-1}
 
 \hypertarget{ux5206ux6790}{%
 \subsection{分析}\label{ux5206ux6790}}
@@ -424,8 +459,8 @@ HCST & 0 & 2.978\ldots{} & 0.924 & 0.409 & 0 & 0 & HCST\tabularnewline
 \bottomrule
 \end{longtable}
 
-\hypertarget{ux7ec6ux80deux7fa4ux6ce8ux91ca-1}{%
-\subsubsection{细胞群注释}\label{ux7ec6ux80deux7fa4ux6ce8ux91ca-1}}
+\hypertarget{ux7ec6ux80deux7fa4ux6ce8ux91ca}{%
+\subsubsection{细胞群注释}\label{ux7ec6ux80deux7fa4ux6ce8ux91ca}}
 
 获取原作者的研究\textsuperscript{\protect\hyperlink{ref-IntegrativeSinYuZh2023}{5}}数据（补充材料），将差异表达基因映射到 UMAP 图中。
 
@@ -496,7 +531,7 @@ Figure \ref{fig:map-cell-types-in-UMAP}为图map cell types in UMAP概览。
 \hypertarget{ux62dfux65f6ux5e8fux5206ux6790-monocle3}{%
 \subsubsection{拟时序分析 Monocle3}\label{ux62dfux65f6ux5e8fux5206ux6790-monocle3}}
 
-选择 ccRCC 1, ccRCC 2, ccRCC 3, ccRCC 4 作为分支数据，将 Seurat 的结果以 Monocle3 做拟时序分析。
+选择 ccRCC 1, ccRCC 2, ccRCC 3, ccRCC 4 作为分支数据，将 Seurat 的聚类结果以 Monocle3 做拟时序分析。
 
 Figure \ref{fig:pseudotime-of-ccRCC-cells}为图pseudotime of ccRCC cells概览。
 
@@ -510,16 +545,16 @@ Figure \ref{fig:pseudotime-of-ccRCC-cells}为图pseudotime of ccRCC cells概览�
 
 在拟时序轨迹中寻找差异基因（\texttt{graph\_test}）。
 
-Table \ref{tab:differential-expressed-genes-in-trajectory}为表格differential expressed genes in trajectory概览。
+Table \ref{tab:differential-expressed-genes-DEG-in-trajectory}为表格differential expressed genes DEG in trajectory概览。
 
-\textbf{(对应文件为 \texttt{Figure+Table/differential-expressed-genes-in-trajectory.csv})}
+\textbf{(对应文件为 \texttt{Figure+Table/differential-expressed-genes-DEG-in-trajectory.csv})}
 
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有24823行6列，以下预览的表格可能省略部分数据；表格含有24823个唯一`rownames'。
 \end{tcolorbox}
 \end{center}
 
 \begin{longtable}[]{@{}llllll@{}}
-\caption{\label{tab:differential-expressed-genes-in-trajectory}Differential expressed genes in trajectory}\tabularnewline
+\caption{\label{tab:differential-expressed-genes-DEG-in-trajectory}Differential expressed genes DEG in trajectory}\tabularnewline
 \toprule
 rownames & status & p\_value & moran\ldots{} & morans\_I & q\_value\tabularnewline
 \midrule
@@ -546,6 +581,16 @@ ISG15 & OK & 1.840\ldots{} & 7.865\ldots{} & 0.029\ldots{} & 1.051\ldots{}\tabul
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
+
+Figure \ref{fig:pseudotime-DEG-in-module}为图pseudotime DEG in module概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/pseudotime-DEG-in-module.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/pseudotime-DEG-in-module.pdf}
+\caption{Pseudotime DEG in module}\label{fig:pseudotime-DEG-in-module}
+\end{center}
 
 \hypertarget{ux83b7ux53d6ux663cux591cux8282ux5f8bux76f8ux5173ux57faux56e0ux96c6ux548cux6ce8ux91ca}{%
 \subsubsection{获取昼夜节律相关基因集和注释}\label{ux83b7ux53d6ux663cux591cux8282ux5f8bux76f8ux5173ux57faux56e0ux96c6ux548cux6ce8ux91ca}}
@@ -800,7 +845,7 @@ Figure \ref{fig:intersect-of-gene-significant-and-module-membership}为图inters
 \hypertarget{ux901aux8defux5bccux96c6ux5206ux6790-clusterprofiler}{%
 \subsubsection{通路富集分析 Clusterprofiler}\label{ux901aux8defux5bccux96c6ux5206ux6790-clusterprofiler}}
 
-取 \ref{fig:intersect-of-gene-significant-and-module-membership} 的交集基因，做通路富集分析。
+取 Fig. \ref{fig:intersect-of-gene-significant-and-module-membership} 的交集基因，做通路富集分析。
 
 Figure \ref{fig:kegg-enrich}为图kegg enrich概览。
 
@@ -1100,6 +1145,26 @@ Figure \ref{fig:Survival-analysis-of-PEBP1}为图Survival analysis of PEBP1概�
 \subsubsection{细胞通讯 CellChat}\label{ux7ec6ux80deux901aux8baf-cellchat}}
 
 使用 \texttt{DB\_Genecards\_ensembl} (Fig. \ref{fig:intersects-all-used-gene-sets}) 基因集的基因进行细胞通讯分析。该基因集来源于 Genecards，暗示了这些基因与昼夜节律之间的关联性。
+
+Figure \ref{fig:used-database-for-cell-communication}为图used database for cell communication概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/used-database-for-cell-communication.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/used-database-for-cell-communication.pdf}
+\caption{Used database for cell communication}\label{fig:used-database-for-cell-communication}
+\end{center}
+
+Figure \ref{fig:cell-communication-count}为图cell communication count概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/cell-communication-count.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/cell-communication-count.pdf}
+\caption{Cell communication count}\label{fig:cell-communication-count}
+\end{center}
 
 Figure \ref{fig:cell-communication-heatmap-of-TNF-signiling}为图cell communication heatmap of TNF signiling概览。
 

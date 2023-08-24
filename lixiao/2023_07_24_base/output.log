@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  23 AUG 2023 17:48
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  24 AUG 2023 18:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1201,7 +1201,7 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 4.99947pt on input line 6.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 9.70718pt on input line 21.
+(Font)              scaled to size 9.70718pt on input line 16.
 [1
 
 ])
@@ -1216,14 +1216,9 @@ LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
+[3]
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 11.64862pt on input line 117.
-LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 13.97833pt on input line 162.
-[3] [4]
-File: output_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type pdf)
-<use output_files/figure-latex/unnamed-chunk-5-1.pdf>
-[5]
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
@@ -1235,7 +1230,7 @@ Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 356.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 123.
 
 Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             'FandolFang-Regular' with options
@@ -1249,287 +1244,358 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 nguage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
+File: ./Figure+Table/fig1.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig1.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 128.
+See the caption package documentation for explanation.
+
+[4]
+File: ./Figure+Table/fig2.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig2.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 141.
+See the caption package documentation for explanation.
+
+[5]
+File: ./Figure+Table/fig3.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig3.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 163.
+See the caption package documentation for explanation.
+
+[6]
+File: ./Figure+Table/fig4.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig4.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 179.
+See the caption package documentation for explanation.
+
+[7]
+File: ./Figure+Table/fig5.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig5.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 192.
+See the caption package documentation for explanation.
+
+LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
+(Font)              scaled to size 13.97833pt on input line 199.
+[8]
+File: output_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
+<use output_files/figure-latex/unnamed-chunk-14-1.pdf>
+[9] [10]
 File: Figure+Table/Normalization-pca-samples.pdf Graphic file (type pdf)
 <use Figure+Table/Normalization-pca-samples.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 361.
+(caption)                particular \caption on input line 396.
 See the caption package documentation for explanation.
 
-[6]
+[11]
 File: Figure+Table/pca-rank.pdf Graphic file (type pdf)
 <use Figure+Table/pca-rank.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 372.
+(caption)                particular \caption on input line 407.
 See the caption package documentation for explanation.
 
-[7]
+[12]
 File: Figure+Table/seurat-cluster-UMAP.pdf Graphic file (type pdf)
 <use Figure+Table/seurat-cluster-UMAP.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 382.
+(caption)                particular \caption on input line 417.
 See the caption package documentation for explanation.
 
-[8] [9] [10]
+[13] [14] [15]
 File: Figure+Table/map-cell-types-in-UMAP.pdf Graphic file (type pdf)
 <use Figure+Table/map-cell-types-in-UMAP.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 491.
+(caption)                particular \caption on input line 526.
 See the caption package documentation for explanation.
 
-[11]
+[16]
 File: Figure+Table/pseudotime-of-ccRCC-cells.pdf Graphic file (type pdf)
 <use Figure+Table/pseudotime-of-ccRCC-cells.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 508.
+(caption)                particular \caption on input line 543.
 See the caption package documentation for explanation.
 
-[12]
+[17]
+File: Figure+Table/pseudotime-DEG-in-module.pdf Graphic file (type pdf)
+<use Figure+Table/pseudotime-DEG-in-module.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 592.
+See the caption package documentation for explanation.
+
+[18]
 File: Figure+Table/intersect-of-sources-of-c2-genes.pdf Graphic file (type pdf)
 
 <use Figure+Table/intersect-of-sources-of-c2-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 567.
+(caption)                particular \caption on input line 612.
 See the caption package documentation for explanation.
 
-[13] [14] [15]
+[19] [20] [21]
 File: Figure+Table/intersects-all-used-gene-sets.pdf Graphic file (type pdf)
 <use Figure+Table/intersects-all-used-gene-sets.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 656.
+(caption)                particular \caption on input line 701.
 See the caption package documentation for explanation.
 
 File: Figure+Table/selection-of-soft-threshold.pdf Graphic file (type pdf)
 <use Figure+Table/selection-of-soft-threshold.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 676.
+(caption)                particular \caption on input line 721.
 See the caption package documentation for explanation.
 
-[16]
+[22]
 File: Figure+Table/gene-modules.pdf Graphic file (type pdf)
 <use Figure+Table/gene-modules.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 688.
+(caption)                particular \caption on input line 733.
 See the caption package documentation for explanation.
 
-[17]
+[23]
 File: Figure+Table/CRDscore-distribution.pdf Graphic file (type pdf)
 <use Figure+Table/CRDscore-distribution.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 706.
+(caption)                particular \caption on input line 751.
 See the caption package documentation for explanation.
 
-[18] [19]
+[24] [25]
 File: Figure+Table/intersect-of-gene-significant-and-module-membership.pdf Grap
 hic file (type pdf)
 <use Figure+Table/intersect-of-gene-significant-and-module-membership.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 797.
+(caption)                particular \caption on input line 842.
 See the caption package documentation for explanation.
 
-[20]
+[26]
 File: Figure+Table/kegg-enrich.pdf Graphic file (type pdf)
 <use Figure+Table/kegg-enrich.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 812.
+(caption)                particular \caption on input line 857.
 See the caption package documentation for explanation.
 
-[21]
 File: Figure+Table/go-enrich.pdf Graphic file (type pdf)
 <use Figure+Table/go-enrich.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 824.
+(caption)                particular \caption on input line 869.
 See the caption package documentation for explanation.
 
-[22]
-Overfull \hbox (22.01509pt too wide) in alignment at lines 853--858
+[27]
+Overfull \hbox (22.01509pt too wide) in alignment at lines 898--903
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (22.01509pt too wide) in alignment at lines 858--862
+Overfull \hbox (22.01509pt too wide) in alignment at lines 903--907
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (22.01509pt too wide) in alignment at lines 862--880
+Overfull \hbox (22.01509pt too wide) in alignment at lines 907--925
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
-[23]
+[28]
 File: Figure+Table/tcga-rna-data-filter.pdf Graphic file (type pdf)
 <use Figure+Table/tcga-rna-data-filter.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 902.
-See the caption package documentation for explanation.
-
-File: Figure+Table/tcga-rna-data-normalize.pdf Graphic file (type pdf)
-<use Figure+Table/tcga-rna-data-normalize.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 912.
-See the caption package documentation for explanation.
-
-[24] [25]
-File: Figure+Table/random-split-the-datasets.pdf Graphic file (type pdf)
-<use Figure+Table/random-split-the-datasets.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 937.
-See the caption package documentation for explanation.
-
-File: Figure+Table/EFS-top30-genes.pdf Graphic file (type pdf)
-<use Figure+Table/EFS-top30-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 947.
 See the caption package documentation for explanation.
 
-[26] [27]
+[29]
+File: Figure+Table/tcga-rna-data-normalize.pdf Graphic file (type pdf)
+<use Figure+Table/tcga-rna-data-normalize.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 957.
+See the caption package documentation for explanation.
+
+[30]
+File: Figure+Table/random-split-the-datasets.pdf Graphic file (type pdf)
+<use Figure+Table/random-split-the-datasets.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 982.
+See the caption package documentation for explanation.
+
+[31]
+File: Figure+Table/EFS-top30-genes.pdf Graphic file (type pdf)
+<use Figure+Table/EFS-top30-genes.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 992.
+See the caption package documentation for explanation.
+
+[32] [33]
 File: Figure+Table/Top30-genes-intersect-with-DEG.pdf Graphic file (type pdf)
 <use Figure+Table/Top30-genes-intersect-with-DEG.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 960.
+(caption)                particular \caption on input line 1005.
 See the caption package documentation for explanation.
 
 File: Figure+Table/LASSO-model.pdf Graphic file (type pdf)
 <use Figure+Table/LASSO-model.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 975.
+(caption)                particular \caption on input line 1020.
 See the caption package documentation for explanation.
 
-[28]
+[34]
 File: Figure+Table/LASSO-coefficents.pdf Graphic file (type pdf)
 <use Figure+Table/LASSO-coefficents.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 985.
+(caption)                particular \caption on input line 1030.
 See the caption package documentation for explanation.
 
-[29]
+[35]
 File: Figure+Table/LASSO-ROC.pdf Graphic file (type pdf)
 <use Figure+Table/LASSO-ROC.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 997.
+(caption)                particular \caption on input line 1042.
 See the caption package documentation for explanation.
 
-[30]
+[36]
 File: Figure+Table/top-30-genes-in-pseudotime-part-1.pdf Graphic file (type pdf
 )
 <use Figure+Table/top-30-genes-in-pseudotime-part-1.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1015.
+(caption)                particular \caption on input line 1060.
 See the caption package documentation for explanation.
 
-[31] [32]
+[37] [38]
 File: Figure+Table/top-30-genes-in-pseudotime-part-2.pdf Graphic file (type pdf
 )
 <use Figure+Table/top-30-genes-in-pseudotime-part-2.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1025.
+(caption)                particular \caption on input line 1070.
 See the caption package documentation for explanation.
 
-[33] [34]
+[39] [40]
 File: Figure+Table/top-30-genes-in-pseudotime-part3.pdf Graphic file (type pdf)
 
 <use Figure+Table/top-30-genes-in-pseudotime-part3.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1035.
+(caption)                particular \caption on input line 1080.
 See the caption package documentation for explanation.
 
-[35] [36]
+[41] [42]
 File: Figure+Table/Specific-genes-in-pseudotime.pdf Graphic file (type pdf)
 <use Figure+Table/Specific-genes-in-pseudotime.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1060.
+(caption)                particular \caption on input line 1105.
 See the caption package documentation for explanation.
 
 File: Figure+Table/Survival-analysis-of-PGK1.pdf Graphic file (type pdf)
 <use Figure+Table/Survival-analysis-of-PGK1.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1076.
-See the caption package documentation for explanation.
-
-[37]
-File: Figure+Table/Survival-analysis-of-KCNQ1OT1.pdf Graphic file (type pdf)
-<use Figure+Table/Survival-analysis-of-KCNQ1OT1.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1086.
-See the caption package documentation for explanation.
-
-[38]
-File: Figure+Table/Survival-analysis-of-PEBP1.pdf Graphic file (type pdf)
-<use Figure+Table/Survival-analysis-of-PEBP1.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1096.
-See the caption package documentation for explanation.
-
-[39]
-File: Figure+Table/cell-communication-heatmap-of-TNF-signiling.pdf Graphic file
- (type pdf)
-<use Figure+Table/cell-communication-heatmap-of-TNF-signiling.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1111.
-See the caption package documentation for explanation.
-
-[40]
-File: Figure+Table/gene-expression-of-TNF-signiling.pdf Graphic file (type pdf)
-
-<use Figure+Table/gene-expression-of-TNF-signiling.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 1121.
 See the caption package documentation for explanation.
 
-[41]
-File: Figure+Table/role-of-TNF-signiling.pdf Graphic file (type pdf)
-<use Figure+Table/role-of-TNF-signiling.pdf>
+[43]
+File: Figure+Table/Survival-analysis-of-KCNQ1OT1.pdf Graphic file (type pdf)
+<use Figure+Table/Survival-analysis-of-KCNQ1OT1.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 1131.
 See the caption package documentation for explanation.
 
-[42]
-File: Figure+Table/cell-communication-of-TNF-signiling.pdf Graphic file (type p
-df)
-<use Figure+Table/cell-communication-of-TNF-signiling.pdf>
+[44]
+File: Figure+Table/Survival-analysis-of-PEBP1.pdf Graphic file (type pdf)
+<use Figure+Table/Survival-analysis-of-PEBP1.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 1141.
 See the caption package documentation for explanation.
 
-[43] [44] [45] (./output.aux) ) 
+[45]
+File: Figure+Table/used-database-for-cell-communication.pdf Graphic file (type 
+pdf)
+<use Figure+Table/used-database-for-cell-communication.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1156.
+See the caption package documentation for explanation.
+
+[46]
+File: Figure+Table/cell-communication-count.pdf Graphic file (type pdf)
+<use Figure+Table/cell-communication-count.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1166.
+See the caption package documentation for explanation.
+
+[47]
+File: Figure+Table/cell-communication-heatmap-of-TNF-signiling.pdf Graphic file
+ (type pdf)
+<use Figure+Table/cell-communication-heatmap-of-TNF-signiling.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1176.
+See the caption package documentation for explanation.
+
+[48]
+File: Figure+Table/gene-expression-of-TNF-signiling.pdf Graphic file (type pdf)
+
+<use Figure+Table/gene-expression-of-TNF-signiling.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1186.
+See the caption package documentation for explanation.
+
+[49]
+File: Figure+Table/role-of-TNF-signiling.pdf Graphic file (type pdf)
+<use Figure+Table/role-of-TNF-signiling.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1196.
+See the caption package documentation for explanation.
+
+[50]
+File: Figure+Table/cell-communication-of-TNF-signiling.pdf Graphic file (type p
+df)
+<use Figure+Table/cell-communication-of-TNF-signiling.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1206.
+See the caption package documentation for explanation.
+
+[51] [52] [53] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31458 strings out of 476191
- 649236 string characters out of 5812072
- 1095595 words of memory out of 5000000
- 51651 multiletter control sequences out of 15000+600000
+ 31521 strings out of 476191
+ 651799 string characters out of 5812072
+ 1091013 words of memory out of 5000000
+ 51705 multiletter control sequences out of 15000+600000
  476348 words of font info for 93 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,9n,121p,1057b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (45 pages).
+Output written on output.pdf (53 pages).

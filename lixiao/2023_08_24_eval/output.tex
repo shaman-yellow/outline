@@ -1,0 +1,430 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Evaluation},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Evaluation}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+以下为需要评估的内容以及相应的答复：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  用网络药理学分析中药方的主要活性成分，对比文献研究现状挑选4个左右的活性成分作为候选药物成分
+
+  \begin{itemize}
+  \tightlist
+  \item
+    可分析主要成分，结合目标疾病筛选主要活性成分。
+  \item
+    可从 HERB (\url{http://herb.ac.cn/Download/}) 获取成分信息（该数据库整合了较多的其他数据库）。
+  \item
+    目标疾病是否为糖尿病肾病？且有代谢组数据？如果为（中药方成分的）非靶向代谢组，则能根据非靶向代谢组数据鉴定更多的化合物用于网络药理学分析，而不是只通过数据库筛选。
+  \item
+    可进一步通过 PPI 网络和通路富集分析筛选活性成分\textsuperscript{\protect\hyperlink{ref-NeuronSpecificMurtaz2022}{1}}。
+  \item
+    可查阅文献（较为主观，可作为辅助手段）
+  \end{itemize}
+\item
+  分析糖尿病肾病肠道差异菌群
+
+  \begin{itemize}
+  \tightlist
+  \item
+    需要 16s RNA数据，或从 GEO 公共数据库获取（\url{https://www.ncbi.nlm.nih.gov/gds/?term=16s}）。
+  \item
+    可用 qiime2 （\url{https://qiime2.org/}）筛选肠道差异菌群\textsuperscript{\protect\hyperlink{ref-MicrobiomeDataRaiS2021}{2},\protect\hyperlink{ref-LongitudinalInWang2019}{3}}。
+  \end{itemize}
+\item
+  分析糖尿病肾病代谢组学差异
+
+  \begin{itemize}
+  \tightlist
+  \item
+    需明确，是人的肾脏的代谢组，还是肠道菌的代谢组（因为上述有肠道菌分析，容易混淆）。
+  \item
+    可分为挖掘公共数据库（GNPS：\url{https://gnps.ucsd.edu/ProteoSAFe/static/gnps-splash.jsp}）和客户提供代谢数据的情况。
+  \item
+    如果是客户提供，请考虑：
+
+    \begin{itemize}
+    \tightlist
+    \item
+      包含对照组和模型组的数据，需要生物学重复，最好为非靶向代谢组数据（这种情况下，能鉴定和找到最多的差异代谢物）
+    \item
+      如果是非靶向代谢组，需要数据鉴定。可分为谱图匹配性鉴定（常规方法），和预测性鉴定（例如，SIRIUS\textsuperscript{\protect\hyperlink{ref-Sirius4ARapDuhrko2019}{4}}）。
+    \item
+      如果是靶向代谢组，已知目标代谢物，则不需要额外的鉴定，根据分子量比对即可。
+    \item
+      需确认代谢组数据的采集是否包含 MS\textsuperscript{2}。如果仅包含 MS\textsuperscript{1}，则鉴定准确度会相对偏低。如果是靶向代谢组，仅有 MS\textsuperscript{1} 亦可。
+    \end{itemize}
+  \item
+    以标准的方法：PCA 聚类，OPLS-DA 聚类、VIP 、P 值筛选差异代谢物。
+  \item
+    还可以结合不同 Feature selection 算法进一步筛选，例如LASSO，EFS\textsuperscript{\protect\hyperlink{ref-EfsAnEnsemblNeuman2017}{5}}等。
+  \item
+    差异代谢物可通路富集分析，结合疾病，进一步筛选。可用方法为 MetaboAnalyst (\url{https://www.metaboanalyst.ca/MetaboAnalyst/ModuleView.xhtml})\textsuperscript{\protect\hyperlink{ref-MetaboanalystrPang2020}{6}}。
+  \item
+    根据上述情况不同，工作量会大不相同。可做大量分析，也可仅做少量分析。
+  \end{itemize}
+\item
+  分析差异菌群与差异代谢物的相关性（桑基图）
+
+  \begin{itemize}
+  \tightlist
+  \item
+    16s RNA 和代谢组的多组学分析\textsuperscript{\protect\hyperlink{ref-DisruptedSpermZhang2021}{7}}。
+  \item
+    对差异菌群和差异代谢物关联性分析，桑基图、热图均可（热图可能更直观，见 Fig. \ref{fig:correlation-of-metabolites-with-microbiota}）。
+  \end{itemize}
+\item
+  结合药物成分筛选目标菌群和相关代谢物
+
+  \begin{itemize}
+  \tightlist
+  \item
+    首先需要获取药物成分的靶点。可通过 Binding DB 获取 \url{https://www.bindingdb.org/rwd/bind/index.jsp}。
+  \item
+    通过（人的）代谢物的通路富集结果（步骤 3）得到相应蛋白，可对药物靶点取交集。
+  \item
+    通过机器预测药物和肠道菌互作\textsuperscript{\protect\hyperlink{ref-PredictingDrugMccoub2022}{8},\protect\hyperlink{ref-MachineLearninMccoub2021}{9}}。目前似乎存在一系列方法，需要探索找到合适的方法。
+  \item
+    若上述方法简便容易，以下或许可以不用考虑：
+
+    \begin{itemize}
+    \tightlist
+    \item
+      关于药物-肠道菌互作\textsuperscript{\protect\hyperlink{ref-PersonalizedMaJavdan2020}{10}}，药物作用于菌，得到代谢物（细菌的代谢物，而非人）。
+    \item
+      想要从药物中筛选，需要细菌的代谢物信息（这一步骤可能存在一定苦难，需要结合实际筛选的细菌考虑）。
+    \item
+      上述，肠道菌代谢物的获取是关键步骤之一，可以从 gutMGene（\url{http://bio-annotation.cn/gutmgene/home.dhtml}）获取。
+    \item
+      通过计算药物和肠道菌代谢物的分子相似性，推测是否存在药物-菌作用关系\textsuperscript{\protect\hyperlink{ref-MolecularSimilGandin2022}{11}}（具有不确定性）
+    \end{itemize}
+  \end{itemize}
+\item
+  代谢小分子靶点蛋白分析（这个看能不能用分子对接的方式获取）
+
+  \begin{itemize}
+  \tightlist
+  \item
+    只要上述（步骤 5）的药物和靶点都具备，即可以分子对接方式分析。
+  \end{itemize}
+\item
+  广泛的靶点蛋白与糖尿病肾病差异基因取交集，筛选候选基因
+
+  \begin{itemize}
+  \tightlist
+  \item
+    结合疾病的公共数据库筛选进一步筛选，例如 genecards \url{https://www.genecards.org/}。
+  \item
+    需要明确，这里还能进一步通过分析其他 GEO 数据筛选差异基因，再结合筛选。是否需要？
+  \end{itemize}
+\end{enumerate}
+
+总体上，工作量较大，视情况可能需要 1-3 周。
+
+\hypertarget{route}{%
+\section{研究设计流程图}\label{route}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+以下内容为仅为示例。
+
+\hypertarget{ux7f51ux7edcux836fux7406ux5b66ux548c-ppi}{%
+\subsection{网络药理学和 PPI}\label{ux7f51ux7edcux836fux7406ux5b66ux548c-ppi}}
+
+Figure \ref{fig:PPI-network-for-targets}为图PPI network for targets概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-56-42.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-56-42.png}
+\caption{PPI network for targets}\label{fig:PPI-network-for-targets}
+\end{center}
+
+Figure \ref{fig:enrichment-analysis}为图enrichment analysis概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 13-03-48.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 13-03-48.png}
+\caption{Enrichment analysis}\label{fig:enrichment-analysis}
+\end{center}
+
+\hypertarget{ux80a0ux9053ux83ccux5206ux6790}{%
+\subsection{肠道菌分析}\label{ux80a0ux9053ux83ccux5206ux6790}}
+
+Figure \ref{fig:flow-chart-of-qiime2-processing}为图flow chart of qiime2 processing概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-26-30.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-26-30.png}
+\caption{Flow chart of qiime2 processing}\label{fig:flow-chart-of-qiime2-processing}
+\end{center}
+
+Figure \ref{fig:qiime2-quality-control}为图qiime2 quality control概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-36-35.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-36-35.png}
+\caption{Qiime2 quality control}\label{fig:qiime2-quality-control}
+\end{center}
+
+Figure \ref{fig:gut-microbiome-abundance}为图gut microbiome abundance概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-40-38.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-40-38.png}
+\caption{Gut microbiome abundance}\label{fig:gut-microbiome-abundance}
+\end{center}
+
+\hypertarget{ux4ee3ux8c22ux7269ux5206ux6790}{%
+\subsection{代谢物分析}\label{ux4ee3ux8c22ux7269ux5206ux6790}}
+
+Figure \ref{fig:use-MetaboAnalyst-for-analysis-of-metabolites}为图use MetaboAnalyst for analysis of metabolites概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-32-20.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-32-20.png}
+\caption{Use MetaboAnalyst for analysis of metabolites}\label{fig:use-MetaboAnalyst-for-analysis-of-metabolites}
+\end{center}
+
+Figure \ref{fig:identify-compounds-with-SIRIUS-4-OPTIONAL}为图identify compounds with SIRIUS 4 OPTIONAL概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-28-15.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-28-15.png}
+\caption{Identify compounds with SIRIUS 4 OPTIONAL}\label{fig:identify-compounds-with-SIRIUS-4-OPTIONAL}
+\end{center}
+
+\hypertarget{ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269ux6574ux5408}{%
+\subsection{肠道菌和代谢物整合}\label{ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269ux6574ux5408}}
+
+Figure \ref{fig:correlation-of-metabolites-with-microbiota}为图correlation of metabolites with microbiota概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-24-36.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-24-36.png}
+\caption{Correlation of metabolites with microbiota}\label{fig:correlation-of-metabolites-with-microbiota}
+\end{center}
+
+\hypertarget{ux836fux7269ux548cux80a0ux9053ux83ccux7684ux76f8ux4e92ux4f5cux7528}{%
+\subsection{药物和肠道菌的相互作用}\label{ux836fux7269ux548cux80a0ux9053ux83ccux7684ux76f8ux4e92ux4f5cux7528}}
+
+\hypertarget{ux901aux8fc7ux673aux5668ux5b66ux4e60ux9884ux6d4b}{%
+\subsubsection{通过机器学习预测}\label{ux901aux8fc7ux673aux5668ux5b66ux4e60ux9884ux6d4b}}
+
+来自于综述文章，需要找到合适的方法。
+
+Figure \ref{fig:machine-learning-prediction-of-drug-towards-microbiota}为图machine learning prediction of drug towards microbiota概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 13-38-39.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 13-38-39.png}
+\caption{Machine learning prediction of drug towards microbiota}\label{fig:machine-learning-prediction-of-drug-towards-microbiota}
+\end{center}
+
+\hypertarget{ux836fux7269ux88abux80a0ux9053ux83ccux4ee3ux8c22}{%
+\subsubsection{药物被肠道菌代谢}\label{ux836fux7269ux88abux80a0ux9053ux83ccux4ee3ux8c22}}
+
+Figure \ref{fig:drug-metabolized-by-microbiota}为图drug metabolized by microbiota概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 13-13-48.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 13-13-48.png}
+\caption{Drug metabolized by microbiota}\label{fig:drug-metabolized-by-microbiota}
+\end{center}
+
+Figure \ref{fig:chemical-modification-by-microbiota}为图chemical modification by microbiota概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 13-16-48.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 13-16-48.png}
+\caption{Chemical modification by microbiota}\label{fig:chemical-modification-by-microbiota}
+\end{center}
+
+\hypertarget{ux5206ux5b50ux76f8ux4f3cux6027}{%
+\subsubsection{分子相似性}\label{ux5206ux5b50ux76f8ux4f3cux6027}}
+
+Figure \ref{fig:molecule-similarity}为图molecule similarity概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 12-52-35.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 12-52-35.png}
+\caption{Molecule similarity}\label{fig:molecule-similarity}
+\end{center}
+
+\hypertarget{ux5206ux5b50ux5bf9ux63a5}{%
+\subsection{分子对接}\label{ux5206ux5b50ux5bf9ux63a5}}
+
+Figure \ref{fig:autodock-vina-binding-affinity}为图autodock vina binding affinity概览。
+
+\textbf{(对应文件为 \texttt{../2023\_06\_30\_eval/figs/Docking\_Affinity.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{../2023_06_30_eval/figs/Docking_Affinity.pdf}
+\caption{Autodock vina binding affinity}\label{fig:autodock-vina-binding-affinity}
+\end{center}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-NeuronSpecificMurtaz2022}{}%
+1. Murtaza, N. \emph{et al.} Neuron-specific protein network mapping of autism risk genes identifies shared biological mechanisms and disease-relevant pathologies. \emph{Cell Reports} \textbf{41}, (2022).
+
+\leavevmode\hypertarget{ref-MicrobiomeDataRaiS2021}{}%
+2. Rai, S. N. \emph{et al.} Microbiome data analysis with applications to pre-clinical studies using qiime2: Statistical considerations. \emph{Genes \textbackslash\&amp; Diseases} \textbf{8}, (2021).
+
+\leavevmode\hypertarget{ref-LongitudinalInWang2019}{}%
+3. Wang, X. \emph{et al.} Longitudinal investigation of the swine gut microbiome from birth to market reveals stage and growth performance associated bacteria. \emph{Microbiome} \textbf{7}, (2019).
+
+\leavevmode\hypertarget{ref-Sirius4ARapDuhrko2019}{}%
+4. Dührkop, K. \emph{et al.} SIRIUS 4: A rapid tool for turning tandem mass spectra into metabolite structure information. \emph{Nature Methods} \textbf{16}, 299--302 (2019).
+
+\leavevmode\hypertarget{ref-EfsAnEnsemblNeuman2017}{}%
+5. Neumann, U., Genze, N. \& Heider, D. EFS: An ensemble feature selection tool implemented as r-package and web-application. \emph{BioData Mining} \textbf{10}, 21 (2017).
+
+\leavevmode\hypertarget{ref-MetaboanalystrPang2020}{}%
+6. Pang, Z., Chong, J., Li, S. \& Xia, J. MetaboAnalystR 3.0: Toward an optimized workflow for global metabolomics. \emph{Metabolites} (2020) doi:\href{https://doi.org/10.3390/metabo10050186}{10.3390/metabo10050186}.
+
+\leavevmode\hypertarget{ref-DisruptedSpermZhang2021}{}%
+7. Zhang, T. \emph{et al.} Disrupted spermatogenesis in a metabolic syndrome model: The role of vitamin a metabolism in the guttestis axis. \emph{Gut} \textbf{71}, (2021).
+
+\leavevmode\hypertarget{ref-PredictingDrugMccoub2022}{}%
+8. McCoubrey, L. E., Gaisford, S., Orlu, M. \& Basit, A. W. Predicting drug-microbiome interactions with machine learning. \emph{Biotechnology Advances} \textbf{54}, (2022).
+
+\leavevmode\hypertarget{ref-MachineLearninMccoub2021}{}%
+9. McCoubrey, L. E., Elbadawi, M., Orlu, M., Gaisford, S. \& Basit, A. W. Machine learning uncovers adverse drug effects on intestinal bacteria. \emph{Pharmaceutics} \textbf{13}, (2021).
+
+\leavevmode\hypertarget{ref-PersonalizedMaJavdan2020}{}%
+10. Javdan, B. \emph{et al.} Personalized mapping of drug metabolism by the human gut microbiome. \emph{Cell} \textbf{181}, (2020).
+
+\leavevmode\hypertarget{ref-MolecularSimilGandin2022}{}%
+11. Gandini, E. \emph{et al.} Molecular similarity perception based on machine-learning models. \emph{International Journal of Molecular Sciences} \textbf{23}, (2022).
+\end{cslreferences}
+
+\end{document}
