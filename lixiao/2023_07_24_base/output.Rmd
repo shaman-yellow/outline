@@ -1,0 +1,958 @@
+---
+title: Analysis
+author: 'Huang LiChuang in Wie-Biotech'
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: true
+    toc_depth: 3
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+---
+
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# Title
+
+结合 scRNA-seq 和 bulk RNA-seq 探究昼夜节律基因对于 ccRCC 的预后评估价值
+
+（主题：昼夜节律，肿瘤，预后单细胞分析）[@SingleCellTraHeLe2022]
+
+# Abstract
+
+昼夜节律基因在癌症中的改变研究仍然缺乏，例如肾细胞癌（Renal Cell Carcinoma，RCC），这使得其在肿瘤细胞中的功能的清晰度和描述存在空白。本研究通过结合 scRNA-seq 和 bulk RNA-seq，以细胞群注释、拟时分析、细胞通讯、基因共表达分析、差异分析、富集分析、Feature selection、LASSO 回归、生存分析等方法，呈线形探讨了昼夜节律相关基因在 ccRCC 中的转归。注释 scRNA-seq 细胞群后，拟时分析和加权共表达分析发现，处于末期的 ccRCC 会发生昼夜节律扰乱。细胞通讯结果表明，Monocytes 和相关的 TNF-TNFRSF1B 信号通路在昼夜节律基因和 ccRCC 发展中发挥主要通讯角色。对昼夜节律相关基因的 LASSO 回归分析表明，相关基因，包括PGK1、KCNQ1OT1 等可以作为预后诊断参考。进一步的拟时分析和生存分析验证了 PGK1、KCNQ1OT1、PEBP1 三个基因在 ccRCC 发展中的表达量变化或表达量和生存率的显著性关系。
+
+# Introduction
+
+生物体的行为和新陈代谢每 24 小时就会出现有节奏的波动，以预测环境的变化。这种节律时钟受到环境信息的外部和内部信号影响。最重要的外部时间是光，特别是光暗循环。所有这些信号共同改变某些基因的表达水平以及控制生理过程的代谢物或激素的产生，其改变会导致健康损害。事实上，昼夜时钟（circadian clock，CC）可以调节：细胞周期进展、DNA 修复机制、线粒体功能障碍、代谢重编程、免疫系统[@ChronotherapyAmiama2022]。CC 的改变是多种慢性疾病的危险因素，例如神经退行性疾病、糖尿病和癌症等[@ChronotherapyAmiama2022; @CancerAndTheShafi2019]。事实上，CC基因表达的改变可能导致常见恶性肿瘤的发生。虽然 CC 基因在正常生理中的功能已经被充分阐明，但CC基因在癌症中的改变研究仍然缺乏，例如肾细胞癌（Renal Cell Carcinoma，RCC），这使得其在肿瘤细胞中的功能的清晰度和描述存在空白[@RoleOfClockGSanton2023]。CC 基因和昼夜节律在 RCC 患者中的作用是一个较新研究领域，特别是考虑到昼夜节律在抗癌治疗中的影响的新发现。在肾细胞癌中，目前治疗方法缺乏有效的疗效或耐药性生物标志物，这强烈支持探索一系列可能影响患者治疗结果的临床和行为变量的必要性[@RoleOfClockGSanton2023]。
+
+本研究通过分析肾癌单细胞测序数据集[@IntegrativeSinYuZh2023]，继标准的单细胞处理流程[@IntegratedAnalHaoY2021; @ComprehensiveIStuart2019]，囊括细胞群鉴定，拟时序分析[@ReversedGraphQiuX2017; @TheDynamicsAnTrapne2014]，加权基因共表达分析[@WgcnaAnRPacLangfe2008]，差异性分析，通路分析[@ClusterprofilerWuTi2021]，以多种方法筛选关键CC基因[@EfsAnEnsemblNeuman2017]，并筛选 top genes[@EfsAnEnsemblNeuman2017]，借助 LASSO 回归建立预后模型，表征肿瘤发展和预后效果，并在随后进行生存分析、细胞通讯分析[@InferenceAndAJinS2021]等，较为深入的探讨了昼夜节律在肾细胞癌（主要为 Clear cell renal cell carcinoma，ccRCC）中的作用。
+
+# Methods
+
+## scRNA-seq 的数据预处理
+
+scRNA 数据来源于 GSE207493 [@IntegrativeSinYuZh2023]。以 Seurat 做数据预处理和整合[@IntegratedAnalHaoY2021; @ComprehensiveIStuart2019]，消除批次效应。流程参照：
+
+- <https://satijalab.org/seurat/articles/sctransform_vignette>
+- <https://satijalab.org/seurat/articles/integration_introduction>
+
+## 细胞群注释
+
+获取原作者的研究[@IntegrativeSinYuZh2023]数据（补充材料），将差异表达基因映射到 UMAP 图中。重新映射的算法：
+
+1. 将 UMAP 聚类结果中的每一个类群的 DEG 与原 DEG 数据比对
+2. 优先保留所有细胞类型
+3. 将最优比对结果注释（覆盖最多原 DEG）
+
+使用 R 编写函数，将差异基因比对到 UMAP 聚类结果中。
+
+## 拟时分析
+
+使用 Monocle3 [@ReversedGraphQiuX2017; @TheDynamicsAnTrapne2014] 拟时序分析。使用 SeuratWrappers 将 Seurat 对象转化为
+Monocle3 对象（仅保留 ccRCC 细胞），使得 Seurat 的聚类和注释结果保留到 Monocle3 中。根据原作者研究[@IntegrativeSinYuZh2023]，'ccRCC 4' 关联 epithelial cells 分化，为肿瘤的早期阶段。在构建拟时轨迹中，选取 ccRCC 4 作为拟时 root。流程参照：<https://cole-trapnell-lab.github.io/monocle3/docs/getting_started/>。
+
+## 昼夜节律基因集
+
+从 <https://www.genecards.org/> genecards 检索 circadian 相关基因。
+从 <https://bioinf.wehi.edu.au/software/MSigDB/> 获取 C2 基因集合 (curated gene sets)。
+以 `biomaRt` 注释这些基因（无法获取注释的基因不再用于后续分析）。
+
+## 细胞通讯
+
+使用 CellChat 进行细胞通讯分析[@InferenceAndAJinS2021]。将 Seurat 对象转化为 CellChat 对象时，保留所有细胞类型，但仅保留 Genecards 检索得到的昼夜节律相关的基因。整体分析流程参照：<https://htmlpreview.github.io/?https://github.com/sqjin/CellChat/blob/master/tutorial/CellChat-vignette.html>。
+
+## 加权基因共表达网络
+
+使用 WGCNA [@WgcnaAnRPacLangfe2008] 做加权共表达分析。将 Seurat 对象的基因表达数据和细胞数据转化为矩阵对象，供 WGCNA 计算。而供加权计算的 CRDscore 来源于 \@ref(crdscore)。整体流程可参照：<https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html>
+
+## 富集分析
+
+使用 Clusterprofiler [@ClusterprofilerWuTi2021] 做通路富集分析，以 ggplot2 做可视化。基因的名称由 biomaRt 转换为 Entrez ID 供输入。
+
+## 计算 CRDscore {#crdscore}
+
+CRDscore 的计算和理论可参考[@SingleCellTraHeLe2022]。CRDscore 计算的R包可于 Github 下载：<https://github.com/yixianfan/CRDscore>。
+计算时，输入参考的昼夜节律基因（C2基因集）和预计算的细胞和对应的基因矩阵数据，得出 CRDscore 得分。
+
+## 获取 TCGA KIRC 数据以及预处理
+
+使用 TCGAbiolinks 下载TCGA KIRC RNA-seq 数据和对应的临床数据。可参照：<https://www.bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html>。使用 edgeR 预处理 RNA-seq 数据，过滤低表达的基因和归一化，可参照：<http://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html>
+
+## Feature selection 和 LASSO 回归
+
+使用 EFS [@EfsAnEnsemblNeuman2017] 计算基因的重要性，而 LASSO 回归使用了 glmnet 包。使用十倍交叉验证（glmnet::cv.glmnet）法选取了最小 Lambda 值。ROC 曲线的绘制使用了 pROC 包。
+
+## 生存分析
+
+使用 survival 和 survminer 对 TCGA 的 RNA-seq 数据和临川数据做生存分析和生存曲线的绘制。
+
+# Results
+
+## 分析 scRNA-seq 数据聚焦于 ccRCC {#focus}
+
+```{r}
+fig1 <- cl(
+  rw("./Figure+Table/Normalization-pca-samples.pdf", "./Figure+Table/pca-rank.pdf"),
+  rw("./Figure+Table/seurat-cluster-UMAP.pdf", "./Figure+Table/map-cell-types-in-UMAP.pdf"),
+  rw("./Figure+Table/pseudotime-of-ccRCC-cells.pdf", "./Figure+Table/pseudotime-DEG-in-module.pdf")
+)
+render(fig1)
+```
+
+为了研究昼夜节律和相关基因对 ccRCC 的影响，选择 GSE207493 为分析对象[@IntegrativeSinYuZh2023]。该数据集共19个样本数据，为减少计算时间，随机选择9个样本，以 Seurat 整合数据集[@IntegratedAnalHaoY2021; @ComprehensiveIStuart2019]，消除批次效应。Fig. \@ref(fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC)a 为各个样本在 PC1、PC2 上的分布。随后，根据Fig. \@ref(fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC)b 所示，选择PC1-PC5作为主要成分，进行 UMAP 降维和聚类。聚类结果如 Fig. \@ref(fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC)c 所示。为了注释 UMAP 的聚类结果，此处获取了 Yu 等人注释的 Markder 基因（见Tab. \@ref(tab:Original-differential-expressed-genes-DEG)），将其重新映射到 UMAP 结果中，即 Fig. \@ref(fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC)d。随后的分析，聚焦于 ccRCC 1、2、3、4。将 Seurat 的处理数据传递到 Monocle3[@ReversedGraphQiuX2017; @TheDynamicsAnTrapne2014]，对 ccRCC 细胞做拟时序分析。根据 Yu 等人的研究 [@IntegrativeSinYuZh2023]，ccRCC 4 为肿瘤的发展根源（root），因此我们选择 Fig. \@ref(fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC)e 所示的点为 root，呈现时序轨迹。总体上，结合 Fig. \@ref(fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC)d，可知 ccRCC 能由 阶段4 发展到2、3、1，这一结论与 Yu 等人的研究一致。进一步发现，ccRCC1 处于发展的最末期。利用 Monocle3 根据拟时分析寻找差异基因，即 `graph_test`（见 Tab. \@ref(tab:differential-expressed-genes-DEG-in-trajectory)）；进一步，将差异基因按模块聚类，结果见 Fig. \@ref(fig:MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC)f，可以发现，ccRCC 1 在最多的基因表达模块上与其它 ccRCC 阶段不同。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Preprocess-GEO-samples-and-annotate-cell-typle-for-focusing-on-ccRCC
+autor("./Figure+Table/fig1.pdf")
+```
+
+## WGCNA 寻找 CRD 关键基因 {#wgc}
+
+```{r}
+fig2 <- cls(
+  cl(rw("./Figure+Table/intersect-of-sources-of-c2-genes.pdf",
+      "./Figure+Table/intersects-all-used-gene-sets.pdf",
+      "./Figure+Table/selection-of-soft-threshold.pdf"),
+    rw("./Figure+Table/gene-modules.pdf",
+      "./Figure+Table/CRDscore-distribution.pdf",
+      "./Figure+Table/intersect-of-gene-significant-and-module-membership.pdf"),
+    rw("./Figure+Table/go-enrich.pdf", "./Figure+Table/kegg-enrich.pdf")
+  )
+)
+render(fig2)
+```
+
+为了权衡昼夜节律在 ccRCC 发展过程中的作用，我们获取了两批和昼夜节律密切相关的数据。其一为源自 MSigDB <https://www.gsea-msigdb.org/gsea/msigdb> 的 C2 （curated gene sets）基因集，其中标注为昼夜节律相关的基因（匹配 'circadian'）。C2 基因集的这些昼夜基因的来源展现在 Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)b 中。其二，从 Genecards 网站检索与 'circadian' 相关的基因。之后，将 C2 的基因集和 Genecards 的基因集以 `BiomaRt`（使用 ensembl dataset）注释，保留获得注释的基因用于随后分析（注释结果见 Tab. \@ref(tab:annotation-of-c2-gene-set) 和 \@ref(tab:annotation-of-genecards-gene-set)）。这些基因与 Seruat、Monocle3 处理得到的差异表达基因以及其他基因集的交集展现在 Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)b。之后，以 Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)b 所示的 `DB_Genecards_ensembl` 基因集为基础，过滤 ccRCC 的基因，供 WGCNA 加权共表达分析。根据 Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)c 所示，选择 'soft threshold' 为 2，构建基因共表达模块（Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)d）[@WgcnaAnRPacLangfe2008]。
+
+考虑到 Genecards 的基因检索结果带有预测性，同时为了更确切的评估 ccRCC 细胞中的昼夜节律状态，之后，以 Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)b 所示的 `DB_Curated_gene_sets` 基因集为参考，评估各个细胞的昼夜节律扰乱状态。即，我们计算了这些细胞的 CRDscore（CRD, circadian rhythm disruption）[@SingleCellTraHeLe2022]。不同阶段的 ccRCC 细胞的 CRDscore 分布如 Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)e 所示。可以明显观察到，ccRCC 1 的得分高于其它三个阶段，这一结果与上述拟时分析的结果相互印证，ccRCC 1 为发展的拟时末期，并且该阶段出现昼夜节律扰乱。之后，我们将 CRDscore 拟作 'Trait' 数据，供 WGCNA 对基因和基因模块做加权评估。这里计算得到 'Module Membership'（mm）'Gene significant' （gs）（数据见 Tab. \@ref(tab:module-membership)，Tab. \@ref(tab:gene-significant)）。基因集 mm 和 gs 的交集见 Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)f，共 `r length(enrich_ids$gs_mm)` 个交集基因。将这些交集基因做通路富集分析。GO 富集结果显示（Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)g），首先这些基因与节律过程（rhythmic process），昼夜节律（circadian rhythm）相关，此外，还和缺氧、氧化水平等与肿瘤微环境的通路相关联。这些结果验证了昼夜节律对于 ccRCC 发展的影响，以及用于预后诊断乃至治疗的可能。KEGG 富集结果显示（Fig. \@ref(fig:MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes)h），基因集与肿瘤蛋白聚糖（proteoglycans in cancer）相关，同时，与抗原抗体反应相关（Antigen processing and presentation）。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Weighting-the-genes-correlation-network-with-CRDscore-for-finding-critical-genes
+autor("./Figure+Table/fig2.pdf")
+```
+
+## 细胞通讯发现 ccRCC 发展中起主要 signaling 作用的细胞 {#comm}
+
+```{r}
+fig3 <- cl(
+  rw("./Figure+Table/used-database-for-cell-communication.pdf",
+    "./Figure+Table/cell-communication-count.pdf"),
+  rw("./Figure+Table/cell-communication-heatmap-of-TNF-signiling.pdf",
+    "./Figure+Table/gene-expression-of-TNF-signiling.pdf"),
+  rw("./Figure+Table/role-of-TNF-signiling.pdf",
+    "./Figure+Table/cell-communication-of-TNF-signiling.pdf")
+)
+render(fig3)
+```
+
+我们在 \@ref(focus) 和 \@ref(wgc) 中证明了 ccRCC 发展（拟时）末期会发生昼夜节律扰乱（CRD）。接下来，我们以细胞通讯技术 CellChat [@InferenceAndAJinS2021] 探究昼夜节律基因在各类细胞中的相互表达和作用情况。使用 CellChat 的内置数据注释细胞间的通讯（Fig. \@ref(fig:MAIN-Explore-cell-communications-for-finding-critical-cell-types-and-signaling)a）。CellChat 主要以差异表达基因注释细胞间的通讯。结果如 Fig. \@ref(fig:MAIN-Explore-cell-communications-for-finding-critical-cell-types-and-signaling)b 所示，在仅以 `DB_Genecards_ensembl` 基因集作为通讯分析的前提下，我们发现 Monocytes 和 TAM 2 细胞发挥了主要通讯作用。通讯结果得到两条相关通路，TNF 和 IGF。这里，我们聚焦到 TNF 通路（Fig. \@ref(fig:MAIN-Explore-cell-communications-for-finding-critical-cell-types-and-signaling)c）。Monocytes 和 TAM 2 的确扮演了主要的通讯角色。进一步考察 TNF 的配体受体基因的表达（Fig. \@ref(fig:MAIN-Explore-cell-communications-for-finding-critical-cell-types-and-signaling)d），可以发现，Monocytes 的受体基因 TNFRSF1B 表达最为突出。随后，对细胞的传入和输入功能作权衡，Monocytes 细胞都表现出了最大比重（Fig. \@ref(fig:MAIN-Explore-cell-communications-for-finding-critical-cell-types-and-signaling)e 和 f）。这说明，ccRCC 的发展过程中，CRD 带来的影响可能首要发生于 Monocytes 细胞中。Monocytes 有可能成为今后ccRCC 的 CRD 诊断和治疗的靶点细胞。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Explore-cell-communications-for-finding-critical-cell-types-and-signaling
+autor("./Figure+Table/fig3.pdf")
+```
+
+## 以 TCGA RNA-seq 构建预后模型以及验证
+
+```{r}
+fig4 <- cl(
+  rw("./Figure+Table/tcga-rna-data-filter.pdf",
+    "./Figure+Table/tcga-rna-data-normalize.pdf",
+    "./Figure+Table/random-split-the-datasets.pdf"),
+  rw("./Figure+Table/EFS-top30-genes.pdf",
+    "./Figure+Table/Top30-genes-intersect-with-DEG.pdf",
+    "./Figure+Table/LASSO-model.pdf"),
+  rw("./Figure+Table/LASSO-coefficents.pdf",
+    "./Figure+Table/LASSO-ROC.pdf",
+    "./Figure+Table/Specific-genes-in-pseudotime.pdf"
+  )
+)
+render(fig4)
+```
+
+为了进一步明确 \@ref(wgc) 筛选的 gs 和 mm 的交集基因（即对 CRD 起关键影响的基因）在 ccRCC 发展中的诊断作用，我们从 TCGA 数据库的 KIRC（Kidney Renal Clear Cell Carcinoma ）项目中获取了可得的 533 个病人的 RNA-seq 数据（见 Tab. \@ref(tab:downloaded-RNA-seq-data-of-ccRCC-in-TCGA)）[@TcgabiolinksAColapr2015]。使用 edgeR 对这些表达数据 raw count）做预处理，即过滤低表达和归一化（见 Fig. \@ref(fig:MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset)a 和 b）。随后，随机将这些数据按照 4:1 的比例分为训练数据集和验证数据集。在生存前后，样本的生存比率基本一致（Fig. \@ref(fig:MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset)c）。对于训练数据集，这里首先使用了 EFS 方法[@EfsAnEnsemblNeuman2017]，以八种不同的算法筛选基因（Feature selection）。其中 top 30 的基因（Top30）为 Fig. \@ref(fig:MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset)d 所示。对比 Top30 基因和差异表达基因，共有 25 个基因有交集（Fig. \@ref(fig:MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset)e）。这说明大部分的 Top30 都是差异表达基因。接下来，对训练数据集进行 LASSO 回归。以十倍交叉验证法选取最小 Lambda 值（Fig. \@ref(fig:MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset)f）。LASSO 模型所选用的诊断基因为 Fig. \@ref(fig:MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset)g 所示。随后，以 ROC 曲线评估了 LASSO 模型在验证数据集的性能表现（Fig. \@ref(fig:MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset)h）。AUC 值为0.69，高于随机分类器。说明昼夜节律基因对于 ccRCC 诊断有参考价值。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Perform-Feature-selection-and-LASSO-regression-on-TCGA-dataset
+autor("./Figure+Table/fig4.pdf")
+```
+
+```{r}
+fig5 <- cl(rw("./Figure+Table/Survival-analysis-of-PGK1.pdf",
+    "./Figure+Table/Survival-analysis-of-KCNQ1OT1.pdf",
+    "./Figure+Table/Survival-analysis-of-PEBP1.pdf"))
+render(fig5)
+```
+
+回到 scRNA 数据中，将 EFS 选取的 Top30 基因在拟时序轨迹中的表达变化呈现。可以发现，有三个基因（PGK1, KCNQ1OT1, PEBP1）的表达量呈明显线形波动。磷酸甘油酸激酶 1 (PGK1) 是有氧糖酵解途径中的必需酶；PGK1 的高细胞外表达通过抑制血管生成来抑制癌症恶性肿瘤[@Pgk1MediatedCHeYu2019]。KCNQ1 Opposite Strand/Antisense Transcript 1（KCNQ1OT1）是一种在防止基因组不稳定和衰老方面发挥着重要作用的 LncRNA [@Kcnq1ot1PromotZhang2022]。而磷脂酰乙醇胺结合蛋白 1 (PEBP1) 是一种 21 kDa 的小蛋白，与活细胞的几个关键过程有关，PEBP1的失调，特别是其下调，会导致癌症和阿尔茨海默病等重大疾病[@Pebp1RkipBehaSchoen2020]。为了确证拟时分析的结果，我们以 TCGA 的数据进行了生存分析。以 Kaplan-Meier 方法绘制生存曲线，结果如 Fig. \@ref(fig:MAIN-Survival-analysis-for-validation)所示。PGK1、KCNQ1OT1、PEBP1 的表达量变化意味着显著的生存率波动。其中，低表达的 PGK1 有着更高的生存率，而高表达的 PEBP1 有更高的生存率。
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Survival-analysis-for-validation
+autor("./Figure+Table/fig5.pdf")
+```
+
+# Discussion
+
+ccRCC 的发展过程中伴随着 CRD，而这在 ccRCC 4中表现得尤为明显。由于昼夜节律的特殊性质，受到多种因素调控，最突出的是光暗循环，这在体内表现为一系列的细胞行为和基因表达的改变，而在 ccRCC 中，Monocytes 以及对应的 TNF-TNFRSF1B 信号轴可能是受节律调控最为突出的细胞或者相应的基因表达。然而，TNF 信号通路是个复杂的信号轴[@TnfInTheEraChen2021]，在 ccRCC 的进程中，受到更多因素的制约。在我们在后续的研究中，进一步探讨了在 ccRCC 中发挥作用的昼夜节律相关的基因。其中，PGK1、KCNQ1OT1、PEBP1 是 ccRCC 的拟时过程中发生突出变化的基因，生存分析表明它们显著与生存率相关。然而，这三个基因并不直接属于昼夜节律基因或者时钟基因，三者和昼夜节律的关联性得出于加权基因共表达分析。可以推测，ccRCC 的发展过程中，昼夜节律的变化将导致三个基因的表达水平发生变化，这在体内水平上改变了细胞的免役过程，例如 Monocytes 细胞和 TNF 信号轴。
+
+总体上，本研究通过结合 scRNA-seq 和 bulk RNA-seq 探讨了 ccRCC 过程中的昼夜节律影响。对 scRNA-seq 数据，拟时分析发现，处于末期的 ccRCC 会发生昼夜节律扰乱。加权基因共表达分析（WGCNA）发现了 155 个和昼夜节律显著相关的基因，通路富集分析表明它们和节律性、抗原呈递、肿瘤微环境相关。使用 TCGA 的 533 个 bulk RNA-seq 数据，针对 ccRCC 的预后，以多种 Feature selection 算法筛选了 Top 30 的基因，并以此用 LASSO 回归建立了预后诊断模型。AUC 线下曲线面积为 0.69，高于随机分类器。昼夜节律对于 ccRCC 的影响还未被报道，该研究为节律疗法治疗 ccRCC 乃至其他肾癌提供了依据。随后，我们将 Top 30 的基因带回到 scRNA-seq 做分析。进一步的拟时分析发现，PGK1、KCNQ1OT1、PEBP1 三个基因的表达量在拟时轨迹中发生明显的线形变化。这三个基因位于 EFS 筛选的 Top 30 基因，而 LASSO 回归分析的结果含涵盖 PGK1 和 KCNQ1OT1。以这三个基因回到 bulk RNA-seq，针对三者的表达量做生存分析，结果表明，三者的表达量显著关乎生存率（p &lt; 0.05）。三个基因可能是昼夜节律在 ccRCC 中的下游调控基因。
+
+# 附：分析流程
+
+## 方案
+
+- 筛选数据集
+- Seurat 分析
+    - 数据预处理QC
+    - 消除批次效应
+    - 数据降维、聚类
+    - 差异表达分析
+    - 细胞群鉴定
+- Monocle 分析
+    - 细胞轨迹图
+    - 拟时序分析
+- MSigDB
+    - <https://bioinf.wehi.edu.au/software/MSigDB/>
+    - <https://www.gsea-msigdb.org/gsea/msigdb>
+- WGCNA 分析
+    - 预处理上述筛选的数据
+    - 共表达基因模块
+    - 结合 CRDscore 加权分析
+- Clusterprofiler 
+    - 通路富集分析
+- EFS
+    - Feature selection
+- LASSO
+    - regression
+- Cellchat 分析
+    - 聚焦于上述筛选的关键基因
+    - 目标基因所在细胞和其他细胞的通讯
+    - 目标基因的通路（Role）
+- Survival
+
+## 流程设计
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "Data:GEO, Gene_library, TCGA",
+    "GEO:Seurat",
+    "Seurat:QC, batch_effect, reduction, clustering, DEG_mark, annotation",
+    "annotation:select_ccRCC",
+    "select_ccRCC:Monocle3, WGCNA",
+    "Monocle3:trajectory, graph_test",
+    "Gene_library:MSigDB_C2, Genecards",
+    "MSigDB_C2:CRDscore",
+    "CRDscore:WGCNA",
+    "Genecards:WGCNA",
+    "WGCNA:Sig.Genes",
+    "Sig.Genes:Enrichment",
+    "Enrichment:KEGG, GO",
+    "TCGA:RNA_seq",
+    "RNA_seq:edgeR",
+    "edgeR:filter, normalization",
+    "normalization:train, valid",
+    "train:feature_selection",
+    "feature_selection:EFS_top30",
+    "EFS_top30:LASSO, Survival, Monocle3_branch",
+    "LASSO, valid:ROC",
+    "Genecards, annotation:CellChat",
+    "CellChat:communication",
+    "communication:signaling"
+    ), "tree"
+)
+p.route <- flowChart(route, 1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 15, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+## 分析
+
+```{r}
+#| clear-save
+sr <- clear(sr, F)
+mn <- clear(mn, F)
+tc <- clear(tc, F)
+lm <- clear(lm, F)
+cc <- clear(cc, F)
+save.image()
+```
+
+### 数据来源
+
+重新分析来源于 GSE207493 [@IntegrativeSinYuZh2023] 的数据。
+关于 clear cell renal cell carcinoma（ccRCC）[@ClearCellRenaJonasc2020]。
+
+```{r}
+#| get-geo-data
+gse <- "GSE207493"
+about <- GEOquery::getGEO(gse)
+metas <- get_metadata.geo(about)
+prods <- get_prod.geo(metas)
+# GEOquery::getGEOSuppFiles(gse, filter_regex = "scRNA")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Preprocessed-information
+autor(prods)
+```
+
+```{bash}
+mkdir GSE207493
+wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE207nnn/GSE207493/suppl/GSE207493%5FscRNA%2Dseq%2Etar%2Egz \
+  -O GSE207493/GSE207493_scRNA-seq.tar.gz
+tar -xvf GSE207493/GSE207493_scRNA-seq.tar.gz -C GSE207493
+unzip GSE207493/scRNA-seq.zip -d GSE207493/
+rm GSE207493/scRNA-seq.zip
+```
+
+### 数据预处理 Seruat
+
+```{r}
+#| preprocess
+set.seed(1)
+files <- sample(list.files("./GSE207493/", "RCC", full.names = T), 9)
+
+sr <- job_seuratn(files)
+sr <- step1(sr, 500, 7500)
+sr <- step2(sr, 6)
+sr <- step3(sr, 1:5, 1.2)
+sr <- step4(sr)
+sr <- step5(sr, 6)
+
+saveRDS(sr, "sr5.rds")
+
+sr <- readRDS("sr5.rds")
+
+# for (i in 1:6) {
+#   sr <- stepPostModify(sr, i)
+# }
+```
+
+GSE207493 数据集共 19 个样本，随机选择 9 个样本用于分析。
+根据以下流程预处理，消除批次效应。
+
+- <https://satijalab.org/seurat/articles/sctransform_vignette>
+- <https://satijalab.org/seurat/articles/integration_introduction>
+
+```{r eval = T, echo = F, results = "asis"}
+#| Normalization-pca-samples
+autor(wrap(sr@plots$step1$p.pca_1v2, 6, 5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| pca-rank
+autor(wrap(sr@plots$step1$p.pca_rank, 5, 5), abs = "根据图示，使用 1-5 个 PC 进行 UMAP 聚类。")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| seurat-cluster-UMAP
+autor(wrap(sr@plots$step2$p.umap, 6, 5))
+```
+
+### 差异表达
+
+对 UMAP 聚类结果进行差异表达分析。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Differential-expressed-genes
+autor(sr@tables$step5$all_markers, key = "cluster")
+```
+
+### 细胞群注释
+
+```{r}
+#| annotate-cells
+rawAnno0 <- rawAnno <- openxlsx::read.xlsx("./GSE207493/sup_tables.xlsx", 1, 2)
+rawAnno <- select(rawAnno, gene, cluster)
+
+ref_marker <- as_marker_list(rawAnno, rownames(object(sr)))
+sr <- map(sr, ref_marker)
+plots(sr, 4)$p.map_marker_list
+
+saveRDS(sr, "sr5_map.rds")
+```
+
+获取原作者的研究[@IntegrativeSinYuZh2023]数据（补充材料），将差异表达基因映射到 UMAP 图中。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Original-differential-expressed-genes-DEG
+autor(as_tibble(rawAnno0), abs = "该表格为原作者的研究数据。", key = "cluster")
+```
+
+重新映射的算法：
+
+1. 将 UMAP 聚类结果中的每一个类群的 DEG 与原 DEG 数据比对
+2. 优先保留所有细胞类型
+3. 将最优比对结果注释（覆盖最多原 DEG）
+
+```{r eval = T, echo = F, results = "asis"}
+#| map-cell-types-in-UMAP
+autor(sr@plots$step4$p.map_marker_list, abs = "根据原作者的差异表达基因和对应的细胞类型，映射到 UMAP 图中。")
+```
+
+根据原作者研究[@IntegrativeSinYuZh2023]，'ccRCC 4' 关联 epithelial cells 分化，为肿瘤的早期阶段。
+
+### 拟时序分析 Monocle3
+
+```{r}
+#| pseudotime
+step0("mono")
+
+sr_sub <- getsub(sr, map_cell_type %in% paste0("ccRCC ", 1:4))
+mn <- asjob_monocle(sr_sub)
+mn <- step1(mn)
+mn <- step2(mn, "Y_31")
+mn <- step3(mn)
+
+saveRDS(mn, "mn3.rds")
+```
+
+选择 ccRCC 1, ccRCC 2, ccRCC 3, ccRCC 4 作为分支数据，将 Seurat 的聚类结果以 Monocle3 做拟时序分析。
+
+```{r eval = T, echo = F, results = "asis"}
+#| pseudotime-of-ccRCC-cells
+autor(wrap(mn@plots$step2$p.pseu, 6, 5))
+```
+
+在拟时序轨迹中寻找差异基因（`graph_test`）。
+
+```{r eval = T, echo = F, results = "asis"}
+#| differential-expressed-genes-DEG-in-trajectory
+autor(mn@tables$step3$graph_test)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| pseudotime-DEG-in-module
+autor(mn@plots$step3$gene_module_heatdata$graph_test.sig)
+```
+
+### 获取昼夜节律相关基因集和注释
+
+```{r}
+#| get-circadian-rhythm-genes
+c2 <- get_c2_data("circadian")
+db_gc <- get_from_genecards("circadian", 0)
+
+mart <- new_biomart()
+db_gc_anno <- filter_biomart(mart, general_attrs(), filters = "hgnc_symbol", db_gc$Symbol)
+db_c2_anno <- filter_biomart(mart, general_attrs(), filters = "entrezgene_id", unique(unlist(c2)))
+```
+
+```{r}
+#| c2-intersect
+c2_ups <- new_upset(lst = c2)
+```
+
+从 <https://www.genecards.org/> genecards 检索 circadian 相关基因。
+从 <https://bioinf.wehi.edu.au/software/MSigDB/> 获取 C2 基因集合 (curated gene sets)。
+以 `biomaRt` 注释这些基因（无法获取注释的基因不再用于后续分析）。
+
+检查 C2 基因集关于 circadian 的来源数据（Fig. \@ref(fig:intersect-of-sources-of-c2-genes)）。
+关于 UpSet 图[@SetsAndIntersLexA2014]。
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersect-of-sources-of-c2-genes
+autor(c2_ups)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| annotation-of-c2-gene-set
+autor(db_c2_anno)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| annotation-of-genecards-gene-set
+autor(db_gc_anno)
+```
+
+### 数据整备
+
+```{r}
+#| intersects-all-used
+require(Seurat)
+sets <- list(
+  All_sample_genes = rownames(sr@object[[ "RNA" ]]),
+  Seurat_integrated = rownames(sr@object),
+  Seurat_integrated_DEG = tables(sr, 5)$all_markers$gene,
+  Monocle_ccRCC_graph_test = tables(mn, 3)$graph_test.sig$gene_id,
+  DB_Curated_gene_sets = db_c2_anno$hgnc_symbol,
+  DB_Genecards_ensembl = db_gc_anno$hgnc_symbol
+)
+sets <- lapply(sets, unique)
+sets_ups <- new_upset(lst = sets)
+```
+
+在以上分析中，我们得到了一系列的基因数据集结果。
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersects-all-used-gene-sets
+autor(sets_ups)
+```
+
+### 加权基因共表达 WGCNA
+
+#### 计算基因共表达模块
+
+```{r}
+#| wgcna
+step0("wg")
+# ins <- ins(sets$Seurat_integrated_DEG, sets$Monocle_ccRCC_graph_test, sets$DB_Genecards_ensembl)
+wg <- asjob_wgcna(sr_sub, sets$DB_Genecards_ensembl)
+wg <- step1(wg)
+wg <- step2(wg)
+wg <- step3(wg)
+wg <- step4(wg)
+saveRDS(wg, "wg4.rds")
+
+plots(wg, 4)
+```
+
+使用 Fig. \@ref(fig:intersects-all-used-gene-sets) 中的 `DB_Genecards_ensembl` 基因集的基因，
+过滤单细胞的数据（过滤 Seurat 对象）用以 WGCNA 分析。
+
+```{r eval = T, echo = F, results = "asis"}
+#| selection-of-soft-threshold
+autor(wg@plots$step2$sft, abs = "选择阈值为 2。")
+```
+
+建立基因共表达模块。
+
+```{r eval = T, echo = F, results = "asis"}
+#| gene-modules
+autor(wg@plots$step3$net)
+```
+
+#### 计算 CRDscore {#crd}
+
+```{r}
+#| CRDscore
+# <https://github.com/yixianfan/CRDscore>
+devtools::load_all("~/CRDscore")
+wg@object$targets$CRDscore <- unname(cal_CRDscore(
+  t(data.frame(wg@params$datExpr0)), n.bins = 50,
+  circadians = sets$DB_Curated_gene_sets,
+  study.type = "scRNAseq"
+))
+
+data.density <- data.frame(value = wg@object$targets$CRDscore,
+  cell_type = wg@object$targets$map_cell_type)
+p.density <- ggplot(data.density) +
+  geom_density(aes(x = value, color = cell_type))
+```
+
+为了对共表达的基因进行加权评估，需要 'trait' 数据。
+计算细胞的 CRDscore [@SingleCellTraHeLe2022] 作为拟 trait 数据。
+该计算以 Fig. \@ref(fig:intersects-all-used-gene-sets) 中的 `DB_Curated_gene_sets` 为基准。
+
+```{r eval = T, echo = F, results = "asis"}
+#| CRDscore-distribution
+autor(wrap(p.density, 8, 3), abs = "计算的 CRDscore 的数据分布。")
+```
+
+#### 筛选高权重基因 {#weighted}
+
+```{r}
+#| weighted-with-CRDscore
+wg <- step5(wg, select(as_wgcTrait(wg@object), CRDscore))
+wg <- step6(wg)
+saveRDS(wg, "wg6.rds")
+tables(wg, 6)
+plots(wg, 5)
+```
+
+根据 CRDscore 对基因加权分析。
+
+```{r eval = T, echo = F, results = "asis"}
+#| module-membership
+autor(wg@tables$step6$mm)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gene-significant
+autor(wg@tables$step6$gs)
+```
+
+取 Tab. \@ref(tab:module-membership) 和 Tab. \@ref(tab:gene-significant) 的交集。
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersect-of-gene-significant-and-module-membership
+autor(wg@plots[[5]]$p.mm_gs)
+```
+
+### 通路富集分析 Clusterprofiler
+
+取 Fig. \@ref(fig:intersect-of-gene-significant-and-module-membership) 的交集基因，做通路富集分析。
+
+```{r}
+#| enrichment
+enrich_ids <- list(gs_mm = wg@params$ins.mm_gs)
+en <- job_enrich(enrich_ids, db_gc_anno)
+en <- step1(en)
+## the Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP)
+plots(en)
+saveRDS(en, "en1.rds")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| kegg-enrich
+autor(wrap(en@plots$step1$p.kegg$gs_mm, 8, 4))
+```
+
+KEGG 富集结果显示，基因集与肿瘤（proteoglycans in cancer）相关，同时，与抗原抗体反应相关。
+
+```{r eval = T, echo = F, results = "asis"}
+#| go-enrich
+autor(en@plots$step1$p.go$gs_mm)
+```
+
+（BP, MF, CC: Biological Process, Molecular Function, and Cellular Component groups）
+
+GO 富集结果显示，这些基因与 节律过程（rhythmic process），昼夜节律（circadian rhythm）相关，
+并且和缺氧、氧化水平等与肿瘤微环境的通路相关联。
+
+这些结果验证了昼夜节律对于 ccRCC 发展的影响，以及预后诊断以及治疗的可能。
+
+
+### Feature selection 和构建预后模型 (LASSO)
+
+<https://portal.gdc.cancer.gov/>
+
+#### TCGA 数据获取
+
+```{r}
+#| tcga-data
+# TCGA
+
+options(step_check = T)
+step0("tc")
+tc <- job_tcga("TCGA-KIRC")
+tc <- step1(tc)
+tc <- step2(tc)
+tc <- step3(tc)
+saveRDS(tc, "tc3.rds")
+
+query_1 <- slice(tc@tables$step1$query_1, tc@tables$step1$cons$.row_1)
+```
+
+以 `TCGAbiolinks` 下载 TCGA (RNA) 数据（KIRC）[@TcgabiolinksAColapr2015]。
+<https://www.bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html>
+
+```{r eval = T, echo = F, results = "asis"}
+#| downloaded-RNA-seq-data-of-ccRCC-in-TCGA
+autor(query_1)
+```
+
+#### 预处理 TCGA RNA 数据
+
+使用 `edgeR` 预处理 RNA 数据。
+
+- 过滤低表达的基因。
+- 表达量归一化。
+
+```{r}
+#| limma
+lm <- asjob_limma(tc)
+lm <- step1(lm)
+saveRDS(lm, "lm1.rds")
+# data_norm <- lm@params$p.norm_data
+# saveRDS(data_norm, "data_norm.rds")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tcga-rna-data-filter
+autor(lm@plots$step1$p.filter@data)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tcga-rna-data-normalize
+autor(lm@plots$step1$p.norm@data)
+```
+
+#### EFS
+
+并随机分成两组数据（4:1），以备训练和验证。
+
+在使用 LASSO 回归之前，这里预先对基因集进行了过滤。
+
+- 以 Fig. \@ref(fig:intersect-of-gene-significant-and-module-membership) (\@ref(weighted)) 中的交集的基因过滤 TCGA KIRC （即，ccRCC）的表达数据
+- 使用 EFS [@EfsAnEnsemblNeuman2017] 处理训练数据集，筛选 top30 features。
+
+```{r eval = T, echo = F, results = "asis"}
+#| random-split-the-datasets
+autor(la@plots$step1$p.consist)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| EFS-top30-genes
+autor(la@plots$step2$p.efs)
+```
+
+```{r}
+#| check-if-in-DEG
+sets_ups.tops_dge <- new_upset(lst = c(
+    dges <- sets[ names(sets) %in% c("Seurat_integrated_DEG", "Monocle_ccRCC_graph_test", "Seurat_integrated")],
+    list(EFS_tops = tops)
+    ))
+sets_ups.tops_dge
+```
+
+确认 top30 基因是否属于差异表达基因。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Top30-genes-intersect-with-DEG
+autor(sets_ups.tops_dge, abs = "其中 25 个属于差异表达基因。")
+```
+
+#### LASSO 回归
+
+```{r}
+#| lasso
+options(step_check = F)
+la <- asjob_lasso(lm, enrich_ids$gs_mm)
+la <- step1(la)
+la <- step2(la)
+la <- step3(la)
+
+la@plots$step3$p.model
+la@plots$step3$p.roc$lambda.min
+la@plots$step3$p.coef
+tops <- la@params$tops
+
+saveRDS(la, "la3.rds")
+```
+
+以训练数据集的 Top30 基因进行 LASSO 回归。以十倍交叉验证选择最优 Lambda 值。
+
+```{r eval = T, echo = F, results = "asis"}
+#| LASSO-model
+autor(la@plots$step3$p.model)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LASSO-coefficents
+autor(wrap(la@plots$step3$p.coef, 4, 7))
+```
+
+ROC 结果显示，AUC 为 0.69，高于随机分类器，Fig. \@ref(fig:LASSO-coefficents) 所示基因对于预后具有一定的诊断参考价值。
+
+```{r eval = T, echo = F, results = "asis"}
+#| LASSO-ROC
+autor(la@plots$step3$p.roc$lambda.min)
+```
+
+### 拟时序分析基因转归 Monocle3
+
+```{r}
+#| target-genes
+mn <- readRDS("./mn3.rds")
+
+mn4 <- step4(mn, ids(mn), tops)
+plots(mn4)[[ 1 ]][3]
+
+m.tops <- c("PGK1", "KCNQ1OT1", "PEBP1")
+mn4.0 <- step4(mn, ids(mn), m.tops)
+plots(mn4.0)
+
+mn4.0@object <- mn4@object <- NULL
+saveRDS(mn4, "mn4.rds")
+saveRDS(mn4.0, "mn4.0.rds")
+svr(mn4)
+```
+
+#### Top 30 in pseudotime {#top30p}
+
+对 Top 30 的基因在拟时序分析中追踪其表达量变化。
+
+```{r eval = T, echo = F, results = "asis"}
+#| top-30-genes-in-pseudotime-part-1
+autor(mn4@plots$step4$genes_in_pseudotime$pseudo1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| top-30-genes-in-pseudotime-part-2
+autor(mn4@plots$step4$genes_in_pseudotime$pseudo2)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| top-30-genes-in-pseudotime-part3
+autor(mn4@plots$step4$genes_in_pseudotime$pseudo3)
+```
+
+#### Specific genes in Pseudotime {#sp3}
+
+在 \@ref(top30p) 中发现，有三个基因表现出明显的曲线变化趋势。
+
+- PGK1，呈上升曲线
+- KCNQ1OT1，呈 S 变化曲线
+- PEBP1，呈上升曲线
+
+```{r eval = T, echo = F, results = "asis"}
+#| Specific-genes-in-pseudotime
+autor(mn4.0@plots$step4$genes_in_pseudotime$pseudo1)
+```
+
+### 生存分析 Survival
+
+```{r}
+#| sur
+lm <- readRDS("./lm1.rds")
+
+su <- asjob_survival(lm, c(m.tops))
+su <- step1(su)
+
+su@plots$step1$PGK1
+```
+
+为了进一步验证上述结果（\@ref(sp3)），以 TCGA 的数据做生存分析。
+结果显示，三者对于 ccRCC 的风险评估均有显著性意义。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Survival-analysis-of-PGK1
+autor(su@plots$step1$PGK1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Survival-analysis-of-KCNQ1OT1
+autor(su@plots$step1$KCNQ1OT1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Survival-analysis-of-PEBP1
+autor(su@plots$step1$PEBP1)
+```
+
+### 细胞通讯 CellChat
+
+使用 `DB_Genecards_ensembl` (Fig. \@ref(fig:intersects-all-used-gene-sets)) 基因集的基因进行细胞通讯分析。该基因集来源于 Genecards，暗示了这些基因与昼夜节律之间的关联性。
+
+```{r}
+#| cell-chat
+sr <- readRDS("sr5_map.rds")
+sr_sub.tops <- getsub(sr, features = sets$DB_Genecards_ensembl)
+cc <- asjob_cellchat(sr_sub.tops)
+cc <- step1(cc)
+
+cc@plots$step1$p.aggre_count
+cc@plots$step1$p.aggre_weight
+
+cc <- step2(cc)
+
+cc@plots$step2$cell_comm_heatmap$TNF
+cc@plots$step2$gene_expr_violin$TNF
+cc@plots$step2$role_weight_scatter$TNF
+cc@plots$step2$role_comps_heatmap$TNF
+
+saveRDS(cc, "./cc2.rds")
+
+cc@plots$step2$cell_comm_heatmap$TNF$main
+tnf_main <- recordPlot()
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| used-database-for-cell-communication
+autor(cc@plots$step1$p.showdb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| cell-communication-count
+autor(cc@plots$step1$p.aggre_count)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| cell-communication-heatmap-of-TNF-signiling
+autor(tnf_main)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gene-expression-of-TNF-signiling
+autor(cc@plots$step2$gene_expr_violin$TNF)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| role-of-TNF-signiling
+autor(wrap(cc@plots$step2$role_weight_scatter$TNF, 4, 4))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| cell-communication-of-TNF-signiling
+autor(wrap(cc@plots$step2$role_comps_heatmap$TNF, 5, 3.5))
+```
+
+细胞通讯结果显示，昼夜相关基因与 TNF （肿瘤坏死因子）通路相关。但是，细胞通讯图并不显示免疫细胞与 ccRCC 细胞之间的交互关系，这提示昼夜节律基因并不直接作用于 ccRCC 细胞，但是通过作用于免役细胞间接生效。其中，Monocytes 可能是关键细胞（TNFRSF1B 高表达）。
+
+## 其他
+
+```{r}
+sear <- esearch.mj('Circadian rhythm')
+sear2 <- esearch.mj('Circadian metabolites')
+sear3 <- esearch.mj('Circadian metabolism')
+```
+
+```{r}
+# TranscriptionFYeung2017
+part <- dplyr::filter(sear, grepl("expression", Title, T))
+print(part, n = 100)
+part[12, ]
+```
+
+```{r}
+# CellSpecificCWang2023
+sear3[4, ]
+```
+
+```{r}
+# OptimalTranspoSchieb2019
+```
+
+
+[mda]: LUNG [@IntegratedAnalHaoY2021]
+[mda]: EMT [@ContextSpecifiCook2020]
+[mda]: <https://www.ncbi.nlm.nih.gov/gds/?term=(tumor+OR+cancer)+AND+time-course+AND+Homo+sapiens+AND+scRNA>
+[mda]: GSE: 32358524[@ContextSpecifiCook2020]
+[mda]: (A549, lung; DU145, prostate; MCF7, breast; and OVCA420, ovarian)
+[mda]: MULTI-seq[@MultiSeqSampMcginn2019] <https://github.com/chris-mcginnis-ucsf/MULTI-seq>
+[mda]: review of EMT, MET or EMP[@EpithelialMeseLuWe2019]
+[mda]: cc review: 33384351 (science), 36291855[@ChronotherapyAmiama2022], 31300477 (cancer res)[@CancerAndTheShafi2019]
+
+

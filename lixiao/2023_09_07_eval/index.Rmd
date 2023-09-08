@@ -1,0 +1,85 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+建立肺癌和奥沙利铂（Oxaliplatin）疗法相关的预后工具。
+
+大致方案如下：
+
+- 使用 CellMiner 数据库的 NCI-60 数据集，筛选与奥沙利铂处理敏感的基因。
+- 使用 TCGA 数据库，获取肺癌的病患者 mRNA 数据集。
+- 以随机森林、LASSO 回归等方式筛选 TCGA 数据集的关键基因，并建立回归模型。
+- 以生存分析等方式验证结果。
+- 得到用于预测肺癌和奥沙利铂疗法预后的预测模型（用于计算指标）。
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("data:TCGA_datasets, CellMiner",
+    "CellMiner:Oxaliplatin, lung_cancer_cell",
+    "Oxaliplatin, lung_cancer_cell:the_genes",
+    "TCGA_datasets:training, validation",
+    "the_genes:training",
+    "training:LASSO, EFS",
+    "LASSO, EFS:features_model",
+    "features_model:ROC, survival",
+    "validation:features_model",
+    "ROC, survival:model"
+    )
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+# 材料和方法 {#methods}
+
+# 分析结果 {#results}
+
+```{r eval = T, echo = F, results = "asis"}
+#| CellMiner-for--Drug-sensitivity-analysis
+autor("../2023_06_25_fix/figs/pearsonTest.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| EFS-for-select-features
+autor("../2023_07_24_base/Figure+Table/EFS-top30-genes.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LASSO-models
+autor("../2023_07_24_base/Figure+Table/LASSO-model.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LASSO-ROC
+autor("../2023_07_24_base/Figure+Table/LASSO-ROC.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Survival-analysis
+autor("../2023_07_24_base/Figure+Table/Survival-analysis-of-PGK1.pdf")
+```
+
+# 结论 {#dis}

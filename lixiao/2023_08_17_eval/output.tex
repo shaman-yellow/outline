@@ -1,0 +1,569 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Report of Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Report of Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+根据客户提供的材料分析基因突变及信号通路，筛选出研究的对象基因。相关疾病是``高胆汁酸血症''或是``妊娠期肝内胆汁淤积症（Intrahepatic cholestasis of pregnancy，ICP）
+
+\hypertarget{fastp-ux8d28ux63a7}{%
+\subsection{fastp 质控}\label{fastp-ux8d28ux63a7}}
+
+\begin{itemize}
+\tightlist
+\item
+  去低质量碱基
+\item
+  去接头
+\item
+  生成报告
+\end{itemize}
+
+\hypertarget{workflow}{%
+\subsection{全外显子分析流程}\label{workflow}}
+
+WES 一般分析流程为：
+
+\url{https://gatk.broadinstitute.org/hc/en-us/sections/360007226651-Best-Practices-Workflows}:
+
+\begin{itemize}
+\tightlist
+\item
+  Preprocessing \url{https://gatk.broadinstitute.org/hc/en-us/articles/360035535912-Data-pre-processingfor-variant-discovery}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    比对到参考基因组
+  \item
+    标记重复
+  \item
+    基础校准（Base (Quality Score) Recalibration）
+  \end{itemize}
+\item
+  Variant discovery \url{https://gatk.broadinstitute.org/hc/en-us/articles/360035535932-Germline-shortvariant-discovery-SNPs-Indels-}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    获取变异注释文件
+  \item
+    变异检测
+  \item
+    变异质控和过滤
+  \item
+    变异注释
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{ux7ed3ux679cux53efux89c6ux5316}{%
+\subsection{结果可视化}\label{ux7ed3ux679cux53efux89c6ux5316}}
+
+使用 maftools 对变异注释结果可视化。
+
+\hypertarget{route}{%
+\section{研究设计流程图}\label{route}}
+
+\includegraphics[width=\linewidth]{output_files/figure-latex/unnamed-chunk-4-1}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\begin{itemize}
+\tightlist
+\item
+  fastp (\url{https://github.com/OpenGene/fastp})
+\end{itemize}
+
+以下可以通过 \url{https://gatk.broadinstitute.org/hc/en-us/articles/360041320571--How-to-Install-all-software-packages-required-to-follow-the-GATK-Best-Practices} 获取安装。
+
+\begin{itemize}
+\tightlist
+\item
+  bwa
+\item
+  \ldots{}
+\end{itemize}
+
+使用 elPrep\textsuperscript{\protect\hyperlink{ref-MultithreadedV2021}{1}} 替代 GATK4 做 WES 分析（见 \ref{workflow}）。
+
+使用 bcftools\textsuperscript{\protect\hyperlink{ref-TwelveYearsOfDanece2021}{2}} 过滤 vcf。
+
+使用 ANNOVAR 变异注释。
+
+使用 R maftools 可视化 ANNOVAR 注释结果。
+
+使用 clusterProfiler 富集分析（KEGG）。
+
+参考基因组：
+
+\begin{itemize}
+\tightlist
+\item
+  \url{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/latest/hg38.fa.gz}
+\end{itemize}
+
+SNPs 和 Indels:
+
+(\url{https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0})
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{1000G\_phase1.snps.high\_confidence.hg38.vcf}
+\item
+  \texttt{Mills\_and\_1000G\_gold\_standard.indels.hg38.vcf}
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{fastp-ux8d28ux63a7-1}{%
+\subsection{fastp 质控}\label{fastp-ux8d28ux63a7-1}}
+
+`Fastp report files' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./fastp\_report})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./fastp\_report共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item V350065014\_L01\_93\_.html
+\item V350065014\_L01\_94\_.html
+\item V350065014\_L02\_94\_.html
+\item V350065026\_L03\_86\_.html
+\item V350065026\_L04\_85\_.html
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+注：客户提供 8 个病人的数据，每个病人的目录下有 2 个子文件，因此共 16 个样本数据。硬盘中有个别 fastq 文件有损坏。损坏的文件未纳入分析流程中（没有报告生成的为损坏的文件）。
+
+\hypertarget{wes-ux53d8ux5f02ux7b5bux9009}{%
+\subsection{WES 变异筛选}\label{wes-ux53d8ux5f02ux7b5bux9009}}
+
+以下流程相较于 GATK4 Best Practice (\url{https://gatk.broadinstitute.org/hc/en-us/sections/360007226651-Best-Practices-Workflows}) 有所变化。
+
+\begin{itemize}
+\tightlist
+\item
+  使用 elPrep 5 完成检测流程（流程类似于 GATK4，但速度更快）\textsuperscript{\protect\hyperlink{ref-MultithreadedV2021}{1}}。
+\end{itemize}
+
+得到变异信息文件（vcf）后，使用 bcftools 过滤（QUAL\textgreater10 \&\& GQ\textgreater10 \&\& FORMAT/DP\textgreater10 \&\& INFO/DP\textgreater100）。
+
+\hypertarget{annovar-res}{%
+\subsubsection{ANNOVAR 注释}\label{annovar-res}}
+
+使用 ANNOVAR (\url{https://annovar.openbioinformatics.org/en/latest/}) 注释后，滤除同义突变。
+
+`Exonic annotation by ANNOVAR' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{exonic-annotation-by-ANNOVAR})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹exonic-annotation-by-ANNOVAR共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_X220325\_I26\_V350065014\_L1\_22L01298712.93.csv
+\item 10\_X220325\_M038\_V350065181\_L04\_22L01298713.24.csv
+\item 11\_X220325\_M038\_V350065181\_L04\_22L01298716.25.csv
+\item 12\_X220325\_M120\_V350065026\_L03\_22L01298714.86.csv
+\item 13\_X220325\_M120\_V350065026\_L04\_22L01298711.85.csv
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{maftools-ux53efux89c6ux5316}{%
+\subsubsection{\texorpdfstring{\texttt{maftools} 可视化}{maftools 可视化}}\label{maftools-ux53efux89c6ux5316}}
+
+参考 \url{https://www.bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html\#910_Mutational_Signatures}
+
+Figure \ref{fig:summary-of-mutations-in-samples}为图summary of mutations in samples概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/summary-of-mutations-in-samples.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/summary-of-mutations-in-samples.pdf}
+\caption{Summary of mutations in samples}\label{fig:summary-of-mutations-in-samples}
+\end{center}
+
+Figure \ref{fig:proportion-of-SNPs-mutation}为图proportion of SNPs mutation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/proportion-of-SNPs-mutation.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/proportion-of-SNPs-mutation.pdf}
+\caption{Proportion of SNPs mutation}\label{fig:proportion-of-SNPs-mutation}
+\end{center}
+
+\hypertarget{ux4e0bux6e38ux5206ux6790}{%
+\subsection{下游分析}\label{ux4e0bux6e38ux5206ux6790}}
+
+\hypertarget{ux83b7ux53d6-genecards-ux4e0eux80c6ux6c41ux76f8ux5173ux75beux75c5ux7684ux57faux56e0}{%
+\subsubsection{获取 Genecards 与胆汁相关疾病的基因}\label{ux83b7ux53d6-genecards-ux4e0eux80c6ux6c41ux76f8ux5173ux75beux75c5ux7684ux57faux56e0}}
+
+Table \ref{tab:Genecards-genes-relative-with-bild-acids}为表格Genecards genes relative with bild acids概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Genecards-genes-relative-with-bild-acids.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1494行7列，以下预览的表格可能省略部分数据；表格含有1494个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Genecards-genes-relative-with-bild-acids}Genecards genes relative with bild acids}\tabularnewline
+\toprule
+Symbol & Descr\ldots{} & Category & UniPr\ldots{} & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Descr\ldots{} & Category & UniPr\ldots{} & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+BAAT & Bile \ldots{} & Prote\ldots{} & Q14032 & 47 & GC09M\ldots{} & 93.50\tabularnewline
+AKR1D1 & Aldo-\ldots{} & Prote\ldots{} & P51857 & 48 & GC07P\ldots{} & 88.14\tabularnewline
+ABCB11 & ATP B\ldots{} & Prote\ldots{} & O95342 & 50 & GC02M\ldots{} & 85.41\tabularnewline
+SLC10A1 & Solut\ldots{} & Prote\ldots{} & Q14973 & 47 & GC14M\ldots{} & 83.40\tabularnewline
+NR1H4 & Nucle\ldots{} & Prote\ldots{} & Q96RI1 & 52 & GC12P\ldots{} & 83.18\tabularnewline
+AMACR & Alpha\ldots{} & Prote\ldots{} & Q9UHK6 & 49 & GC05M\ldots{} & 76.57\tabularnewline
+HSD3B7 & Hydro\ldots{} & Prote\ldots{} & Q9H2F3 & 45 & GC16P\ldots{} & 70.66\tabularnewline
+CYP7B1 & Cytoc\ldots{} & Prote\ldots{} & O75881 & 50 & GC08M\ldots{} & 65.39\tabularnewline
+GPBAR1 & G Pro\ldots{} & Prote\ldots{} & Q8TDU6 & 44 & GC02P\ldots{} & 63.83\tabularnewline
+CYP7A1 & Cytoc\ldots{} & Prote\ldots{} & P22680 & 47 & GC08M\ldots{} & 60.99\tabularnewline
+ACOX2 & Acyl-\ldots{} & Prote\ldots{} & Q99424 & 47 & GC03M\ldots{} & 59.23\tabularnewline
+SLC51B & Solut\ldots{} & Prote\ldots{} & Q86UW2 & 38 & GC15P\ldots{} & 58.25\tabularnewline
+ABCB4 & ATP B\ldots{} & Prote\ldots{} & P21439 & 51 & GC07M\ldots{} & 56.92\tabularnewline
+SLC27A5 & Solut\ldots{} & Prote\ldots{} & Q9Y2P5 & 45 & GC19M\ldots{} & 55.16\tabularnewline
+ALB & Albumin & Prote\ldots{} & P02768 & 53 & GC04P\ldots{} & 51.11\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux901aux8defux5bccux96c6ux5206ux6790}{%
+\subsubsection{通路富集分析}\label{ux901aux8defux5bccux96c6ux5206ux6790}}
+
+取 Tab. \ref{tab:Genecards-genes-relative-with-bild-acids} 的基因与 \ref{tab:annovar-res} 的所有基因的交集。
+
+Figure \ref{fig:intersect-of-variants-with-Genecards-prediction}为图intersect of variants with Genecards prediction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersect-of-variants-with-Genecards-prediction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersect-of-variants-with-Genecards-prediction.pdf}
+\caption{Intersect of variants with Genecards prediction}\label{fig:intersect-of-variants-with-Genecards-prediction}
+\end{center}
+
+以交集基因通路富集。
+
+Figure \ref{fig:KEGG-enrichment}为图KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-enrichment.pdf}
+\caption{KEGG enrichment}\label{fig:KEGG-enrichment}
+\end{center}
+
+取 `Bile secretion' 和 `Cholesterol metabolism' 相关的基因。
+
+Figure \ref{fig:Intersection-of-filtered-variants-with-KEGG-pathway}为图Intersection of filtered variants with KEGG pathway概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-filtered-variants-with-KEGG-pathway.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-filtered-variants-with-KEGG-pathway.pdf}
+\caption{Intersection of filtered variants with KEGG pathway}\label{fig:Intersection-of-filtered-variants-with-KEGG-pathway}
+\end{center}
+
+取 Fig. \ref{fig:Intersection-of-filtered-variants-with-KEGG-pathway} 所示的两条通路的基因交集。
+
+将这些交集基因回归到所有样本的变异数据中，取共同发生的突变结果。
+
+Figure \ref{fig:intersects-of-the-pathways-related-variants-in-all-samples}为图intersects of the pathways related variants in all samples概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersects-of-the-pathways-related-variants-in-all-samples.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersects-of-the-pathways-related-variants-in-all-samples.pdf}
+\caption{Intersects of the pathways related variants in all samples}\label{fig:intersects-of-the-pathways-related-variants-in-all-samples}
+\end{center}
+
+有 7 个变异同时发生在所有样本中。
+
+Table \ref{tab:Bile-acids-related-variants-occurs-in-all-ICP-samples}为表格Bile acids related variants occurs in all ICP samples概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Bile-acids-related-variants-occurs-in-all-ICP-samples.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有7行14列，以下预览的表格可能省略部分数据；表格含有7个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllllll@{}}
+\caption{\label{tab:Bile-acids-related-variants-occurs-in-all-ICP-samples}Bile acids related variants occurs in all ICP samples}\tabularnewline
+\toprule
+hgnc\_\ldots{} & prote\ldots{} & Chr & Start & End & Ref & Alt & Func\ldots. & Gene\ldots. & GeneD\ldots{} & Exoni\ldots{} & AACha\ldots{} & cytoBand & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_\ldots{} & prote\ldots{} & Chr & Start & End & Ref & Alt & Func\ldots. & Gene\ldots. & GeneD\ldots{} & Exoni\ldots{} & AACha\ldots{} & cytoBand & \ldots{}\tabularnewline
+\midrule
+\endhead
+LRP1 & p.Q2900P & chr12 & 57196001 & 57196001 & A & C & exonic & LRP1 & & nonsy\ldots{} & LRP1:\ldots{} & 12q13.3 & \ldots{}\tabularnewline
+SLC10A1 & p.S267F & chr14 & 69778476 & 69778476 & G & A & exonic & SLC10A1 & & nonsy\ldots{} & SLC10\ldots{} & 14q24.1 & \ldots{}\tabularnewline
+AQP9 & p.T214A & chr15 & 58184082 & 58184082 & A & G & exonic & AQP9 & & nonsy\ldots{} & AQP9:\ldots{} & 15q21.3 & \ldots{}\tabularnewline
+APOH & p.V266L & chr17 & 66214639 & 66214639 & C & A & exonic & APOH & & nonsy\ldots{} & APOH:\ldots{} & 17q24.2 & \ldots{}\tabularnewline
+ABCB11 & p.V444A & chr2 & 16897\ldots{} & 16897\ldots{} & A & G & exonic & ABCB11 & & nonsy\ldots{} & ABCB1\ldots{} & 2q31.1 & \ldots{}\tabularnewline
+LRP2 & p.A2872T & chr2 & 16919\ldots{} & 16919\ldots{} & C & T & exonic & LRP2 & & nonsy\ldots{} & LRP2:\ldots{} & 2q31.1 & \ldots{}\tabularnewline
+TSPO & p.T147A & chr22 & 43162920 & 43162920 & A & G & exonic & TSPO & & nonsy\ldots{} & TSPO:\ldots{} & 22q13.2 & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+见 Tab. \ref{tab:Bile-acids-related-variants-occurs-in-all-ICP-samples}。
+
+ICP 相关对象基因：
+
+LRP1, SLC10A1, AQP9, APOH, ABCB11, LRP2, TSPO。
+
+突变形式 (hgvs) 为：
+
+p.Q2900P, p.S267F, p.T214A, p.V266L, p.V444A, p.A2872T, p.T147A。
+
+\hypertarget{ux5176ux5b83}{%
+\section{其它}\label{ux5176ux5b83}}
+
+\hypertarget{ux65b0ux751fux513fux5fc3ux810fux9aa4ux505c}{%
+\subsection{新生儿心脏骤停}\label{ux65b0ux751fux513fux5fc3ux810fux9aa4ux505c}}
+
+\hypertarget{ux6570ux636eux6765ux6e90}{%
+\subsubsection{数据来源}\label{ux6570ux636eux6765ux6e90}}
+
+检索：neonatal cardiac arrest
+
+数据来源于\textsuperscript{\protect\hyperlink{ref-TranscriptomePTuLa2019}{3}} (piglets mRNA-seq)：
+
+\begin{itemize}
+\tightlist
+\item
+  PMID: 31005300
+\item
+  GSE120863
+\end{itemize}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    RNA sequencing reads were aligned to the Pig genome
+(Sscrofa11.1) using Star.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    featureCounts was used to map the reads to the exons of
+genes.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    DESeq2 was used to normalize the data using
+regularized-logarithm.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Genome\_build: Sscrofa11.1
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.4
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content:
+0618\_striatum.feature\_counts.all\_samples.txt includes the
+counts.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.5
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content:
+sham\_DHCA\_striatum\_mRNA\_seq.txt includes the fold changes
+and statistics.
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux65b0ux751fux513fux80ceux7caaux6027ux8179ux819cux708eux5deeux5f02ux57faux56e0}{%
+\subsection{新生儿胎粪性腹膜炎差异基因}\label{ux65b0ux751fux513fux80ceux7caaux6027ux8179ux819cux708eux5deeux5f02ux57faux56e0}}
+
+检索：neonatal meconium peritonitis
+
+无相关数据。
+
+\hypertarget{ux80ceux513fux5babux5185ux7a98ux8feb}{%
+\subsection{胎儿宫内窘迫}\label{ux80ceux513fux5babux5185ux7a98ux8feb}}
+
+检索：fetal distress
+
+无相关数据。
+
+\hypertarget{ux6b7bux80ce}{%
+\subsection{死胎}\label{ux6b7bux80ce}}
+
+检索：stillbirth
+
+无相关数据。
+
+\hypertarget{ux65b0ux751fux513fux547cux5438ux7a98ux8febux7efcux5408ux5f81}{%
+\subsection{新生儿呼吸窘迫综合征}\label{ux65b0ux751fux513fux547cux5438ux7a98ux8febux7efcux5408ux5f81}}
+
+neonatal respiratory distress syndrome
+
+无相关数据。
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-MultithreadedV2021}{}%
+1. Multithreaded variant calling in elPrep 5. \emph{PLOS ONE} \textbf{16}, 1--13 (2021).
+
+\leavevmode\hypertarget{ref-TwelveYearsOfDanece2021}{}%
+2. Danecek, P. \emph{et al.} Twelve years of samtools and bcftools. \emph{GigaScience} \textbf{10}, (2021).
+
+\leavevmode\hypertarget{ref-TranscriptomePTuLa2019}{}%
+3. Tu, L. N. \emph{et al.} Transcriptome profiling reveals activation of inflammation and apoptosis in the neonatal striatum after deep hypothermic circulatory arrest. \emph{The Journal of Thoracic and Cardiovascular Surgery} \textbf{158}, (2019).
+\end{cslreferences}
+
+\end{document}

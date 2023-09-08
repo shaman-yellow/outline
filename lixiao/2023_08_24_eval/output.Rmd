@@ -1,0 +1,261 @@
+---
+title: Analysis
+author: 'Huang LiChuang of Wie-Biotech'
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: true
+    toc_depth: 3
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+---
+
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+# p.route
+```
+
+# 材料和方法 {#methods}
+
+# 分析结果 {#results}
+
+## 网络药理学分析主要活性成分
+
+```{r}
+herbs <- c("丹参", "大黄", "太子参", "黄连", "牛膝", "制半夏", "红花", "茯苓", "陈皮", "甘草")
+hb <- job_herb(herbs)
+hb <- step1(hb)
+hb <- step2(hb)
+hb <- step3(hb, "diabetic nephropathy")
+
+hb <- readRDS("./hb3.rds")
+```
+
+### 从 HERB 网站获取中药和成分以及靶点数据
+
+HERB <http://herb.ac.cn/>
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCM-information
+autor(hb@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCM-compounds
+autor(hb@tables$step1$herbs_compounds)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| compounds-targets
+autor(hb@tables$step2$compounds_targets)
+```
+
+将 Tab. \@ref(tab:compounds-targets) 的基因信息注释：
+
+```{r eval = T, echo = F, results = "asis"}
+#| compounds-targets-with-annotation-of-biomaRt-of-ensembl-dataset
+autor(hb@tables$step3$compounds_targets_annotation)
+```
+
+### 从 Genecards 获取疾病的靶点数据
+
+Genecards <https://www.genecards.org/>
+
+```{r eval = T, echo = F, results = "asis"}
+#| desease-targets-of-diabetic-nephropathy
+autor(hb@params$disease_targets)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| desease-targets-with-annotation-of-biomaRt-of-ensembl-dataset
+autor(hb@tables$step3$disease_targets_annotation)
+```
+
+### 数据透视
+
+以下，以 UpSet 图展示各个数据集之间的交集。
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersect-of-target-genes-of-TCMs
+autor(hb@plots$step3$p.herbs_targets, width = 12)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersect-of-compounds-of-TCMs
+autor(hb@plots$step3$p.herbs_compounds, width = 10)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersect-of-targets-of-compounds-and-disease-targets
+autor(hb@plots$step3$p.targets_disease)
+```
+
+### 以 STRINGdb 构建 PPI 网络
+
+以 Fig. \@ref(fig:intersect-of-targets-of-compounds-and-disease-targets) 中的四个数据集的交集，以 `STRINGdb` 创建 PPI 网络。
+
+由于 PPI 网络包含过多节点，这里不展示 PPI 图（较为混乱）。
+
+```{r}
+options(step_check = F)
+st <- asjob_stringdb(hb)
+st <- step1(st, 30)
+plots(st)[[1]]
+plots(st)[[2]]
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ID-mapped-by-STRINGdb
+autor(st@tables$step1$mapped)
+```
+
+### 筛选 HubGenes
+
+利用 Cytoscape 的插件 CytoHubba [@CytohubbaIdenChin2014] 提供的 MCC 算法计算
+Hub 基因得分（这里 MCC 算法被集成到 R 中，独立计算）。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MCC-Top-30
+autor(st@plots$step1$p.mcc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-MCC-scores
+autor(st@tables$step1$hub_genes)
+```
+
+### 通路富集分析
+
+使用 `clusterProfiler` 富集分析 top 30 的基因。
+
+```{r}
+en <- asjob_enrich(st)
+en <- step1(en)
+plots(en)[[2]]
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GO-enrichment-of-MCC-top-30
+autor(en@plots$step1$p.go$hub_genes)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-enrichment-of-MCC-top-30
+autor(en@plots$step1$p.kegg$hub_genes)
+```
+
+## 分析糖尿病肾病肠道差异菌群
+
+### 选择公共数据库的 16s rRNA 数据
+
+- 所选数据的文献来源[@TheIntestinalZhang2023]
+    - Title: The Intestinal Microbiota Composition in Early and Late Stages of Diabetic Kidney Disease
+    - PMID: 37341590
+    - BioProject: PRJNA824185
+- 相关信息
+    - 引物：805R (5'-GACTACHVGGGTATCTAATCC-3') and 341F (5'-CCTACGGGNGGCWGCAG-3')
+
+```{r}
+#| sra-info
+project <- "PRJNA824185"
+primer_f <- "CCTACGGGNGGCWGCAG"
+primer_r <- "GACTACHVGGGTATCTAATCC"
+dir.create("sra_data")
+cdRun("esearch -db sra -query ", project, " | efetch -format runinfo > ./sra_data/info.csv")
+
+info <- ftibble("./sra_data/info.csv")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-the-sra-data-of-PRJNA824185
+autor(info)
+```
+
+### 下载和预处理 SRA 数据
+
+使用 `sra-toolkit` 工具组的 `prefetch` 下载 SRA 数据，并用 `fastq-dump` 转化为 fastq 文件。
+
+```{r}
+#| download-sra
+pbapply::pblapply(info$Run,
+  function(id) {
+    path <- "./sra_data"
+    exists <- file.exists(paste0(path, "/", id))
+    while (!exists) {
+      cdRun("prefetch ", id, " ", "--output-directory ", path)
+      exists <- file.exists(paste0(path, "/", id))
+    }
+  })
+```
+
+```{r}
+#| as-fastq
+files <- list.files("./sra_data/", "\\.sra$", full.names = T, recursive = T)
+pbapply::pblapply(files,
+  function(file) {
+    path <- get_path(file)
+    cdRun("fastq-dump --gzip --split-3 ", file, " -O ", path)
+  })
+```
+
+### Qiime2 
+
+以下分析参照： <https://docs.qiime2.org/2023.7/tutorials/moving-pictures-usage/>
+
+
+
+## 分析糖尿病肾病的肠道代谢组学差异
+
+## 分析差异菌群与代谢物的相关性
+
+# 结论 {#dis}
+

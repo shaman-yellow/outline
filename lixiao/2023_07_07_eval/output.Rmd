@@ -1,0 +1,428 @@
+---
+title: Analysis
+author: 'Huang LiChuang of Wie-Biotech'
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: true
+    toc_depth: 3
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+---
+
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+根据客户需求和提供的数据，筛出（瘢痕增生）能够与 TCF-AS1 结合又能与 TCF4 结合的 RNA 结合蛋白。
+结果请参考 \@ref(dis)
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    "Preprocess:Fastp_QC, Map_to_reference, Merge_mRNA_ncRNA",
+    "Differential_analysis:Filter_low_expression, Nomalization, Linear_regression, Contrast_fit",
+    "Contrast_fit:WGCNA",
+    "WGCNA:Build_Modules, Module_membership",
+    "Module_membership:Find_TCF4",
+    "Find_TCF4:Get_Fasta_data",
+    "Get_Fasta_data:catRAPID_prediction"
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+# 材料和方法 {#methods}
+
+1. 获取参考注释基因。
+2. 初步处理客户提供的数据（fastp 质控、kallisto [@NearOptimalPrBray2016] 对比到参考基因座等）。
+3. 使用 limma 差异分析[@LimmaPowersDiRitchi2015]。
+4. 使用 WGCNA 方法[@WgcnaAnRPacLangfe2008]，从差异基因中筛选与 TCF4-AS1 lncRNA 和 TCF4mRNA 具有共表达关系的基
+因。
+5. 视情况选择合适的预测工具[@ICatIRapidArmaos2021; @RbpTstlIsATPeng2022; @IntegratingTheSuYu2019; @RckAccurateAOrenst2016]，预测蛋白和 RNA 的结合程度，并可视化为图表。
+
+# 分析结果 {#results}
+
+## 下载参考基因组注释文件
+
+下载 cDNA 和 ncRNA 参考基因注释。
+<https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/>
+
+```{r}
+#| ref-cdna
+cdRun("wget https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz", path = "../")
+cdRun("wget https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/ncrna/Homo_sapiens.GRCh38.ncrna.fa.gz", path = "../")
+```
+
+## fastq 预处理
+
+### 数据质控
+
+使用fastp去接头和去低质量的碱基
+
+```{r}
+#| fastp-qc
+fastp_pair("~/disk_sda1/L49-3 原始数据Raw")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| reports-fastq-files-processed-with-fastp
+autor("./fastp_report", abs = "此为 fastp 处理时生成的报告文件。")
+```
+
+## 使用 kallisto 比对 fastq 到参考基因座
+
+kallisto 提供了快速且准确的 fastq 比对到参考基因座的方法[@NearOptimalPrBray2016] (<http://pachterlab.github.io/kallisto/manual.html>)。
+
+```{r}
+#| hg38-index
+kall_index("../Homo_sapiens.GRCh38.cdna.all.fa.gz")
+kall_index("../Homo_sapiens.GRCh38.ncrna.fa.gz", "../hg38_ncrna.idx")
+```
+
+### 鉴定 mRNA
+
+使用 kallisto 将 fastq 与 hg38 的 cDNA 数据比对。
+
+```{r}
+#| mRNA
+kall_quant("~/disk_sda1/L49-3 原始数据Raw/fastp_qc", index = "~/outline/lixiao/hg38_mrna.idx")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| refer-to-mRNA
+autor("./quant_hg38_mrna", abs = "主要为子目录下的 abundance.tsv 文件。")
+```
+
+### 鉴定 ncRNA
+
+使用 kallisto 将 fastq 与 hg38 的 ncRNA 数据比对。
+
+```{r}
+#| ncRNA
+kall_quant("~/disk_sda1/L49-3 原始数据Raw/fastp_qc", index = "~/outline/lixiao/hg38_ncrna.idx")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| refer-to-ncRNA
+autor("./quant_hg38_ncrna", abs = "主要为子目录下的 abundance.tsv 文件。")
+```
+
+## 差异分析
+
+### 读取并合并不同样本 RNA 定量数据
+
+```{r}
+#| read-rna
+lst_mrna <- read_kall_quant("./quant_hg38_mrna")
+lst_ncrna <- read_kall_quant("./quant_hg38_ncrna")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| merged-mrna
+autor(lst_mrna$counts)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| merged-ncrna
+autor(lst_ncrna$counts)
+```
+
+### 合并 mRNA 和 ncRNA 数据
+
+在这里，将 mRNA 数据和 ncRNA 数据按照列（样品）合并。
+
+```{r}
+#| merge-ncrna-and-mrna
+lst_merged <- list(
+  counts = rbind(lst_mrna$counts, lst_ncrna$counts),
+  metadata = select(lst_mrna$metadata, sample)
+)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| merged-data-of-mRNA-and-ncRNA
+autor(lst_merged$counts)
+```
+
+### 使用 `biomaRt` 获取基因注释
+
+使用 R包 `biomaRt` 获取 mRNA 和 ncRNA 的注释。
+
+```{r}
+#| biomart
+mart <- new_biomart()
+genes_merged <- filter_biomart(mart, general_attrs(), "ensembl_transcript_id", lst_merged$counts$target_id)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| annotation-mRNA
+autor(genes_merged)
+```
+
+### 使用 `limma` 差异分析 {#diff}
+
+```{r}
+fun <- function(data) {
+  mutate(data, group = stringr::str_extract(sample, "^[A-Z]+"),
+    group = dplyr::recode(group, CT = "control", CUR = "treat"))
+}
+lst_merged$metadata %<>% fun()
+```
+
+```{r}
+#| diff-test
+step0("lim")
+dge <- new_dge(lst_merged$metadata, lst_merged$counts, genes_merged)
+lm <- job_limma(dge)
+lm <- step1(lm)
+lm <- step2(lm, treat - control, use = "P.Value", use.cut = .05, cut.fc = .3)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| filter-low-expression-genes
+autor(lm@plots$step1$p.filter)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| nomalize-genes-expression
+autor(lm@plots$step1$p.norm)
+```
+
+线形回归拟合 `model.matrix(~ 0 + group)`[@LimmaPowersDiRitchi2015; @AGuideToCreaLawC2020]，并统计检验。
+
+```{r eval = T, echo = F, results = "asis"}
+#| linear-regression-and-contrast-fit-results
+autor(lm@tables$step2$tops[[1]], abs = "根据 P.Value (0.05) 和 |log2FC| (0.3) 过滤得到结果。")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| volcano-plot-of-differential-expression-genes
+autor(lm@plots$step2$p.valcano[[1]])
+```
+
+## 基因共表达分析
+
+### 建立基因共表达模块
+
+将上述（\@ref(diff), Fig. \@ref(fig:nomalize-genes-expression)）
+标准化过的**差异表达**基因数据
+(Tab. \@ref(tab:linear-regression-and-contrast-fit-results))
+用于 WGCNA 分析[@WgcnaAnRPacLangfe2008]。
+
+```{r}
+step0("wg")
+wg <- asjob_wgcna(lm)
+wg <- step1(wg)
+wg <- step2(wg)
+wg <- step3(wg)
+wg <- step4(wg, 3)
+saveRDS(wg, "wg4.rds")
+wg@params$allTraits$noise <- rnorm(6)
+wg@step <- 5L
+wg <- step6(wg)
+
+mm <- tbmerge(wg@tables$step6$mm, genes_merged, by.x = "gene", by.y = "ensembl_transcript_id", all.x = T)
+mm_tcf4 <- filter(mm, grepl("TCF4", hgnc_symbol))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| cluster-sample
+autor(wg@plots$step1$raw_sample_tree)
+```
+
+由于样本数量较少，没有明显合适的 'soft threshold'。这里，选择 'soft threshold' 为 3。
+
+```{r eval = T, echo = F, results = "asis"}
+#| pick-soft-thereshold
+autor(wg@plots$step3$sft)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gene-modules
+autor(wg@plots$step4$net)
+```
+
+### 共表达模块和基因的关联性
+
+计算 'gene module' 和 genes 之间的关联性（module membership）。
+
+```{r eval = T, echo = F, results = "asis"}
+#| module-membership
+autor(mm)
+```
+
+### TCF4 所在的基因表达模块
+
+确认TCF4 或 TCF-AS1 所在基因模块。
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCF4-in-modules-memberships
+autor(mm_tcf4, abs = "TCF4 所在基因模块为 'ME1' 和 'ME2'（TCF4 和 TCF-AS1不存在共表达关系）。")
+```
+
+```{r}
+mm1_2 <- filter(mm, module %in% c("ME1", "ME2"), p.adjust < .05)
+mm1_2 <- distinct(mm1_2, entrezgene_id, hgnc_symbol, .keep_all = T)
+mm1_2 <- arrange(mm1_2, p.adjust)
+
+candidates_protein <- get_seq.pro(mm1_2$hgnc_symbol, mart)
+
+target_rna <- get_seq.rna(c("TCF4", "TCF4-AS1"), mart)
+```
+
+过滤 Tab. \@ref(tab:module-membership) 数据，根据 p.adjust &lt; 0.05, 以及 module 为 'ME1' 和 'ME2'。
+随后，使用 `biomaRt` 获取基因对应的蛋白质的序列，同时，获取 TCF4 和 TCF-AS1 的序列；将这些序列转化为 'fasta'
+格式（数量大于 500 个的 'fasta' 文件被切分）。
+
+```{r}
+#| fasta
+autor("./fasta")
+```
+
+### 使用 'catRAPID omics v2.1' 预测 RBPs
+
+#### 上传 catRAPID 服务器
+
+catRAPID omics v2.1[@ICatIRapidArmaos2021] 可同时计算多对 RNA 和蛋白质的结合（一次最多接受 500 个序列）。
+
+结果可见于服务器：
+
+- <http://crg-webservice.s3.amazonaws.com/submissions/2023-08/729560/output/index.html?unlock=c9f3fccec3>
+- <http://crg-webservice.s3.amazonaws.com/submissions/2023-08/729563/output/index.html?unlock=77c11a2b6a>
+- <http://crg-webservice.s3.amazonaws.com/submissions/2023-08/729565/output/index.html?unlock=6449ff7496>
+
+#### 结果整理
+
+```{r}
+dir.create("catRapid")
+moveToDir(paste0("can", 1:3), "output_full.*\\.zip", from = "~/Downloads/", to = "./catRapid", suffix = ".zip")
+
+res <- lapply(list.files("./catRapid", "\\.zip$", full.names = T),
+  function(file) {
+    ftibble(unzip(file, exdir = "./catRapid"))
+  })
+res <- do.call(dplyr::bind_rows, res)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-results-include-positive-or-negtive
+autor(res)
+```
+
+关于结果表格和各类评分的解释可以参考： <http://service.tartaglialab.com/static_files/shared/documentation_omics2.html>。
+
+接下来，按照不同条件筛选结果：
+
+- `RBP_Propensity == 1`,
+- `Interaction_Propensity > 0`,
+- `numof.RNA.Binding_Domains_Instances > 0`,
+- `numof.RNA_Binding_Motifs_Instances > 0`
+
+```{r}
+#| intersects
+res1 <- mutate(res, .id = 1:nrow(res))
+args <- list(
+  rlang::quo(RBP_Propensity == 1),
+  rlang::quo(Interaction_Propensity > 0),
+  rlang::quo(numof.RNA.Binding_Domains_Instances > 0),
+  rlang::quo(numof.RNA_Binding_Motifs_Instances > 0)
+)
+sets <- lapply(args,
+  function(arg) {
+    filter(res1, !!arg)$.id
+  })
+names(sets) <- c(
+  "RBP_Propensity",
+  "Interaction_Propensity",
+  "numof.RNA.Binding_Domains_Instances",
+  "numof.RNA_Binding_Motifs_Instances"
+)
+
+upset <- new_upset(lst = sets)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersects-of-sets-of-filtering-conditions
+autor(upset)
+```
+
+```{r}
+reduce <- filter(res, !!!args)
+```
+
+可以发现，将四个数据集取交集，能得到包含少量数据的结果。
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| top-candidates
+autor(reduce)
+```
+
+Tab. \@ref(tab:top-candidates) 包含 RBPs 与 TCF4 结合或 TCF-AS1 结合的可能性，以下取它们的交集。
+
+```{r}
+sets_venn <- lapply(split(reduce, ~ RNA_ID), function(data) data$Protein_ID)
+venn <- new_venn(lst = sets_venn)
+uid <- lapply(sets_venn, unique)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| unique-candidate-of-RBP-binding-with-TCF4-and-TCF-AS1
+autor(venn)
+```
+
+Fig. \@ref(fig:unique-candidate-of-RBP-binding-with-TCF4-and-TCF-AS1) 中包含的蛋白的 'symbol' 为：
+
+```{r, eval = T, echo = F}
+uid
+```
+
+# 结论 {#dis}
+
+将 RNA-seq 数据结合差异分析、基因共表达分析，并利用 catRAPID 工具预测 RBPs，成功筛选出一批 RBPs。
+随后，根据 RBP 倾向（`RBP_Propensity`）、结合倾向（`Interaction_Propensity`）等条件筛选，
+获得唯一 RBP：`r uid$TCF4.AS1`
+

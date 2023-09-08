@@ -1,0 +1,389 @@
+---
+title: Report of Analysis
+author: 'Huang LiChuang of Wie-Biotech'
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: true
+    toc_depth: 3
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+---
+
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+根据客户提供的材料分析基因突变及信号通路，筛选出研究的对象基因。相关疾病是“高胆汁酸血症”或是“妊娠期肝内胆汁淤积症（Intrahepatic cholestasis of pregnancy，ICP）
+
+## fastp 质控
+
+- 去低质量碱基
+- 去接头
+- 生成报告
+
+## 全外显子分析流程 {#workflow}
+
+WES 一般分析流程为：
+
+<https://gatk.broadinstitute.org/hc/en-us/sections/360007226651-Best-Practices-Workflows>:
+
+- Preprocessing <https://gatk.broadinstitute.org/hc/en-us/articles/360035535912-Data-pre-processingfor-variant-discovery>
+    - 比对到参考基因组
+    - 标记重复
+    - 基础校准（Base (Quality Score) Recalibration）
+- Variant discovery <https://gatk.broadinstitute.org/hc/en-us/articles/360035535932-Germline-shortvariant-discovery-SNPs-Indels->
+    - 获取变异注释文件
+    - 变异检测
+    - 变异质控和过滤
+    - 变异注释
+
+## 结果可视化
+
+使用 maftools 对变异注释结果可视化。
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("data:QC",
+    "QC:<fastp>",
+    "<fastp>:Preprocessing",
+    "Preprocessing:<bwa>",
+    "<bwa>:map_to_ref",
+    "map_to_ref:<elPrep>",
+    "<elPrep>:mark_dups, BQSR, detect_variants",
+    "detect_variants:variants_filter",
+    "variants_filter:<bcftools>",
+    "<bcftools>:QUAL, GQ, INFO/DP, FORMAT/DP",
+    "FORMAT/DP:<ANNOVAR>",
+    "<ANNOVAR>:enrichment, genecards, <maftools>",
+    "enrichment, Genecards:results"
+  ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 12, fig.height = 11, fig.cap = NULL}
+p.route
+```
+
+# 材料和方法 {#methods}
+
+- fastp (<https://github.com/OpenGene/fastp>)
+
+以下可以通过 <https://gatk.broadinstitute.org/hc/en-us/articles/360041320571--How-to-Install-all-software-packages-required-to-follow-the-GATK-Best-Practices> 获取安装。
+
+- bwa
+- ...
+
+使用 elPrep[@MultithreadedV2021] 替代 GATK4 做 WES 分析（见 \@ref(workflow)）。
+
+使用 bcftools[@TwelveYearsOfDanece2021] 过滤 vcf。
+
+使用 ANNOVAR 变异注释。
+
+使用 R maftools 可视化 ANNOVAR 注释结果。
+
+使用 clusterProfiler 富集分析（KEGG）。
+
+参考基因组：
+
+- <https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/latest/hg38.fa.gz>
+
+SNPs 和 Indels:
+
+(<https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0>)
+
+- `1000G_phase1.snps.high_confidence.hg38.vcf`
+- `Mills_and_1000G_gold_standard.indels.hg38.vcf`
+
+# 分析结果 {#results}
+
+## fastp 质控
+
+```{r}
+fp <- .job_fastp(object = "/media/echo/6E3CE3153CE2D75D/20220415-liuming2/")
+fp <- step1(fp, ".fq.gz")
+fp <- step2(fp)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| fastp-report-files
+autor("./fastp_report")
+```
+
+注：客户提供 8 个病人的数据，每个病人的目录下有 2 个子文件，因此共 16 个样本数据。硬盘中有个别 fastq 文件有损坏。损坏的文件未纳入分析流程中（没有报告生成的为损坏的文件）。
+
+## WES 变异筛选
+
+```{r}
+options(step_check = F)
+ga <- asjob_gatk(fp, "~/disk_sdb5/08_17")
+ga <- step1(ga)
+ga <- step2(ga)
+ga <- step3(ga)
+ga <- step4(ga)
+
+ga@params$vcf_for_anno <- "filtered_all.vcf.gz"
+ga <- step5(ga, use_db = 1:2)
+ga <- step6(ga)
+ga <- step7(ga)
+
+db_gc <- gc <- get_from_genecards("bile acids")
+genes <- intersect(ga@tables$step6$exonic_caused_anno$hgnc_symbol, gc$Symbol)
+venn <- new_venn(Variants = ga@tables$step6$exonic_caused_anno$hgnc_symbol, Genecards_Prediction = gc$Symbol)
+
+en <- job_enrich(list(vari = genes), ga@tables$step6$exonic_caused_anno)
+en <- step1(en, maxShow = 20)
+
+en_kegg <- filter(en@tables$step1$res.kegg$vari, grepl("Bile|Cholesterol", Description))
+sGenes <- unique(unlist(en_kegg$geneName_list))
+
+bile_rel <- lapply(ga@tables$step6$exonic_caused,
+  function(data) {
+    data <- filter(data, hgnc_symbol %in% sGenes)
+    relocate(data, hgnc_symbol, protein_coding)
+  })
+
+sets_variants <- lapply(bile_rel, function(x) x$protein_coding)
+p.sets_variants <- new_upset(lst = sets_variants)
+
+ins <- ins(lst = sets_variants)
+coOccurs <- filter(bile_rel[[1]], protein_coding %in% dplyr::all_of(ins))
+
+ga <- step8(ga, coOccurs$hgnc_symbol)
+ga@plots$step8$p.oncoplot
+
+```
+
+```{r}
+# install:
+# https://gatk.broadinstitute.org/hc/en-us/articles/360041320571--How-to-Install-all-software-packages-required-to-follow-the-GATK-Best-Practices
+```
+
+```{r}
+# extra: https://chendianyu.github.io/gatk/2018/09/20/GATK4-germline-pipeline/
+# https://zhuanlan.zhihu.com/p/69726572
+```
+
+以下流程相较于 GATK4 Best Practice (<https://gatk.broadinstitute.org/hc/en-us/sections/360007226651-Best-Practices-Workflows>) 有所变化。
+
+- 使用 elPrep 5 完成检测流程（流程类似于 GATK4，但速度更快）[@MultithreadedV2021]。
+
+得到变异信息文件（vcf）后，使用 bcftools 过滤（QUAL>10 && GQ>10 && FORMAT/DP>10 && INFO/DP>100）。
+
+### ANNOVAR 注释 {#annovar-res}
+
+使用 ANNOVAR (<https://annovar.openbioinformatics.org/en/latest/>) 注释后，滤除同义突变。
+
+```{r eval = T, echo = F, results = "asis"}
+#| exonic-annotation-by-ANNOVAR
+autor(ga@tables$step6$exonic_caused)
+```
+
+### `maftools` 可视化
+
+参考 <https://www.bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html#910_Mutational_Signatures>
+
+```{r eval = T, echo = F, results = "asis"}
+#| summary-of-mutations-in-samples
+autor(ga@plots$step7$p.summary)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| proportion-of-SNPs-mutation
+autor(ga@plots$step7$p.snp_class)
+```
+
+## 下游分析
+
+### 获取 Genecards 与胆汁相关疾病的基因
+
+```{r eval = T, echo = F, results = "asis"}
+#| Genecards-genes-relative-with-bild-acids
+autor(db_gc)
+```
+
+### 通路富集分析
+
+取 Tab. \@ref(tab:Genecards-genes-relative-with-bild-acids) 的基因与 \@ref(tab:annovar-res) 的所有基因的交集。
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersect-of-variants-with-Genecards-prediction
+autor(wrap(venn, 7, 5))
+```
+
+以交集基因通路富集。
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-enrichment
+autor(en@plots$step1$p.kegg$vari)
+```
+
+取 'Bile secretion' 和 'Cholesterol metabolism' 相关的基因。
+
+```{r}
+sets <- list(Bile_secretion = en_kegg$geneName_list[[1]], Cholesterol_metabolism = en_kegg$geneName_list[[2]],
+  Filtered_variants = genes
+)
+upsets <- new_upset(lst = sets)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-filtered-variants-with-KEGG-pathway
+autor(upsets)
+```
+
+取 Fig. \@ref(fig:Intersection-of-filtered-variants-with-KEGG-pathway) 所示的两条通路的基因交集。
+
+将这些交集基因回归到所有样本的变异数据中，取共同发生的突变结果。
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersects-of-the-pathways-related-variants-in-all-samples
+autor(p.sets_variants)
+```
+
+有 7 个变异同时发生在所有样本中。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Bile-acids-related-variants-occurs-in-all-ICP-samples
+autor(coOccurs)
+```
+
+# 结论 {#dis}
+
+见 Tab. \@ref(tab:Bile-acids-related-variants-occurs-in-all-ICP-samples)。
+
+ICP 相关对象基因：
+
+LRP1, SLC10A1, AQP9, APOH, ABCB11, LRP2, TSPO。
+
+突变形式 (hgvs) 为：
+
+p.Q2900P, p.S267F, p.T214A, p.V266L, p.V444A, p.A2872T, p.T147A。
+
+# 其它
+
+## 新生儿心脏骤停
+
+### 数据来源
+
+检索：neonatal cardiac arrest 
+
+数据来源于[@TranscriptomePTuLa2019] (piglets mRNA-seq)：
+
+- PMID: 31005300
+- GSE120863
+
+```{r}
+gse <- "GSE120863"
+about <- GEOquery::getGEO(gse)
+metas <- get_metadata.geo(about)
+prods <- get_prod.geo(metas)
+
+GEOquery::getGEOSuppFiles(gse)
+R.utils::gunzip("./GSE120863/GSE120863_0618_striatum.feature_counts.all_samples.txt.gz")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Preprocessed-information
+autor(prods)
+```
+
+```{r}
+object <- ftibble("./GSE120863/GSE120863_0618_striatum.feature_counts.all_samples.txt", skip = 1)
+
+metadata <- group_strings(colnames(object), c(Sham = "^S[-1-9].*bam", Model = "D[0-9].*bam"), target = "sample")
+counts <- dplyr::select(object, 1, dplyr::all_of(metadata$sample))
+genes <- dplyr::select_if(object, is.character)
+
+pig_mart <- new_biomart("sscrofa_gene_ensembl")
+anno <- filter_biomart(pig_mart, general_attrs(), "ensembl_gene_id", genes$Geneid)
+
+dge <- new_dge(metadata, counts, anno)
+
+lm <- job_limma(dge)
+lm <- step1(lm)
+lm <- step2(lm, Model - Sham, use = "P.Value", use.cut = .05)
+sgenes <- lm@tables$step2$tops[[1]]$hgnc_symbol
+sgenes <- sgenes[ !is.na(sgenes) & sgenes != ""]
+
+en1 <- job_enrich(list(dge = sgenes), anno)
+en1 <- step1(en1, organism = "pig", orgDb = "org.Ss.eg.db", maxShow = 20)
+en1@plots$step1$p.kegg
+en1@plots$step1$p.go
+```
+
+## 新生儿胎粪性腹膜炎差异基因
+
+检索：neonatal meconium peritonitis
+
+无相关数据。
+
+## 胎儿宫内窘迫
+
+检索：fetal distress
+
+无相关数据。
+
+```{r}
+ge1 <- job_geo("GSE80172")
+ge1 <- step1(ge1)
+ge1@params$metas$res
+```
+
+## 死胎
+
+检索：stillbirth
+
+无相关数据。
+
+```{r}
+ges <- job_geo("")
+ges <- step1(ges)
+ge1@params$metas$res
+```
+
+## 新生儿呼吸窘迫综合征
+
+neonatal respiratory distress syndrome
+
+无相关数据。
+

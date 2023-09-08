@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Evaluation},
+  pdftitle={Analysis},
   pdfauthor={Huang LiChuang of Wie-Biotech},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -75,7 +75,7 @@
   {}%
   {\par}
 
-\title{Evaluation}
+\title{Analysis}
 \author{Huang LiChuang of Wie-Biotech}
 \date{}
 
@@ -93,127 +93,6 @@
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
 
-以下为需要评估的内容以及相应的答复：
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  用网络药理学分析中药方的主要活性成分，对比文献研究现状挑选4个左右的活性成分作为候选药物成分
-
-  \begin{itemize}
-  \tightlist
-  \item
-    可分析主要成分，结合目标疾病筛选主要活性成分。
-  \item
-    可从 HERB (\url{http://herb.ac.cn/Download/}) 获取成分信息（该数据库整合了较多的其他数据库）。
-  \item
-    目标疾病是否为糖尿病肾病？且有代谢组数据？如果为（中药方成分的）非靶向代谢组，则能根据非靶向代谢组数据鉴定更多的化合物用于网络药理学分析，而不是只通过数据库筛选。
-  \item
-    可进一步通过 PPI 网络和通路富集分析筛选活性成分\textsuperscript{\protect\hyperlink{ref-NeuronSpecificMurtaz2022}{1}}。
-  \item
-    可查阅文献（较为主观，可作为辅助手段）
-  \end{itemize}
-\item
-  分析糖尿病肾病肠道差异菌群
-
-  \begin{itemize}
-  \tightlist
-  \item
-    需要 16s RNA数据，或从 GEO 公共数据库获取（\url{https://www.ncbi.nlm.nih.gov/gds/?term=16s}）。
-  \item
-    可用 qiime2 （\url{https://qiime2.org/}）筛选肠道差异菌群\textsuperscript{\protect\hyperlink{ref-MicrobiomeDataRaiS2021}{2},\protect\hyperlink{ref-LongitudinalInWang2019}{3}}。
-  \end{itemize}
-\item
-  分析糖尿病肾病代谢组学差异
-
-  \begin{itemize}
-  \tightlist
-  \item
-    需明确，是人的肾脏的代谢组，还是肠道菌的代谢组（因为上述有肠道菌分析，容易混淆）。
-  \item
-    可分为挖掘公共数据库（GNPS：\url{https://gnps.ucsd.edu/ProteoSAFe/static/gnps-splash.jsp}）和客户提供代谢数据的情况。
-  \item
-    如果是客户提供，请考虑：
-
-    \begin{itemize}
-    \tightlist
-    \item
-      包含对照组和模型组的数据，需要生物学重复，最好为非靶向代谢组数据（这种情况下，能鉴定和找到最多的差异代谢物）
-    \item
-      如果是非靶向代谢组，需要数据鉴定。可分为谱图匹配性鉴定（常规方法），和预测性鉴定（例如，SIRIUS\textsuperscript{\protect\hyperlink{ref-Sirius4ARapDuhrko2019}{4}}）。
-    \item
-      如果是靶向代谢组，已知目标代谢物，则不需要额外的鉴定，根据分子量比对即可。
-    \item
-      需确认代谢组数据的采集是否包含 MS\textsuperscript{2}。如果仅包含 MS\textsuperscript{1}，则鉴定准确度会相对偏低。如果是靶向代谢组，仅有 MS\textsuperscript{1} 亦可。
-    \end{itemize}
-  \item
-    以标准的方法：PCA 聚类，OPLS-DA 聚类、VIP 、P 值筛选差异代谢物。
-  \item
-    还可以结合不同 Feature selection 算法进一步筛选，例如LASSO，EFS\textsuperscript{\protect\hyperlink{ref-EfsAnEnsemblNeuman2017}{5}}等。
-  \item
-    差异代谢物可通路富集分析，结合疾病，进一步筛选。可用方法为 MetaboAnalyst (\url{https://www.metaboanalyst.ca/MetaboAnalyst/ModuleView.xhtml})\textsuperscript{\protect\hyperlink{ref-MetaboanalystrPang2020}{6}}。
-  \item
-    根据上述情况不同，工作量会大不相同。可做大量分析，也可仅做少量分析。
-  \end{itemize}
-\item
-  分析差异菌群与差异代谢物的相关性（桑基图）
-
-  \begin{itemize}
-  \tightlist
-  \item
-    16s RNA 和代谢组的多组学分析\textsuperscript{\protect\hyperlink{ref-DisruptedSpermZhang2021}{7}}。
-  \item
-    对差异菌群和差异代谢物关联性分析，桑基图、热图均可（热图可能更直观，见 Fig. \ref{fig:correlation-of-metabolites-with-microbiota}）。
-  \end{itemize}
-\item
-  结合药物成分筛选目标菌群和相关代谢物
-
-  \begin{itemize}
-  \tightlist
-  \item
-    首先需要获取药物成分的靶点。可通过 Binding DB 获取 \url{https://www.bindingdb.org/rwd/bind/index.jsp}。
-  \item
-    通过（人的）代谢物的通路富集结果（步骤 3）得到相应蛋白，可对药物靶点取交集。
-  \item
-    通过机器预测药物和肠道菌互作\textsuperscript{\protect\hyperlink{ref-PredictingDrugMccoub2022}{8},\protect\hyperlink{ref-MachineLearninMccoub2021}{9}}。目前似乎存在一系列方法，需要探索找到合适的方法。
-  \item
-    若上述方法简便容易，以下或许可以不用考虑：
-
-    \begin{itemize}
-    \tightlist
-    \item
-      关于药物-肠道菌互作\textsuperscript{\protect\hyperlink{ref-PersonalizedMaJavdan2020}{10}}，药物作用于菌，得到代谢物（细菌的代谢物，而非人）。
-    \item
-      想要从药物中筛选，需要细菌的代谢物信息（这一步骤可能存在一定苦难，需要结合实际筛选的细菌考虑）。
-    \item
-      上述，肠道菌代谢物的获取是关键步骤之一，可以从 gutMGene（\url{http://bio-annotation.cn/gutmgene/home.dhtml}）获取。
-    \item
-      通过计算药物和肠道菌代谢物的分子相似性，推测是否存在药物-菌作用关系\textsuperscript{\protect\hyperlink{ref-MolecularSimilGandin2022}{11}}（具有不确定性）
-    \end{itemize}
-  \end{itemize}
-\item
-  代谢小分子靶点蛋白分析（这个看能不能用分子对接的方式获取）
-
-  \begin{itemize}
-  \tightlist
-  \item
-    只要上述（步骤 5）的药物和靶点都具备，即可以分子对接方式分析。
-  \end{itemize}
-\item
-  广泛的靶点蛋白与糖尿病肾病差异基因取交集，筛选候选基因
-
-  \begin{itemize}
-  \tightlist
-  \item
-    结合疾病的公共数据库筛选进一步筛选，例如 genecards \url{https://www.genecards.org/}。
-  \item
-    需要明确，这里还能进一步通过分析其他 GEO 数据筛选差异基因，再结合筛选。是否需要？
-  \end{itemize}
-\end{enumerate}
-
-总体上，工作量较大，视情况可能需要 1-3 周。
-
 \hypertarget{route}{%
 \section{研究设计流程图}\label{route}}
 
@@ -223,166 +102,944 @@
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
 
-以下内容为仅为示例。
+\hypertarget{ux7f51ux7edcux836fux7406ux5b66ux5206ux6790ux4e3bux8981ux6d3bux6027ux6210ux5206}{%
+\subsection{网络药理学分析主要活性成分}\label{ux7f51ux7edcux836fux7406ux5b66ux5206ux6790ux4e3bux8981ux6d3bux6027ux6210ux5206}}
 
-\hypertarget{ux7f51ux7edcux836fux7406ux5b66ux548c-ppi}{%
-\subsection{网络药理学和 PPI}\label{ux7f51ux7edcux836fux7406ux5b66ux548c-ppi}}
+\hypertarget{ux4ece-herb-ux7f51ux7ad9ux83b7ux53d6ux4e2dux836fux548cux6210ux5206ux4ee5ux53caux9776ux70b9ux6570ux636e}{%
+\subsubsection{从 HERB 网站获取中药和成分以及靶点数据}\label{ux4ece-herb-ux7f51ux7ad9ux83b7ux53d6ux4e2dux836fux548cux6210ux5206ux4ee5ux53caux9776ux70b9ux6570ux636e}}
 
-Figure \ref{fig:PPI-network-for-targets}为图PPI network for targets概览。
+HERB \url{http://herb.ac.cn/}
 
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-56-42.png})}
+Table \ref{tab:TCM-information}为表格TCM information概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TCM-information.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行18列，以下预览的表格可能省略部分数据；表格含有10个唯一`Herb\_'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllll@{}}
+\caption{\label{tab:TCM-information}TCM information}\tabularnewline
+\toprule
+Herb\_ & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Prope\ldots{} & Merid\ldots{} & UsePart & Function & Indic\ldots{} & Toxicity & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_ & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Prope\ldots{} & Merid\ldots{} & UsePart & Function & Indic\ldots{} & Toxicity & \ldots{}\tabularnewline
+\midrule
+\endhead
+HERB0\ldots{} & CHEN PI & 陈皮 & Dried\ldots{} & Peric\ldots{} & Warm;\ldots{} & Lung;\ldots{} & NA & To re\ldots{} & Treat\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & DA HUANG & 大黄 & root \ldots{} & Radix\ldots{} & Cold;\ldots{} & Splee\ldots{} & root \ldots{} & To ca\ldots{} & Reple\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & DAN SHEN & 丹参 & root \ldots{} & Radix\ldots{} & Minor\ldots{} & Liver\ldots{} & root & To re\ldots{} & Angin\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & FU LING & 茯苓 & India\ldots{} & Poria & Mild;\ldots{} & Splee\ldots{} & scler\ldots{} & To ca\ldots{} & Neura\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & GAN CAO & 甘草 & Root \ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung;\ldots{} & root \ldots{} & To re\ldots{} & 1. It\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & HONG HUA & 红花 & Saffl\ldots{} & Flos \ldots{} & Warm;\ldots{} & Liver\ldots{} & flower & To ac\ldots{} & Ameno\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & HUANG\ldots{} & 黄连 & rhizo\ldots{} & Rhizo\ldots{} & Cold;\ldots{} & Large\ldots{} & rhizome & To re\ldots{} & Febri\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & NIU XI & 牛膝 & root \ldots{} & Radix\ldots{} & Mild;\ldots{} & Liver\ldots{} & root & To re\ldots{} & Achin\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & TAI Z\ldots{} & 太子参 & Heter\ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung;\ldots{} & NA & To re\ldots{} & Treat\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & ZHI B\ldots{} & 制半夏 & Prepa\ldots{} & Rhizo\ldots{} & Warm;\ldots{} & Lung;\ldots{} & Pinel\ldots{} & Treat\ldots{} & Treat\ldots{} & Extre\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:TCM-compounds}为表格TCM compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TCM-compounds.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1761行4列，以下预览的表格可能省略部分数据；表格含有10个唯一`herb\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:TCM-compounds}TCM compounds}\tabularnewline
+\toprule
+herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4\tabularnewline
+\midrule
+\endhead
+HERB0\ldots{} & HBIN0\ldots{} & 1-A-t\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & (1S,5\ldots{} & (1S,5\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 1-Und\ldots{} & 10268\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 22410\ldots{} & 2,6-O\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 2-(2-\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 2,5,5\ldots{} & 2,5,5\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 2,6,1\ldots{} & 2,6,1\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & ()-2-\ldots{} & Bicyc\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & (2S)-\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & (2S)-\ldots{} & (2S)-\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 3-carene & (1S)-\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 3-dec\ldots{} & 3-dec\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & {[}(3R)\ldots{} & butan\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 4-ACE\ldots{} & 17745\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 5,7-d\ldots{} & (2R)-\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:compounds-targets}为表格compounds targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/compounds-targets.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有14888行6列，以下预览的表格可能省略部分数据；表格含有707个唯一`Ingredient\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:compounds-targets}Compounds targets}\tabularnewline
+\toprule
+Ingre\ldots{} & Targe\ldots\ldots2 & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Ingre\ldots{} & Targe\ldots\ldots2 & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{}\tabularnewline
+\midrule
+\endhead
+HBIN0\ldots{} & HBTAR\ldots{} & PGR & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & PTGS2 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & RXRA & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & DPP4 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & AR & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & NR3C1 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & PRSS1 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & CA2 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & ESR1 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & GABRA1 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & NCOA2 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & ACHE & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & PRSS1 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & PRSS1 & NA & NA & NA\tabularnewline
+HBIN0\ldots{} & HBTAR\ldots{} & SLC6A2 & NA & NA & NA\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+将 Tab. \ref{tab:compounds-targets} 的基因信息注释：
+
+Table \ref{tab:compounds-targets-with-annotation-of-biomaRt-of-ensembl-dataset}为表格compounds targets with annotation of biomaRt of ensembl dataset概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/compounds-targets-with-annotation-of-biomaRt-of-ensembl-dataset.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有14888行13列，以下预览的表格可能省略部分数据；表格含有4230个唯一`Target.name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:compounds-targets-with-annotation-of-biomaRt-of-ensembl-dataset}Compounds targets with annotation of biomaRt of ensembl dataset}\tabularnewline
+\toprule
+Targe\ldots\ldots1 & Ingre\ldots{} & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{} & ensem\ldots\ldots7 & ensem\ldots\ldots8 & entre\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Targe\ldots\ldots1 & Ingre\ldots{} & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{} & ensem\ldots\ldots7 & ensem\ldots\ldots8 & entre\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endhead
+6PGD & HBIN0\ldots{} & HBTAR\ldots{} & NA & HBREF\ldots{} & 27270429 & NA & NA & NA & \ldots{}\tabularnewline
+AAMP & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 14 & \ldots{}\tabularnewline
+AANAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 15 & \ldots{}\tabularnewline
+AANAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 15 & \ldots{}\tabularnewline
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
+AARS2 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 57505 & \ldots{}\tabularnewline
+AASS & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 10157 & \ldots{}\tabularnewline
+AASS & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 10157 & \ldots{}\tabularnewline
+ABAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 18 & \ldots{}\tabularnewline
+ABAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 18 & \ldots{}\tabularnewline
+ABAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 18 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux4ece-genecards-ux83b7ux53d6ux75beux75c5ux7684ux9776ux70b9ux6570ux636e}{%
+\subsubsection{从 Genecards 获取疾病的靶点数据}\label{ux4ece-genecards-ux83b7ux53d6ux75beux75c5ux7684ux9776ux70b9ux6570ux636e}}
+
+Genecards \url{https://www.genecards.org/}
+
+Table \ref{tab:desease-targets-of-diabetic-nephropathy}为表格desease targets of diabetic nephropathy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/desease-targets-of-diabetic-nephropathy.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1309行7列，以下预览的表格可能省略部分数据；表格含有1309个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:desease-targets-of-diabetic-nephropathy}Desease targets of diabetic nephropathy}\tabularnewline
+\toprule
+Symbol & Descr\ldots{} & Category & UniPr\ldots{} & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Descr\ldots{} & Category & UniPr\ldots{} & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+ACE & Angio\ldots{} & Prote\ldots{} & P12821 & 55 & GC17P\ldots{} & 84.68\tabularnewline
+HNF1B & HNF1 \ldots{} & Prote\ldots{} & P35680 & 47 & GC17M\ldots{} & 83.38\tabularnewline
+GCK & Gluco\ldots{} & Prote\ldots{} & P35557 & 53 & GC07M\ldots{} & 83.04\tabularnewline
+KCNJ11 & Potas\ldots{} & Prote\ldots{} & Q14654 & 50 & GC11M\ldots{} & 80.35\tabularnewline
+HNF1A & HNF1 \ldots{} & Prote\ldots{} & P20823 & 51 & GC12P\ldots{} & 78.94\tabularnewline
+ABCC8 & ATP B\ldots{} & Prote\ldots{} & Q09428 & 50 & GC11M\ldots{} & 73.88\tabularnewline
+IL6 & Inter\ldots{} & Prote\ldots{} & P05231 & 55 & GC07P\ldots{} & 70.31\tabularnewline
+HNF4A & Hepat\ldots{} & Prote\ldots{} & P41235 & 53 & GC20P\ldots{} & 67.73\tabularnewline
+PPARG & Perox\ldots{} & Prote\ldots{} & P37231 & 57 & GC03P\ldots{} & 64.11\tabularnewline
+PDX1 & Pancr\ldots{} & Prote\ldots{} & P52945 & 50 & GC13P\ldots{} & 61.95\tabularnewline
+COL4A5 & Colla\ldots{} & Prote\ldots{} & P29400 & 48 & GC0XP\ldots{} & 58.60\tabularnewline
+WFS1 & Wolfr\ldots{} & Prote\ldots{} & O76024 & 50 & GC04P\ldots{} & 57.65\tabularnewline
+TCF7L2 & Trans\ldots{} & Prote\ldots{} & Q9NQB0 & 51 & GC10P\ldots{} & 56.48\tabularnewline
+VEGFA & Vascu\ldots{} & Prote\ldots{} & P15692 & 53 & GC06P\ldots{} & 56.25\tabularnewline
+COL4A3 & Colla\ldots{} & Prote\ldots{} & Q01955 & 50 & GC02P\ldots{} & 55.86\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:desease-targets-with-annotation-of-biomaRt-of-ensembl-dataset}为表格desease targets with annotation of biomaRt of ensembl dataset概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/desease-targets-with-annotation-of-biomaRt-of-ensembl-dataset.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有674行8列，以下预览的表格可能省略部分数据；表格含有674个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:desease-targets-with-annotation-of-biomaRt-of-ensembl-dataset}Desease targets with annotation of biomaRt of ensembl dataset}\tabularnewline
+\toprule
+hgnc\_\ldots{} & ensem\ldots\ldots2 & ensem\ldots\ldots3 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_\ldots{} & ensem\ldots\ldots2 & ensem\ldots\ldots3 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endhead
+ABCB1 & ENSG0\ldots{} & ENST0\ldots{} & 5243 & 7 & 87503017 & 87713323 & ATP b\ldots{}\tabularnewline
+ABCC8 & ENSG0\ldots{} & ENST0\ldots{} & 6833 & 11 & 17392498 & 17476894 & ATP b\ldots{}\tabularnewline
+ABCG1 & ENSG0\ldots{} & ENST0\ldots{} & 9619 & 21 & 42199689 & 42297244 & ATP b\ldots{}\tabularnewline
+ACE & ENSG0\ldots{} & ENST0\ldots{} & 1636 & 17 & 63477061 & 63498380 & angio\ldots{}\tabularnewline
+ACHE & ENSG0\ldots{} & ENST0\ldots{} & 43 & 7 & 10088\ldots{} & 10089\ldots{} & acety\ldots{}\tabularnewline
+ACSL1 & ENSG0\ldots{} & ENST0\ldots{} & 2180 & 4 & 18475\ldots{} & 18482\ldots{} & acyl-\ldots{}\tabularnewline
+ACTB & ENSG0\ldots{} & ENST0\ldots{} & 60 & 7 & 5526409 & 5563902 & actin\ldots{}\tabularnewline
+ADA & ENSG0\ldots{} & ENST0\ldots{} & 100 & 20 & 44584896 & 44652252 & adeno\ldots{}\tabularnewline
+ADA2 & ENSG0\ldots{} & ENST0\ldots{} & 51816 & 22 & 17178790 & 17258235 & adeno\ldots{}\tabularnewline
+ADAMTS13 & ENSG0\ldots{} & ENST0\ldots{} & 11093 & HG203\ldots{} & 240452 & 285496 & ADAM \ldots{}\tabularnewline
+ADAR & ENSG0\ldots{} & ENST0\ldots{} & 103 & 1 & 15458\ldots{} & 15462\ldots{} & adeno\ldots{}\tabularnewline
+ADCY3 & ENSG0\ldots{} & ENST0\ldots{} & 109 & 2 & 24819169 & 24920237 & adeny\ldots{}\tabularnewline
+ADCY5 & ENSG0\ldots{} & ENST0\ldots{} & 111 & 3 & 12328\ldots{} & 12344\ldots{} & adeny\ldots{}\tabularnewline
+ADD1 & ENSG0\ldots{} & ENST0\ldots{} & 118 & 4 & 2843844 & 2930076 & adduc\ldots{}\tabularnewline
+ADORA1 & ENSG0\ldots{} & ENST0\ldots{} & 134 & 1 & 20309\ldots{} & 20316\ldots{} & adeno\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6570ux636eux900fux89c6}{%
+\subsubsection{数据透视}\label{ux6570ux636eux900fux89c6}}
+
+以下，以 UpSet 图展示各个数据集之间的交集。
+
+Figure \ref{fig:intersect-of-target-genes-of-TCMs}为图intersect of target genes of TCMs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersect-of-target-genes-of-TCMs.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-56-42.png}
-\caption{PPI network for targets}\label{fig:PPI-network-for-targets}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersect-of-target-genes-of-TCMs.pdf}
+\caption{Intersect of target genes of TCMs}\label{fig:intersect-of-target-genes-of-TCMs}
 \end{center}
 
-Figure \ref{fig:enrichment-analysis}为图enrichment analysis概览。
+Figure \ref{fig:intersect-of-compounds-of-TCMs}为图intersect of compounds of TCMs概览。
 
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 13-03-48.png})}
+\textbf{(对应文件为 \texttt{Figure+Table/intersect-of-compounds-of-TCMs.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 13-03-48.png}
-\caption{Enrichment analysis}\label{fig:enrichment-analysis}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersect-of-compounds-of-TCMs.pdf}
+\caption{Intersect of compounds of TCMs}\label{fig:intersect-of-compounds-of-TCMs}
 \end{center}
 
-\hypertarget{ux80a0ux9053ux83ccux5206ux6790}{%
-\subsection{肠道菌分析}\label{ux80a0ux9053ux83ccux5206ux6790}}
+Figure \ref{fig:intersect-of-targets-of-compounds-and-disease-targets}为图intersect of targets of compounds and disease targets概览。
 
-Figure \ref{fig:flow-chart-of-qiime2-processing}为图flow chart of qiime2 processing概览。
-
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-26-30.png})}
+\textbf{(对应文件为 \texttt{Figure+Table/intersect-of-targets-of-compounds-and-disease-targets.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-26-30.png}
-\caption{Flow chart of qiime2 processing}\label{fig:flow-chart-of-qiime2-processing}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersect-of-targets-of-compounds-and-disease-targets.pdf}
+\caption{Intersect of targets of compounds and disease targets}\label{fig:intersect-of-targets-of-compounds-and-disease-targets}
 \end{center}
 
-Figure \ref{fig:qiime2-quality-control}为图qiime2 quality control概览。
+\hypertarget{ux4ee5-stringdb-ux6784ux5efa-ppi-ux7f51ux7edc}{%
+\subsubsection{以 STRINGdb 构建 PPI 网络}\label{ux4ee5-stringdb-ux6784ux5efa-ppi-ux7f51ux7edc}}
 
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-36-35.png})}
+以 Fig. \ref{fig:intersect-of-targets-of-compounds-and-disease-targets} 中的四个数据集的交集，以 \texttt{STRINGdb} 创建 PPI 网络。
+
+由于 PPI 网络包含过多节点，这里不展示 PPI 图（较为混乱）。
+
+Table \ref{tab:ID-mapped-by-STRINGdb}为表格ID mapped by STRINGdb概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/ID-mapped-by-STRINGdb.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有292行9列，以下预览的表格可能省略部分数据；表格含有289个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:ID-mapped-by-STRINGdb}ID mapped by STRINGdb}\tabularnewline
+\toprule
+hgnc\_\ldots{} & STRIN\ldots{} & ensem\ldots\ldots3 & ensem\ldots\ldots4 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_\ldots{} & STRIN\ldots{} & ensem\ldots\ldots3 & ensem\ldots\ldots4 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endhead
+ABCB1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 5243 & 7 & 87503017 & 87713323 & ATP b\ldots{}\tabularnewline
+ACE & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 1636 & 17 & 63477061 & 63498380 & angio\ldots{}\tabularnewline
+ACHE & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 43 & 7 & 10088\ldots{} & 10089\ldots{} & acety\ldots{}\tabularnewline
+ACSL1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 2180 & 4 & 18475\ldots{} & 18482\ldots{} & acyl-\ldots{}\tabularnewline
+ACTB & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 60 & 7 & 5526409 & 5563902 & actin\ldots{}\tabularnewline
+ADA & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 100 & 20 & 44584896 & 44652252 & adeno\ldots{}\tabularnewline
+ADA2 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 51816 & 22 & 17178790 & 17258235 & adeno\ldots{}\tabularnewline
+ADA2 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 51816 & 22 & 17178790 & 17258235 & adeno\ldots{}\tabularnewline
+ADAR & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 103 & 1 & 15458\ldots{} & 15462\ldots{} & adeno\ldots{}\tabularnewline
+ADD1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 118 & 4 & 2843844 & 2930076 & adduc\ldots{}\tabularnewline
+ADORA1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 134 & 1 & 20309\ldots{} & 20316\ldots{} & adeno\ldots{}\tabularnewline
+ADRB1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 153 & 10 & 11404\ldots{} & 11404\ldots{} & adren\ldots{}\tabularnewline
+AGXT & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 189 & 2 & 24086\ldots{} & 24088\ldots{} & alani\ldots{}\tabularnewline
+AKR1B10 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 57016 & 7 & 13452\ldots{} & 13454\ldots{} & aldo-\ldots{}\tabularnewline
+ALAD & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 210 & 9 & 11338\ldots{} & 11340\ldots{} & amino\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux7b5bux9009-hubgenes}{%
+\subsubsection{筛选 HubGenes}\label{ux7b5bux9009-hubgenes}}
+
+利用 Cytoscape 的插件 CytoHubba\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{1}} 提供的 MCC 算法计算
+Hub 基因得分（这里 MCC 算法被集成到 R 中，独立计算）。
+
+Figure \ref{fig:MCC-Top-30}为图MCC Top 30概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MCC-Top-30.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-36-35.png}
-\caption{Qiime2 quality control}\label{fig:qiime2-quality-control}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MCC-Top-30.pdf}
+\caption{MCC Top 30}\label{fig:MCC-Top-30}
 \end{center}
 
-Figure \ref{fig:gut-microbiome-abundance}为图gut microbiome abundance概览。
+Table \ref{tab:all-MCC-scores}为表格all MCC scores概览。
 
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-40-38.png})}
+\textbf{(对应文件为 \texttt{Figure+Table/all-MCC-scores.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有292行10列，以下预览的表格可能省略部分数据；表格含有289个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:all-MCC-scores}All MCC scores}\tabularnewline
+\toprule
+hgnc\_\ldots{} & MCC\_s\ldots{} & STRIN\ldots{} & ensem\ldots\ldots4 & ensem\ldots\ldots5 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_\ldots{} & MCC\_s\ldots{} & STRIN\ldots{} & ensem\ldots\ldots4 & ensem\ldots\ldots5 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endhead
+SRC & 1441311 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 6714 & HG410\ldots{} & 254187 & 315552 & SRC p\ldots{} & \ldots{}\tabularnewline
+HSP90AA1 & 1353642 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3320 & 14 & 10208\ldots{} & 10213\ldots{} & heat \ldots{} & \ldots{}\tabularnewline
+EGFR & 1328596 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 1956 & 7 & 55019017 & 55211628 & epide\ldots{} & \ldots{}\tabularnewline
+ITGB3 & 941356 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3690 & 17 & 47253827 & 47313743 & integ\ldots{} & \ldots{}\tabularnewline
+MET & 937035 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 4233 & 7 & 11667\ldots{} & 11679\ldots{} & MET p\ldots{} & \ldots{}\tabularnewline
+MAPK3 & 894838 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 5595 & 16 & 30114105 & 30123506 & mitog\ldots{} & \ldots{}\tabularnewline
+KRAS & 890536 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3845 & 12 & 25205246 & 25250936 & KRAS \ldots{} & \ldots{}\tabularnewline
+PTPN11 & 871709 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 5781 & 12 & 11241\ldots{} & 11250\ldots{} & prote\ldots{} & \ldots{}\tabularnewline
+HRAS & 849299 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3265 & HSCHR\ldots{} & 61883 & 66928 & HRas \ldots{} & \ldots{}\tabularnewline
+NRAS & 828404 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 4893 & 1 & 11470\ldots{} & 11471\ldots{} & NRAS \ldots{} & \ldots{}\tabularnewline
+ERBB2 & 531274 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 2064 & 17 & 39687914 & 39730426 & erb-b\ldots{} & \ldots{}\tabularnewline
+ACTB & 420124 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 60 & 7 & 5526409 & 5563902 & actin\ldots{} & \ldots{}\tabularnewline
+APP & 417130 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 351 & 21 & 25880535 & 26171128 & amylo\ldots{} & \ldots{}\tabularnewline
+SNCA & 416493 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 6622 & 4 & 89700345 & 89838315 & synuc\ldots{} & \ldots{}\tabularnewline
+MAPT & 406245 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 4137 & HSCHR\ldots{} & 760287 & 893653 & micro\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux901aux8defux5bccux96c6ux5206ux6790}{%
+\subsubsection{通路富集分析}\label{ux901aux8defux5bccux96c6ux5206ux6790}}
+
+使用 \texttt{clusterProfiler} 富集分析 top 30 的基因。
+
+Figure \ref{fig:GO-enrichment-of-MCC-top-30}为图GO enrichment of MCC top 30概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GO-enrichment-of-MCC-top-30.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-40-38.png}
-\caption{Gut microbiome abundance}\label{fig:gut-microbiome-abundance}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GO-enrichment-of-MCC-top-30.pdf}
+\caption{GO enrichment of MCC top 30}\label{fig:GO-enrichment-of-MCC-top-30}
 \end{center}
 
-\hypertarget{ux4ee3ux8c22ux7269ux5206ux6790}{%
-\subsection{代谢物分析}\label{ux4ee3ux8c22ux7269ux5206ux6790}}
+Figure \ref{fig:KEGG-enrichment-of-MCC-top-30}为图KEGG enrichment of MCC top 30概览。
 
-Figure \ref{fig:use-MetaboAnalyst-for-analysis-of-metabolites}为图use MetaboAnalyst for analysis of metabolites概览。
-
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-32-20.png})}
+\textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment-of-MCC-top-30.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-32-20.png}
-\caption{Use MetaboAnalyst for analysis of metabolites}\label{fig:use-MetaboAnalyst-for-analysis-of-metabolites}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-enrichment-of-MCC-top-30.pdf}
+\caption{KEGG enrichment of MCC top 30}\label{fig:KEGG-enrichment-of-MCC-top-30}
 \end{center}
 
-Figure \ref{fig:identify-compounds-with-SIRIUS-4-OPTIONAL}为图identify compounds with SIRIUS 4 OPTIONAL概览。
+\hypertarget{ux5206ux6790ux7cd6ux5c3fux75c5ux80beux75c5ux80a0ux9053ux5deeux5f02ux83ccux7fa4}{%
+\subsection{分析糖尿病肾病肠道差异菌群}\label{ux5206ux6790ux7cd6ux5c3fux75c5ux80beux75c5ux80a0ux9053ux5deeux5f02ux83ccux7fa4}}
 
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-28-15.png})}
+\hypertarget{ux9009ux62e9ux516cux5171ux6570ux636eux5e93ux7684-16s-rrna-ux6570ux636e}{%
+\subsubsection{选择公共数据库的 16s rRNA 数据}\label{ux9009ux62e9ux516cux5171ux6570ux636eux5e93ux7684-16s-rrna-ux6570ux636e}}
 
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-28-15.png}
-\caption{Identify compounds with SIRIUS 4 OPTIONAL}\label{fig:identify-compounds-with-SIRIUS-4-OPTIONAL}
+\begin{itemize}
+\tightlist
+\item
+  所选数据的文献来源\textsuperscript{\protect\hyperlink{ref-TheIntestinalZhang2023}{2}}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Title: The Intestinal Microbiota Composition in Early and Late Stages of Diabetic Kidney Disease
+  \item
+    PMID: 37341590
+  \item
+    BioProject: PRJNA824185
+  \end{itemize}
+\item
+  相关信息
+
+  \begin{itemize}
+  \tightlist
+  \item
+    引物：805R (5'-GACTACHVGGGTATCTAATCC-3') and 341F (5'-CCTACGGGNGGCWGCAG-3')
+  \end{itemize}
+\end{itemize}
+
+Table \ref{tab:metadata-of-the-sra-data-of-PRJNA824185}为表格metadata of the sra data of PRJNA824185概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-the-sra-data-of-PRJNA824185.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有108行47列，以下预览的表格可能省略部分数据；表格含有108个唯一`Run'。
+\end{tcolorbox}
 \end{center}
 
-\hypertarget{ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269ux6574ux5408}{%
-\subsection{肠道菌和代谢物整合}\label{ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269ux6574ux5408}}
+\begin{longtable}[]{@{}lllllllllllll@{}}
+\caption{\label{tab:metadata-of-the-sra-data-of-PRJNA824185}Metadata of the sra data of PRJNA824185}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+Run\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Relea\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+LoadDate\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+spots\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+bases\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+spots\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+avgLe\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+size\_MB\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Assem\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+downl\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Exper\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Libra\ldots\ldots12\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+Run\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Relea\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+LoadDate\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+spots\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+bases\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+spots\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+avgLe\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+size\_MB\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Assem\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+downl\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Exper\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Libra\ldots\ldots12\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+84114\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+42057000\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_1\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+85133\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+42566500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_10\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+83213\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+41772926\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+502\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+12\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_11\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+80525\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+40423550\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+502\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+12\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_12\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+83961\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+41980500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_2\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+81782\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+40891000\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_3\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+56959\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+28479500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+9\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_4\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+85406\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+42703000\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+15\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_5\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+87838\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+43919000\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+15\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_6\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+87784\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+43892000\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_7\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+85552\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+42776000\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_8\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+82562\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+41281000\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+12\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+C\_9\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+80309\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+40154500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+12\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+DM\_10\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+84125\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+42062500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+DM\_11\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRR18\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2023-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2022-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+82632\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+41316000\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+500\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+https\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SRX14\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+DM\_12\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
-Figure \ref{fig:correlation-of-metabolites-with-microbiota}为图correlation of metabolites with microbiota概览。
+\hypertarget{ux4e0bux8f7dux548cux9884ux5904ux7406-sra-ux6570ux636e}{%
+\subsubsection{下载和预处理 SRA 数据}\label{ux4e0bux8f7dux548cux9884ux5904ux7406-sra-ux6570ux636e}}
 
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 11-24-36.png})}
+使用 \texttt{sra-toolkit} 工具组的 \texttt{prefetch} 下载 SRA 数据，并用 \texttt{fastq-dump} 转化为 fastq 文件。
 
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 11-24-36.png}
-\caption{Correlation of metabolites with microbiota}\label{fig:correlation-of-metabolites-with-microbiota}
-\end{center}
+\hypertarget{qiime2}{%
+\subsubsection{Qiime2}\label{qiime2}}
 
-\hypertarget{ux836fux7269ux548cux80a0ux9053ux83ccux7684ux76f8ux4e92ux4f5cux7528}{%
-\subsection{药物和肠道菌的相互作用}\label{ux836fux7269ux548cux80a0ux9053ux83ccux7684ux76f8ux4e92ux4f5cux7528}}
+以下分析参照： \url{https://docs.qiime2.org/2023.7/tutorials/moving-pictures-usage/}
 
-\hypertarget{ux901aux8fc7ux673aux5668ux5b66ux4e60ux9884ux6d4b}{%
-\subsubsection{通过机器学习预测}\label{ux901aux8fc7ux673aux5668ux5b66ux4e60ux9884ux6d4b}}
+\hypertarget{ux5206ux6790ux7cd6ux5c3fux75c5ux80beux75c5ux7684ux80a0ux9053ux4ee3ux8c22ux7ec4ux5b66ux5deeux5f02}{%
+\subsection{分析糖尿病肾病的肠道代谢组学差异}\label{ux5206ux6790ux7cd6ux5c3fux75c5ux80beux75c5ux7684ux80a0ux9053ux4ee3ux8c22ux7ec4ux5b66ux5deeux5f02}}
 
-来自于综述文章，需要找到合适的方法。
-
-Figure \ref{fig:machine-learning-prediction-of-drug-towards-microbiota}为图machine learning prediction of drug towards microbiota概览。
-
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 13-38-39.png})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 13-38-39.png}
-\caption{Machine learning prediction of drug towards microbiota}\label{fig:machine-learning-prediction-of-drug-towards-microbiota}
-\end{center}
-
-\hypertarget{ux836fux7269ux88abux80a0ux9053ux83ccux4ee3ux8c22}{%
-\subsubsection{药物被肠道菌代谢}\label{ux836fux7269ux88abux80a0ux9053ux83ccux4ee3ux8c22}}
-
-Figure \ref{fig:drug-metabolized-by-microbiota}为图drug metabolized by microbiota概览。
-
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 13-13-48.png})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 13-13-48.png}
-\caption{Drug metabolized by microbiota}\label{fig:drug-metabolized-by-microbiota}
-\end{center}
-
-Figure \ref{fig:chemical-modification-by-microbiota}为图chemical modification by microbiota概览。
-
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 13-16-48.png})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 13-16-48.png}
-\caption{Chemical modification by microbiota}\label{fig:chemical-modification-by-microbiota}
-\end{center}
-
-\hypertarget{ux5206ux5b50ux76f8ux4f3cux6027}{%
-\subsubsection{分子相似性}\label{ux5206ux5b50ux76f8ux4f3cux6027}}
-
-Figure \ref{fig:molecule-similarity}为图molecule similarity概览。
-
-\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-08-24\ 12-52-35.png})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-08-24 12-52-35.png}
-\caption{Molecule similarity}\label{fig:molecule-similarity}
-\end{center}
-
-\hypertarget{ux5206ux5b50ux5bf9ux63a5}{%
-\subsection{分子对接}\label{ux5206ux5b50ux5bf9ux63a5}}
-
-Figure \ref{fig:autodock-vina-binding-affinity}为图autodock vina binding affinity概览。
-
-\textbf{(对应文件为 \texttt{../2023\_06\_30\_eval/figs/Docking\_Affinity.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{../2023_06_30_eval/figs/Docking_Affinity.pdf}
-\caption{Autodock vina binding affinity}\label{fig:autodock-vina-binding-affinity}
-\end{center}
+\hypertarget{ux5206ux6790ux5deeux5f02ux83ccux7fa4ux4e0eux4ee3ux8c22ux7269ux7684ux76f8ux5173ux6027}{%
+\subsection{分析差异菌群与代谢物的相关性}\label{ux5206ux6790ux5deeux5f02ux83ccux7fa4ux4e0eux4ee3ux8c22ux7269ux7684ux76f8ux5173ux6027}}
 
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
@@ -393,38 +1050,11 @@ Figure \ref{fig:autodock-vina-binding-affinity}为图autodock vina binding affin
 
 \hypertarget{refs}{}
 \begin{cslreferences}
-\leavevmode\hypertarget{ref-NeuronSpecificMurtaz2022}{}%
-1. Murtaza, N. \emph{et al.} Neuron-specific protein network mapping of autism risk genes identifies shared biological mechanisms and disease-relevant pathologies. \emph{Cell Reports} \textbf{41}, (2022).
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+1. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
 
-\leavevmode\hypertarget{ref-MicrobiomeDataRaiS2021}{}%
-2. Rai, S. N. \emph{et al.} Microbiome data analysis with applications to pre-clinical studies using qiime2: Statistical considerations. \emph{Genes \textbackslash\&amp; Diseases} \textbf{8}, (2021).
-
-\leavevmode\hypertarget{ref-LongitudinalInWang2019}{}%
-3. Wang, X. \emph{et al.} Longitudinal investigation of the swine gut microbiome from birth to market reveals stage and growth performance associated bacteria. \emph{Microbiome} \textbf{7}, (2019).
-
-\leavevmode\hypertarget{ref-Sirius4ARapDuhrko2019}{}%
-4. Dührkop, K. \emph{et al.} SIRIUS 4: A rapid tool for turning tandem mass spectra into metabolite structure information. \emph{Nature Methods} \textbf{16}, 299--302 (2019).
-
-\leavevmode\hypertarget{ref-EfsAnEnsemblNeuman2017}{}%
-5. Neumann, U., Genze, N. \& Heider, D. EFS: An ensemble feature selection tool implemented as r-package and web-application. \emph{BioData Mining} \textbf{10}, 21 (2017).
-
-\leavevmode\hypertarget{ref-MetaboanalystrPang2020}{}%
-6. Pang, Z., Chong, J., Li, S. \& Xia, J. MetaboAnalystR 3.0: Toward an optimized workflow for global metabolomics. \emph{Metabolites} (2020) doi:\href{https://doi.org/10.3390/metabo10050186}{10.3390/metabo10050186}.
-
-\leavevmode\hypertarget{ref-DisruptedSpermZhang2021}{}%
-7. Zhang, T. \emph{et al.} Disrupted spermatogenesis in a metabolic syndrome model: The role of vitamin a metabolism in the guttestis axis. \emph{Gut} \textbf{71}, (2021).
-
-\leavevmode\hypertarget{ref-PredictingDrugMccoub2022}{}%
-8. McCoubrey, L. E., Gaisford, S., Orlu, M. \& Basit, A. W. Predicting drug-microbiome interactions with machine learning. \emph{Biotechnology Advances} \textbf{54}, (2022).
-
-\leavevmode\hypertarget{ref-MachineLearninMccoub2021}{}%
-9. McCoubrey, L. E., Elbadawi, M., Orlu, M., Gaisford, S. \& Basit, A. W. Machine learning uncovers adverse drug effects on intestinal bacteria. \emph{Pharmaceutics} \textbf{13}, (2021).
-
-\leavevmode\hypertarget{ref-PersonalizedMaJavdan2020}{}%
-10. Javdan, B. \emph{et al.} Personalized mapping of drug metabolism by the human gut microbiome. \emph{Cell} \textbf{181}, (2020).
-
-\leavevmode\hypertarget{ref-MolecularSimilGandin2022}{}%
-11. Gandini, E. \emph{et al.} Molecular similarity perception based on machine-learning models. \emph{International Journal of Molecular Sciences} \textbf{23}, (2022).
+\leavevmode\hypertarget{ref-TheIntestinalZhang2023}{}%
+2. Zhang, L. \emph{et al.} The intestinal microbiota composition in early and late stages of diabetic kidney disease. \emph{Microbiology Spectrum} \textbf{11}, (2023).
 \end{cslreferences}
 
 \end{document}

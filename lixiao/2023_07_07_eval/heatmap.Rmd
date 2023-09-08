@@ -1,0 +1,22 @@
+
+
+## Test
+
+```{r}
+hps <- new_heatdata(dge)
+hps <- set_xmeta(hps)
+hps@data_long %<>% dplyr::mutate(gene = as.character(gene))
+ymeta <- dplyr::distinct(hps@data_long, gene)
+ymeta <- dplyr::slice(ymeta, sample(1:nrow(ymeta), 60))
+hps@ymeta <- ymeta
+hps@ymeta %<>% dplyr::mutate(module = sample(n(m, 5), nrow(hps@ymeta), T))
+hps <- callheatmap(hps)
+draw(hps)
+
+draw_genetree(hps)
+draw_sampletree(hps)
+
+
+```
+
+

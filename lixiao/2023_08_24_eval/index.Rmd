@@ -1,0 +1,314 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+# p.route
+```
+
+# 材料和方法 {#methods}
+
+# 分析结果 {#results}
+
+## 网络药理学分析主要活性成分
+
+```{r}
+herbs <- c("丹参", "大黄", "太子参", "黄连", "牛膝", "制半夏", "红花", "茯苓", "陈皮", "甘草")
+hb <- job_herb(herbs)
+hb <- step1(hb)
+hb <- step2(hb)
+hb <- step3(hb, "diabetic nephropathy")
+
+hb <- readRDS("./hb3.rds")
+```
+
+### 从 HERB 网站获取中药和成分以及靶点数据
+
+HERB <http://herb.ac.cn/>
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCM-information
+autor(hb@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCM-compounds
+autor(hb@tables$step1$herbs_compounds)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| compounds-targets
+autor(hb@tables$step2$compounds_targets)
+```
+
+将 Tab. \@ref(tab:compounds-targets) 的基因信息注释：
+
+```{r eval = T, echo = F, results = "asis"}
+#| compounds-targets-with-annotation-of-biomaRt-of-ensembl-dataset
+autor(hb@tables$step3$compounds_targets_annotation)
+```
+
+### 从 Genecards 获取疾病的靶点数据
+
+Genecards <https://www.genecards.org/>
+
+```{r eval = T, echo = F, results = "asis"}
+#| desease-targets-of-diabetic-nephropathy
+autor(hb@params$disease_targets)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| desease-targets-with-annotation-of-biomaRt-of-ensembl-dataset
+autor(hb@tables$step3$disease_targets_annotation)
+```
+
+### 数据透视
+
+以下，以 UpSet 图展示各个数据集之间的交集。
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersect-of-target-genes-of-TCMs
+autor(hb@plots$step3$p.herbs_targets, width = 12)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersect-of-compounds-of-TCMs
+autor(hb@plots$step3$p.herbs_compounds, width = 10)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersect-of-targets-of-compounds-and-disease-targets
+autor(hb@plots$step3$p.targets_disease)
+```
+
+### 以 STRINGdb 构建 PPI 网络
+
+以 Fig. \@ref(fig:intersect-of-targets-of-compounds-and-disease-targets) 中的四个数据集的交集，以 `STRINGdb` 创建 PPI 网络。
+
+由于 PPI 网络包含过多节点，这里不展示 PPI 图（较为混乱）。
+
+```{r}
+options(step_check = F)
+st <- asjob_stringdb(hb)
+st <- step1(st, 30)
+plots(st)[[1]]
+plots(st)[[2]]
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ID-mapped-by-STRINGdb
+autor(st@tables$step1$mapped)
+```
+
+### 筛选 HubGenes
+
+利用 Cytoscape 的插件 CytoHubba [@CytohubbaIdenChin2014] 提供的 MCC 算法计算
+Hub 基因得分（这里 MCC 算法被集成到 R 中，独立计算）。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MCC-Top-30
+autor(st@plots$step1$p.mcc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-MCC-scores
+autor(st@tables$step1$hub_genes)
+```
+
+### 通路富集分析
+
+使用 `clusterProfiler` 富集分析 top 30 的基因。
+
+```{r}
+en <- asjob_enrich(st)
+en <- step1(en)
+plots(en)[[2]]
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GO-enrichment-of-MCC-top-30
+autor(en@plots$step1$p.go$hub_genes)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-enrichment-of-MCC-top-30
+autor(en@plots$step1$p.kegg$hub_genes)
+```
+
+## 分析糖尿病肾病肠道差异菌群
+
+### 选择公共数据库的 16s rRNA 数据
+
+- 所选数据的文献来源[@TheIntestinalZhang2023]
+    - Title: The Intestinal Microbiota Composition in Early and Late Stages of Diabetic Kidney Disease
+    - PMID: 37341590
+    - BioProject: PRJNA824185
+- 相关信息
+    - 引物：805R (5'-GACTACHVGGGTATCTAATCC-3') and 341F (5'-CCTACGGGNGGCWGCAG-3')
+
+```{r}
+#| sra-info
+primer_f <- "CCTACGGGNGGCWGCAG"
+primer_r <- "GACTACHVGGGTATCTAATCC"
+
+sra <- job_sra("PRJNA824185")
+sra <- step1(sra)
+sra <- step2(sra)
+sra <- step3(sra)
+sra <- step4(sra)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-the-sra-data-of-PRJNA824185
+autor(sra@params$info)
+```
+
+### 下载和预处理 SRA 数据
+
+使用 `sra-toolkit` 工具组的 `prefetch` 下载 SRA 数据，并用 `fastq-dump` 转化为 fastq 文件。
+
+实际使用的数据为：
+
+- Control 组
+- Diabetic Nephropathy 组
+
+```{r}
+sra0 <- sra
+sra0@params$metadata %<>% filter(!grepl("DM", `sample-id`))
+sra0@params$metadata %<>% mutate(group = stringr::str_extract(`sample-id`, "[A-Z]+"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-used-16s-rRNA-data
+autor(sra0@params$metadata, key = "group")
+```
+
+### 使用 Qiime2 作为上游分析
+
+以下分析参照[@ReproducibleIBolyen2019; @TheBiologicalMcdona2012; @Dada2HighResCallah2016; @ErrorCorrectinHamday2008; @MicrobialCommuHamday2009; @]： <https://docs.qiime2.org/2023.7/tutorials/moving-pictures-usage/>
+
+- importing data
+- Demultiplexing sequences
+- Sequence quality control and feature table construction
+    - DADA2
+- FeatureTable and FeatureData summaries
+- Generate a tree for phylogenetic diversity analyses
+- Alpha and beta diversity analysis
+- Alpha rarefaction plotting
+- Taxonomic analysis
+- Differential abundance testing with ANCOM
+
+```{r}
+#| try-first
+qi <- asjob_qiime(sra0, "sra_data")
+qi <- step1(qi)
+qi <- step2(qi, 250, 250)
+qi <- step3(qi)
+qi <- step4(qi, 3697)
+qi <- step5(qi, 19116)
+qi <- step6(qi)
+qi <- step7(qi)
+saveRDS(qi, "qi_first.rds")
+```
+
+```{r}
+#| try-second
+qi <- asjob_qiime(sra0)
+qi <- step1(qi)
+qi <- step2(qi, 250, 250)
+qi <- step3(qi)
+qi <- step4(qi, 5000)
+qi <- step5(qi, 10000)
+qi <- step6(qi)
+qi <- step7(qi)
+```
+
+### 使用 `MicrobiotaProcess` 作为下游分析（作图）
+
+关于 LDA[@MicrobiomeDataRaiS2021]
+
+```{r}
+#| run
+options(step_check = F)
+mp <- asjob_mp(qi)
+mp0 <- step1(mp)
+mp0 <- step2(mp0)
+mp0 <- step3(mp0)
+mp0 <- step4(mp0)
+
+mp0@plots$step4$p.box
+saveRDS(mp0, "mp0.rds")
+```
+
+## 分析糖尿病肾病的肠道代谢组学差异
+
+### 数据来源
+
+```{r}
+cdRun("wget http://bio-annotation.cn/gutmgene/public/res/gutMGene-human.xlsx", path = "../")
+cdRun("wget http://bio-annotation.cn/gutmgene/public/res/Gut%20Microbe%20and%20Metabolite-human.txt", path = "../")
+mic2meta <- ftibble("../Gut Microbe and Metabolite-human.txt")
+```
+
+Article:
+Serum integrative omics reveals the landscape of human diabetic kidney disease
+<https://doi.org/10.1016/j.molmet.2021.101367>
+[MSV000087487](https://massive.ucsd.edu/ProteoSAFe/dataset.jsp?task=1c497254e25e4a08a664a3f675b0cfe7)
+
+```{r}
+# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7759603/
+# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7759603/bin/Data_Sheet_1.XLSX
+
+# https://pubmed.ncbi.nlm.nih.gov/35615098/
+# https://figshare.com/ndownloader/files/33926873?private_link=02319eeb01c363a87928
+```
+
+## 分析差异菌群与代谢物的相关性
+
+
+
+```{r}
+#| resource
+# http://bio-annotation.cn/gutmgene/resource.dhtml
+```
+
+```{r}
+# https://pubmed.ncbi.nlm.nih.gov/33177712/
+# from metabolites to microbiome https://pubmed.ncbi.nlm.nih.gov/31477923/
+```
+
+## 结合药物成分筛选目标菌群和相关代谢物
+
+## 代谢小分子靶点蛋白分析（这个看能不能用分子对接的方式获取）
+
+## 广泛的靶点蛋白与糖尿病肾病差异基因取交集
+
+# 结论 {#dis}

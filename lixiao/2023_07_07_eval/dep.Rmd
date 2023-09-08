@@ -1,0 +1,87 @@
+---
+---
+
+## Limma
+
+keywords: Keloids
+
+<GSE113619>
+
+Time series integrative analysis of RNA-Seq and miRNA expression data reveals
+key biologic pathways during keloid formation [RNA-seq]
+
+```{r}
+## metadata
+gse <- "GSE113619"
+about <- GEOquery::getGEO(gse)
+metas <- get_metadata.geo(about)
+prod <- get_prod.geo(metas)
+metadata <- do.call(rbind, metas$main)
+metadata <- dplyr::mutate(metadata, time.point.ch1 = make.names(time.point.ch1))
+```
+
+```{r eval = T, echo = F}
+prod
+```
+
+```{r}
+## download samples data
+GEOquery::getGEOSuppFiles(gse)
+lapply(list.files(gse, "\\.gz$", full.names = T), gunzip)
+files <- list.files(gse, "\\.csv$", full.names = T)
+data <- ftibble(files)
+data <- data[[ 2 ]]
+```
+
+```{r}
+## get entriz id annotation
+mart <- new_biomart()
+anno <- filter_biomart(mart, general_attrs()[-4], "entrezgene_id", data$V1)
+anno <- dplyr::distinct(anno, entrezgene_id, .keep_all = T)
+anno <- dplyr::relocate(anno, entrezgene_id)
+```
+
+```{r}
+## as DGEList
+dge <- new_dge(metadata[, 1:5], data, anno, "entrezgene_id")
+```
+
+```{r}
+## filter low expression
+group. <- paste0(dge$samples$diagnosis.ch1, "_", dge$samples$time.point.ch1)
+dge <- filter_low.dge(dge, group.)
+```
+
+```{r}
+## nomalization genes
+design <- mx(~ 0 + group.)
+## ELIST
+dge <- norm_genes.dge(dge, design)
+```
+
+```{r}
+## pca
+data_long <- as_data_long(dge)
+pca <- pca_data.long(data_long)
+plot_andata(pca)
+```
+
+```{r}
+## design matrix and contrast matrix
+contr <- limma::makeContrasts(
+  keloid_day.0 - healthy_day.0,
+  keloid_day.42 - healthy_day.42,
+  keloid_day.42 - keloid_day.0 - (healthy_day.42 - healthy_day.0),
+  levels = design
+)
+```
+
+```{r}
+## fit
+fit <- diff_test(dge, design, contr)
+tops <- extract_tops(fit)
+```
+
+## WGCNA
+
+文献[@WgcnaAnRPacLangfe2008]（<https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/>）。

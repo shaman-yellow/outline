@@ -1,0 +1,247 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析内容评估
+
+筛出（瘢痕增生）能够与TCF-AS1结合又能与TCF4结合的RNA结合蛋白，关于预期结果和交付内容的补充：
+
+1. 初步处理客户提供的数据（由于客户未提供数据，情况不明）。
+2. 使用客户提供的数据筛选基因（预计使用WGCNA [@WgcnaAnRPacLangfe2008] 的方法，但客户未提供数据，情况不明），与 TCF4-AS1 lncRNA 和 TCF4mRNA 具有共表达关系。若使用WGCNA分析，将得到相关分析结果的可视化图和表格（请参考 \@ref(demo)）。
+3. 视情况选择合适的预测工具[@ICatIRapidArmaos2021; @RbpTstlIsATPeng2022; @IntegratingTheSuYu2019; @RckAccurateAOrenst2016]，预测蛋白和RNA的结合程度，并可视化为图表。
+4. 最后整理成完整分析报告（形式为本 pdf 文档），并附含上述分析的图表信息，参考文献等。
+
+# 分析结果 {#results}
+
+## 下载参考基因组注释文件
+
+下载 cDNA 和 ncRNA 参考基因注释。
+<https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/>
+
+```{r}
+#| ref-cdna
+cdRun("wget https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz", path = "../")
+cdRun("wget https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/ncrna/Homo_sapiens.GRCh38.ncrna.fa.gz", path = "../")
+```
+
+## fastq 预处理
+
+### 数据质控
+
+使用fastp去接头和去低质量的碱基
+
+```{r}
+#| fastp-qc
+fastp_pair("~/disk_sda1/L49-3 原始数据Raw")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| reports-fastq-files-processed-with-fastp
+autor("./fastp_report", abs = "此为 fastp 处理时生成的报告文件。")
+```
+
+## 使用 kallisto 比对 fastq 到参考基因座
+
+kallisto 提供了快速且准确的 fastq 比对到参考基因座的方法[@NearOptimalPrBray2016] (<http://pachterlab.github.io/kallisto/manual.html>)。
+
+```{r}
+#| hg38-index
+kall_index("../Homo_sapiens.GRCh38.cdna.all.fa.gz")
+kall_index("../Homo_sapiens.GRCh38.ncrna.fa.gz", "../hg38_ncrna.idx")
+```
+
+### 鉴定 mRNA
+
+使用 kallisto 将 fastq 与 hg38 的 cDNA 数据比对。
+
+```{r}
+#| mRNA
+kall_quant("~/disk_sda1/L49-3 原始数据Raw/fastp_qc", index = "~/outline/lixiao/hg38_mrna.idx")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| refer-to-mRNA
+autor("./quant_hg38_mrna", abs = "主要为子目录下的 abundance.tsv 文件。")
+```
+
+### 鉴定 ncRNA
+
+使用 kallisto 将 fastq 与 hg38 的 ncRNA 数据比对。
+
+```{r}
+#| ncRNA
+kall_quant("~/disk_sda1/L49-3 原始数据Raw/fastp_qc", index = "~/outline/lixiao/hg38_ncrna.idx")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| refer-to-ncRNA
+autor("./quant_hg38_ncrna", abs = "主要为子目录下的 abundance.tsv 文件。")
+```
+
+## 差异分析
+
+### 读取并合并不同样本 RNA 定量数据
+
+```{r}
+#| read-rna
+lst_mrna <- read_kall_quant("./quant_hg38_mrna")
+lst_ncrna <- read_kall_quant("./quant_hg38_ncrna")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| merged-mrna
+autor(lst_mrna$counts)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| merged-ncrna
+autor(lst_ncrna$counts)
+```
+
+### 合并 mRNA 和 ncRNA 数据
+
+在这里，将 mRNA 数据和 ncRNA 数据按照列（样品）合并。
+
+```{r}
+#| merge-ncrna-and-mrna
+lst_merged <- list(
+  counts = rbind(lst_mrna$counts, lst_ncrna$counts),
+  metadata = select(lst_mrna$metadata, sample)
+)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| merged-data-of-mRNA-and-ncRNA
+autor(lst_merged$counts)
+```
+
+### 使用 `biomaRt` 获取基因注释
+
+使用 R包 `biomaRt` 获取 mRNA 和 ncRNA 的注释。
+
+```{r}
+#| biomart
+mart <- new_biomart()
+genes_merged <- filter_biomart(mart, general_attrs(), "ensembl_transcript_id", lst_merged$counts$target_id)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| annotation-mRNA
+autor(genes_merged)
+```
+
+### 使用 `limma` 差异分析 {#diff}
+
+```{r}
+fun <- function(data) {
+  mutate(data, group = stringr::str_extract(sample, "^[A-Z]+"),
+    group = dplyr::recode(group, CT = "control", CUR = "treat"))
+}
+lst_merged$metadata %<>% fun()
+```
+
+```{r}
+#| diff-test
+step0("lim")
+dge <- new_dge(lst_merged$metadata, lst_merged$counts, genes_merged)
+lm <- job_limma(dge)
+lm <- step1(lm)
+lm <- step2(lm, treat - control, use = "P.Value", use.cut = .05, cut.fc = .3)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| filter-low-expression-genes
+autor(lm@plots$step1$p.filter)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| nomalize-genes-expression
+autor(lm@plots$step1$p.norm)
+```
+
+线形回归拟合 `model.matrix(~ 0 + group)`[@LimmaPowersDiRitchi2015; @AGuideToCreaLawC2020]，并统计检验。
+
+```{r eval = T, echo = F, results = "asis"}
+#| linear-regression-and-contrast-fit-results
+autor(lm@tables$step2$tops[[1]], abs = "根据 P.Value (0.05) 和 |log2FC| (0.3) 过滤得到结果。")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| volcano-plot-of-differential-expression-genes
+autor(lm@plots$step2$p.valcano[[1]])
+```
+
+## 基因共表达分析
+
+### 建立基因共表达模块
+
+将上述（\@ref(diff), Fig. \@ref(fig:nomalize-genes-expression)）
+标准化过的**差异表达**基因数据
+(Tab. \@ref(tab:linear-regression-and-contrast-fit-results))
+用于 WGCNA 分析[@WgcnaAnRPacLangfe2008]。
+
+```{r}
+step0("wg")
+wg <- asjob_wgcna(lm)
+wg <- step1(wg)
+wg <- step2(wg)
+wg <- step3(wg)
+wg <- step4(wg, 3)
+saveRDS(wg, "wg4.rds")
+wg@params$allTraits$noise <- rnorm(6)
+wg@step <- 5L
+wg <- step6(wg)
+
+mm <- tbmerge(wg@tables$step6$mm, genes_merged, by.x = "gene", by.y = "ensembl_transcript_id", all.x = T)
+mm_tcf4 <- filter(mm, grepl("TCF4", hgnc_symbol))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| cluster-sample
+autor(wg@plots$step1$raw_sample_tree)
+```
+
+由于样本数量较少，没有明显合适的 'soft threshold'。这里，选择 'soft threshold' 为 3。
+
+```{r eval = T, echo = F, results = "asis"}
+#| pick-soft-thereshold
+autor(wg@plots$step3$sft)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gene-modules
+autor(wg@plots$step4$net)
+```
+
+### 共表达模块和基因的关联性
+
+计算 'gene module' 和 genes 之间的关联性（module membership）。
+
+```{r}
+#| module-membership
+autor(mm)
+```
+
+### TCF4 所在的基因表达模块
+
+确认TCF4 或 TCF-AS1 所在基因模块。
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCF4-in-modules-memberships
+autor(mm_tcf4)
+```
+

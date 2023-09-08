@@ -1,0 +1,406 @@
+---
+title: Results of Molecular Docking
+author: Huang Lichuang in Wie-Biotech
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: true
+    toc_depth: 3
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatletter
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+---
+
+
+```{r setup, include = F}
+knitr::opts_chunk$set(echo = F, eval = F, message = F)
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+```
+
+# 设计流程
+
+## 已有数据
+
+已筛选的Hubgenes；药方的中药和相应成分，以及对应靶点。
+
+## 分子对接
+
+步骤：
+
+- 从已有数据得到成分和靶点数据，根据筛选的Hubgenes预处理，得到可能的药物分子和靶点的结合。
+- 从Uniprot 网站（<https://www.uniprot.org/>）或 RCSB PDB（<https://www.rcsb.org/>）获取靶点蛋白的结构。
+- 从PubChem <https://pubchem.ncbi.nlm.nih.gov/> 获取药物分子结构。
+- 以AutoDock Vina 1.2.0 [@AutodockVina1Eberha2021] （<http://vina.scripps.edu>），在Python下使用，批量对接多个分子和靶点。
+- 将结果可视化或输出成表格。
+
+# 分析和结果
+
+以下分析和上述设计思路可能有所不同。
+
+除了AutoDock Vina （<http://vina.scripps.edu>）, 还会用到 ADFR 工具组（<https://ccsb.scripps.edu/adfr/>），Python 的 Meeko ，或其它工具。
+
+流程请参考文献[@ComputationalPForli2016] 或者 <https://autodock-vina.readthedocs.io/en/latest/docking_basic.html>。
+
+## 中药和成分和靶点数据的预处理
+
+### 整理来自 HERB 网站的数据
+
+从网站 <http://herb.ac.cn/Download/> 获取成分信息。
+
+```{r}
+db <- get_herb_data()
+mccTops <- ftibble("./04_MCC_TOP10.csv", skip = 1)
+```
+
+```{r}
+sHerbs <- c("天麻", "钩藤", "石决明", "栀子", "黄芩", "川牛膝", "杜仲", "益母草", "桑寄生", "夜交藤", "茯苓")
+sHerbs.info <- dplyr::filter(db$herb, Herb_cn_name %in% !!sHerbs)
+sHerbs.info <- dplyr::filter(sHerbs.info, Herb_pinyin_name != "WEI YI MU CAO")
+```
+
+```{r}
+## The following need to previously install and configure: Selenium (java tools)
+link <- start_drive()
+## herbs compounds
+download_herbCompounds(link, sHerbs.info$Herb_)
+data.cpds <- moveToDir_herbs(sHerbs.info$Herb_)
+## herbs target
+download_herbTargets(link, sHerbs.info$Herb_)
+data.tgts <- moveToDir_herbs(sHerbs.info$Herb_, to = "herbs_target")
+## end
+end_drive()
+```
+
+药方的化合物成分信息概览，共有`r colSum(data.cpds$Ingredient.id)`个唯一成分：
+**(对应文件为 `./all_ingredients_info.xlsx`)**
+
+```{r}
+openxlsx::write.xlsx(data.cpds, "all_ingredients_info.xlsx")
+```
+
+```{r eval = T, echo = F}
+data.cpds
+```
+
+### 根据 BindingDB 数据库筛选药物和靶点的结合可能
+
+BindingDB 数据库记录了化合物和成分的亲和信息： <https://www.bindingdb.org/rwd/bind/chemsearch/marvin/Download.jsp>。
+
+下载相关数据，以供后续筛选化合物和靶点。
+
+```{bash}
+wget https://www.bindingdb.org/bind/downloads/BindingDB_All_2D_202307.sdf.zip -O ../BindingDB_All_2D_202307.sdf.zip
+wget https://www.bindingdb.org/bind/downloads/BindingDB_All_202307.tsv.zip -O ../BindingDB_All_202307.tsv.zip
+wget https://www.bindingdb.org/bind/BindingDB_UniProt.txt -O ../BindingDB_UniProt.txt
+unzip ../BindingDB_All_202307.tsv.zip -d ../
+```
+
+## 获取药物分子结构数据和预处理
+
+### 根据 BindingDB 提供的结合可能筛选药物分子 {#par}
+
+PubChem CID 连接到 PubChem 数据库[@PubchemSubstanKimS2015]。
+
+根据整理的药方成分的 PubChem CID 信息和 BindingDB 数据的 PubChem CID 信息过滤化合物。
+
+```{r}
+info_cpds <- merge(data.cpds, db$component, all.x = T, by.x = "Ingredient.id", by.y = "Ingredient_id")
+info_cpds <- tibble::as_tibble(info_cpds)
+info_cpds <- dplyr::filter(info_cpds, !is.na(PubChem_id))
+meta_cid <- dplyr::select(info_cpds, Ingredient.id, Ingredient.name, PubChem_id)
+meta_cid <- dplyr::distinct(meta_cid)
+cids <- unique(meta_cid$PubChem_id)
+```
+
+**注意：** 药方统计有`r colSum(data.cpds$Ingredient.id)`个唯一成分，而包含PubChem ID 的化合物共有`r colSum(cids)`个。
+
+以下为包含PubChem ID的化合物的概览：
+
+```{r eval = T, echo = F}
+meta_cid
+```
+
+这些数据结合 BindingDB 数据进一步过滤。
+
+```{r}
+bdb <- ld_cutRead("../BindingDB_All.tsv",
+  c("PubChem CID", "PDB ID(s) of Target Chain"))
+bdb <- dplyr::filter(bdb, `PubChem CID` %in% meta_cid$PubChem_id)
+colnames(bdb) <- c("PubChem_id", "pdb_id")
+bdb.slice <- bdb
+data.table::fwrite(bdb.slice, "BindingDB_data_filter_by_herb_compounds.csv")
+```
+
+以下为 BindingDB 中记录有上述化合物的条目，包含了靶点蛋白的信息：
+**(对应文件为 `BindingDB_data_filter_by_herb_compounds.csv`)**
+
+```{r eval = T, echo = F}
+bdb.slice
+```
+
+将上述数据结合 MCC top 10 靶点蛋白的注释数据（包含PDB ID）进一步过滤。
+
+(靶点蛋白的 PDB ID 的获取，参考 \@ref(pdbID))
+
+```{r}
+bdb <- nl(bdb$PubChem_id, strsplit(bdb$pdb_id, ","))
+bdb <- lst_clear0(tmp)
+## anno
+bdb <- lapply(bdb, function(v) v[ v %in% anno$pdb ])
+bdb <- lst_clear0(bdb)
+cids <- names(bdb)
+```
+
+现在，已有化合物（PubChem CID）和对应的靶点蛋白（PDB ID）的信息：
+
+```{r eval = T, echo = F}
+bdb
+```
+
+### 获取化合物分子的 SDF 数据 
+
+通过 PubChem ID 使用 PubChem API 获取官方 .sdf 文件（<https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest/>）[@AnUpdateOnPuKimS2018]。
+
+```{r}
+sdfFile <- query_sdfs(unique(cids), curl_cl = 3)
+```
+
+所有 .sdf 文件被整合。
+**(对应文件为 `./SDFs/all_compounds.sdf`)**
+
+### 预处理化合物的结构数据
+
+使用 Python 的 Meeko 转化 .sdf 数据为 .pdbqt。
+
+```{r}
+res.pdbqt <- sdf_as_pdbqts(sdfFile) 
+res.ligand <- nl(res.pdbqt$pdbqt.cid, res.pdbqt$pdbqt)
+```
+
+共有 `r res.pdbqt$pdbqt.num` 个化合物被成功转化。
+**(对应文件为 `./pdbqt`)**
+
+## 获取靶点蛋白数据
+
+### 获取 MCC top 10 蛋白的PDB ID {#pdbID}
+
+使用 R `BiomaRt` 获取MCC 筛选的Top 10 蛋白的 PDB ID。
+
+```{r}
+mart <- new_biomart()
+attrs <- list_attrs(mart)
+pos <- grep("pdb", attrs$name)
+attr <- attrs[pos, ]
+```
+
+```{r}
+anno <- filter_biomart(mart, c(
+"hgnc_symbol", "pdb"), "hgnc_symbol",
+  mccTops$Name)
+## anno <- dplyr::relocate(anno, hgnc_symbol, pdb)
+anno <- dplyr::filter(anno, pdb != "")
+anno <- dplyr::mutate(anno, pdb = tolower(pdb))
+data.table::fwrite(anno, "MCC_tops_PDB_ID.csv")
+```
+
+结果如下：
+**(对应文件为 `MCC_tops_PDB_ID.csv`)**
+
+```{r eval = T, echo = F}
+anno
+```
+
+**注意**，一个蛋白对应多种结构，对应有多个 PDB ID：
+
+```{r eval = T, echo = F}
+anno.show <- split(anno, anno$hgnc_symbol)
+anno.show <- sapply(mccTops$Name,
+  function(name) anno.show[[ name ]], simplify = F)
+show_multi(anno.show, "pdb", "Protein")
+```
+
+### 根据 BindingDB 数据提供的结合可能筛选靶点蛋白结构
+
+由于同一个蛋白对应多个名称，根据 BindingDB 提供的结合可能筛选，减少计算量。
+
+此步骤已经在 \@ref{par} 中同步实现。
+
+### 获取靶点蛋白的 PDB 文件
+
+使用 RCSB PDB 提供的 API 获取 .pdb 文件。共有`r length(pdb.files)`个。
+<https://www.rcsb.org/docs/programmatic-access/batch-downloads-with-shell-script>
+
+```{r}
+pdb.files <- get_pdb(unique(unlist(bdb)))
+```
+
+**(对应文件为 `./protein_pdb`)**
+
+### 根据种族过滤靶点蛋白
+
+PDB 文件中记录有种族信息，根据种族（人种）过滤靶点蛋白（Regex match: "ORGANISM_SCIENTIFIC: HOMO SAPIENS;"）。
+
+```{r}
+pdb.files <- filter_pdbs(pdb.files)
+```
+
+过滤前有 `r length(anno$pdb)` 个文件，过滤后有 `r length(pdb.files)` 个文件。
+
+### 预处理靶点蛋白 PDB 文件
+
+使用 ADFR 工具给受体蛋白加氢并转化为 .pdbqt 文件。成功获取`r length(res.receptor)`个文件。
+
+**(对应文件为 `./protein_pdbqt`)**
+
+```{r}
+res.receptor <- prepare_receptor(pdb.files)
+```
+
+## 使用AutoDock Vina分子对接
+
+### 所有分子和靶点蛋白结合的可能性
+
+```{r}
+show.layout <- tibble::tibble(
+  Ligand = rep(names(bdb), lengths(bdb)),
+  Receptor = tolower(unlist(bdb, use.names = F))
+)
+layout <- apply(show.layout, 1, unname, simplify = F)
+```
+
+结合 \@ref(par) 得到的对应关系以及最终获得的化合物和靶点蛋白的 .pdbqt 文件，共有以下`r length(layout)`结合可能：
+
+```{r eval = T, echo = F}
+show.layout
+```
+
+### 使用 AutoDock Vina 分子对接 
+
+```{r}
+n <- 0
+file.remove("/tmp/res.log")
+pbapply::pblapply(layout,
+  function(v) {
+    lig <- res.ligand[[ v[1] ]]
+    recep <- res.receptor[[ tolower(v[2]) ]]
+    n <<- n + 1
+    vina_limit(lig, recep, 3600)
+  }
+)
+file.copy("/tmp/res.log", "all_vina_summary.txt", T)
+```
+
+该步骤包括使用 ADFR 工具计算 affinity maps <https://ccsb.scripps.edu/adfr/>。
+
+尽管已经通过多种方式筛选了化合物和蛋白的结合，依然有 `r length(layout)` 种可能性。
+
+vina 的一次计算时间约 0.5 分钟到数小时不等；此处设定了计算时间限制（3600 秒），超出时间限制将被强制取消。
+
+所有可能都被计算，中途可能强制取消。结果文件和计算需要的分子或蛋白信息都被存储。
+**(对应文件为 `./vina_space`)**
+子目录的命名规则为："PubChem ID" + "\_into\_" + "PDB ID"。
+子目录下的更多文件的解释请参考：<https://autodock-vina.readthedocs.io/en/latest/docking_basic.html>
+
+在`r length(layout)`次计算中：
+
+- 成功计算（`r nrow(res_dock)`次）
+- 或时间限制或软件原因失败（`r length(layout) - nrow(res_dock)`次）。
+
+```{r}
+res_dock <- summary_vina <- summary_vina()
+res_dock <- dplyr::mutate(res_dock, PubChem_id = as.integer(PubChem_id))
+res_dock <- tbmerge(res_dock, meta_cid, by = "PubChem_id", all.x = T)
+res_dock <- tbmerge(res_dock, dplyr::mutate(anno, pdb = tolower(pdb)),
+  by.x = "PDB_ID", by.y = "pdb", all.x = T)
+res_dock <- dplyr::arrange(res_dock, Affinity)
+data.table::fwrite(res_dock, "results_of_batch_docking.csv")
+```
+
+对接的结果概览（Affinity 单位为 kcal/mol，值越低，结合程度越好）：
+**(对应文件为 `./results_of_batch_docking.csv`)**
+
+```{r eval = T, echo = F}
+res_dock
+```
+
+可视化如下（根据靶点蛋白去重复）：
+**(对应文件为 `./figs/Docking_Affinity.pdf`)**
+
+```{r fig2, eval = T, echo = F, fig.cap = "Molecular Docking Affinity"}
+knitr::include_graphics("./figs/Docking_Affinity.pdf")
+```
+
+```{r}
+res_dock.p <- dplyr::mutate(res_dock, name = hgnc_symbol)
+res_dock.p <- dplyr::distinct(res_dock.p, Ingredient.name, hgnc_symbol, .keep_all = T)
+p <- ggplot(res_dock.p) + 
+  geom_col(aes(x = name, y = Affinity, fill = Affinity), width = .7) +
+  labs(x = "", y = "Affinity (kcal/mol)") +
+  coord_flip() +
+  facet_wrap(~ Hmisc::capitalize(Ingredient.name), ncol = 1, scales = "free_y") +
+  theme()
+smallsvg(p, "Docking_Affinity.pdf", 5, 7)
+```
+
+### 对接可视化
+
+使用 PyMol 工具将结果可视化[@LigandDockingSeelig2010]。
+（对应文件存储在 `vina_space` 目录下，png 文件，共 `r nrow(res_dock)` 个）。
+在 Figure \@ref(fig:fig2) 中展示的结果被保存在 `./figs` 文件夹。
+**(对应文件为 `./figs/66065_into_6x81.png`, `./figs`)**
+
+```{r}
+res_files <- nl(
+  paste0(summary_vina$PubChem_id, "_into_", summary_vina$PDB_ID),
+  summary_vina$dir
+)
+```
+
+```{r}
+pbapply::pbapply(res_dock, 1,
+  function(v) {
+    vinaShow(v[[ "Combn" ]], v[[ "PDB_ID" ]])
+  }
+)
+```
+
+```{r}
+## manualy modify
+pbapply::pbapply(res_dock.p, 1,
+  function(v) {
+    vinaShow(v[[ "Combn" ]], v[[ "PDB_ID" ]], timeLimit = 120, backup = "./figs")
+  }
+)
+```
+
+以下 Figure \@ref(fig:fig2) 展示 Figure \@ref(fig:fig3) 中排名最高的结果：
+
+```{r fig3, eval = T, echo = F, fig.cap = "Visualization of Molecular docking"}
+image <- sub("_out.pdbqt", ".png", res_dock.p$file[[ 1 ]])
+inclu.capt(image)
+```
+
+

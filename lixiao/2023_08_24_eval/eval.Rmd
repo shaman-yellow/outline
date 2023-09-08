@@ -1,0 +1,171 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+以下为需要评估的内容以及相应的答复：
+
+1. 用网络药理学分析中药方的主要活性成分，对比文献研究现状挑选4个左右的活性成分作为候选药物成分
+    - 可分析主要成分，结合目标疾病筛选主要活性成分。
+    - 可从 HERB (<http://herb.ac.cn/Download/>) 获取成分信息（该数据库整合了较多的其他数据库）。
+    - 目标疾病是否为糖尿病肾病？且有代谢组数据？如果为（中药方成分的）非靶向代谢组，则能根据非靶向代谢组数据鉴定更多的化合物用于网络药理学分析，而不是只通过数据库筛选。
+    - 可进一步通过 PPI 网络和通路富集分析筛选活性成分[@NeuronSpecificMurtaz2022]。
+    - 可查阅文献（较为主观，可作为辅助手段）
+2. 分析糖尿病肾病肠道差异菌群
+    - 需要 16s RNA数据，或从 GEO 公共数据库获取（<https://www.ncbi.nlm.nih.gov/gds/?term=16s>）。
+    - 可用 qiime2 （<https://qiime2.org/>）筛选肠道差异菌群[@MicrobiomeDataRaiS2021; @LongitudinalInWang2019]。
+3. 分析糖尿病肾病代谢组学差异
+    - 需明确，是人的肾脏的代谢组，还是肠道菌的代谢组（因为上述有肠道菌分析，容易混淆）。
+    - 可分为挖掘公共数据库（GNPS：<https://gnps.ucsd.edu/ProteoSAFe/static/gnps-splash.jsp>）和客户提供代谢数据的情况。
+    - 如果是客户提供，请考虑：
+        - 包含对照组和模型组的数据，需要生物学重复，最好为非靶向代谢组数据（这种情况下，能鉴定和找到最多的差异代谢物）
+        - 如果是非靶向代谢组，需要数据鉴定。可分为谱图匹配性鉴定（常规方法），和预测性鉴定（例如，SIRIUS[@Sirius4ARapDuhrko2019]）。
+        - 如果是靶向代谢组，已知目标代谢物，则不需要额外的鉴定，根据分子量比对即可。
+        - 需确认代谢组数据的采集是否包含 MS^2^。如果仅包含 MS^1^，则鉴定准确度会相对偏低。如果是靶向代谢组，仅有 MS^1^ 亦可。
+    - 以标准的方法：PCA 聚类，OPLS-DA 聚类、VIP 、P 值筛选差异代谢物。
+    - 还可以结合不同 Feature selection 算法进一步筛选，例如LASSO，EFS[@EfsAnEnsemblNeuman2017]等。
+    - 差异代谢物可通路富集分析，结合疾病，进一步筛选。可用方法为 MetaboAnalyst (<https://www.metaboanalyst.ca/MetaboAnalyst/ModuleView.xhtml>)[@MetaboanalystrPang2020]。
+    - 根据上述情况不同，工作量会大不相同。可做大量分析，也可仅做少量分析。
+4. 分析差异菌群与差异代谢物的相关性（桑基图）
+    - 16s RNA 和代谢组的多组学分析[@DisruptedSpermZhang2021]。
+    - 对差异菌群和差异代谢物关联性分析，桑基图、热图均可（热图可能更直观，见 Fig. \@ref(fig:correlation-of-metabolites-with-microbiota)）。
+5. 结合药物成分筛选目标菌群和相关代谢物
+    - 首先需要获取药物成分的靶点。可通过 Binding DB 获取 <https://www.bindingdb.org/rwd/bind/index.jsp>。
+    - 通过（人的）代谢物的通路富集结果（步骤 3）得到相应蛋白，可对药物靶点取交集。
+    - 通过机器预测药物和肠道菌互作[@PredictingDrugMccoub2022; @MachineLearninMccoub2021]。目前似乎存在一系列方法，需要探索找到合适的方法。
+    - 若上述方法简便容易，以下或许可以不用考虑：
+        - 关于药物-肠道菌互作[@PersonalizedMaJavdan2020]，药物作用于菌，得到代谢物（细菌的代谢物，而非人）。
+        - 想要从药物中筛选，需要细菌的代谢物信息（这一步骤可能存在一定苦难，需要结合实际筛选的细菌考虑）。
+        - 上述，肠道菌代谢物的获取是关键步骤之一，可以从 gutMGene（<http://bio-annotation.cn/gutmgene/home.dhtml>）获取。
+        - 通过计算药物和肠道菌代谢物的分子相似性，推测是否存在药物-菌作用关系[@MolecularSimilGandin2022]（具有不确定性）
+8. 代谢小分子靶点蛋白分析（这个看能不能用分子对接的方式获取）
+    - 只要上述（步骤 5）的药物和靶点都具备，即可以分子对接方式分析。
+9. 广泛的靶点蛋白与糖尿病肾病差异基因取交集，筛选候选基因
+    - 结合疾病的公共数据库筛选进一步筛选，例如 genecards <https://www.genecards.org/>。
+    - 需要明确，这里还能进一步通过分析其他 GEO 数据筛选差异基因，再结合筛选。是否需要？
+
+总体上，工作量较大，视情况可能需要 1-3 周。
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+# p.route
+```
+
+# 材料和方法 {#methods}
+
+# 分析结果 {#results}
+
+以下内容为仅为示例。
+
+## 网络药理学和 PPI
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPI-network-for-targets
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 11-56-42.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| enrichment-analysis
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 13-03-48.png")
+```
+
+## 肠道菌分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| flow-chart-of-qiime2-processing
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 11-26-30.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| qiime2-quality-control
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 11-36-35.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gut-microbiome-abundance
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 11-40-38.png")
+```
+
+## 代谢物分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| use-MetaboAnalyst-for-analysis-of-metabolites
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 11-32-20.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| identify-compounds-with-SIRIUS-4-OPTIONAL
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 11-28-15.png")
+```
+
+## 肠道菌和代谢物整合
+
+```{r eval = T, echo = F, results = "asis"}
+#| correlation-of-metabolites-with-microbiota
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 11-24-36.png")
+```
+
+## 药物和肠道菌的相互作用
+
+### 通过机器学习预测
+
+来自于综述文章，需要找到合适的方法。
+
+```{r eval = T, echo = F, results = "asis"}
+#| machine-learning-prediction-of-drug-towards-microbiota
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 13-38-39.png")
+```
+
+### 药物被肠道菌代谢
+
+```{r eval = T, echo = F, results = "asis"}
+#| drug-metabolized-by-microbiota
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 13-13-48.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| chemical-modification-by-microbiota
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 13-16-48.png")
+```
+
+### 分子相似性
+
+```{r eval = T, echo = F, results = "asis"}
+#| molecule-similarity
+autor("~/Pictures/Screenshots/Screenshot from 2023-08-24 12-52-35.png")
+```
+
+## 分子对接
+
+```{r eval = T, echo = F, results = "asis"}
+#| autodock-vina-binding-affinity
+autor("../2023_06_30_eval/figs/Docking_Affinity.pdf")
+```
+
+# 结论 {#dis}

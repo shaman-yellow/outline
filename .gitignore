@@ -9,4 +9,15 @@ xcms_workflow.R
 *.cfg
 *.gz
 *.idx
-
+!*.R
+!*.Rmd
+*.qza
+*.fa
+hg38*
+*.bam
+*.sam
+*.vcf
+/lixiao/others/*/*
+tcga*
+*hg38*
+*.elsites

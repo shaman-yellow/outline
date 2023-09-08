@@ -1,0 +1,69 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析内容评估
+
+筛出（瘢痕增生）能够与TCF-AS1结合又能与TCF4结合的RNA结合蛋白，关于预期结果和交付内容的补充：
+
+1. 初步处理客户提供的数据（由于客户未提供数据，情况不明）。
+2. 使用客户提供的数据筛选基因（预计使用WGCNA [@WgcnaAnRPacLangfe2008] 的方法，但客户未提供数据，情况不明），与 TCF4-AS1 lncRNA 和 TCF4mRNA 具有共表达关系。若使用WGCNA分析，将得到相关分析结果的可视化图和表格（请参考 \@ref(demo)）。
+3. 视情况选择合适的预测工具[@ICatIRapidArmaos2021; @RbpTstlIsATPeng2022; @IntegratingTheSuYu2019; @RckAccurateAOrenst2016]，预测蛋白和RNA的结合程度，并可视化为图表。
+4. 最后整理成完整分析报告（形式为本 pdf 文档），并附含上述分析的图表信息，参考文献等。
+
+```{r eval = T, echo = F, results = "asis"}
+#| note0
+cat(text_roundrect("注：由于客户还未提供数据，具体情况会有调整。"))
+```
+
+# 报告和结果示例 {#demo}
+
+```{r eval = T, echo = F, results = "asis"}
+#| note
+cat(text_roundrect("注：以下内容仅为报告和结果示例，实际分析和报告展出可能和以下内容有所不同。"))
+```
+
+## 分析结果图
+
+```{r eval = T, echo = F, results = "asis"}
+#| clustering-of-eigengenes
+autor("../2023_07_07_eval/example/eigen.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| correlation-of-eigengenes-and-traits-data
+autor("../2023_07_07_eval/example/figs/traitCorHeatmap.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| figures-in-relative-reference-about-WGCNA
+autor("~/Pictures/Screenshots/Screenshot from 2023-07-25 10-25-07.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| figures-about-prediction-of-binding
+autor("~/Pictures/Screenshots/Screenshot from 2023-07-25 10-27-41.png")
+```
+
+## 分析结果表
+
+```{r eval = T, echo = F, results = "asis"}
+#| gene-annotation
+autor(ftibble("../2023_07_07_eval/example/tabs/gene.csv"))
+```
+
+

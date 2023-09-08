@@ -1,0 +1,69 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+```
+
+# test
+
+```{r eval = T, echo = F, results = "asis"}
+#| test
+autor("../2023_06_30_eval/figs/370_into_1cxw.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| report-test
+autor("../2023_06_25_fix/figs/MCC_top10.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| test-figure-out-of-line
+autor("../2023_06_30_eval/figs/5280343_into_5th6.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| plot-with-ggplot2
+autor(ggplot(eg) + geom_point(aes(x = x, y = y)))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| mtcars
+autor(tibble::as_tibble(mtcars), abs = "test", sum.ex = "show time")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| heatdata
+heatdata <- corheatmap(mtcars, mtcars)
+autor(heatdata)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| custom-function
+autor("../../ahr_sig", abs = "这是自己的文件")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| list-of-mtcars
+autor(namel(mtcars, mtcars, iris))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| list-of-test-ggplot
+lst <- list(point = ggplot(eg2) + geom_point(aes(x = a, y = b)))
+autor(lst)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| grob
+autor(circleGrob())
+```
+
+
