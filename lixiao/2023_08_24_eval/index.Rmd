@@ -213,7 +213,7 @@ autor(sra0@params$metadata, key = "group")
 
 ### 使用 Qiime2 作为上游分析
 
-以下分析参照[@ReproducibleIBolyen2019; @TheBiologicalMcdona2012; @Dada2HighResCallah2016; @ErrorCorrectinHamday2008; @MicrobialCommuHamday2009; @]： <https://docs.qiime2.org/2023.7/tutorials/moving-pictures-usage/>
+以下分析参照[@ReproducibleIBolyen2019; @TheBiologicalMcdona2012; @Dada2HighResCallah2016; @ErrorCorrectinHamday2008; @MicrobialCommuHamday2009]： <https://docs.qiime2.org/2023.7/tutorials/moving-pictures-usage/>
 
 - importing data
 - Demultiplexing sequences
@@ -293,7 +293,7 @@ Serum integrative omics reveals the landscape of human diabetic kidney disease
 
 ## 分析差异菌群与代谢物的相关性
 
-
+血清代谢物和肠道菌群的关联性[@BloodMetabolomWilman2019]
 
 ```{r}
 #| resource
@@ -307,8 +307,41 @@ Serum integrative omics reveals the landscape of human diabetic kidney disease
 
 ## 结合药物成分筛选目标菌群和相关代谢物
 
-## 代谢小分子靶点蛋白分析（这个看能不能用分子对接的方式获取）
+## 代谢小分子靶点蛋白分析
+
+### 分子对接数据准备
+
+```{r}
+vn <- asjob_vina(st, job_herb = hb)
+vn <- step1(vn, NULL)
+vn <- step2(vn)
+vn <- step3(vn)
+```
 
 ## 广泛的靶点蛋白与糖尿病肾病差异基因取交集
+
+### 糖尿病肾病差异基因
+
+#### 数据来源
+
+- GSE199838
+
+```{r}
+ge1 <- job_geo("GSE199838")
+ge1 <- step1(ge1)
+ge1 <- step2(ge1, "all.mRNA")
+raw_table <- fxlsx("./GSE199838/GSE199838_N-4-Y_N-1-H_N-2-G--FN-1-Y_FN-2-L_FN-3-C.all.mRNA.xlsx")
+
+counts <- select(raw_table, Gene, 5:10)
+counts <- distinct(counts, Gene, .keep_all = T)
+metadata <- group_strings(colnames(counts)[-1], c(Control = "^N", Disease = "^FN"), "sample")
+genes <- select(counts, hgnc_symbol = Gene)
+
+dge <- new_dge(metadata, counts, genes)
+lm <- job_limma(dge)
+lm <- step1(lm)
+lm <- step2(lm, Disease - Control, use = "P")
+lm@plots$step2$p.valcano
+```
 
 # 结论 {#dis}

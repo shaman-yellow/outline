@@ -190,7 +190,7 @@ attr <- attrs[pos, ]
 ```{r}
 anno <- filter_biomart(mart, c(
 "hgnc_symbol", "pdb"), "hgnc_symbol",
-  mccTops$Name)
+  mccTops$Name, distinct = F)
 ## anno <- dplyr::relocate(anno, hgnc_symbol, pdb)
 anno <- dplyr::filter(anno, pdb != "")
 anno <- dplyr::mutate(anno, pdb = tolower(pdb))
