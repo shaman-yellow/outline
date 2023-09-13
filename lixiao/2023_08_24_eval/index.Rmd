@@ -227,19 +227,6 @@ autor(sra0@params$metadata, key = "group")
 - Differential abundance testing with ANCOM
 
 ```{r}
-#| try-first
-qi <- asjob_qiime(sra0, "sra_data")
-qi <- step1(qi)
-qi <- step2(qi, 250, 250)
-qi <- step3(qi)
-qi <- step4(qi, 3697)
-qi <- step5(qi, 19116)
-qi <- step6(qi)
-qi <- step7(qi)
-saveRDS(qi, "qi_first.rds")
-```
-
-```{r}
 #| try-second
 qi <- asjob_qiime(sra0)
 qi <- step1(qi)
@@ -249,6 +236,7 @@ qi <- step4(qi, 5000)
 qi <- step5(qi, 10000)
 qi <- step6(qi)
 qi <- step7(qi)
+saveRDS(qi, "qi_second.rds")
 ```
 
 ### 使用 `MicrobiotaProcess` 作为下游分析（作图）
@@ -259,13 +247,19 @@ qi <- step7(qi)
 #| run
 options(step_check = F)
 mp <- asjob_mp(qi)
-mp0 <- step1(mp)
-mp0 <- step2(mp0)
-mp0 <- step3(mp0)
-mp0 <- step4(mp0)
+mp <- step1(mp)
+mp@plots$step1$p.rarefaction
+mp@plots$step1$p.alpha_index
+mp <- step2(mp)
+mp@plots$step2$p.rel_abundance$Class
+mp <- step3(mp)
+mp@plots$step3$p.pcoa
+mp <- step4(mp)
+mp@plots$step4$p.box
+mp@plots$step4$p.tree
 
-mp0@plots$step4$p.box
-saveRDS(mp0, "mp0.rds")
+mp@plots$step4$p.box
+saveRDS(mp, "mp.rds")
 ```
 
 ## 分析糖尿病肾病的肠道代谢组学差异
@@ -312,10 +306,15 @@ Serum integrative omics reveals the landscape of human diabetic kidney disease
 ### 分子对接数据准备
 
 ```{r}
+options(step_check = F)
 vn <- asjob_vina(st, job_herb = hb)
 vn <- step1(vn, NULL)
 vn <- step2(vn)
 vn <- step3(vn)
+vn <- step4(vn, 120)
+vn <- step5(vn)
+vn <- step6(vn)
+vn <- step7(vn)
 ```
 
 ## 广泛的靶点蛋白与糖尿病肾病差异基因取交集
