@@ -17,3 +17,14 @@ top_table1 <- fxlsx("./GSE189005/2. Differential RNA expression analysis in clus
 top_table2 <- fxlsx("./GSE189005/3. Differential RNA expression analysis in cluster C/Analysts-based classification/T2DR_vs_T2DwtC.xlsx")
 
 
+qi <- asjob_qiime(fp, meta, "cra_remote_qiime")
+qi <- set_remote(qi, "/data/hlc/CRA007013")
+qi <- step1(qi)
+qi <- step2(qi, 150, 150, workers = 30)
+
+qi <- step3(qi)
+qi <- step4(qi, 5000)
+qi <- step5(qi, 10000)
+qi <- step6(qi)
+qi <- step7(qi)
+

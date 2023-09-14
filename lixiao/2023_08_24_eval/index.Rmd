@@ -259,7 +259,8 @@ mp@plots$step4$p.box
 mp@plots$step4$p.tree
 
 mp@plots$step4$p.box
-saveRDS(mp, "mp.rds")
+mp <- clear(mp)
+saveRDS(mp, "mp_cleared.rds")
 ```
 
 ## 分析糖尿病肾病的肠道代谢组学差异

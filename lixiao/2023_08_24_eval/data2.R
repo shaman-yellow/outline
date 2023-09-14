@@ -66,14 +66,5 @@ fp <- set_remote(fp)
 fp <- step1(fp, workers = 28)
 fp <- step2(fp)
 
-qi <- asjob_qiime(fp, meta, "cra_remote_qiime")
-qi <- set_remote(qi, "/data/hlc/CRA007013")
-qi <- step1(qi)
-qi <- step2(qi, 150, 150, workers = 30)
-
-qi <- step3(qi)
-qi <- step4(qi, 5000)
-qi <- step5(qi, 10000)
-qi <- step6(qi)
-qi <- step7(qi)
+saveRDS(fp, "./fp_cra.rds")
 
