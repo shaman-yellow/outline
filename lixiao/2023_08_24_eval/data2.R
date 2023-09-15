@@ -68,3 +68,13 @@ fp <- step2(fp)
 
 saveRDS(fp, "./fp_cra.rds")
 
+# ==========================================================================
+# biobakery
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+fp <- readRDS("./fp_cra.rds")
+
+bk <- asjob_biobakery(fp)
+bk <- set_remote(bk, bk$wd)
+
+
