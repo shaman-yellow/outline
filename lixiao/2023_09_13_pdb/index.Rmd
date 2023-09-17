@@ -38,4 +38,10 @@ p.route
 
 # 分析结果 {#results}
 
+```{r}
+new_package.fromFiles("~/touchPDB",
+  c("workflow_zzz_protein_db.R"),
+  path = "~/utils.tool/R/")
+```
+
 # 结论 {#dis}
