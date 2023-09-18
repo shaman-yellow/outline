@@ -41,7 +41,20 @@ p.route
 ```{r}
 new_package.fromFiles("~/touchPDB",
   c("workflow_zzz_protein_db.R"),
-  path = "~/utils.tool/R/")
+  path = "~/utils.tool/R/", depends = NULL)
+file.copy(c("~/utils.tool/R/a.R", "~/utils.tool/R/workflow_00.R"), "~/touchPDB/R", T)
+roxygen2::roxygenize("~/touchPDB")
+
+devtools::build("~/touchPDB", ".")
+```
+
+## 使用示例
+
+```{r, echo = T}
+syms <- c("ERBB4", "Pik3r1", "AHR", "TP53")
+pd <- new_pdb()
+pd <- via_symbol(pd, syms)
+anno(pd, syms)
 ```
 
 # 结论 {#dis}

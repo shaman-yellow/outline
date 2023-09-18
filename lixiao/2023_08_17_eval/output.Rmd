@@ -224,12 +224,12 @@ autor(ga@tables$step6$exonic_caused)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| summary-of-mutations-in-samples
-autor(ga@plots$step7$p.summary)
+autor(z7(ga@plots$step7$p.summary, .5, .5))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| proportion-of-SNPs-mutation
-autor(ga@plots$step7$p.snp_class)
+autor(z7(ga@plots$step7$p.snp_class, .5, .5))
 ```
 
 ## 下游分析
@@ -247,14 +247,14 @@ autor(db_gc)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| intersect-of-variants-with-Genecards-prediction
-autor(wrap(venn, 7, 5))
+autor(z7(wrap(venn, 7, 5)))
 ```
 
 以交集基因通路富集。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| KEGG-enrichment
-autor(en@plots$step1$p.kegg$vari)
+autor(zoom(en@plots$step1$p.kegg$vari, .9, .7))
 ```
 
 取 'Bile secretion' 和 'Cholesterol metabolism' 相关的基因。
@@ -263,12 +263,15 @@ autor(en@plots$step1$p.kegg$vari)
 sets <- list(Bile_secretion = en_kegg$geneName_list[[1]], Cholesterol_metabolism = en_kegg$geneName_list[[2]],
   Filtered_variants = genes
 )
+
 upsets <- new_upset(lst = sets)
+show(upsets)
+p.upsets <- wrap(recordPlot())
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Intersection-of-filtered-variants-with-KEGG-pathway
-autor(upsets)
+autor(zoom(p.upsets, .5, .5))
 ```
 
 取 Fig. \@ref(fig:Intersection-of-filtered-variants-with-KEGG-pathway) 所示的两条通路的基因交集。

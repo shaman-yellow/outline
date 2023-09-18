@@ -1,32 +1,28 @@
 
-as <- list_attrs(pd$mart)
+devtools::load_all("~/touchPDB", export_all = F)
 
+syms <- c("ERBB4", "Pik3r1", "AHR", "TP53")
 pd <- new_pdb()
-pd <- via_symbol(pd, "Pik3r1", 5)
+pd <- via_symbol(pd, syms)
+anno(pd, syms)
 
-r3dmol(
-  viewer_spec = m_viewer_spec(
-    cartoonQuality = 10, # 图形质量
-    lowerZoomLimit = 50, # 缩放下限
-    upperZoomLimit = 350 # 缩放上限
-  )
-) %>%
-  # 添加模型
-  m_add_model(data = pdb_6zsl, format = "pdb") %>%  
-  # 模型缩放到整体
-  m_zoom_to() %>%
-  # 设置 Cartoon 样式，并且颜色为绿色
-  m_set_style(style = m_style_cartoon(color = '#00cc96')) %>% 
-  # 设置 beta-折叠为蓝紫色
-  m_set_style(sel = m_sel(ss = 's'),                 
-              style = m_style_cartoon(color = '#636efa', arrows = TRUE)) %>% 
-  # 设置 alpha-螺旋为橙色
-  m_set_style(sel = m_sel(ss = 'h'),
-              style = m_style_cartoon(color = '#ff7f0e')) %>%
-  # 初始角度按Y轴旋转90度
-  m_rotate(angle = 90, axis = 'y') %>%
-  # 旋转动画
-  m_spin()
+
+
+obj <- vis(pd, "Pik3r1")
+
+require(r3dmol)
+
+obj <- r3dmol(viewer_spec = m_viewer_spec(cartoonQuality = 10,
+    lowerZoomLimit = 50, upperZoomLimit = 350))
+obj <- m_add_model(obj, data = pdb_6zsl, format = "pdb")
+obj <- m_zoom_to(obj)
+obj <- m_set_style(obj, style = m_style_cartoon(color = '#00cc96'))
+obj <- m_set_style(obj, sel = m_sel(ss = 's'),                 
+  style = m_style_cartoon(color = '#636efa', arrows = TRUE))
+obj <- m_set_style(obj, sel = m_sel(ss = 'h'),
+  style = m_style_cartoon(color = '#ff7f0e'))
+obj <- m_rotate(obj, angle = 90, axis = 'y')
+obj <- m_spin(obj)
 
 ids <- c("P22682", "P47941")
 query = list("accession_id" = ids)
