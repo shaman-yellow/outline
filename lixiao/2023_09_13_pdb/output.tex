@@ -1,0 +1,245 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+
+\title{Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+创建了可呈现蛋白质基本信息（分子量、活性位点、结合位点）和结构信息（3D 结构）的 R 包。用户可通过该 R 包，获取存储任意的蛋白质信息。运行指令后，可获得 html（网页）文件，以浏览器打开（已附示例的 html 文件）。
+
+注： \texttt{touchPDB\_0.0.0.9000.tar.gz} 为 R 包，\texttt{annotation.html} 为示例的结果。
+
+\hypertarget{results}{%
+\section{使用说明}\label{results}}
+
+\hypertarget{ux5b89ux88c5}{%
+\subsection{安装}\label{ux5b89ux88c5}}
+
+\hypertarget{ux5b89ux88c5ux4f9dux8d56}{%
+\subsubsection{安装依赖}\label{ux5b89ux88c5ux4f9dux8d56}}
+
+以下安装已经过 \texttt{conda} 新建独立环境完成测试（R 4.2）。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{lapply}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"cli"}\NormalTok{, }\StringTok{"pbapply"}\NormalTok{, }\StringTok{"R.utils"}\NormalTok{, }\StringTok{"r3dmol"}\NormalTok{, }\StringTok{"RCurl"}\NormalTok{,}
+    \StringTok{"rmarkdown"}\NormalTok{, }\StringTok{"utils"}\NormalTok{, }\StringTok{"XML"}\NormalTok{, }\StringTok{"shiny"}\NormalTok{, }\StringTok{"BiocManager"}\NormalTok{),}
+  \ControlFlowTok{function}\NormalTok{(pkg) \{}
+    \ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{requireNamespace}\NormalTok{(pkg))}
+      \KeywordTok{install.packages}\NormalTok{(pkg)}
+\NormalTok{  \})}
+
+\NormalTok{BiocManager}\OperatorTok{::}\KeywordTok{install}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"BiocStyle"}\NormalTok{, }\StringTok{"UniProt.ws"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+注：如果是在 Linux 下安装，可能面临需要安装 libcurl 的问题。可以使用 \texttt{sudo\ apt\ install\ libcurl4-openssl-dev} 解决；
+如果是 \texttt{conda} 环境下，请使用 \texttt{conda\ install\ -c\ conda-forge\ r-curl} 安装 \texttt{libcurl}。
+
+\hypertarget{ux5b89ux88c5-1}{%
+\subsubsection{安装}\label{ux5b89ux88c5-1}}
+
+请确保安装包在当前目录下，如果不在，请输入正确的路径。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"touchPDB\_0.0.0.9000.tar.gz"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux4f7fux7528ux793aux4f8b}{%
+\subsection{使用示例}\label{ux4f7fux7528ux793aux4f8b}}
+
+在 R 命令行中：
+
+\hypertarget{ins}{%
+\subsubsection{示例 1}\label{ins}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# 加载包}
+\KeywordTok{require}\NormalTok{(touchPDB)}
+
+\CommentTok{\#\# 需要查询的蛋白质的 Symbol（任意数量）}
+\NormalTok{syms \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"ERBB4"}\NormalTok{, }\StringTok{"Pik3r1"}\NormalTok{, }\StringTok{"AHR"}\NormalTok{, }\StringTok{"TP53"}\NormalTok{)}
+\CommentTok{\#\# 新建项目}
+\NormalTok{pd \textless{}{-}}\StringTok{ }\KeywordTok{new\_pdb}\NormalTok{()}
+\CommentTok{\#\# 获取文件}
+\NormalTok{pd \textless{}{-}}\StringTok{ }\KeywordTok{via\_symbol}\NormalTok{(pd, syms)}
+\CommentTok{\#\# 生成注释网页（本地 html 文件）}
+\KeywordTok{anno}\NormalTok{(pd, syms)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux793aux4f8b-2}{%
+\subsubsection{示例 2}\label{ux793aux4f8b-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{require}\NormalTok{(touchPDB)}
+
+\NormalTok{pd \textless{}{-}}\StringTok{ }\KeywordTok{new\_pdb}\NormalTok{()}
+\NormalTok{pd \textless{}{-}}\StringTok{ }\KeywordTok{via\_symbol}\NormalTok{(pd, }\KeywordTok{c}\NormalTok{(}\StringTok{"ERBB4"}\NormalTok{))}
+\KeywordTok{anno}\NormalTok{(pd, syms)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux7ed3ux679cux5448ux73b0}{%
+\subsection{结果呈现}\label{ux7ed3ux679cux5448ux73b0}}
+
+以下展示示例 1（\ref{ins} ）运行结果的截图。
+
+Figure \ref{fig:index}为图index概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-09-19\ 10-12-28.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-09-19 10-12-28.png}
+\caption{Index}\label{fig:index}
+\end{center}
+
+Figure \ref{fig:Infomation}为图Infomation概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-09-19\ 10-13-28.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-09-19 10-13-28.png}
+\caption{Infomation}\label{fig:Infomation}
+\end{center}
+
+Figure \ref{fig:protein-structure-eg-1}为图protein structure eg 1概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-09-19\ 10-14-19.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-09-19 10-14-19.png}
+\caption{Protein structure eg 1}\label{fig:protein-structure-eg-1}
+\end{center}
+
+\end{document}

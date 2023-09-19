@@ -19,24 +19,11 @@ set_index()
 
 # 摘要 {#abstract}
 
-# 研究设计流程图 {#route}
+创建了可呈现蛋白质基本信息（分子量、活性位点、结合位点）和结构信息（3D 结构）的 R 包。用户可通过该 R 包，获取存储任意的蛋白质信息。运行指令后，可获得 html（网页）文件，以浏览器打开（已附示例的 html 文件）。
 
-```{r}
-#| route
-route <- as_network(
-  list("RNA_seq_data:Preprocess",
-    ), "tree"
-)
-p.route <- flowChart(route, 1.1, 1)
-```
+注： `touchPDB_0.0.0.9000.tar.gz` 为 R 包，`annotation.html` 为示例的结果。
 
-```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
-p.route
-```
-
-# 材料和方法 {#methods}
-
-# 分析结果 {#results}
+# 使用说明 {#results}
 
 ```{r}
 new_package.fromFiles("~/touchPDB",
@@ -48,13 +35,80 @@ roxygen2::roxygenize("~/touchPDB")
 devtools::build("~/touchPDB", ".")
 ```
 
-## 使用示例
+## 安装
+
+### 安装依赖
+
+以下安装已经过 `conda` 新建独立环境完成测试（R 4.2）。
 
 ```{r, echo = T}
+lapply(c("cli", "pbapply", "R.utils", "r3dmol", "RCurl",
+    "rmarkdown", "utils", "XML", "shiny", "BiocManager"),
+  function(pkg) {
+    if (!requireNamespace(pkg))
+      install.packages(pkg)
+  })
+
+BiocManager::install(c("BiocStyle", "UniProt.ws"))
+```
+
+注：如果是在 Linux 下安装，可能面临需要安装 libcurl 的问题。可以使用 `sudo apt install libcurl4-openssl-dev` 解决；
+如果是 `conda` 环境下，请使用 `conda install -c conda-forge r-curl` 安装 `libcurl`。
+
+### 安装
+
+请确保安装包在当前目录下，如果不在，请输入正确的路径。
+
+```{r, echo = T}
+install.packages("touchPDB_0.0.0.9000.tar.gz")
+```
+
+## 使用示例
+
+在 R 命令行中：
+
+### 示例 1 {#ins}
+
+```{r, echo = T}
+## 加载包
+require(touchPDB)
+
+## 需要查询的蛋白质的 Symbol（任意数量）
 syms <- c("ERBB4", "Pik3r1", "AHR", "TP53")
+## 新建项目
 pd <- new_pdb()
+## 获取文件
 pd <- via_symbol(pd, syms)
+## 生成注释网页（本地 html 文件）
 anno(pd, syms)
 ```
 
-# 结论 {#dis}
+### 示例 2
+
+
+```{r, echo = T}
+require(touchPDB)
+
+pd <- new_pdb()
+pd <- via_symbol(pd, c("ERBB4"))
+anno(pd, syms)
+```
+
+## 结果呈现
+
+以下展示示例 1（\@ref(ins) ）运行结果的截图。
+
+```{r eval = T, echo = F, results = "asis"}
+#| index
+autor("~/Pictures/Screenshots/Screenshot from 2023-09-19 10-12-28.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Infomation
+autor("~/Pictures/Screenshots/Screenshot from 2023-09-19 10-13-28.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| protein-structure-eg-1
+autor("~/Pictures/Screenshots/Screenshot from 2023-09-19 10-14-19.png")
+```

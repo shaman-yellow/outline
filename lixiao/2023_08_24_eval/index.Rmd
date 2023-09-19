@@ -251,14 +251,15 @@ mp <- step1(mp)
 mp@plots$step1$p.rarefaction
 mp@plots$step1$p.alpha_index
 mp <- step2(mp)
-mp@plots$step2$p.rel_abundance$Class
+mp@plots$step2$p.rel_abundance$Genus
 mp <- step3(mp)
 mp@plots$step3$p.pcoa
 mp <- step4(mp)
 mp@plots$step4$p.box
 mp@plots$step4$p.tree
 
-mp@plots$step4$p.box
+mp@tables$step4$top_table
+
 mp <- clear(mp)
 saveRDS(mp, "mp_cleared.rds")
 ```
@@ -268,39 +269,65 @@ saveRDS(mp, "mp_cleared.rds")
 ### 数据来源
 
 ```{r}
-cdRun("wget http://bio-annotation.cn/gutmgene/public/res/gutMGene-human.xlsx", path = "../")
-cdRun("wget http://bio-annotation.cn/gutmgene/public/res/Gut%20Microbe%20and%20Metabolite-human.txt", path = "../")
-mic2meta <- ftibble("../Gut Microbe and Metabolite-human.txt")
-```
-
-Article:
-Serum integrative omics reveals the landscape of human diabetic kidney disease
-<https://doi.org/10.1016/j.molmet.2021.101367>
-[MSV000087487](https://massive.ucsd.edu/ProteoSAFe/dataset.jsp?task=1c497254e25e4a08a664a3f675b0cfe7)
-
-```{r}
-# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7759603/
-# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7759603/bin/Data_Sheet_1.XLSX
-
+#| preparation-metabo-data
 # https://pubmed.ncbi.nlm.nih.gov/35615098/
 # https://figshare.com/ndownloader/files/33926873?private_link=02319eeb01c363a87928
+data <- openxlsx::read.xlsx("./Metabolomics data from screening cohort.xlsx")
+data <- as_tibble(data)
+data <- filter(data, !is.na(Patient.ID))
+
+metadata <- slice(data[, -1], 1)
+metadata <- tidyr::gather(metadata, sample, group)
+metadata <- mutate(metadata, group = make.names(group))
+
+counts <- slice(data, -1)
+counts <- dplyr::mutate_at(counts, colnames(counts)[-1],
+  function(x) {
+    x <- as.double(x)
+    ifelse(is.na(x), 0, x)
+  })
+```
+
+### Feature selection
+
+```{r}
+#| top-metabolites
+lm <- job_limma(new_dge(metadata, counts, select(counts, name = Patient.ID)))
+
+la <- asjob_lasso(lm, use = "name", from_normed = F)
+la <- step1(la, levels = c("Control", "Diabetic.kidney.disease"), n.train = .99)
+la <- step2(la, top = 150)
+
+la@plots$step2$p.efs
+la$tops
+```
+
+### 富集分析
+
+```{r}
+writeLines(la$tops, "cpds.txt")
 ```
 
 ## 分析差异菌群与代谢物的相关性
 
+### 使用关联数据
+
 血清代谢物和肠道菌群的关联性[@BloodMetabolomWilman2019]
 
-```{r}
-#| resource
-# http://bio-annotation.cn/gutmgene/resource.dhtml
-```
+Lachnospiraceae[@TheControversiVacca2020]
 
 ```{r}
-# https://pubmed.ncbi.nlm.nih.gov/33177712/
-# from metabolites to microbiome https://pubmed.ncbi.nlm.nih.gov/31477923/
+mp <- step5(mp)
+mp$matched
+mp@tables$step5$db_data_matched
+
+selected <- filter(mp@tables$step5$db_data_matched, Substrate %in% dplyr::all_of(la$tops))
+selected
 ```
 
 ## 结合药物成分筛选目标菌群和相关代谢物
+
+
 
 ## 代谢小分子靶点蛋白分析
 

@@ -1,5 +1,13 @@
 
 
+cids <- mp@tables$step5$db_data_matched$Substrate.PubChem.CID %>% .[!is.na(.)]
+file_syno <- query_synonyms(cids, "synonyms", curl_cl = 5)
+syno <- do.call(dplyr::bind_rows, extract_rdata_list(file_syno))
+
+matchThat(syno$syno, make.names(la$tops))
+
+
+
 sra <- asjob_sra(meta, "~/disk_sda1/CRA007013")
 
 qi <- asjob_qiime(sra)
