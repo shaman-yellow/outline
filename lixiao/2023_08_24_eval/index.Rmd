@@ -116,7 +116,7 @@ autor(hb@plots$step3$p.targets_disease)
 由于 PPI 网络包含过多节点，这里不展示 PPI 图（较为混乱）。
 
 ```{r}
-options(step_check = F)
+step_check = F
 st <- asjob_stringdb(hb)
 st <- step1(st, 30)
 plots(st)[[1]]
@@ -239,7 +239,7 @@ qi <- step7(qi)
 saveRDS(qi, "qi_second.rds")
 ```
 
-### 使用 `MicrobiotaProcess` 作为下游分析（作图）
+### 使用 `MicrobiotaProcess` 作为下游分析
 
 关于 LDA[@MicrobiomeDataRaiS2021]
 
@@ -305,7 +305,21 @@ la$tops
 ### 富集分析
 
 ```{r}
-writeLines(la$tops, "cpds.txt")
+#| MetaboAnalyst
+mt <- job_metabo()
+mt <- step1(mt, la$tops)
+
+mt@plots$step1$metabolites_ORA_dot_kegg_pathway
+mt$hits
+```
+
+```{r}
+#| fella
+fl <- asjob_fella(mt)
+fl <- step1(fl)
+
+fl@plots$step1$p.enrich$ids
+fl@params$graph.lst$ids
 ```
 
 ## 分析差异菌群与代谢物的相关性
@@ -314,7 +328,11 @@ writeLines(la$tops, "cpds.txt")
 
 血清代谢物和肠道菌群的关联性[@BloodMetabolomWilman2019]
 
+### 从差异菌群到差异代谢物
+
 Lachnospiraceae[@TheControversiVacca2020]
+
+Trimethylamine[@TheRoleOfAGPravee2022]
 
 ```{r}
 mp <- step5(mp)
@@ -325,31 +343,13 @@ selected <- filter(mp@tables$step5$db_data_matched, Substrate %in% dplyr::all_of
 selected
 ```
 
-## 结合药物成分筛选目标菌群和相关代谢物
-
-
-
-## 代谢小分子靶点蛋白分析
-
-### 分子对接数据准备
-
 ```{r}
-options(step_check = F)
-vn <- asjob_vina(st, job_herb = hb)
-vn <- step1(vn, NULL)
-vn <- step2(vn)
-vn <- step3(vn)
-vn <- step4(vn, 120)
-vn <- step5(vn)
-vn <- step6(vn)
-vn <- step7(vn)
+p.keyMe <- wrap(map(la, "Trimethylamine"), 6, 5)
 ```
 
-## 广泛的靶点蛋白与糖尿病肾病差异基因取交集
+## 分析糖尿病肾病的转录组学差异
 
-### 糖尿病肾病差异基因
-
-#### 数据来源
+### 数据来源
 
 - GSE199838
 
@@ -369,6 +369,82 @@ lm <- job_limma(dge)
 lm <- step1(lm)
 lm <- step2(lm, Disease - Control, use = "P")
 lm@plots$step2$p.valcano
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| source-processing
+autor(.lich(ge1@params$prods))
+```
+
+### 数据标准化
+
+```{r eval = T, echo = F, results = "asis"}
+#| RNA-filtered-genes
+autor(lm@plots$step1$p.filter)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| RNA-nomalization
+autor(lm@plots$step1$p.norm)
+```
+
+### 差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| RNA-seq-DEG
+autor(lm@plots$step2$p.valcano[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| RNA-DEG-top-table
+autor(lm@tables$step2$tops[[1]])
+```
+
+## 转录组学和网络药理学结合
+
+```{r}
+top_table <- filter(lm@tables$step2$tops[[1]], P.Value < .05, abs(logFC) > 1)
+sets_deg_hub <- list(RNA_top_DEG = top_table$Gene, PPI_Hub_genes = head(st@tables$step1$hub_genes$hgnc_symbol, n = 100))
+p.venn <- new_venn(lst = sets_deg_hub, wrap = T)
+p.venn
+
+receptors <- ins(lst = sets_deg_hub)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-receptors
+autor(new_lich(namel(receptors)))
+```
+
+## 代谢小分子靶点蛋白分析
+
+### 分子对接
+
+```{r}
+vn0 <- job_vina(selected$Substrate.PubChem.CID, receptors)
+vn0 <- step1(vn0, NULL)
+vn0 <- step2(vn0)
+vn0 <- step3(vn0)
+vn0 <- step4(vn0)
+vn0 <- step5(vn0, selected, "Substrate.PubChem.CID", "Substrate")
+
+vn0@plots$step5
+vn0@tables$step5$res_dock
+```
+
+## 药物和靶点蛋白
+
+```{r}
+options(step_check = F)
+vn <- asjob_vina(st, job_herb = hb)
+
+vn <- step1(vn, NULL)
+vn <- step2(vn)
+vn <- step3(vn)
+vn <- step4(vn, 120)
+vn <- step5(vn)
+vn <- step6(vn)
+vn <- step7(vn)
 ```
 
 # 结论 {#dis}

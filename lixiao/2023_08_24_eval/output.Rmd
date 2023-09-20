@@ -146,7 +146,7 @@ autor(hb@plots$step3$p.targets_disease)
 由于 PPI 网络包含过多节点，这里不展示 PPI 图（较为混乱）。
 
 ```{r}
-options(step_check = F)
+step_check = F
 st <- asjob_stringdb(hb)
 st <- step1(st, 30)
 plots(st)[[1]]
@@ -206,56 +206,262 @@ autor(en@plots$step1$p.kegg$hub_genes)
 
 ```{r}
 #| sra-info
-project <- "PRJNA824185"
 primer_f <- "CCTACGGGNGGCWGCAG"
 primer_r <- "GACTACHVGGGTATCTAATCC"
-dir.create("sra_data")
-cdRun("esearch -db sra -query ", project, " | efetch -format runinfo > ./sra_data/info.csv")
 
-info <- ftibble("./sra_data/info.csv")
+sra <- job_sra("PRJNA824185")
+sra <- step1(sra)
+sra <- step2(sra)
+sra <- step3(sra)
+sra <- step4(sra)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| metadata-of-the-sra-data-of-PRJNA824185
-autor(info)
+autor(sra@params$info)
 ```
 
 ### 下载和预处理 SRA 数据
 
 使用 `sra-toolkit` 工具组的 `prefetch` 下载 SRA 数据，并用 `fastq-dump` 转化为 fastq 文件。
 
-```{r}
-#| download-sra
-pbapply::pblapply(info$Run,
-  function(id) {
-    path <- "./sra_data"
-    exists <- file.exists(paste0(path, "/", id))
-    while (!exists) {
-      cdRun("prefetch ", id, " ", "--output-directory ", path)
-      exists <- file.exists(paste0(path, "/", id))
-    }
-  })
-```
+实际使用的数据为：
+
+- Control 组
+- Diabetic Nephropathy 组
 
 ```{r}
-#| as-fastq
-files <- list.files("./sra_data/", "\\.sra$", full.names = T, recursive = T)
-pbapply::pblapply(files,
-  function(file) {
-    path <- get_path(file)
-    cdRun("fastq-dump --gzip --split-3 ", file, " -O ", path)
-  })
+sra0 <- sra
+sra0@params$metadata %<>% filter(!grepl("DM", `sample-id`))
+sra0@params$metadata %<>% mutate(group = stringr::str_extract(`sample-id`, "[A-Z]+"))
 ```
 
-### Qiime2 
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-used-16s-rRNA-data
+autor(sra0@params$metadata, key = "group")
+```
 
-以下分析参照： <https://docs.qiime2.org/2023.7/tutorials/moving-pictures-usage/>
+### 使用 Qiime2 作为上游分析
 
+以下分析参照[@ReproducibleIBolyen2019; @TheBiologicalMcdona2012; @Dada2HighResCallah2016; @ErrorCorrectinHamday2008; @MicrobialCommuHamday2009]： <https://docs.qiime2.org/2023.7/tutorials/moving-pictures-usage/>
 
+- importing data
+- Demultiplexing sequences
+- Sequence quality control and feature table construction
+    - DADA2
+- FeatureTable and FeatureData summaries
+- Generate a tree for phylogenetic diversity analyses
+- Alpha and beta diversity analysis
+- Alpha rarefaction plotting
+- Taxonomic analysis
+- Differential abundance testing with ANCOM
+
+```{r}
+#| try-second
+qi <- asjob_qiime(sra0)
+qi <- step1(qi)
+qi <- step2(qi, 250, 250)
+qi <- step3(qi)
+qi <- step4(qi, 5000)
+qi <- step5(qi, 10000)
+qi <- step6(qi)
+qi <- step7(qi)
+saveRDS(qi, "qi_second.rds")
+```
+
+### 使用 `MicrobiotaProcess` 作为下游分析
+
+关于 LDA[@MicrobiomeDataRaiS2021]
+
+```{r}
+#| run
+options(step_check = F)
+mp <- asjob_mp(qi)
+mp <- step1(mp)
+mp@plots$step1$p.rarefaction
+mp@plots$step1$p.alpha_index
+mp <- step2(mp)
+mp@plots$step2$p.rel_abundance$Genus
+mp <- step3(mp)
+mp@plots$step3$p.pcoa
+mp <- step4(mp)
+mp@plots$step4$p.box
+mp@plots$step4$p.tree
+
+mp@tables$step4$top_table
+
+mp <- clear(mp)
+saveRDS(mp, "mp_cleared.rds")
+```
 
 ## 分析糖尿病肾病的肠道代谢组学差异
 
+### 数据来源
+
+```{r}
+#| preparation-metabo-data
+# https://pubmed.ncbi.nlm.nih.gov/35615098/
+# https://figshare.com/ndownloader/files/33926873?private_link=02319eeb01c363a87928
+data <- openxlsx::read.xlsx("./Metabolomics data from screening cohort.xlsx")
+data <- as_tibble(data)
+data <- filter(data, !is.na(Patient.ID))
+
+metadata <- slice(data[, -1], 1)
+metadata <- tidyr::gather(metadata, sample, group)
+metadata <- mutate(metadata, group = make.names(group))
+
+counts <- slice(data, -1)
+counts <- dplyr::mutate_at(counts, colnames(counts)[-1],
+  function(x) {
+    x <- as.double(x)
+    ifelse(is.na(x), 0, x)
+  })
+```
+
+### Feature selection
+
+```{r}
+#| top-metabolites
+lm <- job_limma(new_dge(metadata, counts, select(counts, name = Patient.ID)))
+
+la <- asjob_lasso(lm, use = "name", from_normed = F)
+la <- step1(la, levels = c("Control", "Diabetic.kidney.disease"), n.train = .99)
+la <- step2(la, top = 150)
+
+la@plots$step2$p.efs
+la$tops
+```
+
+### 富集分析
+
+```{r}
+#| MetaboAnalyst
+mt <- job_metabo()
+mt <- step1(mt, la$tops)
+
+mt@plots$step1$metabolites_ORA_dot_kegg_pathway
+mt$hits
+```
+
+```{r}
+#| fella
+fl <- asjob_fella(mt)
+fl <- step1(fl)
+
+fl@plots$step1$p.enrich$ids
+fl@params$graph.lst$ids
+```
+
 ## 分析差异菌群与代谢物的相关性
+
+### 使用关联数据
+
+血清代谢物和肠道菌群的关联性[@BloodMetabolomWilman2019]
+
+### 从差异菌群到差异代谢物
+
+Lachnospiraceae[@TheControversiVacca2020]
+
+Trimethylamine[@TheRoleOfAGPravee2022]
+
+```{r}
+mp <- step5(mp)
+mp$matched
+mp@tables$step5$db_data_matched
+
+selected <- filter(mp@tables$step5$db_data_matched, Substrate %in% dplyr::all_of(la$tops))
+selected
+```
+
+```{r}
+p.keyMe <- wrap(map(la, "Trimethylamine"), 6, 5)
+```
+
+## 分析糖尿病肾病的转录组学差异
+
+### 数据来源
+
+- GSE199838
+
+```{r}
+ge1 <- job_geo("GSE199838")
+ge1 <- step1(ge1)
+ge1 <- step2(ge1, "all.mRNA")
+raw_table <- fxlsx("./GSE199838/GSE199838_N-4-Y_N-1-H_N-2-G--FN-1-Y_FN-2-L_FN-3-C.all.mRNA.xlsx")
+
+counts <- select(raw_table, Gene, 5:10)
+counts <- distinct(counts, Gene, .keep_all = T)
+metadata <- group_strings(colnames(counts)[-1], c(Control = "^N", Disease = "^FN"), "sample")
+genes <- select(counts, hgnc_symbol = Gene)
+
+dge <- new_dge(metadata, counts, genes)
+lm <- job_limma(dge)
+lm <- step1(lm)
+lm <- step2(lm, Disease - Control, use = "P")
+lm@plots$step2$p.valcano
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| source-processing
+autor(.lich(ge1@params$prods))
+```
+
+### 数据标准化
+
+```{r eval = T, echo = F, results = "asis"}
+#| RNA-filtered-genes
+autor(lm@plots$step1$p.filter)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| RNA-nomalization
+autor(lm@plots$step1$p.norm)
+```
+
+### 差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| RNA-seq-DEG
+autor(lm@plots$step2$p.valcano[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| RNA-DEG-top-table
+autor(lm@tables$step2$tops[[1]])
+```
+
+## 转录组学和网络药理学结合
+
+```{r}
+top_table <- filter(lm@tables$step2$tops[[1]], P.Value < .05, abs(logFC) > 1)
+sets_deg_hub <- list(RNA_top_DEG = top_table$Gene, PPI_Hub_genes = head(st@tables$step1$hub_genes$hgnc_symbol, n = 100))
+p.venn <- new_venn(lst = sets_deg_hub, wrap = T)
+p.venn
+
+receptors <- ins(lst = sets_deg_hub)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-receptors
+autor(.lich(namel(receptors)))
+```
+
+## 代谢小分子靶点蛋白分析
+
+### 分子对接数据准备
+
+```{r}
+options(step_check = F)
+vn <- asjob_vina(st, job_herb = hb)
+
+vn <- step1(vn, NULL)
+vn <- step2(vn)
+vn <- step3(vn)
+vn <- step4(vn, 120)
+vn <- step5(vn)
+vn <- step6(vn)
+vn <- step7(vn)
+```
 
 # 结论 {#dis}
 

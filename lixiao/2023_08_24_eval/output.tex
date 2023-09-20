@@ -4,17 +4,20 @@
 %
 \documentclass[
 ]{article}
-\usepackage{lmodern}
-\usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -33,16 +36,9 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdftitle={Analysis},
-  pdfauthor={Huang LiChuang of Wie-Biotech},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
-\usepackage{longtable,booktabs}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
 \makeatletter
@@ -68,12 +64,41 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
-\newenvironment{cslreferences}%
-  {}%
-  {\par}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
 
 \title{Analysis}
 \author{Huang LiChuang of Wie-Biotech}
@@ -118,27 +143,88 @@ Table \ref{tab:TCM-information}为表格TCM information概览。
 \end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}llllllllllll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0874}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0388}}@{}}
 \caption{\label{tab:TCM-information}TCM information}\tabularnewline
-\toprule
-Herb\_ & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Prope\ldots{} & Merid\ldots{} & UsePart & Function & Indic\ldots{} & Toxicity & \ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Herb\_
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Herb\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Herb\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Herb\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Herb\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Prope\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Merid\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+UsePart
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Function
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Indic\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Toxicity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endfirsthead
-\toprule
-Herb\_ & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Prope\ldots{} & Merid\ldots{} & UsePart & Function & Indic\ldots{} & Toxicity & \ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Herb\_
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Herb\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Herb\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Herb\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Herb\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Prope\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Merid\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+UsePart
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Function
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Indic\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Toxicity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
-HERB0\ldots{} & CHEN PI & 陈皮 & Dried\ldots{} & Peric\ldots{} & Warm;\ldots{} & Lung;\ldots{} & NA & To re\ldots{} & Treat\ldots{} & NA & \ldots{}\tabularnewline
-HERB0\ldots{} & DA HUANG & 大黄 & root \ldots{} & Radix\ldots{} & Cold;\ldots{} & Splee\ldots{} & root \ldots{} & To ca\ldots{} & Reple\ldots{} & NA & \ldots{}\tabularnewline
-HERB0\ldots{} & DAN SHEN & 丹参 & root \ldots{} & Radix\ldots{} & Minor\ldots{} & Liver\ldots{} & root & To re\ldots{} & Angin\ldots{} & NA & \ldots{}\tabularnewline
-HERB0\ldots{} & FU LING & 茯苓 & India\ldots{} & Poria & Mild;\ldots{} & Splee\ldots{} & scler\ldots{} & To ca\ldots{} & Neura\ldots{} & NA & \ldots{}\tabularnewline
-HERB0\ldots{} & GAN CAO & 甘草 & Root \ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung;\ldots{} & root \ldots{} & To re\ldots{} & 1. It\ldots{} & NA & \ldots{}\tabularnewline
-HERB0\ldots{} & HONG HUA & 红花 & Saffl\ldots{} & Flos \ldots{} & Warm;\ldots{} & Liver\ldots{} & flower & To ac\ldots{} & Ameno\ldots{} & NA & \ldots{}\tabularnewline
-HERB0\ldots{} & HUANG\ldots{} & 黄连 & rhizo\ldots{} & Rhizo\ldots{} & Cold;\ldots{} & Large\ldots{} & rhizome & To re\ldots{} & Febri\ldots{} & NA & \ldots{}\tabularnewline
-HERB0\ldots{} & NIU XI & 牛膝 & root \ldots{} & Radix\ldots{} & Mild;\ldots{} & Liver\ldots{} & root & To re\ldots{} & Achin\ldots{} & NA & \ldots{}\tabularnewline
-HERB0\ldots{} & TAI Z\ldots{} & 太子参 & Heter\ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung;\ldots{} & NA & To re\ldots{} & Treat\ldots{} & NA & \ldots{}\tabularnewline
-HERB0\ldots{} & ZHI B\ldots{} & 制半夏 & Prepa\ldots{} & Rhizo\ldots{} & Warm;\ldots{} & Lung;\ldots{} & Pinel\ldots{} & Treat\ldots{} & Treat\ldots{} & Extre\ldots{} & \ldots{}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+HERB0\ldots{} & CHEN PI & 陈皮 & Dried\ldots{} & Peric\ldots{} & Warm;\ldots{} & Lung;\ldots{} & NA & To re\ldots{} & Treat\ldots{} & NA & \ldots{} \\
+HERB0\ldots{} & DA HUANG & 大黄 & root \ldots{} & Radix\ldots{} & Cold;\ldots{} & Splee\ldots{} & root \ldots{} & To ca\ldots{} & Reple\ldots{} & NA & \ldots{} \\
+HERB0\ldots{} & DAN SHEN & 丹参 & root \ldots{} & Radix\ldots{} & Minor\ldots{} & Liver\ldots{} & root & To re\ldots{} & Angin\ldots{} & NA & \ldots{} \\
+HERB0\ldots{} & FU LING & 茯苓 & India\ldots{} & Poria & Mild;\ldots{} & Splee\ldots{} & scler\ldots{} & To ca\ldots{} & Neura\ldots{} & NA & \ldots{} \\
+HERB0\ldots{} & GAN CAO & 甘草 & Root \ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung;\ldots{} & root \ldots{} & To re\ldots{} & 1. It\ldots{} & NA & \ldots{} \\
+HERB0\ldots{} & HONG HUA & 红花 & Saffl\ldots{} & Flos \ldots{} & Warm;\ldots{} & Liver\ldots{} & flower & To ac\ldots{} & Ameno\ldots{} & NA & \ldots{} \\
+HERB0\ldots{} & HUANG\ldots{} & 黄连 & rhizo\ldots{} & Rhizo\ldots{} & Cold;\ldots{} & Large\ldots{} & rhizome & To re\ldots{} & Febri\ldots{} & NA & \ldots{} \\
+HERB0\ldots{} & NIU XI & 牛膝 & root \ldots{} & Radix\ldots{} & Mild;\ldots{} & Liver\ldots{} & root & To re\ldots{} & Achin\ldots{} & NA & \ldots{} \\
+HERB0\ldots{} & TAI Z\ldots{} & 太子参 & Heter\ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung;\ldots{} & NA & To re\ldots{} & Treat\ldots{} & NA & \ldots{} \\
+HERB0\ldots{} & ZHI B\ldots{} & 制半夏 & Prepa\ldots{} & Rhizo\ldots{} & Warm;\ldots{} & Lung;\ldots{} & Pinel\ldots{} & Treat\ldots{} & Treat\ldots{} & Extre\ldots{} & \ldots{} \\
 \end{longtable}
 
 Table \ref{tab:TCM-compounds}为表格TCM compounds概览。
@@ -151,31 +237,32 @@ Table \ref{tab:TCM-compounds}为表格TCM compounds概览。
 
 \begin{longtable}[]{@{}llll@{}}
 \caption{\label{tab:TCM-compounds}TCM compounds}\tabularnewline
-\toprule
-herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4\tabularnewline
-\midrule
+\toprule\noalign{}
+herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 \\
+\midrule\noalign{}
 \endfirsthead
-\toprule
-herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4\tabularnewline
-\midrule
+\toprule\noalign{}
+herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 \\
+\midrule\noalign{}
 \endhead
-HERB0\ldots{} & HBIN0\ldots{} & 1-A-t\ldots{} & NA\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & (1S,5\ldots{} & (1S,5\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & 1-Und\ldots{} & 10268\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & 22410\ldots{} & 2,6-O\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & 2-(2-\ldots{} & NA\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & 2,5,5\ldots{} & 2,5,5\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & 2,6,1\ldots{} & 2,6,1\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & ()-2-\ldots{} & Bicyc\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & (2S)-\ldots{} & NA\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & (2S)-\ldots{} & (2S)-\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & 3-carene & (1S)-\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & 3-dec\ldots{} & 3-dec\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & {[}(3R)\ldots{} & butan\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & 4-ACE\ldots{} & 17745\ldots{}\tabularnewline
-HERB0\ldots{} & HBIN0\ldots{} & 5,7-d\ldots{} & (2R)-\ldots{}\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+HERB0\ldots{} & HBIN0\ldots{} & 1-A-t\ldots{} & NA \\
+HERB0\ldots{} & HBIN0\ldots{} & (1S,5\ldots{} & (1S,5\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & 1-Und\ldots{} & 10268\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & 22410\ldots{} & 2,6-O\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & 2-(2-\ldots{} & NA \\
+HERB0\ldots{} & HBIN0\ldots{} & 2,5,5\ldots{} & 2,5,5\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & 2,6,1\ldots{} & 2,6,1\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & ()-2-\ldots{} & Bicyc\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & (2S)-\ldots{} & NA \\
+HERB0\ldots{} & HBIN0\ldots{} & (2S)-\ldots{} & (2S)-\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & 3-carene & (1S)-\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & 3-dec\ldots{} & 3-dec\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & {[}(3R)\ldots{} & butan\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & 4-ACE\ldots{} & 17745\ldots{} \\
+HERB0\ldots{} & HBIN0\ldots{} & 5,7-d\ldots{} & (2R)-\ldots{} \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} \\
 \end{longtable}
 
 Table \ref{tab:compounds-targets}为表格compounds targets概览。
@@ -188,31 +275,32 @@ Table \ref{tab:compounds-targets}为表格compounds targets概览。
 
 \begin{longtable}[]{@{}llllll@{}}
 \caption{\label{tab:compounds-targets}Compounds targets}\tabularnewline
-\toprule
-Ingre\ldots{} & Targe\ldots\ldots2 & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+Ingre\ldots{} & Targe\ldots\ldots2 & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{} \\
+\midrule\noalign{}
 \endfirsthead
-\toprule
-Ingre\ldots{} & Targe\ldots\ldots2 & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+Ingre\ldots{} & Targe\ldots\ldots2 & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{} \\
+\midrule\noalign{}
 \endhead
-HBIN0\ldots{} & HBTAR\ldots{} & PGR & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & PTGS2 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & RXRA & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & DPP4 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & AR & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & NR3C1 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & PRSS1 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & CA2 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & ESR1 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & GABRA1 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & NCOA2 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & ACHE & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & PRSS1 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & PRSS1 & NA & NA & NA\tabularnewline
-HBIN0\ldots{} & HBTAR\ldots{} & SLC6A2 & NA & NA & NA\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+HBIN0\ldots{} & HBTAR\ldots{} & PGR & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & PTGS2 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & RXRA & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & DPP4 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & AR & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & NR3C1 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & PRSS1 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & CA2 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & ESR1 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & GABRA1 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & NCOA2 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & ACHE & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & PRSS1 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & PRSS1 & NA & NA & NA \\
+HBIN0\ldots{} & HBTAR\ldots{} & SLC6A2 & NA & NA & NA \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
 \end{longtable}
 
 将 Tab. \ref{tab:compounds-targets} 的基因信息注释：
@@ -225,33 +313,84 @@ Table \ref{tab:compounds-targets-with-annotation-of-biomaRt-of-ensembl-dataset}�
 \end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}llllllllll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1287}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0891}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1287}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0891}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0891}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0891}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1287}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1287}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0891}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0396}}@{}}
 \caption{\label{tab:compounds-targets-with-annotation-of-biomaRt-of-ensembl-dataset}Compounds targets with annotation of biomaRt of ensembl dataset}\tabularnewline
-\toprule
-Targe\ldots\ldots1 & Ingre\ldots{} & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{} & ensem\ldots\ldots7 & ensem\ldots\ldots8 & entre\ldots{} & \ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Targe\ldots\ldots1
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ingre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Targe\ldots\ldots3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Datab\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Paper.id
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+PubMe\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots7
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots8
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endfirsthead
-\toprule
-Targe\ldots\ldots1 & Ingre\ldots{} & Targe\ldots\ldots3 & Datab\ldots{} & Paper.id & PubMe\ldots{} & ensem\ldots\ldots7 & ensem\ldots\ldots8 & entre\ldots{} & \ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Targe\ldots\ldots1
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ingre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Targe\ldots\ldots3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Datab\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Paper.id
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+PubMe\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots7
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots8
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
-6PGD & HBIN0\ldots{} & HBTAR\ldots{} & NA & HBREF\ldots{} & 27270429 & NA & NA & NA & \ldots{}\tabularnewline
-AAMP & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 14 & \ldots{}\tabularnewline
-AANAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 15 & \ldots{}\tabularnewline
-AANAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 15 & \ldots{}\tabularnewline
-AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
-AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
-AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
-AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
-AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{}\tabularnewline
-AARS2 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 57505 & \ldots{}\tabularnewline
-AASS & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 10157 & \ldots{}\tabularnewline
-AASS & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 10157 & \ldots{}\tabularnewline
-ABAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 18 & \ldots{}\tabularnewline
-ABAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 18 & \ldots{}\tabularnewline
-ABAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 18 & \ldots{}\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+6PGD & HBIN0\ldots{} & HBTAR\ldots{} & NA & HBREF\ldots{} & 27270429 & NA & NA & NA & \ldots{} \\
+AAMP & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 14 & \ldots{} \\
+AANAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 15 & \ldots{} \\
+AANAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 15 & \ldots{} \\
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{} \\
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{} \\
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{} \\
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{} \\
+AARS1 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 16 & \ldots{} \\
+AARS2 & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 57505 & \ldots{} \\
+AASS & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 10157 & \ldots{} \\
+AASS & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 10157 & \ldots{} \\
+ABAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 18 & \ldots{} \\
+ABAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 18 & \ldots{} \\
+ABAT & HBIN0\ldots{} & HBTAR\ldots{} & NA & NA & NA & ENSG0\ldots{} & ENST0\ldots{} & 18 & \ldots{} \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
 \end{longtable}
 
 \hypertarget{ux4ece-genecards-ux83b7ux53d6ux75beux75c5ux7684ux9776ux70b9ux6570ux636e}{%
@@ -269,31 +408,32 @@ Table \ref{tab:desease-targets-of-diabetic-nephropathy}为表格desease targets 
 
 \begin{longtable}[]{@{}lllllll@{}}
 \caption{\label{tab:desease-targets-of-diabetic-nephropathy}Desease targets of diabetic nephropathy}\tabularnewline
-\toprule
-Symbol & Descr\ldots{} & Category & UniPr\ldots{} & GIFtS & GC\_id & Score\tabularnewline
-\midrule
+\toprule\noalign{}
+Symbol & Descr\ldots{} & Category & UniPr\ldots{} & GIFtS & GC\_id & Score \\
+\midrule\noalign{}
 \endfirsthead
-\toprule
-Symbol & Descr\ldots{} & Category & UniPr\ldots{} & GIFtS & GC\_id & Score\tabularnewline
-\midrule
+\toprule\noalign{}
+Symbol & Descr\ldots{} & Category & UniPr\ldots{} & GIFtS & GC\_id & Score \\
+\midrule\noalign{}
 \endhead
-ACE & Angio\ldots{} & Prote\ldots{} & P12821 & 55 & GC17P\ldots{} & 84.68\tabularnewline
-HNF1B & HNF1 \ldots{} & Prote\ldots{} & P35680 & 47 & GC17M\ldots{} & 83.38\tabularnewline
-GCK & Gluco\ldots{} & Prote\ldots{} & P35557 & 53 & GC07M\ldots{} & 83.04\tabularnewline
-KCNJ11 & Potas\ldots{} & Prote\ldots{} & Q14654 & 50 & GC11M\ldots{} & 80.35\tabularnewline
-HNF1A & HNF1 \ldots{} & Prote\ldots{} & P20823 & 51 & GC12P\ldots{} & 78.94\tabularnewline
-ABCC8 & ATP B\ldots{} & Prote\ldots{} & Q09428 & 50 & GC11M\ldots{} & 73.88\tabularnewline
-IL6 & Inter\ldots{} & Prote\ldots{} & P05231 & 55 & GC07P\ldots{} & 70.31\tabularnewline
-HNF4A & Hepat\ldots{} & Prote\ldots{} & P41235 & 53 & GC20P\ldots{} & 67.73\tabularnewline
-PPARG & Perox\ldots{} & Prote\ldots{} & P37231 & 57 & GC03P\ldots{} & 64.11\tabularnewline
-PDX1 & Pancr\ldots{} & Prote\ldots{} & P52945 & 50 & GC13P\ldots{} & 61.95\tabularnewline
-COL4A5 & Colla\ldots{} & Prote\ldots{} & P29400 & 48 & GC0XP\ldots{} & 58.60\tabularnewline
-WFS1 & Wolfr\ldots{} & Prote\ldots{} & O76024 & 50 & GC04P\ldots{} & 57.65\tabularnewline
-TCF7L2 & Trans\ldots{} & Prote\ldots{} & Q9NQB0 & 51 & GC10P\ldots{} & 56.48\tabularnewline
-VEGFA & Vascu\ldots{} & Prote\ldots{} & P15692 & 53 & GC06P\ldots{} & 56.25\tabularnewline
-COL4A3 & Colla\ldots{} & Prote\ldots{} & Q01955 & 50 & GC02P\ldots{} & 55.86\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+ACE & Angio\ldots{} & Prote\ldots{} & P12821 & 55 & GC17P\ldots{} & 84.68 \\
+HNF1B & HNF1 \ldots{} & Prote\ldots{} & P35680 & 47 & GC17M\ldots{} & 83.38 \\
+GCK & Gluco\ldots{} & Prote\ldots{} & P35557 & 53 & GC07M\ldots{} & 83.04 \\
+KCNJ11 & Potas\ldots{} & Prote\ldots{} & Q14654 & 50 & GC11M\ldots{} & 80.35 \\
+HNF1A & HNF1 \ldots{} & Prote\ldots{} & P20823 & 51 & GC12P\ldots{} & 78.94 \\
+ABCC8 & ATP B\ldots{} & Prote\ldots{} & Q09428 & 50 & GC11M\ldots{} & 73.88 \\
+IL6 & Inter\ldots{} & Prote\ldots{} & P05231 & 55 & GC07P\ldots{} & 70.31 \\
+HNF4A & Hepat\ldots{} & Prote\ldots{} & P41235 & 53 & GC20P\ldots{} & 67.73 \\
+PPARG & Perox\ldots{} & Prote\ldots{} & P37231 & 57 & GC03P\ldots{} & 64.11 \\
+PDX1 & Pancr\ldots{} & Prote\ldots{} & P52945 & 50 & GC13P\ldots{} & 61.95 \\
+COL4A5 & Colla\ldots{} & Prote\ldots{} & P29400 & 48 & GC0XP\ldots{} & 58.60 \\
+WFS1 & Wolfr\ldots{} & Prote\ldots{} & O76024 & 50 & GC04P\ldots{} & 57.65 \\
+TCF7L2 & Trans\ldots{} & Prote\ldots{} & Q9NQB0 & 51 & GC10P\ldots{} & 56.48 \\
+VEGFA & Vascu\ldots{} & Prote\ldots{} & P15692 & 53 & GC06P\ldots{} & 56.25 \\
+COL4A3 & Colla\ldots{} & Prote\ldots{} & Q01955 & 50 & GC02P\ldots{} & 55.86 \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
 \end{longtable}
 
 Table \ref{tab:desease-targets-with-annotation-of-biomaRt-of-ensembl-dataset}为表格desease targets with annotation of biomaRt of ensembl dataset概览。
@@ -304,33 +444,74 @@ Table \ref{tab:desease-targets-with-annotation-of-biomaRt-of-ensembl-dataset}为
 \end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}llllllll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1125}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1625}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1625}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1125}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1125}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1125}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1125}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1125}}@{}}
 \caption{\label{tab:desease-targets-with-annotation-of-biomaRt-of-ensembl-dataset}Desease targets with annotation of biomaRt of ensembl dataset}\tabularnewline
-\toprule
-hgnc\_\ldots{} & ensem\ldots\ldots2 & ensem\ldots\ldots3 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+hgnc\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots2
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+chrom\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+start\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+end\_p\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+descr\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endfirsthead
-\toprule
-hgnc\_\ldots{} & ensem\ldots\ldots2 & ensem\ldots\ldots3 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+hgnc\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots2
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+chrom\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+start\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+end\_p\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+descr\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
-ABCB1 & ENSG0\ldots{} & ENST0\ldots{} & 5243 & 7 & 87503017 & 87713323 & ATP b\ldots{}\tabularnewline
-ABCC8 & ENSG0\ldots{} & ENST0\ldots{} & 6833 & 11 & 17392498 & 17476894 & ATP b\ldots{}\tabularnewline
-ABCG1 & ENSG0\ldots{} & ENST0\ldots{} & 9619 & 21 & 42199689 & 42297244 & ATP b\ldots{}\tabularnewline
-ACE & ENSG0\ldots{} & ENST0\ldots{} & 1636 & 17 & 63477061 & 63498380 & angio\ldots{}\tabularnewline
-ACHE & ENSG0\ldots{} & ENST0\ldots{} & 43 & 7 & 10088\ldots{} & 10089\ldots{} & acety\ldots{}\tabularnewline
-ACSL1 & ENSG0\ldots{} & ENST0\ldots{} & 2180 & 4 & 18475\ldots{} & 18482\ldots{} & acyl-\ldots{}\tabularnewline
-ACTB & ENSG0\ldots{} & ENST0\ldots{} & 60 & 7 & 5526409 & 5563902 & actin\ldots{}\tabularnewline
-ADA & ENSG0\ldots{} & ENST0\ldots{} & 100 & 20 & 44584896 & 44652252 & adeno\ldots{}\tabularnewline
-ADA2 & ENSG0\ldots{} & ENST0\ldots{} & 51816 & 22 & 17178790 & 17258235 & adeno\ldots{}\tabularnewline
-ADAMTS13 & ENSG0\ldots{} & ENST0\ldots{} & 11093 & HG203\ldots{} & 240452 & 285496 & ADAM \ldots{}\tabularnewline
-ADAR & ENSG0\ldots{} & ENST0\ldots{} & 103 & 1 & 15458\ldots{} & 15462\ldots{} & adeno\ldots{}\tabularnewline
-ADCY3 & ENSG0\ldots{} & ENST0\ldots{} & 109 & 2 & 24819169 & 24920237 & adeny\ldots{}\tabularnewline
-ADCY5 & ENSG0\ldots{} & ENST0\ldots{} & 111 & 3 & 12328\ldots{} & 12344\ldots{} & adeny\ldots{}\tabularnewline
-ADD1 & ENSG0\ldots{} & ENST0\ldots{} & 118 & 4 & 2843844 & 2930076 & adduc\ldots{}\tabularnewline
-ADORA1 & ENSG0\ldots{} & ENST0\ldots{} & 134 & 1 & 20309\ldots{} & 20316\ldots{} & adeno\ldots{}\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+ABCB1 & ENSG0\ldots{} & ENST0\ldots{} & 5243 & 7 & 87503017 & 87713323 & ATP b\ldots{} \\
+ABCC8 & ENSG0\ldots{} & ENST0\ldots{} & 6833 & 11 & 17392498 & 17476894 & ATP b\ldots{} \\
+ABCG1 & ENSG0\ldots{} & ENST0\ldots{} & 9619 & 21 & 42199689 & 42297244 & ATP b\ldots{} \\
+ACE & ENSG0\ldots{} & ENST0\ldots{} & 1636 & 17 & 63477061 & 63498380 & angio\ldots{} \\
+ACHE & ENSG0\ldots{} & ENST0\ldots{} & 43 & 7 & 10088\ldots{} & 10089\ldots{} & acety\ldots{} \\
+ACSL1 & ENSG0\ldots{} & ENST0\ldots{} & 2180 & 4 & 18475\ldots{} & 18482\ldots{} & acyl-\ldots{} \\
+ACTB & ENSG0\ldots{} & ENST0\ldots{} & 60 & 7 & 5526409 & 5563902 & actin\ldots{} \\
+ADA & ENSG0\ldots{} & ENST0\ldots{} & 100 & 20 & 44584896 & 44652252 & adeno\ldots{} \\
+ADA2 & ENSG0\ldots{} & ENST0\ldots{} & 51816 & 22 & 17178790 & 17258235 & adeno\ldots{} \\
+ADAMTS13 & ENSG0\ldots{} & ENST0\ldots{} & 11093 & HG203\ldots{} & 240452 & 285496 & ADAM \ldots{} \\
+ADAR & ENSG0\ldots{} & ENST0\ldots{} & 103 & 1 & 15458\ldots{} & 15462\ldots{} & adeno\ldots{} \\
+ADCY3 & ENSG0\ldots{} & ENST0\ldots{} & 109 & 2 & 24819169 & 24920237 & adeny\ldots{} \\
+ADCY5 & ENSG0\ldots{} & ENST0\ldots{} & 111 & 3 & 12328\ldots{} & 12344\ldots{} & adeny\ldots{} \\
+ADD1 & ENSG0\ldots{} & ENST0\ldots{} & 118 & 4 & 2843844 & 2930076 & adduc\ldots{} \\
+ADORA1 & ENSG0\ldots{} & ENST0\ldots{} & 134 & 1 & 20309\ldots{} & 20316\ldots{} & adeno\ldots{} \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
 \end{longtable}
 
 \hypertarget{ux6570ux636eux900fux89c6}{%
@@ -383,33 +564,79 @@ Table \ref{tab:ID-mapped-by-STRINGdb}为表格ID mapped by STRINGdb概览。
 \end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}lllllllll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1011}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1011}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1461}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1461}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1011}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1011}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1011}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1011}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1011}}@{}}
 \caption{\label{tab:ID-mapped-by-STRINGdb}ID mapped by STRINGdb}\tabularnewline
-\toprule
-hgnc\_\ldots{} & STRIN\ldots{} & ensem\ldots\ldots3 & ensem\ldots\ldots4 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+hgnc\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+STRIN\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots4
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+chrom\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+start\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+end\_p\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+descr\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endfirsthead
-\toprule
-hgnc\_\ldots{} & STRIN\ldots{} & ensem\ldots\ldots3 & ensem\ldots\ldots4 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+hgnc\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+STRIN\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots4
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+chrom\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+start\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+end\_p\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+descr\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
-ABCB1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 5243 & 7 & 87503017 & 87713323 & ATP b\ldots{}\tabularnewline
-ACE & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 1636 & 17 & 63477061 & 63498380 & angio\ldots{}\tabularnewline
-ACHE & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 43 & 7 & 10088\ldots{} & 10089\ldots{} & acety\ldots{}\tabularnewline
-ACSL1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 2180 & 4 & 18475\ldots{} & 18482\ldots{} & acyl-\ldots{}\tabularnewline
-ACTB & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 60 & 7 & 5526409 & 5563902 & actin\ldots{}\tabularnewline
-ADA & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 100 & 20 & 44584896 & 44652252 & adeno\ldots{}\tabularnewline
-ADA2 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 51816 & 22 & 17178790 & 17258235 & adeno\ldots{}\tabularnewline
-ADA2 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 51816 & 22 & 17178790 & 17258235 & adeno\ldots{}\tabularnewline
-ADAR & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 103 & 1 & 15458\ldots{} & 15462\ldots{} & adeno\ldots{}\tabularnewline
-ADD1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 118 & 4 & 2843844 & 2930076 & adduc\ldots{}\tabularnewline
-ADORA1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 134 & 1 & 20309\ldots{} & 20316\ldots{} & adeno\ldots{}\tabularnewline
-ADRB1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 153 & 10 & 11404\ldots{} & 11404\ldots{} & adren\ldots{}\tabularnewline
-AGXT & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 189 & 2 & 24086\ldots{} & 24088\ldots{} & alani\ldots{}\tabularnewline
-AKR1B10 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 57016 & 7 & 13452\ldots{} & 13454\ldots{} & aldo-\ldots{}\tabularnewline
-ALAD & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 210 & 9 & 11338\ldots{} & 11340\ldots{} & amino\ldots{}\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+ABCB1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 5243 & 7 & 87503017 & 87713323 & ATP b\ldots{} \\
+ACE & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 1636 & 17 & 63477061 & 63498380 & angio\ldots{} \\
+ACHE & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 43 & 7 & 10088\ldots{} & 10089\ldots{} & acety\ldots{} \\
+ACSL1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 2180 & 4 & 18475\ldots{} & 18482\ldots{} & acyl-\ldots{} \\
+ACTB & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 60 & 7 & 5526409 & 5563902 & actin\ldots{} \\
+ADA & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 100 & 20 & 44584896 & 44652252 & adeno\ldots{} \\
+ADA2 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 51816 & 22 & 17178790 & 17258235 & adeno\ldots{} \\
+ADA2 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 51816 & 22 & 17178790 & 17258235 & adeno\ldots{} \\
+ADAR & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 103 & 1 & 15458\ldots{} & 15462\ldots{} & adeno\ldots{} \\
+ADD1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 118 & 4 & 2843844 & 2930076 & adduc\ldots{} \\
+ADORA1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 134 & 1 & 20309\ldots{} & 20316\ldots{} & adeno\ldots{} \\
+ADRB1 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 153 & 10 & 11404\ldots{} & 11404\ldots{} & adren\ldots{} \\
+AGXT & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 189 & 2 & 24086\ldots{} & 24088\ldots{} & alani\ldots{} \\
+AKR1B10 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 57016 & 7 & 13452\ldots{} & 13454\ldots{} & aldo-\ldots{} \\
+ALAD & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 210 & 9 & 11338\ldots{} & 11340\ldots{} & amino\ldots{} \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
 \end{longtable}
 
 \hypertarget{ux7b5bux9009-hubgenes}{%
@@ -436,33 +663,89 @@ Table \ref{tab:all-MCC-scores}为表格all MCC scores概览。
 \end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}lllllllllll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.1275}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.1275}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0392}}@{}}
 \caption{\label{tab:all-MCC-scores}All MCC scores}\tabularnewline
-\toprule
-hgnc\_\ldots{} & MCC\_s\ldots{} & STRIN\ldots{} & ensem\ldots\ldots4 & ensem\ldots\ldots5 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & \ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+hgnc\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+MCC\_s\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+STRIN\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots4
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+chrom\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+start\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+end\_p\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+descr\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endfirsthead
-\toprule
-hgnc\_\ldots{} & MCC\_s\ldots{} & STRIN\ldots{} & ensem\ldots\ldots4 & ensem\ldots\ldots5 & entre\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & \ldots{}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+hgnc\_\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+MCC\_s\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+STRIN\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots4
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ensem\ldots\ldots5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entre\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+chrom\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+start\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+end\_p\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+descr\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
-SRC & 1441311 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 6714 & HG410\ldots{} & 254187 & 315552 & SRC p\ldots{} & \ldots{}\tabularnewline
-HSP90AA1 & 1353642 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3320 & 14 & 10208\ldots{} & 10213\ldots{} & heat \ldots{} & \ldots{}\tabularnewline
-EGFR & 1328596 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 1956 & 7 & 55019017 & 55211628 & epide\ldots{} & \ldots{}\tabularnewline
-ITGB3 & 941356 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3690 & 17 & 47253827 & 47313743 & integ\ldots{} & \ldots{}\tabularnewline
-MET & 937035 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 4233 & 7 & 11667\ldots{} & 11679\ldots{} & MET p\ldots{} & \ldots{}\tabularnewline
-MAPK3 & 894838 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 5595 & 16 & 30114105 & 30123506 & mitog\ldots{} & \ldots{}\tabularnewline
-KRAS & 890536 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3845 & 12 & 25205246 & 25250936 & KRAS \ldots{} & \ldots{}\tabularnewline
-PTPN11 & 871709 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 5781 & 12 & 11241\ldots{} & 11250\ldots{} & prote\ldots{} & \ldots{}\tabularnewline
-HRAS & 849299 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3265 & HSCHR\ldots{} & 61883 & 66928 & HRas \ldots{} & \ldots{}\tabularnewline
-NRAS & 828404 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 4893 & 1 & 11470\ldots{} & 11471\ldots{} & NRAS \ldots{} & \ldots{}\tabularnewline
-ERBB2 & 531274 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 2064 & 17 & 39687914 & 39730426 & erb-b\ldots{} & \ldots{}\tabularnewline
-ACTB & 420124 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 60 & 7 & 5526409 & 5563902 & actin\ldots{} & \ldots{}\tabularnewline
-APP & 417130 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 351 & 21 & 25880535 & 26171128 & amylo\ldots{} & \ldots{}\tabularnewline
-SNCA & 416493 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 6622 & 4 & 89700345 & 89838315 & synuc\ldots{} & \ldots{}\tabularnewline
-MAPT & 406245 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 4137 & HSCHR\ldots{} & 760287 & 893653 & micro\ldots{} & \ldots{}\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+SRC & 1441311 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 6714 & HG410\ldots{} & 254187 & 315552 & SRC p\ldots{} & \ldots{} \\
+HSP90AA1 & 1353642 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3320 & 14 & 10208\ldots{} & 10213\ldots{} & heat \ldots{} & \ldots{} \\
+EGFR & 1328596 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 1956 & 7 & 55019017 & 55211628 & epide\ldots{} & \ldots{} \\
+ITGB3 & 941356 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3690 & 17 & 47253827 & 47313743 & integ\ldots{} & \ldots{} \\
+MET & 937035 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 4233 & 7 & 11667\ldots{} & 11679\ldots{} & MET p\ldots{} & \ldots{} \\
+MAPK3 & 894838 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 5595 & 16 & 30114105 & 30123506 & mitog\ldots{} & \ldots{} \\
+KRAS & 890536 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3845 & 12 & 25205246 & 25250936 & KRAS \ldots{} & \ldots{} \\
+PTPN11 & 871709 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 5781 & 12 & 11241\ldots{} & 11250\ldots{} & prote\ldots{} & \ldots{} \\
+HRAS & 849299 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 3265 & HSCHR\ldots{} & 61883 & 66928 & HRas \ldots{} & \ldots{} \\
+NRAS & 828404 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 4893 & 1 & 11470\ldots{} & 11471\ldots{} & NRAS \ldots{} & \ldots{} \\
+ERBB2 & 531274 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 2064 & 17 & 39687914 & 39730426 & erb-b\ldots{} & \ldots{} \\
+ACTB & 420124 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 60 & 7 & 5526409 & 5563902 & actin\ldots{} & \ldots{} \\
+APP & 417130 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 351 & 21 & 25880535 & 26171128 & amylo\ldots{} & \ldots{} \\
+SNCA & 416493 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 6622 & 4 & 89700345 & 89838315 & synuc\ldots{} & \ldots{} \\
+MAPT & 406245 & 9606\ldots. & ENSG0\ldots{} & ENST0\ldots{} & 4137 & HSCHR\ldots{} & 760287 & 893653 & micro\ldots{} & \ldots{} \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
 \end{longtable}
 
 \hypertarget{ux901aux8defux5bccux96c6ux5206ux6790}{%
@@ -528,501 +811,99 @@ Table \ref{tab:metadata-of-the-sra-data-of-PRJNA824185}为表格metadata of the 
 \end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}lllllllllllll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0796}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0796}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0796}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0531}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0796}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0796}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0796}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0708}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0796}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0796}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0796}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.1239}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 24\tabcolsep) * \real{0.0354}}@{}}
 \caption{\label{tab:metadata-of-the-sra-data-of-PRJNA824185}Metadata of the sra data of PRJNA824185}\tabularnewline
-\toprule
-\begin{minipage}[b]{0.05\columnwidth}\raggedright
-Run\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-Relea\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-LoadDate\strut
-\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
-spots\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-bases\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-spots\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-avgLe\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-size\_MB\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-Assem\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-downl\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-Exper\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
-Libra\ldots\ldots12\strut
-\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Run
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Relea\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+LoadDate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+spots
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+bases
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+spots\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+avgLe\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+size\_MB
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Assem\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+downl\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exper\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Libra\ldots\ldots12
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endfirsthead
-\toprule
-\begin{minipage}[b]{0.05\columnwidth}\raggedright
-Run\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-Relea\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-LoadDate\strut
-\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
-spots\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-bases\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-spots\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-avgLe\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-size\_MB\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-Assem\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-downl\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
-Exper\ldots{}\strut
-\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
-Libra\ldots\ldots12\strut
-\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\midrule
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Run
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Relea\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+LoadDate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+spots
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+bases
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+spots\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+avgLe\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+size\_MB
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Assem\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+downl\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exper\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Libra\ldots\ldots12
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-84114\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-42057000\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-13\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_1\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-85133\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-42566500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-13\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_10\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-83213\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-41772926\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-502\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-12\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_11\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-80525\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-40423550\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-502\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-12\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_12\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-83961\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-41980500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-13\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_2\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-81782\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-40891000\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-13\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_3\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-56959\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-28479500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-9\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_4\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-85406\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-42703000\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-15\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_5\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-87838\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-43919000\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-15\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_6\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-87784\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-43892000\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-13\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_7\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-85552\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-42776000\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-13\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_8\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-82562\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-41281000\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-12\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-C\_9\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-80309\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-40154500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-12\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-DM\_10\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-84125\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-42062500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-13\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-DM\_11\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRR18\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2023-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-2022-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-82632\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-41316000\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-0\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-500\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-13\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-NA\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-https\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-SRX14\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-DM\_12\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 84114 & 42057000 & 0 & 500 & 13 & NA & https\ldots{} & SRX14\ldots{} & C\_1 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 85133 & 42566500 & 0 & 500 & 13 & NA & https\ldots{} & SRX14\ldots{} & C\_10 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 83213 & 41772926 & 0 & 502 & 12 & NA & https\ldots{} & SRX14\ldots{} & C\_11 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 80525 & 40423550 & 0 & 502 & 12 & NA & https\ldots{} & SRX14\ldots{} & C\_12 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 83961 & 41980500 & 0 & 500 & 13 & NA & https\ldots{} & SRX14\ldots{} & C\_2 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 81782 & 40891000 & 0 & 500 & 13 & NA & https\ldots{} & SRX14\ldots{} & C\_3 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 56959 & 28479500 & 0 & 500 & 9 & NA & https\ldots{} & SRX14\ldots{} & C\_4 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 85406 & 42703000 & 0 & 500 & 15 & NA & https\ldots{} & SRX14\ldots{} & C\_5 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 87838 & 43919000 & 0 & 500 & 15 & NA & https\ldots{} & SRX14\ldots{} & C\_6 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 87784 & 43892000 & 0 & 500 & 13 & NA & https\ldots{} & SRX14\ldots{} & C\_7 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 85552 & 42776000 & 0 & 500 & 13 & NA & https\ldots{} & SRX14\ldots{} & C\_8 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 82562 & 41281000 & 0 & 500 & 12 & NA & https\ldots{} & SRX14\ldots{} & C\_9 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 80309 & 40154500 & 0 & 500 & 12 & NA & https\ldots{} & SRX14\ldots{} & DM\_10 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 84125 & 42062500 & 0 & 500 & 13 & NA & https\ldots{} & SRX14\ldots{} & DM\_11 & \ldots{} \\
+SRR18\ldots{} & 2023-\ldots{} & 2022-\ldots{} & 82632 & 41316000 & 0 & 500 & 13 & NA & https\ldots{} & SRX14\ldots{} & DM\_12 & \ldots{} \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
 \end{longtable}
 
 \hypertarget{ux4e0bux8f7dux548cux9884ux5904ux7406-sra-ux6570ux636e}{%
@@ -1030,16 +911,293 @@ DM\_12\strut
 
 使用 \texttt{sra-toolkit} 工具组的 \texttt{prefetch} 下载 SRA 数据，并用 \texttt{fastq-dump} 转化为 fastq 文件。
 
-\hypertarget{qiime2}{%
-\subsubsection{Qiime2}\label{qiime2}}
+实际使用的数据为：
 
-以下分析参照： \url{https://docs.qiime2.org/2023.7/tutorials/moving-pictures-usage/}
+\begin{itemize}
+\tightlist
+\item
+  Control 组
+\item
+  Diabetic Nephropathy 组
+\end{itemize}
+
+Table \ref{tab:metadata-of-used-16s-rRNA-data}为表格metadata of used 16s rRNA data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-used-16s-rRNA-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有78行5列，以下预览的表格可能省略部分数据；表格含有2个唯一`group'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:metadata-of-used-16s-rRNA-data}Metadata of used 16s rRNA data}\tabularnewline
+\toprule\noalign{}
+sampl\ldots{} & Run & forwa\ldots{} & rever\ldots{} & group \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+sampl\ldots{} & Run & forwa\ldots{} & rever\ldots{} & group \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+C.1 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.10 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.11 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.12 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.2 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.3 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.4 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.5 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.6 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.7 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.8 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+C.9 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & C \\
+DN.16 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & DN \\
+DN.17 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & DN \\
+DN.18 & SRR18\ldots{} & /home\ldots{} & /home\ldots{} & DN \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
+\end{longtable}
+
+\hypertarget{ux4f7fux7528-qiime2-ux4f5cux4e3aux4e0aux6e38ux5206ux6790}{%
+\subsubsection{使用 Qiime2 作为上游分析}\label{ux4f7fux7528-qiime2-ux4f5cux4e3aux4e0aux6e38ux5206ux6790}}
+
+以下分析参照\textsuperscript{\protect\hyperlink{ref-ReproducibleIBolyen2019}{3}--\protect\hyperlink{ref-MicrobialCommuHamday2009}{7}}： \url{https://docs.qiime2.org/2023.7/tutorials/moving-pictures-usage/}
+
+\begin{itemize}
+\tightlist
+\item
+  importing data
+\item
+  Demultiplexing sequences
+\item
+  Sequence quality control and feature table construction
+
+  \begin{itemize}
+  \tightlist
+  \item
+    DADA2
+  \end{itemize}
+\item
+  FeatureTable and FeatureData summaries
+\item
+  Generate a tree for phylogenetic diversity analyses
+\item
+  Alpha and beta diversity analysis
+\item
+  Alpha rarefaction plotting
+\item
+  Taxonomic analysis
+\item
+  Differential abundance testing with ANCOM
+\end{itemize}
+
+\hypertarget{ux4f7fux7528-microbiotaprocess-ux4f5cux4e3aux4e0bux6e38ux5206ux6790}{%
+\subsubsection{\texorpdfstring{使用 \texttt{MicrobiotaProcess} 作为下游分析}{使用 MicrobiotaProcess 作为下游分析}}\label{ux4f7fux7528-microbiotaprocess-ux4f5cux4e3aux4e0bux6e38ux5206ux6790}}
+
+关于 LDA\textsuperscript{\protect\hyperlink{ref-MicrobiomeDataRaiS2021}{8}}
 
 \hypertarget{ux5206ux6790ux7cd6ux5c3fux75c5ux80beux75c5ux7684ux80a0ux9053ux4ee3ux8c22ux7ec4ux5b66ux5deeux5f02}{%
 \subsection{分析糖尿病肾病的肠道代谢组学差异}\label{ux5206ux6790ux7cd6ux5c3fux75c5ux80beux75c5ux7684ux80a0ux9053ux4ee3ux8c22ux7ec4ux5b66ux5deeux5f02}}
 
+\hypertarget{ux6570ux636eux6765ux6e90}{%
+\subsubsection{数据来源}\label{ux6570ux636eux6765ux6e90}}
+
+\hypertarget{feature-selection}{%
+\subsubsection{Feature selection}\label{feature-selection}}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
 \hypertarget{ux5206ux6790ux5deeux5f02ux83ccux7fa4ux4e0eux4ee3ux8c22ux7269ux7684ux76f8ux5173ux6027}{%
 \subsection{分析差异菌群与代谢物的相关性}\label{ux5206ux6790ux5deeux5f02ux83ccux7fa4ux4e0eux4ee3ux8c22ux7269ux7684ux76f8ux5173ux6027}}
+
+\hypertarget{ux4f7fux7528ux5173ux8054ux6570ux636e}{%
+\subsubsection{使用关联数据}\label{ux4f7fux7528ux5173ux8054ux6570ux636e}}
+
+血清代谢物和肠道菌群的关联性\textsuperscript{\protect\hyperlink{ref-BloodMetabolomWilman2019}{9}}
+
+\hypertarget{ux4eceux5deeux5f02ux83ccux7fa4ux5230ux5deeux5f02ux4ee3ux8c22ux7269}{%
+\subsubsection{从差异菌群到差异代谢物}\label{ux4eceux5deeux5f02ux83ccux7fa4ux5230ux5deeux5f02ux4ee3ux8c22ux7269}}
+
+Lachnospiraceae\textsuperscript{\protect\hyperlink{ref-TheControversiVacca2020}{10}}
+
+Trimethylamine\textsuperscript{\protect\hyperlink{ref-TheRoleOfAGPravee2022}{11}}
+
+\hypertarget{ux5206ux6790ux7cd6ux5c3fux75c5ux80beux75c5ux7684ux8f6cux5f55ux7ec4ux5b66ux5deeux5f02}{%
+\subsection{分析糖尿病肾病的转录组学差异}\label{ux5206ux6790ux7cd6ux5c3fux75c5ux80beux75c5ux7684ux8f6cux5f55ux7ec4ux5b66ux5deeux5f02}}
+
+\hypertarget{ux6570ux636eux6765ux6e90-1}{%
+\subsubsection{数据来源}\label{ux6570ux636eux6765ux6e90-1}}
+
+\begin{itemize}
+\tightlist
+\item
+  GSE199838
+\end{itemize}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Illumina Bcl2FastQ  software used for basecalling.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    Sequenced reads were trimmed for adaptor sequence, and
+masked for low-complexity or low-quality sequence. The
+remaining reads were filtered against the rRNA database to
+remove possible ribosomal RNA contamination, and then
+mapped to the hg19 whole genome using Hisat2 v2.1.0 with
+default parameters.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    HTSeq v0.11.2 was subsequently employed to convert
+aligned short reads into read counts for each gene model.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Assembly: hg19
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.4
+:}
+
+\vspace{0.5em}
+
+    Supplementary files format and content: tab-delimited
+text files include RPKM for each Sample
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux6570ux636eux6807ux51c6ux5316}{%
+\subsubsection{数据标准化}\label{ux6570ux636eux6807ux51c6ux5316}}
+
+Figure \ref{fig:RNA-filtered-genes}为图RNA filtered genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RNA-filtered-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RNA-filtered-genes.pdf}
+\caption{RNA filtered genes}\label{fig:RNA-filtered-genes}
+\end{center}
+
+Figure \ref{fig:RNA-nomalization}为图RNA nomalization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RNA-nomalization.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RNA-nomalization.pdf}
+\caption{RNA nomalization}\label{fig:RNA-nomalization}
+\end{center}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+Figure \ref{fig:RNA-seq-DEG}为图RNA seq DEG概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RNA-seq-DEG.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RNA-seq-DEG.pdf}
+\caption{RNA seq DEG}\label{fig:RNA-seq-DEG}
+\end{center}
+
+Table \ref{tab:RNA-DEG-top-table}为表格RNA DEG top table概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RNA-DEG-top-table.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有865行7列，以下预览的表格可能省略部分数据；表格含有865个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:RNA-DEG-top-table}RNA DEG top table}\tabularnewline
+\toprule\noalign{}
+hgnc\_\ldots{} & logFC & AveExpr & t & P.Value & adj.P\ldots{} & B \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+hgnc\_\ldots{} & logFC & AveExpr & t & P.Value & adj.P\ldots{} & B \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+NPY1R & 2.251\ldots{} & 6.749\ldots{} & 7.572\ldots{} & 0.000\ldots{} & 0.618\ldots{} & -3.90\ldots{} \\
+HBB & -2.83\ldots{} & 8.479\ldots{} & -5.57\ldots{} & 0.000\ldots{} & 0.618\ldots{} & -3.91\ldots{} \\
+COL14A1 & 2.124\ldots{} & 7.990\ldots{} & 5.201\ldots{} & 0.001\ldots{} & 0.618\ldots{} & -3.94\ldots{} \\
+ASAH1 & 1.170\ldots{} & 7.424\ldots{} & 4.806\ldots{} & 0.001\ldots{} & 0.618\ldots{} & -3.97\ldots{} \\
+VARS & -0.96\ldots{} & 7.518\ldots{} & -4.40\ldots{} & 0.002\ldots{} & 0.618\ldots{} & -3.99\ldots{} \\
+RHOB & -1.15\ldots{} & 9.861\ldots{} & -4.31\ldots{} & 0.003\ldots{} & 0.618\ldots{} & -4.01\ldots{} \\
+MT1E & -3.14\ldots{} & 8.226\ldots{} & -4.21\ldots{} & 0.003\ldots{} & 0.618\ldots{} & -4.02\ldots{} \\
+MT2A & -2.89\ldots{} & 8.428\ldots{} & -4.14\ldots{} & 0.004\ldots{} & 0.618\ldots{} & -4.02\ldots{} \\
+FGL2 & 1.058\ldots{} & 8.156\ldots{} & 4.069\ldots{} & 0.004\ldots{} & 0.618\ldots{} & -4.03\ldots{} \\
+C4B & -1.88\ldots{} & 7.510\ldots{} & -3.97\ldots{} & 0.005\ldots{} & 0.618\ldots{} & -4.04\ldots{} \\
+SLC27A4 & -0.76\ldots{} & 7.183\ldots{} & -3.82\ldots{} & 0.006\ldots{} & 0.618\ldots{} & -4.06\ldots{} \\
+VASN & -1.13\ldots{} & 7.761\ldots{} & -3.68\ldots{} & 0.007\ldots{} & 0.618\ldots{} & -4.07\ldots{} \\
+PABPC1 & -0.71\ldots{} & 9.322\ldots{} & -3.67\ldots{} & 0.007\ldots{} & 0.618\ldots{} & -4.08\ldots{} \\
+TTC28 & -0.90\ldots{} & 8.207\ldots{} & -3.58\ldots{} & 0.008\ldots{} & 0.618\ldots{} & -4.08\ldots{} \\
+TRABD2B & -1.78\ldots{} & 7.019\ldots{} & -3.73\ldots{} & 0.006\ldots{} & 0.618\ldots{} & -4.08\ldots{} \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
+\end{longtable}
+
+\hypertarget{ux8f6cux5f55ux7ec4ux5b66ux548cux7f51ux7edcux836fux7406ux5b66ux7ed3ux5408}{%
+\subsection{转录组学和网络药理学结合}\label{ux8f6cux5f55ux7ec4ux5b66ux548cux7f51ux7edcux836fux7406ux5b66ux7ed3ux5408}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+receptors
+:}
+
+\vspace{0.5em}
+
+    DCN
+    IRAK1
+    CDKN1A
+    FOXO3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux4ee3ux8c22ux5c0fux5206ux5b50ux9776ux70b9ux86cbux767dux5206ux6790}{%
+\subsection{代谢小分子靶点蛋白分析}\label{ux4ee3ux8c22ux5c0fux5206ux5b50ux9776ux70b9ux86cbux767dux5206ux6790}}
+
+\hypertarget{ux5206ux5b50ux5bf9ux63a5ux6570ux636eux51c6ux5907}{%
+\subsubsection{分子对接数据准备}\label{ux5206ux5b50ux5bf9ux63a5ux6570ux636eux51c6ux5907}}
 
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
@@ -1049,12 +1207,51 @@ DM\_12\strut
 \addcontentsline{toc}{section}{Reference}
 
 \hypertarget{refs}{}
-\begin{cslreferences}
-\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
-1. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+\begin{CSLReferences}{0}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-CytohubbaIdenChin2014}{}}%
+\CSLLeftMargin{1. }%
+\CSLRightInline{Chin, C.-H. \emph{et al.} \href{https://doi.org/10.1186/1752-0509-8-S4-S11}{cytoHubba: Identifying hub objects and sub-networks from complex interactome}. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).}
 
-\leavevmode\hypertarget{ref-TheIntestinalZhang2023}{}%
-2. Zhang, L. \emph{et al.} The intestinal microbiota composition in early and late stages of diabetic kidney disease. \emph{Microbiology Spectrum} \textbf{11}, (2023).
-\end{cslreferences}
+\leavevmode\vadjust pre{\hypertarget{ref-TheIntestinalZhang2023}{}}%
+\CSLLeftMargin{2. }%
+\CSLRightInline{Zhang, L. \emph{et al.} \href{https://doi.org/10.1128/spectrum.00382-23}{The intestinal microbiota composition in early and late stages of diabetic kidney disease}. \emph{Microbiology Spectrum} \textbf{11}, (2023).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-ReproducibleIBolyen2019}{}}%
+\CSLLeftMargin{3. }%
+\CSLRightInline{Bolyen, E. \emph{et al.} \href{https://doi.org/10.1038/s41587-019-0209-9}{Reproducible, interactive, scalable and extensible microbiome data science using QIIME 2}. \emph{Nature Biotechnology} \textbf{37}, 852--857 (2019).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-TheBiologicalMcdona2012}{}}%
+\CSLLeftMargin{4. }%
+\CSLRightInline{McDonald, D. \emph{et al.} \href{https://doi.org/10.1186/2047-217X-1-7}{The biological observation matrix (BIOM) format or: How i learned to stop worrying and love the ome-ome}. \emph{GigaScience} \textbf{1}, 7 (2012).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Dada2HighResCallah2016}{}}%
+\CSLLeftMargin{5. }%
+\CSLRightInline{Callahan, B. J. \emph{et al.} \href{https://doi.org/10.1038/nmeth.3869}{DADA2: High-resolution sample inference from illumina amplicon data}. \emph{Nature methods} \textbf{13}, 581 (2016).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-ErrorCorrectinHamday2008}{}}%
+\CSLLeftMargin{6. }%
+\CSLRightInline{Hamday, M., Walker J., J., Harris, J. K., Gold J., N. \& Knight, R. \href{https://doi.org/10.1038/nmeth.1184}{Error-correcting barcoded primers allow hundreds of samples to be pyrosequenced in multiplex}. \emph{Nature Methods} \textbf{5}, 235--237 (2008).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-MicrobialCommuHamday2009}{}}%
+\CSLLeftMargin{7. }%
+\CSLRightInline{Hamday, M. \& Knight, R. \href{https://doi.org/10.1101/gr.085464.108}{Microbial community profiling for human microbiome projects: Tools, techniques, and challenges}. \emph{Genome Research} \textbf{19}, 1141--1152 (2009).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-MicrobiomeDataRaiS2021}{}}%
+\CSLLeftMargin{8. }%
+\CSLRightInline{Rai, S. N. \emph{et al.} \href{https://doi.org/10.1016/j.gendis.2019.12.005}{Microbiome data analysis with applications to pre-clinical studies using QIIME2: Statistical considerations}. \emph{Genes \textbackslash\&amp; Diseases} \textbf{8}, (2021).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-BloodMetabolomWilman2019}{}}%
+\CSLLeftMargin{9. }%
+\CSLRightInline{Wilmanski, T. \emph{et al.} \href{https://doi.org/10.1038/s41587-019-0233-9}{Blood metabolome predicts gut microbiome \(\alpha\)-diversity in humans}. \emph{Nature Biotechnology} \textbf{37}, (2019).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-TheControversiVacca2020}{}}%
+\CSLLeftMargin{10. }%
+\CSLRightInline{Vacca, M. \emph{et al.} \href{https://doi.org/10.3390/microorganisms8040573}{The controversial role of human gut lachnospiraceae}. \emph{Microorganisms} \textbf{8}, (2020).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-TheRoleOfAGPravee2022}{}}%
+\CSLLeftMargin{11. }%
+\CSLRightInline{Praveenraj, S. S. \emph{et al.} \href{https://doi.org/10.1007/s12035-022-02990-5}{The role of a gut microbial-derived metabolite, trimethylamine n-oxide (TMAO), in neurological disorders}. \emph{Molecular neurobiology} \textbf{59}, 6684--6700 (2022).}
+
+\end{CSLReferences}
 
 \end{document}
