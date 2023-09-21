@@ -19,6 +19,11 @@ set_index()
 
 # 摘要 {#abstract}
 
+结合网络药理学、肠道菌微生物组 (16s rRNA)、代谢组、转录组、分子对接等技术，筛选复方（肾衰宁）对糖尿病肾病（DN）治疗的主要活性成分和作用靶点。
+
+16s rRNA 和代谢组结合，筛选到差异菌 Lachnospiraceae 和差异代谢物 Trimethylamine。DN 患者 Lachnospiraceae 丰度下降，而血清 Trimethylamine 水平升高，提示 DN 患者由于 Lachnospiraceae 菌失调，降低 Trimethylamine 的代谢能力。进一步结合网络药理学和转录组（肾组织），筛选到靶点蛋白 FOXO3，IRAK1，CDKN1A。DN 患者的 FOXO3，IRAK1，CDKN1A 表达量下降。分子对接应用于 Trimethylamine 和 FOXO3，IRAK1，CDKN1A 蛋白，结果显示，Trimethylamine 对三者都有结合可能，且对 FOXO3 有最高的亲和度。作用于 FOXO3，IRAK1，CDKN1A 等蛋白的复方的活性成分共有 `r colSum(mainAct[[2]])` 个，请参考 Tab. \@ref(tab:main-active-compounds-to-receptors)。
+
+
 # 研究设计流程图 {#route}
 
 ```{r}
@@ -36,9 +41,22 @@ p.route <- flowChart(route, 1.1, 1)
 
 # 材料和方法 {#methods}
 
+- Qiime2
+- MetaboAnalystR
+- gutMDisorder
+- MicrobiotaProcess
+- STRINGdb
+- clusterProfiler
+- FELLA
+- limma
+- Autodock Vina
+- pymol
+- R
+- ...
+
 # 分析结果 {#results}
 
-## 网络药理学分析主要活性成分
+## 网络药理学分析
 
 ```{r}
 herbs <- c("丹参", "大黄", "太子参", "黄连", "牛膝", "制半夏", "红花", "茯苓", "陈皮", "甘草")
@@ -128,7 +146,7 @@ plots(st)[[2]]
 autor(st@tables$step1$mapped)
 ```
 
-### 筛选 HubGenes
+### 筛选 HubGenes {#hubs}
 
 利用 Cytoscape 的插件 CytoHubba [@CytohubbaIdenChin2014] 提供的 MCC 算法计算
 Hub 基因得分（这里 MCC 算法被集成到 R 中，独立计算）。
@@ -176,9 +194,6 @@ autor(en@plots$step1$p.kegg$hub_genes)
 
 ```{r}
 #| sra-info
-primer_f <- "CCTACGGGNGGCWGCAG"
-primer_r <- "GACTACHVGGGTATCTAATCC"
-
 sra <- job_sra("PRJNA824185")
 sra <- step1(sra)
 sra <- step2(sra)
@@ -241,38 +256,96 @@ saveRDS(qi, "qi_second.rds")
 
 ### 使用 `MicrobiotaProcess` 作为下游分析
 
-关于 LDA[@MicrobiomeDataRaiS2021]
-
 ```{r}
 #| run
 options(step_check = F)
+
 mp <- asjob_mp(qi)
 mp <- step1(mp)
-mp@plots$step1$p.rarefaction
-mp@plots$step1$p.alpha_index
 mp <- step2(mp)
-mp@plots$step2$p.rel_abundance$Genus
 mp <- step3(mp)
-mp@plots$step3$p.pcoa
 mp <- step4(mp)
-mp@plots$step4$p.box
-mp@plots$step4$p.tree
 
-mp@tables$step4$top_table
-
-mp <- clear(mp)
+mp <- clear(mp, F)
 saveRDS(mp, "mp_cleared.rds")
 ```
 
-## 分析糖尿病肾病的肠道代谢组学差异
+结果见以下部分。
+
+### Alpha 多样性
+
+Control 组和 Diabetic Nephropathy 组的 Alpha 多样性没有显著差异（Fig. \@ref(fig:evaluate-alpha-diversity-in-multiple-methods)）。
+
+```{r eval = T, echo = F, results = "asis"}
+#| alpha-rarefaction-curve
+autor(mp@plots$step1$p.rarefaction)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| evaluate-alpha-diversity-in-multiple-methods
+autor(mp@plots$step1$p.alpha_index)
+```
+
+### 物种丰度
+
+门、纲、目、科、属、种对应为：
+
+```{r eval = T, echo = F, results = "asis"}
+#| taxonomy
+autor(new_lich(list(taxonomy = names(mp@plots$step2$p.rel_abundance))))
+```
+
+### Beta 多样性
+
+在 Beta 分析中，C 组和 DN 组未发生完全区分的聚类。
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCoA
+autor(mp@plots$step3$p.pcoa)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| abundance-in-Family
+autor(mp@plots$step3$p.hier$Family)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| abundance-in-Genus
+autor(mp@plots$step3$p.hier$Genus)
+```
+
+### 差异分析
+
+相比于 C 组，DN 组的部分菌丰度显著降低（Tab. \@ref(tab:FDR-significant-Microbiota)）。 
+
+```{r eval = T, echo = F, results = "asis"}
+#| significant-Microbiota-boxplot
+autor(mp@plots$step4$p.box)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| FDR-significant-Microbiota
+autor(filter(mp@tables$step4$top_table, fdr < .05))
+```
+
+关于 LDA[@MicrobiomeDataRaiS2021]。
+
+## 分析糖尿病肾病的代谢组学差异
 
 ### 数据来源
+
+该数据为血清代谢组。血清代谢组可以反映肠道菌丰度，请参考[@BloodMetabolomWilman2019]。
+
+数据来源：
+
+- Title: Serum Metabolomics Benefits Discrimination Kidney Disease Development in Type 2 Diabetes Patients
+- PMID: 35615098
 
 ```{r}
 #| preparation-metabo-data
 # https://pubmed.ncbi.nlm.nih.gov/35615098/
 # https://figshare.com/ndownloader/files/33926873?private_link=02319eeb01c363a87928
-data <- openxlsx::read.xlsx("./Metabolomics data from screening cohort.xlsx")
+data <- openxlsx::read.xlsx("./metabo_test/Metabolomics data from screening cohort.xlsx")
 data <- as_tibble(data)
 data <- filter(data, !is.na(Patient.ID))
 
@@ -288,63 +361,115 @@ counts <- dplyr::mutate_at(counts, colnames(counts)[-1],
   })
 ```
 
-### Feature selection
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-serum
+autor(select(la@params$metadata, group, sample))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| source-data-of-serum
+autor(as_tibble(t(la@object)))
+```
+
+### 代谢物筛选
 
 ```{r}
 #| top-metabolites
-lm <- job_limma(new_dge(metadata, counts, select(counts, name = Patient.ID)))
+lm0 <- job_limma(new_dge(metadata, counts, select(counts, name = Patient.ID)))
 
-la <- asjob_lasso(lm, use = "name", from_normed = F)
+la <- asjob_lasso(lm0, use = "name", from_normed = F)
 la <- step1(la, levels = c("Control", "Diabetic.kidney.disease"), n.train = .99)
 la <- step2(la, top = 150)
-
-la@plots$step2$p.efs
 la$tops
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| selected-metabolites-with-multiple-selection-methods
+autor(la@plots$step2$p.efs)
+```
+
 ### 富集分析
+
+取 Fig. \@ref(fig:selected-metabolites-with-multiple-selection-methods) 的代谢物做富集分析。
+
+以下内容仅供参考，无直接结论。
+
+#### MetaboAnalyst
 
 ```{r}
 #| MetaboAnalyst
 mt <- job_metabo()
 mt <- step1(mt, la$tops)
-
-mt@plots$step1$metabolites_ORA_dot_kegg_pathway
 mt$hits
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| use-MetaboAnalyst-for-metabolites-enrichment
+autor(mt@plots$step1$metabolites_ORA_dot_kegg_pathway)
+```
+
+#### FELLA
+
 ```{r}
-#| fella
 fl <- asjob_fella(mt)
 fl <- step1(fl)
-
-fl@plots$step1$p.enrich$ids
+fl <- clear(fl, save = T)
 fl@params$graph.lst$ids
 ```
 
-## 分析差异菌群与代谢物的相关性
+```{r eval = T, echo = F, results = "asis"}
+#| use-FELLA-for-metabolites-enrichment
+autor(fl@plots$step1$p.enrich$ids)
+```
+
+## 关联分析：差异菌群与代谢物
 
 ### 使用关联数据
 
-血清代谢物和肠道菌群的关联性[@BloodMetabolomWilman2019]
+血清代谢物和肠道菌群的关联性[@GutmdisorderACheng2019]
+
+- Title: gutMDisorder: a comprehensive database for dysbiosis of the gut microbiota in disorders and interventions
+
+该数据集反映了肠道菌与代谢物之间的关联。
 
 ### 从差异菌群到差异代谢物
 
-Lachnospiraceae[@TheControversiVacca2020]
-
-Trimethylamine[@TheRoleOfAGPravee2022]
+将 Fig. \@ref(fig:selected-metabolites-with-multiple-selection-methods) 的代谢物和 
+Fig. \@ref(fig:significant-Microbiota-boxplot) 的差异菌，结合 gutMDisorder 数据集，进一步筛选差异代谢物和差异菌。
 
 ```{r}
-mp <- step5(mp)
+options(step_check = F)
+mp <- step5(mp, la$tops)
+
+
 mp$matched
 mp@tables$step5$db_data_matched
 
-selected <- filter(mp@tables$step5$db_data_matched, Substrate %in% dplyr::all_of(la$tops))
+selected <- filter(mp@tables$step5$db_data_matched,
+  Substrate %in% dplyr::all_of(la$tops) |
+    Metabolite %in% dplyr::all_of(la$tops)
+)
 selected
 ```
 
 ```{r}
 p.keyMe <- wrap(map(la, "Trimethylamine"), 6, 5)
+p.keyMe
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Integration-of-datasets-for-metabolites-and-microbiota-selection
+autor(mp@plots$step5$p.alluvial)
+```
+
+Fig. \@ref(fig:Integration-of-datasets-for-metabolites-and-microbiota-selection) 筛选到：
+
+- Lachnospiraceae[@TheControversiVacca2020]
+- Trimethylamine[@TheRoleOfAGPravee2022]
+
+```{r eval = T, echo = F, results = "asis"}
+#| Metabolite-Trimethylamine-levels
+autor(p.keyMe)
 ```
 
 ## 分析糖尿病肾病的转录组学差异
@@ -402,9 +527,12 @@ autor(lm@tables$step2$tops[[1]])
 
 ## 转录组学和网络药理学结合
 
+取 \@ref(hubs) 中 top 100 的基因，与 Tab. \@ref(tab:RNA-DEG-top-table) 中满足条件（P.Value &lt; .05, |logFC| &gt; 1）的基因。
+
 ```{r}
 top_table <- filter(lm@tables$step2$tops[[1]], P.Value < .05, abs(logFC) > 1)
-sets_deg_hub <- list(RNA_top_DEG = top_table$Gene, PPI_Hub_genes = head(st@tables$step1$hub_genes$hgnc_symbol, n = 100))
+sets_deg_hub <- list(RNA_top_DEG = top_table$hgnc_symbol,
+  PPI_Hub_genes = head(st@tables$step1$hub_genes$hgnc_symbol, n = 100))
 p.venn <- new_venn(lst = sets_deg_hub, wrap = T)
 p.venn
 
@@ -412,13 +540,24 @@ receptors <- ins(lst = sets_deg_hub)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-target-genes-as-receptor
+autor(p.venn)
+```
+
+所有的候选受体（用于分子对接 \@ref(dock1)
+
+```{r eval = T, echo = F, results = "asis"}
 #| all-receptors
 autor(new_lich(namel(receptors)))
 ```
 
-## 代谢小分子靶点蛋白分析
+## 代谢小分子靶点蛋白分析 {#dock1}
 
 ### 分子对接
+
+使用 Autodock vina 对接[@AutodockVina1Eberha2021]。
+
+流程请参考文献[@ComputationalPForli2016] 或者 <https://autodock-vina.readthedocs.io/en/latest/docking_basic.html>。
 
 ```{r}
 vn0 <- job_vina(selected$Substrate.PubChem.CID, receptors)
@@ -427,17 +566,90 @@ vn0 <- step2(vn0)
 vn0 <- step3(vn0)
 vn0 <- step4(vn0)
 vn0 <- step5(vn0, selected, "Substrate.PubChem.CID", "Substrate")
+# activate_base()
+vn0 <- step6(vn0)
 
-vn0@plots$step5
+wrap(vn0@plots$step5$p.res_vina, 5, 3)
 vn0@tables$step5$res_dock
+
+vn0 <- step7(vn0)
+system("pymol ./pdbqt/1146.pdbqt -g ./figs/1146.png")
+
+trim.smi <- filter(fl@params$mapped, Query == "Trimethylamine")$SMILES
+trim.2d <- draw_smile(trim.smi, "figs/1146_2D.svg")
 ```
 
-## 药物和靶点蛋白
+```{r eval = T, echo = F, results = "asis"}
+#| docking-affinity
+autor(wrap(vn0@plots$step5$p.res_vina, 5, 3))
+```
+
+### 对接可视化
+
+使用 PyMol 工具将结果可视化[@LigandDockingSeelig2010]。
+
+```{r eval = T, echo = F, results = "asis"}
+#| docking-with-FOXO3
+autor(.file_fig("./figs/1146_into_2lqh.png"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| docking-with-IRAK1
+autor(.file_fig("./figs/1146_into_6bfn.png"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| docking-with-CDKN1A
+autor(.file_fig("./figs/1146_into_6p8h.png"))
+```
+
+对接的化合物的结构为：
+
+```{r eval = T, echo = F, results = "asis"}
+#| compound-structure-2D
+autor(trim.2d)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| compound-structure-3D
+autor(.file_fig("./figs/1146.png"))
+```
+
+### 靶点蛋白的表达量以及相关通路
+
+```{r}
+p.keyGe <- wrap(map(lm, vn0@tables$step5$unique_tops$hgnc_symbol, pvalue = F), 5, 4)
+
+res.receptors <- vn0@tables$step5$unique_tops$hgnc_symbol
+en1 <- job_enrich(list(keyGe = res.receptors),
+  hb@params$targets_annotation
+)
+en1 <- step1(en1, maxShow = 20)
+en1@plots$step1$p.kegg
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| pathway-enrichment-of-receptors
+autor(en1@plots$step1$p.kegg$keyGe)
+```
+
+## 复方活性成分
+
+### 作用于靶点蛋白的主要活性成分
+
+```{r}
+mainAct <- select(filter(hb@params$herbs_targets, Target.name %in% res.receptors), -1)
+mainAct <- map(mainAct, "herb_id", hb@params$herbs_info, "Herb_", "Herb_pinyin_name")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| main-active-compounds-to-receptors
+autor(mainAct, key = "Ingredient.name")
+```
 
 ```{r}
 options(step_check = F)
 vn <- asjob_vina(st, job_herb = hb)
-
 vn <- step1(vn, NULL)
 vn <- step2(vn)
 vn <- step3(vn)
@@ -448,3 +660,5 @@ vn <- step7(vn)
 ```
 
 # 结论 {#dis}
+
+见 \@ref(abstract)
