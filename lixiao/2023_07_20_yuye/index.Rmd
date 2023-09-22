@@ -1,0 +1,266 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 题目
+
+# 摘要 {#abstract}
+
+关于转录组数据库筛选肌少症（Sarcopenia）、结直肠癌（colorectal cancer）、化疗（Chemotherapy）共同的通路：
+
+```{r}
+# 肌少症，恶性肿瘤，线粒体，如果能够链接到结直肠癌，看看有没有共通的通路，那最好
+# 肿瘤患者多出现代谢紊乱、营养不良，化疗可加重以上问题
+```
+
+- 使用公共数据库：
+    1. 筛选 GEO 至少两个数据集，一个肌少症，另一个结直肠癌症。后者最好包含化疗前后的两组数据。如果 GEO 数据库不存在结直肠癌化疗前后的合适数据，可能需要筛选三个数据集供处理。
+    2. 消除批次效应（不同来源的数据的各种无关因素带来的影响）。
+    3. 筛选共通基因，有两种方法：
+        1. 一般法，多重比对，取交集。
+        2. WGCNA[@WgcnaAnRPacLangfe2008] 法，对多个数据集进行一致性分析，寻找关键基因模块。
+        3. 联合法，联合上述两种方法。
+    4. 根据基因筛选结果，通路富集分析。
+
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+# 材料和方法 {#methods}
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程
+
+## 相关文献
+
+- Danger signals: Chemotherapy enhancers? [@DangerSignalsVargas2017]
+- Current Targeted Therapy for Metastatic Colorectal Cancer [@CurrentTargeteOhishi2023]
+- Sarcopenia in the Older Adult With Cancer [@SarcopeniaInTWillia2021]
+- Mitochondrial dysfunction and oxidative stress in aging and cancer [@MitochondrialDKudrya2016]
+- The role of aging in cancer [@TheRoleOfAgiHavas2022]
+
+## 数据来源
+
+```{r}
+# (((((((homo sapiens[Organism]) AND Chemotherapy) AND cancer)) AND colorectal cancer)) AND pre) AND post 
+```
+
+### 结直肠癌
+
+#### GSE142340: six CRC cell lines treated with CTRL and optimized drug combinations (ODCs)
+
+- RNA sequencing was conducted for six CRC cell lines treated with CTRL and optimized drug combinations (ODCs), providing samples in duplicate
+    - GSE142340
+
+```{r}
+geo1 <- job_geo("GSE142340")
+geo1 <- step1(geo1)
+geo1@params$prods
+geo1 <- step2(geo1)
+lapply(list.files("./GSE142340", full.names = T), R.utils::gunzip)
+
+counts <- ftibble("./GSE142340/GSE142340_rawcounts.txt")
+
+metadata <- geo1@params$metas$res[[1]]
+metadata <- dplyr::rename_all(metadata, make.names)
+metadata <- select(metadata, 1, cell.line.ch1:treatment.ch1)
+metadata <- mutate(metadata, treatment.ch1 = make.names(treatment.ch1),
+  group = gs(paste0(cell.line.ch1, "_", treatment.ch1), "\\.\\.", "_")
+)
+
+con1 <- lapply(split(metadata$group, metadata$cell.line.ch1),
+  function(x) {
+    x <- unique(x)
+    paste0(x[2], " - ", x[1])
+  }
+)
+
+genes <- select(counts, hgnc_symbol = gene)
+
+lm1 <- job_limma(new_dge(metadata, counts, genes))
+step0("limma")
+lm1 <- step1(lm1)
+lm1 <- step2(lm1, contrasts = unlist(con1, use.names = F), use = "P")
+
+lm1_tops <- lapply(lm1@tables$step2$tops,
+  function(x) x$hgnc_symbol
+)
+
+p.lm1_upsets <- new_upset(lst = lm1_tops, trunc = "right")
+p.lm1_upsets
+
+lm1_ins <- ins(lst = lm1_tops[ !grepl("^SW48", names(lm1_tops)) ])
+```
+
+#### GSE153412: radio-chemoresistance in colorectal cancer cell lines
+
+- RNAseq analysis of radio-chemoresistance in colorectal cancer cell lines
+    - GSE153412
+
+```{r}
+geo2 <- job_geo("GSE153412")
+geo2 <- step1(geo2)
+geo2 <- step2(geo2, "counts")
+R.utils::gunzip("./GSE153412/GSE153412_est_counts.tsv.gz")
+
+geo2@params$prods
+counts <- ftibble("./GSE153412/GSE153412_est_counts.tsv")
+
+metadata <- geo2@params$guess
+metadata <- mutate(metadata, cell.line.ch1 = make.names(cell.line.ch1),
+  treatment.ch1 = gs(make.names(treatment.ch1), "[.]{2,}", "_"),
+  group = paste0(X5.fu.sensitivity.ch1, "_", cell.line.ch1, "_", treatment.ch1)
+)
+
+genes <- select(counts, hgnc_symbol =  gene)
+
+con2 <- lapply(split(metadata$group,
+    paste0(metadata$X5.fu.sensitivity.ch1, "_", metadata$cell.line.ch1)),
+  function(x) {
+    x <- unique(x)
+    paste0(x[2], " - ", x[1])
+  })
+
+lm2 <- job_limma(new_dge(metadata, counts, genes))
+lm2 <- step1(lm2)
+lm2 <- step2(lm2, contrasts = unlist(con2, use.names = F), use = "adj")
+
+lm2_tops <- lapply(lm2@tables$step2$tops,
+  function(x) x$hgnc_symbol
+)
+
+p.lm2_upsets <- new_upset(lst = lm2_tops, trunc = "right")
+p.lm2_upsets
+
+lm2_ins <- ins(lst = lm2_tops[ grepl("^Sen", names(lm2_tops)) ])
+```
+
+#### GSE183984: tumor tissue obtained before and after cetuximab treatment
+
+- RNA sequencing of formalin-fixed paraffin-embedded (FFPE) tumor tissue obtained before and after cetuximab treatment
+    - GSE183984
+
+```{r}
+geo4 <- job_geo("GSE183984")
+geo4 <- step1(geo4)
+geo4 <- step2(geo4, "counts")
+
+R.utils::gunzip("./GSE183984/GSE183984_ASAN_RNASEQ_raw_counts_ensg.csv.gz")
+
+metadata <- geo4@params$guess
+metadata <- filter(metadata, grepl("primary tumor", tissue.ch1))
+metadata <- mutate(metadata,
+  title = gs(title, ".*\\[(.*)\\].*", "\\1"),
+  title = gs(title, "_15$", "_015"),
+  time.point.ch1 = ifelse(is.na(time.point.ch1),
+    "pre-treatment", time.point.ch1),
+  group = make.names(time.point.ch1)
+)
+
+counts <- ftibble("./GSE183984/GSE183984_ASAN_RNASEQ_raw_counts_ensg.csv")
+genes <- select(counts, name)
+
+mart <- new_biomart()
+anno4 <- filter_biomart(mart, general_attrs(), "ensembl_gene_id", genes$name)
+
+lm4 <- job_limma(new_dge(metadata, counts, anno4))
+lm4 <- step1(lm4)
+lm4 <- step2(lm4, post.treatment - pre.treatment)
+
+lm4@plots$step2$p.valcano[[1]]
+
+```
+
+#### GSE156281: post chemo-RT surgical materials of RCA patients
+
+- Total of 104 patients RNA samples (pre-therapeutic biopsies) belonging to patients of pathological complete and non complete response post radiotherapy. Addiotional 12 RNA samples from post chemo-RT surgical materials of RCA patients.
+    - GSE156281
+
+#### TCGA
+
+```{r}
+#| READ
+step0("tc")
+tc1 <- job_tcga("TCGA-READ")
+tc1 <- step1(tc1)
+tc1 <- step2(tc1)
+tc1 <- step3(tc1)
+tc1 <- clear(tc1)
+
+lm.tc1 <- asjob_limma(tc1)
+```
+
+```{r}
+#| COAD
+tc2 <- job_tcga("TCGA-COAD")
+```
+
+### 肌少症
+
+#### GSE167186: transcriptome profiling on lower limb muscle biopsies from 72 young, old and sarcopenic subjects
+
+- We performed transcriptome profiling on lower limb muscle biopsies from 72 young, old and sarcopenic subjects using bulk RNA-seq (N = 72) and single-nuclei RNA-seq (N = 17).
+    - GSE167186
+
+```{r}
+geo5 <- job_geo("GSE167186")
+geo5 <- step1(geo5)
+geo5@params$prods
+geo5 <- step2(geo5)
+R.utils::gunzip("./GSE167186/GSE167186_counts.csv.gz")
+
+counts <- ftibble("./GSE167186/GSE167186_counts.csv")
+
+metadata <- geo5@params$metas$res[[1]]
+metadata <- dplyr::rename_all(metadata, make.names)
+metadata <- select(metadata, 1, dplyr::ends_with(".ch1"))
+metadata <- mutate(metadata, age.ch1 = as.integer(age.ch1),
+  age_status = ifelse(age.ch1 > 40, "OLD", "YOUNG"),
+  status = stringr::str_extract(group.ch1, "Sarcopenia|Healthy")
+)
+metadata <- filter(metadata, !is.na(status))
+metadata <- mutate(metadata, group = paste0(age_status, "_", status))
+
+genes <- select(counts, hgnc_symbol = Symbol)
+
+lm5 <- job_limma(new_dge(metadata, counts, genes))
+lm5 <- step1(lm5)
+lm5@plots$step1$p.norm
+lm5 <- step2(lm5,
+  OLD_Sarcopenia - OLD_Healthy,
+  OLD_Healthy - YOUNG_Healthy,
+  use = "P"
+)
+lm5@plots$step2$p.valcano[[1]]
+
+```

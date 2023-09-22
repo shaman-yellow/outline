@@ -1,0 +1,37 @@
+
+#### GSE227641: HCT 15 cells with oxaliplatin and sorafenib; CoCl2, brefeldin A, or low glucose
+
+-	Inositol hexaphosphate enhances chemotherapy by reversing persistent endoplasmic reticulum stress-induced senescence in colorectal cancer
+    - for HCT 15 cells treated with oxaliplatin and sorafenib.
+        - GSE227609
+    - for HCT 15 cells treated with CoCl2, brefeldin A, or low glucose.
+        - GSE227379
+
+```{r}
+geo3 <- job_geo("GSE227641")
+geo3 <- step1(geo3)
+geo3@params$guess
+geo3 <- step2(geo3)
+
+untar("./GSE227641/GSE227641_RAW.tar", exdir = "./GSE227641")
+lapply(list.files("./GSE227641", "gz$", full.names = T), R.utils::gunzip)
+
+metadata <- geo3@params$guess
+counts <- lapply(list.files("./GSE227641", "txt$", full.names = T), ftibble)
+```
+
+#### GSE183984: tumor tissue obtained before and after cetuximab treatment
+
+- RNA sequencing of formalin-fixed paraffin-embedded (FFPE) tumor tissue obtained before and after cetuximab treatment
+    - GSE183984
+
+```{r}
+geo4 <- job_geo("GSE183984")
+geo4 <- step1(geo4)
+geo4 <- step2(geo4, "counts")
+
+metadata <- geo4@params$guess
+metadata <- filter(metadata, grepl("primary tumor", tissue.ch1))
+```
+
+
