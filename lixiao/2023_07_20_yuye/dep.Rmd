@@ -1,4 +1,11 @@
 
+#### GSE156281: post chemo-RT surgical materials of RCA patients
+
+- Total of 104 patients RNA samples (pre-therapeutic biopsies) belonging to patients of pathological complete and non complete response post radiotherapy. Addiotional 12 RNA samples from post chemo-RT surgical materials of RCA patients.
+    - GSE156281
+
+
+
 #### GSE227641: HCT 15 cells with oxaliplatin and sorafenib; CoCl2, brefeldin A, or low glucose
 
 -	Inositol hexaphosphate enhances chemotherapy by reversing persistent endoplasmic reticulum stress-induced senescence in colorectal cancer
@@ -34,4 +41,54 @@ metadata <- geo4@params$guess
 metadata <- filter(metadata, grepl("primary tumor", tissue.ch1))
 ```
 
+### GSE111017: Study of sarcopenia in human muscle biopsies of elderly individuals
 
+```{r}
+geo6 <- job_geo("GSE111017")
+geo6 <- step1(geo6)
+geo6@params$prods@.Data %<>% lapply(function(x) x[1])
+geo6@params$prods
+geo6@params$guess
+```
+
+#### "GSE111006", "GSE111010", "GSE111016"
+
+```{r}
+counts.lst <- pbapply::pblapply(c("GSE111006", "GSE111010", "GSE111016"),
+  function(gse) {
+    if (!file.exists(gse)) {
+      geo <- job_geo(gse)
+      geo <- step1(geo)
+      geo <- step2(geo, "Counts")
+    }
+    file <- list.files(gse, ".gz$", full.names = T)
+    if (length(file) > 0)
+      R.utils::gunzip(file)
+    file <- list.files(gse, ".csv$", full.names = T)
+    ftibble(file)
+  })
+
+counts.lst 
+```
+
+
+```{r}
+#| lasso
+la5 <- asjob_lasso(lm5, use.filter = lm5@tables$step2$tops[[1]]$hgnc_symbol, use = "hgnc_symbol")
+la5 <- step1(la5, levels = c("OLD_Healthy", "OLD_Sarcopenia"), n.train = .7)
+la5@plots$step1$p.consist
+la5 <- step2(la5)
+la5@plots$step2$p.efs
+la5 <- step3(la5, nfold = 3, use_tops = T)
+
+la5@plots$step3$p.roc$lambda.min
+la5@params$tops
+
+```
+
+```{r}
+
+lm5@tables$step2$tops[[1]]$hgnc_symbol
+intersect(lm5@tables$step2$tops[[1]]$hgnc_symbol, all.sigs)
+
+```
