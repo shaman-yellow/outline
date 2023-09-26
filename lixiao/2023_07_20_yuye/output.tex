@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Report of Analysis},
+  pdftitle={Analysis},
   pdfauthor={Huang LiChuang of Wie-Biotech},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -75,7 +75,7 @@
   {}%
   {\par}
 
-\title{Report of Analysis}
+\title{Analysis}
 \author{Huang LiChuang of Wie-Biotech}
 \date{}
 
@@ -90,191 +90,730 @@
 
 \listoftables
 
-\hypertarget{test}{%
-\section{test}\label{test}}
+\hypertarget{ux9898ux76ee}{%
+\section{题目}\label{ux9898ux76ee}}
 
-Figure \ref{fig:test}为图test概览。
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
 
-\textbf{(对应文件为 \texttt{../2023\_06\_30\_eval/figs/370\_into\_1cxw.png})}
+关于转录组数据库筛选肌少症（Sarcopenia）、结直肠癌（colorectal cancer）、化疗（Chemotherapy）共同的通路：
+
+\hypertarget{route}{%
+\section{研究设计流程图}\label{route}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{methods-1}{%
+\subsection{Methods}\label{methods-1}}
+
+\begin{itemize}
+\tightlist
+\item
+  GEOquery
+\item
+  TCGAbiolinks
+\item
+  limma
+\item
+  edgeR
+\item
+  clusterProfiler
+\item
+  R
+\item
+  \ldots{}
+\end{itemize}
+
+\hypertarget{meterials}{%
+\subsection{meterials}\label{meterials}}
+
+使用的数据集见 \ref{supp}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{ux7ed3ux76f4ux80a0ux764cux7ec6ux80deux7684ux7279ux5b9aux836fux7269ux5316ux7597ux5deeux5f02ux5206ux6790}{%
+\subsection{结直肠癌细胞的特定药物化疗差异分析}\label{ux7ed3ux76f4ux80a0ux764cux7ec6ux80deux7684ux7279ux5b9aux836fux7269ux5316ux7597ux5deeux5f02ux5206ux6790}}
+
+\hypertarget{tcga-ux4e34ux5e8aux6837ux672cux7684ux6cdbux578bux5316ux7597ux5deeux5f02ux5206ux6790}{%
+\subsection{TCGA 临床样本的泛型化疗差异分析}\label{tcga-ux4e34ux5e8aux6837ux672cux7684ux6cdbux578bux5316ux7597ux5deeux5f02ux5206ux6790}}
+
+\hypertarget{ux808cux5c11ux75c7ux7684ux57faux56e0ux5171ux8868ux8fbeux5206ux6790}{%
+\subsection{肌少症的基因共表达分析}\label{ux808cux5c11ux75c7ux7684ux57faux56e0ux5171ux8868ux8fbeux5206ux6790}}
+
+\hypertarget{ux7ed3ux76f4ux80a0ux764cux4e0eux808cux5c11ux75c7ux7684ux7efcux5408ux5206ux6790}{%
+\subsection{结直肠癌与肌少症的综合分析}\label{ux7ed3ux76f4ux80a0ux764cux4e0eux808cux5c11ux75c7ux7684ux7efcux5408ux5206ux6790}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{supp}{%
+\section{附：分析流程}\label{supp}}
+
+\hypertarget{ux76f8ux5173ux6587ux732e}{%
+\subsection{相关文献}\label{ux76f8ux5173ux6587ux732e}}
+
+\begin{itemize}
+\tightlist
+\item
+  Skeletal muscle-specific Keap1 disruption modulates fatty acid utilization and enhances exercise capacity in female mice\textsuperscript{\protect\hyperlink{ref-SkeletalMuscleOnoki2021}{1}}
+\item
+  Mitochondrial dysfunction and oxidative stress in aging and cancer\textsuperscript{\protect\hyperlink{ref-MitochondrialDKudrya2016}{2}}
+\item
+  Danger signals: Chemotherapy enhancers?\textsuperscript{\protect\hyperlink{ref-DangerSignalsVargas2017}{3}}
+\item
+  Current Targeted Therapy for Metastatic Colorectal Cancer\textsuperscript{\protect\hyperlink{ref-CurrentTargeteOhishi2023}{4}}
+\item
+  Sarcopenia in the Older Adult With Cancer\textsuperscript{\protect\hyperlink{ref-SarcopeniaInTWillia2021}{5}}
+\item
+  The role of aging in cancer\textsuperscript{\protect\hyperlink{ref-TheRoleOfAgiHavas2022}{6}}
+\end{itemize}
+
+\hypertarget{geo-ux7ed3ux76f4ux80a0ux764cux7ec6ux80deux6837ux672c}{%
+\subsection{GEO 结直肠癌（细胞样本）}\label{geo-ux7ed3ux76f4ux80a0ux764cux7ec6ux80deux6837ux672c}}
+
+\hypertarget{gse142340-six-crc-cell-lines-treated-with-ctrl-and-optimized-drug-combinations-odcs}{%
+\subsubsection{GSE142340: six CRC cell lines treated with CTRL and optimized drug combinations (ODCs)}\label{gse142340-six-crc-cell-lines-treated-with-ctrl-and-optimized-drug-combinations-odcs}}
+
+\begin{itemize}
+\tightlist
+\item
+  RNA sequencing was conducted for six CRC cell lines treated with CTRL and optimized drug combinations (ODCs), providing samples in duplicate
+
+  \begin{itemize}
+  \tightlist
+  \item
+    GSE142340
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Illumina Casava2.2 software used for basecalling.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    Sequenced reads were mapped to rn6 whole genome using
+STAR v2.5.3a with default parameters
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    Raw counts are produced by htseq-count (HTSeq v.0.9.1)
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Normalization and differential expression analysis were
+performed with edgeR v.3.24.3
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.4
+:}
+
+\vspace{0.5em}
+
+    Genome\_build: hg38
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.5
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content: tab-delimited
+text files include rawcount values for each Sample
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.6
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content: tab-delimited
+text files include normalized expression values(cpm = count
+per millions) for each Sample
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Figure \ref{fig:DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142340}为图DEGs in different cell types with chemotherapy or not GSE142340概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142340.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{../2023_06_30_eval/figs/370_into_1cxw.png}
-\caption{Test}\label{fig:test}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142340.pdf}
+\caption{DEGs in different cell types with chemotherapy or not GSE142340}\label{fig:DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142340}
 \end{center}
 
-Figure \ref{fig:report-test}为图report test概览。
+\hypertarget{gse153412-radio-chemoresistance-in-colorectal-cancer-cell-lines}{%
+\subsubsection{GSE153412: radio-chemoresistance in colorectal cancer cell lines}\label{gse153412-radio-chemoresistance-in-colorectal-cancer-cell-lines}}
 
-\textbf{(对应文件为 \texttt{../2023\_06\_25\_fix/figs/MCC\_top10.pdf})}
+\begin{itemize}
+\tightlist
+\item
+  RNAseq analysis of radio-chemoresistance in colorectal cancer cell lines
+
+  \begin{itemize}
+  \tightlist
+  \item
+    GSE153412
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    FASTQ files were generated using bcl2fastq version
+v2.20.0.422
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    FASTQ files were filtered using Trimmomatic 0.36 (PE
+ILLUMINACLIP:adapters.fa:2:30:10 LEADING:5 TRAILING:5
+MINLEN:45).
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    The quality was assessed with FastQC 0.11.8.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    The transcriptome was generated with gffread, using the
+GRCh38.p13 genome and the latest Ensembl annotation (Homo
+sapiens version 98).
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.4
+:}
+
+\vspace{0.5em}
+
+    Complete read pairs were aligned and quantified on a
+human transcriptome using Kallisto 0.44.0 (index built with
+–kmer-size=31).
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.5
+:}
+
+\vspace{0.5em}
+
+    Genome\_build: GRCh38.p13
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.6
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content: Kallisto output
+tsv file with transcripts abundance (raw counts and tpm).
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.7
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content: Matrix table
+with raw gene counts for every gene and every sample
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.8
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content: Matrix table
+with tpm values for every gene and every sample
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Figure \ref{fig:DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412}为图DEGs in different cell types with chemotherapy or not GSE153412概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{../2023_06_25_fix/figs/MCC_top10.pdf}
-\caption{Report test}\label{fig:report-test}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412.pdf}
+\caption{DEGs in different cell types with chemotherapy or not GSE153412}\label{fig:DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412}
 \end{center}
 
-Figure \ref{fig:test-figure-out-of-line}为图test figure out of line概览。
+\hypertarget{tcga-ux76f4ux80a0ux764ctcga-read}{%
+\subsection{TCGA 直肠癌（TCGA-READ）}\label{tcga-ux76f4ux80a0ux764ctcga-read}}
 
-\textbf{(对应文件为 \texttt{../2023\_06\_30\_eval/figs/5280343\_into\_5th6.png})}
+Table \ref{tab:READ-clinical-data}为表格READ clinical data概览。
 
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{../2023_06_30_eval/figs/5280343_into_5th6.png}
-\caption{Test figure out of line}\label{fig:test-figure-out-of-line}
-\end{center}
+\textbf{(对应文件为 \texttt{Figure+Table/READ-clinical-data.xlsx})}
 
-Figure \ref{fig:plot-with-ggplot2}为图plot with ggplot2概览。
-
-\textbf{(对应文件为 \texttt{figs/plot-with-ggplot2.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{figs/plot-with-ggplot2.pdf}
-\caption{Plot with ggplot2}\label{fig:plot-with-ggplot2}
-\end{center}
-
-Table \ref{tab:mtcars}为表格mtcars概览。
-test
-
-\textbf{(对应文件为 \texttt{tabs/mtcars.csv})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有32行11列，以下预览的表格可能省略部分数据；表格含有25个唯一`mpg'。
-show time\end{tcolorbox}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有135行111列，以下预览的表格可能省略部分数据；表格含有135个唯一`sample'。
+\end{tcolorbox}
 \end{center}
 
 \begin{longtable}[]{@{}lllllllllll@{}}
-\caption{\label{tab:mtcars}Mtcars}\tabularnewline
+\caption{\label{tab:READ-clinical-data}READ clinical data}\tabularnewline
 \toprule
-mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb\tabularnewline
+group & lib.size & norm\ldots. & sample & barcode & patient & short\ldots\ldots7 & defin\ldots{} & sampl\ldots\ldots9 & sampl\ldots\ldots10 & \ldots{}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb\tabularnewline
+group & lib.size & norm\ldots. & sample & barcode & patient & short\ldots\ldots7 & defin\ldots{} & sampl\ldots\ldots9 & sampl\ldots\ldots10 & \ldots{}\tabularnewline
 \midrule
 \endhead
-21 & 6 & 160 & 110 & 3.9 & 2.62 & 16.46 & 0 & 1 & 4 & 4\tabularnewline
-21 & 6 & 160 & 110 & 3.9 & 2.875 & 17.02 & 0 & 1 & 4 & 4\tabularnewline
-22.8 & 4 & 108 & 93 & 3.85 & 2.32 & 18.61 & 1 & 1 & 4 & 1\tabularnewline
-21.4 & 6 & 258 & 110 & 3.08 & 3.215 & 19.44 & 1 & 0 & 3 & 1\tabularnewline
-18.7 & 8 & 360 & 175 & 3.15 & 3.44 & 17.02 & 0 & 0 & 3 & 2\tabularnewline
-18.1 & 6 & 225 & 105 & 2.76 & 3.46 & 20.22 & 1 & 0 & 3 & 1\tabularnewline
-14.3 & 8 & 360 & 245 & 3.21 & 3.57 & 15.84 & 0 & 0 & 3 & 4\tabularnewline
-24.4 & 4 & 146.7 & 62 & 3.69 & 3.19 & 20 & 1 & 0 & 4 & 2\tabularnewline
-22.8 & 4 & 140.8 & 95 & 3.92 & 3.15 & 22.9 & 1 & 0 & 4 & 2\tabularnewline
-19.2 & 6 & 167.6 & 123 & 3.92 & 3.44 & 18.3 & 1 & 0 & 4 & 4\tabularnewline
-17.8 & 6 & 167.6 & 123 & 3.92 & 3.44 & 18.9 & 1 & 0 & 4 & 4\tabularnewline
-16.4 & 8 & 275.8 & 180 & 3.07 & 4.07 & 17.4 & 0 & 0 & 3 & 3\tabularnewline
-17.3 & 8 & 275.8 & 180 & 3.07 & 3.73 & 17.6 & 0 & 0 & 3 & 3\tabularnewline
-15.2 & 8 & 275.8 & 180 & 3.07 & 3.78 & 18 & 0 & 0 & 3 & 3\tabularnewline
-10.4 & 8 & 472 & 205 & 2.93 & 5.25 & 17.98 & 0 & 0 & 3 & 4\tabularnewline
+yes & 60935\ldots{} & 1.250\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 52344\ldots{} & 0.910\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & NT & Solid\ldots{} & TCGA-\ldots{} & 11 & \ldots{}\tabularnewline
+no & 48571\ldots{} & 1.031\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+no & 50713\ldots{} & 0.857\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & NT & Solid\ldots{} & TCGA-\ldots{} & 11 & \ldots{}\tabularnewline
+yes & 60107\ldots{} & 0.945\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & NT & Solid\ldots{} & TCGA-\ldots{} & 11 & \ldots{}\tabularnewline
+no & 47905\ldots{} & 0.993\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 19924\ldots{} & 0.898\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 63999\ldots{} & 1.069\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 21927\ldots{} & 1.060\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 51616\ldots{} & 0.974\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+no & 33491\ldots{} & 0.871\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & NT & Solid\ldots{} & TCGA-\ldots{} & 11 & \ldots{}\tabularnewline
+yes & 33640\ldots{} & 1.124\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+no & 38780\ldots{} & 1.124\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 41384\ldots{} & 1.106\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 53539\ldots{} & 1.104\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
 
-\begin{verbatim}
-## Warning: Removed 63 rows containing missing values (`geom_point()`).
-\end{verbatim}
+统计是否化疗：
 
-Figure \ref{fig:heatdata}为图heatdata概览。
+Figure \ref{fig:READ-whether-with-chemotherapy}为图READ whether with chemotherapy概览。
 
-\textbf{(对应文件为 \texttt{figs/heatdata.pdf})}
+\textbf{(对应文件为 \texttt{Figure+Table/READ-whether-with-chemotherapy.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{figs/heatdata.pdf}
-\caption{Heatdata}\label{fig:heatdata}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/READ-whether-with-chemotherapy.pdf}
+\caption{READ whether with chemotherapy}\label{fig:READ-whether-with-chemotherapy}
 \end{center}
 
-这是自己的文件
-`Custom function' 数据已全部提供。
+Figure \ref{fig:READ-difference-expressed-genes}为图READ difference expressed genes概览。
 
-\textbf{(对应文件为 \texttt{../../ahr\_sig})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹../../ahr\_sig共包含6个文件。
-
-\begin{enumerate}\tightlist
-\item analysis\_data.1.R
-\item analysis\_data.10.R
-\item analysis\_data.11.R
-\item analysis\_data.12.R
-\item analysis\_data.13.R
-\item ...
-\end{enumerate}\end{tcolorbox}
-\end{center}
-
-`List of mtcars' 数据已全部提供。
-
-\textbf{(对应文件为 \texttt{list-of-mtcars})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹list-of-mtcars共包含3个文件。
-
-\begin{enumerate}\tightlist
-\item 1\_mtcars.csv
-\item 2\_mtcars.csv
-\item 3\_iris.csv
-\end{enumerate}\end{tcolorbox}
-\end{center}
-
-`List of test ggplot' 数据已全部提供。
-
-\textbf{(对应文件为 \texttt{list-of-test-ggplot})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹list-of-test-ggplot共包含1个文件。
-
-\begin{enumerate}\tightlist
-\item 1\_point.pdf
-\end{enumerate}\end{tcolorbox}
-\end{center}
-
-Figure \ref{fig:grob}为图grob概览。
-
-\textbf{(对应文件为 \texttt{figs/grob.pdf})}
+\textbf{(对应文件为 \texttt{Figure+Table/READ-difference-expressed-genes.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{figs/grob.pdf}
-\caption{Grob}\label{fig:grob}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/READ-difference-expressed-genes.pdf}
+\caption{READ difference expressed genes}\label{fig:READ-difference-expressed-genes}
 \end{center}
 
-\hypertarget{ux751fux4fe1ux8bc4ux4f30}{%
-\section{生信评估}\label{ux751fux4fe1ux8bc4ux4f30}}
+\hypertarget{tcga-ux7ed3ux80a0ux764ctcga-coad}{%
+\subsection{TCGA 结肠癌（TCGA-COAD）}\label{tcga-ux7ed3ux80a0ux764ctcga-coad}}
 
-关于转录组数据库筛选肌少症、癌症（结直肠癌）、化疗共同的通路，是否要串连三个要素（肌少症，结直肠癌，化疗）？
+Table \ref{tab:COAD-clinical-data}为表格COAD clinical data概览。
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
+\textbf{(对应文件为 \texttt{Figure+Table/COAD-clinical-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有388行112列，以下预览的表格可能省略部分数据；表格含有388个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:COAD-clinical-data}COAD clinical data}\tabularnewline
+\toprule
+group & lib.size & norm\ldots. & sample & barcode & patient & short\ldots\ldots7 & defin\ldots{} & sampl\ldots\ldots9 & sampl\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+group & lib.size & norm\ldots. & sample & barcode & patient & short\ldots\ldots7 & defin\ldots{} & sampl\ldots\ldots9 & sampl\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endhead
+no & 50725\ldots{} & 1.167\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 46391\ldots{} & 1.030\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+no & 29081\ldots{} & 0.988\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+no & 51150\ldots{} & 1.097\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 33677\ldots{} & 1.080\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+no & 31679\ldots{} & 1.073\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 44720\ldots{} & 0.781\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & NT & Solid\ldots{} & TCGA-\ldots{} & 11 & \ldots{}\tabularnewline
+no & 21922\ldots{} & 1.073\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 22321\ldots{} & 1.326\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+no & 35916\ldots{} & 0.872\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & NT & Solid\ldots{} & TCGA-\ldots{} & 11 & \ldots{}\tabularnewline
+yes & 19466\ldots{} & 0.969\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 30802\ldots{} & 1.147\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TP & Prima\ldots{} & TCGA-\ldots{} & 01 & \ldots{}\tabularnewline
+yes & 52195\ldots{} & 0.909\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & NT & Solid\ldots{} & TCGA-\ldots{} & 11 & \ldots{}\tabularnewline
+no & 40206\ldots{} & 0.831\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & NT & Solid\ldots{} & TCGA-\ldots{} & 11 & \ldots{}\tabularnewline
+no & 46895\ldots{} & 0.751\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & TCGA-\ldots{} & NT & Solid\ldots{} & TCGA-\ldots{} & 11 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+统计是否化疗：
+
+Figure \ref{fig:COAD-whether-with-chemotherapy}为图COAD whether with chemotherapy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/COAD-whether-with-chemotherapy.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/COAD-whether-with-chemotherapy.pdf}
+\caption{COAD whether with chemotherapy}\label{fig:COAD-whether-with-chemotherapy}
+\end{center}
+
+使用 Limma 计算差异表达基因。
+
+Figure \ref{fig:COAD-difference-expressed-genes}为图COAD difference expressed genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/COAD-difference-expressed-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/COAD-difference-expressed-genes.pdf}
+\caption{COAD difference expressed genes}\label{fig:COAD-difference-expressed-genes}
+\end{center}
+
+\hypertarget{geo-ux808cux5c11ux75c7}{%
+\subsection{GEO 肌少症}\label{geo-ux808cux5c11ux75c7}}
+
+\hypertarget{gse167186-transcriptome-profiling-on-lower-limb-muscle-biopsies-from-72-young-old-and-sarcopenic-subjects}{%
+\subsubsection{GSE167186: transcriptome profiling on lower limb muscle biopsies from 72 young, old and sarcopenic subjects}\label{gse167186-transcriptome-profiling-on-lower-limb-muscle-biopsies-from-72-young-old-and-sarcopenic-subjects}}
+
+\begin{itemize}
 \tightlist
 \item
-  使用公共数据库，可行：
+  We performed transcriptome profiling on lower limb muscle biopsies from 72 young, old and sarcopenic subjects using bulk RNA-seq (N = 72) and single-nuclei RNA-seq (N = 17).
 
-  \begin{enumerate}
-  \def\labelenumii{\arabic{enumii}.}
+  \begin{itemize}
   \tightlist
   \item
-    筛选 GEO 至少两个数据集，一个肌少症，另一个结直肠癌症。后者最好包含化疗前后的两组数据。如果 GEO 数据库不存在结直肠癌化疗前后的合适数据，可能需要筛选三个数据集供处理。
-  \item
-    消除批次效应（不同来源的数据的各种无关因素带来的影响）。
-  \item
-    筛选共通基因，有两种方法：
+    GSE167186
+  \end{itemize}
+\end{itemize}
 
-    \begin{enumerate}
-    \def\labelenumiii{\arabic{enumiii}.}
-    \tightlist
-    \item
-      一般法，多重比对，取交集。
-    \item
-      WGCNA\textsuperscript{\protect\hyperlink{ref-WgcnaAnRPacLangfe2008}{1}} 法，对多个数据集进行一致性分析，寻找关键基因模块。
-    \item
-      联合法，联合上述两种方法。
-    \end{enumerate}
-  \item
-    根据基因筛选结果，通路富集分析。
-  \end{enumerate}
-\item
-  使用自备数据集，可行。可以更有针对性的设计实验分组，避免批次效应，分析结果更可靠；但针对性越强，成本越高。
-\end{enumerate}
+\hypertarget{edger}{%
+\paragraph{edgeR}\label{edger}}
 
-工作量：视数据集的多少和分析复杂程度，需要2-3天。
+对数据进行标准化处理。
+
+Figure \ref{fig:filtering-of-Sarcopenia-datasets}为图filtering of Sarcopenia datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/filtering-of-Sarcopenia-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/filtering-of-Sarcopenia-datasets.pdf}
+\caption{Filtering of Sarcopenia datasets}\label{fig:filtering-of-Sarcopenia-datasets}
+\end{center}
+
+Figure \ref{fig:nomalization-of-Sarcopenia-datasets}为图nomalization of Sarcopenia datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/nomalization-of-Sarcopenia-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/nomalization-of-Sarcopenia-datasets.pdf}
+\caption{Nomalization of Sarcopenia datasets}\label{fig:nomalization-of-Sarcopenia-datasets}
+\end{center}
+
+\hypertarget{wgcna}{%
+\paragraph{WGCNA}\label{wgcna}}
+
+Table \ref{tab:metadata-of-samples-used-in-GEO-Sarcopenia-data}为表格metadata of samples used in GEO Sarcopenia data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-samples-used-in-GEO-Sarcopenia-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有53行16列，以下预览的表格可能省略部分数据；表格含有53个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllll@{}}
+\caption{\label{tab:metadata-of-samples-used-in-GEO-Sarcopenia-data}Metadata of samples used in GEO Sarcopenia data}\tabularnewline
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & X6.mi\ldots{} & age.ch1 & biode\ldots{} & grip\ldots. & group\ldots{} & leg.p\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & X6.mi\ldots{} & age.ch1 & biode\ldots{} & grip\ldots. & group\ldots{} & leg.p\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endhead
+X\_10 & OLD\_S\ldots{} & 23299\ldots{} & 1.064\ldots{} & X\_10 & 1.010\ldots{} & 68 & 166.2 & 41.8 & Sarco\ldots{} & 130.5 & \ldots{}\tabularnewline
+X\_11 & OLD\_H\ldots{} & 24242\ldots{} & 1.078\ldots{} & X\_11 & 1.088\ldots{} & 87 & 136.4 & 24.2 & Old H\ldots{} & 129.55 & \ldots{}\tabularnewline
+X\_13 & OLD\_S\ldots{} & 17915\ldots{} & 0.968\ldots{} & X\_13 & 1.425\ldots{} & 83 & 143.1 & 40 & Sarco\ldots{} & 127.27 & \ldots{}\tabularnewline
+X\_14 & OLD\_H\ldots{} & 22048\ldots{} & 0.932\ldots{} & X\_14 & 0.918\ldots{} & 77 & 222.1 & 35.5 & Old H\ldots{} & 229.5 & \ldots{}\tabularnewline
+X\_15 & OLD\_H\ldots{} & 21527\ldots{} & 0.916\ldots{} & X\_15 & NA & 82 & 127.9 & 35.1 & Old H\ldots{} & 94.5 & \ldots{}\tabularnewline
+X\_16 & OLD\_H\ldots{} & 15754\ldots{} & 0.949\ldots{} & X\_16 & NA & 73 & 202.7 & 49.1 & Old H\ldots{} & 145.5 & \ldots{}\tabularnewline
+X\_17 & OLD\_S\ldots{} & 23226\ldots{} & 1.116\ldots{} & X\_17 & 0.886\ldots{} & 77 & 171.7 & 45.5 & Sarco\ldots{} & 87.5 & \ldots{}\tabularnewline
+X\_18 & OLD\_H\ldots{} & 22781\ldots{} & 0.998\ldots{} & X\_18 & 1.086\ldots{} & 64 & 203.9 & 42.7 & Old H\ldots{} & 112.5 & \ldots{}\tabularnewline
+X\_19 & OLD\_S\ldots{} & 21202\ldots{} & 1.092\ldots{} & X\_19 & 1.041\ldots{} & 77 & 143.8 & 33.7 & Sarco\ldots{} & 112.5 & \ldots{}\tabularnewline
+X\_1 & OLD\_S\ldots{} & 25372\ldots{} & 0.994\ldots{} & X\_1 & NA & 67 & 148.7 & 41.3 & Sarco\ldots{} & NA & \ldots{}\tabularnewline
+X\_20 & OLD\_S\ldots{} & 21469\ldots{} & 1.085\ldots{} & X\_20 & 1.136\ldots{} & 78 & 152.3 & 54.7 & Sarco\ldots{} & 148.5 & \ldots{}\tabularnewline
+X\_21 & OLD\_S\ldots{} & 23263\ldots{} & 1.041\ldots{} & X\_21 & 0.970\ldots{} & 83 & 100.6 & 25.8 & Sarco\ldots{} & 67.5 & \ldots{}\tabularnewline
+X\_22 & OLD\_H\ldots{} & 22763\ldots{} & 1.059\ldots{} & X\_22 & 1.025\ldots{} & 78 & 207.2 & 45.1 & Old H\ldots{} & 139.5 & \ldots{}\tabularnewline
+X\_23 & OLD\_H\ldots{} & 26356\ldots{} & 1.114\ldots{} & X\_23 & 1 & 76 & 236.8 & 42.4 & Old H\ldots{} & 112.5 & \ldots{}\tabularnewline
+X\_24 & OLD\_H\ldots{} & 30075\ldots{} & 1.185\ldots{} & X\_24 & 0.745\ldots{} & 65 & 120.8 & 23.6 & Old H\ldots{} & 103.5 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:whether-with-Sarcopenia}为图whether with Sarcopenia概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/whether-with-Sarcopenia.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/whether-with-Sarcopenia.pdf}
+\caption{Whether with Sarcopenia}\label{fig:whether-with-Sarcopenia}
+\end{center}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Bulk RNA-seq was aligned using the STAR software, and
+counted using featureCounts.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    Single-nuclei RNA-seq was aligned using the CellRanger
+software (10x).
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    Genome\_build: Homo\_sapiens.GRCh38
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content: counts.csv:
+Counts data for bulk RNA-seq.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.4
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content: HM*.csv: Counts
+for single-nuclei RNA-seq.
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Figure \ref{fig:soft-threshold}为图soft threshold概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/soft-threshold.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/soft-threshold.pdf}
+\caption{Soft threshold}\label{fig:soft-threshold}
+\end{center}
+
+Figure \ref{fig:clustering-of-gene-modules}为图clustering of gene modules概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/clustering-of-gene-modules.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/clustering-of-gene-modules.pdf}
+\caption{Clustering of gene modules}\label{fig:clustering-of-gene-modules}
+\end{center}
+
+Figure \ref{fig:correlation-of-gene-modules-and-traits-data}为图correlation of gene modules and traits data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/correlation-of-gene-modules-and-traits-data.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/correlation-of-gene-modules-and-traits-data.pdf}
+\caption{Correlation of gene modules and traits data}\label{fig:correlation-of-gene-modules-and-traits-data}
+\end{center}
+
+Figure \ref{fig:intersection-of-genes-significant-and-module-memberships}为图intersection of genes significant and module memberships概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-genes-significant-and-module-memberships.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-genes-significant-and-module-memberships.pdf}
+\caption{Intersection of genes significant and module memberships}\label{fig:intersection-of-genes-significant-and-module-memberships}
+\end{center}
+
+\hypertarget{ux7efcux5408ux7ed3ux76f4ux80a0ux764cux548cux808cux5c11ux75c7}{%
+\subsection{综合：结直肠癌和肌少症}\label{ux7efcux5408ux7ed3ux76f4ux80a0ux764cux548cux808cux5c11ux75c7}}
+
+\hypertarget{ux7ed3ux76f4ux80a0ux764cux6570ux636eux6574ux5408}{%
+\subsubsection{（结直肠癌）数据整合}\label{ux7ed3ux76f4ux80a0ux764cux6570ux636eux6574ux5408}}
+
+Figure \ref{fig:all-colorectal-DEGs}为图all colorectal DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/all-colorectal-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/all-colorectal-DEGs.pdf}
+\caption{All colorectal DEGs}\label{fig:all-colorectal-DEGs}
+\end{center}
+
+\hypertarget{ux7ed3ux76f4ux80a0ux764cux4e0eux808cux5c11ux75c7ux4ea4ux96c6ux57faux56e0}{%
+\subsubsection{（结直肠癌与肌少症）交集基因}\label{ux7ed3ux76f4ux80a0ux764cux4e0eux808cux5c11ux75c7ux4ea4ux96c6ux57faux56e0}}
+
+Figure \ref{fig:intersection-of-colorectal-DEGs-with-Sarcopenia-significant-genes}为图intersection of colorectal DEGs with Sarcopenia significant genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-colorectal-DEGs-with-Sarcopenia-significant-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-colorectal-DEGs-with-Sarcopenia-significant-genes.pdf}
+\caption{Intersection of colorectal DEGs with Sarcopenia significant genes}\label{fig:intersection-of-colorectal-DEGs-with-Sarcopenia-significant-genes}
+\end{center}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+
+Figure \ref{fig:go-enrichment}为图go enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/go-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/go-enrichment.pdf}
+\caption{Go enrichment}\label{fig:go-enrichment}
+\end{center}
+
+Figure \ref{fig:kegg-enrichment}为图kegg enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/kegg-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/kegg-enrichment.pdf}
+\caption{Kegg enrichment}\label{fig:kegg-enrichment}
+\end{center}
+
+\hypertarget{ux901aux8defux53efux89c6ux5316}{%
+\subsubsection{通路可视化}\label{ux901aux8defux53efux89c6ux5316}}
+
+Figure \ref{fig:hits-in-autophagy}为图hits in autophagy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04140.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2023-09-26_17_55_53.262977/hsa04140.pathview.png}
+\caption{Hits in autophagy}\label{fig:hits-in-autophagy}
+\end{center}
+
+Figure \ref{fig:hits-in-Mitophagy}为图hits in Mitophagy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04137.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2023-09-26_17_55_53.262977/hsa04137.pathview.png}
+\caption{Hits in Mitophagy}\label{fig:hits-in-Mitophagy}
+\end{center}
 
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
@@ -282,8 +821,23 @@ Figure \ref{fig:grob}为图grob概览。
 
 \hypertarget{refs}{}
 \begin{cslreferences}
-\leavevmode\hypertarget{ref-WgcnaAnRPacLangfe2008}{}%
-1. Langfelder, P. \& Horvath, S. WGCNA: An r package for weighted correlation network analysis. \emph{BMC Bioinformatics} \textbf{9}, (2008).
+\leavevmode\hypertarget{ref-SkeletalMuscleOnoki2021}{}%
+1. Onoki, T. \emph{et al.} Skeletal muscle-specific keap1 disruption modulates fatty acid utilization and enhances exercise capacity in female mice. \emph{Redox biology} \textbf{43}, (2021).
+
+\leavevmode\hypertarget{ref-MitochondrialDKudrya2016}{}%
+2. Kudryavtseva, A. V. \emph{et al.} Mitochondrial dysfunction and oxidative stress in aging and cancer. \emph{Oncotarget} \textbf{7}, 44879--44905 (2016).
+
+\leavevmode\hypertarget{ref-DangerSignalsVargas2017}{}%
+3. Vargas, T. R. \& Apetoh, L. Danger signals: Chemotherapy enhancers? \emph{Immunological Reviews} \textbf{280}, (2017).
+
+\leavevmode\hypertarget{ref-CurrentTargeteOhishi2023}{}%
+4. Ohishi, T. \emph{et al.} Current targeted therapy for metastatic colorectal cancer. \emph{International Journal of Molecular Sciences} \textbf{24}, (2023).
+
+\leavevmode\hypertarget{ref-SarcopeniaInTWillia2021}{}%
+5. Williams, G. R., Dunne, R. F., Giri, S., Shachar, S. S. \& Caan, B. J. Sarcopenia in the older adult with cancer. \emph{Journal of Clinical Oncology} \textbf{39}, (2021).
+
+\leavevmode\hypertarget{ref-TheRoleOfAgiHavas2022}{}%
+6. Havas, A., Yin, S. \& Adams, P. D. The role of aging in cancer. \emph{Molecular Oncology} \textbf{16}, (2022).
 \end{cslreferences}
 
 \end{document}

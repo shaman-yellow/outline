@@ -92,3 +92,103 @@ lm5@tables$step2$tops[[1]]$hgnc_symbol
 intersect(lm5@tables$step2$tops[[1]]$hgnc_symbol, all.sigs)
 
 ```
+
+
+### Genecards
+
+```{r}
+db_gc_sarc <- get_from_genecards("Sarcopenia", 1)
+db_gc_sarc
+```
+
+## 生存分析
+
+### TCGA-READ
+
+```{r}
+sur.tc1 <- asjob_survival(lm.tc1, gene_autoph)
+sur.tc1 <- step1(sur.tc1)
+```
+
+### TCGA-COAD
+
+```{r}
+sur.tc2 <- asjob_survival(lm.tc2, gene_autoph)
+sur.tc2 <- step1(sur.tc2)
+```
+
+## 线粒体相关的通路和基因
+
+```{r}
+db_c2 <- get_c2_data("mitochon")
+anno_db_c2 <- filter_biomart(mart, general_attrs(), "entrezgene_id", unlist(db_c2, , F))
+
+db_c2.hg <- map(db_c2, y = anno_db_c2, y.ref = "entrezgene_id", y.get = "hgnc_symbol")
+db_c2.hg <- lapply(db_c2.hg, function(x) x[ !is.na(x) & x != ""])
+
+new_upset(lst = db_c2.hg, trunc = NULL)
+p.db_c2 <- recordPlot()
+wrap(p.db_c2, 15, 7)
+
+db_mito <- unique(unlist(db_c2.hg, use.names = F))
+```
+
+### GSE183984: tumor tissue obtained before and after cetuximab treatment
+
+- RNA sequencing of formalin-fixed paraffin-embedded (FFPE) tumor tissue obtained before and after cetuximab treatment
+    - GSE183984
+
+```{r eval = T, echo = F, results = "asis"}
+#| geo4-prods
+autor(geo4@params$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-used-sample-of-GSE183984
+autor(lm4@params$normed_data$targets, key = "group")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| used-sample-colorectal-tumor-tissue-distribution
+autor()
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-colorectum-tumor-tissue-before-or-after-chemotherapy
+autor(lm4@plots$step2$p.valcano[[1]])
+```
+
+```{r}
+geo4 <- job_geo("GSE183984")
+geo4 <- step1(geo4)
+geo4 <- step2(geo4, "counts")
+
+R.utils::gunzip("./GSE183984/GSE183984_ASAN_RNASEQ_raw_counts_ensg.csv.gz")
+
+metadata <- geo4@params$guess
+metadata <- filter(metadata, grepl("primary tumor", tissue.ch1))
+metadata <- mutate(metadata,
+  title = gs(title, ".*\\[(.*)\\].*", "\\1"),
+  title = gs(title, "_15$", "_015"),
+  time.point.ch1 = ifelse(is.na(time.point.ch1),
+    "pre-treatment", time.point.ch1),
+  group = make.names(time.point.ch1)
+)
+
+counts <- ftibble("./GSE183984/GSE183984_ASAN_RNASEQ_raw_counts_ensg.csv")
+genes <- select(counts, name)
+
+mart <- new_biomart()
+anno4 <- filter_biomart(mart, general_attrs(), "ensembl_gene_id", genes$name)
+```
+
+```{r}
+lm4 <- job_limma(new_dge(metadata, counts, anno4))
+lm4 <- step1(lm4)
+lm4 <- step2(lm4, post.treatment - pre.treatment)
+
+lm4@plots$step2$p.valcano[[1]]
+lm4_ins <- lm4@tables$step2$tops[[1]]$hgnc_symbol
+```
+
+

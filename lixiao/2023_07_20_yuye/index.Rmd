@@ -28,16 +28,6 @@ set_index()
 # 肿瘤患者多出现代谢紊乱、营养不良，化疗可加重以上问题
 ```
 
-- 使用公共数据库：
-    1. 筛选 GEO 至少两个数据集，一个肌少症，另一个结直肠癌症。后者最好包含化疗前后的两组数据。如果 GEO 数据库不存在结直肠癌化疗前后的合适数据，可能需要筛选三个数据集供处理。
-    2. 消除批次效应（不同来源的数据的各种无关因素带来的影响）。
-    3. 筛选共通基因，有两种方法：
-        1. 一般法，多重比对，取交集。
-        2. WGCNA[@WgcnaAnRPacLangfe2008] 法，对多个数据集进行一致性分析，寻找关键基因模块。
-        3. 联合法，联合上述两种方法。
-    4. 根据基因筛选结果，通路富集分析。
-
-
 # 研究设计流程图 {#route}
 
 ```{r}
@@ -50,19 +40,73 @@ p.route <- flowChart(route, 1.1, 1)
 ```
 
 ```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
-p.route
+# p.route
 ```
 
 # 材料和方法 {#methods}
 
+## Methods
+
+- GEOquery
+- TCGAbiolinks
+- limma
+- edgeR
+- clusterProfiler
+- R
+- ...
+
+## meterials
+
+使用的数据集见 \@ref(supp)
+
 # 分析结果 {#results}
+
+## 结直肠癌细胞的特定药物化疗差异分析
+
+```{r}
+fig1 <- cl(
+  rw("./Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142340.pdf"),
+  rw("./Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412.pdf")
+)
+render(fig1)
+```
+
+## TCGA 临床样本的泛型化疗差异分析
+
+```{r}
+fig2 <- cl(
+  rw("./Figure+Table/READ-whether-with-chemotherapy.pdf", "./Figure+Table/READ-difference-expressed-genes.pdf"),
+  rw("./Figure+Table/COAD-whether-with-chemotherapy.pdf", "./Figure+Table/COAD-difference-expressed-genes.pdf")
+)
+render(fig2)
+```
+
+## 肌少症的基因共表达分析
+
+```{r eval = T, echo = F, results = "asis"}
+fig3 <- cls(
+  cl(rw("./Figure+Table/soft-threshold.pdf"),
+    rw("./Figure+Table/clustering-of-gene-modules.pdf",
+      "./Figure+Table/intersection-of-genes-significant-and-module-memberships.pdf")),
+  cl("./Figure+Table/correlation-of-gene-modules-and-traits-data.pdf")
+)
+render(fig3)
+
+```
+
+## 结直肠癌与肌少症的综合分析
+
+```{r}
+fig4 <- cl()
+```
 
 # 结论 {#dis}
 
-# 附：分析流程
+# 附：分析流程 {#supp}
 
 ## 相关文献
 
+- Skeletal muscle-specific Keap1 disruption modulates fatty acid utilization and enhances exercise capacity in female mice [@SkeletalMuscleOnoki2021]
 - Mitochondrial dysfunction and oxidative stress in aging and cancer [@MitochondrialDKudrya2016]
 - Danger signals: Chemotherapy enhancers? [@DangerSignalsVargas2017]
 - Current Targeted Therapy for Metastatic Colorectal Cancer [@CurrentTargeteOhishi2023]
@@ -73,28 +117,22 @@ p.route
 # (((((((homo sapiens[Organism]) AND Chemotherapy) AND cancer)) AND colorectal cancer)) AND pre) AND post 
 ```
 
-## 线粒体相关的通路和基因
-
-```{r}
-db_c2 <- get_c2_data("mitochon")
-anno_db_c2 <- filter_biomart(mart, general_attrs(), "entrezgene_id", unlist(db_c2, , F))
-
-db_c2.hg <- map(db_c2, y = anno_db_c2, y.ref = "entrezgene_id", y.get = "hgnc_symbol")
-db_c2.hg <- lapply(db_c2.hg, function(x) x[ !is.na(x) & x != ""])
-
-new_upset(lst = db_c2.hg, trunc = NULL)
-p.db_c2 <- recordPlot()
-wrap(p.db_c2, 15, 7)
-
-db_mito <- unique(unlist(db_c2.hg, use.names = F))
-```
-
-## 结直肠癌（GEO 细胞、组织样本）
+## GEO 结直肠癌（细胞样本）
 
 ### GSE142340: six CRC cell lines treated with CTRL and optimized drug combinations (ODCs)
 
 - RNA sequencing was conducted for six CRC cell lines treated with CTRL and optimized drug combinations (ODCs), providing samples in duplicate
     - GSE142340
+
+```{r eval = T, echo = F, results = "asis"}
+#| geo1-prods
+autor(geo1@params$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142340
+autor(wrap(p.lm1_upsets, 14))
+```
 
 ```{r}
 geo1 <- job_geo("GSE142340")
@@ -129,11 +167,11 @@ lm1 <- step1(lm1)
 lm1 <- step2(lm1, contrasts = unlist(con1, use.names = F), use = "P")
 
 lm1_tops <- lapply(lm1@tables$step2$tops,
-  function(x) intersect(x$hgnc_symbol, db_mito)
+  function(x) x$hgnc_symbol
 )
 
-p.lm1_upsets <- new_upset(lst = lm1_tops, trunc = "right")
-p.lm1_upsets
+names(lm1_tops) %<>% gs(" - .*$", "")
+p.lm1_upsets <- new_upset(lst = lm1_tops, trunc = NULL)
 
 lm1_ins <- ins(lst = lm1_tops)
 lm1_ins
@@ -143,6 +181,16 @@ lm1_ins
 
 - RNAseq analysis of radio-chemoresistance in colorectal cancer cell lines
     - GSE153412
+
+```{r eval = T, echo = F, results = "asis"}
+#| geo2-prods
+autor(geo2@params$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412
+autor(wrap(p.lm2_upsets, 13, 6))
+```
 
 ```{r}
 geo2 <- job_geo("GSE153412")
@@ -175,55 +223,35 @@ lm2 <- step1(lm2)
 lm2 <- step2(lm2, contrasts = unlist(con2, use.names = F), use = "adj")
 
 lm2_tops <- lapply(lm2@tables$step2$tops,
-  function(x) intersect(x$hgnc_symbol, db_mito)
+  function(x) x$hgnc_symbol
 )
 
-p.lm2_upsets <- new_upset(lst = lm2_tops, trunc = "right")
+names(lm2_tops) %<>% gs(" - .*$", "")
+p.lm2_upsets <- new_upset(lst = lm2_tops, trunc = NULL)
 p.lm2_upsets
 
 lm2_ins <- ins(lst = lm2_tops[ grepl("^Sen", names(lm2_tops)) ])
 lm2_ins
 ```
 
-### GSE183984: tumor tissue obtained before and after cetuximab treatment
+## TCGA 直肠癌（TCGA-READ）
 
-- RNA sequencing of formalin-fixed paraffin-embedded (FFPE) tumor tissue obtained before and after cetuximab treatment
-    - GSE183984
-
-```{r}
-geo4 <- job_geo("GSE183984")
-geo4 <- step1(geo4)
-geo4 <- step2(geo4, "counts")
-
-R.utils::gunzip("./GSE183984/GSE183984_ASAN_RNASEQ_raw_counts_ensg.csv.gz")
-
-metadata <- geo4@params$guess
-metadata <- filter(metadata, grepl("primary tumor", tissue.ch1))
-metadata <- mutate(metadata,
-  title = gs(title, ".*\\[(.*)\\].*", "\\1"),
-  title = gs(title, "_15$", "_015"),
-  time.point.ch1 = ifelse(is.na(time.point.ch1),
-    "pre-treatment", time.point.ch1),
-  group = make.names(time.point.ch1)
-)
-
-counts <- ftibble("./GSE183984/GSE183984_ASAN_RNASEQ_raw_counts_ensg.csv")
-genes <- select(counts, name)
-
-mart <- new_biomart()
-anno4 <- filter_biomart(mart, general_attrs(), "ensembl_gene_id", genes$name)
+```{r eval = T, echo = F, results = "asis"}
+#| READ-clinical-data
+autor(lm.tc1@params$normed_data$targets, key = "sample")
 ```
 
-```{r}
-lm4 <- job_limma(new_dge(metadata, counts, anno4))
-lm4 <- step1(lm4)
-lm4 <- step2(lm4, post.treatment - pre.treatment)
+统计是否化疗：
 
-lm4@plots$step2$p.valcano[[1]]
-lm4_ins <- intersect(lm4@tables$step2$tops[[1]]$hgnc_symbol, db_mito)
+```{r eval = T, echo = F, results = "asis"}
+#| READ-whether-with-chemotherapy
+autor(z7(lm.tc1@params$p.meta, .6, .6))
 ```
 
-## TCGA-READ
+```{r eval = T, echo = F, results = "asis"}
+#| READ-difference-expressed-genes
+autor(lm.tc1@plots$step2$p.valcano[[1]])
+```
 
 ```{r}
 #| READ
@@ -232,9 +260,10 @@ tc1 <- job_tcga("TCGA-READ")
 tc1 <- step1(tc1)
 tc1 <- step2(tc1)
 tc1 <- step3(tc1)
-tc1 <- clear(tc1)
+tc1 <- clear(tc1, F)
 
-lm.tc1 <- asjob_limma(tc1)
+lm.tc1 <- asjob_limma(tc1, group = "treatment_or_therapy")
+
 lm.tc1@object <- lm.tc1@object[, lm.tc1@object$samples$treatment_or_therapy %in% c("yes", "no")]
 lm.tc1@object$samples %<>% mutate(group = treatment_or_therapy)
 
@@ -244,8 +273,8 @@ lm.tc1 <- step2(lm.tc1, yes - no, label = "gene_name", use = "P")
 lm.tc1@plots$step1$p.norm
 lm.tc1@plots$step2$p.valcano
 
-lm.tc1.mito <- ins(db_mito, lm.tc1@tables$step2$tops[[1]]$gene_name)
-lm.tc1.mito
+lm.tc1.top <- lm.tc1@tables$step2$tops[[1]]$gene_name
+lm.tc1.top
 
 wg.tc1 <- asjob_wgcna(lm.tc1)
 wg.tc1 <- step1(wg.tc1)
@@ -256,7 +285,26 @@ wg.tc1 <- step4(wg.tc1)
 wg.tc1
 ```
 
-## TCGA-COAD
+## TCGA 结肠癌（TCGA-COAD）
+
+```{r eval = T, echo = F, results = "asis"}
+#| COAD-clinical-data
+autor(lm.tc2@params$normed_data$targets, key = "sample")
+```
+
+统计是否化疗：
+
+```{r eval = T, echo = F, results = "asis"}
+#| COAD-whether-with-chemotherapy
+autor(z7(lm.tc2@params$p.meta, .6, .6))
+```
+
+使用 Limma 计算差异表达基因。
+
+```{r eval = T, echo = F, results = "asis"}
+#| COAD-difference-expressed-genes
+autor(lm.tc2@plots$step2$p.valcano[[1]])
+```
 
 ```{r}
 #| COAD
@@ -265,55 +313,82 @@ tc2 <- job_tcga("TCGA-COAD")
 tc2 <- step1(tc2)
 tc2 <- step2(tc2)
 tc2 <- step3(tc2)
-tc2 <- clear(tc2)
+tc2 <- clear(tc2, F)
 
-lm.tc2 <- asjob_limma(tc2)
+lm.tc2 <- asjob_limma(tc2, group = "treatment_or_therapy")
 lm.tc2@object <- lm.tc2@object[, lm.tc2@object$samples$treatment_or_therapy %in% c("yes", "no")]
 lm.tc2@object$samples %<>% mutate(group = treatment_or_therapy)
+
+lm.tc2@params$p.meta
 
 lm.tc2 <- step1(lm.tc2)
 lm.tc2 <- step2(lm.tc2, yes - no, label = "gene_name", use = "P")
 
 lm.tc2@tables$step2$tops[[1]]$gene_name
 
-lm.tc2.mito <- ins(db_mito, lm.tc2@tables$step2$tops[[1]]$gene_name)
-lm.tc2.mito
+lm.tc2.top <- lm.tc2@tables$step2$tops[[1]]$gene_name
+lm.tc2.top
 ```
 
-## （结直肠癌）数据整合
-
-```{r}
-#| combine
-lm.coTCGA.mito <- ins(lm.tc1.mito, lm.tc2.mito)
-map(lm.tc1, ref = lm.co.mito, ref.use = "gene_name")
-map(lm.tc2, ref = lm.co.mito, ref.use = "gene_name")
-lm.coTCGA.mito
-
-lm.coGEO.mito <- ins(c(lm1_ins, lm2_ins), lm4_ins)
-lm.coGEO.mito
-```
-
-```{r}
-all.sets <- namel(lm1_ins, lm2_ins, lm.tc1.mito, lm.tc2.mito)
-all.sigs <- unique(unlist(all.sets, use.names = F))
-```
-
-## 肌少症
-
-### Genecards
-
-```{r}
-db_gc_sarc <- get_from_genecards("Sarcopenia", 1)
-db_gc_sarc
-```
+## GEO 肌少症
 
 ### GSE167186: transcriptome profiling on lower limb muscle biopsies from 72 young, old and sarcopenic subjects
 
 - We performed transcriptome profiling on lower limb muscle biopsies from 72 young, old and sarcopenic subjects using bulk RNA-seq (N = 72) and single-nuclei RNA-seq (N = 17).
     - GSE167186
 
+#### edgeR
+
+对数据进行标准化处理。
+
+```{r eval = T, echo = F, results = "asis"}
+#| filtering-of-Sarcopenia-datasets
+autor(lm5@plots$step1$p.filter)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| nomalization-of-Sarcopenia-datasets
+autor(lm5@plots$step1$p.norm)
+```
+
+#### WGCNA
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-samples-used-in-GEO-Sarcopenia-data
+autor(as_tibble(lm5@params$normed_data$targets), key = "sample")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| whether-with-Sarcopenia
+autor(lm5@params$p.meta)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| geo5-prods
+autor(geo5@params$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| soft-threshold
+autor(wg5@plots$step3$sft)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| clustering-of-gene-modules
+autor(wg5@plots$step4$net)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| correlation-of-gene-modules-and-traits-data
+autor(wg5@plots$step5$hps_corp)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-genes-significant-and-module-memberships
+autor(wrap(p.wg5.venn, 4, 2.5))
+```
+
 ```{r}
-#| geo
 geo5 <- job_geo("GSE167186")
 geo5 <- step1(geo5)
 geo5@params$prods
@@ -322,7 +397,6 @@ R.utils::gunzip("./GSE167186/GSE167186_counts.csv.gz")
 ```
 
 ```{r}
-#| preparation
 counts <- ftibble("./GSE167186/GSE167186_counts.csv")
 
 metadata <- geo5@params$metas$res[[1]]
@@ -341,8 +415,10 @@ genes <- select(counts, hgnc_symbol = Symbol)
 ```
 
 ```{r}
-#| limma
 lm5 <- job_limma(new_dge(metadata, counts, genes))
+
+lm5 <- meta(lm5)
+
 lm5 <- step1(lm5)
 lm5@plots$step1$p.norm
 lm5 <- step2(lm5,
@@ -357,7 +433,6 @@ lm5@params$normed_data$targets %>% as_tibble
 ```
 
 ```{r}
-#| wgcna
 wg5 <- asjob_wgcna(lm5, NULL)
 
 wg5 <- step1(wg5)
@@ -378,24 +453,61 @@ options(step_check = F)
 wg5 <- step5(wg5, traits)
 wg5@plots$step5$hps_corp
 
-wg5 <- step6(wg5, "grip.strength_kg")
+wg5 <- step6(wg5, use = "p")
 
 wg5@tables$step6$gs
 wg5@tables$step6$mm
 
 wg5@params$ins.mm_gs
+
+p.wg5.venn <- new_venn(lst = lapply(wg5@tables$step6, function(x) x$gene))
 ```
 
-## 结直肠癌和肌少症
+## 综合：结直肠癌和肌少症
 
-### 交集基因
+
+### （结直肠癌）数据整合
 
 ```{r}
-#| intersects
-co.sig <- intersect(all.sigs, c(wg5@params$ins.mm_gs))
+all.sets <- namel(GSE142340 = lm1_ins, GSE153412 = lm2_ins, TCGA_READ = lm.tc1.top, TCGA_COAD = lm.tc2.top)
+all.sigs <- unique(unlist(all.sets, use.names = F))
+all.sigs <- unique(gs(all.sigs, "\\.[0-9]+", ""))
+
+p.all.sets <- new_col(lst = all.sets)
+p.all.sets
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-colorectal-DEGs
+autor(p.all.sets)
+```
+
+### （结直肠癌与肌少症）交集基因
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-colorectal-DEGs-with-Sarcopenia-significant-genes
+autor(p.co.sig.venn)
+```
+
+```{r}
+co.sig <- intersect(all.sigs, wg5@params$ins.mm_gs)
+p.co.sig.venn <- new_venn(colorectal_DEG = all.sigs, sarcopenia_sig. = wg5@params$ins.mm_gs)
+p.co.sig.venn
 ```
 
 ### 富集分析
+
+The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+
+```{r eval = T, echo = F, results = "asis"}
+#| go-enrichment
+autor(en@plots$step1$p.go$co.sig)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| kegg-enrichment
+autor(z7(en@plots$step1$p.kegg$co.sig, 1, .8))
+```
 
 ```{r}
 en <- job_enrich(namel(co.sig), anno4)
@@ -403,4 +515,31 @@ en <- step1(en)
 
 en@plots$step1$p.go
 en@plots$step1$p.kegg
+```
+
+```{r}
+gene_autoph <- en@tables$step1$res.kegg$co.sig$geneName_list[[3]]
+gene_mitoph <- en@tables$step1$res.kegg$co.sig$geneName_list[[1]]
+
+gene_co.ph <- ins(gene_mitoph, gene_autoph)
+
+en@tables$step1$res.kegg$co.sig
+```
+
+### 通路可视化
+
+```{r}
+en <- step2(en, c("hsa04140", "hsa04137"))
+en@plots$step2$p.pathviews$hsa04137
+en@plots$step2$p.pathviews$hsa04140
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| hits-in-autophagy
+autor(en@plots$step2$p.pathviews$hsa04140)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| hits-in-Mitophagy
+autor(en@plots$step2$p.pathviews$hsa04137)
 ```
