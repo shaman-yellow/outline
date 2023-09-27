@@ -1,29 +1,34 @@
-\contentsline {section}{\numberline {1}题目}{2}{section.1}%
-\contentsline {section}{\numberline {2}摘要}{2}{section.2}%
-\contentsline {section}{\numberline {3}研究设计流程图}{3}{section.3}%
-\contentsline {section}{\numberline {4}材料和方法}{3}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Methods}{3}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}meterials}{3}{subsection.4.2}%
-\contentsline {section}{\numberline {5}分析结果}{3}{section.5}%
-\contentsline {subsection}{\numberline {5.1}结直肠癌细胞的特定药物化疗差异分析}{3}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}TCGA 临床样本的泛型化疗差异分析}{3}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}肌少症的基因共表达分析}{3}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}结直肠癌与肌少症的综合分析}{3}{subsection.5.4}%
-\contentsline {section}{\numberline {6}结论}{3}{section.6}%
-\contentsline {section}{\numberline {7}附：分析流程}{3}{section.7}%
-\contentsline {subsection}{\numberline {7.1}相关文献}{3}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}GEO 结直肠癌（细胞样本）}{4}{subsection.7.2}%
-\contentsline {subsubsection}{\numberline {7.2.1}GSE142340: six CRC cell lines treated with CTRL and optimized drug combinations (ODCs)}{4}{subsubsection.7.2.1}%
-\contentsline {subsubsection}{\numberline {7.2.2}GSE153412: radio-chemoresistance in colorectal cancer cell lines}{5}{subsubsection.7.2.2}%
-\contentsline {subsection}{\numberline {7.3}TCGA 直肠癌（TCGA-READ）}{7}{subsection.7.3}%
-\contentsline {subsection}{\numberline {7.4}TCGA 结肠癌（TCGA-COAD）}{9}{subsection.7.4}%
-\contentsline {subsection}{\numberline {7.5}GEO 肌少症}{11}{subsection.7.5}%
-\contentsline {subsubsection}{\numberline {7.5.1}GSE167186: transcriptome profiling on lower limb muscle biopsies from 72 young, old and sarcopenic subjects}{11}{subsubsection.7.5.1}%
-\contentsline {paragraph}{\numberline {7.5.1.1}edgeR}{11}{paragraph.7.5.1.1}%
-\contentsline {paragraph}{\numberline {7.5.1.2}WGCNA}{12}{paragraph.7.5.1.2}%
-\contentsline {subsection}{\numberline {7.6}综合：结直肠癌和肌少症}{18}{subsection.7.6}%
-\contentsline {subsubsection}{\numberline {7.6.1}（结直肠癌）数据整合}{18}{subsubsection.7.6.1}%
-\contentsline {subsubsection}{\numberline {7.6.2}（结直肠癌与肌少症）交集基因}{18}{subsubsection.7.6.2}%
-\contentsline {subsubsection}{\numberline {7.6.3}富集分析}{19}{subsubsection.7.6.3}%
-\contentsline {subsubsection}{\numberline {7.6.4}通路可视化}{20}{subsubsection.7.6.4}%
-\contentsline {section}{Reference}{22}{section*.4}%
+\contentsline {section}{\numberline {1}题目}{3}{section.1}%
+\contentsline {section}{\numberline {2}摘要}{3}{section.2}%
+\contentsline {section}{\numberline {3}前言}{3}{section.3}%
+\contentsline {section}{\numberline {4}研究设计流程图}{3}{section.4}%
+\contentsline {section}{\numberline {5}材料和方法}{3}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Methods}{3}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}meterials}{4}{subsection.5.2}%
+\contentsline {section}{\numberline {6}分析结果}{4}{section.6}%
+\contentsline {subsection}{\numberline {6.1}结直肠癌细胞的特定药物化疗差异分析}{4}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}TCGA 临床样本的泛型化疗差异分析}{5}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}肌少症的基因共表达分析}{6}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}结直肠癌与肌少症的综合分析}{7}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}线粒体自噬基因的表达}{8}{subsection.6.5}%
+\contentsline {section}{\numberline {7}结论}{9}{section.7}%
+\contentsline {section}{\numberline {8}附：分析流程}{9}{section.8}%
+\contentsline {subsection}{\numberline {8.1}相关文献}{9}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}GEO 结直肠癌（细胞样本）}{10}{subsection.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}GSE142340: six CRC cell lines treated with CTRL and optimized drug combinations (ODCs)}{10}{subsubsection.8.2.1}%
+\contentsline {subsubsection}{\numberline {8.2.2}GSE153412: radio-chemoresistance in colorectal cancer cell lines}{12}{subsubsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.3}TCGA 结肠癌（TCGA-READ）}{15}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}TCGA 直肠癌（TCGA-COAD）}{16}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}GEO 肌少症}{18}{subsection.8.5}%
+\contentsline {subsubsection}{\numberline {8.5.1}GSE167186: transcriptome profiling on lower limb muscle biopsies from 72 young, old and sarcopenic subjects}{18}{subsubsection.8.5.1}%
+\contentsline {paragraph}{\numberline {8.5.1.1}edgeR}{18}{paragraph.8.5.1.1}%
+\contentsline {paragraph}{\numberline {8.5.1.2}WGCNA}{19}{paragraph.8.5.1.2}%
+\contentsline {subsection}{\numberline {8.6}综合：结直肠癌和肌少症}{25}{subsection.8.6}%
+\contentsline {subsubsection}{\numberline {8.6.1}（结直肠癌）数据整合}{25}{subsubsection.8.6.1}%
+\contentsline {subsubsection}{\numberline {8.6.2}（结直肠癌与肌少症）交集基因}{25}{subsubsection.8.6.2}%
+\contentsline {subsubsection}{\numberline {8.6.3}富集分析}{26}{subsubsection.8.6.3}%
+\contentsline {subsubsection}{\numberline {8.6.4}通路可视化}{27}{subsubsection.8.6.4}%
+\contentsline {subsection}{\numberline {8.7}验证：线粒体自噬基因是否差异表达}{29}{subsection.8.7}%
+\contentsline {subsubsection}{\numberline {8.7.1}肌少症}{29}{subsubsection.8.7.1}%
+\contentsline {subsubsection}{\numberline {8.7.2}结直肠癌}{29}{subsubsection.8.7.2}%
+\contentsline {section}{Reference}{31}{section*.4}%

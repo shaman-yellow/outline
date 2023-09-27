@@ -49,14 +49,22 @@ set_index()
 
 # 题目
 
+多组转录组数据集结合差异分析与基因共表达分析筛选结直肠癌化疗与肌少症的关联通路
+
 # 摘要 {#abstract}
 
-关于转录组数据库筛选肌少症（Sarcopenia）、结直肠癌（colorectal cancer）、化疗（Chemotherapy）共同的通路：
+结直肠癌（colorectal cancer）的化疗（Chemotherapy）可能导致或加重肌少症（Sarcopenia），然而其内在机制尚不明朗。为了筛选共通的通路，本研究选取了 2 个 GEO 的结直肠癌细胞系数据集，2 个 TCGA 结肠癌或直肠癌数据集，1 个 肌少症的 GEO 数据集，结合了差异分析、基因共表达分析、富集分析等方式，探究可能的内在机制。通路富集表明，自噬（Autophagy）和线粒体自噬（Mitophagy）是共同通路，与 Autophagy 和 Mitophagy 的共交集基因为 RAB7A, CALCOCO2, BNIP3, ATG9A。其中，BNIP3 在 Sarcopenia 的数据集和 TCGA 直肠数据集中同时差异表达（P &lt; 0.05）。
+
+PS：结果未找到与 KEAP1-NRF2 通路的关联。
 
 ```{r}
 # 肌少症，恶性肿瘤，线粒体，如果能够链接到结直肠癌，看看有没有共通的通路，那最好
 # 肿瘤患者多出现代谢紊乱、营养不良，化疗可加重以上问题
 ```
+
+# 前言 {#introduction}
+
+应用化疗治疗可刺激癌症细胞施放内源性危险信号，以诱导发生免疫反应[@DangerSignalsVargas2017]。然而，化疗过程可伴随副作用的发生，例如肌少症[@ChemotherapyInBozzet2020]。肌少症是一种在老年人中常见的，一种进行性、全身性骨骼肌疾病，涉及肌肉质量和功能的加速丧失，与跌倒、功能下降、虚弱和死亡等不良后果[@SarcopeniaCruzJ2019]。肌少症的发生发展涉及多种机制，诸如激素（IGF-1 和胰岛素等）的功能、线粒体功能过程中的细胞内机制等[@SarcopeniaMoWiedme2021]。在恶性肿瘤的进展中，和相关的营养不良本身就会侵蚀肌肉质量，诱发肌少症，而化疗会发生类似的机制，并且会加重这个过程[@ChemotherapyInBozzet2020]。尽管已有文献报导恶性肿瘤、化疗、肌少症之间的相关性，然而其内在的分子机制尚不明朗。本研究从结直肠癌 （CRC） 出发，选用公共数据库的多个数据集，分别以 CRC 细胞系层面、临床样本层面筛选化疗的差异表达基因，结合肌少症的转录组数据的基因共表达分析，探究潜在的结直肠癌化疗与肌少症的共通通路。
 
 # 研究设计流程图 {#route}
 
@@ -79,9 +87,10 @@ p.route <- flowChart(route, 1.1, 1)
 
 - GEOquery
 - TCGAbiolinks
-- limma
 - edgeR
+- limma
 - clusterProfiler
+- pathview
 - R
 - ...
 
@@ -91,7 +100,9 @@ p.route <- flowChart(route, 1.1, 1)
 
 # 分析结果 {#results}
 
-## 结直肠癌细胞的特定药物化疗差异分析
+## 结直肠癌细胞的特定药物化疗差异分析 {#cellDiff}
+
+为了探究化疗所致的癌症共性的生理或病理变化，此处首先从细胞层面探究化疗导致的差异表达基因。两个来源于 GEO 的数据集被采用，分别是 GSE142340 (Geo1) 和 GSE153412 (Geo2)。Geo1 包含六种 CRC (colorectal cancer) 细胞系的化疗的对比分析，涉及药物 Regorafenib、Selumetinib、Vemurafenib、Vatalanib、AZD-4547、GDC-0994 混合应用（Tab. \@ref(tab:metadata-of-GSE142340)）[@OptimizedLowDZoetem2020]。Geo2 包含三种 CRC 细胞系的化疗对比分析，涉及药物 5-fluorouracil (和 Uracil 对照)（Tab. \@ref(tab:metadata-of-GSE153412)）[@DownregulationChauvi2022]。将数据预处理、经差异分析后，Geo1 和 Geo2 的各组差异表达基因（p-value &lt; 0.05, |log2(FC)| &gt; 0.3）的 UpSet 图分别见 Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-GEO-datasets-about-colorectal-chemotherapy)a 和 b。在 Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-GEO-datasets-about-colorectal-chemotherapy)b 中，相比于药物敏感型，耐受型几乎不发生基因转录水平的变化。分别取 Geo1 和 Geo2（不包括药物耐受组的差异基因）的共交集基因，以供后续分析。
 
 ```{r}
 fig1 <- cl(
@@ -101,17 +112,89 @@ fig1 <- cl(
 render(fig1)
 ```
 
-## TCGA 临床样本的泛型化疗差异分析
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-DEGs-obtained-from-two-GEO-datasets-about-colorectal-chemotherapy
+autor("./Figure+Table/fig1.pdf")
+```
+
+## TCGA 临床样本的泛型化疗差异分析 {#tcgaDiff}
+
+为了从个体水平探究化疗对于癌症转录水平上的影响，从 TCGA 数据库获取结肠癌（READ）和直肠癌（ROAD）转录组数据以及相应的临床数据，根据是否药物化疗进行分组。TCGA-READ 共包含 `r nrow(lm.tc1@params$normed_data$targets)` 个患者的数据（Tab. \@ref(tab:READ-clinical-data)），其化疗分布占比见 Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy)；TCGA-COAD 共包含 `r nrow(lm.tc2@params$normed_data$targets)` 个患者的数据（Tab. \@ref(tab:COAD-clinical-data)），其化疗分布占比见 Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy)c。分别将两批数据去除未记录是否化疗的样本后，标准化数据后，以未化疗组和化疗组进行差异分析（Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy)b 和 d），供后续使用。需要注意的是，该 TCGA 的临床数据未记录患者的用药种类、周期等信息，相对于细胞层面的差异分析，更具不稳定性，但也更贴近实际化疗情形。筛选所得的差异基因（p-value &lt; 0.05, |log2(FC)| &gt; 0.3）数见 Fig. \@ref(fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway)a。
 
 ```{r}
 fig2 <- cl(
-  rw()
+  rw("./Figure+Table/READ-whether-with-chemotherapy.pdf", "./Figure+Table/READ-difference-expressed-genes.pdf"),
+  rw("./Figure+Table/COAD-whether-with-chemotherapy.pdf", "./Figure+Table/COAD-difference-expressed-genes.pdf")
 )
+render(fig2)
 ```
 
-## 肌少症的基因共表达分析
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy
+autor("./Figure+Table/fig2.pdf")
+```
+
+## 肌少症的基因共表达分析 {#SarSig}
+
+肌少症的数据集来源于 GEO 的 GSE167186。选取肌少症患者组和对照组的样本（Old Sarcopenia, Old Healthy），以筛选肌少症的潜在标志基因（Tab. \@ref(tab:metadata-of-samples-used-in-GEO-Sarcopenia-data)）。该数据集包含肌少症指标的临床数据，故采用 WGCNA [@WgcnaAnRPacLangfe2008] 替代差异分析，以避免多重比较的 p 值矫正问题。选择 Soft Threshold 为 2（Fig. \@ref(fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset)a），建立基因共表达模块（Fig. \@ref(fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset)b）。随后，结合临床数据筛选显著基因模块（Fig. \@ref(fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset)d）。临床数据显著关联的基因集（GS，gene significant）和显著的基因模块关系（MM，module membership）的交集（Fig. \@ref(fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset)c），共有 1779 个基因。
+
+```{r}
+fig3 <- cls(
+  cl(rw("./Figure+Table/soft-threshold.pdf"),
+    rw("./Figure+Table/clustering-of-gene-modules.pdf",
+      "./Figure+Table/intersection-of-genes-significant-and-module-memberships.pdf")),
+  cl("./Figure+Table/correlation-of-gene-modules-and-traits-data.pdf")
+)
+render(fig3)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset
+autor("./Figure+Table/fig3.pdf")
+```
 
 ## 结直肠癌与肌少症的综合分析
+
+以转录组数据库串连肌少症（Sarcopenia）、结直肠癌（colorectal cancer）、化疗（Chemotherapy）筛选共同的通路，取上述结直肠癌差异基因（\@ref(cellDiff) 和 \@ref(tcgaDiff)）（Fig. \@ref(fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway)a）的合集，与肌少症的潜在标志基因取交集（\@ref(SarSig)）（Fig. \@ref(fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway)c）。共有 184 个交集基因。KEGG 富集分析表明（Fig. \@ref(fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway)d），自噬（Autophagy）通路为首要富集的通路；此外，线粒体自噬（Mitophagy）也是显著的通路。GO 富集分析同样揭示了（Fig. \@ref(fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway)b）线粒体相关的通路，如，BP: 'mitochondrial protein processing'，CC: 'mitochondrial inner membrane'，CC: 'autophagosome' 等。自噬通路（Autophagy）（Fig. \@ref(fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway)e）与 Hypoxia、Low energy、ROS 等肿瘤微环境因素相关。事实上，已有文献综述了线粒体（线粒体失调、氧化应激等）、衰老、肿瘤、肌少症[@MitochondrialDKudrya2016; @SarcopeniaInTWillia2021; @TheRoleOfAgiHavas2022]之间的关联。
+
+PS: The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+
+```{r}
+fig4 <- cls(
+  cl("./Figure+Table/all-colorectal-DEGs.pdf",
+    "./Figure+Table/go-enrichment.pdf"),
+  cl(rw("./Figure+Table/intersection-of-colorectal-DEGs-with-Sarcopenia-significant-genes.pdf",
+    "./Figure+Table/kegg-enrichment.pdf"),
+  "./Figure+Table/hsa04140.pathview.png"
+  )
+)
+render(fig4)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway
+autor("./Figure+Table/fig4.pdf")
+```
+
+## 线粒体自噬基因的表达
+
+聚焦于线粒体自噬通路（Mitophagy）的 6 个交集基因（Fig. \@ref(fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia)a）。这 6 个基因与自噬通路有 4 个交集基因，分别为 RAB7A, CALCOCO2, BNIP3, ATG9A。在上述分析中，我们以多重数据的差异分析的合集，结合 WGCNA 分析的方式取得基因集（Fig. \@ref(fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway)c），接下来，为了验证 Mitophagy 的 6 个基因的显著性，重新回到对应的数据集检查。在 Sarcopenia 的数据集中，BNIP3，JUN 为差异表达的基因（Fig. \@ref(fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia)b）。随后，可以在 TCGA-COAD 数据集中可以发现 BNIP3 的差异表达（Fig. \@ref(fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia)d）；然而，BNIP3 在 TCGA-READ 数据集为非差异表达基因（Fig. \@ref(fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia)c）。显然，该 6 个基因的其余基因是来自于纯细胞系的转录组数据筛选，与复杂的临床样本有所不同。上述分析表明，基因 BNIP3 在直肠癌的化疗治疗中，可能与肌少症的发生发展机制关联，并且与线粒体自噬通路相关。然而，BNIP3 与肌少症的关联机制是否存在于结肠癌或者其它癌症的化疗过程中，需要进一步验证。
+
+```{r}
+fig5 <- cl(
+  rw("./Figure+Table/hsa04137.pathview.png",
+    "./Figure+Table/wilcox-test-of-mitophgy-related-genes-in-Sarcopenia.pdf"),
+  rw("./Figure+Table/wilcox-test-of-mitophgy-related-genes-in-READ.pdf",
+    "./Figure+Table/wilcox-test-of-mitophgy-related-genes-in-COAD.pdf"
+  )
+)
+render(fig5)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia
+autor("./Figure+Table/fig5.pdf")
+```
 
 # 结论 {#dis}
 
@@ -121,9 +204,9 @@ fig2 <- cl(
 
 - Skeletal muscle-specific Keap1 disruption modulates fatty acid utilization and enhances exercise capacity in female mice [@SkeletalMuscleOnoki2021]
 - Mitochondrial dysfunction and oxidative stress in aging and cancer [@MitochondrialDKudrya2016]
+- Sarcopenia in the Older Adult With Cancer [@SarcopeniaInTWillia2021]
 - Danger signals: Chemotherapy enhancers? [@DangerSignalsVargas2017]
 - Current Targeted Therapy for Metastatic Colorectal Cancer [@CurrentTargeteOhishi2023]
-- Sarcopenia in the Older Adult With Cancer [@SarcopeniaInTWillia2021]
 - The role of aging in cancer [@TheRoleOfAgiHavas2022]
 
 ```{r}
@@ -140,6 +223,11 @@ fig2 <- cl(
 ```{r eval = T, echo = F, results = "asis"}
 #| geo1-prods
 autor(geo1@params$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-GSE142340
+autor(as_tibble(lm1@params$normed_data$targets), key = "group")
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -201,6 +289,11 @@ autor(geo2@params$prods)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-GSE153412
+autor(as_tibble(lm2@params$normed_data$targets), key = "group")
+```
+
+```{r eval = T, echo = F, results = "asis"}
 #| DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412
 autor(wrap(p.lm2_upsets, 13, 6))
 ```
@@ -247,7 +340,7 @@ lm2_ins <- ins(lst = lm2_tops[ grepl("^Sen", names(lm2_tops)) ])
 lm2_ins
 ```
 
-## TCGA 直肠癌（TCGA-READ）
+## TCGA 结肠癌（TCGA-READ）
 
 ```{r eval = T, echo = F, results = "asis"}
 #| READ-clinical-data
@@ -298,7 +391,7 @@ wg.tc1 <- step4(wg.tc1)
 wg.tc1
 ```
 
-## TCGA 结肠癌（TCGA-COAD）
+## TCGA 直肠癌（TCGA-COAD）
 
 ```{r eval = T, echo = F, results = "asis"}
 #| COAD-clinical-data
@@ -519,7 +612,7 @@ autor(en@plots$step1$p.go$co.sig)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| kegg-enrichment
-autor(z7(en@plots$step1$p.kegg$co.sig, 1, .8))
+autor(z7(en@plots$step1$p.kegg$co.sig, .7, .8))
 ```
 
 ```{r}
@@ -556,4 +649,33 @@ autor(en@plots$step2$p.pathviews$hsa04140)
 #| hits-in-Mitophagy
 autor(en@plots$step2$p.pathviews$hsa04137)
 ```
+
+## 验证：线粒体自噬基因是否差异表达
+
+```{r}
+#| check-and-map
+p.sar.mitoph <-  map(lm5, gene_mitoph)
+p.tc1.mitoph <- map(lm.tc1, gene_mitoph, ref.use = "gene_name")
+p.tc2.mitoph <- map(lm.tc2, gene_mitoph, ref.use = "gene_name")
+```
+
+### 肌少症
+
+```{r eval = T, echo = F, results = "asis"}
+#| wilcox-test-of-mitophgy-related-genes-in-Sarcopenia
+autor(p.sar.mitoph)
+```
+
+### 结直肠癌
+
+```{r eval = T, echo = F, results = "asis"}
+#| wilcox-test-of-mitophgy-related-genes-in-READ
+autor(p.tc1.mitoph)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| wilcox-test-of-mitophgy-related-genes-in-COAD
+autor(p.tc2.mitoph)
+```
+
 

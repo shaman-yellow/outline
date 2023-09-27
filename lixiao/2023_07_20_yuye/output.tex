@@ -93,10 +93,19 @@
 \hypertarget{ux9898ux76ee}{%
 \section{题目}\label{ux9898ux76ee}}
 
+多组转录组数据集结合差异分析与基因共表达分析筛选结直肠癌化疗与肌少症的关联通路
+
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
 
-关于转录组数据库筛选肌少症（Sarcopenia）、结直肠癌（colorectal cancer）、化疗（Chemotherapy）共同的通路：
+结直肠癌（colorectal cancer）的化疗（Chemotherapy）可能导致或加重肌少症（Sarcopenia），然而其内在机制尚不明朗。为了筛选共通的通路，本研究选取了 2 个 GEO 的结直肠癌细胞系数据集，2 个 TCGA 结肠癌或直肠癌数据集，1 个 肌少症的 GEO 数据集，结合了差异分析、基因共表达分析、富集分析等方式，探究可能的内在机制。通路富集表明，自噬（Autophagy）和线粒体自噬（Mitophagy）是共同通路，与 Autophagy 和 Mitophagy 的共交集基因为 RAB7A, CALCOCO2, BNIP3, ATG9A。其中，BNIP3 在 Sarcopenia 的数据集和 TCGA 直肠数据集中同时差异表达（P \textless{} 0.05）。
+
+PS：结果未找到与 KEAP1-NRF2 通路的关联。
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+应用化疗治疗可刺激癌症细胞施放内源性危险信号，以诱导发生免疫反应\textsuperscript{\protect\hyperlink{ref-DangerSignalsVargas2017}{1}}。然而，化疗过程可伴随副作用的发生，例如肌少症\textsuperscript{\protect\hyperlink{ref-ChemotherapyInBozzet2020}{2}}。肌少症是一种在老年人中常见的，一种进行性、全身性骨骼肌疾病，涉及肌肉质量和功能的加速丧失，与跌倒、功能下降、虚弱和死亡等不良后果\textsuperscript{\protect\hyperlink{ref-SarcopeniaCruzJ2019}{3}}。肌少症的发生发展涉及多种机制，诸如激素（IGF-1 和胰岛素等）的功能、线粒体功能过程中的细胞内机制等\textsuperscript{\protect\hyperlink{ref-SarcopeniaMoWiedme2021}{4}}。在恶性肿瘤的进展中，和相关的营养不良本身就会侵蚀肌肉质量，诱发肌少症，而化疗会发生类似的机制，并且会加重这个过程\textsuperscript{\protect\hyperlink{ref-ChemotherapyInBozzet2020}{2}}。尽管已有文献报导恶性肿瘤、化疗、肌少症之间的相关性，然而其内在的分子机制尚不明朗。本研究从结直肠癌 （CRC） 出发，选用公共数据库的多个数据集，分别以 CRC 细胞系层面、临床样本层面筛选化疗的差异表达基因，结合肌少症的转录组数据的基因共表达分析，探究潜在的结直肠癌化疗与肌少症的共通通路。
 
 \hypertarget{route}{%
 \section{研究设计流程图}\label{route}}
@@ -114,11 +123,13 @@
 \item
   TCGAbiolinks
 \item
-  limma
-\item
   edgeR
 \item
+  limma
+\item
   clusterProfiler
+\item
+  pathview
 \item
   R
 \item
@@ -133,17 +144,82 @@
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
 
-\hypertarget{ux7ed3ux76f4ux80a0ux764cux7ec6ux80deux7684ux7279ux5b9aux836fux7269ux5316ux7597ux5deeux5f02ux5206ux6790}{%
-\subsection{结直肠癌细胞的特定药物化疗差异分析}\label{ux7ed3ux76f4ux80a0ux764cux7ec6ux80deux7684ux7279ux5b9aux836fux7269ux5316ux7597ux5deeux5f02ux5206ux6790}}
+\hypertarget{cellDiff}{%
+\subsection{结直肠癌细胞的特定药物化疗差异分析}\label{cellDiff}}
 
-\hypertarget{tcga-ux4e34ux5e8aux6837ux672cux7684ux6cdbux578bux5316ux7597ux5deeux5f02ux5206ux6790}{%
-\subsection{TCGA 临床样本的泛型化疗差异分析}\label{tcga-ux4e34ux5e8aux6837ux672cux7684ux6cdbux578bux5316ux7597ux5deeux5f02ux5206ux6790}}
+为了探究化疗所致的癌症共性的生理或病理变化，此处首先从细胞层面探究化疗导致的差异表达基因。两个来源于 GEO 的数据集被采用，分别是 GSE142340 (Geo1) 和 GSE153412 (Geo2)。Geo1 包含六种 CRC (colorectal cancer) 细胞系的化疗的对比分析，涉及药物 Regorafenib、Selumetinib、Vemurafenib、Vatalanib、AZD-4547、GDC-0994 混合应用（Tab. \ref{tab:metadata-of-GSE142340}）\textsuperscript{\protect\hyperlink{ref-OptimizedLowDZoetem2020}{5}}。Geo2 包含三种 CRC 细胞系的化疗对比分析，涉及药物 5-fluorouracil (和 Uracil 对照)（Tab. \ref{tab:metadata-of-GSE153412}）\textsuperscript{\protect\hyperlink{ref-DownregulationChauvi2022}{6}}。将数据预处理、经差异分析后，Geo1 和 Geo2 的各组差异表达基因（p-value \textless{} 0.05, \textbar log2(FC)\textbar{} \textgreater{} 0.3）的 UpSet 图分别见 Fig. \ref{fig:MAIN-DEGs-obtained-from-two-GEO-datasets-about-colorectal-chemotherapy}a 和 b。在 Fig. \ref{fig:MAIN-DEGs-obtained-from-two-GEO-datasets-about-colorectal-chemotherapy}b 中，相比于药物敏感型，耐受型几乎不发生基因转录水平的变化。分别取 Geo1 和 Geo2（不包括药物耐受组的差异基因）的共交集基因，以供后续分析。
 
-\hypertarget{ux808cux5c11ux75c7ux7684ux57faux56e0ux5171ux8868ux8fbeux5206ux6790}{%
-\subsection{肌少症的基因共表达分析}\label{ux808cux5c11ux75c7ux7684ux57faux56e0ux5171ux8868ux8fbeux5206ux6790}}
+Figure \ref{fig:MAIN-DEGs-obtained-from-two-GEO-datasets-about-colorectal-chemotherapy}为图MAIN DEGs obtained from two GEO datasets about colorectal chemotherapy概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig1.pdf}
+\caption{MAIN DEGs obtained from two GEO datasets about colorectal chemotherapy}\label{fig:MAIN-DEGs-obtained-from-two-GEO-datasets-about-colorectal-chemotherapy}
+\end{center}
+
+\hypertarget{tcgaDiff}{%
+\subsection{TCGA 临床样本的泛型化疗差异分析}\label{tcgaDiff}}
+
+为了从个体水平探究化疗对于癌症转录水平上的影响，从 TCGA 数据库获取结肠癌（READ）和直肠癌（ROAD）转录组数据以及相应的临床数据，根据是否药物化疗进行分组。TCGA-READ 共包含 135 个患者的数据（Tab. \ref{tab:READ-clinical-data}），其化疗分布占比见 Fig. \ref{fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy}；TCGA-COAD 共包含 388 个患者的数据（Tab. \ref{tab:COAD-clinical-data}），其化疗分布占比见 Fig. \ref{fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy}c。分别将两批数据去除未记录是否化疗的样本后，标准化数据后，以未化疗组和化疗组进行差异分析（Fig. \ref{fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy}b 和 d），供后续使用。需要注意的是，该 TCGA 的临床数据未记录患者的用药种类、周期等信息，相对于细胞层面的差异分析，更具不稳定性，但也更贴近实际化疗情形。筛选所得的差异基因（p-value \textless{} 0.05, \textbar log2(FC)\textbar{} \textgreater{} 0.3）数见 Fig. \ref{fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway}a。
+
+Figure \ref{fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy}为图MAIN DEGs obtained from two TCGA project datasets about colorectal chemotherapy概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig2.pdf}
+\caption{MAIN DEGs obtained from two TCGA project datasets about colorectal chemotherapy}\label{fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy}
+\end{center}
+
+\hypertarget{SarSig}{%
+\subsection{肌少症的基因共表达分析}\label{SarSig}}
+
+肌少症的数据集来源于 GEO 的 GSE167186。选取肌少症患者组和对照组的样本（Old Sarcopenia, Old Healthy），以筛选肌少症的潜在标志基因（Tab. \ref{tab:metadata-of-samples-used-in-GEO-Sarcopenia-data}）。该数据集包含肌少症指标的临床数据，故采用 WGCNA\textsuperscript{\protect\hyperlink{ref-WgcnaAnRPacLangfe2008}{7}} 替代差异分析，以避免多重比较的 p 值矫正问题。选择 Soft Threshold 为 2（Fig. \ref{fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset}a），建立基因共表达模块（Fig. \ref{fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset}b）。随后，结合临床数据筛选显著基因模块（Fig. \ref{fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset}d）。临床数据显著关联的基因集（GS，gene significant）和显著的基因模块关系（MM，module membership）的交集（Fig. \ref{fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset}c），共有 1779 个基因。
+
+Figure \ref{fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset}为图MAIN significant genes obtained by WGCNA analysis of GEO Sarcopenia dataset概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig3.pdf}
+\caption{MAIN significant genes obtained by WGCNA analysis of GEO Sarcopenia dataset}\label{fig:MAIN-significant-genes-obtained-by-WGCNA-analysis-of-GEO-Sarcopenia-dataset}
+\end{center}
 
 \hypertarget{ux7ed3ux76f4ux80a0ux764cux4e0eux808cux5c11ux75c7ux7684ux7efcux5408ux5206ux6790}{%
 \subsection{结直肠癌与肌少症的综合分析}\label{ux7ed3ux76f4ux80a0ux764cux4e0eux808cux5c11ux75c7ux7684ux7efcux5408ux5206ux6790}}
+
+以转录组数据库串连肌少症（Sarcopenia）、结直肠癌（colorectal cancer）、化疗（Chemotherapy）筛选共同的通路，取上述结直肠癌差异基因（\ref{cellDiff} 和 \ref{tcgaDiff}）（Fig. \ref{fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway}a）的合集，与肌少症的潜在标志基因取交集（\ref{SarSig}）（Fig. \ref{fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway}c）。共有 184 个交集基因。KEGG 富集分析表明（Fig. \ref{fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway}d），自噬（Autophagy）通路为首要富集的通路；此外，线粒体自噬（Mitophagy）也是显著的通路。GO 富集分析同样揭示了（Fig. \ref{fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway}b）线粒体相关的通路，如，BP: `mitochondrial protein processing'，CC: `mitochondrial inner membrane'，CC: `autophagosome' 等。自噬通路（Autophagy）（Fig. \ref{fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway}e）与 Hypoxia、Low energy、ROS 等肿瘤微环境因素相关。事实上，已有文献综述了线粒体（线粒体失调、氧化应激等）、衰老、肿瘤、肌少症\textsuperscript{\protect\hyperlink{ref-MitochondrialDKudrya2016}{8}--\protect\hyperlink{ref-TheRoleOfAgiHavas2022}{10}}之间的关联。
+
+PS: The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+
+Figure \ref{fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway}为图MAIN The intersected genes enriched in mitochondrial and autophagy related pathway概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig4.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig4.pdf}
+\caption{MAIN The intersected genes enriched in mitochondrial and autophagy related pathway}\label{fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway}
+\end{center}
+
+\hypertarget{ux7ebfux7c92ux4f53ux81eaux566cux57faux56e0ux7684ux8868ux8fbe}{%
+\subsection{线粒体自噬基因的表达}\label{ux7ebfux7c92ux4f53ux81eaux566cux57faux56e0ux7684ux8868ux8fbe}}
+
+聚焦于线粒体自噬通路（Mitophagy）的 6 个交集基因（Fig. \ref{fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia}a）。这 6 个基因与自噬通路有 4 个交集基因，分别为 RAB7A, CALCOCO2, BNIP3, ATG9A。在上述分析中，我们以多重数据的差异分析的合集，结合 WGCNA 分析的方式取得基因集（Fig. \ref{fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway}c），接下来，为了验证 Mitophagy 的 6 个基因的显著性，重新回到对应的数据集检查。在 Sarcopenia 的数据集中，BNIP3，JUN 为差异表达的基因（Fig. \ref{fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia}b）。随后，可以在 TCGA-COAD 数据集中可以发现 BNIP3 的差异表达（Fig. \ref{fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia}d）；然而，BNIP3 在 TCGA-READ 数据集为非差异表达基因（Fig. \ref{fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia}c）。显然，该 6 个基因的其余基因是来自于纯细胞系的转录组数据筛选，与复杂的临床样本有所不同。上述分析表明，基因 BNIP3 在直肠癌的化疗治疗中，可能与肌少症的发生发展机制关联，并且与线粒体自噬通路相关。然而，BNIP3 与肌少症的关联机制是否存在于结肠癌或者其它癌症的化疗过程中，需要进一步验证。
+
+Figure \ref{fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia}为图MAIN The expression of mitophgy related genes in colorectal cancer or sarcopenia概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig5.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig5.pdf}
+\caption{MAIN The expression of mitophgy related genes in colorectal cancer or sarcopenia}\label{fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-cancer-or-sarcopenia}
+\end{center}
 
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
@@ -157,17 +233,17 @@
 \begin{itemize}
 \tightlist
 \item
-  Skeletal muscle-specific Keap1 disruption modulates fatty acid utilization and enhances exercise capacity in female mice\textsuperscript{\protect\hyperlink{ref-SkeletalMuscleOnoki2021}{1}}
+  Skeletal muscle-specific Keap1 disruption modulates fatty acid utilization and enhances exercise capacity in female mice\textsuperscript{\protect\hyperlink{ref-SkeletalMuscleOnoki2021}{11}}
 \item
-  Mitochondrial dysfunction and oxidative stress in aging and cancer\textsuperscript{\protect\hyperlink{ref-MitochondrialDKudrya2016}{2}}
+  Mitochondrial dysfunction and oxidative stress in aging and cancer\textsuperscript{\protect\hyperlink{ref-MitochondrialDKudrya2016}{8}}
 \item
-  Danger signals: Chemotherapy enhancers?\textsuperscript{\protect\hyperlink{ref-DangerSignalsVargas2017}{3}}
+  Sarcopenia in the Older Adult With Cancer\textsuperscript{\protect\hyperlink{ref-SarcopeniaInTWillia2021}{9}}
 \item
-  Current Targeted Therapy for Metastatic Colorectal Cancer\textsuperscript{\protect\hyperlink{ref-CurrentTargeteOhishi2023}{4}}
+  Danger signals: Chemotherapy enhancers?\textsuperscript{\protect\hyperlink{ref-DangerSignalsVargas2017}{1}}
 \item
-  Sarcopenia in the Older Adult With Cancer\textsuperscript{\protect\hyperlink{ref-SarcopeniaInTWillia2021}{5}}
+  Current Targeted Therapy for Metastatic Colorectal Cancer\textsuperscript{\protect\hyperlink{ref-CurrentTargeteOhishi2023}{12}}
 \item
-  The role of aging in cancer\textsuperscript{\protect\hyperlink{ref-TheRoleOfAgiHavas2022}{6}}
+  The role of aging in cancer\textsuperscript{\protect\hyperlink{ref-TheRoleOfAgiHavas2022}{10}}
 \end{itemize}
 
 \hypertarget{geo-ux7ed3ux76f4ux80a0ux764cux7ec6ux80deux6837ux672c}{%
@@ -271,6 +347,43 @@ per millions) for each Sample
 \vspace{2em}
 \end{tcolorbox}
 \end{center}
+
+Table \ref{tab:metadata-of-GSE142340}为表格metadata of GSE142340概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-GSE142340.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有24行7列，以下预览的表格可能省略部分数据；表格含有12个唯一`group'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:metadata-of-GSE142340}Metadata of GSE142340}\tabularnewline
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & cell\ldots. & treat\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & cell\ldots. & treat\ldots{}\tabularnewline
+\midrule
+\endhead
+DLDCTR2 & DLD1\_\ldots{} & 22435\ldots{} & 1.002\ldots{} & DLDCTR2 & DLD1 & CTRL\tabularnewline
+DLDCTRL1 & DLD1\_\ldots{} & 19842\ldots{} & 0.982\ldots{} & DLDCTRL1 & DLD1 & CTRL\tabularnewline
+DLDODC1 & DLD1\_\ldots{} & 22132\ldots{} & 0.979\ldots{} & DLDODC1 & DLD1 & ODC\ldots..\tabularnewline
+DLDODC2 & DLD1\_\ldots{} & 21319\ldots{} & 1.007\ldots{} & DLDODC2 & DLD1 & ODC\ldots..\tabularnewline
+HCTCTRL1 & HCT11\ldots{} & 21546\ldots{} & 0.980\ldots{} & HCTCTRL1 & HCT116 & CTRL\tabularnewline
+HCTCTRL2 & HCT11\ldots{} & 23262\ldots{} & 0.972\ldots{} & HCTCTRL2 & HCT116 & CTRL\tabularnewline
+HCTODC1 & HCT11\ldots{} & 24506\ldots{} & 0.995\ldots{} & HCTODC1 & HCT116 & ODC\ldots..\tabularnewline
+HCTODC2 & HCT11\ldots{} & 22573\ldots{} & 0.991\ldots{} & HCTODC2 & HCT116 & ODC\ldots..\tabularnewline
+HTCTRL1 & HT29\_\ldots{} & 21553\ldots{} & 0.930\ldots{} & HTCTRL1 & HT29 & CTRL\tabularnewline
+HTCTRL2 & HT29\_\ldots{} & 22492\ldots{} & 0.953\ldots{} & HTCTRL2 & HT29 & CTRL\tabularnewline
+HTODC1 & HT29\_\ldots{} & 16252\ldots{} & 0.819\ldots{} & HTODC1 & HT29 & ODC\ldots..\tabularnewline
+HTODC2 & HT29\_\ldots{} & 20979\ldots{} & 0.964\ldots{} & HTODC2 & HT29 & ODC\ldots..\tabularnewline
+LSCTRL1 & LS174\ldots{} & 22752\ldots{} & 0.986\ldots{} & LSCTRL1 & LS174T & CTRL\tabularnewline
+LSCTRL2 & LS174\ldots{} & 21163\ldots{} & 1.014\ldots{} & LSCTRL2 & LS174T & CTRL\tabularnewline
+LSODC1 & LS174\ldots{} & 21870\ldots{} & 0.979\ldots{} & LSODC1 & LS174T & ODC\ldots..\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
 
 Figure \ref{fig:DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142340}为图DEGs in different cell types with chemotherapy or not GSE142340概览。
 
@@ -408,6 +521,43 @@ with tpm values for every gene and every sample
 \end{tcolorbox}
 \end{center}
 
+Table \ref{tab:metadata-of-GSE153412}为表格metadata of GSE153412概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-GSE153412.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有54行8列，以下预览的表格可能省略部分数据；表格含有18个唯一`group'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:metadata-of-GSE153412}Metadata of GSE153412}\tabularnewline
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & X5.fu\ldots{} & cell\ldots. & treat\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & X5.fu\ldots{} & cell\ldots. & treat\ldots{}\tabularnewline
+\midrule
+\endhead
+DSU1 & Sensi\ldots{} & 52675\ldots{} & 0.940\ldots{} & DSU1 & Sensi\ldots{} & DLD.1 & Uraci\ldots{}\tabularnewline
+DSU2 & Sensi\ldots{} & 20781\ldots{} & 0.951\ldots{} & DSU2 & Sensi\ldots{} & DLD.1 & Uraci\ldots{}\tabularnewline
+DSU3 & Sensi\ldots{} & 54236\ldots{} & 0.945\ldots{} & DSU3 & Sensi\ldots{} & DLD.1 & Uraci\ldots{}\tabularnewline
+DS51 & Sensi\ldots{} & 89157\ldots{} & 1.029\ldots{} & DS51 & Sensi\ldots{} & DLD.1 & X5FU\ldots.\tabularnewline
+DS52 & Sensi\ldots{} & 61094\ldots{} & 1.016\ldots{} & DS52 & Sensi\ldots{} & DLD.1 & X5FU\ldots.\tabularnewline
+DS53 & Sensi\ldots{} & 49329\ldots{} & 1.014\ldots{} & DS53 & Sensi\ldots{} & DLD.1 & X5FU\ldots.\tabularnewline
+DS5I1 & Sensi\ldots{} & 68251\ldots{} & 1.022\ldots{} & DS5I1 & Sensi\ldots{} & DLD.1 & X5FU\ldots.\tabularnewline
+DS5I2 & Sensi\ldots{} & 40788\ldots{} & 1.047\ldots{} & DS5I2 & Sensi\ldots{} & DLD.1 & X5FU\ldots.\tabularnewline
+DS5I3 & Sensi\ldots{} & 58964\ldots{} & 1.035\ldots{} & DS5I3 & Sensi\ldots{} & DLD.1 & X5FU\ldots.\tabularnewline
+X116SU1 & Sensi\ldots{} & 50504\ldots{} & 0.973\ldots{} & X116SU1 & Sensi\ldots{} & HCT.116 & Uraci\ldots{}\tabularnewline
+X116SU2 & Sensi\ldots{} & 52524\ldots{} & 1.004\ldots{} & X116SU2 & Sensi\ldots{} & HCT.116 & Uraci\ldots{}\tabularnewline
+X116SU3 & Sensi\ldots{} & 49999\ldots{} & 0.981\ldots{} & X116SU3 & Sensi\ldots{} & HCT.116 & Uraci\ldots{}\tabularnewline
+X116S51 & Sensi\ldots{} & 55051\ldots{} & 1.065\ldots{} & X116S51 & Sensi\ldots{} & HCT.116 & X5FU\ldots.\tabularnewline
+X116S52 & Sensi\ldots{} & 81542\ldots{} & 1.033\ldots{} & X116S52 & Sensi\ldots{} & HCT.116 & X5FU\ldots.\tabularnewline
+X116S53 & Sensi\ldots{} & 57667\ldots{} & 1.043\ldots{} & X116S53 & Sensi\ldots{} & HCT.116 & X5FU\ldots.\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
 Figure \ref{fig:DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412}为图DEGs in different cell types with chemotherapy or not GSE153412概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412.pdf})}
@@ -418,14 +568,14 @@ Figure \ref{fig:DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412}
 \caption{DEGs in different cell types with chemotherapy or not GSE153412}\label{fig:DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412}
 \end{center}
 
-\hypertarget{tcga-ux76f4ux80a0ux764ctcga-read}{%
-\subsection{TCGA 直肠癌（TCGA-READ）}\label{tcga-ux76f4ux80a0ux764ctcga-read}}
+\hypertarget{tcga-ux7ed3ux80a0ux764ctcga-read}{%
+\subsection{TCGA 结肠癌（TCGA-READ）}\label{tcga-ux7ed3ux80a0ux764ctcga-read}}
 
 Table \ref{tab:READ-clinical-data}为表格READ clinical data概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/READ-clinical-data.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有135行111列，以下预览的表格可能省略部分数据；表格含有135个唯一`sample'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有135行113列，以下预览的表格可能省略部分数据；表格含有135个唯一`sample'。
 \end{tcolorbox}
 \end{center}
 
@@ -480,8 +630,8 @@ Figure \ref{fig:READ-difference-expressed-genes}为图READ difference expressed 
 \caption{READ difference expressed genes}\label{fig:READ-difference-expressed-genes}
 \end{center}
 
-\hypertarget{tcga-ux7ed3ux80a0ux764ctcga-coad}{%
-\subsection{TCGA 结肠癌（TCGA-COAD）}\label{tcga-ux7ed3ux80a0ux764ctcga-coad}}
+\hypertarget{tcga-ux76f4ux80a0ux764ctcga-coad}{%
+\subsection{TCGA 直肠癌（TCGA-COAD）}\label{tcga-ux76f4ux80a0ux764ctcga-coad}}
 
 Table \ref{tab:COAD-clinical-data}为表格COAD clinical data概览。
 
@@ -815,29 +965,86 @@ Figure \ref{fig:hits-in-Mitophagy}为图hits in Mitophagy概览。
 \caption{Hits in Mitophagy}\label{fig:hits-in-Mitophagy}
 \end{center}
 
+\hypertarget{ux9a8cux8bc1ux7ebfux7c92ux4f53ux81eaux566cux57faux56e0ux662fux5426ux5deeux5f02ux8868ux8fbe}{%
+\subsection{验证：线粒体自噬基因是否差异表达}\label{ux9a8cux8bc1ux7ebfux7c92ux4f53ux81eaux566cux57faux56e0ux662fux5426ux5deeux5f02ux8868ux8fbe}}
+
+\hypertarget{ux808cux5c11ux75c7}{%
+\subsubsection{肌少症}\label{ux808cux5c11ux75c7}}
+
+Figure \ref{fig:wilcox-test-of-mitophgy-related-genes-in-Sarcopenia}为图wilcox test of mitophgy related genes in Sarcopenia概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/wilcox-test-of-mitophgy-related-genes-in-Sarcopenia.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/wilcox-test-of-mitophgy-related-genes-in-Sarcopenia.pdf}
+\caption{Wilcox test of mitophgy related genes in Sarcopenia}\label{fig:wilcox-test-of-mitophgy-related-genes-in-Sarcopenia}
+\end{center}
+
+\hypertarget{ux7ed3ux76f4ux80a0ux764c}{%
+\subsubsection{结直肠癌}\label{ux7ed3ux76f4ux80a0ux764c}}
+
+Figure \ref{fig:wilcox-test-of-mitophgy-related-genes-in-READ}为图wilcox test of mitophgy related genes in READ概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/wilcox-test-of-mitophgy-related-genes-in-READ.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/wilcox-test-of-mitophgy-related-genes-in-READ.pdf}
+\caption{Wilcox test of mitophgy related genes in READ}\label{fig:wilcox-test-of-mitophgy-related-genes-in-READ}
+\end{center}
+
+Figure \ref{fig:wilcox-test-of-mitophgy-related-genes-in-COAD}为图wilcox test of mitophgy related genes in COAD概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/wilcox-test-of-mitophgy-related-genes-in-COAD.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/wilcox-test-of-mitophgy-related-genes-in-COAD.pdf}
+\caption{Wilcox test of mitophgy related genes in COAD}\label{fig:wilcox-test-of-mitophgy-related-genes-in-COAD}
+\end{center}
+
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
 \addcontentsline{toc}{section}{Reference}
 
 \hypertarget{refs}{}
 \begin{cslreferences}
-\leavevmode\hypertarget{ref-SkeletalMuscleOnoki2021}{}%
-1. Onoki, T. \emph{et al.} Skeletal muscle-specific keap1 disruption modulates fatty acid utilization and enhances exercise capacity in female mice. \emph{Redox biology} \textbf{43}, (2021).
+\leavevmode\hypertarget{ref-DangerSignalsVargas2017}{}%
+1. Vargas, T. R. \& Apetoh, L. Danger signals: Chemotherapy enhancers? \emph{Immunological Reviews} \textbf{280}, (2017).
+
+\leavevmode\hypertarget{ref-ChemotherapyInBozzet2020}{}%
+2. Bozzetti, F. Chemotherapy-induced sarcopenia. \emph{Current treatment options in oncology} \textbf{21}, (2020).
+
+\leavevmode\hypertarget{ref-SarcopeniaCruzJ2019}{}%
+3. Cruz-Jentoft, A. J. \& Sayer, A. A. Sarcopenia. \emph{Lancet (London, England)} \textbf{393}, 2636--2646 (2019).
+
+\leavevmode\hypertarget{ref-SarcopeniaMoWiedme2021}{}%
+4. Wiedmer, P. \emph{et al.} Sarcopenia - molecular mechanisms and open questions. \emph{Ageing research reviews} \textbf{65}, (2021).
+
+\leavevmode\hypertarget{ref-OptimizedLowDZoetem2020}{}%
+5. Zoetemelk, M. \emph{et al.} Optimized low-dose combinatorial drug treatment boosts selectivity and efficacy of colorectal carcinoma treatment. \emph{Molecular oncology} \textbf{14}, 2894--2919 (2020).
+
+\leavevmode\hypertarget{ref-DownregulationChauvi2022}{}%
+6. Chauvin, A. \emph{et al.} Downregulation of krab zinc finger proteins in 5-fluorouracil resistant colorectal cancer cells. \emph{BMC cancer} \textbf{22}, (2022).
+
+\leavevmode\hypertarget{ref-WgcnaAnRPacLangfe2008}{}%
+7. Langfelder, P. \& Horvath, S. WGCNA: An r package for weighted correlation network analysis. \emph{BMC Bioinformatics} \textbf{9}, (2008).
 
 \leavevmode\hypertarget{ref-MitochondrialDKudrya2016}{}%
-2. Kudryavtseva, A. V. \emph{et al.} Mitochondrial dysfunction and oxidative stress in aging and cancer. \emph{Oncotarget} \textbf{7}, 44879--44905 (2016).
-
-\leavevmode\hypertarget{ref-DangerSignalsVargas2017}{}%
-3. Vargas, T. R. \& Apetoh, L. Danger signals: Chemotherapy enhancers? \emph{Immunological Reviews} \textbf{280}, (2017).
-
-\leavevmode\hypertarget{ref-CurrentTargeteOhishi2023}{}%
-4. Ohishi, T. \emph{et al.} Current targeted therapy for metastatic colorectal cancer. \emph{International Journal of Molecular Sciences} \textbf{24}, (2023).
+8. Kudryavtseva, A. V. \emph{et al.} Mitochondrial dysfunction and oxidative stress in aging and cancer. \emph{Oncotarget} \textbf{7}, 44879--44905 (2016).
 
 \leavevmode\hypertarget{ref-SarcopeniaInTWillia2021}{}%
-5. Williams, G. R., Dunne, R. F., Giri, S., Shachar, S. S. \& Caan, B. J. Sarcopenia in the older adult with cancer. \emph{Journal of Clinical Oncology} \textbf{39}, (2021).
+9. Williams, G. R., Dunne, R. F., Giri, S., Shachar, S. S. \& Caan, B. J. Sarcopenia in the older adult with cancer. \emph{Journal of Clinical Oncology} \textbf{39}, (2021).
 
 \leavevmode\hypertarget{ref-TheRoleOfAgiHavas2022}{}%
-6. Havas, A., Yin, S. \& Adams, P. D. The role of aging in cancer. \emph{Molecular Oncology} \textbf{16}, (2022).
+10. Havas, A., Yin, S. \& Adams, P. D. The role of aging in cancer. \emph{Molecular Oncology} \textbf{16}, (2022).
+
+\leavevmode\hypertarget{ref-SkeletalMuscleOnoki2021}{}%
+11. Onoki, T. \emph{et al.} Skeletal muscle-specific keap1 disruption modulates fatty acid utilization and enhances exercise capacity in female mice. \emph{Redox biology} \textbf{43}, (2021).
+
+\leavevmode\hypertarget{ref-CurrentTargeteOhishi2023}{}%
+12. Ohishi, T. \emph{et al.} Current targeted therapy for metastatic colorectal cancer. \emph{International Journal of Molecular Sciences} \textbf{24}, (2023).
 \end{cslreferences}
 
 \end{document}

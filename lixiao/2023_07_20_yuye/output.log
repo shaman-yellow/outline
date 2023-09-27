@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  26 SEP 2023 18:02
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  27 SEP 2023 18:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1185,23 +1185,23 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 9.70718pt on input line 1.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 5.
+(Font)              scaled to size 7.0pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 5.
+(Font)              scaled to size 5.0pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 5.
+(Font)              scaled to size 10.00092pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 5.
+(Font)              scaled to size 7.00064pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 5.
+(Font)              scaled to size 5.00046pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 5.
+(Font)              scaled to size 9.99893pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 5.
+(Font)              scaled to size 6.99925pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 5.
+(Font)              scaled to size 4.99947pt on input line 6.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 8.
+(Font)              scaled to size 10.0pt on input line 9.
 [1
 
 ])
@@ -1212,16 +1212,15 @@ LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
-(./output.lot)
+(./output.lot [2])
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 94.
-[2]
-LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 137.
 [3]
+LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
+(Font)              scaled to size 11.64862pt on input line 148.
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
@@ -1233,7 +1232,7 @@ Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 277.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 154.
 
 Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             'FandolFang-Regular' with options
@@ -1247,8 +1246,47 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 nguage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
+File: ./Figure+Table/fig1.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig1.pdf>
 
-Overfull \hbox (10.27425pt too wide) in paragraph at lines 277--278
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 159.
+See the caption package documentation for explanation.
+
+[4]
+File: ./Figure+Table/fig2.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig2.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 174.
+See the caption package documentation for explanation.
+
+[5]
+File: ./Figure+Table/fig3.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig3.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 189.
+See the caption package documentation for explanation.
+
+[6]
+File: ./Figure+Table/fig4.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig4.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 206.
+See the caption package documentation for explanation.
+
+[7]
+File: ./Figure+Table/fig5.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig5.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 221.
+See the caption package documentation for explanation.
+
+[8] [9] [10]
+Overfull \hbox (10.27425pt too wide) in paragraph at lines 390--391
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142340.pdf
 \TU/lmr/bx/n/10 ) 
@@ -1260,122 +1298,120 @@ File: Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142
 40.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 282.
+(caption)                particular \caption on input line 395.
 See the caption package documentation for explanation.
 
-[4]
-Underfull \hbox (badness 10000) in paragraph at lines 319--322
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 432--435
 []\TU/lmr/m/n/10 FASTQ files were filtered using Trimmomatic 0.36 (PE ILLUMINA-
 
  []
 
-[5]
-Overfull \hbox (10.27425pt too wide) in paragraph at lines 413--414
+[12] [13]
+Overfull \hbox (10.27425pt too wide) in paragraph at lines 563--564
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153412.pdf
 \TU/lmr/bx/n/10 ) 
  []
 
-[6]
 File: Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE153
 412.pdf Graphic file (type pdf)
 <use Figure+Table/DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE1534
 12.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 418.
+(caption)                particular \caption on input line 568.
 See the caption package documentation for explanation.
 
-
-Overfull \hbox (32.7051pt too wide) in alignment at lines 432--437
+[14]
+Overfull \hbox (32.7051pt too wide) in alignment at lines 582--587
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (32.7051pt too wide) in alignment at lines 437--441
+Overfull \hbox (32.7051pt too wide) in alignment at lines 587--591
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (32.7051pt too wide) in alignment at lines 441--459
+Overfull \hbox (32.7051pt too wide) in alignment at lines 591--609
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
-[7]
 File: Figure+Table/READ-whether-with-chemotherapy.pdf Graphic file (type pdf)
 <use Figure+Table/READ-whether-with-chemotherapy.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 470.
+(caption)                particular \caption on input line 620.
 See the caption package documentation for explanation.
 
+[15]
 File: Figure+Table/READ-difference-expressed-genes.pdf Graphic file (type pdf)
 <use Figure+Table/READ-difference-expressed-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 480.
+(caption)                particular \caption on input line 630.
 See the caption package documentation for explanation.
 
-[8]
-Overfull \hbox (32.7051pt too wide) in alignment at lines 494--499
+[16]
+Overfull \hbox (32.7051pt too wide) in alignment at lines 644--649
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (32.7051pt too wide) in alignment at lines 499--503
+Overfull \hbox (32.7051pt too wide) in alignment at lines 649--653
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (32.7051pt too wide) in alignment at lines 503--521
+Overfull \hbox (32.7051pt too wide) in alignment at lines 653--671
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
-[9]
 File: Figure+Table/COAD-whether-with-chemotherapy.pdf Graphic file (type pdf)
 <use Figure+Table/COAD-whether-with-chemotherapy.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 532.
+(caption)                particular \caption on input line 682.
 See the caption package documentation for explanation.
 
+[17]
 File: Figure+Table/COAD-difference-expressed-genes.pdf Graphic file (type pdf)
 <use Figure+Table/COAD-difference-expressed-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 544.
+(caption)                particular \caption on input line 694.
 See the caption package documentation for explanation.
 
-[10]
 File: Figure+Table/filtering-of-Sarcopenia-datasets.pdf Graphic file (type pdf)
 
 <use Figure+Table/filtering-of-Sarcopenia-datasets.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 577.
+(caption)                particular \caption on input line 727.
 See the caption package documentation for explanation.
 
-[11]
+[18]
 File: Figure+Table/nomalization-of-Sarcopenia-datasets.pdf Graphic file (type p
 df)
 <use Figure+Table/nomalization-of-Sarcopenia-datasets.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 587.
+(caption)                particular \caption on input line 737.
 See the caption package documentation for explanation.
 
-[12]
-Overfull \hbox (33.00513pt too wide) in alignment at lines 601--606
+[19]
+Overfull \hbox (33.00513pt too wide) in alignment at lines 751--756
  [] [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (33.00513pt too wide) in alignment at lines 606--610
+Overfull \hbox (33.00513pt too wide) in alignment at lines 756--760
  [] [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (33.00513pt too wide) in alignment at lines 610--628
+Overfull \hbox (33.00513pt too wide) in alignment at lines 760--778
  [] [] [] [] [] [] [] [] [] [] [] [] 
  []
 
@@ -1383,53 +1419,53 @@ File: Figure+Table/whether-with-Sarcopenia.pdf Graphic file (type pdf)
 <use Figure+Table/whether-with-Sarcopenia.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 637.
+(caption)                particular \caption on input line 787.
 See the caption package documentation for explanation.
 
-[13] [14]
+[20] [21]
 File: Figure+Table/soft-threshold.pdf Graphic file (type pdf)
 <use Figure+Table/soft-threshold.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 708.
+(caption)                particular \caption on input line 858.
 See the caption package documentation for explanation.
 
 File: Figure+Table/clustering-of-gene-modules.pdf Graphic file (type pdf)
 <use Figure+Table/clustering-of-gene-modules.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 718.
+(caption)                particular \caption on input line 868.
 See the caption package documentation for explanation.
 
-[15]
+[22]
 File: Figure+Table/correlation-of-gene-modules-and-traits-data.pdf Graphic file
  (type pdf)
 <use Figure+Table/correlation-of-gene-modules-and-traits-data.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 728.
+(caption)                particular \caption on input line 878.
 See the caption package documentation for explanation.
 
-[16]
+[23]
 File: Figure+Table/intersection-of-genes-significant-and-module-memberships.pdf
  Graphic file (type pdf)
 <use Figure+Table/intersection-of-genes-significant-and-module-memberships.pdf>
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 738.
+(caption)                particular \caption on input line 888.
 See the caption package documentation for explanation.
 
-[17]
+[24]
 File: Figure+Table/all-colorectal-DEGs.pdf Graphic file (type pdf)
 <use Figure+Table/all-colorectal-DEGs.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 754.
+(caption)                particular \caption on input line 904.
 See the caption package documentation for explanation.
 
 
-Overfull \hbox (20.77425pt too wide) in paragraph at lines 762--763
+Overfull \hbox (20.77425pt too wide) in paragraph at lines 912--913
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/intersection-of-colorectal-DEGs-with-Sarcopenia-significant-genes.p
 df\TU/lmr/bx/n/10 ) 
@@ -1441,23 +1477,23 @@ genes.pdf Graphic file (type pdf)
 enes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 767.
+(caption)                particular \caption on input line 917.
 See the caption package documentation for explanation.
 
-[18]
+[25]
 File: Figure+Table/go-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/go-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 782.
+(caption)                particular \caption on input line 932.
 See the caption package documentation for explanation.
 
-[19]
+[26]
 File: Figure+Table/kegg-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/kegg-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 792.
+(caption)                particular \caption on input line 942.
 See the caption package documentation for explanation.
 
 File: pathview2023-09-26_17_55_53.262977/hsa04140.pathview.png Graphic file (ty
@@ -1465,26 +1501,52 @@ pe bmp)
 <pathview2023-09-26_17_55_53.262977/hsa04140.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 805.
+(caption)                particular \caption on input line 955.
 See the caption package documentation for explanation.
 
-[20]
+[27]
 File: pathview2023-09-26_17_55_53.262977/hsa04137.pathview.png Graphic file (ty
 pe bmp)
 <pathview2023-09-26_17_55_53.262977/hsa04137.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 815.
+(caption)                particular \caption on input line 965.
 See the caption package documentation for explanation.
 
-[21] [22] (./output.aux) ) 
+[28]
+File: Figure+Table/wilcox-test-of-mitophgy-related-genes-in-Sarcopenia.pdf Grap
+hic file (type pdf)
+<use Figure+Table/wilcox-test-of-mitophgy-related-genes-in-Sarcopenia.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 981.
+See the caption package documentation for explanation.
+
+File: Figure+Table/wilcox-test-of-mitophgy-related-genes-in-READ.pdf Graphic fi
+le (type pdf)
+<use Figure+Table/wilcox-test-of-mitophgy-related-genes-in-READ.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 994.
+See the caption package documentation for explanation.
+
+[29]
+File: Figure+Table/wilcox-test-of-mitophgy-related-genes-in-COAD.pdf Graphic fi
+le (type pdf)
+<use Figure+Table/wilcox-test-of-mitophgy-related-genes-in-COAD.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1004.
+See the caption package documentation for explanation.
+
+[30] [31] [32] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31344 strings out of 476191
- 648797 string characters out of 5812072
- 1085730 words of memory out of 5000000
- 51552 multiletter control sequences out of 15000+600000
+ 31470 strings out of 476191
+ 654948 string characters out of 5812072
+ 1087100 words of memory out of 5000000
+ 51669 multiletter control sequences out of 15000+600000
  476340 words of font info for 92 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,9n,121p,1003b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,9n,121p,1161b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (22 pages).
+Output written on output.pdf (32 pages).
