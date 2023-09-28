@@ -19,13 +19,15 @@ set_index()
 
 # 摘要 {#abstract}
 
-TCGA 突变数据
-TCGA 转录数据
-基因共表达
-免疫浸润水平
-生存分析
-timeROC
-单细胞数据验证
+- 主要审核
+
+1. 创新性
+2. 分析方法是否正确，运算过程是否有偏差，书写的运算步骤内容是否有缺失，结果图片是否准确
+
+- 审核结果展示形式
+
+1. 直接在文档里做批注说明
+2. 表格登记：通过登记：通过；有问题登记：存在具体几个方面的问题——以上1和2都要做处理
 
 # 前言 {#introduction}
 
@@ -49,28 +51,3 @@ p.route
 # 分析结果 {#results}
 
 # 结论 {#dis}
-
-# 附：分析流程
-
-## 其他
-
-### 候选方法
-
-- cfOmics: a cell-free multi-Omics database for diseases
-    - multiple-data source
-
-### 候选研究
-
-- 癌症并发症
-    - 营养不良
-    - 恶病质
-    - 贫血
-    - 免疫系统受损
-    - 感染
-    - 腹水
-
-```{r}
-es_omics <- esearch.mj("multi-omics")
-es_omics$Title[[1]]
-filter(es_omics, grepl("Nucleic", .id))
-```

@@ -49,7 +49,7 @@ set_index()
 
 # 题目
 
-多组转录组数据集结合差异分析与基因共表达分析筛选结直肠癌化疗与肌少症的关联通路
+转录组数据集结合差异分析与基因共表达分析筛选结直肠癌化疗与肌少症的关联通路
 
 # 摘要 {#abstract}
 
@@ -64,26 +64,38 @@ PS：结果未找到与 KEAP1-NRF2 通路的关联。
 
 # 前言 {#introduction}
 
-应用化疗治疗可刺激癌症细胞施放内源性危险信号，以诱导发生免疫反应[@DangerSignalsVargas2017]。然而，化疗过程可伴随副作用的发生，例如肌少症[@ChemotherapyInBozzet2020]。肌少症是一种在老年人中常见的，一种进行性、全身性骨骼肌疾病，涉及肌肉质量和功能的加速丧失，与跌倒、功能下降、虚弱和死亡等不良后果[@SarcopeniaCruzJ2019]。肌少症的发生发展涉及多种机制，诸如激素（IGF-1 和胰岛素等）的功能、线粒体功能过程中的细胞内机制等[@SarcopeniaMoWiedme2021]。在恶性肿瘤的进展中，和相关的营养不良本身就会侵蚀肌肉质量，诱发肌少症，而化疗会发生类似的机制，并且会加重这个过程[@ChemotherapyInBozzet2020]。尽管已有文献报导恶性肿瘤、化疗、肌少症之间的相关性，然而其内在的分子机制尚不明朗。本研究从结直肠癌 （CRC） 出发，选用公共数据库的多个数据集，分别以 CRC 细胞系层面、临床样本层面筛选化疗的差异表达基因，结合肌少症的转录组数据的基因共表达分析，探究潜在的结直肠癌化疗与肌少症的共通通路。
+应用化疗治疗可刺激癌症细胞施放内源性危险信号，以诱导发生免疫反应[@DangerSignalsVargas2017]。然而，化疗过程可伴随副作用的发生，例如肌少症[@ChemotherapyInBozzet2020]。肌少症是一种在老年人中常见的，一种进行性、全身性骨骼肌疾病，涉及肌肉质量和功能的加速丧失，与跌倒、功能下降、虚弱和死亡等不良后果[@SarcopeniaCruzJ2019]。肌少症的发生发展涉及多种机制，诸如激素（IGF-1 和胰岛素等）的功能、线粒体功能过程中的细胞内机制等[@SarcopeniaMoWiedme2021]。在恶性肿瘤的进展中，和相关的营养不良本身就会侵蚀肌肉质量，诱发肌少症，而化疗会发生类似的机制，并且会加重这个过程[@ChemotherapyInBozzet2020]。尽管已有文献报导恶性肿瘤、化疗、肌少症之间的相关性，然而其内在的分子机制尚不明朗。本研究从结直肠癌（CRC）出发，选用公共数据库的多个数据集，分别以 CRC 细胞系层面、临床样本层面筛选化疗的差异表达基因，结合肌少症的转录组数据的基因共表达分析，探究潜在的结直肠癌化疗与肌少症的共通通路。
 
 # 研究设计流程图 {#route}
 
 ```{r}
 #| route
 route <- as_network(
-  list("RNA_seq_data:Preprocess",
+  list("datasets:GEO, TCGA",
+    "GEO:Sarcopenia, CRC_cell",
+    "TCGA:READ, COAD",
+    "CRC_cell, READ, COAD:CRC_chem._DEGs",
+    "Sarcopenia:WGCNA",
+    "WGCNA:gene_Sig.",
+    "gene_Sig., CRC_chem._DEGs:Intersection",
+    "Intersection:enrichment, pathway",
+    "pathway:signature",
+    "signature:TCGA_validate",
+    "TCGA_validate:READ, COAD"
     ), "tree"
 )
 p.route <- flowChart(route, 1.1, 1)
 ```
 
 ```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
-# p.route
+p.route
 ```
 
 # 材料和方法 {#methods}
 
 ## Methods
+
+主要 R 包：
 
 - GEOquery
 - TCGAbiolinks
@@ -91,12 +103,19 @@ p.route <- flowChart(route, 1.1, 1)
 - limma
 - clusterProfiler
 - pathview
-- R
 - ...
 
 ## meterials
 
-使用的数据集见 \@ref(supp)
+数据集：
+
+- GSE142340
+- GSE153412
+- TCGA-READ
+- TCGA-COAD
+- GSE167186
+
+具体见 \@ref(supp)
 
 # 分析结果 {#results}
 
@@ -197,6 +216,8 @@ autor("./Figure+Table/fig5.pdf")
 ```
 
 # 结论 {#dis}
+
+结直肠癌（colorectal cancer）的化疗（Chemotherapy）与肌少症（Sarcopenia）的关联通路为自噬（Autophagy）和线粒体自噬（Mitophagy）。Autophagy 和 Mitophagy 的共交集基因为 RAB7A, CALCOCO2, BNIP3, ATG9A。其中，BNIP3 在直肠癌的化疗治疗和肌少症患者中的表达均显著升高。
 
 # 附：分析流程 {#supp}
 

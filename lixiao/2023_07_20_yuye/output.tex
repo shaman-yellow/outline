@@ -93,7 +93,7 @@
 \hypertarget{ux9898ux76ee}{%
 \section{题目}\label{ux9898ux76ee}}
 
-多组转录组数据集结合差异分析与基因共表达分析筛选结直肠癌化疗与肌少症的关联通路
+转录组数据集结合差异分析与基因共表达分析筛选结直肠癌化疗与肌少症的关联通路
 
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
@@ -105,16 +105,20 @@ PS：结果未找到与 KEAP1-NRF2 通路的关联。
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
 
-应用化疗治疗可刺激癌症细胞施放内源性危险信号，以诱导发生免疫反应\textsuperscript{\protect\hyperlink{ref-DangerSignalsVargas2017}{1}}。然而，化疗过程可伴随副作用的发生，例如肌少症\textsuperscript{\protect\hyperlink{ref-ChemotherapyInBozzet2020}{2}}。肌少症是一种在老年人中常见的，一种进行性、全身性骨骼肌疾病，涉及肌肉质量和功能的加速丧失，与跌倒、功能下降、虚弱和死亡等不良后果\textsuperscript{\protect\hyperlink{ref-SarcopeniaCruzJ2019}{3}}。肌少症的发生发展涉及多种机制，诸如激素（IGF-1 和胰岛素等）的功能、线粒体功能过程中的细胞内机制等\textsuperscript{\protect\hyperlink{ref-SarcopeniaMoWiedme2021}{4}}。在恶性肿瘤的进展中，和相关的营养不良本身就会侵蚀肌肉质量，诱发肌少症，而化疗会发生类似的机制，并且会加重这个过程\textsuperscript{\protect\hyperlink{ref-ChemotherapyInBozzet2020}{2}}。尽管已有文献报导恶性肿瘤、化疗、肌少症之间的相关性，然而其内在的分子机制尚不明朗。本研究从结直肠癌 （CRC） 出发，选用公共数据库的多个数据集，分别以 CRC 细胞系层面、临床样本层面筛选化疗的差异表达基因，结合肌少症的转录组数据的基因共表达分析，探究潜在的结直肠癌化疗与肌少症的共通通路。
+应用化疗治疗可刺激癌症细胞施放内源性危险信号，以诱导发生免疫反应\textsuperscript{\protect\hyperlink{ref-DangerSignalsVargas2017}{1}}。然而，化疗过程可伴随副作用的发生，例如肌少症\textsuperscript{\protect\hyperlink{ref-ChemotherapyInBozzet2020}{2}}。肌少症是一种在老年人中常见的，一种进行性、全身性骨骼肌疾病，涉及肌肉质量和功能的加速丧失，与跌倒、功能下降、虚弱和死亡等不良后果\textsuperscript{\protect\hyperlink{ref-SarcopeniaCruzJ2019}{3}}。肌少症的发生发展涉及多种机制，诸如激素（IGF-1 和胰岛素等）的功能、线粒体功能过程中的细胞内机制等\textsuperscript{\protect\hyperlink{ref-SarcopeniaMoWiedme2021}{4}}。在恶性肿瘤的进展中，和相关的营养不良本身就会侵蚀肌肉质量，诱发肌少症，而化疗会发生类似的机制，并且会加重这个过程\textsuperscript{\protect\hyperlink{ref-ChemotherapyInBozzet2020}{2}}。尽管已有文献报导恶性肿瘤、化疗、肌少症之间的相关性，然而其内在的分子机制尚不明朗。本研究从结直肠癌（CRC）出发，选用公共数据库的多个数据集，分别以 CRC 细胞系层面、临床样本层面筛选化疗的差异表达基因，结合肌少症的转录组数据的基因共表达分析，探究潜在的结直肠癌化疗与肌少症的共通通路。
 
 \hypertarget{route}{%
 \section{研究设计流程图}\label{route}}
+
+\includegraphics[width=\linewidth]{output_files/figure-latex/unnamed-chunk-5-1}
 
 \hypertarget{methods}{%
 \section{材料和方法}\label{methods}}
 
 \hypertarget{methods-1}{%
 \subsection{Methods}\label{methods-1}}
+
+主要 R 包：
 
 \begin{itemize}
 \tightlist
@@ -131,15 +135,29 @@ PS：结果未找到与 KEAP1-NRF2 通路的关联。
 \item
   pathview
 \item
-  R
-\item
   \ldots{}
 \end{itemize}
 
 \hypertarget{meterials}{%
 \subsection{meterials}\label{meterials}}
 
-使用的数据集见 \ref{supp}
+数据集：
+
+\begin{itemize}
+\tightlist
+\item
+  GSE142340
+\item
+  GSE153412
+\item
+  TCGA-READ
+\item
+  TCGA-COAD
+\item
+  GSE167186
+\end{itemize}
+
+具体见 \ref{supp}
 
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
@@ -223,6 +241,8 @@ Figure \ref{fig:MAIN-The-expression-of-mitophgy-related-genes-in-colorectal-canc
 
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
+
+结直肠癌（colorectal cancer）的化疗（Chemotherapy）与肌少症（Sarcopenia）的关联通路为自噬（Autophagy）和线粒体自噬（Mitophagy）。Autophagy 和 Mitophagy 的共交集基因为 RAB7A, CALCOCO2, BNIP3, ATG9A。其中，BNIP3 在直肠癌的化疗治疗和肌少症患者中的表达均显著升高。
 
 \hypertarget{supp}{%
 \section{附：分析流程}\label{supp}}
