@@ -1,0 +1,78 @@
+
+<https://www.strategy-ckd.eu/scientific-publications>
+
+肠道微生物群组成、功能的改变，特别是引起尿毒症毒性的代谢物的产生，通常与 CKD 的发病和进展有关[@MicrobiomeInCLohia2022]。
+
+研究肠道细菌的相对组成和丰度及其与血浆尿毒症毒素水平的潜在关联还不充分[@GutMicrobiomeKrukow2023]。
+
+色氨酸 [@MicrobialDerivMadell2022]
+
+PMID: 24876123
+
+Hypertensive nephropathy [@HypertensiveNeCarria2020]
+
+
+
+
+### 肾动脉狭窄症（纤维筋形成异常、大动脉炎症综合症、动脉硬化）
+### 胆固醇栓塞症
+### 肾静脉血栓症
+### 虚血性肾病
+
+### 巢状节段性肾小球硬化症
+### 新月体形成性肾炎
+### 膜增生性肾小球肾炎
+
+- 癌症并发症
+    - 营养不良
+    - 恶病质
+    - 贫血
+    - 免疫系统受损
+    - 感染
+    - 腹水
+
+
+
+```{r}
+
+# Determining Regulatory Associations using Graphical models on multi-Omic Networks
+# 36533448
+
+# IMOTA: an interactive multi-omics tissue atlas for the analysis of human miRNA-target interactions
+# 28977416
+
+# nat biotech.
+# Multi-omics data integration using ratio-based quantitative profiling with Quartet reference materials
+# 37679543
+# [@MultiOmicsDatZheng2023]
+
+```
+
+## 其他
+
+### 候选方法
+
+- cfOmics: a cell-free multi-Omics database for diseases
+    - multiple-data source
+
+### 候选研究
+
+- chronic kidney disease (CKD)
+    - 肠道菌失调
+    - 炎症反应
+    - 贫血
+    - 高血压
+    - 高脂血症
+    - 肾纤维化
+
+```{r}
+es_omics <- esearch.mj("multi-omics")
+es_omics$Title[[1]]
+print(filter(es_omics, grepl("Nuc", .id)), n = 100)
+
+```
+
+```{r}
+es_omics1 <- esearch.mj("omics")
+print(filter(es_omics1, grepl("biotech", .id)), n = 100)
+```

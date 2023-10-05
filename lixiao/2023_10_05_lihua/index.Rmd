@@ -1,0 +1,62 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+客户研究方向为 “硬皮病scleroderma”/“系统性硬化症Systemic Sclerosis”， 想要了解目前是否有关于此疾病的开源数据库？
+此外是否有利用脂肪组织来源的基质血管部分（AD-SVF）治疗相关的开源数据库？
+
+```{r}
+# 硬皮病（又称系统性硬化病）是一组会导致皮肤变硬变紧的罕见疾病。
+# 该病还可能导致血管、内脏和消化道出现问题。
+# 硬皮病通常被归类为“局限性”或“弥漫性”，这仅指皮肤受累的程度。
+# 这两种类型都可能涉及其他血管或器官问题。
+```
+
+- 硬皮病 (scleroderma) / 系统性硬化症 (Systemic Sclerosis)
+    - GSE224849, PMID: 36040182
+    - GSE186198, PMID: 36482877
+    - GSE231694
+    - ...
+
+- 脂肪组织来源的基质血管部分（adipose tissue-derived stromal vascular fraction, AD-SVF）治疗相关
+    - 无
+
+# 前言 {#introduction}
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+# 材料和方法 {#methods}
+
+# 分析结果 {#results}
+
+# 结论 {#dis}

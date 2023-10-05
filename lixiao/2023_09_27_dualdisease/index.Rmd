@@ -17,7 +17,21 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
 set_index()
 ```
 
+# 题目
+
 # 摘要 {#abstract}
+
+# 前言 {#introduction}
+
+CKD 与患癌症风险之间的联系尚未明确。尽管多项研究观察到需要透析或肾移植的 ESRD 患者患癌症的风险较高，但不太严重的肾脏疾病是否与癌症相关仍知之甚少[@CkdAndTheRisLowran2014]。
+
+肾癌流行病学[@EpidemiologyOfBukavi2022]
+
+CKD 和肾癌[@RenalCellCancSaly2021]
+
+Cancer Risk and Mortality in Patients With Kidney Disease[@CancerRiskAndKitchl2022]
+
+# 研究设计流程图 {#route}
 
 TCGA 突变数据
 TCGA 转录数据
@@ -26,10 +40,6 @@ TCGA 转录数据
 生存分析
 timeROC
 单细胞数据验证
-
-# 前言 {#introduction}
-
-# 研究设计流程图 {#route}
 
 ```{r}
 #| route
@@ -52,25 +62,62 @@ p.route
 
 # 附：分析流程
 
-## 其他
+## 肾癌 (TCGA-KIRC)
 
-### 候选方法
-
-- cfOmics: a cell-free multi-Omics database for diseases
-    - multiple-data source
-
-### 候选研究
-
-- 癌症并发症
-    - 营养不良
-    - 恶病质
-    - 贫血
-    - 免疫系统受损
-    - 感染
-    - 腹水
+### 转录组（Transcriptome Profiling）
 
 ```{r}
-es_omics <- esearch.mj("multi-omics")
-es_omics$Title[[1]]
-filter(es_omics, grepl("Nucleic", .id))
+tc <- job_tcga("TCGA-KIRC")
+tc <- step1(tc)
+tc <- step2(tc)
+tc <- step3(tc)
+tc <- clear(tc)
+
+lm <- asjob_limma(tc)
 ```
+
+### 基因组（Mutation data）
+
+```{r}
+# https://www.bioconductor.org/packages/release/bioc/vignettes/TCGAbiolinks/inst/doc/mutation.html
+```
+
+## 慢性肾病
+
+```{r}
+# https://www.tokushukai.or.jp/cn/treatment/internal/nephrology/jinzoubyou_jinfuzen.php
+```
+
+### GSE60861: An integrative analysis of renal miRNA- and mRNA-expression signatures in progressive chronic kidney disease
+
+## 血管性疾患
+
+### 高血压性肾炎（hypertensive nephropathy）
+- GSE210898: Single-cell RNA transcriptomics of hypertensive nephropathy patients
+
+## （原发性）肾小球性疾患
+
+### IgA 肾病 (IgA Nephropathy)
+- GSE145652, RNA-seq
+- GSE175759, RNA-seq
+
+### 膜性肾病 (idiopathic membranous nephropathy)
+- GSE216841, RNA-seq
+- GSE241302, scRNA
+- GSE175759, RNA-seq
+
+### 微小病变肾病 (Minimal change disease)
+- GSE216841, RNA-seq
+- GSE175759, RNA-seq
+
+## （继发性）肾小球性疾患
+
+### 糖尿病肾病 (Diabetic kidney disease)
+- GSE175759, RNA-seq
+- GSE199838, RNA-seq
+- GSE217709, RNA-seq
+
+### 狼疮性肾炎 (lupus nephritis)
+- GSE175759, RNA-seq
+- GSE157293, RNA-seq
+
