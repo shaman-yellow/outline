@@ -1,0 +1,49 @@
+
+### 构建 PPI 网络
+
+```{r}
+st <- job_stringdb(data.frame(hgnc_symbol = treat_all))
+st <- step1(st, tops = 50)
+st@plots$step1$p.mcc
+st.hub50 <- head(st@tables$step1$hub_genes, n = 50)$hgnc_symbol
+intersect(st.hub50, geo.plots$p.upset.ins)
+```
+
+### 富集分析
+
+```{r}
+en <- job_enrich(list(ids = coTarget), anno)
+en <- step1(en)
+en@plots$step1$p.go$ids
+en <- step2(en)
+```
+
+### GSE232753: Comparative gene expression profiling analysis of RNA-seq data for patients with sepsis and healthy volunteer.
+
+```{r}
+geo1 <- job_geo("GSE232753")
+geo1 <- step1(geo1)
+geo1 <- step2(geo1)
+
+geo1@params$guess
+```
+
+### GSE224095: Single-cell transcriptomic changes in sepsis patient
+
+```{r}
+geo2 <- job_geo("GSE224095")
+geo2 <- step1(geo2)
+geo2 <- step2(geo2)
+
+geo2@params$guess
+```
+
+## TNA 靶点基因
+
+TNA (Tanshinone I) 靶点基因
+
+```{r}
+tna_tgt <- fxlsx("./raw/tna_targets.xlsx")
+```
+
+

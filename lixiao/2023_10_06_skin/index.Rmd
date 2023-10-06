@@ -1,0 +1,85 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 题目
+
+待定（根据实际分析）
+
+# 摘要 {#abstract}
+
+(方案设计)
+
+方向：皮肤科，特应性皮炎（Atopic Dermatitis，AD）[@MolecularMechaSroka2021; @FromEmollientsSalvat2021]
+分值：5分+
+
+AD 涉及的因素较多（epidermal barrier dysfunction, host genetics, environmental factors, and immune perturbations[@FromEmollientsSalvat2021]）。
+
+AD 中调节皮肤屏障功能和免疫反应的潜在机制和关键分子已被揭示[@SkinBarrierAbYang2020]。
+
+JAK-STAT signaling pathway in AD[@JakStatSignalHuang2022]
+
+Biomarkers of AD[@BiomarkersInABakker2023]
+
+Is Atopic Dermatitis Only a Skin Disease?[@IsAtopicDermaMesjas2023]
+
+- 可用的 GEO 数据集
+    - GSE224783, RNA-seq
+    - GSE237920, RNA-seq
+    - GSE184509, RNA-seq
+    - GSE213849, scRNA-seq
+    - GSE197023, ST, scRNA-seq
+    - GSE222840, scRNA-seq
+    - ...
+- RNA-seq 数据分析
+    - 差异分析
+    - 富集分析[@ClusterprofilerWuTi2021]
+    - 免疫浸润预测[@EstimatingTheBecht2016]
+    - 基因共表达（WGCNA）[@WgcnaAnRPacLangfe2008]
+    - ...
+- 单细胞数据分析（或验证）
+    - 细胞鉴定[@IntegratedAnalHaoY2021]（The pathology of AD is accompanied by an imbalance in immunity involving Th1, Th2, and Treg cells, culminating in alterations in Th1- and Th2-mediated immune responses and IgE-mediated hypersensitivity[@SkinBarrierAbYang2020]）
+    - 差异分析
+    - 拟时分析[@TheDynamicsAnTrapne2014]
+    - 细胞通讯[@InferenceAndAJinS2021]
+    - ...
+
+
+
+# 前言 {#introduction}
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+# 材料和方法 {#methods}
+
+# 分析结果 {#results}
+
+# 结论 {#dis}

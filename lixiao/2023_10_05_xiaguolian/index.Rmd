@@ -19,9 +19,9 @@ set_index()
 
 # 摘要 {#abstract}
 
-筛选丹参酮治疗脓毒症的关键差异表达基因及相关信号通路
+筛选丹参酮治疗脓毒症（sepsis）的关键差异表达基因及相关信号通路
 
-Caco-2细胞系
+Caco-2细胞系 (epithelial cells isolated from colon tissue derived from a 72-year-old, White, male with colorectal adenocarcinoma)
 
 对照组con，脂多糖组LPS，丹参酮组TNA（LPS+TNA）
 
@@ -47,3 +47,112 @@ p.route
 # 分析结果 {#results}
 
 # 结论 {#dis}
+
+# 附：分析流程
+
+## 测序数据
+
+### 差异分析
+
+```{r}
+counts <- ftibble("./raw/gene_count.csv")
+
+metadata <- group_strings(colnames(counts)[-1],
+  c(control = "^con", model = "^LPS", treatment = "^TNA"), "sample")
+
+mart <- new_biomart()
+anno <- filter_biomart(mart, general_attrs(), "ensembl_gene_id", counts$gene_id)
+
+lm <- job_limma(new_dge(metadata, counts, anno))
+lm <- step1(lm)
+lm <- step2(lm, treatment - model, model - control)
+lm <- step3(lm, c("treatment_vs_model", "model_vs_control"))
+lm@plots$step3$p.sets_intersection
+
+treat_all_sets <- list(
+  up = ins(lm@params$sets_intersection$treatment_vs_model.up, lm@params$sets_intersection$model_vs_control.down),
+  down = ins(lm@params$sets_intersection$treatment_vs_model.down, lm@params$sets_intersection$model_vs_control.up)
+)
+treat_all <- unique(unlist(treat_all_sets))
+```
+
+### 富集分析
+
+```{r}
+en0 <- job_enrich(list(ids = treat_all), anno)
+en0 <- step1(en0)
+
+en0@plots$step1$p.kegg$ids
+en0@plots$step1$p.go$ids
+en0@tables$step1$res.kegg$ids
+
+en0 <- step2(en0, "hsa04390")
+en0@plots$step2$p.pathviews$hsa04390
+
+treat_hippo <- en0@tables$step1$res.kegg$ids[2, ]$geneName_list[[1]]
+```
+
+## GEO sepsis
+
+### GSE237861: Transcriptome analysis of six tissues obtained post mortem from sepsis patients
+
+```{r}
+geo <- job_geo("GSE237861")
+geo <- step1(geo)
+geo <- step2(geo)
+
+geo@params$prods
+geo@params$guess
+
+lapply(list.files("./GSE237861/", "\\.gz$", full.names = T), R.utils::gunzip)
+geo.res <- sapply(list.files("./GSE237861/", "\\.tsv$", full.names = T), ftibble, simplify = F)
+
+geo.summary <- lapply(geo.res,
+  function(data) {
+    symbols <- filter(data, FDR < .05, abs(logFC) > .3)$gene_ID
+    gs(symbols, "\\.[0-9]*$", "")
+  })
+fun <- function(x) {
+  tissue <- unique(gs(names(x), ".*\\.([a-z]*).tsv", "\\1"))
+  meta <- group_strings(names(x), nl(tissue, tissue, as.list = F))
+  meta <- mutate(meta, sample = stringr::str_extract(target, "sepsis[0-9]"),
+    diff_number = vapply(target, function(x) length(geo.summary[[ x ]]), integer(1))
+  )
+  ## heatmap
+  data <- select(meta, -target, tissue = group, patient = sample)
+  obj <- new_heatdata(.data_long(data))
+  obj@aesn$lab_fill <- "Number"
+  p.hp <- wrap(callheatmap(obj), 5, 4)
+  ## upset
+  lst <- split(meta$target, meta$group)
+  lst <- lapply(lst,
+    function(x){
+      unique(unlist(geo.summary[ names(geo.summary) %in% x ]))
+    })
+  p.upset <- wrap(new_upset(lst = lst), 12, 6)
+  upset.ins <- ins(lst = lst)
+  upset.set <- lst
+  namel(p.hp, p.upset, upset.ins, upset.set)
+}
+geo.plots <- fun(geo.summary)
+geo.plots$upset.ins
+```
+
+## 整合：测序数据和 GEO 数据
+
+### 交集基因
+
+```{r}
+#| strict
+coTarget <- intersect(geo.plots$p.upset.ins, treat_all)
+```
+
+```{r}
+#| loose
+matched.lst <- lapply(geo.plots$upset.set, function(x) intersect(x, treat_hippo))
+## 冲积图
+```
+
+## 分子对接
+
+
