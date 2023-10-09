@@ -1,0 +1,330 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{ux9898ux76ee}{%
+\section{题目}\label{ux9898ux76ee}}
+
+待定（根据实际分析）
+
+\hypertarget{abstract}{%
+\section{摘要（拟设计）}\label{abstract}}
+
+\hypertarget{ux8981ux6c42}{%
+\subsection{要求}\label{ux8981ux6c42}}
+
+\begin{itemize}
+\tightlist
+\item
+  方向：皮肤科，特应性皮炎（Atopic Dermatitis，AD）\textsuperscript{\protect\hyperlink{ref-MolecularMechaSroka2021}{1},\protect\hyperlink{ref-FromEmollientsSalvat2021}{2}}
+\item
+  分值：5分+
+\end{itemize}
+
+\hypertarget{ad-ux7814ux7a76ux73b0ux72b6ux6982ux8ff0}{%
+\subsection{AD 研究现状概述}\label{ad-ux7814ux7a76ux73b0ux72b6ux6982ux8ff0}}
+
+AD 涉及的因素较多（epidermal barrier dysfunction, host genetics, environmental factors, and immune perturbations\textsuperscript{\protect\hyperlink{ref-FromEmollientsSalvat2021}{2}}）。AD 中调节皮肤屏障功能和免疫反应的潜在机制和关键分子已被揭示\textsuperscript{\protect\hyperlink{ref-SkinBarrierAbYang2020}{3}}。JAK-STAT 通路在 AD 机制中起到关键作用\textsuperscript{\protect\hyperlink{ref-JakStatSignalHuang2022}{4}}。AD 的 Biomarkers 已被综述\textsuperscript{\protect\hyperlink{ref-BiomarkersInABakker2023}{5}}。
+
+AD 被认为不仅是一种皮肤病（Is Atopic Dermatitis Only a Skin Disease?\textsuperscript{\protect\hyperlink{ref-IsAtopicDermaMesjas2023}{6}}），而是与其它疾病在一定环境因素下互关联（cardiovascular, autoimmune, neurological, psychiatric, and metabolic disorders）；这些被怀疑通过更复杂的遗传和免疫学机制与 AD 的发病机制相关，但其相关性仍知之甚少（2023 年文献）\textsuperscript{\protect\hyperlink{ref-IsAtopicDermaMesjas2023}{6}}。
+
+关联的疾病\textsuperscript{\protect\hyperlink{ref-IsAtopicDermaMesjas2023}{6}}：
+
+\begin{itemize}
+\tightlist
+\item
+  Cardiovascular Diseases
+
+  \begin{itemize}
+  \tightlist
+  \item
+    coronary artery disease
+  \item
+    angina pectoris
+  \item
+    myocardial infarction
+  \item
+    stroke
+  \item
+    peripheral vascular disease
+  \end{itemize}
+\item
+  Neurologic and Psychiatric Diseases
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Epilepsy
+  \item
+    Autism
+  \item
+    Depression
+  \item
+    \ldots{}
+  \end{itemize}
+\item
+  Autoimmune Diseases
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Alopecia Areata
+  \item
+    Vitiligo
+  \item
+    Rheumatoid Diseases
+  \item
+    Type I Diabetes
+  \end{itemize}
+\item
+  Obesity
+\end{itemize}
+
+\hypertarget{ux62dfux89e3ux51b3ux7684ux95eeux9898}{%
+\subsection{拟解决的问题}\label{ux62dfux89e3ux51b3ux7684ux95eeux9898}}
+
+AD 和其他疾病（Cardiovascular Diseases, Neurologic and Psychiatric Diseases, Autoimmune Diseases, Obesity）的关联机制探究。从基因表达数据入手，研究 AD 和多种疾病的互关联基因和机制。
+
+Figure \ref{fig:Comorbidities-frequently-associated-with-AD}为图Comorbidities frequently associated with AD概览。
+
+\textbf{(对应文件为 \texttt{\textasciitilde{}/Pictures/Screenshots/Screenshot\ from\ 2023-10-09\ 10-20-39.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2023-10-09 10-20-39.png}
+\caption{Comorbidities frequently associated with AD}\label{fig:Comorbidities-frequently-associated-with-AD}
+\end{center}
+
+\hypertarget{ux9884ux671fux8defux7ebf}{%
+\subsection{预期路线}\label{ux9884ux671fux8defux7ebf}}
+
+AD 可能会存在不同类型，可能需要根据 Fig. \ref{fig:Comorbidities-frequently-associated-with-AD} 将不同病例（RNA-seq 数据）聚类，各自和各种疾病关联分析，寻找相关基因。各类型的并发症（并发症 a、b、c）可能和 AD 之间有互关联基因，假设这些为集合 A，集合 B，集合 C。那么，集合 A、B、C 等之间，可能还存在某种关联性（该关联性需要采取适当的方法探讨，联系实际解决问题）。预期的关联性较强，有突出结果，则根据这个思路深入分析；若关联性弱，则调整方向，可能调整研究的并发症（缩减范围），寻找有关联的点深入突破。后期可再以 RNA-seq 或 scRNA-seq 进一步验证。
+
+\hypertarget{ux53efux7528ux7684ux6570ux636eux96c6}{%
+\subsection{可用的数据集}\label{ux53efux7528ux7684ux6570ux636eux96c6}}
+
+AD 的数据集：
+
+\begin{itemize}
+\tightlist
+\item
+  GSE224783, RNA-seq
+\item
+  GSE237920, RNA-seq
+\item
+  GSE184509, RNA-seq
+\item
+  GSE213849, scRNA-seq
+\item
+  GSE197023, ST, scRNA-seq
+\item
+  GSE222840, scRNA-seq
+\item
+  \ldots{}
+\end{itemize}
+
+除上述 AD 数据集外，还需要其它关联疾病的（GEO）数据集。这些数据将根据实际情况选用。
+
+\hypertarget{ux6570ux636eux5206ux6790ux62dfux91c7ux7528ux7684ux65b9ux6cd5}{%
+\subsection{数据分析拟采用的方法：}\label{ux6570ux636eux5206ux6790ux62dfux91c7ux7528ux7684ux65b9ux6cd5}}
+
+\begin{itemize}
+\tightlist
+\item
+  RNA-seq 数据分析
+
+  \begin{itemize}
+  \tightlist
+  \item
+    差异分析
+  \item
+    富集分析\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{7}}
+  \item
+    免疫浸润预测\textsuperscript{\protect\hyperlink{ref-EstimatingTheBecht2016}{8}}
+  \item
+    基因共表达（WGCNA）\textsuperscript{\protect\hyperlink{ref-WgcnaAnRPacLangfe2008}{9}}
+  \item
+    \ldots{}
+  \end{itemize}
+\item
+  scRNA-seq 数据分析（或验证）
+
+  \begin{itemize}
+  \tightlist
+  \item
+    细胞鉴定\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{10}}（The pathology of AD is accompanied by an imbalance in immunity involving Th1, Th2, and Treg cells, culminating in alterations in Th1- and Th2-mediated immune responses and IgE-mediated hypersensitivity\textsuperscript{\protect\hyperlink{ref-SkinBarrierAbYang2020}{3}}）
+  \item
+    拟时分析\textsuperscript{\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{11}}
+  \item
+    细胞通讯\textsuperscript{\protect\hyperlink{ref-InferenceAndAJinS2021}{12}}
+  \item
+    \ldots{}
+  \end{itemize}
+\item
+  关联因素探讨
+
+  \begin{itemize}
+  \tightlist
+  \item
+    共表达分析
+  \item
+    蛋白互作
+  \item
+    文献调研
+  \item
+    \ldots{}
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{ux5de5ux4f5cux91cf}{%
+\subsection{工作量}\label{ux5de5ux4f5cux91cf}}
+
+预期工作量较大，需要1-2周时间。
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{route}{%
+\section{研究设计流程图}\label{route}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-MolecularMechaSroka2021}{}%
+1. Sroka-Tomaszewska, J. \& Trzeciak, M. Molecular mechanisms of atopic dermatitis pathogenesis. \emph{International journal of molecular sciences} \textbf{22}, (2021).
+
+\leavevmode\hypertarget{ref-FromEmollientsSalvat2021}{}%
+2. Salvati, L., Cosmi, L. \& Annunziato, F. From emollients to biologicals: Targeting atopic dermatitis. \emph{International journal of molecular sciences} \textbf{22}, (2021).
+
+\leavevmode\hypertarget{ref-SkinBarrierAbYang2020}{}%
+3. Yang, G. \emph{et al.} Skin barrier abnormalities and immune dysfunction in atopic dermatitis. \emph{International journal of molecular sciences} \textbf{21}, (2020).
+
+\leavevmode\hypertarget{ref-JakStatSignalHuang2022}{}%
+4. Huang, I.-H., Chung, W.-H., Wu, P.-C. \& Chen, C.-B. JAK-stat signaling pathway in the pathogenesis of atopic dermatitis: An updated review. \emph{Frontiers in immunology} \textbf{13}, (2022).
+
+\leavevmode\hypertarget{ref-BiomarkersInABakker2023}{}%
+5. Bakker, D., Bruin-Weller, M. de, Drylewicz, J., Wijk, F. van \& Thijs, J. Biomarkers in atopic dermatitis. \emph{The Journal of allergy and clinical immunology} \textbf{151}, 1163--1168 (2023).
+
+\leavevmode\hypertarget{ref-IsAtopicDermaMesjas2023}{}%
+6. Mesjasz, A., Zawadzka, M., Chałubiński, M. \& Trzeciak, M. Is atopic dermatitis only a skin disease? \emph{International journal of molecular sciences} \textbf{24}, (2023).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+7. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-EstimatingTheBecht2016}{}%
+8. Becht, E. \emph{et al.} Estimating the~population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. \emph{Genome Biology} \textbf{17}, (2016).
+
+\leavevmode\hypertarget{ref-WgcnaAnRPacLangfe2008}{}%
+9. Langfelder, P. \& Horvath, S. WGCNA: An r package for weighted correlation network analysis. \emph{BMC Bioinformatics} \textbf{9}, (2008).
+
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+10. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-TheDynamicsAnTrapne2014}{}%
+11. Trapnell, C. \emph{et al.} The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. \emph{Nature Biotechnology} \textbf{32}, (2014).
+
+\leavevmode\hypertarget{ref-InferenceAndAJinS2021}{}%
+12. Jin, S. \emph{et al.} Inference and analysis of cell-cell communication using cellchat. \emph{Nature Communications} \textbf{12}, (2021).
+\end{cslreferences}
+
+\end{document}
