@@ -56,7 +56,7 @@ p.route
 
 单以测序数据集筛选到 1797 个靶点，富集分析聚焦到 Hippo 通路（Fig. \@ref(fig:genes-enriched-in-hippo-signiling-pathway)）。
 
-以 GEO 数据 GSE237861 分析发现，6 种不同组织的 sepsis 病例存在 51 个共同的差异表达基因（Disease vs control）。进一步分析发现：无同时存在于 6 或 5 种组织的Hippo 通路基因（同时也是 Tanshinone 的作用靶点）；_BIRC3_、_ID1_ 在 4 种组织中差异表达；_DLG4_ 在 3 种组织中差异表达（Fig. \@ref(fig:Target-genes-of-TNA-in-mutiple-tissue-of-sepsis-of-Hippo-pathway)）。分子对接显示，SMAD7, SOX2, TGFBR2, DLG4, DLG2 具有良好亲和度（Fig. \@ref(fig:docking-affinity)）。综上，*DLG4* 在 3 种sepsis 组织中差异表达，且 DLG4 可与 Tanshinone I 结合，因此，*DLG4* 可能是 TNA 治疗 sepsis 的关键靶点之一，对应信号通路为 Hippo。
+以 GEO 数据 GSE237861 分析发现，6 种不同组织的 sepsis 病例存在 51 个共同的差异表达基因（Disease vs control）。进一步分析发现：无同时存在于 6 或 5 种组织的Hippo 通路基因（同时也是 Tanshinone IIA 的作用靶点）；_BIRC3_、_ID1_ 在 4 种组织中差异表达；_DLG4_ 在 3 种组织中差异表达（Fig. \@ref(fig:Target-genes-of-TNA-in-mutiple-tissue-of-sepsis-of-Hippo-pathway)）。分子对接显示，SMAD7, SOX2, TGFBR2, DLG4, DLG2 具有良好亲和度（Fig. \@ref(fig:docking-affinity)）。综上，*DLG4* 在 3 种sepsis 组织中差异表达，且 DLG4 可与 Tanshinone IIA 结合，因此，*DLG4* 可能是 TNA 治疗 sepsis 的关键靶点之一，对应信号通路为 Hippo。
 
 # 结论 {#dis}
 
@@ -251,21 +251,21 @@ autor(p.allu)
 
 ### 分子对接
 
-丹参酮 I（Tanshinone I, CID:114917）
+丹参酮 I（Tanshinone IIA, CID:164676）
 
-以 AutoDock Vina 对 Fig. \@ref(fig:Target-genes-of-TNA-in-mutiple-tissue-of-sepsis-of-Hippo-pathway) 所示基因的蛋白以 Tanshinone I分子对接。
+以 AutoDock Vina 对 Fig. \@ref(fig:Target-genes-of-TNA-in-mutiple-tissue-of-sepsis-of-Hippo-pathway) 所示基因的蛋白以 Tanshinone IIA分子对接。
 
 结果显示，SMAD7, SOX2, TGFBR2, DLG4, DLG2 具有良好亲和度。
 
 结合 Fig. \@ref(fig:Target-genes-of-TNA-in-mutiple-tissue-of-sepsis-of-Hippo-pathway) 所示的多组织差异表达，DLG4 同时在 3 种组织 sepsis 差异表达，且为 TNA 作用靶点，表现良好对接亲和度，可能是 TNA 治疗的关键靶点之一。
 
 ```{r}
-vn <- job_vina("114917", unique(unlist(matched.lst, use.names = F)))
+vn <- job_vina("164676", unique(unlist(matched.lst, use.names = F)))
 vn <- step1(vn, NULL)
 vn <- step2(vn)
 vn <- step3(vn)
 vn <- step4(vn)
-vn <- step5(vn, data.frame(cid = 114917, name = "Tanshinone I"), "cid", "name")
+vn <- step5(vn, data.frame(cid = 164676, name = "Tanshinone IIA"), "cid", "name")
 paste(vn@tables$step5$unique_tops$hgnc_symbol, collapse = ", ")
 
 vn <- step6(vn)
@@ -279,7 +279,7 @@ autor(wrap(vn@plots$step5$p.res_vina, 6, 4))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Tanshinone-I-binding-with-protein-DLG4
-autor(.file_fig("./figs/114917_into_1kef.png"))
+#| Tanshinone-IIA-binding-with-protein-DLG4
+autor(.file_fig("./figs/164676_into_1kef.png"))
 ```
 
