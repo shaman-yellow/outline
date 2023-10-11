@@ -46,8 +46,6 @@ p.route
 
 ## ST 数据预处理
 
-scAnno[@ScannoADeconLiuH2023]
-
 ```{r}
 dirs <- list.files("/media/echo/6E3CE3153CE2D75D/曹卓测序结果/空间转录组/肺癌空间转录组测序/CellRanger/", full.names = T)
 
@@ -64,29 +62,84 @@ metadata <- tibble::tibble(dirs = dirs, target = paste0(dirs, "/outs"), sample =
 st <- job_seuratSp(metadata$target[[1]])
 st <- step1(st)
 st <- step2(st, 2500, 9000)
-st <- step3(st, 1:15, 1.5)
-st <- step4(st, "scAnno")
+st <- step3(st, 1:15, 3)
+st <- step4(st, "SingleR")
 
-st@plots$step4$p.score_SingleR
 wrap(st@plots$step4$p.map_SingleR, 10, 5)
+
 st <- step5(st, 5)
-st@tables$step5$all_markers
+
+options(step_check = F)
+st <- step6(st, "Lung")
+st@plots$step6$p.map_scsa
+
+st@plots$step3$p.spatial_cluster
+st@tables$step6$scsa_res
+
+```
+
+## 细胞注释
+
+### SCSA 注释
+
+### SingleR 注释
+
+### 细胞注释依据 Nature: A molecular cell atlas of the human lung from single-cell RNA sequencing
+
+A molecular cell atlas of the human lung from single-cell RNA sequencing (PMID: 33208946) [@AMolecularCelTravag2020]
+
+- Supplementary Table 1. Canonical cell types (45) in the human lung and their
+  abundances, markers, and available expression data. 
+- Supplementary Table 2. Human lung cell cluster identities, abundances, and locations. 
+- **Supplementary Table 4**. Enriched markers found in each cluster, with
+  transcription factors, receptors/ligands, and disease associated genes
+  annotated. 
+
+```{r}
+dir.create("AMolecularCelTravag2020", F)
+file.copy("~/Downloads/41586_2020_2922_MOESM3_ESM.xlsx", "AMolecularCelTravag2020/nature_sTab_1.xlsx")
+file.copy("~/Downloads/41586_2020_2922_MOESM4_ESM.xlsx", "AMolecularCelTravag2020/nature_sTab_2.xlsx")
+file.copy("~/Downloads/41586_2020_2922_MOESM6_ESM.xlsx", "AMolecularCelTravag2020/nature_sTab_4.xlsx")
 ```
 
 ```{r}
-obj <- st@object
-data(gene.anno, package = "scAnno")
-data(hcl.sc, package = "scAnno")
-data(tcga.data.u, package = "scAnno")
-ref.expr <- as.data.frame(Seurat::GetAssayData(hcl.sc, slot = 'data'))
-ref.anno <- as.character(Seurat::Idents(hcl.sc))
+#| Nature-marker-arrange
+nature_xlsx4 <- "AMolecularCelTravag2020/nature_sTab_4.xlsx"
+sheet <- 0L
+data.nature_xlsx4 <- pbapply::pblapply(openxlsx::getSheetNames(nature_xlsx4),
+  function(name) {
+    sheet <<- sheet + 1L
+    if (!grepl("SS", name)) {
+      meta <- openxlsx::read.xlsx(nature_xlsx4, sheet, rows = 1, colNames = F)
+      meta <- unlist(meta, use.names = F)
+      data <- fxlsx(nature_xlsx4, sheet, startRow = 2)
+      namel(meta, data)
+    }
+  })
+data.nature_xlsx4 <- lst_clear0(data.nature_xlsx4)
 
-results <- scAnno::scAnno(query = obj,
-	ref.expr = ref.expr, ref.anno = ref.anno,
-	save.markers = "markers",
-  gene.anno = gene.anno, tcga.data.u = tcga.data.u)
-
+anno.nature_xlsx4 <- nl(vapply(data.nature_xlsx4, function(x) x$meta, character(1)),
+  lapply(data.nature_xlsx4, function(x) x$data))
+anno.nature_xlsx4 <- dplyr::rename(data.table::rbindlist(anno.nature_xlsx4, idcol = T),
+  cluster = .id, gene = Gene)
+anno.nature_xlsx4 <- as_tibble(anno.nature_xlsx4)
 ```
+
+```{r}
+#| Nature-as-marker-list
+ref_marker <- as_marker_list(anno.nature_xlsx4, rownames(object(st)))
+tt <- map(st, ref_marker, prop = .05, log2fc = .1)
+```
+
+### 癌细胞注释依据 Cell: Therapy-Induced Evolution of Human Lung Cancer Revealed by Single-Cell RNA Sequencing
+
+Therapy-Induced Evolution of Human Lung Cancer Revealed by Single-Cell RNA Sequencing [@TherapyInducedMaynar2020]
+
+- **Table S2**. Gene Lists, Related to Figures 1, 2, and 3. Excel file containing
+  four sheets of gene lists including 1) Cell type markers 2) COSMIC tier 1
+  genes 3) Genes included in each cancer cell signature and 4) Immune markers.
+
+## 细胞通讯
 
 ```{r}
 ## cellchat
@@ -94,3 +147,5 @@ cc <- asjob_cellchat(st)
 cc <- step1(cc)
 cc <- step2(cc)
 ```
+
+

@@ -106,8 +106,18 @@ autor(lm@plots$step2$p.valcano[[2]])
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
+#| table-of-DEGs-of-model-versus-control
+autor(lm@tables$step2$tops[[2]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
 #| DEGs-of-treatment-versus-model
 autor(lm@plots$step2$p.valcano[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| table-of-DEGs-of-treatment-versus-model
+autor(lm@tables$step2$tops[[1]])
 ```
 
 丹参酮的疗效有两种情况：

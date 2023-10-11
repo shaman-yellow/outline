@@ -1,0 +1,16 @@
+```{r}
+obj <- st@object
+data(gene.anno, package = "scAnno")
+data(hcl.sc, package = "scAnno")
+data(tcga.data.u, package = "scAnno")
+ref.expr <- as.data.frame(Seurat::GetAssayData(hcl.sc, slot = 'data'))
+ref.anno <- as.character(Seurat::Idents(hcl.sc))
+
+require(Seurat)
+devtools::load_all("~/scAnno/")
+results <- scAnno(query = obj,
+	ref.expr = ref.expr, ref.anno = ref.anno,
+  gene.anno = gene.anno, tcga.data.u = tcga.data.u, use = "Spatial")
+
+
+```

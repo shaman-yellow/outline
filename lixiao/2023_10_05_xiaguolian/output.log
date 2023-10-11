@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  10 OCT 2023 15:20
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  11 OCT 2023 10:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1270,15 +1270,45 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 See the caption package documentation for explanation.
 
 [5]
+Overfull \hbox (48.64513pt too wide) in alignment at lines 164--169
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (48.64513pt too wide) in alignment at lines 169--173
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (48.64513pt too wide) in alignment at lines 173--191
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[6]
 File: Figure+Table/DEGs-of-treatment-versus-model.pdf Graphic file (type pdf)
 <use Figure+Table/DEGs-of-treatment-versus-model.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 163.
+(caption)                particular \caption on input line 200.
 See the caption package documentation for explanation.
 
-[6]
-Overfull \hbox (36.52425pt too wide) in paragraph at lines 178--179
+
+Overfull \hbox (46.01514pt too wide) in alignment at lines 211--216
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (46.01514pt too wide) in alignment at lines 216--220
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (46.01514pt too wide) in alignment at lines 220--238
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[7]
+Overfull \hbox (36.52425pt too wide) in paragraph at lines 252--253
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/intersection-of-disease-genes-expression-and-treatment-effect-of-TN
 A.pdf\TU/lmr/bx/n/10 ) 
@@ -1290,48 +1320,49 @@ t-of-TNA.pdf Graphic file (type pdf)
 -of-TNA.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 183.
+(caption)                particular \caption on input line 257.
 See the caption package documentation for explanation.
 
-[7]
+[8]
 File: Figure+Table/KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 200.
+(caption)                particular \caption on input line 274.
 See the caption package documentation for explanation.
 
+[9]
 File: pathview2023-10-06_15_12_57.141235/hsa04390.pathview.png Graphic file (ty
 pe bmp)
 <pathview2023-10-06_15_12_57.141235/hsa04390.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 212.
+(caption)                particular \caption on input line 286.
 See the caption package documentation for explanation.
 
-[8] [9]
+[10] [11]
 Overfull \vbox (39.31258pt too high) has occurred while \output is active []
 
-[10]
+[12]
 File: Figure+Table/DEGs-number-in-sepsis-of-mutiple-tissue-of-GEO-dataset.pdf G
 raphic file (type pdf)
 <use Figure+Table/DEGs-number-in-sepsis-of-mutiple-tissue-of-GEO-dataset.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 376.
+(caption)                particular \caption on input line 450.
 See the caption package documentation for explanation.
 
-[11]
+[13]
 File: Figure+Table/intersection-of-DEGs-of-mutiple-tissue-of-sepsis.pdf Graphic
  file (type pdf)
 <use Figure+Table/intersection-of-DEGs-of-mutiple-tissue-of-sepsis.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 388.
+(caption)                particular \caption on input line 462.
 See the caption package documentation for explanation.
 
-[12]
-Overfull \hbox (15.52425pt too wide) in paragraph at lines 411--412
+[14]
+Overfull \hbox (15.52425pt too wide) in paragraph at lines 485--486
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/Target-genes-of-TNA-in-mutiple-tissue-of-sepsis-of-Hippo-pathway.pd
 f\TU/lmr/bx/n/10 ) 
@@ -1343,32 +1374,32 @@ hway.pdf Graphic file (type pdf)
 way.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 416.
+(caption)                particular \caption on input line 490.
 See the caption package documentation for explanation.
 
-[13]
+[15]
 File: Figure+Table/docking-affinity.pdf Graphic file (type pdf)
 <use Figure+Table/docking-affinity.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 437.
+(caption)                particular \caption on input line 511.
 See the caption package documentation for explanation.
 
 File: ./figs/164676_into_1kef.png Graphic file (type bmp)
 <./figs/164676_into_1kef.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 447.
+(caption)                particular \caption on input line 521.
 See the caption package documentation for explanation.
 
-[14] [15] (./output.aux) ) 
+[16] [17] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31220 strings out of 476191
- 642750 string characters out of 5812072
- 1079089 words of memory out of 5000000
- 51434 multiletter control sequences out of 15000+600000
+ 31227 strings out of 476191
+ 642898 string characters out of 5812072
+ 1084497 words of memory out of 5000000
+ 51441 multiletter control sequences out of 15000+600000
  476332 words of font info for 91 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,9n,121p,1003b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (15 pages).
+Output written on output.pdf (17 pages).
