@@ -1,0 +1,62 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+糖尿病视网膜病变与眼底图像的计量分析
+
+## DR tools
+
+EyePACS: an adaptable telemedicine system for diabetic retinopathy screening (20144289)
+
+Automated Diabetic Retinopathy Screening and Monitoring Using Retinal Fundus Image Analysis (26888972) [@AutomatedDiabeBhaska2016]
+
+## Others
+
+Chákṣu: A glaucoma specific fundus image database (36737439)
+
+Assessment of image quality on color fundus retinal images using the automatic retinal image analysis (35729197)
+Kaggle database
+
+
+
+# 前言 {#introduction}
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+# 材料和方法 {#methods}
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}

@@ -80,9 +80,28 @@ st@tables$step6$scsa_res
 
 ## 细胞注释
 
+### 富集分析
+
+```{r}
+#| enrichment
+en <- asjob_enrich(st, "macroph|plasma|fibro|monocyte")
+en <- step1(en)
+```
+
 ### SCSA 注释
 
 ### SingleR 注释
+
+### inferCNV 判断肿瘤细胞
+
+```{r}
+#| inferCNV
+# <https://bioconductor.org/packages/release/bioc/html/infercnv.html>
+# <https://bioconductor.org/packages/release/bioc/vignettes/infercnv/inst/doc/inferCNV.html>
+
+cn <- asjob_infercnv(st, ref.pattern = "macroph|plasma|fibro|monocyte")
+cn <- step1(cn)
+```
 
 ### 细胞注释依据 Nature: A molecular cell atlas of the human lung from single-cell RNA sequencing
 
@@ -138,6 +157,19 @@ Therapy-Induced Evolution of Human Lung Cancer Revealed by Single-Cell RNA Seque
 - **Table S2**. Gene Lists, Related to Figures 1, 2, and 3. Excel file containing
   four sheets of gene lists including 1) Cell type markers 2) COSMIC tier 1
   genes 3) Genes included in each cancer cell signature and 4) Immune markers.
+
+```{r}
+#| cancer-cell-markers
+dir.create("TherapyInducedMaynar2020", F)
+file.copy("~/Downloads/mmc2.xlsx", "TherapyInducedMaynar2020")
+
+fun_cancerSig <- function() {
+  file <- "./TherapyInducedMaynar2020/mmc2.xlsx"
+  sheets <- openxlsx::getSheetNames(file)
+  isthat <- grep("Cancer", sheets)
+  fxlsx(file, sheet = isthat)
+}
+```
 
 ## 细胞通讯
 
