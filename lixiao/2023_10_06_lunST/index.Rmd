@@ -62,20 +62,21 @@ metadata <- tibble::tibble(dirs = dirs, target = paste0(dirs, "/outs"), sample =
 st <- job_seuratSp(metadata$target[[1]])
 st <- step1(st)
 st <- step2(st, 2500, 9000)
-st <- step3(st, 1:15, 3)
-st <- step4(st, "SingleR")
+st <- step3(st, 1:15, 2)
+st <- step4(st)
 
-wrap(st@plots$step4$p.map_SingleR, 10, 5)
+wrap(st@plots$step4$p.map_SingleR, 7, 5)
 
 st <- step5(st, 5)
-
-options(step_check = F)
 st <- step6(st, "Lung")
+
 st@plots$step6$p.map_scsa
 
 st@plots$step3$p.spatial_cluster
 st@tables$step6$scsa_res
+vis(st)
 
+options(step_check = F)
 ```
 
 ## 细胞注释
@@ -90,85 +91,55 @@ en <- step1(en)
 
 ### SCSA 注释
 
-### SingleR 注释
+## 依据变异拷贝数鉴定肿瘤细胞
 
-### inferCNV 判断肿瘤细胞
+### copyKAT 解析肿瘤细胞
+
+copyKAT [@DelineatingCopGaoR2021]
+
+非整倍体是人类肿瘤细胞中最普遍的特征，约 90% 的肿瘤的基因组是非整倍体，而正常细胞是二倍体[@CausesAndConsGordon2012]
 
 ```{r}
-#| inferCNV
-# <https://bioconductor.org/packages/release/bioc/html/infercnv.html>
-# <https://bioconductor.org/packages/release/bioc/vignettes/infercnv/inst/doc/inferCNV.html>
+#| copyKAT-all-cells
+ka0 <- job_kat(st)
+ka0 <- step1(ka0)
+ka0 <- step2(ka0)
+ka0 <- clear(ka0)
+ka0@plots$step2$p.copykat
 
-cn <- asjob_infercnv(st, ref.pattern = "macroph|plasma|fibro|monocyte")
-cn <- step1(cn)
+st <- map(st, ka0)
+vis(st, "copykat_cell")
+vis(st, "scsa_cell")
 ```
 
-### 细胞注释依据 Nature: A molecular cell atlas of the human lung from single-cell RNA sequencing
-
-A molecular cell atlas of the human lung from single-cell RNA sequencing (PMID: 33208946) [@AMolecularCelTravag2020]
-
-- Supplementary Table 1. Canonical cell types (45) in the human lung and their
-  abundances, markers, and available expression data. 
-- Supplementary Table 2. Human lung cell cluster identities, abundances, and locations. 
-- **Supplementary Table 4**. Enriched markers found in each cluster, with
-  transcription factors, receptors/ligands, and disease associated genes
-  annotated. 
+### 肿瘤细胞重聚类
 
 ```{r}
-dir.create("AMolecularCelTravag2020", F)
-file.copy("~/Downloads/41586_2020_2922_MOESM3_ESM.xlsx", "AMolecularCelTravag2020/nature_sTab_1.xlsx")
-file.copy("~/Downloads/41586_2020_2922_MOESM4_ESM.xlsx", "AMolecularCelTravag2020/nature_sTab_2.xlsx")
-file.copy("~/Downloads/41586_2020_2922_MOESM6_ESM.xlsx", "AMolecularCelTravag2020/nature_sTab_4.xlsx")
+st_cancer <- getsub(st, cells = grep("Cancer", object(st)@meta.data$copykat_cell))
+vis(st_cancer)
+
+st_cancer@step <- 2L
+st_cancer <- step3(st_cancer, 1:15, 2)
+vis(st_cancer, "seurat_clusters", 1.5)
 ```
 
-```{r}
-#| Nature-marker-arrange
-nature_xlsx4 <- "AMolecularCelTravag2020/nature_sTab_4.xlsx"
-sheet <- 0L
-data.nature_xlsx4 <- pbapply::pblapply(openxlsx::getSheetNames(nature_xlsx4),
-  function(name) {
-    sheet <<- sheet + 1L
-    if (!grepl("SS", name)) {
-      meta <- openxlsx::read.xlsx(nature_xlsx4, sheet, rows = 1, colNames = F)
-      meta <- unlist(meta, use.names = F)
-      data <- fxlsx(nature_xlsx4, sheet, startRow = 2)
-      namel(meta, data)
-    }
-  })
-data.nature_xlsx4 <- lst_clear0(data.nature_xlsx4)
+## 拟时分析肿瘤细胞
 
-anno.nature_xlsx4 <- nl(vapply(data.nature_xlsx4, function(x) x$meta, character(1)),
-  lapply(data.nature_xlsx4, function(x) x$data))
-anno.nature_xlsx4 <- dplyr::rename(data.table::rbindlist(anno.nature_xlsx4, idcol = T),
-  cluster = .id, gene = Gene)
-anno.nature_xlsx4 <- as_tibble(anno.nature_xlsx4)
-```
+### 构建逆时轨迹
+
+### 根据拟时分析区分肿瘤细胞亚类
 
 ```{r}
-#| Nature-as-marker-list
-ref_marker <- as_marker_list(anno.nature_xlsx4, rownames(object(st)))
-tt <- map(st, ref_marker, prop = .05, log2fc = .1)
-```
+#| monocle3
+mn <- asjob_monocle(st_cancer, "seurat_clusters")
+mn <- step1(mn, pt.size = 1.5)
+mn@plots$step1$p.traj
+mn@plots$step1$p.prin
 
-### 癌细胞注释依据 Cell: Therapy-Induced Evolution of Human Lung Cancer Revealed by Single-Cell RNA Sequencing
-
-Therapy-Induced Evolution of Human Lung Cancer Revealed by Single-Cell RNA Sequencing [@TherapyInducedMaynar2020]
-
-- **Table S2**. Gene Lists, Related to Figures 1, 2, and 3. Excel file containing
-  four sheets of gene lists including 1) Cell type markers 2) COSMIC tier 1
-  genes 3) Genes included in each cancer cell signature and 4) Immune markers.
-
-```{r}
-#| cancer-cell-markers
-dir.create("TherapyInducedMaynar2020", F)
-file.copy("~/Downloads/mmc2.xlsx", "TherapyInducedMaynar2020")
-
-fun_cancerSig <- function() {
-  file <- "./TherapyInducedMaynar2020/mmc2.xlsx"
-  sheets <- openxlsx::getSheetNames(file)
-  isthat <- grep("Cancer", sheets)
-  fxlsx(file, sheet = isthat)
-}
+mn <- step2(mn, "Y_7")
+mn@plots$step2$p.pseu
+mn <- step3(mn)
+mn@plots$step3$gene_module_heatdata
 ```
 
 ## 细胞通讯

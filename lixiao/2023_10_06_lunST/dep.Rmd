@@ -1,3 +1,4 @@
+
 ```{r}
 obj <- st@object
 data(gene.anno, package = "scAnno")
@@ -14,3 +15,101 @@ results <- scAnno(query = obj,
 
 
 ```
+
+
+```{r}
+#| copyKAT
+
+st_sub <- getsub(st, cells = grep("Macroph|Epithe", object(st)@meta.data$scsa_cell))
+p.map_st_sub <- vis(st_sub)
+
+ka <- job_kat(st_sub, use = "Spatial")
+ka <- step1(ka)
+ka <- step2(ka)
+ka@tables$step2$res_copykat
+
+st_sub <- map(st_sub, ka)
+vis(st_sub, "copykat_cell")
+vis(st_sub)
+
+```
+
+### inferCNV 判断肿瘤细胞
+
+```{r}
+#| inferCNV
+# <https://bioconductor.org/packages/release/bioc/html/infercnv.html>
+# <https://bioconductor.org/packages/release/bioc/vignettes/infercnv/inst/doc/inferCNV.html>
+cn <- asjob_infercnv(st_sub, ref.pattern = "macroph")
+cn <- step1(cn)
+```
+
+### 细胞注释依据 Nature: A molecular cell atlas of the human lung from single-cell RNA sequencing
+
+A molecular cell atlas of the human lung from single-cell RNA sequencing (PMID: 33208946) [@AMolecularCelTravag2020]
+
+- Supplementary Table 1. Canonical cell types (45) in the human lung and their
+  abundances, markers, and available expression data. 
+- Supplementary Table 2. Human lung cell cluster identities, abundances, and locations. 
+- **Supplementary Table 4**. Enriched markers found in each cluster, with
+  transcription factors, receptors/ligands, and disease associated genes
+  annotated. 
+
+```{r}
+dir.create("AMolecularCelTravag2020", F)
+file.copy("~/Downloads/41586_2020_2922_MOESM3_ESM.xlsx", "AMolecularCelTravag2020/nature_sTab_1.xlsx")
+file.copy("~/Downloads/41586_2020_2922_MOESM4_ESM.xlsx", "AMolecularCelTravag2020/nature_sTab_2.xlsx")
+file.copy("~/Downloads/41586_2020_2922_MOESM6_ESM.xlsx", "AMolecularCelTravag2020/nature_sTab_4.xlsx")
+```
+
+```{r}
+#| Nature-marker-arrange
+nature_xlsx4 <- "AMolecularCelTravag2020/nature_sTab_4.xlsx"
+sheet <- 0L
+data.nature_xlsx4 <- pbapply::pblapply(openxlsx::getSheetNames(nature_xlsx4),
+  function(name) {
+    sheet <<- sheet + 1L
+    if (!grepl("SS", name)) {
+      meta <- openxlsx::read.xlsx(nature_xlsx4, sheet, rows = 1, colNames = F)
+      meta <- unlist(meta, use.names = F)
+      data <- fxlsx(nature_xlsx4, sheet, startRow = 2)
+      namel(meta, data)
+    }
+  })
+data.nature_xlsx4 <- lst_clear0(data.nature_xlsx4)
+
+anno.nature_xlsx4 <- nl(vapply(data.nature_xlsx4, function(x) x$meta, character(1)),
+  lapply(data.nature_xlsx4, function(x) x$data))
+anno.nature_xlsx4 <- dplyr::rename(data.table::rbindlist(anno.nature_xlsx4, idcol = T),
+  cluster = .id, gene = Gene)
+anno.nature_xlsx4 <- as_tibble(anno.nature_xlsx4)
+```
+
+```{r}
+#| Nature-as-marker-list
+ref_marker <- as_marker_list(anno.nature_xlsx4, rownames(object(st)))
+tt <- map(st, ref_marker, prop = .05, log2fc = .1)
+```
+
+### 癌细胞注释依据 Cell: Therapy-Induced Evolution of Human Lung Cancer Revealed by Single-Cell RNA Sequencing
+
+Therapy-Induced Evolution of Human Lung Cancer Revealed by Single-Cell RNA Sequencing [@TherapyInducedMaynar2020]
+
+- **Table S2**. Gene Lists, Related to Figures 1, 2, and 3. Excel file containing
+  four sheets of gene lists including 1) Cell type markers 2) COSMIC tier 1
+  genes 3) Genes included in each cancer cell signature and 4) Immune markers.
+
+```{r}
+#| cancer-cell-markers
+dir.create("TherapyInducedMaynar2020", F)
+file.copy("~/Downloads/mmc2.xlsx", "TherapyInducedMaynar2020")
+
+fun_cancerSig <- function() {
+  file <- "./TherapyInducedMaynar2020/mmc2.xlsx"
+  sheets <- openxlsx::getSheetNames(file)
+  isthat <- grep("Cancer", sheets)
+  fxlsx(file, sheet = isthat)
+}
+```
+
+
