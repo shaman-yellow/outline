@@ -47,6 +47,7 @@ p.route
 ## ST 数据预处理
 
 ```{r}
+#| pre
 dirs <- list.files("/media/echo/6E3CE3153CE2D75D/曹卓测序结果/空间转录组/肺癌空间转录组测序/CellRanger/", full.names = T)
 
 pbapply::pblapply(dirs,
@@ -110,6 +111,7 @@ ka0@plots$step2$p.copykat
 st <- map(st, ka0)
 vis(st, "copykat_cell")
 vis(st, "scsa_cell")
+vis(st, "scsa_copykat")
 ```
 
 ### 肿瘤细胞重聚类
@@ -125,7 +127,7 @@ vis(st_cancer, "seurat_clusters", 1.5)
 
 ## 拟时分析肿瘤细胞
 
-### 构建逆时轨迹
+### 构建拟时轨迹
 
 ### 根据拟时分析区分肿瘤细胞亚类
 
@@ -140,15 +142,73 @@ mn <- step2(mn, "Y_7")
 mn@plots$step2$p.pseu
 mn <- step3(mn)
 mn@plots$step3$gene_module_heatdata
+
+    # mn$cellClass_tree.gene_module <- hclust(dist(t(mn@tables$step3$gene_module$graph_test.sig$aggregate)))
+st_cancer.re <- regroup(st_cancer, mn@params$cellClass_tree.gene_module, 3,
+  rename = list("3" = "cancer_1", "2" = "cancer_3", "1" = "cancer_2"))
+vis(st_cancer.re, "regroup.hclust", 1.5)
+
+p.ka_map <- vis(regroup(st_cancer, ka0, 15), "regroup.hclust", 1.5)
+```
+
+### 肿瘤细胞亚类差异分析和富集分析
+
+```{r}
+#| enrichment
+st_cancer.re@step <- 4L
+st_cancer.re <- step5(st_cancer.re)
+st_cancer.re@tables$step5$all_markers
+
+en.re <- asjob_enrich(st_cancer.re, NULL)
+en.re <- step1(en.re)
+en.re@tables$step1$res.kegg
+en.re@plots$step1$p.kegg[[2]]
+en.re@plots$step1$p.kegg[[3]]
+```
+
+```{r}
+# sig
+save.image("./sig.RData")
+
+load("./sig.RData")
+```
+
+## 肿瘤细胞来源分析
+
+### 肿瘤与上皮细胞或基底细胞差异分析
+
+```{r}
+st_epi <- getsub(st, cells = grep("Cancer|Basal|Epithe", object(st)@meta.data$scsa_copykat))
+vis(st_epi, "scsa_copykat")
+
+st_epi <- map(st_epi, st_cancer.re, "scsa_copykat", "regroup.hclust", "cancer_mapped")
+vis(st_epi, "cancer_mapped")
+
+st_epi <- diff(st_epi, "cancer_mapped",
+  expand.grid(paste0("cancer_", 1:3), c("Basal cell", "Epithelial cell")))
+```
+
+```{r}
+en.epi <- asjob_enrich(st_epi, NULL)
+en.epi <- step1(en.epi)
+en.epi@plots$step1$p.kegg[[1]]
 ```
 
 ## 细胞通讯
 
+### 所有细胞之间的通讯
+
 ```{r}
-## cellchat
-cc <- asjob_cellchat(st)
+st <- map(st, st_epi, "scsa_copykat", "cancer_mapped", "cancer_mapped")
+vis(st, "cancer_mapped")
+```
+
+```{r}
+cc <- asjob_cellchat(getsub(st, features = st@tables$step5$all_markers$gene), "cancer_mapped")
 cc <- step1(cc)
 cc <- step2(cc)
+cc <- step3(cc)
+cc <- step4(cc)
 ```
 
 
