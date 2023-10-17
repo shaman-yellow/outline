@@ -1,0 +1,584 @@
+---
+title: Analysis
+author: 'Huang LiChuang of Wie-Biotech'
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: true
+    toc_depth: 3
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+---
+
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+空间转录组分析：
+
+- 鉴定肿瘤细胞
+- 肿瘤细胞亚群分析
+- 肿瘤细胞和正常细胞之间的差异分析
+- 细胞通讯分析
+- 肿瘤细胞和正常细胞（巨噬细胞）之间的通讯分析。
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+```
+
+# 材料和方法 {#methods}
+
+- Seurat
+- copyKAT [@DelineatingCopGaoR2021]
+- monocle3
+- cellchat
+- clusterProfiler
+- ...
+
+# 分析结果 {#results}
+
+- 以 copykat 鉴定了肿瘤细胞，主要为上皮细胞 (epithelial cells, EC) 或 基底细胞（basal cells, BC）。
+- 以拟时分析将肿瘤细胞分为三个亚型（cancer 1，cancer 2，cancer 3），表现出时间（拟时）递进变化。
+- 肿瘤细胞亚型之间的差异分析，肿瘤细胞和正常细胞（EC, BC）之间的差异分析，主要聚焦的通路有 'Phagosome'、’Antigen processing and presentation'、'Focal adhesion' 等。
+- 细胞通讯分析的整体情况见 Fig. \@ref(fig:all-cells-communication-significance)。
+- 巨噬细胞和肿瘤细胞的通讯，突出表现为 ITGA 受体配体相关通路，共 `r colSum(itga.pi3k)` 个基因（其中多数为近似的亚型），首要富集于 PI3K-Akt 相关通路，并且和 'Focal adhesion' 等上述分析的结果相一致。
+
+# 结论 {#dis}
+
+见 \@ref(results)。
+
+# 附：分析流程（癌组织切片） {#workflow1}
+
+## ST 数据预处理
+
+```{r eval = T, echo = F, results = "asis"}
+#| spatial-sample-QC
+autor(st@plots$step1$p.qc, abs = "选择基因数 2500 - 9000 作为过滤指标。")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCA-ranking
+autor(st@plots$step2$p.pca_rank, abs = "选择主成份 1-15 用于后续聚类。")
+```
+
+```{r}
+dirs <- list.files("/media/echo/6E3CE3153CE2D75D/曹卓测序结果/空间转录组/肺癌空间转录组测序/CellRanger/", full.names = T)
+
+pbapply::pblapply(dirs,
+  function(dir) {
+    file <- list.files(dir, "tar\\.gz$", full.names = T)
+    untar(file, exdir = dir)
+  })
+metadata <- tibble::tibble(dirs = dirs, target = paste0(dirs, "/outs"), sample = get_filename(dirs))
+```
+
+```{r}
+st <- job_seuratSp(metadata$target[[1]])
+st <- step1(st)
+st <- step2(st, 2500, 9000)
+st <- step3(st, 1:15, 2)
+st <- step4(st)
+
+wrap(st@plots$step4$p.map_SingleR, 7, 5)
+
+st <- step5(st, 5)
+st <- step6(st, "Lung")
+
+st@plots$step6$p.map_scsa
+
+st@plots$step3$p.spatial_cluster
+st@tables$step6$scsa_res
+vis(st)
+
+options(step_check = F)
+```
+
+## 细胞注释
+
+### 所有细胞类（Seurat clusters）的 marker
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-markers-of-Seurat-clusters
+autor(st@tables$step5$all_markers, key = "cluster")
+```
+
+### SCSA 注释
+
+以肺脏组织的数据集注释。
+
+```{r eval = T, echo = F, results = "asis"}
+#| SCSA-annotation
+autor(vis(st, group.by = "scsa_cell"))
+```
+
+## 依据变异拷贝数鉴定肿瘤细胞
+
+### copyKAT 解析肿瘤细胞
+
+copyKAT [@DelineatingCopGaoR2021]
+
+非整倍体是人类肿瘤细胞中最普遍的特征，约 90% 的肿瘤的基因组是非整倍体，而正常细胞是二倍体[@CausesAndConsGordon2012]
+
+```{r eval = T, echo = F, results = "asis"}
+#| copyKAT-prediction-of-aneuploidy
+autor(ka0@plots$step2$p.copykat)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| cell-mapped-of-copyKAT-prediction
+autor(vis(st, group.by = "scsa_copykat"))
+```
+
+对比 Fig. \@ref(fig:cell-mapped-of-copyKAT-prediction) 和 Fig. \@ref(fig:SCSA-annotation) 可知，癌细胞主要为上皮细胞或基底细胞。
+
+```{r}
+ka0 <- job_kat(st)
+ka0 <- step1(ka0)
+ka0 <- step2(ka0)
+ka0 <- clear(ka0)
+ka0@plots$step2$p.copykat
+
+st <- map(st, ka0)
+vis(st, "copykat_cell")
+vis(st, "scsa_cell")
+vis(st, "scsa_copykat")
+```
+
+### 肿瘤细胞重聚类
+
+为了区分肿瘤细胞之间的亚型，这里首先将肿瘤细胞重新聚类。
+
+```{r eval = T, echo = F, results = "asis"}
+#| re-classify-of-cancer-cells
+autor(vis(st_cancer, group.by = "seurat_clusters", 1.5))
+```
+
+```{r}
+st_cancer <- getsub(st, cells = grep("Cancer", object(st)@meta.data$copykat_cell))
+vis(st_cancer)
+
+st_cancer@step <- 2L
+st_cancer <- step3(st_cancer, 1:15, 2)
+vis(st_cancer, "seurat_clusters", 1.5)
+```
+
+## 拟时分析肿瘤细胞
+
+### 构建拟时轨迹
+
+```{r eval = T, echo = F, results = "asis"}
+#| pseudotime-visualization-of-cancer-cells
+autor(z7(mn@plots$step1$p.traj$seurat_clusters, .5, .5))
+```
+
+### 根据拟时分析区分肿瘤细胞亚类
+
+```{r eval = T, echo = F, results = "asis"}
+#| gene-module-of-co-expression-analysis
+autor(mn@plots$step3$gene_module_heatdata$graph_test.sig)
+```
+
+Fig. \@ref(fig:gene-module-of-co-expression-analysis)，根据细胞类的聚类树，可以将细胞类分为三个大类。
+
+为了选择拟时起点，这里，将 Fig. \@ref(fig:copyKAT-prediction-of-aneuploidy) 所示的细胞聚类树切分为 15 个大类的细胞，然后映射到
+Fig. \@ref(fig:pseudotime-visualization-of-cancer-cells) 对应的聚类图中。可以看到（Fig. \@ref(fig:test-for-selecting-pseudotime-start-point)），细胞类类 11 首要分布在左侧区域（UMAP 图）（1 - 15，数目越小，代表越趋近于非整倍体，即肿瘤细胞），因此，左侧区域的细胞更接近于正常细胞。
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| test-for-selecting-pseudotime-start-point
+autor(p.ka_map)
+```
+
+因此，选择左侧区域的细胞作为拟时起点。
+
+```{r eval = T, echo = F, results = "asis"}
+#| cancer-cells-subtypes
+autor(vis(st_cancer.re, group.by = "regroup.hclust", 1.5))
+```
+
+```{r}
+mn <- asjob_monocle(st_cancer, "seurat_clusters")
+mn <- step1(mn, pt.size = 1.5)
+mn@plots$step1$p.traj
+mn@plots$step1$p.prin
+
+mn <- step2(mn, "Y_7")
+mn@plots$step2$p.pseu
+mn <- step3(mn)
+mn@plots$step3$gene_module_heatdata
+
+    # mn$cellClass_tree.gene_module <- hclust(dist(t(mn@tables$step3$gene_module$graph_test.sig$aggregate)))
+st_cancer.re <- regroup(st_cancer, mn@params$cellClass_tree.gene_module, 3,
+  rename = list("3" = "cancer_1", "2" = "cancer_3", "1" = "cancer_2"))
+vis(st_cancer.re, "regroup.hclust", 1.5)
+
+p.ka_map <- vis(regroup(st_cancer, ka0, 15), "regroup.hclust", 1.5)
+```
+
+### 肿瘤细胞亚类差异分析和富集分析 {#en-cancer-sub}
+
+以下分析，可关注的通路有：
+
+- Phagosome
+- Antigen processing and presentati...
+- Focal adhesion
+- ...
+
+cancer 1 细胞的 marker 的富集分析有结果，但矫正 p 值均不显著。
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-enrichment-of-markers-of-cancer-1-cells
+autor(en.re@tables$step1$res.kegg[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| enrichment-of-markers-of-cancer-2-cells
+autor(en.re@plots$step1$p.kegg[[2]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-enrichment-of-markers-of-cancer-2-cells
+autor(en.re@tables$step1$res.kegg[[2]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| enrichment-of-markers-of-cancer-3-cells
+autor(en.re@plots$step1$p.kegg[[3]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-enrichment-of-markers-of-cancer-3-cells
+autor(en.re@tables$step1$res.kegg[[3]])
+```
+
+```{r}
+st_cancer.re@step <- 4L
+st_cancer.re <- step5(st_cancer.re)
+st_cancer.re@tables$step5$all_markers
+
+en.re <- asjob_enrich(st_cancer.re, NULL)
+en.re <- step1(en.re)
+en.re@tables$step1$res.kegg
+en.re@plots$step1$p.kegg[[2]]
+en.re@plots$step1$p.kegg[[3]]
+```
+
+```{r}
+# sig
+save.image("./sig.RData")
+load("./sig.RData")
+```
+
+## 肿瘤细胞来源分析
+
+### 肿瘤与上皮细胞或基底细胞差异分析
+
+接下来的分析回到 Fig. \@ref(fig:SCSA-annotation) 图中，取出上皮细胞或基底细胞对应的细胞类（肿瘤细胞主要分布在这两类细胞中），并且将 Fig. \@ref(fig:cancer-cells-subtypes) 对应的细胞亚型映射。
+
+```{r eval = T, echo = F, results = "asis"}
+#| cancer-cells-in-epithelial--or-basal-cells
+autor(vis(st_epi, group.by = "cancer_mapped"))
+```
+
+```{r}
+st_epi <- getsub(st, cells = grep("Cancer|Basal|Epithe", object(st)@meta.data$scsa_copykat))
+vis(st_epi, "scsa_copykat")
+
+st_epi <- map(st_epi, st_cancer.re, "scsa_copykat", "regroup.hclust", "cancer_mapped")
+vis(st_epi, "cancer_mapped")
+
+st_epi <- diff(st_epi, "cancer_mapped",
+  expand.grid(paste0("cancer_", 1:3), c("Basal cell", "Epithelial cell")))
+```
+
+### 肿瘤与上皮细胞或基底细胞差异基因的富集分析 {#en-diff}
+
+以下富集与 \@ref(en-cancer-sub) 相对应，"Phagosome"、"Antigen processing and presentati…" 等为差异基因的主要富集通路。
+
+```{r eval = T, echo = F, results = "asis"}
+#| enrichment-of-DEGs-of-Cancer-1-cells-vs-Basal-cells
+autor(en.epi@plots$step1$p.kegg[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| enrichment-of-DEGs-of-Cancer-1-cells-vs-Epithelial-cells
+autor(en.epi@plots$step1$p.kegg[[2]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-enrichments-of-DEGs-of-cancer-vs-epithelial-or-basal-cells
+autor(en.epi@plots$step1$p.kegg)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-all-enrichments-of-DEGs-of-cancer-vs-epithelial-or-basal-cells
+autor(en.epi@tables$step1$res.kegg)
+```
+
+```{r}
+en.epi <- asjob_enrich(st_epi, NULL)
+en.epi <- step1(en.epi)
+en.epi@plots$step1$p.kegg[[1]]
+```
+
+## 细胞通讯
+
+以下分析使用的为 Tab. \@ref(tab:all-markers-of-Seurat-clusters) 中的基因。
+
+### 所有细胞之间的通讯
+
+将肿瘤细胞亚型映射到 Fig. \@ref(fig:SCSA-annotation) 中，得到 Fig. \@ref(fig:cancer-subtypes-in-all-cells)。
+
+```{r eval = T, echo = F, results = "asis"}
+#| cancer-subtypes-in-all-cells
+autor(vis(st, group.by = "cancer_mapped"))
+```
+
+以 cellchat 计算所有这些细胞之间的通讯关系[@InferenceAndAJinS2021]。
+
+```{r eval = T, echo = F, results = "asis"}
+#| overview-of-cells-communication
+autor(cc@plots$step1$p.aggre_count)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-cells-communication-significance
+autor(wrap(cc@plots$step2$lr_comm_bubble, 20, 22))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-cells-communication-roles
+autor(wrap(cc@plots$step2$lr_role_heatmap$all))
+```
+
+```{r}
+st <- map(st, st_epi, "scsa_copykat", "cancer_mapped", "cancer_mapped")
+vis(st, "cancer_mapped")
+
+cc <- asjob_cellchat(getsub(st, features = st@tables$step5$all_markers$gene), "cancer_mapped")
+cc <- step1(cc)
+# step2 used
+
+wrap(cc@plots$step2$lr_comm_bubble, 20, 22)
+wrap(cc@plots$step2$lr_role_heatmap$all)
+```
+
+### 巨噬细胞和肿瘤细胞之间的互作
+
+以下，我们主要聚焦于巨噬细胞和癌细胞之间的通讯关系。
+
+```{r eval = T, echo = F, results = "asis"}
+#| table-of-communication-between-macrophage-and-cancer-cells
+autor(p.mac2can$data)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| visualization-of-communication-between-macrophage-and-cancer-cells
+autor(p.mac2can$p)
+```
+
+根据 Fig. \@ref(fig:visualization-of-communication-between-macrophage-and-cancer-cells)，
+可以关注到互作网络图中中心度 (centrality degree) 较高的 ITGA 相关受体或配体。
+
+```{r}
+p.mac2can <- map(cc, "Macropha", "cancer", 20, 6)
+itga <- filter(p.mac2can$data, grepl("ITGA", receptor))
+itga
+```
+
+### ITGA 相关配体受体富集分析
+
+根据 Fig. \@ref(fig:visualization-of-communication-between-macrophage-and-cancer-cells)，以下将 ITGA 相关基因做富集分析。
+
+```{r eval = T, echo = F, results = "asis"}
+#| enrichment-of-ITGA-related-genes
+autor(en.itga@plots$step1$p.kegg)
+```
+
+Fig. \@ref(fig:enrichment-of-ITGA-related-genes) 首要富集到 PI3K-AKT 通路。还可以发现，"Small cell lung cancer" 也是显著富集结果之一。
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-enrichment-of-ITGA-related-genes
+autor(en.itga@tables$step1$res.kegg$ids)
+```
+
+```{r}
+genes.itga <- unique.lps(c(itga$ligand, itga$receptor))
+en.itga <- job_enrich(list(ids = genes.itga))
+
+en.itga <- step1(en.itga)
+en.itga@plots$step1$p.kegg
+en.itga@tables$step1$res.kegg$ids
+```
+
+### 首要富集的 PI3K 通路
+
+以下结果可以和 \@ref(en-cancer-sub) 和 \@ref(en-diff) 相对应。
+
+```{r eval = T, echo = F, results = "asis"}
+#| view-of-enriched-genes-in-PI3K-pathway
+autor(en.itga@plots$step2$p.pathviews$hsa04151)
+```
+
+```{r}
+en.itga <- step2(en.itga, "hsa04151")
+en.itga@plots$step2$p.pathviews
+```
+
+```{r}
+itga.pathways <- unique(itga$pathway_name)
+
+cc@step <- 1L
+cc <- step2(cc, pathways = itga.pathways)
+cc <- clear(cc)
+```
+
+### PI3K 通路和 ITGA 相关受体配体的交集
+
+```{r}
+itga.pi3k <- filter(en.itga@tables$step1$res.kegg$ids, ID == "hsa04151")$geneName_list[[1]]
+new_lich(list(ITGA_with_PI3K = itga.pi3k))
+
+colSum(itga.pi3k)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ITGA-related-genes
+autor(new_lich(list(ITGA_with_PI3K = itga.pi3k)))
+```
+
+### 通讯基因的表达在肿瘤细胞中的拟时变化
+
+以下分析表现了 ITGA 和 PI3K 通路相关的 `r colSum(itga.pi3k)` 个基因在肿瘤细胞亚型之间的转化（拟时过程）过程中的表达变化。
+
+```{r eval = T, echo = F, results = "asis"}
+#| group-1-communication-related-genes-in-pseudotime
+autor(mn@plots$step4$genes_in_pseudotime$pseudo1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| group-2-communication-related-genes-in-pseudotime
+autor(mn@plots$step4$genes_in_pseudotime$pseudo2)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| group-3-communication-related-genes-in-pseudotime
+autor(mn@plots$step4$genes_in_pseudotime$pseudo3)
+```
+
+```{r}
+mn <- map(mn, st, "scsa_cell", "cancer_mapped", "cancer_mapped")
+
+mn@step <- 3L
+mn <- step4(mn, paste0("cancer_", 1:3), itga.pi3k)
+mn <- clear(mn)
+
+mn@plots$step4$genes_in_pseudotime$pseudo3
+mn@plots$step4$genes_in_pseudotime$pseudo2
+mn@plots$step4$genes_in_pseudotime$pseudo1
+```
+
+```{r}
+st <- clear(st)
+st_epi <- clear(st_epi)
+st_cancer <- clear(st_cancer)
+st_cancer.re <- clear(st_cancer.re)
+```
+
+# 附：分析流程（癌旁组织切片） {#workflow2}
+
+## Clustering and annotation
+
+```{r}
+st2 <- job_seuratSp(metadata$target[[3]])
+st2 <- step1(st2)
+st2@plots$step1$p.qc
+st2 <- step2(st2, 800, 5500)
+st2@plots$step2$p.pca_rank
+
+st2 <- readRDS("./st2.2.rds")
+st2 <- step3(st2, 1:15, 1.2)
+st2@step <- 4L
+
+st2 <- step5(st2, 8)
+st2 <- step6(st2, "Lung")
+vis(st2, "scsa_cell")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| extra-QC
+autor(st2@plots$step1$p.qc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| extra-SCSA-annotation
+autor(vis(st2, group.by = "scsa_cell"))
+```
+
+## Copykat prediction
+
+可以观察到，copyKAT 的细胞类型预测，癌旁组织 Fig. \@ref(fig:extra-copyKAT-prediction) 的聚类不及 癌组织切片的 Fig. \@ref(fig:copyKAT-prediction-of-aneuploidy) 明显。
+
+```{r eval = T, echo = F, results = "asis"}
+#| extra-copyKAT-prediction
+autor(ka2@plots$step2$p.copykat)
+```
+
+```{r}
+ka2 <- job_kat(st2)
+ka2 <- step1(ka2, path = "copykat2")
+ka2 <- step2(ka2)
+ka2 <- clear(ka2, "copykat_para_cancer")
+ka2@plots$step2$p.copykat
+```
+
+```{r}
+save.image("./sig2.RData")
+load("./sig2.RData")
+```
+
