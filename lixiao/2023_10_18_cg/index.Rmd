@@ -1,0 +1,83 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+# 前言 {#introduction}
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+# 材料和方法 {#methods}
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## GSE171904: GSM5237106
+
+```{r}
+geo <- job_geo("GSE171904")
+geo <- step1(geo)
+
+untar("./GSE171904/GSE171904_RAW.tar", exdir = "./GSE171904")
+dir.create("./GSE171904/ccl4")
+system("mv ./GSE171904/GSM5237106_ccl4_* -t ./GSE171904/ccl4 ")
+
+lapply(list.files("./GSE171904/ccl4/", "^GSM", full.names = T),
+  function(file) {
+    path <- get_path(file)
+    filename <- get_filename(file)
+    new <- gs(filename, ".*?([^_]*$)", "\\1")
+    file.rename(file, paste0(path, "/", new))
+  })
+```
+
+```{r}
+sr <- job_seurat("./GSE171904/ccl4/")
+sr <- step1(sr)
+sr@plots$step1$p.qc
+sr <- step2(sr, 100, 6000)
+sr@plots$step2$p.pca_rank
+save.image()
+
+sr <- step3(sr, 1:15, 1.2)
+sr@plots$step3$p.umap
+
+sr@step <- 4L
+sr <- step5(sr, 6)
+sr <- step6(sr, "Liver")
+
+```
+
+

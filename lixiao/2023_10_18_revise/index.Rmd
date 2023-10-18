@@ -1,0 +1,171 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+## 主要生信部分
+
+- Sjogren syndrome (SS), a chronic autoimmune disease
+- 复方，Xuanmai Ganju (XMGJ)
+
+原文以 GEO 做 SS 差异表达基因筛选，获取 XMGJ 的成分和靶点信息，构建 PPI 网络，筛选治疗疾病靶点。
+
+## 修正内容
+
+- 原文使用的是 TCMSP database <https://tcmspw.com/tcmsp.php> 检索复方成分数据和靶点数据，由于订单中不包含该部分原数据，所以该内容已全部重新分析。数据库修改为 HERB <http://herb.ac.cn/> `r hb@cite`。
+
+- GEO 数据的分析全部重修。原文未包含具体的数据库来源（GEO 编号），也未提供原始数据，因此重修。
+
+- 以上部分对应的图片全部重修。
+
+# 前言 {#introduction}
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+```
+
+# 材料和方法 {#methods}
+
+数据来源，见 \@ref(workflow)。
+
+方法：
+
+- HERB `r hb@cite`
+- clusterProfiler `r en@cite`
+- STRINGdb `r st@cite`
+- limma `r lm@cite`
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 复方成分和靶点
+
+### 复方成分
+
+```{r}
+hb <- job_herb(c("玄参", "麦冬", "甘草", "桔梗"))
+hb <- step1(hb)
+hb <- step2(hb)
+hb <- step3(hb, "Sjogren syndrome")
+```
+
+## GEO 数据分析
+
+### GSE154926: Total mRNA was extracted from minor salivary glands of 43 SS patients and 7 healthy volunteers.
+
+- minor salivary glands
+
+```{r}
+ge5 <- job_geo("GSE154926")
+ge5 <- step1(ge5)
+ge5 <- step2(ge5, "Raw")
+R.utils::gunzip("./GSE154926/GSE154926_Raw_gene_counts_43pSS+7HVs.csv.gz")
+
+ge5@params$prods
+```
+
+```{r}
+metadata <- relocate(ge5@params$guess, sample = title)
+metadata <- mutate(metadata, group = ifelse(grepl("Healthy", diagnosis.ch1), "control", "disease"))
+
+counts <- ftibble("./GSE154926/GSE154926_Raw_gene_counts_43pSS+7HVs.csv")
+counts
+
+mart <- new_biomart()
+genes <- filter_biomart(mart, general_attrs(), "ensembl_gene_id", counts$V1)
+genes <- relocate(genes, 1, hgnc_symbol)
+```
+
+```{r}
+lm <- job_limma(new_dge(metadata, counts, genes))
+lm <- step1(lm)
+lm@plots$step1$p.filter
+lm@plots$step1$p.norm
+
+lm <- step2(lm, disease - control)
+lm@plots$step2$p.valcano[[1]]
+```
+
+```{r}
+en <- job_enrich(list(ids = lm@tables$step2$tops[[1]]$hgnc_symbol), lm@params$normed_data$genes)
+en <- step1(en)
+en@plots$step1$p.kegg$ids
+```
+
+### GSE135635: RNA-sequencing in primary circulating plasmacytoid dendritic cells from patients with pSS, nSS, and HC. Two cohorts of n=31 each are included (discovery and replication), no duplicates samples
+
+```{r}
+ge6 <- job_geo("GSE135635")
+ge6 <- step1(ge6)
+ge6 <- step2(ge6, "raw")
+ge6@params$guess
+```
+
+```{r}
+metadata <- select(ge6@params$guess, sample = title, group = group.ch1)
+metadata <- mutate(metadata, group = ifelse(group == "HC", "control", "disease"))
+
+lapply(list.files("./GSE135635", "\\.gz", full.names = T), R.utils::gunzip)
+counts <- ftibble("./GSE135635/GSE135635_rawReadsData_disc.csv")
+
+genes <- filter_biomart(mart, general_attrs(), "ensembl_gene_id", counts$V1)
+genes <- relocate(genes, 1, hgnc_symbol)
+```
+
+```{r}
+lm6 <- job_limma(new_dge(metadata, counts, genes))
+lm6 <- step1(lm6)
+lm6 <- step2(lm6, disease - control)
+lm6@plots$step2$p.valcano[[1]]
+```
+
+```{r}
+en6 <- job_enrich(list(ids = lm6@tables$step2$tops[[1]]$hgnc_symbol), lm6@params$normed_data$genes)
+en6 <- step1(en6)
+en6@plots$step1$p.go$ids
+```
+
+### Gather
+
+```{r}
+sets <- list(GSE154926 = lm@tables$step2$tops[[1]]$hgnc_symbol,
+  GSE135635 = lm6@tables$step2$tops[[1]]$hgnc_symbol)
+
+egG <- job_enrich(list(ids = unlist(sets, use.names = F)), lm6@params$normed_data$genes)
+egG <- step1(egG)
+egG@plots$step1$p.go$ids
+egG@tables$step1$res.go$ids
+```
+
+## PPI STRINGdb
+
+

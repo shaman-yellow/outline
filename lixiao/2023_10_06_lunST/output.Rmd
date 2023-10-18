@@ -360,6 +360,11 @@ autor(en.epi@plots$step1$p.kegg)
 autor(en.epi@tables$step1$res.kegg)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-all-DEGs-of-cancer-vs-epithelial-or-basal-cells
+autor(st_epi@params$contrasts)
+```
+
 ```{r}
 en.epi <- asjob_enrich(st_epi, NULL)
 en.epi <- step1(en.epi)

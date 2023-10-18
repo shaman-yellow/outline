@@ -1,0 +1,76 @@
+
+### GSE200020: RNA-sequencing of pheripheral blood isolated cDC2s from patients with primary Sjögren’s syndrome (pSS; n=23), non-Sjögren’s sicca (nSS; n=15), and healthy controls (HC; n=18).
+
+- pheripheral blood
+
+```{r eval = T, echo = F, results = "asis"}
+#| meta1
+autor(ge1@params$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-used-sample-of-GSE200020
+autor(, key = "group.ch1")
+```
+
+```{r}
+ge1 <- job_geo("GSE200020")
+ge1 <- step1(ge1)
+ge1 <- step2(ge1)
+```
+
+```{r}
+mart <- new_biomart()
+
+counts <- fxlsx("./GSE200020/GSE200020_normalized_gene_counts_VST_matrix_Discovery.xlsx")
+genes <- filter_biomart(mart, general_attrs(), "ensembl_gene_id", counts$X1)
+genes <- relocate(genes, 1, hgnc_symbol)
+metadata <- group_strings(ge1@params$guess$title, c(control = "^HC", disease = "pSS"), "sample")
+metadata <- mutate(metadata, sample = stringr::str_extract(sample, "^[^ ]+"))
+
+lm1 <- job_limma(new_dge(metadata, counts, genes))
+lm1@step <- 1L
+lm1 <- step2(lm1, disease - control)
+```
+
+### GSE199868: RNA-sequencing of pheripheral blood isolated CD19+ B cells from patients with primary Sjögren’s syndrome (pSS; n=14), non-Sjögren’s sicca (nSS; n=11), and healthy controls (HC; n=13).
+
+- CD19+ B cells
+
+```{r}
+ge2 <- job_geo("GSE199868")
+ge2 <- step1(ge2)
+ge2 <- step2(ge2)
+```
+
+### GSE194234: RNA sequencing of 7 pSS patients and 6 healthy controls
+
+Total RNA of neutrophils was extracted using TRIzol reagent (Invitrogen, USA) and stored at −80 °C for subsequent RNA sequencing (Novogene, China)
+
+- neutrophils
+
+```{r}
+ge3 <- job_geo("GSE194234")
+ge3 <- step1(ge3)
+ge3 <- step2(ge3)
+```
+
+### GSE173635: FACS sorted CCR9+, CXCR5+ and CCR9-CXCR5- Th cells from peripheral blood of n=7 pSS patients and n=7 HC were analyzed using RNA sequencing
+
+- CCR9+, CXCR5+ and CCR9-CXCR5- Th cells
+
+```{r}
+ge4 <- job_geo("GSE173635")
+ge4 <- step1(ge4)
+ge4 <- step2(ge4)
+
+ge4@params$prods
+```
+
+### GSE173670: RNA-sequencing of pheripheral blood isolated CD14+ monocytes from patients with primary Sjögren’s syndrome (pSS; n=14) , non-Sjögren’s sicca (nSS; n=8), and healthy controls (HC; n=14).
+
+- pheripheral blood isolated CD14+ monocytes
+
+### GSE171896: minor salivary glands (MSGs) from 36 patients with ILD-pSS and 128 patients with non-ILD-pSS
+
+- minor salivary glands (MSGs)
