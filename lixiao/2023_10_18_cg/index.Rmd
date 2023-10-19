@@ -33,7 +33,6 @@ p.route <- flowChart(route, 1.1, 1)
 ```
 
 ```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
-p.route
 ```
 
 # 材料和方法 {#methods}
@@ -45,6 +44,39 @@ p.route
 # 附：分析流程 {#workflow}
 
 ## GSE171904: GSM5237106
+
+### QC
+
+```{r eval = T, echo = F, results = "asis"}
+#| QC
+autor(sr@plots$step1$p.qc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCA-rank
+autor(sr@plots$step2$p.pca_rank)
+```
+
+### Clustering
+
+```{r eval = T, echo = F, results = "asis"}
+#| UMAP-clustering
+autor(z7(sr@plots$step3$p.umap, 1.1, 1))
+```
+
+### Top markers
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-markers-tables-Seurat-clusters
+autor(sr@tables$step5$all_markers)
+```
+
+### Cell annotation
+
+```{r eval = T, echo = F, results = "asis"}
+#| Cell-annotation
+autor(wrap((vis(sr, group.by = "scsa_cell")), 9, 5))
+```
 
 ```{r}
 geo <- job_geo("GSE171904")
@@ -66,18 +98,47 @@ lapply(list.files("./GSE171904/ccl4/", "^GSM", full.names = T),
 ```{r}
 sr <- job_seurat("./GSE171904/ccl4/")
 sr <- step1(sr)
-sr@plots$step1$p.qc
 sr <- step2(sr, 100, 6000)
-sr@plots$step2$p.pca_rank
-save.image()
-
 sr <- step3(sr, 1:15, 1.2)
-sr@plots$step3$p.umap
-
 sr@step <- 4L
 sr <- step5(sr, 6)
 sr <- step6(sr, "Liver")
 
+
+save.image()
+sr@plots$step1$p.qc
+sr@plots$step2$p.pca_rank
+sr@plots$step3$p.umap
+
+vis(sr, "scsa_cell")
+```
+
+### Ndrg1 in SCSA annotation cells
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ndrg1-expression
+autor(wrap(p.ndrg1$p.dim, 7, 5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ndrg1-expression-violin
+autor(wrap(p.ndrg1$p.vln, 10, 6))
+```
+
+### Ndrg1 in Seurat clusters
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ndrg1-expression-violin-Seurat-clusters
+autor(wrap(p.ndrg1.ex$p.vln, 10, 6))
+```
+
+```{r}
+p.ndrg1 <- focus(sr, "Ndrg1", "scsa_cell")
+p.ndrg1$p.vln
+p.ndrg1$p.dim
+
+p.ndrg1.ex <- focus(sr, "Ndrg1", "seurat_clusters")
+p.ndrg1.ex$p.vln
 ```
 
 

@@ -28,11 +28,13 @@ set_index()
 
 ## 修正内容
 
-- 原文使用的是 TCMSP database <https://tcmspw.com/tcmsp.php> 检索复方成分数据和靶点数据，由于订单中不包含该部分原数据，所以该内容已全部重新分析。数据库修改为 HERB <http://herb.ac.cn/> `r hb@cite`。
+- 原文使用的是 TCMSP database <https://tcmspw.com/tcmsp.php> 检索复方成分数据和靶点数据，由于订单中不包含该部分原数据，所以该内容已全部重新分析。数据库修改为 HERB `r hb@cite` (<http://herb.ac.cn/>) 。
 
-- GEO 数据的分析全部重修。原文未包含具体的数据库来源（GEO 编号），也未提供原始数据，因此重修。
+- GEO 数据的分析全部修正。原文未包含具体的数据库来源（GEO 编号），也未提供原始数据，因此需修正。
 
-- 以上部分对应的图片全部重修。
+- 以上部分对应的图片全部修正。
+
+- 需要修正的部分已在原文稿中高亮标注，需要改成本文档 \@ref(results) 对应内容。
 
 # 前言 {#introduction}
 
@@ -52,18 +54,34 @@ p.route <- flowChart(route, 1.1, 1)
 
 # 材料和方法 {#methods}
 
-数据来源，见 \@ref(workflow)。
+数据来源，见 \@ref(workflow)，主要有：
+
+- GSE7451
+- GSE40611
+- GSE154926
+- GSE135635
 
 方法：
 
 - HERB `r hb@cite`
-- clusterProfiler `r en@cite`
-- STRINGdb `r st@cite`
+- clusterProfiler `r en.tpss@cite`
+- STRINGdb `r sdb@cite`
 - limma `r lm@cite`
 
 # 分析结果 {#results}
 
+- 从 HERB 网站获取 XMGJ 的成分数据和成分对应的靶点数据（对应）`r hb@cite`。
+- 以 4 个 GEO 数据集做差异分析`r lm@cite`（SS versus healthy control, |log~2~(FC)| &gt; 0.3, p.adjust &lt; 0.05）（对应）得到 4 个 DEGs 集。
+- 取 4 个 DEGs 集的合集，将其与 XMGJ 的靶点取交集（对应）（设交集为 IntSets）。
+- 将 IntSets 基因集构建 PPI 网络`r sdb@cite`，以 MCC 算法筛选 top30 的基因[@CytohubbaIdenChin2014]。
+- 将 IntSets 基因集做富集分析`r en.tpss@cite`，发现： KEGG 富集于 ； GO 富集于。KEGG 和 GO 富集分析结果一致，暗示了 XMGJ 治疗自身免疫性疾病 SS 的内在机制。
+- MCC top30 的基因与 Chemokine signaling pathway 富集的基因有 35% 交集，对应 14 个基因（\@ref(mcc2chemo)）。
+- Chemokine signaling pathway 可能是 XMGJ 治疗 SS 的关键通路，对应的基因（\@ref(mcc2chemo)），XMGJ 相应的成分有 `r colSum(res.dedup$Ingredient.name)` 个。
+
+
 # 结论 {#dis}
+
+见 \@ref(results)。
 
 # 附：分析流程 {#workflow}
 
@@ -72,17 +90,134 @@ p.route <- flowChart(route, 1.1, 1)
 ### 复方成分
 
 ```{r}
-hb <- job_herb(c("玄参", "麦冬", "甘草", "桔梗"))
+hb <- job_herb(c("玄参", "麦冬", "甘草", "桔梗", "黄柏", "知母", "天花粉"))
 hb <- step1(hb)
 hb <- step2(hb)
 hb <- step3(hb, "Sjogren syndrome")
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-information
+autor(hb@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-compounds
+autor(hb@plots$step3$p.herbs_compounds)
+```
+
+### 成分靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| Components-of-the-herbs-and-their-targets
+autor(hb@params$easyRead)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-targets
+autor(hb@plots$step3$p.herbs_targets)
+```
+
 ## GEO 数据分析
+
+### GSE7451: Gene profilling from 10 saliva samples from patients with primary Sojgren's syndrome and 10 saliva samples from control subjects using Affymetrix HGu133+2 microarray.
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-used-samples-of-GSE7451
+autor(as_tibble(lm1@params$normed_data$targets), key = "group")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-GSE7451
+autor(lm1@plots$step2$p.valcano[[1]])
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-DEGs-of-GSE7451
+autor(lm1@tables$step2[[1]][[1]])
+```
+
+
+- saliva samples
+
+```{r}
+ge1 <- job_geo("GSE7451")
+ge1 <- step1(ge1)
+
+metadata <- mutate(ge1@params$guess,
+  group = ifelse(grepl("control", title), "control", "disease"))
+
+lm1 <- asjob_limma(ge1, metadata)
+lm1 <- step1(lm1)
+lm1@plots$step1$p.filter
+lm1@plots$step1$p.norm
+lm1 <- step2(lm1, disease - control)
+lm1@tables$step2$tops[[1]]
+
+```
+
+### GSE40611: Parotid gland tissues were harvested from 17 pSS and 14 non-pSS sicca patients and 18 controls.
+
+- Parotid gland
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-used-samples-of-GSE40611
+autor(as_tibble(lm2@params$normed_data$targets), key = "group")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-GSE40611
+autor(lm2@plots$step2$p.valcano[[1]])
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-DEGs-of-GSE40611
+autor(lm2@tables$step2[[1]][[1]])
+```
+
+
+```{r}
+
+ge2 <- job_geo("GSE40611")
+ge2 <- step1(ge2)
+
+metadata <- filter(ge2@params$guess, disease.status.ch1 %in% c("Control", "pSS"))
+metadata <- mutate(metadata,
+  group = ifelse(disease.status.ch1 == "Control", "control", "disease"),
+  batch = batch.ch1
+)
+
+lm2 <- asjob_limma(ge2, metadata)
+lm2 <- step1(lm2)
+lm2 <- step2(lm2, disease - control)
+
+lm2@plots$step2$p.valcano[[1]]
+lm2@tables$step2$tops
+
+```
 
 ### GSE154926: Total mRNA was extracted from minor salivary glands of 43 SS patients and 7 healthy volunteers.
 
 - minor salivary glands
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-used-samples-of-GSE154926
+autor(as_tibble(lm@params$normed_data$targets), key = "group")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-GSE154926
+autor(lm@plots$step2$p.valcano[[1]])
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-DEGs-of-GSE154926
+autor(lm@tables$step2[[1]][[1]])
+```
+
 
 ```{r}
 ge5 <- job_geo("GSE154926")
@@ -123,6 +258,23 @@ en@plots$step1$p.kegg$ids
 
 ### GSE135635: RNA-sequencing in primary circulating plasmacytoid dendritic cells from patients with pSS, nSS, and HC. Two cohorts of n=31 each are included (discovery and replication), no duplicates samples
 
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-used-samples-of-GSE135635
+autor(as_tibble(lm6@params$normed_data$targets), key = "group")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-GSE135635
+autor(lm6@plots$step2$p.valcano[[1]])
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-DEGs-of-GSE135635
+autor(lm6@tables$step2[[1]][[1]])
+```
+
+
 ```{r}
 ge6 <- job_geo("GSE135635")
 ge6 <- step1(ge6)
@@ -132,6 +284,7 @@ ge6@params$guess
 
 ```{r}
 metadata <- select(ge6@params$guess, sample = title, group = group.ch1)
+metadata <- filter(metadata, group %in% c("HC", "pSS"))
 metadata <- mutate(metadata, group = ifelse(group == "HC", "control", "disease"))
 
 lapply(list.files("./GSE135635", "\\.gz", full.names = T), R.utils::gunzip)
@@ -145,27 +298,129 @@ genes <- relocate(genes, 1, hgnc_symbol)
 lm6 <- job_limma(new_dge(metadata, counts, genes))
 lm6 <- step1(lm6)
 lm6 <- step2(lm6, disease - control)
-lm6@plots$step2$p.valcano[[1]]
-```
 
-```{r}
-en6 <- job_enrich(list(ids = lm6@tables$step2$tops[[1]]$hgnc_symbol), lm6@params$normed_data$genes)
-en6 <- step1(en6)
-en6@plots$step1$p.go$ids
+lm6@plots$step2$p.valcano[[1]]
 ```
 
 ### Gather
 
-```{r}
-sets <- list(GSE154926 = lm@tables$step2$tops[[1]]$hgnc_symbol,
-  GSE135635 = lm6@tables$step2$tops[[1]]$hgnc_symbol)
+```{r eval = T, echo = F, results = "asis"}
+#| all-DEGs-of-GSE-datasets
+autor(p.col_alls)
+```
 
-egG <- job_enrich(list(ids = unlist(sets, use.names = F)), lm6@params$normed_data$genes)
-egG <- step1(egG)
-egG@plots$step1$p.go$ids
-egG@tables$step1$res.go$ids
+```{r}
+sets <- list(GSE7451 = tops(lm1), GSE40611 = tops(lm2),
+  GSE154926 = tops(lm), GSE135635 = tops(lm6))
+p.col_alls <- new_col(lst = sets)
 ```
 
 ## PPI STRINGdb
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-SS-DEGs-with-XMGJ-targets
+autor(p.venn_tpss)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPI-networks
+autor(wrap(sdb@plots$step1$p.ppi, 5, 4))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MCC-top30
+autor(sdb@plots$step1$p.mcc)
+```
+
+```{r}
+sets.tpss <- list(SS_DEGs = unlist(sets, use.names = F), XMGJ_Targets = hb@params$herbs_targets$Target.name)
+p.venn_tpss <- new_venn(lst = sets.tpss, color.high = "lightblue")
+
+target.pss <- ins(lst = sets.tpss)
+sdb <- asjob_stringdb(target.pss)
+sdb <- step1(sdb)
+
+sdb@plots$step1$p.ppi
+sdb@plots$step1$p.mcc
+```
+
+## 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-Enrichment
+autor(en.tpss@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-KEGG-Enrichment
+autor(en.tpss@tables$step1$res.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GO-enrichment
+autor(en.tpss@plots$step1$p.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Tables-of-GO-enrichment
+autor(en.tpss@tables$step1$res.go$ids)
+```
+
+The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+
+```{r}
+en.tpss <- job_enrich(list(ids = target.pss), lm6@params$normed_data$genes)
+en.tpss <- step1(en.tpss)
+
+en.tpss@plots$step1$p.kegg$ids
+en.tpss@plots$step1$p.go$ids
+
+en.tpss@tables$step1$res.kegg$ids
+en.tpss@tables$step1$res.kegg$ids$geneName_list[[1]] %in% head(sdb@tables$step1$hub_genes, 30)$hgnc_symbol
+```
+
+```{r}
+en.tpss <- step2(en.tpss, "hsa04062")
+en.tpss@plots$step2$p.pathviews
+```
+
+## MCC top30 和 Chemokine signaling pathway {#mcc2chemo}
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathway
+autor(p.venn)
+```
+
+```{r}
+sets.mcc2chemo <- list(Chemokine_path. = en.tpss@tables$step1$res.kegg$ids$geneName_list[[1]],
+  MCC_top30 = head(sdb@tables$step1$hub_genes, 30)$hgnc_symbol)
+
+p.venn <- new_venn(lst = sets.mcc2chemo)
+p.venn
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| show-that
+autor(new_lich(list(Intersection = ins(lst = sets.mcc2chemo))))
+```
+
+## Xuanmai Ganju 靶向 Chemokine signaling pathway 治疗 Sjogren syndrome 的成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-components-of-XMGJ-targeting-Chemoking-signaling-for-treating-SS
+autor(res, key = "Ingredient.name")
+```
+
+```{r}
+res <- map(hb@params$herbs_targets, "herb_id", hb@object$herb, "Herb_", "Herb_pinyin_name")
+res <- filter(res, Target.name %in% sets.mcc2chemo$Chemokine_path.)
+
+res.dedup <- distinct(res, Herb_pinyin_name, Ingredient.name)
+```
+
+```{r}
+sets.isTarget <- split(res.dedup$Ingredient.name, res.dedup$Herb_pinyin_name)
+p.upset <- new_upset(lst = sets.isTarget)
+```
 
 

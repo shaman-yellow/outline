@@ -74,3 +74,16 @@ ge4@params$prods
 ### GSE171896: minor salivary glands (MSGs) from 36 patients with ILD-pSS and 128 patients with non-ILD-pSS
 
 - minor salivary glands (MSGs)
+
+### GSE176510: The RNA from the conjunctiva of female SS patients (n = 7) and age-and-sex-matched healthy controls (n = 19) was assayed using the Immunology Pannel 2 from NanoString.
+
+```{r}
+ge3 <- job_geo("GSE176510")
+ge3 <- step1(ge3)
+
+metadata <- mutate(ge3@params$guess, group = ifelse(grepl("Control", diagnosis.ch1), "control", "disease"))
+lm3 <- asjob_limma(ge3, metadata)
+meta(ge3)
+```
+
+

@@ -1,0 +1,1276 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux4e3bux8981ux751fux4fe1ux90e8ux5206}{%
+\subsection{主要生信部分}\label{ux4e3bux8981ux751fux4fe1ux90e8ux5206}}
+
+\begin{itemize}
+\tightlist
+\item
+  Sjogren syndrome (SS), a chronic autoimmune disease
+\item
+  复方，Xuanmai Ganju (XMGJ)
+\end{itemize}
+
+原文以 GEO 做 SS 差异表达基因筛选，获取 XMGJ 的成分和靶点信息，构建 PPI 网络，筛选治疗疾病靶点。
+
+\hypertarget{ux4feeux6b63ux5185ux5bb9}{%
+\subsection{修正内容}\label{ux4feeux6b63ux5185ux5bb9}}
+
+\begin{itemize}
+\item
+  原文使用的是 TCMSP database \url{https://tcmspw.com/tcmsp.php} 检索复方成分数据和靶点数据，由于订单中不包含该部分原数据，所以该内容已全部重新分析。数据库修改为 HERB \url{http://herb.ac.cn/}\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{1}}。
+\item
+  GEO 数据的分析全部重修。原文未包含具体的数据库来源（GEO 编号），也未提供原始数据，因此重修。
+\item
+  以上部分对应的图片全部重修。
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{route}{%
+\section{研究设计流程图}\label{route}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+数据来源，见 \ref{workflow}。
+
+方法：
+
+\begin{itemize}
+\tightlist
+\item
+  HERB\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{1}}
+\item
+  clusterProfiler\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}
+\item
+  STRINGdb\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{3}}
+\item
+  limma\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{4}}
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux590dux65b9ux6210ux5206ux548cux9776ux70b9}{%
+\subsection{复方成分和靶点}\label{ux590dux65b9ux6210ux5206ux548cux9776ux70b9}}
+
+\hypertarget{ux590dux65b9ux6210ux5206}{%
+\subsubsection{复方成分}\label{ux590dux65b9ux6210ux5206}}
+
+Table \ref{tab:Herbs-information}为表格Herbs information概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Herbs-information.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4行18列，以下预览的表格可能省略部分数据；表格含有4个唯一`Herb\_'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllll@{}}
+\caption{\label{tab:Herbs-information}Herbs information}\tabularnewline
+\toprule
+Herb\_ & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Prope\ldots{} & Merid\ldots{} & UsePart & Function & Indic\ldots{} & Toxicity & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_ & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Prope\ldots{} & Merid\ldots{} & UsePart & Function & Indic\ldots{} & Toxicity & \ldots{}\tabularnewline
+\midrule
+\endhead
+HERB0\ldots{} & GAN CAO & 甘草 & Root \ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung;\ldots{} & root \ldots{} & To re\ldots{} & 1. It\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & JIE GENG & 桔梗 & Platy\ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung & root & To re\ldots{} & Cough\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & MAI DONG & 麦冬 & Lirio\ldots{} & Ophio\ldots{} & Minor\ldots{} & Lung;\ldots{} & tuberoid & To no\ldots{} & Angin\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & XUAN \ldots{} & 玄参 & Figwo\ldots{} & Radix\ldots{} & Cold;\ldots{} & Lung;\ldots{} & root & To re\ldots{} & Heat \ldots{} & NA & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:intersection-of-all-compounds}为图intersection of all compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-all-compounds.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-all-compounds.pdf}
+\caption{Intersection of all compounds}\label{fig:intersection-of-all-compounds}
+\end{center}
+
+\hypertarget{ux6210ux5206ux9776ux70b9}{%
+\subsubsection{成分靶点}\label{ux6210ux5206ux9776ux70b9}}
+
+Table \ref{tab:Components-of-the-herbs-and-their-targets}为表格Components of the herbs and their targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Components-of-the-herbs-and-their-targets.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有6181行9列，以下预览的表格可能省略部分数据；表格含有715个唯一`Ingredient.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:Components-of-the-herbs-and-their-targets}Components of the herbs and their targets}\tabularnewline
+\toprule
+Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & Targe\ldots\ldots5 & Targe\ldots\ldots6 & Datab\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & Targe\ldots\ldots5 & Targe\ldots\ldots6 & Datab\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endhead
+HBIN0\ldots{} & GAN CAO & 11-de\ldots{} & 11-De\ldots{} & HBTAR\ldots{} & NR3C1 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 11-de\ldots{} & 11-De\ldots{} & HBTAR\ldots{} & AR & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 12-me\ldots{} & 12-me\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & AR & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & CDK2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & ESR1 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & GSK3B & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & MAPK14 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & CHEK1 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & PPARG & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & CCNA2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & ESR2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & CCNA2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & CDK2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & ESR1 & NA & NA & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:intersection-of-all-targets}为图intersection of all targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-all-targets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-all-targets.pdf}
+\caption{Intersection of all targets}\label{fig:intersection-of-all-targets}
+\end{center}
+
+\hypertarget{geo-ux6570ux636eux5206ux6790}{%
+\subsection{GEO 数据分析}\label{geo-ux6570ux636eux5206ux6790}}
+
+\hypertarget{gse7451-gene-profilling-from-10-saliva-samples-from-patients-with-primary-sojgrens-syndrome-and-10-saliva-samples-from-control-subjects-using-affymetrix-hgu1332-microarray.}{%
+\subsubsection{GSE7451: Gene profilling from 10 saliva samples from patients with primary Sojgren's syndrome and 10 saliva samples from control subjects using Affymetrix HGu133+2 microarray.}\label{gse7451-gene-profilling-from-10-saliva-samples-from-patients-with-primary-sojgrens-syndrome-and-10-saliva-samples-from-control-subjects-using-affymetrix-hgu1332-microarray.}}
+
+Table \ref{tab:metadata-of-used-samples-of-GSE7451}为表格metadata of used samples of GSE7451概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-used-samples-of-GSE7451.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有20行7列，以下预览的表格可能省略部分数据；表格含有2个唯一`group'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:metadata-of-used-samples-of-GSE7451}Metadata of used samples of GSE7451}\tabularnewline
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & title & gende\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & title & gende\ldots{}\tabularnewline
+\midrule
+\endhead
+GSM17\ldots{} & control & 23247\ldots{} & 1.101\ldots{} & GSM17\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & control & 23164\ldots{} & 1.117\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & control & 23523\ldots{} & 1.213\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & control & 23553\ldots{} & 1.177\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & control & 23114\ldots{} & 1.049\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & control & 23397\ldots{} & 1.266\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & control & 22724\ldots{} & 0.996\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & control & 23013\ldots{} & 1.051\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & control & 21367\ldots{} & 0.721\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & control & 20958\ldots{} & 0.595\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & disease & 23050\ldots{} & 1.120\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & disease & 22818\ldots{} & 0.917\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & disease & 21152\ldots{} & 0.763\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & disease & 22518\ldots{} & 0.957\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+GSM18\ldots{} & disease & 22748\ldots{} & 1.142\ldots{} & GSM18\ldots{} & whole\ldots{} & femal\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:DEGs-of-GSE7451}为图DEGs of GSE7451概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-GSE7451.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DEGs-of-GSE7451.pdf}
+\caption{DEGs of GSE7451}\label{fig:DEGs-of-GSE7451}
+\end{center}
+
+Table \ref{tab:tables-of-DEGs-of-GSE7451}为表格tables of DEGs of GSE7451概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-DEGs-of-GSE7451.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有75行23列，以下预览的表格可能省略部分数据；表格含有75个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllll@{}}
+\caption{\label{tab:tables-of-DEGs-of-GSE7451}Tables of DEGs of GSE7451}\tabularnewline
+\toprule
+rownames & hgnc\_\ldots{} & ID & GB\_ACC & SPOT\_ID & Speci\ldots{} & Annot\ldots{} & Seque\ldots\ldots8 & Seque\ldots\ldots9 & Targe\ldots{} & Repre\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & hgnc\_\ldots{} & ID & GB\_ACC & SPOT\_ID & Speci\ldots{} & Annot\ldots{} & Seque\ldots\ldots8 & Seque\ldots\ldots9 & Targe\ldots{} & Repre\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endhead
+22945\ldots{} & IFIT3 & 22945\ldots{} & AI075407 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AI\ldots{} & AI075407 & \ldots{}\tabularnewline
+22675\ldots{} & IFIT2 & 22675\ldots{} & AA131041 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AA\ldots{} & AA131041 & \ldots{}\tabularnewline
+20315\ldots{} & IFIT1 & 20315\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+22670\ldots{} & CMPK2 & 22670\ldots{} & AI742057 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AI\ldots{} & AI742057 & \ldots{}\tabularnewline
+21445\ldots{} & IFI44 & 21445\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+20566\ldots{} & OASL & 20566\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+15654\ldots{} & EGFR & 15654\ldots{} & AF277897 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AF\ldots{} & AF277897 & \ldots{}\tabularnewline
+22861\ldots{} & XAF1 & 22861\ldots{} & AA142842 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AA\ldots{} & AA142842 & \ldots{}\tabularnewline
+21899\ldots{} & TMEM140 & 21899\ldots{} & NM\_01\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_01\ldots{} & \ldots{}\tabularnewline
+22760\ldots{} & EPSTI1 & 22760\ldots{} & AA633203 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AA\ldots{} & AA633203 & \ldots{}\tabularnewline
+24262\ldots{} & RSAD2 & 24262\ldots{} & AW189843 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AW\ldots{} & AW189843 & \ldots{}\tabularnewline
+15584\ldots{} & & 15584\ldots{} & AW974642 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AW\ldots{} & AW974642 & \ldots{}\tabularnewline
+21966\ldots{} & MS4A6A & 21966\ldots{} & NM\_02\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_02\ldots{} & \ldots{}\tabularnewline
+20400\ldots{} & FCGR3B & 20400\ldots{} & J04162 & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:J0\ldots{} & J04162 & \ldots{}\tabularnewline
+23839\ldots{} & & 23839\ldots{} & AW301504 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AW\ldots{} & AW301504 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  saliva samples
+\end{itemize}
+
+\hypertarget{gse40611-parotid-gland-tissues-were-harvested-from-17-pss-and-14-non-pss-sicca-patients-and-18-controls.}{%
+\subsubsection{GSE40611: Parotid gland tissues were harvested from 17 pSS and 14 non-pSS sicca patients and 18 controls.}\label{gse40611-parotid-gland-tissues-were-harvested-from-17-pss-and-14-non-pss-sicca-patients-and-18-controls.}}
+
+\begin{itemize}
+\tightlist
+\item
+  Parotid gland
+\end{itemize}
+
+Table \ref{tab:metadata-of-used-samples-of-GSE40611}为表格metadata of used samples of GSE40611概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-used-samples-of-GSE40611.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有35行9列，以下预览的表格可能省略部分数据；表格含有2个唯一`group'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:metadata-of-used-samples-of-GSE40611}Metadata of used samples of GSE40611}\tabularnewline
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & title & batch\ldots{} & disea\ldots{} & batch\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & title & batch\ldots{} & disea\ldots{} & batch\tabularnewline
+\midrule
+\endhead
+GSM99\ldots{} & control & 78182\ldots{} & 1.949\ldots{} & GSM99\ldots{} & parot\ldots{} & 1 & Control & 1\tabularnewline
+GSM99\ldots{} & control & 65241\ldots{} & 1.158\ldots{} & GSM99\ldots{} & parot\ldots{} & 1 & Control & 1\tabularnewline
+GSM99\ldots{} & control & 60270\ldots{} & 0.969\ldots{} & GSM99\ldots{} & parot\ldots{} & 1 & Control & 1\tabularnewline
+GSM99\ldots{} & control & 71411\ldots{} & 1.592\ldots{} & GSM99\ldots{} & parot\ldots{} & 1 & Control & 1\tabularnewline
+GSM99\ldots{} & control & 64687\ldots{} & 1.171\ldots{} & GSM99\ldots{} & parot\ldots{} & 1 & Control & 1\tabularnewline
+GSM99\ldots{} & control & 57764\ldots{} & 0.998\ldots{} & GSM99\ldots{} & parot\ldots{} & 1 & Control & 1\tabularnewline
+GSM99\ldots{} & control & 77992\ldots{} & 1.919\ldots{} & GSM99\ldots{} & parot\ldots{} & 1 & Control & 1\tabularnewline
+GSM99\ldots{} & control & 61315\ldots{} & 1.050\ldots{} & GSM99\ldots{} & parot\ldots{} & 1 & Control & 1\tabularnewline
+GSM99\ldots{} & control & 62902\ldots{} & 1.120\ldots{} & GSM99\ldots{} & parot\ldots{} & 1 & Control & 1\tabularnewline
+GSM99\ldots{} & control & 44310\ldots{} & 0.841\ldots{} & GSM99\ldots{} & parot\ldots{} & 2 & Control & 2\tabularnewline
+GSM99\ldots{} & control & 47089\ldots{} & 0.891\ldots{} & GSM99\ldots{} & parot\ldots{} & 2 & Control & 2\tabularnewline
+GSM99\ldots{} & control & 48607\ldots{} & 0.937\ldots{} & GSM99\ldots{} & parot\ldots{} & 2 & Control & 2\tabularnewline
+GSM99\ldots{} & control & 49006\ldots{} & 0.958\ldots{} & GSM99\ldots{} & parot\ldots{} & 2 & Control & 2\tabularnewline
+GSM99\ldots{} & control & 41798\ldots{} & 0.790\ldots{} & GSM99\ldots{} & parot\ldots{} & 3 & Control & 3\tabularnewline
+GSM99\ldots{} & control & 48423\ldots{} & 0.829\ldots{} & GSM99\ldots{} & parot\ldots{} & 3 & Control & 3\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:DEGs-of-GSE40611}为图DEGs of GSE40611概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-GSE40611.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DEGs-of-GSE40611.pdf}
+\caption{DEGs of GSE40611}\label{fig:DEGs-of-GSE40611}
+\end{center}
+
+Table \ref{tab:tables-of-DEGs-of-GSE40611}为表格tables of DEGs of GSE40611概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-DEGs-of-GSE40611.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1161行23列，以下预览的表格可能省略部分数据；表格含有1161个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllll@{}}
+\caption{\label{tab:tables-of-DEGs-of-GSE40611}Tables of DEGs of GSE40611}\tabularnewline
+\toprule
+rownames & hgnc\_\ldots{} & ID & GB\_ACC & SPOT\_ID & Speci\ldots{} & Annot\ldots{} & Seque\ldots\ldots8 & Seque\ldots\ldots9 & Targe\ldots{} & Repre\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & hgnc\_\ldots{} & ID & GB\_ACC & SPOT\_ID & Speci\ldots{} & Annot\ldots{} & Seque\ldots\ldots8 & Seque\ldots\ldots9 & Targe\ldots{} & Repre\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endhead
+21143\ldots{} & IGHG1\ldots{} & 21143\ldots{} & M87789 & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:M8\ldots{} & M87789 & \ldots{}\tabularnewline
+20456\ldots{} & SELL & 20456\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+20524\ldots{} & CXCL13 & 20524\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+22859\ldots{} & MS4A1 & 22859\ldots{} & AW474852 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AW\ldots{} & AW474852 & \ldots{}\tabularnewline
+21035\ldots{} & MS4A1 & 21035\ldots{} & BC002807 & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:BC\ldots{} & BC002807 & \ldots{}\tabularnewline
+20589\ldots{} & GABBR\ldots{} & 20589\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+20554\ldots{} & CR2 & 20554\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+22196\ldots{} & PAX5 & 22196\ldots{} & BF510692 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:BF\ldots{} & BF510692 & \ldots{}\tabularnewline
+22859\ldots{} & MS4A1 & 22859\ldots{} & AI862674 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AI\ldots{} & AI862674 & \ldots{}\tabularnewline
+22853\ldots{} & SAMD9 & 22853\ldots{} & AA741307 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:AA\ldots{} & AA741307 & \ldots{}\tabularnewline
+22660\ldots{} & SAMD9L & 22660\ldots{} & BE966604 & & Homo \ldots{} & Oct 6\ldots{} & Conse\ldots{} & GenBank & gb:BE\ldots{} & BE966604 & \ldots{}\tabularnewline
+20329\ldots{} & HLA-DQA1 & 20329\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+20423\ldots{} & FLI1 & 20423\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+20411\ldots{} & CD48 & 20411\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+20391\ldots{} & CXCL9 & 20391\ldots{} & NM\_00\ldots{} & & Homo \ldots{} & Oct 6\ldots{} & Exemp\ldots{} & GenBank & gb:NM\ldots{} & NM\_00\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{gse154926-total-mrna-was-extracted-from-minor-salivary-glands-of-43-ss-patients-and-7-healthy-volunteers.}{%
+\subsubsection{GSE154926: Total mRNA was extracted from minor salivary glands of 43 SS patients and 7 healthy volunteers.}\label{gse154926-total-mrna-was-extracted-from-minor-salivary-glands-of-43-ss-patients-and-7-healthy-volunteers.}}
+
+\begin{itemize}
+\tightlist
+\item
+  minor salivary glands
+\end{itemize}
+
+Table \ref{tab:metadata-of-used-samples-of-GSE154926}为表格metadata of used samples of GSE154926概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-used-samples-of-GSE154926.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有50行9列，以下预览的表格可能省略部分数据；表格含有2个唯一`group'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:metadata-of-used-samples-of-GSE154926}Metadata of used samples of GSE154926}\tabularnewline
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & age.ch1 & diagn\ldots{} & gende\ldots{} & tissu\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & age.ch1 & diagn\ldots{} & gende\ldots{} & tissu\ldots{}\tabularnewline
+\midrule
+\endhead
+BRA2 & control & 18452\ldots{} & 0.860\ldots{} & BRA2 & 21 & Healt\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA3 & control & 35415\ldots{} & 1.221\ldots{} & BRA3 & 59 & Healt\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA4 & control & 11889\ldots{} & 0.970\ldots{} & BRA4 & 71 & Healt\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA31 & control & 15461\ldots{} & 0.758\ldots{} & BRA31 & 24 & Healt\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA33 & control & 26419\ldots{} & 1.448\ldots{} & BRA33 & 61 & Healt\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA36 & control & 18885\ldots{} & 0.976\ldots{} & BRA36 & 14 & Healt\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA37 & control & 55874\ldots{} & 1.782\ldots{} & BRA37 & 52 & Healt\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA41 & disease & 30095\ldots{} & 1.303\ldots{} & BRA41 & 53 & prima\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA64 & disease & 14484\ldots{} & 0.902\ldots{} & BRA64 & 55 & prima\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA11 & disease & 22380\ldots{} & 1.116\ldots{} & BRA11 & 51 & prima\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA13 & disease & 21075\ldots{} & 1.134\ldots{} & BRA13 & 51 & prima\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA14 & disease & 22754\ldots{} & 1.497\ldots{} & BRA14 & 48 & prima\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA15 & disease & 16689\ldots{} & 1.227\ldots{} & BRA15 & 58 & prima\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA16 & disease & 55177\ldots{} & 0.367\ldots{} & BRA16 & 65 & prima\ldots{} & Female & minor\ldots{}\tabularnewline
+BRA18 & disease & 13631\ldots{} & 0.815\ldots{} & BRA18 & 69 & prima\ldots{} & Female & minor\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:DEGs-of-GSE154926}为图DEGs of GSE154926概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-GSE154926.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DEGs-of-GSE154926.pdf}
+\caption{DEGs of GSE154926}\label{fig:DEGs-of-GSE154926}
+\end{center}
+
+Table \ref{tab:tables-of-DEGs-of-GSE154926}为表格tables of DEGs of GSE154926概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-DEGs-of-GSE154926.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有123行14列，以下预览的表格可能省略部分数据；表格含有123个唯一`ensembl\_gene\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllllll@{}}
+\caption{\label{tab:tables-of-DEGs-of-GSE154926}Tables of DEGs of GSE154926}\tabularnewline
+\toprule
+ensem\ldots{} & hgnc\_\ldots{} & entre\ldots{} & refse\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & logFC & AveExpr & t & P.Value & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensem\ldots{} & hgnc\_\ldots{} & entre\ldots{} & refse\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & logFC & AveExpr & t & P.Value & \ldots{}\tabularnewline
+\midrule
+\endhead
+ENSG0\ldots{} & MYH7 & 4625 & NM\_00\ldots{} & 14 & 23412740 & 23435660 & myosi\ldots{} & -6.82\ldots{} & -2.41\ldots{} & -9.37\ldots{} & 9.110\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & DUSP13 & 51207 & NM\_01\ldots{} & 10 & 75094432 & 75109221 & dual \ldots{} & -5.18\ldots{} & -3.45\ldots{} & -8.88\ldots{} & 5.071\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & CASQ1 & 844 & NM\_00\ldots{} & 1 & 16019\ldots{} & 16020\ldots{} & calse\ldots{} & -6.33\ldots{} & -1.73\ldots{} & -8.57\ldots{} & 1.549\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & CSRP3 & 8048 & & 11 & 19182030 & 19210571 & cyste\ldots{} & -6.49\ldots{} & -1.64\ldots{} & -8.53\ldots{} & 1.838\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & ACTN2 & 88 & & 1 & 23666\ldots{} & 23676\ldots{} & actin\ldots{} & -6.35\ldots{} & -1.67\ldots{} & -8.40\ldots{} & 2.948\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & DES & 1674 & NM\_00\ldots{} & 2 & 21941\ldots{} & 21942\ldots{} & desmi\ldots{} & -6.25\ldots{} & -1.35\ldots{} & -8.17\ldots{} & 6.739\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & SMYD1 & 150572 & NM\_19\ldots{} & 2 & 88067825 & 88113384 & SET a\ldots{} & -5.18\ldots{} & -3.00\ldots{} & -8.03\ldots{} & 1.102\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & MYH2 & 4620 & & 17 & 10521148 & 10549700 & myosi\ldots{} & -7.41\ldots{} & -0.01\ldots{} & -7.68\ldots{} & 3.967\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & TCAP & 8557 & NM\_00\ldots{} & 17 & 39665349 & 39666554 & titin\ldots{} & -5.65\ldots{} & -2.06\ldots{} & -7.67\ldots{} & 4.063\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & XIRP2 & 129446 & NM\_00\ldots{} & 2 & 16688\ldots{} & 16725\ldots{} & xin a\ldots{} & -5.98\ldots{} & -2.27\ldots{} & -7.61\ldots{} & 5.165\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & NEB & 4703 & NM\_00\ldots{} & 2 & 15148\ldots{} & 15173\ldots{} & nebul\ldots{} & -4.77\ldots{} & 1.733\ldots{} & -7.56\ldots{} & 6.197\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & CAVIN4 & 347273 & NM\_00\ldots{} & 9 & 10057\ldots{} & 10058\ldots{} & caveo\ldots{} & -4.29\ldots{} & -2.27\ldots{} & -7.60\ldots{} & 5.282\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & TNNT1 & 7138 & NM\_00\ldots{} & 19 & 55132698 & 55149206 & tropo\ldots{} & -5.46\ldots{} & -0.98\ldots{} & -7.44\ldots{} & 9.538\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & MYL1 & 4632 & NM\_07\ldots{} & 2 & 21029\ldots{} & 21031\ldots{} & myosi\ldots{} & -6.85\ldots{} & -0.75\ldots{} & -7.39\ldots{} & 1.171\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & TNNI2 & 7136 & NM\_00\ldots{} & 11 & 1838981 & 1841680 & tropo\ldots{} & -3.93\ldots{} & 0.268\ldots{} & -7.36\ldots{} & 1.285\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{gse135635-rna-sequencing-in-primary-circulating-plasmacytoid-dendritic-cells-from-patients-with-pss-nss-and-hc.-two-cohorts-of-n31-each-are-included-discovery-and-replication-no-duplicates-samples}{%
+\subsubsection{GSE135635: RNA-sequencing in primary circulating plasmacytoid dendritic cells from patients with pSS, nSS, and HC. Two cohorts of n=31 each are included (discovery and replication), no duplicates samples}\label{gse135635-rna-sequencing-in-primary-circulating-plasmacytoid-dendritic-cells-from-patients-with-pss-nss-and-hc.-two-cohorts-of-n31-each-are-included-discovery-and-replication-no-duplicates-samples}}
+
+Table \ref{tab:metadata-of-used-samples-of-GSE135635}为表格metadata of used samples of GSE135635概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-used-samples-of-GSE135635.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有22行5列，以下预览的表格可能省略部分数据；表格含有2个唯一`group'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:metadata-of-used-samples-of-GSE135635}Metadata of used samples of GSE135635}\tabularnewline
+\toprule
+rownames & group & lib.size & norm\ldots. & sample\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm\ldots. & sample\tabularnewline
+\midrule
+\endhead
+Disc.HC1 & control & 56201\ldots{} & 0.986\ldots{} & Disc.HC1\tabularnewline
+Disc.HC2 & control & 54656\ldots{} & 0.984\ldots{} & Disc.HC2\tabularnewline
+Disc.HC3 & control & 55765\ldots{} & 0.959\ldots{} & Disc.HC3\tabularnewline
+Disc.HC4 & control & 59405\ldots{} & 1.037\ldots{} & Disc.HC4\tabularnewline
+Disc.HC5 & control & 55793\ldots{} & 0.957\ldots{} & Disc.HC5\tabularnewline
+Disc.HC6 & control & 57688\ldots{} & 0.997\ldots{} & Disc.HC6\tabularnewline
+Disc.HC7 & control & 55350\ldots{} & 0.961\ldots{} & Disc.HC7\tabularnewline
+Disc.HC8 & control & 56148\ldots{} & 0.995\ldots{} & Disc.HC8\tabularnewline
+Disc\ldots. & disease & 56631\ldots{} & 1.016\ldots{} & Disc\ldots.\tabularnewline
+Disc\ldots. & disease & 59579\ldots{} & 1.007\ldots{} & Disc\ldots.\tabularnewline
+Disc\ldots. & disease & 59215\ldots{} & 1.038\ldots{} & Disc\ldots.\tabularnewline
+Disc\ldots. & disease & 58367\ldots{} & 1.033\ldots{} & Disc\ldots.\tabularnewline
+Disc\ldots. & disease & 56710\ldots{} & 1.002\ldots{} & Disc\ldots.\tabularnewline
+Disc\ldots. & disease & 58039\ldots{} & 1.024\ldots{} & Disc\ldots.\tabularnewline
+Disc\ldots. & disease & 56652\ldots{} & 1.008\ldots{} & Disc\ldots.\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:DEGs-of-GSE135635}为图DEGs of GSE135635概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-GSE135635.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DEGs-of-GSE135635.pdf}
+\caption{DEGs of GSE135635}\label{fig:DEGs-of-GSE135635}
+\end{center}
+
+Table \ref{tab:tables-of-DEGs-of-GSE135635}为表格tables of DEGs of GSE135635概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-DEGs-of-GSE135635.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有394行14列，以下预览的表格可能省略部分数据；表格含有394个唯一`ensembl\_gene\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllllll@{}}
+\caption{\label{tab:tables-of-DEGs-of-GSE135635}Tables of DEGs of GSE135635}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensem\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgnc\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+entre\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+refse\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+chrom\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+start\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+end\_p\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+descr\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+logFC\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+AveExpr\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+t\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+P.Value\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensem\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgnc\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+entre\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+refse\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+chrom\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+start\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+end\_p\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+descr\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+logFC\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+AveExpr\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+t\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+P.Value\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ZNF561\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+93134\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+19\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+9604680\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+9621236\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+zinc \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.668\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4.194\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.524\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1.120\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TCF3\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6929\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+19\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1609291\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1652615\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+trans\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-0.36\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+7.500\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-6.29\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1.935\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+UBE4A\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+9354\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NM\_00\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+11\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+11835\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+11839\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ubiqu\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.309\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.755\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.074\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3.266\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ATP7A\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+538\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+X\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+77910690\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+78050395\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ATPas\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.494\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3.524\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.094\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3.112\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TMIGD2\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+126259\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NM\_00\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+19\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4292227\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4302431\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+trans\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-0.39\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.504\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-5.93\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4.615\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TRAF4\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+9618\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NM\_00\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+17\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+28744011\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+28750956\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TNF r\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-0.42\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+8.484\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-5.88\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.132\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+FAM3A\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+60343\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NM\_00\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+X\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+15450\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+15451\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+FAM3 \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-0.30\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4.948\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-5.87\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.324\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RELT\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+84957\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NM\_15\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+11\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+73376399\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+73397474\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RELT \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-0.33\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.709\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-5.83\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.780\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NUP58\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+9818\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+25301524\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+25365390\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+nucle\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.349\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.040\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.791\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.476\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+IRF2BPL\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+64207\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NM\_02\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+14\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+77024543\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+77028708\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+inter\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-0.44\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.989\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-5.73\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+7.496\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ZNF512B\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+57473\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NM\_02\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+20\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+63956704\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+63969930\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+zinc \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-0.33\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+5.529\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-5.66\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+8.722\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ZNF486\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+90649\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NM\_05\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+19\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+20167214\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+20200488\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+zinc \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0.776\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1.344\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.171\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2.586\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+EPS8L2\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+64787\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+11\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+694438\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+727727\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+EPS8 \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-1.00\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+6.161\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-5.61\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+9.891\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CSNK1E\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1454\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NM\_15\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+22\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+38290691\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+38318084\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+casei\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-0.31\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+7.149\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-5.58\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1.082\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CORO1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+16\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+30183505\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+30184957\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CORO1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-0.43\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3.254\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+-5.61\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+9.851\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{gather}{%
+\subsubsection{Gather}\label{gather}}
+
+Figure \ref{fig:all-DEGs-of-GSE-datasets}为图all DEGs of GSE datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/all-DEGs-of-GSE-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/all-DEGs-of-GSE-datasets.pdf}
+\caption{All DEGs of GSE datasets}\label{fig:all-DEGs-of-GSE-datasets}
+\end{center}
+
+\hypertarget{ppi-stringdb}{%
+\subsection{PPI STRINGdb}\label{ppi-stringdb}}
+
+Figure \ref{fig:intersection-of-SS-DEGs-with-XMGJ-targets}为图intersection of SS DEGs with XMGJ targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-SS-DEGs-with-XMGJ-targets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-SS-DEGs-with-XMGJ-targets.pdf}
+\caption{Intersection of SS DEGs with XMGJ targets}\label{fig:intersection-of-SS-DEGs-with-XMGJ-targets}
+\end{center}
+
+Figure \ref{fig:PPI-networks}为图PPI networks概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-networks.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPI-networks.pdf}
+\caption{PPI networks}\label{fig:PPI-networks}
+\end{center}
+
+Figure \ref{fig:MCC-top30}为图MCC top30概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MCC-top30.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MCC-top30.pdf}
+\caption{MCC top30}\label{fig:MCC-top30}
+\end{center}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+Figure \ref{fig:KEGG-Enrichment}为图KEGG Enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/KEGG-Enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-Enrichment.pdf}
+\caption{KEGG Enrichment}\label{fig:KEGG-Enrichment}
+\end{center}
+
+Table \ref{tab:tables-of-KEGG-Enrichment}为表格tables of KEGG Enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-KEGG-Enrichment.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有233行9列，以下预览的表格可能省略部分数据；表格含有233个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:tables-of-KEGG-Enrichment}Tables of KEGG Enrichment}\tabularnewline
+\toprule
+ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa04062 & Chemo\ldots{} & 24/118 & 192/8622 & 5.925\ldots{} & 1.380\ldots{} & 5.613\ldots{} & 5291/\ldots{} & 24\tabularnewline
+hsa05163 & Human\ldots{} & 24/118 & 225/8622 & 2.350\ldots{} & 2.738\ldots{} & 1.113\ldots{} & 5291/\ldots{} & 24\tabularnewline
+hsa05167 & Kapos\ldots{} & 22/118 & 194/8622 & 1.091\ldots{} & 8.475\ldots{} & 3.446\ldots{} & 5291/\ldots{} & 22\tabularnewline
+hsa04620 & Toll-\ldots{} & 16/118 & 108/8622 & 9.575\ldots{} & 5.577\ldots{} & 2.267\ldots{} & 5291/\ldots{} & 16\tabularnewline
+hsa05203 & Viral\ldots{} & 19/118 & 204/8622 & 2.918\ldots{} & 1.360\ldots{} & 5.530\ldots{} & 5291/\ldots{} & 19\tabularnewline
+hsa04061 & Viral\ldots{} & 14/118 & 100/8622 & 6.090\ldots{} & 2.365\ldots{} & 9.616\ldots{} & 6387/\ldots{} & 14\tabularnewline
+hsa04064 & NF-ka\ldots{} & 14/118 & 104/8622 & 1.047\ldots{} & 3.485\ldots{} & 1.417\ldots{} & 695/3\ldots{} & 14\tabularnewline
+hsa05171 & Coron\ldots{} & 19/118 & 232/8622 & 2.736\ldots{} & 7.971\ldots{} & 3.241\ldots{} & 5291/\ldots{} & 19\tabularnewline
+hsa04380 & Osteo\ldots{} & 15/118 & 135/8622 & 3.498\ldots{} & 9.056\ldots{} & 3.682\ldots{} & 695/2\ldots{} & 15\tabularnewline
+hsa05170 & Human\ldots{} & 18/118 & 212/8622 & 4.708\ldots{} & 1.082\ldots{} & 4.400\ldots{} & 5291/\ldots{} & 18\tabularnewline
+hsa05161 & Hepat\ldots{} & 16/118 & 162/8622 & 5.109\ldots{} & 1.082\ldots{} & 4.400\ldots{} & 5291/\ldots{} & 16\tabularnewline
+hsa05417 & Lipid\ldots{} & 18/118 & 215/8622 & 5.924\ldots{} & 1.150\ldots{} & 4.677\ldots{} & 5291/\ldots{} & 18\tabularnewline
+hsa05164 & Influ\ldots{} & 16/118 & 171/8622 & 1.142\ldots{} & 2.047\ldots{} & 8.325\ldots{} & 5291/\ldots{} & 16\tabularnewline
+hsa05169 & Epste\ldots{} & 17/118 & 202/8622 & 1.719\ldots{} & 2.861\ldots{} & 1.163\ldots{} & 695/5\ldots{} & 17\tabularnewline
+hsa05134 & Legio\ldots{} & 10/118 & 56/8622 & 3.289\ldots{} & 5.110\ldots{} & 2.077\ldots{} & 841/4\ldots{} & 10\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:GO-enrichment}为图GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GO-enrichment.pdf}
+\caption{GO enrichment}\label{fig:GO-enrichment}
+\end{center}
+
+`Tables of GO enrichment' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Tables-of-GO-enrichment})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Tables-of-GO-enrichment共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_BP.csv
+\item 2\_CC.csv
+\item 3\_MF.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+
+\hypertarget{mcc-top30-ux548c-chemokine-signaling-pathway}{%
+\subsection{MCC top30 和 Chemokine signaling pathway}\label{mcc-top30-ux548c-chemokine-signaling-pathway}}
+
+Figure \ref{fig:intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathway}为图intersection of MCC top30 and the hitted genes ofChemokine pathway概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathway.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathway.pdf}
+\caption{Intersection of MCC top30 and the hitted genes ofChemokine pathway}\label{fig:intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathway}
+\end{center}
+
+\hypertarget{xuanmai-ganju-ux9776ux5411-chemokine-signaling-pathway-ux6cbbux7597-sjogren-syndrome-ux7684ux6210ux5206}{%
+\subsection{Xuanmai Ganju 靶向 Chemokine signaling pathway 治疗 Sjogren syndrome 的成分}\label{xuanmai-ganju-ux9776ux5411-chemokine-signaling-pathway-ux6cbbux7597-sjogren-syndrome-ux7684ux6210ux5206}}
+
+Table \ref{tab:tables-of-components-of-XMGJ-targeting-Chemoking-signaling-for-treating-SS}为表格tables of components of XMGJ targeting Chemoking signaling for treating SS概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-components-of-XMGJ-targeting-Chemoking-signaling-for-treating-SS.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有68行9列，以下预览的表格可能省略部分数据；表格含有20个唯一`Ingredient.name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:tables-of-components-of-XMGJ-targeting-Chemoking-signaling-for-treating-SS}Tables of components of XMGJ targeting Chemoking signaling for treating SS}\tabularnewline
+\toprule
+Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & Targe\ldots\ldots5 & Targe\ldots\ldots6 & Datab\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & Targe\ldots\ldots5 & Targe\ldots\ldots6 & Datab\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endhead
+HBIN0\ldots{} & GAN CAO & 18bet\ldots{} & AJ-72\ldots{} & HBTAR\ldots{} & SRC & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR1 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR5 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR6 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR7 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCL8 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCR2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCL10 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCL9 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCL12 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCR4 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCR6 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & GNG2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & MAI DONG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR1 & NA & NA & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-HerbAHighThFang2021}{}%
+1. Fang, S. \emph{et al.} HERB: A high-throughput experiment- and reference-guided database of traditional chinese medicine. \emph{Nucleic Acids Research} \textbf{49}, D1197--D1206 (2021).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+2. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+3. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+4. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+\end{cslreferences}
+
+\end{document}
