@@ -33,4 +33,8 @@ cp("~/outline/lixiao/2023_09_13_pdb/results_touchPDB.zip", thedir(9))
 cp("~/outline/lixiao/2023_07_20_yuye/IN2023072801-3+销售：王双+客户：于骅+恶性肿瘤肌少症+2-3分.zip", thedir(9))
 writeLines("沈顺订单分为两部分，本月为第二部分。", "~/disk_sdb1/my_job/202309/ps.txt")
 
+cp("~/outline/lixiao/2023_10_05_xiaguolian/夏国连生信支持.zip", thedir(10))
+cp("~/outline/lixiao/2023_10_06_lunST/曹卓空间转录组.zip", thedir(10))
+cp("~/outline/lixiao/2023_10_18_revise/修改业务：2023041204-潘一伟&魏伦全.zip", thedir(10))
 
+# <http://192.168.18.99:8000/#shared-libs/lib/ad3a6679-47ad-48c9-9b7d-3d8604693669/%E9%BB%84%E7%A4%BC%E9%97%AF>

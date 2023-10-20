@@ -56,6 +56,11 @@ p.route
 
 # 材料和方法 {#methods}
 
+```{r}
+lite_cancer <- esearch.mj("cancer prediction")
+lite_cancer %>% select(.id, Title) %>% print(n = 100)
+```
+
 # 分析结果 {#results}
 
 # 结论 {#dis}
