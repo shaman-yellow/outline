@@ -110,12 +110,17 @@
 \subsection{修正内容}\label{ux4feeux6b63ux5185ux5bb9}}
 
 \begin{itemize}
+\tightlist
 \item
-  原文使用的是 TCMSP database \url{https://tcmspw.com/tcmsp.php} 检索复方成分数据和靶点数据，由于订单中不包含该部分原数据，所以该内容已全部重新分析。数据库修改为 HERB \url{http://herb.ac.cn/}\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{1}}。
+  原文使用的是 TCMSP database \url{https://tcmspw.com/tcmsp.php} 检索复方成分数据和靶点数据，由于订单中不包含该部分原数据，所以该内容已全部重新分析。数据库修改为 HERB\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{1}} (\url{http://herb.ac.cn/}) 。
 \item
-  GEO 数据的分析全部重修。原文未包含具体的数据库来源（GEO 编号），也未提供原始数据，因此重修。
+  GEO 数据的分析全部修正。
 \item
-  以上部分对应的图片全部重修。
+  以上部分对应的图片全部修正。
+\item
+  具体使用的方法可参考\ref{results} 中的文献引用。
+\item
+  需要修正的部分已在原文稿中高亮标注，需要改成本文档 \ref{results} 对应内容。
 \end{itemize}
 
 \hypertarget{introduction}{%
@@ -127,27 +132,66 @@
 \hypertarget{methods}{%
 \section{材料和方法}\label{methods}}
 
-数据来源，见 \ref{workflow}。
+数据来源为 GEO（\url{https://www.ncbi.nlm.nih.gov/geo/}），见 \ref{workflow}，主要有：
+
+\begin{itemize}
+\tightlist
+\item
+  GSE7451: Saliva
+\item
+  GSE40611: Parotid gland
+\item
+  GSE154926: Minor salivary glands
+\item
+  GSE135635: Plasmacytoid dendritic cells
+\end{itemize}
 
 方法：
 
 \begin{itemize}
 \tightlist
 \item
-  HERB\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{1}}
+  HERB\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{1}}，中药成分数据和靶点数据获取来源。
 \item
-  clusterProfiler\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}
+  clusterProfiler\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}，用于通路富集分析的R包。
 \item
-  STRINGdb\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{3}}
+  STRINGdb\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{3}} 用于构建 PPI 网络。
 \item
-  limma\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{4}}
+  limma\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{4}} 用于差异分析。
+\item
+  其他 R 包或 R 脚本用于分析计算或可视化。
 \end{itemize}
 
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
 
+\begin{itemize}
+\tightlist
+\item
+  从 HERB 网站获取 XMGJ 的成分数据（Tab. \ref{tab:Components-of-Herbs}）和成分对应的靶点数据（Tab. \ref{tab:Components-of-the-herbs-and-their-targets}，Fig. \ref{fig:intersection-of-all-targets}）\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{1}}。
+\item
+  以 4 个 GEO 数据集做差异分析\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{4}}（SS versus healthy control, \textbar log\textsubscript{2}(FC)\textbar{} \textgreater{} 0.3, p.adjust \textless{} 0.05）（Fig. \ref{fig:all-DEGs-of-GSE-datasets}）得到 4 个 DEGs 集。
+\item
+  取 4 个 DEGs 集的合集，将其与 XMGJ 的靶点取交集（Fig. \ref{fig:intersection-of-SS-DEGs-with-XMGJ-targets}）（设交集为 IntSets）。
+\item
+  将 IntSets 基因集构建 PPI 网络（Fig. \ref{fig:PPI-networks}）\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{3}}，以 MCC 算法筛选 top30 的基因（Fig. \ref{fig:MCC-top30}）\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{5}}。
+\item
+  将 IntSets 基因集做富集分析\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}，发现： KEGG 首要富集于 ``Chemokine signaling pathway''（Fig. \ref{fig:KEGG-Enrichment}）； GO 富集于 ``leukocyte migration'', ``chemokine binding'' 等机体免疫行为密切相关的通路（Fig. \ref{fig:GO-enrichment}）。KEGG 和 GO 富集分析结果一致，暗示了 XMGJ 治疗自身免疫性疾病 SS 的内在机制。
+\item
+  MCC top30 的基因与 Chemokine signaling pathway 富集的基因有 34\% 交集（Fig. \ref{fig:intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathway}），对应 14 个基因（\ref{mcc2chemo}）。
+\item
+  趋化因子（Chemokine）是参与多种生物活性的蛋白质，它们的重要作用包括梯度的形成和免疫细胞募集\textsuperscript{\protect\hyperlink{ref-TheChemokineLCecchi2023}{6},\protect\hyperlink{ref-ChemokineHeterBlanch2023}{7}}。
+\item
+  Chemokine signaling pathway （Fig. \ref{fig:The-hitted-genes-in-pathway-of-Chemokine-signaling}）可能是 XMGJ 治疗 SS 的关键通路，通过调控趋化因子相关的基因表达，调节趋化因子结合、趋化因子受体结合活性，缓解 SS 过程中的白细胞迁移、白细胞介导的免疫反应（见 GO 富集结果 Fig. \ref{fig:GO-enrichment}）；对应的基因（\ref{mcc2chemo}）。XMGJ 相应的成分有 32 个（Tab. \ref{tab:tables-of-components-of-XMGJ-targeting-Chemoking-signaling-for-treating-SS}）。
+\end{itemize}
+
+\textbf{注意：}
+新的生信分析结果可以和原稿中的实验内容形成相互补充（例如，实验部分的 XMGJ reduces inflammatory cell infiltration）。
+
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
+
+见 \ref{results}。
 
 \hypertarget{workflow}{%
 \section{附：分析流程}\label{workflow}}
@@ -162,7 +206,7 @@ Table \ref{tab:Herbs-information}为表格Herbs information概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/Herbs-information.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4行18列，以下预览的表格可能省略部分数据；表格含有4个唯一`Herb\_'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有8行18列，以下预览的表格可能省略部分数据；表格含有8个唯一`Herb\_'。
 \end{tcolorbox}
 \end{center}
 
@@ -177,9 +221,50 @@ Herb\_ & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Pro
 \midrule
 \endhead
 HERB0\ldots{} & GAN CAO & 甘草 & Root \ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung;\ldots{} & root \ldots{} & To re\ldots{} & 1. It\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & HUANG\ldots{} & 黄柏 & Amur \ldots{} & Phell\ldots{} & Cold;\ldots{} & Bladd\ldots{} & bark & To dr\ldots{} & Damp-\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & HUANG BO & 黄柏 & Phell\ldots{} & Corte\ldots{} & Cold;\ldots{} & Bladd\ldots{} & bark & 1. To\ldots{} & NA & NA & \ldots{}\tabularnewline
 HERB0\ldots{} & JIE GENG & 桔梗 & Platy\ldots{} & Radix\ldots{} & Mild;\ldots{} & Lung & root & To re\ldots{} & Cough\ldots{} & NA & \ldots{}\tabularnewline
 HERB0\ldots{} & MAI DONG & 麦冬 & Lirio\ldots{} & Ophio\ldots{} & Minor\ldots{} & Lung;\ldots{} & tuberoid & To no\ldots{} & Angin\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & TIAN \ldots{} & 天花粉 & Trich\ldots{} & Radix\ldots{} & Bitte\ldots{} & Lung;\ldots{} & root & To re\ldots{} & Febri\ldots{} & NA & \ldots{}\tabularnewline
 HERB0\ldots{} & XUAN \ldots{} & 玄参 & Figwo\ldots{} & Radix\ldots{} & Cold;\ldots{} & Lung;\ldots{} & root & To re\ldots{} & Heat \ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & ZHI MU & 知母 & rhizo\ldots{} & Rhizo\ldots{} & Cold;\ldots{} & Lung;\ldots{} & rhizome & To re\ldots{} & Diabe\ldots{} & NA & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:Components-of-Herbs}为表格Components of Herbs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Components-of-Herbs.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1242行4列，以下预览的表格可能省略部分数据；表格含有1127个唯一`Ingredient.name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:Components-of-Herbs}Components of Herbs}\tabularnewline
+\toprule
+herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4\tabularnewline
+\midrule
+\endhead
+HERB0\ldots{} & HBIN0\ldots{} & 11-de\ldots{} & 11-De\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 12-me\ldots{} & 12-me\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 1,3-d\ldots{} & 1,3-d\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 1,3-d\ldots{} & 1,3-d\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 1-(5-\ldots{} & (E)-1\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 18alp\ldots{} & J-008\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 18α-h\ldots{} & 18α-h\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 18bet\ldots{} & AJ-72\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 1-Met\ldots{} & AIDS-\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 1-Met\ldots{} & AIDS-\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & (1S,2\ldots{} & cyclo\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 21987\ldots{} & (1S,3\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 22β-a\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 2,2-D\ldots{} & EINEC\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 2-(3,\ldots{} & 2-(3,\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -200,7 +285,7 @@ Table \ref{tab:Components-of-the-herbs-and-their-targets}为表格Components of 
 
 \textbf{(对应文件为 \texttt{Figure+Table/Components-of-the-herbs-and-their-targets.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有6181行9列，以下预览的表格可能省略部分数据；表格含有715个唯一`Ingredient.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有11396行9列，以下预览的表格可能省略部分数据；表格含有1127个唯一`Ingredient.id'。
 \end{tcolorbox}
 \end{center}
 
@@ -214,9 +299,10 @@ Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & 
 Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & Targe\ldots\ldots5 & Targe\ldots\ldots6 & Datab\ldots{} & Paper.id & \ldots{}\tabularnewline
 \midrule
 \endhead
-HBIN0\ldots{} & GAN CAO & 11-de\ldots{} & 11-De\ldots{} & HBTAR\ldots{} & NR3C1 & NA & NA & \ldots{}\tabularnewline
-HBIN0\ldots{} & GAN CAO & 11-de\ldots{} & 11-De\ldots{} & HBTAR\ldots{} & AR & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & GAN CAO & 11-de\ldots{} & 11-De\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & TIAN \ldots{} & 1-(2-\ldots{} & BG014\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & GAN CAO & 12-me\ldots{} & 12-me\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & ZHI MU & 12-O-\ldots{} & 12-o-\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & AR & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & CDK2 & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & ESR1 & NA & NA & \ldots{}\tabularnewline
@@ -228,7 +314,6 @@ HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & CCNA2 
 HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & ESR2 & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & CCNA2 & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & CDK2 & NA & NA & \ldots{}\tabularnewline
-HBIN0\ldots{} & GAN CAO & 1,3-d\ldots{} & 1,3-d\ldots{} & HBTAR\ldots{} & ESR1 & NA & NA & \ldots{}\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -527,6 +612,12 @@ ENSG0\ldots{} & TNNI2 & 7136 & NM\_00\ldots{} & 11 & 1838981 & 1841680 & tropo\l
 
 \hypertarget{gse135635-rna-sequencing-in-primary-circulating-plasmacytoid-dendritic-cells-from-patients-with-pss-nss-and-hc.-two-cohorts-of-n31-each-are-included-discovery-and-replication-no-duplicates-samples}{%
 \subsubsection{GSE135635: RNA-sequencing in primary circulating plasmacytoid dendritic cells from patients with pSS, nSS, and HC. Two cohorts of n=31 each are included (discovery and replication), no duplicates samples}\label{gse135635-rna-sequencing-in-primary-circulating-plasmacytoid-dendritic-cells-from-patients-with-pss-nss-and-hc.-two-cohorts-of-n31-each-are-included-discovery-and-replication-no-duplicates-samples}}
+
+\begin{itemize}
+\tightlist
+\item
+  plasmacytoid dendritic cells
+\end{itemize}
 
 Table \ref{tab:metadata-of-used-samples-of-GSE135635}为表格metadata of used samples of GSE135635概览。
 
@@ -1143,7 +1234,7 @@ Table \ref{tab:tables-of-KEGG-Enrichment}为表格tables of KEGG Enrichment概�
 
 \textbf{(对应文件为 \texttt{Figure+Table/tables-of-KEGG-Enrichment.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有233行9列，以下预览的表格可能省略部分数据；表格含有233个唯一`ID'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有264行9列，以下预览的表格可能省略部分数据；表格含有264个唯一`ID'。
 \end{tcolorbox}
 \end{center}
 
@@ -1157,21 +1248,21 @@ ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & gene
 ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
 \midrule
 \endhead
-hsa04062 & Chemo\ldots{} & 24/118 & 192/8622 & 5.925\ldots{} & 1.380\ldots{} & 5.613\ldots{} & 5291/\ldots{} & 24\tabularnewline
-hsa05163 & Human\ldots{} & 24/118 & 225/8622 & 2.350\ldots{} & 2.738\ldots{} & 1.113\ldots{} & 5291/\ldots{} & 24\tabularnewline
-hsa05167 & Kapos\ldots{} & 22/118 & 194/8622 & 1.091\ldots{} & 8.475\ldots{} & 3.446\ldots{} & 5291/\ldots{} & 22\tabularnewline
-hsa04620 & Toll-\ldots{} & 16/118 & 108/8622 & 9.575\ldots{} & 5.577\ldots{} & 2.267\ldots{} & 5291/\ldots{} & 16\tabularnewline
-hsa05203 & Viral\ldots{} & 19/118 & 204/8622 & 2.918\ldots{} & 1.360\ldots{} & 5.530\ldots{} & 5291/\ldots{} & 19\tabularnewline
-hsa04061 & Viral\ldots{} & 14/118 & 100/8622 & 6.090\ldots{} & 2.365\ldots{} & 9.616\ldots{} & 6387/\ldots{} & 14\tabularnewline
-hsa04064 & NF-ka\ldots{} & 14/118 & 104/8622 & 1.047\ldots{} & 3.485\ldots{} & 1.417\ldots{} & 695/3\ldots{} & 14\tabularnewline
-hsa05171 & Coron\ldots{} & 19/118 & 232/8622 & 2.736\ldots{} & 7.971\ldots{} & 3.241\ldots{} & 5291/\ldots{} & 19\tabularnewline
-hsa04380 & Osteo\ldots{} & 15/118 & 135/8622 & 3.498\ldots{} & 9.056\ldots{} & 3.682\ldots{} & 695/2\ldots{} & 15\tabularnewline
-hsa05170 & Human\ldots{} & 18/118 & 212/8622 & 4.708\ldots{} & 1.082\ldots{} & 4.400\ldots{} & 5291/\ldots{} & 18\tabularnewline
-hsa05161 & Hepat\ldots{} & 16/118 & 162/8622 & 5.109\ldots{} & 1.082\ldots{} & 4.400\ldots{} & 5291/\ldots{} & 16\tabularnewline
-hsa05417 & Lipid\ldots{} & 18/118 & 215/8622 & 5.924\ldots{} & 1.150\ldots{} & 4.677\ldots{} & 5291/\ldots{} & 18\tabularnewline
-hsa05164 & Influ\ldots{} & 16/118 & 171/8622 & 1.142\ldots{} & 2.047\ldots{} & 8.325\ldots{} & 5291/\ldots{} & 16\tabularnewline
-hsa05169 & Epste\ldots{} & 17/118 & 202/8622 & 1.719\ldots{} & 2.861\ldots{} & 1.163\ldots{} & 695/5\ldots{} & 17\tabularnewline
-hsa05134 & Legio\ldots{} & 10/118 & 56/8622 & 3.289\ldots{} & 5.110\ldots{} & 2.077\ldots{} & 841/4\ldots{} & 10\tabularnewline
+hsa04062 & Chemo\ldots{} & 25/175 & 192/8622 & 7.337\ldots{} & 1.937\ldots{} & 1.042\ldots{} & 5291/\ldots{} & 25\tabularnewline
+hsa05163 & Human\ldots{} & 26/175 & 225/8622 & 3.907\ldots{} & 5.158\ldots{} & 2.776\ldots{} & 355/5\ldots{} & 26\tabularnewline
+hsa05167 & Kapos\ldots{} & 24/175 & 194/8622 & 7.590\ldots{} & 6.679\ldots{} & 3.595\ldots{} & 355/5\ldots{} & 24\tabularnewline
+hsa04620 & Toll-\ldots{} & 17/175 & 108/8622 & 4.281\ldots{} & 2.825\ldots{} & 1.521\ldots{} & 5291/\ldots{} & 17\tabularnewline
+hsa04061 & Viral\ldots{} & 15/175 & 100/8622 & 1.265\ldots{} & 6.187\ldots{} & 3.330\ldots{} & 6387/\ldots{} & 15\tabularnewline
+hsa05164 & Influ\ldots{} & 19/175 & 171/8622 & 1.406\ldots{} & 6.187\ldots{} & 3.330\ldots{} & 355/5\ldots{} & 19\tabularnewline
+hsa05142 & Chaga\ldots{} & 15/175 & 102/8622 & 1.682\ldots{} & 6.345\ldots{} & 3.415\ldots{} & 355/5\ldots{} & 15\tabularnewline
+hsa04064 & NF-ka\ldots{} & 15/175 & 104/8622 & 2.221\ldots{} & 7.330\ldots{} & 3.946\ldots{} & 695/3\ldots{} & 15\tabularnewline
+hsa05161 & Hepat\ldots{} & 18/175 & 162/8622 & 3.913\ldots{} & 1.147\ldots{} & 6.178\ldots{} & 355/5\ldots{} & 18\tabularnewline
+hsa04668 & TNF s\ldots{} & 15/175 & 114/8622 & 8.135\ldots{} & 2.147\ldots{} & 1.156\ldots{} & 330/3\ldots{} & 15\tabularnewline
+hsa05170 & Human\ldots{} & 20/175 & 212/8622 & 9.000\ldots{} & 2.160\ldots{} & 1.162\ldots{} & 355/5\ldots{} & 20\tabularnewline
+hsa05417 & Lipid\ldots{} & 20/175 & 215/8622 & 1.146\ldots{} & 2.521\ldots{} & 1.357\ldots{} & 355/5\ldots{} & 20\tabularnewline
+hsa05146 & Amoeb\ldots{} & 14/175 & 102/8622 & 1.503\ldots{} & 3.053\ldots{} & 1.643\ldots{} & 5291/\ldots{} & 14\tabularnewline
+hsa04625 & C-typ\ldots{} & 14/175 & 104/8622 & 1.941\ldots{} & 3.660\ldots{} & 1.970\ldots{} & 5291/\ldots{} & 14\tabularnewline
+hsa05169 & Epste\ldots{} & 19/175 & 202/8622 & 2.280\ldots{} & 4.012\ldots{} & 2.160\ldots{} & 695/3\ldots{} & 19\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -1199,10 +1290,20 @@ Figure \ref{fig:GO-enrichment}为图GO enrichment概览。
 \end{enumerate}\end{tcolorbox}
 \end{center}
 
+Figure \ref{fig:The-hitted-genes-in-pathway-of-Chemokine-signaling}为图The hitted genes in pathway of Chemokine signaling概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04062.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2023-10-20_14_48_59.811576/hsa04062.pathview.png}
+\caption{The hitted genes in pathway of Chemokine signaling}\label{fig:The-hitted-genes-in-pathway-of-Chemokine-signaling}
+\end{center}
+
 The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
 
-\hypertarget{mcc-top30-ux548c-chemokine-signaling-pathway}{%
-\subsection{MCC top30 和 Chemokine signaling pathway}\label{mcc-top30-ux548c-chemokine-signaling-pathway}}
+\hypertarget{mcc2chemo}{%
+\subsection{MCC top30 和 Chemokine signaling pathway}\label{mcc2chemo}}
 
 Figure \ref{fig:intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathway}为图intersection of MCC top30 and the hitted genes ofChemokine pathway概览。
 
@@ -1214,6 +1315,20 @@ Figure \ref{fig:intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathw
 \caption{Intersection of MCC top30 and the hitted genes ofChemokine pathway}\label{fig:intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathway}
 \end{center}
 
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    PIK3CB, PIK3CG, CXCL12, ITK, STAT1, CXCR4, CXCL9, XCL1,
+CCR5, CXCL10, PIK3CD, SRC, LYN, CCL5
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
 \hypertarget{xuanmai-ganju-ux9776ux5411-chemokine-signaling-pathway-ux6cbbux7597-sjogren-syndrome-ux7684ux6210ux5206}{%
 \subsection{Xuanmai Ganju 靶向 Chemokine signaling pathway 治疗 Sjogren syndrome 的成分}\label{xuanmai-ganju-ux9776ux5411-chemokine-signaling-pathway-ux6cbbux7597-sjogren-syndrome-ux7684ux6210ux5206}}
 
@@ -1221,7 +1336,7 @@ Table \ref{tab:tables-of-components-of-XMGJ-targeting-Chemoking-signaling-for-tr
 
 \textbf{(对应文件为 \texttt{Figure+Table/tables-of-components-of-XMGJ-targeting-Chemoking-signaling-for-treating-SS.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有68行9列，以下预览的表格可能省略部分数据；表格含有20个唯一`Ingredient.name'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有121行9列，以下预览的表格可能省略部分数据；表格含有32个唯一`Ingredient.name'。
 \end{tcolorbox}
 \end{center}
 
@@ -1236,6 +1351,8 @@ Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & 
 \midrule
 \endhead
 HBIN0\ldots{} & GAN CAO & 18bet\ldots{} & AJ-72\ldots{} & HBTAR\ldots{} & SRC & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & TIAN \ldots{} & acena\ldots{} & 1Z25C\ldots{} & HBTAR\ldots{} & CXCL8 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & HUANG\ldots{} & aceti\ldots{} & AI3-0\ldots{} & HBTAR\ldots{} & SRC & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR1 & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR5 & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR6 & NA & NA & \ldots{}\tabularnewline
@@ -1248,8 +1365,6 @@ HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCL12 & NA & NA
 HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCR4 & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CXCR6 & NA & NA & \ldots{}\tabularnewline
 HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & GNG2 & NA & NA & \ldots{}\tabularnewline
-HBIN0\ldots{} & JIE GENG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR2 & NA & NA & \ldots{}\tabularnewline
-HBIN0\ldots{} & MAI DONG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR1 & NA & NA & \ldots{}\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -1271,6 +1386,15 @@ HBIN0\ldots{} & MAI DONG & adeni\ldots{} & NA & HBTAR\ldots{} & CCR1 & NA & NA &
 
 \leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
 4. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+5. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+
+\leavevmode\hypertarget{ref-TheChemokineLCecchi2023}{}%
+6. Cecchinato, V., Martini, V., Pirani, E., Ghovehoud, E. \& Uguccioni, M. The chemokine landscape: One system multiple shades. \emph{Frontiers in immunology} \textbf{14}, (2023).
+
+\leavevmode\hypertarget{ref-ChemokineHeterBlanch2023}{}%
+7. Blanchet, X., Weber, C. \& Hundelshausen, P. von. Chemokine heteromers and their impact on cellular function-a conceptual framework. \emph{International journal of molecular sciences} \textbf{24}, (2023).
 \end{cslreferences}
 
 \end{document}

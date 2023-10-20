@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  18 OCT 2023 12:01
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  20 OCT 2023 12:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1184,6 +1184,31 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) (./output.toc
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 9.70718pt on input line 1.
+
+Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
+(fontspec)                Script "CJK".
+
+
+Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
+
+
+Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
+
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 6.
+
+Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
+(fontspec)             'FandolFang-Regular' with options
+(fontspec)             [Scale=MatchLowercase,Script={CJK},Extension={.otf}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->s*[0.9694292301336638]"[FandolFang-Regular.otf]/OT:la
+nguage=dflt;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
 (Font)              scaled to size 10.0pt on input line 7.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
@@ -1218,34 +1243,11 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 94.
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <14.4> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 157.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 11.64862pt on input line 160.
 [3]
-
-Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
-(fontspec)                Script "CJK".
-
-
-Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
-
-
-Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
-
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 165.
-
-Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
-(fontspec)             'FandolFang-Regular' with options
-(fontspec)             [Scale=MatchLowercase,Script={CJK},Extension={.otf}].
-(fontspec)              
-(fontspec)              This font family consists of the following NFSS
-(fontspec)             series/shapes:
-(fontspec)              
-(fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <->s*[0.9694292301336638]"[FandolFang-Regular.otf]/OT:la
-nguage=dflt;"
-(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
-
 File: Figure+Table/spatial-sample-QC.pdf Graphic file (type pdf)
 <use Figure+Table/spatial-sample-QC.pdf>
 
@@ -1476,40 +1478,48 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 See the caption package documentation for explanation.
 
 [28] [29]
+File: Figure+Table/Tissue-Cancer-2-cell-types-SCSA.pdf Graphic file (type pdf)
+<use Figure+Table/Tissue-Cancer-2-cell-types-SCSA.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 848.
+See the caption package documentation for explanation.
+
+[30]
 File: Figure+Table/extra-QC.pdf Graphic file (type pdf)
 <use Figure+Table/extra-QC.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 851.
+(caption)                particular \caption on input line 901.
 See the caption package documentation for explanation.
 
 File: Figure+Table/extra-SCSA-annotation.pdf Graphic file (type pdf)
 <use Figure+Table/extra-SCSA-annotation.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 861.
+(caption)                particular \caption on input line 911.
 See the caption package documentation for explanation.
 
-[30]
+[31]
 File: figs/copykat_para_cancer.png Graphic file (type bmp)
 <figs/copykat_para_cancer.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 876.
+(caption)                particular \caption on input line 926.
 See the caption package documentation for explanation.
 
-[31] [32] (./output.aux)
+[32] [33] (./output.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 31433 strings out of 476191
- 652768 string characters out of 5812072
- 1085883 words of memory out of 5000000
- 51631 multiletter control sequences out of 15000+600000
- 476340 words of font info for 92 fonts, out of 8000000 for 9000
+ 31451 strings out of 476191
+ 653377 string characters out of 5812072
+ 1086259 words of memory out of 5000000
+ 51647 multiletter control sequences out of 15000+600000
+ 476348 words of font info for 93 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,9n,121p,1003b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,9n,126p,1003b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (32 pages).
+Output written on output.pdf (33 pages).

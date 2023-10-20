@@ -29,12 +29,11 @@ set_index()
 ## 修正内容
 
 - 原文使用的是 TCMSP database <https://tcmspw.com/tcmsp.php> 检索复方成分数据和靶点数据，由于订单中不包含该部分原数据，所以该内容已全部重新分析。数据库修改为 HERB `r hb@cite` (<http://herb.ac.cn/>) 。
-
-- GEO 数据的分析全部修正。原文未包含具体的数据库来源（GEO 编号），也未提供原始数据，因此需修正。
-
+- GEO 数据的分析全部修正。
 - 以上部分对应的图片全部修正。
-
+- 具体使用的方法可参考\@ref(results) 中的文献引用。
 - 需要修正的部分已在原文稿中高亮标注，需要改成本文档 \@ref(results) 对应内容。
+
 
 # 前言 {#introduction}
 
@@ -54,30 +53,34 @@ p.route <- flowChart(route, 1.1, 1)
 
 # 材料和方法 {#methods}
 
-数据来源，见 \@ref(workflow)，主要有：
+数据来源为 GEO（<https://www.ncbi.nlm.nih.gov/geo/>），见 \@ref(workflow)，主要有：
 
-- GSE7451
-- GSE40611
-- GSE154926
-- GSE135635
+- GSE7451: Saliva
+- GSE40611: Parotid gland
+- GSE154926: Minor salivary glands
+- GSE135635: Plasmacytoid dendritic cells
 
 方法：
 
-- HERB `r hb@cite`
-- clusterProfiler `r en.tpss@cite`
-- STRINGdb `r sdb@cite`
-- limma `r lm@cite`
+- HERB `r hb@cite`，中药成分数据和靶点数据获取来源。
+- clusterProfiler `r en.tpss@cite`，用于通路富集分析的R包。
+- STRINGdb `r sdb@cite` 用于构建 PPI 网络。
+- limma `r lm@cite` 用于差异分析。
+- 其他 R 包或 R 脚本用于分析计算或可视化。
 
 # 分析结果 {#results}
 
-- 从 HERB 网站获取 XMGJ 的成分数据和成分对应的靶点数据（对应）`r hb@cite`。
-- 以 4 个 GEO 数据集做差异分析`r lm@cite`（SS versus healthy control, |log~2~(FC)| &gt; 0.3, p.adjust &lt; 0.05）（对应）得到 4 个 DEGs 集。
-- 取 4 个 DEGs 集的合集，将其与 XMGJ 的靶点取交集（对应）（设交集为 IntSets）。
-- 将 IntSets 基因集构建 PPI 网络`r sdb@cite`，以 MCC 算法筛选 top30 的基因[@CytohubbaIdenChin2014]。
-- 将 IntSets 基因集做富集分析`r en.tpss@cite`，发现： KEGG 富集于 ； GO 富集于。KEGG 和 GO 富集分析结果一致，暗示了 XMGJ 治疗自身免疫性疾病 SS 的内在机制。
-- MCC top30 的基因与 Chemokine signaling pathway 富集的基因有 35% 交集，对应 14 个基因（\@ref(mcc2chemo)）。
-- Chemokine signaling pathway 可能是 XMGJ 治疗 SS 的关键通路，对应的基因（\@ref(mcc2chemo)），XMGJ 相应的成分有 `r colSum(res.dedup$Ingredient.name)` 个。
+- 从 HERB 网站获取 XMGJ 的成分数据（Tab. \@ref(tab:Components-of-Herbs)）和成分对应的靶点数据（Tab. \@ref(tab:Components-of-the-herbs-and-their-targets)，Fig. \@ref(fig:intersection-of-all-targets)）`r hb@cite`。
+- 以 4 个 GEO 数据集做差异分析`r lm@cite`（SS versus healthy control, |log~2~(FC)| &gt; 0.3, p.adjust &lt; 0.05）（Fig. \@ref(fig:all-DEGs-of-GSE-datasets)）得到 4 个 DEGs 集。
+- 取 4 个 DEGs 集的合集，将其与 XMGJ 的靶点取交集（Fig. \@ref(fig:intersection-of-SS-DEGs-with-XMGJ-targets)）（设交集为 IntSets）。
+- 将 IntSets 基因集构建 PPI 网络（Fig. \@ref(fig:PPI-networks)）`r sdb@cite`，以 MCC 算法筛选 top30 的基因（Fig. \@ref(fig:MCC-top30)）[@CytohubbaIdenChin2014]。
+- 将 IntSets 基因集做富集分析`r en.tpss@cite`，发现： KEGG 首要富集于 "Chemokine signaling pathway"（Fig. \@ref(fig:KEGG-Enrichment)）； GO 富集于 "leukocyte migration", "chemokine binding" 等机体免疫行为密切相关的通路（Fig. \@ref(fig:GO-enrichment)）。KEGG 和 GO 富集分析结果一致，暗示了 XMGJ 治疗自身免疫性疾病 SS 的内在机制。
+- MCC top30 的基因与 Chemokine signaling pathway 富集的基因有 34% 交集（Fig. \@ref(fig:intersection-of-MCC-top30-and-the-hitted-genes-ofChemokine-pathway)），对应 14 个基因（\@ref(mcc2chemo)）。
+- 趋化因子（Chemokine）是参与多种生物活性的蛋白质，它们的重要作用包括梯度的形成和免疫细胞募集[@TheChemokineLCecchi2023; @ChemokineHeterBlanch2023]。
+- Chemokine signaling pathway （Fig. \@ref(fig:The-hitted-genes-in-pathway-of-Chemokine-signaling)）可能是 XMGJ 治疗 SS 的关键通路，通过调控趋化因子相关的基因表达，调节趋化因子结合、趋化因子受体结合活性，缓解 SS 过程中的白细胞迁移、白细胞介导的免疫反应（见 GO 富集结果 Fig. \@ref(fig:GO-enrichment)）；对应的基因（\@ref(mcc2chemo)）。XMGJ 相应的成分有 `r colSum(res.dedup$Ingredient.name)` 个（Tab. \@ref(tab:tables-of-components-of-XMGJ-targeting-Chemoking-signaling-for-treating-SS)）。
 
+**注意：**
+新的生信分析结果可以和原稿中的实验内容形成相互补充（例如，实验部分的 XMGJ reduces inflammatory cell infiltration）。
 
 # 结论 {#dis}
 
@@ -102,6 +105,11 @@ autor(hb@params$herbs_info)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
+#| Components-of-Herbs
+autor(hb@tables$step1$herbs_compounds, key = "Ingredient.name")
+```
+
+```{r eval = T, echo = F, results = "asis"}
 #| intersection-of-all-compounds
 autor(hb@plots$step3$p.herbs_compounds)
 ```
@@ -115,7 +123,7 @@ autor(hb@params$easyRead)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| intersection-of-all-targets
-autor(hb@plots$step3$p.herbs_targets)
+autor(wrap(hb@plots$step3$p.herbs_targets, 11, 6))
 ```
 
 ## GEO 数据分析
@@ -258,6 +266,8 @@ en@plots$step1$p.kegg$ids
 
 ### GSE135635: RNA-sequencing in primary circulating plasmacytoid dendritic cells from patients with pSS, nSS, and HC. Two cohorts of n=31 each are included (discovery and replication), no duplicates samples
 
+- plasmacytoid dendritic cells
+
 ```{r eval = T, echo = F, results = "asis"}
 #| metadata-of-used-samples-of-GSE135635
 autor(as_tibble(lm6@params$normed_data$targets), key = "group")
@@ -364,6 +374,11 @@ autor(en.tpss@plots$step1$p.go$ids)
 ```{r eval = T, echo = F, results = "asis"}
 #| Tables-of-GO-enrichment
 autor(en.tpss@tables$step1$res.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| The-hitted-genes-in-pathway-of-Chemokine-signaling
+autor(en.tpss@plots$step2$p.pathviews$hsa04062)
 ```
 
 The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).

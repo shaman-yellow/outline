@@ -92,7 +92,7 @@ p.route <- flowChart(route, 1.1, 1)
 
 见 \@ref(results)。
 
-# 附：分析流程（癌组织切片） {#workflow1}
+# 附：分析流程（癌组织切片 `Cancer_1`） {#workflow1}
 
 ## ST 数据预处理
 
@@ -535,7 +535,40 @@ st_cancer <- clear(st_cancer)
 st_cancer.re <- clear(st_cancer.re)
 ```
 
-# 附：分析流程（癌旁组织切片） {#workflow2}
+# 附：分析流程（癌组织切片 `Cancer_2`） {#workflow2}
+
+
+```{r}
+stc2 <- job_seuratSp(metadata$target[[2]])
+stc2 <- step1(stc2)
+stc2@plots$step1$p.qc
+stc2 <- step2(stc2, 1, 7000, max.percent.mt = 30)
+stc2@plots$step2$p.pca_rank
+stc2 <- step3(stc2, 1:15, .8)
+stc2@step <- 4L
+stc2 <- step5(stc2, 5)
+stc2 <- step6(stc2, "Lung")
+stc2@params$scsa_log
+stc2@plots$step3$p.spatial_cluster
+vis(stc2, "scsa_cell")
+
+markers <- stc2@tables$step5$all_markers
+meta.data <- distinct(stc2@object@meta.data, seurat_clusters, scsa_cell)
+markers.scsa <- map(markers, "cluster", meta.data, "seurat_clusters", "scsa_cell")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Tissue-Cancer-2-cell-types-SCSA
+autor(vis(stc2, group.by = "scsa_cell"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Tissue-Cancer-2-all-markers
+autor(markers.scsa)
+```
+
+
+# 附：分析流程（癌旁组织切片） {#workflow3}
 
 ## Clustering and annotation
 
