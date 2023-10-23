@@ -108,7 +108,7 @@ autor("./Figure+Table/fig1.pdf")
 
 ## TCGA 临床样本的泛型化疗差异分析 {#tcgaDiff}
 
-为了从个体水平探究化疗对于癌症转录水平上的影响，从 TCGA 数据库获取结肠癌（READ）和直肠癌（ROAD）转录组数据以及相应的临床数据，根据是否药物化疗进行分组。TCGA-READ 共包含 `r nrow(lm.tc1@params$normed_data$targets)` 个患者的数据（Tab. \@ref(tab:READ-clinical-data)），其化疗分布占比见 Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy)；TCGA-COAD 共包含 `r nrow(lm.tc2@params$normed_data$targets)` 个患者的数据（Tab. \@ref(tab:COAD-clinical-data)），其化疗分布占比见 Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy)c。分别将两批数据去除未记录是否化疗的样本后，标准化数据后，以未化疗组和化疗组进行差异分析（Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy)b 和 d），供后续使用。需要注意的是，该 TCGA 的临床数据未记录患者的用药种类、周期等信息，相对于细胞层面的差异分析，更具不稳定性，但也更贴近实际化疗情形。筛选所得的差异基因（p-value &lt; 0.05, |log2(FC)| &gt; 0.3）数见 Fig. \@ref(fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway)a。
+为了从个体水平探究化疗对于癌症转录水平上的影响，从 TCGA 数据库获取结肠癌（READ）和直肠癌（COAD）转录组数据以及相应的临床数据，根据是否药物化疗进行分组。TCGA-READ 共包含 `r nrow(lm.tc1@params$normed_data$targets)` 个患者的数据（Tab. \@ref(tab:READ-clinical-data)），其化疗分布占比见 Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy)；TCGA-COAD 共包含 `r nrow(lm.tc2@params$normed_data$targets)` 个患者的数据（Tab. \@ref(tab:COAD-clinical-data)），其化疗分布占比见 Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy)c。分别将两批数据去除未记录是否化疗的样本后，标准化数据后，以未化疗组和化疗组进行差异分析（Fig. \@ref(fig:MAIN-DEGs-obtained-from-two-TCGA-project-datasets-about-colorectal-chemotherapy)b 和 d），供后续使用。需要注意的是，该 TCGA 的临床数据未记录患者的用药种类、周期等信息，相对于细胞层面的差异分析，更具不稳定性，但也更贴近实际化疗情形。筛选所得的差异基因（p-value &lt; 0.05, |log2(FC)| &gt; 0.3）数见 Fig. \@ref(fig:MAIN-The-intersected-genes-enriched-in-mitochondrial-and-autophagy-related-pathway)a。
 
 ```{r}
 fig2 <- cl(
@@ -223,7 +223,7 @@ autor(as_tibble(lm1@params$normed_data$targets), key = "group")
 
 ```{r eval = T, echo = F, results = "asis"}
 #| DEGs-in-different-cell-types-with-chemotherapy-or-not-GSE142340
-autor(wrap(p.lm1_upsets, 14))
+autor(wrap(p.lm1_upsets, 17, 7))
 ```
 
 ```{r}
@@ -264,9 +264,15 @@ lm1_tops <- lapply(lm1@tables$step2$tops,
 
 names(lm1_tops) %<>% gs(" - .*$", "")
 p.lm1_upsets <- new_upset(lst = lm1_tops, trunc = NULL)
+p.lm1_upsets
 
 lm1_ins <- ins(lst = lm1_tops)
 lm1_ins
+
+lapply(lm1_tops,
+  function(x) {
+    all(lm1_ins %in% x)
+  })
 ```
 
 ### GSE153412: radio-chemoresistance in colorectal cancer cell lines

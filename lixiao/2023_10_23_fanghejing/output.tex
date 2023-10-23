@@ -1,0 +1,401 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+
+\title{Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\begin{itemize}
+\tightlist
+\item
+  药物成分，Tab. \ref{tab:Components-of-Herbs}
+\item
+  药物-成分-靶点，Fig. \ref{fig:Herbs-compounds-and-targets}, Tab. \ref{tab:tables-of-Herbs-compounds-and-targets}
+\item
+  IgA 肾炎相关基因，Fig. \ref{fig:DEGs-of-GSE175759}, Tab. \ref{tab:tables-of-DEGs-of-GSE175759}
+\item
+  靶点-IgA肾炎相关基因（交集），Fig. \ref{fig:intersection-of-IgAN-DEGs-with-herbs-targets}
+\item
+  治疗肾炎相关成分，Tab. \ref{tab:relative-compounds-of-Herbs-that-treating-IgAN}
+\item
+  PPI 网络，Fig. \ref{fig:PPI-networks}, Fig. \ref{fig:MCC-top30}
+\item
+  \ldots{}
+\end{itemize}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux6210ux5206ux548cux9776ux70b9}{%
+\subsection{成分和靶点}\label{ux6210ux5206ux548cux9776ux70b9}}
+
+\hypertarget{ux6210ux5206ux767dux8305ux6839ux548cux738bux4e0dux7559ux884cux5b50}{%
+\subsubsection{成分（白茅根和王不留行子）}\label{ux6210ux5206ux767dux8305ux6839ux548cux738bux4e0dux7559ux884cux5b50}}
+
+Table \ref{tab:Herbs-information}为表格Herbs information概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Herbs-information.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2行18列，以下预览的表格可能省略部分数据；表格含有2个唯一`Herb\_'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllll@{}}
+\caption{\label{tab:Herbs-information}Herbs information}\tabularnewline
+\toprule
+Herb\_ & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Prope\ldots{} & Merid\ldots{} & UsePart & Function & Indic\ldots{} & Toxicity & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_ & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Herb\_\ldots{} & Prope\ldots{} & Merid\ldots{} & UsePart & Function & Indic\ldots{} & Toxicity & \ldots{}\tabularnewline
+\midrule
+\endhead
+HERB0\ldots{} & BAI M\ldots{} & 白茅根 & Lalan\ldots{} & Rhizo\ldots{} & Sweet\ldots{} & Lung;\ldots{} & NA & To ar\ldots{} & 1. It\ldots{} & NA & \ldots{}\tabularnewline
+HERB0\ldots{} & WANG \ldots{} & 王不留行 & Vacar\ldots{} & Semen\ldots{} & Mild;\ldots{} & Stoma\ldots{} & seed & 1. To\ldots{} & Galac\ldots{} & NA & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:Components-of-Herbs}为表格Components of Herbs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Components-of-Herbs.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有140行4列，以下预览的表格可能省略部分数据；表格含有137个唯一`Ingredient.name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:Components-of-Herbs}Components of Herbs}\tabularnewline
+\toprule
+herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+herb\_id & Ingre\ldots\ldots2 & Ingre\ldots\ldots3 & Ingre\ldots\ldots4\tabularnewline
+\midrule
+\endhead
+HERB0\ldots{} & HBIN0\ldots{} & 1-mon\ldots{} & Glyce\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 20,23\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 23-hy\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 23-hy\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 3beta\ldots{} & 3beta\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 3β,23\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 3β,23\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 3β-ac\ldots{} & 3β-ac\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 3-O-a\ldots{} & 3-o-a\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 3-o-α\ldots{} & 3-o-α\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 3-oxo\ldots{} & NA\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 4,5-D\ldots{} & AIDS0\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 4-Met\ldots{} & AI3-2\ldots{}\tabularnewline
+HERB0\ldots{} & HBIN0\ldots{} & 5alph\ldots{} & 5α,9α\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:intersection-of-all-compounds}为图intersection of all compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-all-compounds.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-all-compounds.pdf}
+\caption{Intersection of all compounds}\label{fig:intersection-of-all-compounds}
+\end{center}
+
+\hypertarget{ux6210ux5206ux9776ux70b9}{%
+\subsubsection{成分靶点}\label{ux6210ux5206ux9776ux70b9}}
+
+Table \ref{tab:tables-of-Herbs-compounds-and-targets}为表格tables of Herbs compounds and targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-Herbs-compounds-and-targets.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有987行9列，以下预览的表格可能省略部分数据；表格含有137个唯一`Ingredient.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:tables-of-Herbs-compounds-and-targets}Tables of Herbs compounds and targets}\tabularnewline
+\toprule
+Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & Targe\ldots\ldots5 & Targe\ldots\ldots6 & Datab\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & Targe\ldots\ldots5 & Targe\ldots\ldots6 & Datab\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endhead
+HBIN0\ldots{} & WANG \ldots{} & 1-{[}(2\ldots{} & 1-{[}(2\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 1-mon\ldots{} & Glyce\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 20,23\ldots{} & NA & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & ANPEP & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & CDC34 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & COMT & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & ENPEP & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & GRK6 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & UBE2K & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & LNPEP & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & LTA4H & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & PRKACA & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & PRKACB & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & PRKACG & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & PRKG1 & NA & NA & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:Herbs-compounds-and-targets}为图Herbs compounds and targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Herbs-compounds-and-targets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Herbs-compounds-and-targets.pdf}
+\caption{Herbs compounds and targets}\label{fig:Herbs-compounds-and-targets}
+\end{center}
+
+\hypertarget{iga-ux80beux708e-iga-nephropathy-ux5deeux5f02ux57faux56e0}{%
+\subsection{IgA 肾炎 (IgA Nephropathy) 差异基因}\label{iga-ux80beux708e-iga-nephropathy-ux5deeux5f02ux57faux56e0}}
+
+\hypertarget{gse175759-rna-seq-profiling-for-manulaly-microdissected-tubulointerstitial-tissue-from-90-kidney-samples.}{%
+\subsubsection{GSE175759: RNA-seq profiling for manulaly microdissected tubulointerstitial tissue from 90 kidney samples.}\label{gse175759-rna-seq-profiling-for-manulaly-microdissected-tubulointerstitial-tissue-from-90-kidney-samples.}}
+
+Table \ref{tab:metadata-of-used-samples-of-GSE175759}为表格metadata of used samples of GSE175759概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-used-samples-of-GSE175759.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有65行9列，以下预览的表格可能省略部分数据；表格含有2个唯一`group'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:metadata-of-used-samples-of-GSE175759}Metadata of used samples of GSE175759}\tabularnewline
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & title & estim\ldots{} & techn\ldots{} & tissu\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & title & estim\ldots{} & techn\ldots{} & tissu\ldots{}\tabularnewline
+\midrule
+\endhead
+GSM53\ldots{} & IgAN & 40893\ldots{} & 1.057\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 76.6 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 49316\ldots{} & 1.331\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 68.8 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 35208\ldots{} & 1.009\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 70.5 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 41500\ldots{} & 1.271\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 46.8 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 50748\ldots{} & 1.286\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 63.0 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 43491\ldots{} & 1.145\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 114.8 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 31920\ldots{} & 0.885\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 77.0 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 29243\ldots{} & 0.877\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 81.1 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 33622\ldots{} & 0.941\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 70.5 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 33555\ldots{} & 0.986\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 67.1 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 33784\ldots{} & 1.044\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 77.7 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 40344\ldots{} & 1.195\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 64.6 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 59431\ldots{} & 1.175\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 74.8 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 41323\ldots{} & 1.121\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 68.3 & No & Kidne\ldots{}\tabularnewline
+GSM53\ldots{} & IgAN & 35019\ldots{} & 0.890\ldots{} & GSM53\ldots{} & IgAN\_\ldots{} & 104.5 & No & Kidne\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:DEGs-of-GSE175759}为图DEGs of GSE175759概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-GSE175759.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DEGs-of-GSE175759.pdf}
+\caption{DEGs of GSE175759}\label{fig:DEGs-of-GSE175759}
+\end{center}
+
+Table \ref{tab:tables-of-DEGs-of-GSE175759}为表格tables of DEGs of GSE175759概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-DEGs-of-GSE175759.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4526行14列，以下预览的表格可能省略部分数据；表格含有4526个唯一`ensembl\_gene\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllllll@{}}
+\caption{\label{tab:tables-of-DEGs-of-GSE175759}Tables of DEGs of GSE175759}\tabularnewline
+\toprule
+ensem\ldots{} & hgnc\_\ldots{} & entre\ldots{} & refse\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & logFC & AveExpr & t & P.Value & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensem\ldots{} & hgnc\_\ldots{} & entre\ldots{} & refse\ldots{} & chrom\ldots{} & start\ldots{} & end\_p\ldots{} & descr\ldots{} & logFC & AveExpr & t & P.Value & \ldots{}\tabularnewline
+\midrule
+\endhead
+ENSG0\ldots{} & DUSP1 & 1843 & NM\_00\ldots{} & 5 & 17276\ldots{} & 17277\ldots{} & dual \ldots{} & -3.87\ldots{} & 4.749\ldots{} & -24.7\ldots{} & 1.832\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & FOS & 2353 & NM\_00\ldots{} & 14 & 75278826 & 75282230 & Fos p\ldots{} & -5.85\ldots{} & 3.598\ldots{} & -20.1\ldots{} & 3.550\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & CCN1 & 3491 & NM\_00\ldots{} & 1 & 85580761 & 85584589 & cellu\ldots{} & -2.40\ldots{} & 5.149\ldots{} & -15.2\ldots{} & 1.933\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & NR4A1 & 3164 & & 12 & 52022832 & 52059507 & nucle\ldots{} & -4.27\ldots{} & 3.962\ldots{} & -15.1\ldots{} & 2.429\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & EGR1 & 1958 & NM\_00\ldots{} & 5 & 13846\ldots{} & 13846\ldots{} & early\ldots{} & -4.07\ldots{} & 4.275\ldots{} & -14.3\ldots{} & 4.558\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & ZFP36 & 7538 & NM\_00\ldots{} & 19 & 39406847 & 39409412 & ZFP36\ldots{} & -2.51\ldots{} & 4.920\ldots{} & -13.1\ldots{} & 3.592\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & CISH & 1154 & & 3 & 50606489 & 50611774 & cytok\ldots{} & -1.71\ldots{} & 5.212\ldots{} & -13.0\ldots{} & 4.051\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & JUN & 3725 & & 1 & 58776845 & 58784048 & Jun p\ldots{} & -2.19\ldots{} & 5.232\ldots{} & -12.5\ldots{} & 2.531\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & SIK1 & 150094 & NM\_17\ldots{} & 21 & 43414483 & 43427131 & salt \ldots{} & -2.04\ldots{} & 3.794\ldots{} & -11.3\ldots{} & 2.531\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & RASD1 & 51655 & NM\_01\ldots{} & 17 & 17494437 & 17496395 & ras r\ldots{} & -2.89\ldots{} & 3.520\ldots{} & -11.2\ldots{} & 3.882\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & BTG2 & 7832 & & 1 & 20330\ldots{} & 20330\ldots{} & BTG a\ldots{} & -1.99\ldots{} & 5.834\ldots{} & -11.1\ldots{} & 6.478\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & DUSP6 & 1848 & NM\_00\ldots{} & 12 & 89347235 & 89352501 & dual \ldots{} & -1.24\ldots{} & 5.303\ldots{} & -10.8\ldots{} & 2.327\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & PPP1R10 & 5514 & NM\_00\ldots{} & 6 & 30600413 & 30618612 & prote\ldots{} & -0.64\ldots{} & 6.059\ldots{} & -10.6\ldots{} & 4.307\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & SLC25A25 & 114789 & NM\_00\ldots{} & 9 & 12806\ldots{} & 12810\ldots{} & solut\ldots{} & -1.13\ldots{} & 4.404\ldots{} & -10.6\ldots{} & 4.583\ldots{} & \ldots{}\tabularnewline
+ENSG0\ldots{} & IER2 & 9592 & NM\_00\ldots{} & 19 & 13150411 & 13154911 & immed\ldots{} & -1.63\ldots{} & 5.122\ldots{} & -10.4\ldots{} & 9.458\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ppi-ux7f51ux7edcux836fux7406}{%
+\subsection{PPI 网络药理}\label{ppi-ux7f51ux7edcux836fux7406}}
+
+Figure \ref{fig:intersection-of-IgAN-DEGs-with-herbs-targets}为图intersection of IgAN DEGs with herbs targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-IgAN-DEGs-with-herbs-targets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-IgAN-DEGs-with-herbs-targets.pdf}
+\caption{Intersection of IgAN DEGs with herbs targets}\label{fig:intersection-of-IgAN-DEGs-with-herbs-targets}
+\end{center}
+
+Figure \ref{fig:PPI-networks}为图PPI networks概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-networks.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPI-networks.pdf}
+\caption{PPI networks}\label{fig:PPI-networks}
+\end{center}
+
+Figure \ref{fig:MCC-top30}为图MCC top30概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MCC-top30.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MCC-top30.pdf}
+\caption{MCC top30}\label{fig:MCC-top30}
+\end{center}
+
+\hypertarget{ux6cbbux7597-iga-ux80beux708eux76f8ux5173ux6210ux5206}{%
+\subsection{治疗 IgA 肾炎相关成分}\label{ux6cbbux7597-iga-ux80beux708eux76f8ux5173ux6210ux5206}}
+
+Table \ref{tab:relative-compounds-of-Herbs-that-treating-IgAN}为表格relative compounds of Herbs that treating IgAN概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/relative-compounds-of-Herbs-that-treating-IgAN.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有251行9列，以下预览的表格可能省略部分数据；表格含有58个唯一`Ingredient.name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:relative-compounds-of-Herbs-that-treating-IgAN}Relative compounds of Herbs that treating IgAN}\tabularnewline
+\toprule
+Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & Targe\ldots\ldots5 & Targe\ldots\ldots6 & Datab\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Ingre\ldots\ldots1 & Herb\_\ldots{} & Ingre\ldots\ldots3 & Ingre\ldots\ldots4 & Targe\ldots\ldots5 & Targe\ldots\ldots6 & Datab\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endhead
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & CDC34 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & UBE2S & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & TLR8 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 2,3-b\ldots{} & (2R,3\ldots{} & HBTAR\ldots{} & COMTD1 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & WANG \ldots{} & (3S,6\ldots{} & (3S,6\ldots{} & HBTAR\ldots{} & PTGS2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 4-Met\ldots{} & AI3-2\ldots{} & HBTAR\ldots{} & ADRA2A & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 4-Met\ldots{} & AI3-2\ldots{} & HBTAR\ldots{} & ADRB2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 4-Met\ldots{} & AI3-2\ldots{} & HBTAR\ldots{} & PTGS2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 4-Met\ldots{} & AI3-2\ldots{} & HBTAR\ldots{} & CA2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 4-Met\ldots{} & AI3-2\ldots{} & HBTAR\ldots{} & NOS2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 4-Met\ldots{} & AI3-2\ldots{} & HBTAR\ldots{} & PDE3A & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 6-Met\ldots{} & 26964\ldots{} & HBTAR\ldots{} & ADRB1 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 6-Met\ldots{} & 26964\ldots{} & HBTAR\ldots{} & ADRB2 & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 6-Met\ldots{} & 26964\ldots{} & HBTAR\ldots{} & AR & NA & NA & \ldots{}\tabularnewline
+HBIN0\ldots{} & BAI M\ldots{} & 6-Met\ldots{} & 26964\ldots{} & HBTAR\ldots{} & CHRM1 & NA & NA & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\end{document}

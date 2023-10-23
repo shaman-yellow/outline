@@ -293,3 +293,27 @@ autor(wrap(vn@plots$step5$p.res_vina, 6, 4))
 autor(.file_fig("./figs/164676_into_1kef.png"))
 ```
 
+# 附：补充分析流程
+
+补充分析：进一步筛选与肠道微生物和免疫微环境相关的差异表达基因
+
+- Distinct subsets of neutrophils crosstalk with cytokines and metabolites in patients with sepsis
+  PMID: 36756375
+
+```{r}
+# colon.DEGs <- geo.plots$upset.set$colon
+gdb <- ftibble("../Gut Microbe and Metabolite-human.txt")
+```
+
+- Integrative analysis of metabolomics and proteomics reveals amino acid metabolism disorder in sepsis
+    - PMID: 35287674
+    - Blood samples were collected from patients diagnosed with sepsis at
+      admission to the ICU. Blood samples of patients and NC subjects were
+      drawn using serum separation tubes and allowed to clot at room
+      temperature for 60 min. The samples were centrifuged for 10 min within 30
+      min (1600×g, 4 °C) to remove insoluble solids. Each aliquot of serum was
+      collected and immediately stored at − 80 °C until ultrahigh-performance
+      liquid chromatography with quadrupole time-of-flight mass spectrometry
+      (UPLC-Q-TOF/MS) analysis.
+
+

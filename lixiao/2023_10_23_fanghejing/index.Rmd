@@ -1,0 +1,174 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+- 药物成分，Tab. \@ref(tab:Components-of-Herbs)
+- 药物-成分-靶点，Fig. \@ref(fig:Herbs-compounds-and-targets), Tab. \@ref(tab:tables-of-Herbs-compounds-and-targets)
+- IgA 肾炎相关基因，Fig. \@ref(fig:DEGs-of-GSE175759), Tab. \@ref(tab:tables-of-DEGs-of-GSE175759)
+- 靶点-IgA肾炎相关基因（交集），Fig. \@ref(fig:intersection-of-IgAN-DEGs-with-herbs-targets)
+- 治疗肾炎相关成分，Tab. \@ref(tab:relative-compounds-of-Herbs-that-treating-IgAN)
+- PPI 网络，Fig. \@ref(fig:PPI-networks), Fig. \@ref(fig:MCC-top30)
+- ...
+
+# 附：分析流程 {#workflow}
+
+## 成分和靶点
+
+### 成分（白茅根和王不留行子）
+
+```{r}
+hb <- job_herb(c("白茅根", "王不留行"))
+hb@params$herbs_info %<>% slice(1, 5)
+hb@params$herbs_info
+
+hb <- step1(hb)
+hb <- step2(hb, 100)
+hb <- step3(hb, "IgA glomerulonephritis")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-information
+autor(hb@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Components-of-Herbs
+autor(hb@tables$step1$herbs_compounds, key = "Ingredient.name")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-compounds
+autor(hb@plots$step3$p.herbs_compounds)
+```
+
+### 成分靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-Herbs-compounds-and-targets
+autor(hb@params$easyRead)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets
+autor(p.allu)
+```
+
+```{r}
+data.allu <- select(hb@params$easyRead, Herb_pinyin_name, Ingredient.name, Target.name)
+data.allu <- filter(data.allu, !is.na(Target.name))
+p.allu <- new_allu(data.allu, axes = 1:3, label.auto = T, label.freq = 20)
+```
+
+## IgA 肾炎 (IgA Nephropathy) 差异基因
+
+### GSE175759: RNA-seq profiling for manulaly microdissected tubulointerstitial tissue from 90 kidney samples.
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata-of-used-samples-of-GSE175759
+autor(as_tibble(lm@params$normed_data$targets), key = "group")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-GSE175759
+autor(lm@plots$step2$p.valcano[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-DEGs-of-GSE175759
+autor(lm@tables$step2$tops[[1]])
+```
+
+```{r}
+geo2 <- job_geo("GSE175759")
+geo2 <- step1(geo2)
+geo2 <- step2(geo2)
+untar("./GSE175759/GSE175759_RAW.tar", exdir = "./GSE175759")
+lapply(list.files("./GSE175759", "\\.gz$", full.names = T), R.utils::gunzip)
+```
+
+```{r}
+metadata <- filter(geo2@params$guess, diagnosis.ch1 %in% c("Control", "IgAN"), technical.outlier.ch1 == "No")
+metadata <- dplyr::rename(metadata, sample = rownames, group = diagnosis.ch1)
+
+fun <- function() {
+  files <- list.files("./GSE175759/", "GSM.*", full.names = T)
+  names(files) <- gs(get_realname(files), "(GSM[0-9]+).*", "\\1")
+  files <- files[ names(files) %in% metadata$sample ]
+  lst <- sapply(files, ftibble, simplify = F)
+  lst <- lapply(lst, dplyr::rename, value = 2)
+  data <- data.table::rbindlist(lst, idcol = T)
+  data <- tidyr::spread(data, .id, value)
+  as_tibble(data)
+}
+counts <- dplyr::mutate(fun(), id = gs(id, "\\.[0-9]*$", ""))
+
+mart <- new_biomart()
+genes <- filter_biomart(mart, general_attrs(), "ensembl_gene_id", counts$id)
+genes <- dplyr::relocate(genes, ensembl_gene_id, hgnc_symbol)
+```
+
+```{r}
+lm <- job_limma(new_dge(metadata, counts, genes))
+lm <- step1(lm)
+lm <- step2(lm, IgAN - Control, use = "adj")
+lm@plots$step2$p.valcano[[1]]
+```
+
+## PPI 网络药理
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-IgAN-DEGs-with-herbs-targets
+autor(p.venn)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPI-networks
+autor(wrap(sdb@plots$step1$p.ppi, 5, 4))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MCC-top30
+autor(sdb@plots$step1$p.mcc)
+```
+
+```{r}
+sets.td <- list(targets = hb@params$easyRead$Target.name, DEGs = lm@tables$step2$tops[[1]]$hgnc_symbol)
+sets.td <- lapply(sets.td, rm.no)
+
+p.venn <- new_venn(lst = sets.td)
+ins.td <- ins(lst = sets.td)
+```
+
+```{r}
+sdb <- asjob_stringdb(ins.td)
+sdb <- step1(sdb)
+sdb@plots$step1$p.mcc
+```
+
+## 治疗 IgA 肾炎相关成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| relative-compounds-of-Herbs-that-treating-IgAN
+autor(rel.cpd, key = "Ingredient.name")
+```
+
+```{r}
+rel.cpd <- filter(hb@params$easyRead, Target.name %in% ins.td)
+```

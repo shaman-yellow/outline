@@ -46,3 +46,35 @@ TNA (Tanshinone I) 靶点基因
 tna_tgt <- fxlsx("./raw/tna_targets.xlsx")
 ```
 
+为了筛选出有关肠道微生物的DEGs，优先针对 colon sepsis 的 DEGs 分析。
+
+```{r}
+mj <- esearch.mj("microbiota RNA-seq")
+dplyr::select(mj, .id, Title)
+```
+
+```{r}
+en1 <- job_enrich(list(ids = ins(treat_all, colon.DEGs)), anno)
+en1 <- step1(en1)
+
+db.c2 <- get_c2_data("micro")
+```
+
+```{r}
+# colon.DEGs <- geo.plots$upset.set$colon
+gdb <- ftibble("../Gut Microbe and Metabolite-human.txt")
+```
+
+```{r}
+data <- fxlsx("~/Downloads/Table_1.xlsx")
+data <- dplyr::mutate_at(data, 2:ncol(data),
+  function(x) {
+    x <- as.double(x)
+    ifelse(is.na(x), 0, x)
+  })
+rownames(data) <- data$Metabolites
+data <- dplyr::select(data, -1)
+
+data <- new_heatdata(as_data_long(data))
+callheatmap(data)
+```

@@ -41,6 +41,9 @@ TCGA 转录数据
 timeROC
 单细胞数据验证
 
+多种慢性肾病的 FC
+癌症的 FC
+
 ```{r}
 #| route
 route <- as_network(
@@ -58,7 +61,7 @@ p.route
 
 ```{r}
 lite_cancer <- esearch.mj("cancer prediction")
-lite_cancer %>% select(.id, Title) %>% print(n = 100)
+lite_cancer %>% select(.id, Title) %>% filter(grepl("Nature", .id)) %>% print(n = 100)
 ```
 
 # 分析结果 {#results}
