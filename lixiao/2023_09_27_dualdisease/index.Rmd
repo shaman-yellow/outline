@@ -43,6 +43,7 @@ timeROC
 
 多种慢性肾病的 FC
 癌症的 FC
+用基因集的 FC 来关联分析 (需要多个 GEO 数据集)
 
 ```{r}
 #| route
@@ -69,6 +70,8 @@ lite_cancer %>% select(.id, Title) %>% filter(grepl("Nature", .id)) %>% print(n 
 # 结论 {#dis}
 
 # 附：分析流程
+
+## 肾癌 (GEO)
 
 ## 肾癌 (TCGA-KIRC)
 

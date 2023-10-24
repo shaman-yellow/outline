@@ -69,6 +69,11 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
 
 \title{Analysis}
 \author{Huang LiChuang of Wie-Biotech}
@@ -89,6 +94,8 @@
 \section{摘要}\label{abstract}}
 
 筛选丹参酮治疗脓毒症（sepsis）的关键差异表达基因及相关信号通路。
+
+注：补充分析请参考 \ref{supp}（进一步筛选与肠道微生物和免疫微环境相关的差异表达基因）
 
 \hypertarget{methods}{%
 \section{材料和方法}\label{methods}}
@@ -520,5 +527,1417 @@ Figure \ref{fig:Tanshinone-IIA-binding-with-protein-DLG4}为图Tanshinone IIA bi
 \includegraphics[width = 0.9\linewidth]{./figs/164676_into_1kef.png}
 \caption{Tanshinone IIA binding with protein DLG4}\label{fig:Tanshinone-IIA-binding-with-protein-DLG4}
 \end{center}
+
+\hypertarget{supp}{%
+\section{附：补充分析}\label{supp}}
+
+补充分析：进一步筛选与肠道微生物和免疫微环境相关的差异表达基因
+
+\hypertarget{sepsis-ux7684ux4ee3ux8c22ux7269ux7814ux7a76}{%
+\subsection{Sepsis 的代谢物研究}\label{sepsis-ux7684ux4ee3ux8c22ux7269ux7814ux7a76}}
+
+获取文献相关资料：
+
+\begin{itemize}
+\tightlist
+\item
+  Integrative analysis of metabolomics and proteomics reveals amino acid
+  metabolism disorder in sepsis\textsuperscript{\protect\hyperlink{ref-IntegrativeAnaChen2022}{1}}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    PMID: 35287674
+  \item
+    Blood samples were collected from patients diagnosed with sepsis at
+    admission to the ICU. Blood samples of patients and NC subjects were
+    drawn using serum separation tubes and allowed to clot at room
+    temperature for 60 min. The samples were centrifuged for 10 min within 30
+    min (1600×g, 4 °C) to remove insoluble solids. Each aliquot of serum was
+    collected and immediately stored at − 80 °C until ultrahigh-performance
+    liquid chromatography with quadrupole time-of-flight mass spectrometry
+    (UPLC-Q-TOF/MS) analysis.
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{diff-meta}{%
+\subsubsection{Sepsis 差异代谢物}\label{diff-meta}}
+
+获取上述文献差异代谢物数据\textsuperscript{\protect\hyperlink{ref-IntegrativeAnaChen2022}{1}}：
+
+Table \ref{tab:LITERATURE-Positive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects}为表格LITERATURE Positive ionmode Differentially expressed metabolites of the comparison between sepsis patients and NC subjects概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LITERATURE-Positive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有106行16列，以下预览的表格可能省略部分数据；表格含有106个唯一`Metabolic'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllllll@{}}
+\caption{\label{tab:LITERATURE-Positive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects}LITERATURE Positive ionmode Differentially expressed metabolites of the comparison between sepsis patients and NC subjects}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+Metab\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+mz\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+rt\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Ref\_Name\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Precu\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Score\ldots\ldots6\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Score\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+HMDB\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+KEGG\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Super\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Subclass\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+Metab\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+mz\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+rt\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Ref\_Name\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Precu\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Score\ldots\ldots6\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Score\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+HMDB\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+KEGG\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Super\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Subclass\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M235T139\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+235.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+138.765\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+His-Pro\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9955\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9994\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Carbo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Amino\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M246T539\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+246.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+538.772\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Tramadol\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9466\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9997\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C07153\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Pheno\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Anisoles\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M158T215\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+158.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+214.803\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2-(4-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9424\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9952\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Carbo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Amino\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M286T168\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+286.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+167.9745\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+N-ace\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9925\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9928\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M261T430\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+261.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+430.267\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Diave\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9896\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Metho\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M151T146\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+151.0616\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+145.8605\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3-met\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9995\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9998\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C05587\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Phenols\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Metho\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M168T42\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+168.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+41.67385\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Pheny\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9947\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9988\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C07441\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Phenols\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1-hyd\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M430T289\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+430.3\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+288.673\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Milte\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+Na{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.8708\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9996\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Quate\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M207T66\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+207.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+65.8776\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Pyrantel\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9992\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9997\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C07409\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Diazines\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Pyrim\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M334T419\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+334.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+419.257\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Tebuf\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9111\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9973\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C11126\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Pheny\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M257T166\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+257.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+165.785\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ptero\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9503\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9999\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C10287\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M175T220\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+175.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+219.69\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3,6-d\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.8791\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9514\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benzo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1-ben\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M229T317\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+229.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+316.932\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Tri(p\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+Na{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9965\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9997\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Alcoh\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M225T367\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+225.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+367.1115\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Pogos\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9287\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9357\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Carbo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M290T\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+290.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+411.1295\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Adipo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M+H{]}+\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9802\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9809\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Lipid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Fatty\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Fatty\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:LITERATURE-Negtive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects}为表格LITERATURE Negtive ionmode Differentially expressed metabolites of the comparison between sepsis patients and NC subjects概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LITERATURE-Negtive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有76行16列，以下预览的表格可能省略部分数据；表格含有76个唯一`Metabolic'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllllll@{}}
+\caption{\label{tab:LITERATURE-Negtive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects}LITERATURE Negtive ionmode Differentially expressed metabolites of the comparison between sepsis patients and NC subjects}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+Metab\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+mz\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+rt\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Ref\_Name\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Precu\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Score\ldots\ldots6\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Score\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+HMDB\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+KEGG\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Super\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Subclass\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+Metab\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+mz\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+rt\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Ref\_Name\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Precu\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Score\ldots\ldots6\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Score\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+HMDB\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+KEGG\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Super\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+Subclass\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M287T324\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+287.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+324.445\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Oroti\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9944\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9953\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M246T\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+246.0747\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+40.3787\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Asp-Asn\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9185\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9955\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Carbo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Amino\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M179T\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+179.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+398.696\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+inositol\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9973\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9977\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C00137\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Alcoh\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M151T41\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+151.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+40.7983\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Creso\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9999\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9999\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C14088\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benzo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M147T92\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+147.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+92.21745\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+3-iso\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.8552\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9127\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C07728\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benzo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+2-ben\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M151T211\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+151.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+210.531\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4-hyd\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.927\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.999\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C00642\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Phenols\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1-hyd\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M300T\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+300.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+166.016\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+N-Ace\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9797\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9817\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C04256\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M165T92\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+165.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+91.6485\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Pheny\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9949\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9951\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C01479\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M245T34\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+245.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+33.9236\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Asn-Asn\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9475\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9987\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Carbo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Amino\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M415T37\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+415.2158\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+37.4836\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ramipril\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9887\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9942\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Carbo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Amino\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M125T399\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+125.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+398.69\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+1,2,4\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9697\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9755\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C02814\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Phenols\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Benze\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M286T260\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+286.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+259.84\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Norox\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.908\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9959\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M144T298\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+144.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+297.591\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+4-ace\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9479\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9977\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C02946\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Carbo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Amino\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M190T213\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+190.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+212.844\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+N-ace\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9816\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9853\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+C02712\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Carbo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Amino\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+M125T\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+124.9\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+165.0135\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ethyl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+{[}M-H{]}-\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9683\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.9909\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMDB0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Organ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Sulfu\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux4eceux4ee3ux8c22ux7269ux5230ux80a0ux9053ux5faeux751fux7269}{%
+\subsubsection{从代谢物到肠道微生物}\label{ux4eceux4ee3ux8c22ux7269ux5230ux80a0ux9053ux5faeux751fux7269}}
+
+利用 gutMDisorder\textsuperscript{\protect\hyperlink{ref-GutmdisorderACheng2019}{2}} 数据库，检索与差异代谢物相关的肠道微生物。
+
+Table \ref{tab:databse-of-gutMDisorder}为表格databse of gutMDisorder概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/databse-of-gutMDisorder.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有724行12列，以下预览的表格可能省略部分数据；表格含有289个唯一`Gut Microbiota'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:databse-of-gutMDisorder}Databse of gutMDisorder}\tabularnewline
+\toprule
+Gut M\ldots\ldots1 & Gut M\ldots\ldots2 & Gut M\ldots\ldots3 & Class\ldots{} & Subst\ldots\ldots5 & Subst\ldots\ldots6 & Subst\ldots\ldots7 & Subst\ldots\ldots8 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Gut M\ldots\ldots1 & Gut M\ldots\ldots2 & Gut M\ldots\ldots3 & Class\ldots{} & Subst\ldots\ldots5 & Subst\ldots\ldots6 & Subst\ldots\ldots7 & Subst\ldots\ldots8 & \ldots{}\tabularnewline
+\midrule
+\endhead
+Chris\ldots{} & NA & gm0883 & strain & D-Glu\ldots{} & 5793 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & Salicin & 439503 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & D-Xylose & 135191 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & L-Ara\ldots{} & 439195 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & L-Rha\ldots{} & 25310 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & D-Man\ldots{} & 18950 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & D-Glu\ldots{} & 5793 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & Salicin & 439503 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & D-Xylose & 135191 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & L-Ara\ldots{} & 439195 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & L-Rha\ldots{} & 25310 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Chris\ldots{} & NA & gm0883 & strain & D-Man\ldots{} & 18950 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Enter\ldots{} & 1343173 & gm0884 & species & Orientin & 5281675 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+Clost\ldots{} & 29347 & gm0885 & strain & Bile \ldots{} & 439520 & & CHEBI\ldots{} & \ldots{}\tabularnewline
+Clost\ldots{} & 29347 & gm0885 & strain & Choli\ldots{} & 221493 & HMDB0\ldots{} & CHEBI\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+从 gutMDisorder 中匹配 Tab. \ref{tab:LITERATURE-Positive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects} 与 Tab. \ref{tab:LITERATURE-Negtive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects} 对应的化合物:
+
+Figure \ref{fig:hited-metabolites-and-microbiota-in-gutMDisorder}为图hited metabolites and microbiota in gutMDisorder概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hited-metabolites-and-microbiota-in-gutMDisorder.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/hited-metabolites-and-microbiota-in-gutMDisorder.pdf}
+\caption{Hited metabolites and microbiota in gutMDisorder}\label{fig:hited-metabolites-and-microbiota-in-gutMDisorder}
+\end{center}
+
+Table \ref{tab:table-of-the-hitted-compounds}为表格table of the hitted compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/table-of-the-hitted-compounds.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2行7列，以下预览的表格可能省略部分数据；表格含有2个唯一`Query'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:table-of-the-hitted-compounds}Table of the hitted compounds}\tabularnewline
+\toprule
+Query & Match & HMDB & PubChem & KEGG & SMILES & Comment\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Query & Match & HMDB & PubChem & KEGG & SMILES & Comment\tabularnewline
+\midrule
+\endhead
+Pheny\ldots{} & Alpha\ldots{} & HMDB0\ldots{} & 92258 & C04148 & C1=CC\ldots{} & 1\tabularnewline
+Fumarate & Fumar\ldots{} & HMDB0\ldots{} & 444972 & C00122 & C(=C/\ldots{} & 1\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux9009ux5b9aux7684ux4ee3ux8c22ux7269ux7684ux5bccux96c6ux5206ux6790}{%
+\subsubsection{（选定的）代谢物的富集分析}\label{ux9009ux5b9aux7684ux4ee3ux8c22ux7269ux7684ux5bccux96c6ux5206ux6790}}
+
+将 Tab. \ref{tab:table-of-the-hitted-compounds} 中的两种化合物富集分析。
+
+FELLA （pagerank 算法）用于差异代谢物的富集分析\textsuperscript{\protect\hyperlink{ref-FellaAnRPacPicart2018}{3}}。
+
+Figure \ref{fig:FELLA-enrichment}为图FELLA enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FELLA-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FELLA-enrichment.pdf}
+\caption{FELLA enrichment}\label{fig:FELLA-enrichment}
+\end{center}
+
+Table \ref{tab:table-of-FELLA-enrichment-result}为表格table of FELLA enrichment result概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/table-of-FELLA-enrichment-result.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有43行7列，以下预览的表格可能省略部分数据；表格含有43个唯一`name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:table-of-FELLA-enrichment-result}Table of FELLA enrichment result}\tabularnewline
+\toprule
+name & com & NAME & label & input & abbre\ldots{} & type\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+name & com & NAME & label & input & abbre\ldots{} & type\tabularnewline
+\midrule
+\endhead
+hsa00020 & 1 & Citra\ldots{} & Citra\ldots{} & Others & Citra\ldots{} & Pathway\tabularnewline
+hsa00250 & 1 & Alani\ldots{} & Alani\ldots{} & Others & Alani\ldots{} & Pathway\tabularnewline
+hsa00360 & 1 & Pheny\ldots{} & Pheny\ldots{} & Others & Pheny\ldots{} & Pathway\tabularnewline
+hsa01200 & 1 & Carbo\ldots{} & Carbo\ldots{} & Others & Carbo\ldots{} & Pathway\tabularnewline
+hsa04922 & 1 & Gluca\ldots{} & Gluca\ldots{} & Others & Gluca\ldots{} & Pathway\tabularnewline
+hsa05211 & 1 & Renal\ldots{} & Renal\ldots{} & Others & Renal\ldots{} & Pathway\tabularnewline
+hsa05230 & 1 & Centr\ldots{} & Centr\ldots{} & Others & Centr\ldots{} & Pathway\tabularnewline
+M00029 & 2 & Urea \ldots{} & Urea \ldots{} & Others & Urea \ldots{} & Module\tabularnewline
+M00044 & 2 & Tyros\ldots{} & Tyros\ldots{} & Others & Tyros\ldots{} & Module\tabularnewline
+M00048 & 2 & De no\ldots{} & De no\ldots{} & Others & De no\ldots{} & Module\tabularnewline
+M00049 & 2 & Adeni\ldots{} & Adeni\ldots{} & Others & Adeni\ldots{} & Module\tabularnewline
+M00051 & 2 & De no\ldots{} & De no\ldots{} & Others & De no\ldots{} & Module\tabularnewline
+M00148 & 2 & Succi\ldots{} & Succi\ldots{} & Others & Succi\ldots{} & Module\tabularnewline
+M00173 & 2 & Reduc\ldots{} & Reduc\ldots{} & Others & Reduc\ldots{} & Module\tabularnewline
+M00374 & 2 & Dicar\ldots{} & Dicar\ldots{} & Others & Dicar\ldots{} & Module\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+首要关注 ``Phenylalanine metabolism'' 代谢通路。
+
+\hypertarget{sepsis-ux7684ux86cbux767dux8d28ux7814ux7a76}{%
+\subsection{Sepsis 的蛋白质研究}\label{sepsis-ux7684ux86cbux767dux8d28ux7814ux7a76}}
+
+\hypertarget{sepsis-ux5deeux5f02ux86cbux767d}{%
+\subsubsection{Sepsis 差异蛋白}\label{sepsis-ux5deeux5f02ux86cbux767d}}
+
+\begin{itemize}
+\tightlist
+\item
+  Serum proteomics reveals disorder of lipoprotein metabolism in
+  sepsis\textsuperscript{\protect\hyperlink{ref-SerumProteomicLiang2021}{4}}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Blood samples of patients and NC subjects were collected and allowed to
+    clot at room temperature for 60 min. Serum was separated by
+    centrifugation at 1,600g for 10 min within 30 min to remove insoluble
+    solids and stored at −80°C until proteomic analysis and ELISA (Tammen,
+    2008). Removal of high-abundance proteins in serum, such as albumin and
+    IgG, was performed using ProteoPrep Blue Albumin \& IgG Depletion Kit
+    (PROTBA; Sigma-Aldrich) according to the manufacturer's instructions.
+    Removal of impurities from the protein extraction was performed using a
+    2-D clean kit (GE Healthcare) before the determination of the sample
+    concentration.
+  \end{itemize}
+\end{itemize}
+
+从上述文献获取差异蛋白数据\textsuperscript{\protect\hyperlink{ref-SerumProteomicLiang2021}{4}}：
+
+Table \ref{tab:LITERATURE-Comparison-of-protein-abundance-in-patients-with-sepsis-and-normal-control-subjects}为表格LITERATURE Comparison of protein abundance in patients with sepsis and normal control subjects概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LITERATURE-Comparison-of-protein-abundance-in-patients-with-sepsis-and-normal-control-subjects.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有243行5列，以下预览的表格可能省略部分数据；表格含有243个唯一`Protein.IDs'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:LITERATURE-Comparison-of-protein-abundance-in-patients-with-sepsis-and-normal-control-subjects}LITERATURE Comparison of protein abundance in patients with sepsis and normal control subjects}\tabularnewline
+\toprule
+Prote\ldots{} & Gene\ldots. & log2\ldots. & P.value & adjus\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Prote\ldots{} & Gene\ldots. & log2\ldots. & P.value & adjus\ldots{}\tabularnewline
+\midrule
+\endhead
+ENSBT\ldots{} & ENSBT\ldots{} & -0.72\ldots{} & 0.007\ldots{} & 0.013\ldots{}\tabularnewline
+P00761 & P00761 & 0.289\ldots{} & 0.000\ldots{} & 0.000\ldots{}\tabularnewline
+P02768 & ALB & 0.144\ldots{} & 0.001\ldots{} & 0.002\ldots{}\tabularnewline
+Q28107 & Q28107 & -1.06\ldots{} & 0.000\ldots{} & 0.000\ldots{}\tabularnewline
+Q61782 & Q61782 & -1.42\ldots{} & 6.878\ldots{} & 3.783\ldots{}\tabularnewline
+Q86YZ3 & HRNR & -1.04\ldots{} & 0.000\ldots{} & 0.001\ldots{}\tabularnewline
+P07996 & THBS1 & -1.03\ldots{} & 3.808\ldots{} & 1.523\ldots{}\tabularnewline
+O14791 & APOL1 & -0.42\ldots{} & 6.701\ldots{} & 2.175\ldots{}\tabularnewline
+O75460 & ERN1 & 0.777\ldots{} & 1.357\ldots{} & 4.714\ldots{}\tabularnewline
+O75636 & FCN3 & -0.27\ldots{} & 0.007\ldots{} & 0.014\ldots{}\tabularnewline
+O75882 & ATRN & -0.36\ldots{} & 5.825\ldots{} & 2.196\ldots{}\tabularnewline
+O95445 & APOM & -1.43\ldots{} & 3.389\ldots{} & 5.161\ldots{}\tabularnewline
+O95497 & VNN1 & -1.19\ldots{} & 0.000\ldots{} & 0.000\ldots{}\tabularnewline
+P00326 & ADH1C & 2.087\ldots{} & 0.003\ldots{} & 0.007\ldots{}\tabularnewline
+P00441 & SOD1 & 2.111\ldots{} & 6.761\ldots{} & 2.176\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{tna-ux6cbbux7597ux9776ux70b9ux548c-sepsis-ux5deeux5f02ux86cbux767dux8d28ux7684ux5173ux8054ux4eceux57faux56e0ux5230ux86cbux767dux8d28}{%
+\subsection{TNA 治疗靶点和 Sepsis 差异蛋白质的关联（从基因到蛋白质）}\label{tna-ux6cbbux7597ux9776ux70b9ux548c-sepsis-ux5deeux5f02ux86cbux767dux8d28ux7684ux5173ux8054ux4eceux57faux56e0ux5230ux86cbux767dux8d28}}
+
+\hypertarget{ux4ea4ux96c6ux86cbux767dux57faux56e0}{%
+\subsubsection{交集蛋白（基因）}\label{ux4ea4ux96c6ux86cbux767dux57faux56e0}}
+
+Figure \ref{fig:intersection-of-TNA-targets-and-Sepsis-significant-protein}为图intersection of TNA targets and Sepsis significant protein概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-TNA-targets-and-Sepsis-significant-protein.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-TNA-targets-and-Sepsis-significant-protein.pdf}
+\caption{Intersection of TNA targets and Sepsis significant protein}\label{fig:intersection-of-TNA-targets-and-Sepsis-significant-protein}
+\end{center}
+
+Fig. \ref{fig:intersection-of-TNA-targets-and-Sepsis-significant-protein}，共有 37 个交集基因（蛋白质）。
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+intersection
+:}
+
+\vspace{0.5em}
+
+    APOA2, RBP4, AGT, SERPINA1, TTR, PLTP, ENO1, ITIH2,
+AHSG, F2, OAF, C4BPA, TKT, CST3, F7, APOC3, MDN1, IGFBP4,
+ALDOB, ASGR2, HABP2, F12, VWF, APOC1, ALB, APOA4, CFI, CA2,
+THBS1, HRNR, PDE4DIP, LCAT, IL1RAP, SEMA4B, VASN, C8G, CTBS
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux5bccux96c6ux5206ux6790-1}{%
+\subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790-1}}
+
+Figure \ref{fig:KEGG-enrichment-of-intersection-of-TNA-targets-and-Sepsis-significant-protein}为图KEGG enrichment of intersection of TNA targets and Sepsis significant protein概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment-of-intersection-of-TNA-targets-and-Sepsis-significant-protein.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-enrichment-of-intersection-of-TNA-targets-and-Sepsis-significant-protein.pdf}
+\caption{KEGG enrichment of intersection of TNA targets and Sepsis significant protein}\label{fig:KEGG-enrichment-of-intersection-of-TNA-targets-and-Sepsis-significant-protein}
+\end{center}
+
+Fig. \ref{fig:KEGG-enrichment-of-intersection-of-TNA-targets-and-Sepsis-significant-protein}，关注到
+``Biosynthesis of amino acids'' 通路，这一结果与文献\textsuperscript{\protect\hyperlink{ref-IntegrativeAnaChen2022}{1}}一致。
+此外，根据Fig. \ref{fig:KEGG-pathway-of-Biosynthesis-of-amino-acids}，Phenylalanine 的存在受该通路调控（Phenylalanine metabolism 在 Fig. \ref{fig:FELLA-enrichment} 中富集）。
+
+因此，这里建立了从差异蛋白到 TNA 治疗的差异表达基因的联系，又联系到了差异代谢物的分析（\ref{diff-meta}），而相应代谢物又联系到了肠道微生物（Fig. \ref{fig:hited-metabolites-and-microbiota-in-gutMDisorder}）。
+
+Figure \ref{fig:KEGG-pathway-of-Biosynthesis-of-amino-acids}为图KEGG pathway of Biosynthesis of amino acids概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa01230.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2023-10-24_12_04_31.065582/hsa01230.png}
+\caption{KEGG pathway of Biosynthesis of amino acids}\label{fig:KEGG-pathway-of-Biosynthesis-of-amino-acids}
+\end{center}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+hited\_genes
+:}
+
+\vspace{0.5em}
+
+    ENO1, TKT, ALDOB
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux86cbux767dux8d28ux7ec4ux5b66ux548cux4ee3ux8c22ux7ec4ux5b66ux7684ux5173ux8054ux6027ux5206ux6790}{%
+\subsection{蛋白质组学和代谢组学的关联性分析}\label{ux86cbux767dux8d28ux7ec4ux5b66ux548cux4ee3ux8c22ux7ec4ux5b66ux7684ux5173ux8054ux6027ux5206ux6790}}
+
+见文献\textsuperscript{\protect\hyperlink{ref-SerumProteomicLiang2021}{4}}。这部分，由于原作者\textsuperscript{\protect\hyperlink{ref-SerumProteomicLiang2021}{4}}未上传代谢物的检测含量数据，因此无法重现代谢物和蛋白质的关联分析。不过，原作者已得出结论，即：
+
+\begin{itemize}
+\tightlist
+\item
+  The characteristic proteins and metabolites identified formed a complex
+  network to depict the crucial immunometabolism linked to sepsis. Amino
+  acid-related pathways, including phenylalanine metabolism, tyrosine
+  metabolism and tryptophan biosynthesis, were illustrated to be essential
+  mechanisms of sepsis.
+\end{itemize}
+
+因此，蛋白质组学和代谢组学的联合表明，phenylalanine metabolism 是 Sepsis 关键通路之一。
+
+以下为该文献\textsuperscript{\protect\hyperlink{ref-SerumProteomicLiang2021}{4}}提供的 Figure：
+
+Figure \ref{fig:LITERATURE-Integrative-network-analysis-of-proteomics-and-untargeted-metabolomics-data}为图LITERATURE Integrative network analysis of proteomics and untargeted metabolomics data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/literature\_omics\_fig5.jpeg})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{figs/literature_omics_fig5.jpeg}
+\caption{LITERATURE Integrative network analysis of proteomics and untargeted metabolomics data}\label{fig:LITERATURE-Integrative-network-analysis-of-proteomics-and-untargeted-metabolomics-data}
+\end{center}
+
+Figure \ref{fig:LITERATURE-Schematic-diagram-of-the-crucial-pathways}为图LITERATURE Schematic diagram of the crucial pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/literature\_omics\_fig6.jpeg})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{figs/literature_omics_fig6.jpeg}
+\caption{LITERATURE Schematic diagram of the crucial pathways}\label{fig:LITERATURE-Schematic-diagram-of-the-crucial-pathways}
+\end{center}
+
+\hypertarget{ux603bux7ed3tna-ux6cbbux7597-sepsis-ux53efux80fdux6d89ux53caux7684ux80a0ux9053ux5faeux751fux7269-ux4ee3ux8c22ux7269-ux86cbux767dux8d28ux5173ux8054ux8f74}{%
+\subsection{总结：TNA 治疗 Sepsis 可能涉及的肠道微生物-代谢物-蛋白质关联轴}\label{ux603bux7ed3tna-ux6cbbux7597-sepsis-ux53efux80fdux6d89ux53caux7684ux80a0ux9053ux5faeux751fux7269-ux4ee3ux8c22ux7269-ux86cbux767dux8d28ux5173ux8054ux8f74}}
+
+\begin{itemize}
+\tightlist
+\item
+  以 Sepsis 差异代谢物（Tab. \ref{tab:LITERATURE-Positive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects}，Tab. \ref{tab:LITERATURE-Negtive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects}）和 gutMDisorder 数据库\textsuperscript{\protect\hyperlink{ref-GutmdisorderACheng2019}{2}} 发现了 Sepsis 差异代谢物和肠道菌的联系（Fig. \ref{fig:hited-metabolites-and-microbiota-in-gutMDisorder}）。
+\item
+  上述代谢物（与肠道菌关联的）富集到了通路 Phenylalanine metabolism（Fig. \ref{fig:FELLA-enrichment}）
+\item
+  TNA 治疗靶点和 Sepsis 差异蛋白的交集共有 37 个基因（Fig. \ref{fig:intersection-of-TNA-targets-and-Sepsis-significant-protein}）。
+\item
+  上述交集基因富集到通路 Biosynthesis of amino acids（Fig. \ref{fig:KEGG-enrichment-of-intersection-of-TNA-targets-and-Sepsis-significant-protein}），涉及 Phenylalanine 及其相关化合物的调控。
+\item
+  文献中\textsuperscript{\protect\hyperlink{ref-IntegrativeAnaChen2022}{1}}，蛋白组学和代谢组学分析结果聚焦于 ``Amino acid metabolism''，包含化合物 Phenylalanine 等（Fig. \ref{fig:LITERATURE-Integrative-network-analysis-of-proteomics-and-untargeted-metabolomics-data}，Fig. \ref{fig:LITERATURE-Schematic-diagram-of-the-crucial-pathways}）。
+\end{itemize}
+
+因此，TNA 治疗 Sepsis 可能涉及的肠道微生物-代谢物-蛋白质（基因）关联轴：
+
+\begin{itemize}
+\tightlist
+\item
+  肠道微生物： Lachnospiraceae
+\item
+  代谢物：Phenylacetylglutamine
+\item
+  基因（蛋白）：ENO1, TKT, ALDOB
+\item
+  通路：Biosynthesis of amino acids
+\end{itemize}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-IntegrativeAnaChen2022}{}%
+1. Chen, Q. \emph{et al.} Integrative analysis of metabolomics and proteomics reveals amino acid metabolism disorder in sepsis. \emph{Journal of translational medicine} \textbf{20}, (2022).
+
+\leavevmode\hypertarget{ref-GutmdisorderACheng2019}{}%
+2. Cheng, L., Qi, C., Zhuang, H., Fu, T. \& Zhang, X. GutMDisorder: A comprehensive database for dysbiosis of the gut microbiota in disorders and interventions. \emph{Nucleic Acids Research} \textbf{48}, (2019).
+
+\leavevmode\hypertarget{ref-FellaAnRPacPicart2018}{}%
+3. Picart-Armada, S., Fernandez-Albert, F., Vinaixa, M., Yanes, O. \& Perera-Lluna, A. FELLA: An r package to enrich metabolomics data. \emph{BMC Bioinformatics} \textbf{19}, 538 (2018).
+
+\leavevmode\hypertarget{ref-SerumProteomicLiang2021}{}%
+4. Liang, X. \emph{et al.} Serum proteomics reveals disorder of lipoprotein metabolism in sepsis. \emph{Life science alliance} \textbf{4}, (2021).
+\end{cslreferences}
 
 \end{document}

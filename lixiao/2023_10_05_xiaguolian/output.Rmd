@@ -51,6 +51,8 @@ set_index()
 
 筛选丹参酮治疗脓毒症（sepsis）的关键差异表达基因及相关信号通路。
 
+注：补充分析请参考 \@ref(supp)（进一步筛选与肠道微生物和免疫微环境相关的差异表达基因）
+
 # 材料和方法 {#methods}
 
 测序数据：Caco-2细胞系，对照组con，脂多糖组LPS，丹参酮组TNA（LPS+TNA）。
@@ -322,4 +324,252 @@ autor(wrap(vn@plots$step5$p.res_vina, 6, 4))
 #| Tanshinone-IIA-binding-with-protein-DLG4
 autor(.file_fig("./figs/164676_into_1kef.png"))
 ```
+
+# 附：补充分析 {#supp}
+
+补充分析：进一步筛选与肠道微生物和免疫微环境相关的差异表达基因
+
+## Sepsis 的代谢物研究
+
+获取文献相关资料：
+
+- Integrative analysis of metabolomics and proteomics reveals amino acid
+  metabolism disorder in sepsis[@IntegrativeAnaChen2022]
+    - PMID: 35287674
+    - Blood samples were collected from patients diagnosed with sepsis at
+      admission to the ICU. Blood samples of patients and NC subjects were
+      drawn using serum separation tubes and allowed to clot at room
+      temperature for 60 min. The samples were centrifuged for 10 min within 30
+      min (1600×g, 4 °C) to remove insoluble solids. Each aliquot of serum was
+      collected and immediately stored at − 80 °C until ultrahigh-performance
+      liquid chromatography with quadrupole time-of-flight mass spectrometry
+      (UPLC-Q-TOF/MS) analysis.
+
+### Sepsis 差异代谢物 {#diff-meta}
+
+获取上述文献差异代谢物数据[@IntegrativeAnaChen2022]：
+
+```{r eval = T, echo = F, results = "asis"}
+#| LITERATURE-Positive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects
+autor(dm_pos)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LITERATURE-Negtive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects
+autor(dm_neg)
+```
+
+```{r}
+file.copy("~/Downloads/12967_2022_3320_MOESM3_ESM.xlsx", "raw/diff_metabo_Pos_stab.xlsx")
+file.copy("~/Downloads/12967_2022_3320_MOESM4_ESM.xlsx", "raw/diff_metabo_Neg_stab.xlsx")
+```
+
+### 从代谢物到肠道微生物
+
+利用 gutMDisorder[@GutmdisorderACheng2019] 数据库，检索与差异代谢物相关的肠道微生物。
+
+```{r eval = T, echo = F, results = "asis"}
+#| databse-of-gutMDisorder
+autor(gdb)
+```
+
+从 gutMDisorder 中匹配 Tab. \@ref(tab:LITERATURE-Positive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects) 与 Tab. \@ref(tab:LITERATURE-Negtive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects) 对应的化合物:
+
+```{r eval = T, echo = F, results = "asis"}
+#| hited-metabolites-and-microbiota-in-gutMDisorder
+autor(wrap(p.allu_gdbhit, 5, 4))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| table-of-the-hitted-compounds
+autor(mt@tables$step1$mapped)
+```
+
+```{r}
+dm_pos <- fxlsx("raw/diff_metabo_Pos_stab.xlsx", startRow = 2)
+dm_neg <- fxlsx("raw/diff_metabo_Neg_stab.xlsx", startRow = 2)
+dm_all <- c(dm_pos$Ref_Name, dm_neg$Ref_Name)
+dm_kegg <- unlist(lapply(list(dm_pos, dm_neg), function(x) split(x$KEGG, x$Ref_Name)), F)
+
+# colon.DEGs <- geo.plots$upset.set$colon
+gdb <- ftibble("../Gut Microbe and Metabolite-human.txt")
+
+dm_hit <- dm_all[dm_all %in% c(gdb$Substrate, gdb$Metabolite)]
+dm_hit <- vapply(dm_hit, function(x) dm_kegg[[ x ]], character(1))
+
+gdb_hit <- dplyr::filter(gdb, Substrate %in% names(dm_hit) | Metabolite %in% names(dm_hit))
+gdb_hit <- dplyr::select(gdb_hit, 1, Substrate, Metabolite)
+p.allu_gdbhit <- new_allu(gdb_hit, axes = 1:3)
+```
+
+```{r}
+mt <- job_metabo()
+mt <- step1(mt, names(dm_hit))
+```
+
+### （选定的）代谢物的富集分析
+
+将 Tab. \@ref(tab:table-of-the-hitted-compounds) 中的两种化合物富集分析。
+
+FELLA （pagerank 算法）用于差异代谢物的富集分析`r fl@cite`。
+
+```{r eval = T, echo = F, results = "asis"}
+#| FELLA-enrichment
+autor(fl@plots$step1$p.enrich$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| table-of-FELLA-enrichment-result
+autor(res_fl)
+```
+
+首要关注 "Phenylalanine metabolism" 代谢通路。
+
+```{r}
+fl <- job_fella(unname(dm_hit))
+fl <- step1(fl)
+fl@plots$step1$p.enrich$ids
+
+res_fl <- tibble::as_tibble(fl@params$graph.lst$ids)
+```
+
+## Sepsis 的蛋白质研究
+
+### Sepsis 差异蛋白
+
+- Serum proteomics reveals disorder of lipoprotein metabolism in
+  sepsis[@SerumProteomicLiang2021]
+    - Blood samples of patients and NC subjects were collected and allowed to
+      clot at room temperature for 60 min. Serum was separated by
+      centrifugation at 1,600g for 10 min within 30 min to remove insoluble
+      solids and stored at −80°C until proteomic analysis and ELISA (Tammen,
+      2008). Removal of high-abundance proteins in serum, such as albumin and
+      IgG, was performed using ProteoPrep Blue Albumin & IgG Depletion Kit
+      (PROTBA; Sigma-Aldrich) according to the manufacturer’s instructions.
+      Removal of impurities from the protein extraction was performed using a
+      2-D clean kit (GE Healthcare) before the determination of the sample
+      concentration.
+
+从上述文献获取差异蛋白数据[@SerumProteomicLiang2021]：
+
+```{r eval = T, echo = F, results = "asis"}
+#| LITERATURE-Comparison-of-protein-abundance-in-patients-with-sepsis-and-normal-control-subjects
+autor(dp_sig)
+```
+
+```{r}
+file.copy("~/Downloads/LSA-2021-01091_TableS3.xlsx", "raw/diff_proteo_stab.xlsx")
+```
+
+```{r}
+dp_all <- fxlsx("raw/diff_proteo_stab.xlsx", startRow = 2)
+dp_sig <- dplyr::filter(dp_all, adjusted.P.value < .05)
+```
+
+## TNA 治疗靶点和 Sepsis 差异蛋白质的关联（从基因到蛋白质）
+
+### 交集蛋白（基因）
+
+```{r}
+sets.tna2dp <- list(TNA_target = treat_all, diff_proteo = dp_sig$Gene.names)
+p.venn_tna2dp <- new_venn(lst = sets.tna2dp)
+p.venn_tna2dp
+ins.tna2dp <- ins(lst = sets.tna2dp)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-TNA-targets-and-Sepsis-significant-protein
+autor(p.venn_tna2dp)
+```
+
+Fig. \@ref(fig:intersection-of-TNA-targets-and-Sepsis-significant-protein)，共有 `r length(ins.tna2dp)` 个交集基因（蛋白质）。
+
+```{r eval = T, echo = F, results = "asis"}
+#| genes-of-intersection-of-TNA-targets-and-Sepsis-significant-protein
+autor(new_lich(list(intersection = ins.tna2dp)))
+```
+
+### 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-enrichment-of-intersection-of-TNA-targets-and-Sepsis-significant-protein
+autor(en2@plots$step1$p.kegg$ids)
+```
+
+Fig. \@ref(fig:KEGG-enrichment-of-intersection-of-TNA-targets-and-Sepsis-significant-protein)，关注到
+"Biosynthesis of amino acids" 通路，这一结果与文献[@IntegrativeAnaChen2022]一致。
+此外，根据Fig. \@ref(fig:KEGG-pathway-of-Biosynthesis-of-amino-acids)，Phenylalanine 的存在受该通路调控（Phenylalanine metabolism 在 Fig. \@ref(fig:FELLA-enrichment) 中富集）。
+
+因此，这里建立了从差异蛋白到 TNA 治疗的差异表达基因的联系，又联系到了差异代谢物的分析（\@ref(diff-meta)），而相应代谢物又联系到了肠道微生物（Fig. \@ref(fig:hited-metabolites-and-microbiota-in-gutMDisorder)）。
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-pathway-of-Biosynthesis-of-amino-acids
+autor(en2@plots$step2$p.pathviews$hsa01230)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| hited-genes-in-Biosynthesis-of-amino-acids
+autor(new_lich(list(hited_genes = en2@tables$step1$res.kegg$ids[3, ]$geneName_list[[1]])))
+```
+
+```{r}
+en2 <- job_enrich(list(ids = ins.tna2dp), anno)
+en2 <- step1(en2)
+en2@plots$step1$p.kegg$ids
+en2@plots$step1$p.go$ids
+
+en2 <- step2(en2, "hsa01230", search = "hsa01230.png")
+en2@plots$step2$p.pathviews$hsa01230
+en2@tables$step1$res.kegg$ids[3, ]$geneName_list[[1]]
+en2@tables$step1$res.kegg$ids
+```
+
+## 蛋白质组学和代谢组学的关联性分析
+
+见文献[@SerumProteomicLiang2021]。这部分，由于原作者[@SerumProteomicLiang2021]未上传代谢物的检测含量数据，因此无法重现代谢物和蛋白质的关联分析。不过，原作者已得出结论，即：
+
+- The characteristic proteins and metabolites identified formed a complex
+  network to depict the crucial immunometabolism linked to sepsis. Amino
+  acid-related pathways, including phenylalanine metabolism, tyrosine
+  metabolism and tryptophan biosynthesis, were illustrated to be essential
+  mechanisms of sepsis. 
+
+因此，蛋白质组学和代谢组学的联合表明，phenylalanine metabolism 是 Sepsis 关键通路之一。
+
+以下为该文献[@SerumProteomicLiang2021]提供的 Figure：
+
+```{r eval = T, echo = F, results = "asis"}
+#| LITERATURE-Integrative-network-analysis-of-proteomics-and-untargeted-metabolomics-data
+autor(fig.lite_omics)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LITERATURE-Schematic-diagram-of-the-crucial-pathways
+autor(fig.lite_pheny)
+```
+
+```{r}
+file.copy("~/Downloads/12967_2022_3320_Fig5_HTML.jpg", "figs/literature_omics_fig5.jpeg", T)
+file.copy("~/Downloads/12967_2022_3320_Fig6_HTML.jpg", "figs/literature_omics_fig6.jpeg", T)
+## Integrative network analysis of proteomics and untargeted metabolomics data
+fig.lite_omics <- .file_fig("figs/literature_omics_fig5.jpeg")
+## Schematic diagram of the crucial pathways
+fig.lite_pheny <- .file_fig("figs/literature_omics_fig6.jpeg")
+```
+
+## 总结：TNA 治疗 Sepsis 可能涉及的肠道微生物-代谢物-蛋白质关联轴
+
+- 以 Sepsis 差异代谢物（Tab. \@ref(tab:LITERATURE-Positive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects)，Tab. \@ref(tab:LITERATURE-Negtive-ionmode-Differentially-expressed-metabolites-of-the-comparison-between-sepsis-patients-and-NC-subjects)）和 gutMDisorder 数据库[@GutmdisorderACheng2019] 发现了 Sepsis 差异代谢物和肠道菌的联系（Fig. \@ref(fig:hited-metabolites-and-microbiota-in-gutMDisorder)）。
+- 上述代谢物（与肠道菌关联的）富集到了通路 Phenylalanine metabolism（Fig. \@ref(fig:FELLA-enrichment)）
+- TNA 治疗靶点和 Sepsis 差异蛋白的交集共有 `r length(ins.tna2dp)` 个基因（Fig. \@ref(fig:intersection-of-TNA-targets-and-Sepsis-significant-protein)）。
+- 上述交集基因富集到通路 Biosynthesis of amino acids（Fig. \@ref(fig:KEGG-enrichment-of-intersection-of-TNA-targets-and-Sepsis-significant-protein)），涉及 Phenylalanine 及其相关化合物的调控。
+- 文献中[@IntegrativeAnaChen2022]，蛋白组学和代谢组学分析结果聚焦于 "Amino acid metabolism"，包含化合物 Phenylalanine 等（Fig. \@ref(fig:LITERATURE-Integrative-network-analysis-of-proteomics-and-untargeted-metabolomics-data)，Fig. \@ref(fig:LITERATURE-Schematic-diagram-of-the-crucial-pathways)）。
+
+因此，TNA 治疗 Sepsis 可能涉及的肠道微生物-代谢物-蛋白质（基因）关联轴：
+
+- 肠道微生物： Lachnospiraceae
+- 代谢物：Phenylacetylglutamine
+- 基因（蛋白）：ENO1, TKT, ALDOB
+- 通路：Biosynthesis of amino acids
+
 

@@ -78,3 +78,24 @@ data <- dplyr::select(data, -1)
 data <- new_heatdata(as_data_long(data))
 callheatmap(data)
 ```
+
+- Distinct subsets of neutrophils crosstalk with cytokines and metabolites in patients with sepsis
+  PMID: 36756375
+
+### MetaboAnalyst 富集
+
+```{r}
+mt <- job_metabo()
+mt <- step1(mt, names(dm_hit))
+mt@tables$step1$mapped
+mt <- step2(mt, names(dm_hit)[2])
+```
+
+### Pathview 富集
+
+```{r}
+en1 <- en0
+en1@step <- 1L
+en1 <- step2(en1, "hsa00360", external = T)
+en1@plots$step2$p.pathviews$hsa00360
+```

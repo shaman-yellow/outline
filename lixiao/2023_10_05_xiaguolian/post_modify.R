@@ -4,7 +4,7 @@
 
 write_articlePdf("index.Rmd", "output.Rmd", "Analysis\nauthor: 'Huang LiChuang of Wie-Biotech'")
 
-id <- "夏国连生信支持"
+id <- "夏国连生信支持+补充分析"
 file.copy("./output.pdf", report <- paste0(id, ".pdf"), T)
 
 package_results(head = NULL, masterZip = NULL, report = report)

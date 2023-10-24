@@ -1,9 +1,13 @@
 
+# Set-up
 
+## Functions
+
+```{r}
+#| functions
 # for sync to
 # http://192.168.18.99:8000/#shared-libs/lib/ad3a6679-47ad-48c9-9b7d-3d8604693669/%E9%BB%84%E7%A4%BC%E9%97%AF
 # files first copy to ~/disk_sdb1/my_job
-
 thedir <- function(month, year = 2023) {
   month <- as.character(month)
   if (nchar(month) < 2) {
@@ -18,23 +22,57 @@ cp <- function(from, to) {
   }
   file.copy(from, to, T, T)
 }
+```
 
+# Year-2023
+
+## 2023-07
+
+```{r}
 cp("~/outline/lixiao/2023_06_25_fix/N2023062002.zip", thedir(7))
 cp("~/outline/lixiao/2023_06_30_eval/results_chem_docking.zip", thedir(7))
+```
 
+## 2023-08
+
+```{r}
 cp("~/outline/lixiao/2023_07_07_eval/IN2023072803-3+销售：周燕青+客户：戴心怡+斑痕增生+生信分析.zip", thedir(8))
 cp("~/outline/lixiao/2023_07_24_base/BI2023072101-3+昼夜节律相关+未见肿瘤报道+预后关联单细胞分析+3-5分.zip", thedir(8))
 cp("~/outline/lixiao/2023_08_24_eval/沈顺订单.zip", thedir(8))
 writeLines("沈顺订单分为两部分，本月为第一部分。", "~/disk_sdb1/my_job/202308/ps.txt")
+```
 
+## 2023-09
+
+```{r}
 cp("~/outline/lixiao/2023_08_17_eval/白晓霞订单.zip", thedir(9))
 cp("~/outline/lixiao/2023_08_24_eval/沈顺订单.zip", thedir(9))
 cp("~/outline/lixiao/2023_09_13_pdb/results_touchPDB.zip", thedir(9))
 cp("~/outline/lixiao/2023_07_20_yuye/IN2023072801-3+销售：王双+客户：于骅+恶性肿瘤肌少症+2-3分.zip", thedir(9))
 writeLines("沈顺订单分为两部分，本月为第二部分。", "~/disk_sdb1/my_job/202309/ps.txt")
+```
 
+## 2023-10
+
+```{r}
+#| fixed
 cp("~/outline/lixiao/2023_10_05_xiaguolian/夏国连生信支持.zip", thedir(10))
 cp("~/outline/lixiao/2023_10_06_lunST/曹卓空间转录组.zip", thedir(10))
 cp("~/outline/lixiao/2023_10_18_revise/修改业务：2023041204-潘一伟&魏伦全.zip", thedir(10))
+```
 
-# <http://192.168.18.99:8000/#shared-libs/lib/ad3a6679-47ad-48c9-9b7d-3d8604693669/%E9%BB%84%E7%A4%BC%E9%97%AF>
+Eval:
+
+- 李华评估，了解系统性硬化症 Systemic Sclerosis 开源数据库现状。
+- 周芳评估，设计关于特应性皮炎 Atopic Dermatitis 5分以上生信。
+- 袁路评估，糖尿病视网膜病变与眼底图像的计量分析的可行性。
+- 袁路加急评估，文献计量的图表可否实现。
+- 贾总晓月评估，联合三维基因组测序与单细胞测序技术的分析实现可行性。
+- 方和敬生信支持，网络药理学涉及白茅根和王不留行的药物-成分-靶点分析。
+- 夏国连补充分析，将分析结果与跟肠道微生物和免疫微环境相关相联系。
+
+Eval:
+
+- 孙楠的十个业务单和温呈金的一个业务单。
+
+<http://192.168.18.99:8000/#shared-libs/lib/ad3a6679-47ad-48c9-9b7d-3d8604693669/%E9%BB%84%E7%A4%BC%E9%97%AF>
