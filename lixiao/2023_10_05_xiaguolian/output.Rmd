@@ -212,10 +212,10 @@ geo.res <- sapply(list.files("./GSE237861/", "\\.tsv$", full.names = T), ftibble
 geo.summary <- lapply(geo.res,
   function(data) {
     symbols <- filter(data, FDR < .05, abs(logFC) > .3)$gene_ID
-    gs(symbols, "\\.[0-9]*$", "")
+    gse(symbols, "\\.[0-9]*$", "")
   })
 fun <- function(x) {
-  tissue <- unique(gs(names(x), ".*\\.([a-z]*).tsv", "\\1"))
+  tissue <- unique(gse(names(x), ".*\\.([a-z]*).tsv", "\\1"))
   meta <- group_strings(names(x), nl(tissue, tissue, as.list = F))
   meta <- mutate(meta, sample = stringr::str_extract(target, "sepsis[0-9]"),
     diff_number = vapply(target, function(x) length(geo.summary[[ x ]]), integer(1))
@@ -325,7 +325,7 @@ autor(wrap(vn@plots$step5$p.res_vina, 6, 4))
 autor(.file_fig("./figs/164676_into_1kef.png"))
 ```
 
-# 附：补充分析 {#supp}
+# 附：补充分析——肠道微生物关联 {#supp}
 
 补充分析：进一步筛选与肠道微生物和免疫微环境相关的差异表达基因
 
@@ -572,4 +572,123 @@ fig.lite_pheny <- .file_fig("figs/literature_omics_fig6.jpeg")
 - 基因（蛋白）：ENO1, TKT, ALDOB
 - 通路：Biosynthesis of amino acids
 
+# 附：补充分析——铁死亡 {#Fe}
+
+补充分析：筛选差异表达基因是否涉及与铁死亡相关的信号通路。
+
+Ferroptosis[@FerroptosisMoTang2021; @FerroptosisInChen2021]
+
+- In general, ferroptosis is a type of oxidative cell death driven by lipid
+  peroxidation. Various oxidation and antioxidant pathways couple autophagy and
+  membrane repair mechanisms to shape the process of lipid peroxidation and
+  plasma membrane damage during ferroptosis
+
+## 铁死亡关联方法
+
+铁死亡涉及的信号通路较为复杂，这里为了检测 TNA 治疗的 DEGs 是否涉及铁死亡，调研了涉及 Ferroptosis 检测的方法学文献。
+
+```{r}
+mj <- esearch.mj("Ferroptosis")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Methods-for-Ferroptosis
+autor(mj, key = "Title")
+```
+
+其中，FerrDb V2[@FerrdbV2UpdaZhou2023] 为 Nucleic Acids Res 2023年的方法。
+
+## 以 FerrDb V2 数据库富集分析
+
+- FerrDb V2: update of the manually curated database of ferroptosis regulators
+  and ferroptosis-disease associations [@FerrdbV2UpdaZhou2023]
+    - <http://www.zhounan.org/ferrdb/current/>
+
+```{r}
+db_fe <- get_fe_data(for_gsea = T)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| database-FerrDb-V2
+autor(db_fe)
+```
+
+Tab. \@ref(tab:database-FerrDb-V2) 为以下分析所包含的所有 FerrDb V2 数据内容，以及相关文献来源证明等信息。
+
+### 所有的 DEGs 与 FerrDb V2 的交集
+
+```{r eval = T, echo = F, results = "asis"}
+#| Proportion-of-intersected-genes-of-DEGs-with-Ferrdb
+autor(gse@plots$step3$p.pie_insDb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersected-genes-of-DEGs-with-Ferrdb
+autor(gse@tables$step3$table_insDb, key = "symbol")
+```
+
+### 所有的 DEGs 的富集分析 (GSEA)
+
+将 Fig. \@ref(fig:DEGs-of-model-versus-control) 的 DEGs 以 FerrDb V2 的基因集用于 GSEA 富集分析。
+
+**注：**结果均不显著 (Tab. \@ref(tab:table-of-All-DEGs-of-GSEA-enrichment-via-FerrDb-V2))，仅用于参考TNA 的治疗与 Ferroptosis 有哪些联系。
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-DEGs-of-GSEA-enrichment-via-FerrDb-V2
+autor(gse@plots$step3$p.code)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| table-of-All-DEGs-of-GSEA-enrichment-via-FerrDb-V2
+autor(gse@tables$step3$table_gsea)
+```
+
+```{r}
+gse <- asjob_gsea(lm)
+gse <- step1(gse)
+gse <- step2(gse, c("hsa00982", "hsa00590"))
+gse@plots$step2$p.code
+
+gse@step <- 2L
+gse <- step3(gse, db_fe, 1, map = "driver|supp|marker")
+gse@plots$step3$p.code
+```
+
+### 仅 Ferroptosis 相关基因的富集分析
+
+**注：** 以下富集是过拟合的，因为预先根据 FerrDb 数据筛选了基因用于分析。仅供参考。
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-enrichment-over-Fitting
+autor(en5@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-KEGG-enrichment-over-Fitting
+autor(en5@tables$step1$res.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GO-enrichment-over-Fitting
+autor(en5@plots$step1$p.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| visualization-of-pathway-of-Ferroptosis-over-Fitting
+autor(en5@plots$step2$p.pathviews$hsa04216)
+```
+
+```{r}
+en5 <- job_enrich(list(ids = gse@tables$step3$table_insDb$symbol), anno)
+en5 <- step1(en5)
+en5@plots$step1$p.kegg
+en5@plots$step1$p.go$ids
+en5@tables$step1$res.kegg
+en5 <- step2(en5, "hsa04216")
+```
+
+## 总结
+
+- TNA 治疗的 DEGs 包含一部分铁死亡（Ferroptosis）相关的基因（这些基因见 Tab. \@ref(tab:intersected-genes-of-DEGs-with-Ferrdb)，包含通路注释和文献佐证等内容），但是关联并不密切（不显著）（Fig. \@ref(fig:All-DEGs-of-GSEA-enrichment-via-FerrDb-V2)）。
+- 其余分析供参考。
 

@@ -76,3 +76,32 @@ print(filter(es_omics, grepl("Nuc", .id)), n = 100)
 es_omics1 <- esearch.mj("omics")
 print(filter(es_omics1, grepl("biotech", .id)), n = 100)
 ```
+
+### 基因组（Mutation data）
+
+```{r}
+# https://www.bioconductor.org/packages/release/bioc/vignettes/TCGAbiolinks/inst/doc/mutation.html
+```
+
+
+- GSE178481
+    - Human kideny tissue were disaggregated and profiled using the Chromium
+      Single Cell 3’ Library and Gel Bead Kit v2 (10X Genomics) .
+
+```{r}
+geo1 <- job_geo("GSE178481")
+geo1 <- step1(geo1)
+geo1 <- step2(geo1)
+untar("GSE178481/GSE178481_RAW.tar", exdir = "GSE178481")
+test <- ftibble("./GSE178481/GSM5392398_RCC-PR6-Normal.count.csv.gz")
+```
+
+## 慢性肾病
+
+```{r}
+# https://www.tokushukai.or.jp/cn/treatment/internal/nephrology/jinzoubyou_jinfuzen.php
+```
+
+### GSE60861: An integrative analysis of renal miRNA- and mRNA-expression signatures in progressive chronic kidney disease
+
+

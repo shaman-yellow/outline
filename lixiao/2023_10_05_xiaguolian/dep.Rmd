@@ -56,7 +56,6 @@ dplyr::select(mj, .id, Title)
 ```{r}
 en1 <- job_enrich(list(ids = ins(treat_all, colon.DEGs)), anno)
 en1 <- step1(en1)
-
 db.c2 <- get_c2_data("micro")
 ```
 
@@ -99,3 +98,5 @@ en1@step <- 1L
 en1 <- step2(en1, "hsa00360", external = T)
 en1@plots$step2$p.pathviews$hsa00360
 ```
+
+

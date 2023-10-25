@@ -529,7 +529,7 @@ Figure \ref{fig:Tanshinone-IIA-binding-with-protein-DLG4}为图Tanshinone IIA bi
 \end{center}
 
 \hypertarget{supp}{%
-\section{附：补充分析}\label{supp}}
+\section{附：补充分析------肠道微生物关联}\label{supp}}
 
 补充分析：进一步筛选与肠道微生物和免疫微环境相关的差异表达基因
 
@@ -1921,6 +1921,1371 @@ Figure \ref{fig:LITERATURE-Schematic-diagram-of-the-crucial-pathways}为图LITER
   通路：Biosynthesis of amino acids
 \end{itemize}
 
+\hypertarget{Fe}{%
+\section{附：补充分析------铁死亡}\label{Fe}}
+
+补充分析：筛选差异表达基因是否涉及与铁死亡相关的信号通路。
+
+Ferroptosis\textsuperscript{\protect\hyperlink{ref-FerroptosisMoTang2021}{5},\protect\hyperlink{ref-FerroptosisInChen2021}{6}}
+
+\begin{itemize}
+\tightlist
+\item
+  In general, ferroptosis is a type of oxidative cell death driven by lipid
+  peroxidation. Various oxidation and antioxidant pathways couple autophagy and
+  membrane repair mechanisms to shape the process of lipid peroxidation and
+  plasma membrane damage during ferroptosis
+\end{itemize}
+
+\hypertarget{ux94c1ux6b7bux4ea1ux5173ux8054ux65b9ux6cd5}{%
+\subsection{铁死亡关联方法}\label{ux94c1ux6b7bux4ea1ux5173ux8054ux65b9ux6cd5}}
+
+铁死亡涉及的信号通路较为复杂，这里为了检测 TNA 治疗的 DEGs 是否涉及铁死亡，调研了涉及 Ferroptosis 检测的方法学文献。
+
+Table \ref{tab:Methods-for-Ferroptosis}为表格Methods for Ferroptosis概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Methods-for-Ferroptosis.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有12行5列，以下预览的表格可能省略部分数据；表格含有12个唯一`Title'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:Methods-for-Ferroptosis}Methods for Ferroptosis}\tabularnewline
+\toprule
+.id & Title & FullJ\ldots{} & Name & Id\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+.id & Title & FullJ\ldots{} & Name & Id\tabularnewline
+\midrule
+\endhead
+BMC g\ldots{} & Explo\ldots{} & BMC g\ldots{} & Ran M\ldots{} & 37430218\tabularnewline
+BMC g\ldots{} & Const\ldots{} & BMC g\ldots{} & Chen \ldots{} & 37259023\tabularnewline
+BMC g\ldots{} & Compe\ldots{} & BMC g\ldots{} & Chen \ldots{} & 36755220\tabularnewline
+Nucle\ldots{} & FerrD\ldots{} & Nucle\ldots{} & Zhou \ldots{} & 36305834\tabularnewline
+BMC g\ldots{} & Const\ldots{} & BMC g\ldots{} & Shi W\ldots{} & 36414988\tabularnewline
+BMC g\ldots{} & Ident\ldots{} & BMC g\ldots{} & Chen \ldots{} & 35354376\tabularnewline
+BMC g\ldots{} & Ferro\ldots{} & BMC g\ldots{} & Xu Y\textbar\ldots{} & 35042463\tabularnewline
+Brief\ldots{} & Ferro\ldots{} & Brief\ldots{} & Tang \ldots{} & 34553745\tabularnewline
+BMC g\ldots{} & Ident\ldots{} & BMC g\ldots{} & Fan J\ldots{} & 35033021\tabularnewline
+BMC g\ldots{} & Ident\ldots{} & BMC g\ldots{} & Lin R\ldots{} & 34315405\tabularnewline
+Nucle\ldots{} & Lipid\ldots{} & Nucle\ldots{} & Lin W\ldots{} & 34048582\tabularnewline
+BMC g\ldots{} & Compa\ldots{} & BMC g\ldots{} & Zhang\ldots{} & 33952209\tabularnewline
+\bottomrule
+\end{longtable}
+
+其中，FerrDb V2\textsuperscript{\protect\hyperlink{ref-FerrdbV2UpdaZhou2023}{7}} 为 Nucleic Acids Res 2023年的方法。
+
+\hypertarget{ux4ee5-ferrdb-v2-ux6570ux636eux5e93ux5bccux96c6ux5206ux6790}{%
+\subsection{以 FerrDb V2 数据库富集分析}\label{ux4ee5-ferrdb-v2-ux6570ux636eux5e93ux5bccux96c6ux5206ux6790}}
+
+\begin{itemize}
+\tightlist
+\item
+  FerrDb V2: update of the manually curated database of ferroptosis regulators
+  and ferroptosis-disease associations\textsuperscript{\protect\hyperlink{ref-FerrdbV2UpdaZhou2023}{7}}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{http://www.zhounan.org/ferrdb/current/}
+  \end{itemize}
+\end{itemize}
+
+Table \ref{tab:database-FerrDb-V2}为表格database FerrDb V2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/database-FerrDb-V2.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有844行19列，以下预览的表格可能省略部分数据；表格含有4个唯一`term'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllllllll@{}}
+\caption{\label{tab:database-FerrDb-V2}Database FerrDb V2}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+term\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+symbol\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+.id\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+id\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+rcd\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgncid\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensgs\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+evidence\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+testin\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+pathway\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+confi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+exper\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+caution\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+unipr\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+term\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+symbol\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+.id\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+id\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+rcd\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgncid\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensgs\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+evidence\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+testin\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+pathway\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+confi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+exper\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+caution\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+unipr\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+PTGS2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Simpl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P35354\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+CHAC1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Up-re\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q9BUX1\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+SLC40A1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Erast\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Used \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q9NP59\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+TF\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Erast\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Used \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P02787\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+TFRC\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+5\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Erast\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Used \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P02786\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+FTH1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+6\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Erast\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Used \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P02794\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+GPX4\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+7\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Erast\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Used \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P36969\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+HSPB1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+8\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Erast\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Used \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P04792\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+NFE2L2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+9\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Erast\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Used \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q16236\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+GPX4\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+10\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Upreg\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Rat\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Inhib\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P36969\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+FTH1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+12\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+The p\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P02794\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+RPL8\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Requi\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RPL8 \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P62917\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+IREB2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Requi\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+IREB2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P48200\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+ATP5MC3\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:843\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Requi\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ATP5M\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P48201\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+CS\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Requi\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CS :+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+O75390\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Tab. \ref{tab:database-FerrDb-V2} 为以下分析所包含的所有 FerrDb V2 数据内容，以及相关文献来源证明等信息。
+
+\hypertarget{ux6240ux6709ux7684-degs-ux4e0e-ferrdb-v2-ux7684ux4ea4ux96c6}{%
+\subsubsection{所有的 DEGs 与 FerrDb V2 的交集}\label{ux6240ux6709ux7684-degs-ux4e0e-ferrdb-v2-ux7684ux4ea4ux96c6}}
+
+Figure \ref{fig:Proportion-of-intersected-genes-of-DEGs-with-Ferrdb}为图Proportion of intersected genes of DEGs with Ferrdb概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Proportion-of-intersected-genes-of-DEGs-with-Ferrdb.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Proportion-of-intersected-genes-of-DEGs-with-Ferrdb.pdf}
+\caption{Proportion of intersected genes of DEGs with Ferrdb}\label{fig:Proportion-of-intersected-genes-of-DEGs-with-Ferrdb}
+\end{center}
+
+Table \ref{tab:intersected-genes-of-DEGs-with-Ferrdb}为表格intersected genes of DEGs with Ferrdb概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersected-genes-of-DEGs-with-Ferrdb.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有140行19列，以下预览的表格可能省略部分数据；表格含有79个唯一`symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllllllll@{}}
+\caption{\label{tab:intersected-genes-of-DEGs-with-Ferrdb}Intersected genes of DEGs with Ferrdb}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+term\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+symbol\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+.id\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+id\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+rcd\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgncid\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensgs\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+evidence\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+testin\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+pathway\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+confi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+exper\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+caution\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+unipr\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+term\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+symbol\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+.id\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+id\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+rcd\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+hgncid\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+ensgs\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+evidence\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+testin\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+pathway\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+confi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+exper\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+caution\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedright
+unipr\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CHAC1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Up-re\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q9BUX1\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HSPB1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+marker\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+8\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Erast\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Used \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P04792\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NOX1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+7\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Suppr\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+NOX1 \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Deduced\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+The p\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q9Y5S8\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+20\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Inhib\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Human\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TP53 \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+The a\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P04637\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TFR2\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+28\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RNAi \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TFR2 \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q9UP52\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SLC38A1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+29\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+RNAi \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SLC38\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q9H2H9\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SLC1A5\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+30\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Pharm\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SLC1A\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q15758\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CARS1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+33\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Requi\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Human\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+CARS1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P49589\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+34\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Wild \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Human\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TP53 \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P04637\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMOX1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+37\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Zinc \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Human\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HMOX1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Other\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P09601\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+38\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+p53\^{}3\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TP53 \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P04637\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+39\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Incub\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Human\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+TP53 \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Valid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+P04637\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SLC38A1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+55\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+The g\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+SLC38\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Screened\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q9H2H9\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+GABAR\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+65\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Poten\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+GABAR\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Screened\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q9H0R8\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+WIPI1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+driver\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+67\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Ferro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+HGNC:\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+ENSG0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Poten\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Mice\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+WIPI1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Screened\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\emph{NA}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+Q5MNZ9\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6240ux6709ux7684-degs-ux7684ux5bccux96c6ux5206ux6790-gsea}{%
+\subsubsection{所有的 DEGs 的富集分析 (GSEA)}\label{ux6240ux6709ux7684-degs-ux7684ux5bccux96c6ux5206ux6790-gsea}}
+
+将 Fig. \ref{fig:DEGs-of-model-versus-control} 的 DEGs 以 FerrDb V2 的基因集用于 GSEA 富集分析。
+
+\textbf{注：}结果均不显著 (Tab. \ref{tab:table-of-All-DEGs-of-GSEA-enrichment-via-FerrDb-V2})，仅用于参考TNA 的治疗与 Ferroptosis 有哪些联系。
+
+Figure \ref{fig:All-DEGs-of-GSEA-enrichment-via-FerrDb-V2}为图All DEGs of GSEA enrichment via FerrDb V2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-DEGs-of-GSEA-enrichment-via-FerrDb-V2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/All-DEGs-of-GSEA-enrichment-via-FerrDb-V2.pdf}
+\caption{All DEGs of GSEA enrichment via FerrDb V2}\label{fig:All-DEGs-of-GSEA-enrichment-via-FerrDb-V2}
+\end{center}
+
+Table \ref{tab:table-of-All-DEGs-of-GSEA-enrichment-via-FerrDb-V2}为表格table of All DEGs of GSEA enrichment via FerrDb V2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/table-of-All-DEGs-of-GSEA-enrichment-via-FerrDb-V2.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3行13列，以下预览的表格可能省略部分数据；表格含有3个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllllll@{}}
+\caption{\label{tab:table-of-All-DEGs-of-GSEA-enrichment-via-FerrDb-V2}Table of All DEGs of GSEA enrichment via FerrDb V2}\tabularnewline
+\toprule
+ID & Descr\ldots{} & setSize & enric\ldots{} & NES & pvalue & p.adjust & qvalue & rank & leadi\ldots{} & core\_\ldots{} & GeneR\ldots{} & Count & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descr\ldots{} & setSize & enric\ldots{} & NES & pvalue & p.adjust & qvalue & rank & leadi\ldots{} & core\_\ldots{} & GeneR\ldots{} & Count & \ldots{}\tabularnewline
+\midrule
+\endhead
+Ferro\ldots{} & Ferro\ldots{} & 29 & 0.481\ldots{} & 1.841\ldots{} & 0.008\ldots{} & 0.024\ldots{} & 0.017\ldots{} & 820 & tags=\ldots{} & TSC22\ldots{} & 66 & 19 & \ldots{}\tabularnewline
+Ferro\ldots{} & Ferro\ldots{} & 28 & 0.288\ldots{} & 1.092\ldots{} & 0.367\ldots{} & 0.551\ldots{} & 0.387\ldots{} & 1096 & tags=\ldots{} & SLC7A\ldots{} & 61 & 17 & \ldots{}\tabularnewline
+Ferro\ldots{} & Ferro\ldots{} & 34 & 0.221\ldots{} & 0.869\ldots{} & 0.635\ldots{} & 0.635\ldots{} & 0.445\ldots{} & 842 & tags=\ldots{} & CHAC1\ldots{} & 41 & 14 & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux4ec5-ferroptosis-ux76f8ux5173ux57faux56e0ux7684ux5bccux96c6ux5206ux6790}{%
+\subsubsection{仅 Ferroptosis 相关基因的富集分析}\label{ux4ec5-ferroptosis-ux76f8ux5173ux57faux56e0ux7684ux5bccux96c6ux5206ux6790}}
+
+\textbf{注：} 以下富集是过拟合的，因为预先根据 FerrDb 数据筛选了基因用于分析。仅供参考。
+
+Figure \ref{fig:KEGG-enrichment-over-Fitting}为图KEGG enrichment over Fitting概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment-over-Fitting.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-enrichment-over-Fitting.pdf}
+\caption{KEGG enrichment over Fitting}\label{fig:KEGG-enrichment-over-Fitting}
+\end{center}
+
+Table \ref{tab:tables-of-KEGG-enrichment-over-Fitting}为表格tables of KEGG enrichment over Fitting概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-KEGG-enrichment-over-Fitting.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有184行9列，以下预览的表格可能省略部分数据；表格含有184个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:tables-of-KEGG-enrichment-over-Fitting}Tables of KEGG enrichment over Fitting}\tabularnewline
+\toprule
+ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa05208 & Chemi\ldots{} & 10/63 & 223/8586 & 4.372\ldots{} & 0.000\ldots{} & 0.000\ldots{} & 7422/\ldots{} & 10\tabularnewline
+hsa04216 & Ferro\ldots{} & 5/63 & 41/8586 & 1.106\ldots{} & 0.001\ldots{} & 0.000\ldots{} & 55240\ldots{} & 5\tabularnewline
+hsa04211 & Longe\ldots{} & 5/63 & 89/8586 & 0.000\ldots{} & 0.023\ldots{} & 0.018\ldots{} & 83667\ldots{} & 5\tabularnewline
+hsa05418 & Fluid\ldots{} & 6/63 & 139/8586 & 0.000\ldots{} & 0.023\ldots{} & 0.018\ldots{} & 7422/\ldots{} & 6\tabularnewline
+hsa04931 & Insul\ldots{} & 5/63 & 108/8586 & 0.001\ldots{} & 0.033\ldots{} & 0.026\ldots{} & 6513/\ldots{} & 5\tabularnewline
+hsa05166 & Human\ldots{} & 7/63 & 222/8586 & 0.001\ldots{} & 0.033\ldots{} & 0.026\ldots{} & 6513/\ldots{} & 7\tabularnewline
+hsa04136 & Autop\ldots{} & 3/63 & 32/8586 & 0.001\ldots{} & 0.033\ldots{} & 0.026\ldots{} & 23710\ldots{} & 3\tabularnewline
+hsa05230 & Centr\ldots{} & 4/63 & 70/8586 & 0.001\ldots{} & 0.033\ldots{} & 0.026\ldots{} & 6513/\ldots{} & 4\tabularnewline
+hsa04137 & Mitop\ldots{} & 4/63 & 72/8586 & 0.001\ldots{} & 0.033\ldots{} & 0.026\ldots{} & 23710\ldots{} & 4\tabularnewline
+hsa04152 & AMPK \ldots{} & 5/63 & 121/8586 & 0.001\ldots{} & 0.033\ldots{} & 0.026\ldots{} & 5468/\ldots{} & 5\tabularnewline
+hsa04115 & p53 s\ldots{} & 4/63 & 74/8586 & 0.002\ldots{} & 0.033\ldots{} & 0.026\ldots{} & 83667\ldots{} & 4\tabularnewline
+hsa03320 & PPAR \ldots{} & 4/63 & 75/8586 & 0.002\ldots{} & 0.033\ldots{} & 0.026\ldots{} & 5468/\ldots{} & 4\tabularnewline
+hsa05219 & Bladd\ldots{} & 3/63 & 41/8586 & 0.003\ldots{} & 0.046\ldots{} & 0.036\ldots{} & 7422/\ldots{} & 3\tabularnewline
+hsa04151 & PI3K-\ldots{} & 8/63 & 359/8586 & 0.004\ldots{} & 0.058\ldots{} & 0.045\ldots{} & 7422/\ldots{} & 8\tabularnewline
+hsa05417 & Lipid\ldots{} & 6/63 & 215/8586 & 0.004\ldots{} & 0.058\ldots{} & 0.045\ldots{} & 5468/\ldots{} & 6\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:GO-enrichment-over-Fitting}为图GO enrichment over Fitting概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GO-enrichment-over-Fitting.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GO-enrichment-over-Fitting.pdf}
+\caption{GO enrichment over Fitting}\label{fig:GO-enrichment-over-Fitting}
+\end{center}
+
+Figure \ref{fig:visualization-of-pathway-of-Ferroptosis-over-Fitting}为图visualization of pathway of Ferroptosis over Fitting概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04216.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2023-10-25_15_09_48.134647/hsa04216.pathview.png}
+\caption{Visualization of pathway of Ferroptosis over Fitting}\label{fig:visualization-of-pathway-of-Ferroptosis-over-Fitting}
+\end{center}
+
+\hypertarget{ux603bux7ed3}{%
+\subsection{总结}\label{ux603bux7ed3}}
+
+\begin{itemize}
+\tightlist
+\item
+  TNA 治疗的 DEGs 包含一部分铁死亡（Ferroptosis）相关的基因（这些基因见 Tab. \ref{tab:intersected-genes-of-DEGs-with-Ferrdb}，包含通路注释和文献佐证等内容），但是关联并不密切（不显著）（Fig. \ref{fig:All-DEGs-of-GSEA-enrichment-via-FerrDb-V2}）。
+\item
+  其余分析供参考。
+\end{itemize}
+
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
 \addcontentsline{toc}{section}{Reference}
@@ -1938,6 +3303,15 @@ Figure \ref{fig:LITERATURE-Schematic-diagram-of-the-crucial-pathways}为图LITER
 
 \leavevmode\hypertarget{ref-SerumProteomicLiang2021}{}%
 4. Liang, X. \emph{et al.} Serum proteomics reveals disorder of lipoprotein metabolism in sepsis. \emph{Life science alliance} \textbf{4}, (2021).
+
+\leavevmode\hypertarget{ref-FerroptosisMoTang2021}{}%
+5. Tang, D., Chen, X., Kang, R. \& Kroemer, G. Ferroptosis: Molecular mechanisms and health implications. \emph{Cell research} \textbf{31}, 107--125 (2021).
+
+\leavevmode\hypertarget{ref-FerroptosisInChen2021}{}%
+6. Chen, X., Kang, R., Kroemer, G. \& Tang, D. Ferroptosis in infection, inflammation, and immunity. \emph{The Journal of experimental medicine} \textbf{218}, (2021).
+
+\leavevmode\hypertarget{ref-FerrdbV2UpdaZhou2023}{}%
+7. Zhou, N. \emph{et al.} FerrDb v2: Update of the manually curated database of ferroptosis regulators and ferroptosis-disease associations. \emph{Nucleic acids research} \textbf{51}, D571--D582 (2023).
 \end{cslreferences}
 
 \end{document}

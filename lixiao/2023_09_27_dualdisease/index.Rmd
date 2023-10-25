@@ -45,6 +45,12 @@ timeROC
 癌症的 FC
 用基因集的 FC 来关联分析 (需要多个 GEO 数据集)
 
+- Kidney status markers
+- cancer markers
+- micro-envir...
+- ferroptosis
+- ...
+
 ```{r}
 #| route
 route <- as_network(
@@ -73,9 +79,57 @@ lite_cancer %>% select(.id, Title) %>% filter(grepl("Nature", .id)) %>% print(n 
 
 ## 肾癌 (GEO)
 
+### GSE171306
+
+    - Single-cell RNA sequencing (scRNA-seq) was performed on bilateral clear
+      cell RCC (ccRCC). Primary kidney samples from 3 patients were used for
+      single cell RNA sequencing by 10X Genomics
+
+```{r}
+geo1 <- job_geo("GSE171306")
+geo1 <- step1(geo1)
+geo1 <- step2(geo1)
+untar("./GSE171306/GSE171306_RAW.tar", exdir = "./GSE171306")
+dir.create("./GSE171306/sample1")
+
+fun <- function() {
+  files <- list.files("./GSE171306/", "\\.gz$", full.names = T)
+  files <- files[ grepl("ccRCC1", files) ]
+  lapply(files,
+    function(x)
+      file.rename(x, paste0("./GSE171306/sample1/",
+          gs(get_filename(x), ".*_", "")))
+  )}
+fun()
+```
+
+#### 细胞聚类和注释
+
+```{r}
+sr <- job_seurat("./GSE171306/sample1")
+sr <- step1(sr)
+sr@plots$step1$p.qc
+sr <- step2(sr, 0, 7500, 35)
+sr@plots$step2$p.pca_rank
+sr <- step3(sr, 1:15, 1.2)
+sr@step <- 4L
+sr@plots$step3$p.umap
+sr <- step5(sr, 5)
+sr <- step6(sr, "Kidney")
+
+sr@plots$step6$p.map_scsa
+```
+
+#### 癌细胞识别
+
+```{r}
+kat <- job_kat(sr)
+kat <- step1(kat)
+```
+
 ## 肾癌 (TCGA-KIRC)
 
-### 转录组（Transcriptome Profiling）
+### TCGA 数据
 
 ```{r}
 tc <- job_tcga("TCGA-KIRC")
@@ -85,50 +139,54 @@ tc <- step3(tc)
 tc <- clear(tc)
 
 lm <- asjob_limma(tc)
+lm@object$samples
 ```
-
-### 基因组（Mutation data）
-
-```{r}
-# https://www.bioconductor.org/packages/release/bioc/vignettes/TCGAbiolinks/inst/doc/mutation.html
-```
-
-## 慢性肾病
-
-```{r}
-# https://www.tokushukai.or.jp/cn/treatment/internal/nephrology/jinzoubyou_jinfuzen.php
-```
-
-### GSE60861: An integrative analysis of renal miRNA- and mRNA-expression signatures in progressive chronic kidney disease
 
 ## 血管性疾患
 
 ### 高血压性肾炎（hypertensive nephropathy）
 - GSE210898: Single-cell RNA transcriptomics of hypertensive nephropathy patients
 
+```{r}
+geo.hn <- job_geo("GSE210898")
+```
+
+#### 细胞聚类和注释
+
+
+
 ## （原发性）肾小球性疾患
 
 ### IgA 肾病 (IgA Nephropathy)
+
+- GSE171314, scRNA-seq
 - GSE145652, RNA-seq
 - GSE175759, RNA-seq
 
 ### 膜性肾病 (idiopathic membranous nephropathy)
-- GSE216841, RNA-seq
+
 - GSE241302, scRNA
+- GSE216841, RNA-seq
 - GSE175759, RNA-seq
 
 ### 微小病变肾病 (Minimal change disease)
+
+- GSE176465, scRNA (only but not fit)
 - GSE216841, RNA-seq
 - GSE175759, RNA-seq
 
 ## （继发性）肾小球性疾患
 
 ### 糖尿病肾病 (Diabetic kidney disease)
+
+- GSE204880, scRNA
 - GSE175759, RNA-seq
 - GSE199838, RNA-seq
 - GSE217709, RNA-seq
 
 ### 狼疮性肾炎 (lupus nephritis)
+
+- no scRNA
 - GSE175759, RNA-seq
 - GSE157293, RNA-seq
 
