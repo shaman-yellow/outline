@@ -1,0 +1,288 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{4}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{ux9898ux76ee}{%
+\section{题目}\label{ux9898ux76ee}}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+CKD 与患癌症风险之间的联系尚未明确。尽管多项研究观察到需要透析或肾移植的 ESRD 患者患癌症的风险较高，但不太严重的肾脏疾病是否与癌症相关仍知之甚少\textsuperscript{\protect\hyperlink{ref-OnconephrologyRosner2021}{1}--\protect\hyperlink{ref-CancerRiskAndKitchl2022}{3}}。
+
+肾癌流行病学\textsuperscript{\protect\hyperlink{ref-EpidemiologyOfBukavi2022}{4}}
+
+CKD 和肾癌\textsuperscript{\protect\hyperlink{ref-RenalCellCancSaly2021}{5}}
+
+Cancer Risk and Mortality in Patients With Kidney Disease: Cancer risk was increased in mild to moderate CKD and among transplant recipients\textsuperscript{\protect\hyperlink{ref-CancerRiskAndKitchl2022}{3}}
+
+\hypertarget{route}{%
+\section{研究设计流程图}\label{route}}
+
+TCGA 突变数据
+TCGA 转录数据
+基因共表达
+免疫浸润水平
+生存分析
+timeROC
+单细胞数据验证
+
+多种慢性肾病的 FC
+癌症的 FC
+用基因集的 FC 来关联分析 (需要多个 GEO 数据集)
+
+\begin{itemize}
+\tightlist
+\item
+  Kidney status markers
+\item
+  cancer markers
+\item
+  micro-envir\ldots{}
+\item
+  ferroptosis
+\item
+  \ldots{}
+\end{itemize}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{ux9644ux5206ux6790ux6d41ux7a0b}{%
+\section{附：分析流程}\label{ux9644ux5206ux6790ux6d41ux7a0b}}
+
+\hypertarget{ux80beux764c-geo}{%
+\subsection{肾癌 (GEO)}\label{ux80beux764c-geo}}
+
+\hypertarget{gse171306}{%
+\subsubsection{GSE171306}\label{gse171306}}
+
+\begin{verbatim}
+- Single-cell RNA sequencing (scRNA-seq) was performed on bilateral clear
+  cell RCC (ccRCC). Primary kidney samples from 3 patients were used for
+  single cell RNA sequencing by 10X Genomics
+\end{verbatim}
+
+\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca}{%
+\paragraph{细胞聚类和注释}\label{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca}}
+
+\hypertarget{ux764cux7ec6ux80deux8bc6ux522b}{%
+\paragraph{癌细胞识别}\label{ux764cux7ec6ux80deux8bc6ux522b}}
+
+\hypertarget{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790}{%
+\paragraph{癌细胞拟时分析}\label{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790}}
+
+\hypertarget{ux80beux764c-tcga-kirc}{%
+\subsection{肾癌 (TCGA-KIRC)}\label{ux80beux764c-tcga-kirc}}
+
+\hypertarget{tcga-ux6570ux636e}{%
+\subsubsection{TCGA 数据}\label{tcga-ux6570ux636e}}
+
+\hypertarget{ux8840ux7ba1ux6027ux75beux60a3}{%
+\subsection{血管性疾患}\label{ux8840ux7ba1ux6027ux75beux60a3}}
+
+\hypertarget{ux9ad8ux8840ux538bux6027ux80beux708ehypertensive-nephropathy}{%
+\subsubsection{高血压性肾炎（hypertensive nephropathy）}\label{ux9ad8ux8840ux538bux6027ux80beux708ehypertensive-nephropathy}}
+
+\begin{itemize}
+\tightlist
+\item
+  GSE210898: Single-cell RNA transcriptomics of hypertensive nephropathy patients
+\end{itemize}
+
+\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-1}{%
+\paragraph{细胞聚类和注释}\label{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-1}}
+
+\hypertarget{ux539fux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}{%
+\subsection{（原发性）肾小球性疾患}\label{ux539fux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}}
+
+\hypertarget{iga-ux80beux75c5-iga-nephropathy}{%
+\subsubsection{IgA 肾病 (IgA Nephropathy)}\label{iga-ux80beux75c5-iga-nephropathy}}
+
+\begin{itemize}
+\tightlist
+\item
+  GSE171314, scRNA-seq
+\item
+  GSE145652, RNA-seq
+\item
+  GSE175759, RNA-seq
+\end{itemize}
+
+\hypertarget{ux819cux6027ux80beux75c5-idiopathic-membranous-nephropathy}{%
+\subsubsection{膜性肾病 (idiopathic membranous nephropathy)}\label{ux819cux6027ux80beux75c5-idiopathic-membranous-nephropathy}}
+
+\begin{itemize}
+\tightlist
+\item
+  GSE241302, scRNA
+\item
+  GSE216841, RNA-seq
+\item
+  GSE175759, RNA-seq
+\end{itemize}
+
+\hypertarget{ux5faeux5c0fux75c5ux53d8ux80beux75c5-minimal-change-disease}{%
+\subsubsection{微小病变肾病 (Minimal change disease)}\label{ux5faeux5c0fux75c5ux53d8ux80beux75c5-minimal-change-disease}}
+
+\begin{itemize}
+\tightlist
+\item
+  GSE176465, scRNA (only but not fit)
+\item
+  GSE216841, RNA-seq
+\item
+  GSE175759, RNA-seq
+\end{itemize}
+
+\hypertarget{ux7ee7ux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}{%
+\subsection{（继发性）肾小球性疾患}\label{ux7ee7ux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}}
+
+\hypertarget{ux7cd6ux5c3fux75c5ux80beux75c5-diabetic-kidney-disease}{%
+\subsubsection{糖尿病肾病 (Diabetic kidney disease)}\label{ux7cd6ux5c3fux75c5ux80beux75c5-diabetic-kidney-disease}}
+
+\begin{itemize}
+\tightlist
+\item
+  GSE204880, scRNA
+\item
+  GSE175759, RNA-seq
+\item
+  GSE199838, RNA-seq
+\item
+  GSE217709, RNA-seq
+\end{itemize}
+
+\hypertarget{ux72fcux75aeux6027ux80beux708e-lupus-nephritis}{%
+\subsubsection{狼疮性肾炎 (lupus nephritis)}\label{ux72fcux75aeux6027ux80beux708e-lupus-nephritis}}
+
+\begin{itemize}
+\tightlist
+\item
+  no scRNA
+\item
+  GSE175759, RNA-seq
+\item
+  GSE157293, RNA-seq
+\end{itemize}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-OnconephrologyRosner2021}{}%
+1. Rosner, M. H., Jhaveri, K. D., McMahon, B. A. \& Perazella, M. A. Onconephrology: The intersections between the kidney and cancer. \emph{CA: a cancer journal for clinicians} \textbf{71}, 47--77 (2021).
+
+\leavevmode\hypertarget{ref-CkdAndTheRisLowran2014}{}%
+2. Lowrance, W. T., Ordoñez, J., Udaltsova, N., Russo, P. \& Go, A. S. CKD and the risk of incident cancer. \emph{Journal of the American Society of Nephrology} \textbf{25}, (2014).
+
+\leavevmode\hypertarget{ref-CancerRiskAndKitchl2022}{}%
+3. Kitchlu, A. \emph{et al.} Cancer risk and mortality in patients with kidney disease: A population-based cohort study. \emph{American journal of kidney diseases : the official journal of the National Kidney Foundation} \textbf{80}, 436--448.e1 (2022).
+
+\leavevmode\hypertarget{ref-EpidemiologyOfBukavi2022}{}%
+4. Bukavina, L. \emph{et al.} Epidemiology of renal cell carcinoma: 2022 update. \emph{European Urology} \textbf{82}, (2022).
+
+\leavevmode\hypertarget{ref-RenalCellCancSaly2021}{}%
+5. Saly, D. L., Eswarappa, M. S., Street, S. E. \& Deshpande, P. Renal cell cancer and chronic kidney disease. \emph{Advances in chronic kidney disease} \textbf{28}, 460--468.e1 (2021).
+\end{cslreferences}
+
+\end{document}

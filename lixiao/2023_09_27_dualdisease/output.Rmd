@@ -1,5 +1,35 @@
 ---
+title: Analysis
+author: 'Huang LiChuang of Wie-Biotech'
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: true
+    toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
 ---
+
 
 ```{r include = F}
 #| setup
@@ -139,24 +169,6 @@ vis(sr, "scsa_copykat")
 
 #### 癌细胞拟时分析
 
-```{r}
-mn <- dual_monocle(sr, kat)
-mn <- step1(mn)
-mn@plots$step1$p.cancer_position
-map(mn, 30)
-mn <- step2(mn, "Y_14")
-mn@plots$step2$p.pseu
-mn <- step3(mn)
-mn@plots$step3$gene_module_heatdata$graph_test.sig
-vis(mn)
-
-sr_cancer <- asjob_seurat(mn, 5)
-```
-
-```{r}
-load("./can.RData")
-```
-
 ## 肾癌 (TCGA-KIRC)
 
 ### TCGA 数据
@@ -174,72 +186,20 @@ lm@object$samples
 
 ## 血管性疾患
 
-### 高血压性肾炎: GSE210898（hypertensive nephropathy）
-
-- Single-cell RNA transcriptomics of hypertensive nephropathy patients
+### 高血压性肾炎（hypertensive nephropathy）
+- GSE210898: Single-cell RNA transcriptomics of hypertensive nephropathy patients
 
 ```{r}
 geo.hn <- job_geo("GSE210898")
-geo.hn <- step1(geo.hn)
-geo.hn@params$guess
-geo.hn <- step2(geo.hn)
-
-untar("./GSE210898/GSE210898_RAW.tar", exdir = "./GSE210898")
-system("tar -xvf ./GSE210898/GSM6439880_s210722H1_matrix.tar.gz -C ./GSE210898")
 ```
 
 #### 细胞聚类和注释
 
-```{r}
-sr.hn <- job_seurat("./GSE210898/s210722H1_matrix_10X")
-sr.hn <- step1(sr.hn)
-sr.hn@plots$step1$p.qc
-sr.hn <- step2(sr.hn, 0, 6000, 75)
-sr.hn@plots$step2$p.pca_rank
-sr.hn <- step3(sr.hn, 1:15, 1.2)
-sr.hn@plots$step3$p.umap
 
-sr.hn@step <- 4L
-sr.hn <- step5(sr.hn, 5)
-sr.hn <- step6(sr.hn, "Kidney")
-sr.hn <- clear(sr.hn)
-
-sr.hn@plots$step6$p.map_scsa
-```
 
 ## （原发性）肾小球性疾患
 
 ### IgA 肾病 (IgA Nephropathy)
-
-```{r}
-geo.iga <- job_geo("GSE171314")
-geo.iga <- step1(geo.iga)
-geo.iga@params$guess
-geo.iga <- step2(geo.iga)
-
-untar("./GSE171314/GSE171314_RAW.tar", exdir = "./GSE171314")
-prepare_10x("./GSE171314/GSM5222730_s200525a4.expression_matrix.txt.gz")
-```
-
-#### 细胞聚类和注释
-
-```{r}
-sr.iga <- job_seurat("./GSE171314/GSM5222730_s200525a4/")
-sr.iga <- step1(sr.iga)
-sr.iga@plots$step1$p.qc
-sr.iga <- step2(sr.iga, 0, 6000, 75)
-sr.iga@plots$step2$p.pca_rank
-sr.iga <- step3(sr.iga, 1:15, 1.2)
-sr.iga@plots$step3$p.umap
-
-sr.iga@step <- 4L
-sr.iga <- step5(sr.iga, 5)
-sr.iga <- step6(sr.iga, "Kidney")
-
-sr.iga@plots$step6$p.map_scsa
-```
-
-
 
 - GSE171314, scRNA-seq
 - GSE145652, RNA-seq
@@ -265,3 +225,10 @@ sr.iga@plots$step6$p.map_scsa
 - GSE175759, RNA-seq
 - GSE199838, RNA-seq
 - GSE217709, RNA-seq
+
+### 狼疮性肾炎 (lupus nephritis)
+
+- no scRNA
+- GSE175759, RNA-seq
+- GSE157293, RNA-seq
+
