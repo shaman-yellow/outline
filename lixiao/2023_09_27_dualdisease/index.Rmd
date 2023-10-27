@@ -116,7 +116,6 @@ sr@step <- 4L
 sr@plots$step3$p.umap
 sr <- step5(sr, 5)
 sr <- step6(sr, "Kidney")
-
 sr@plots$step6$p.map_scsa
 ```
 
@@ -140,7 +139,7 @@ vis(sr, "scsa_copykat")
 #### 癌细胞拟时分析
 
 ```{r}
-mn <- dual_monocle(sr, kat)
+mn <- do_monocle(sr, kat)
 mn <- step1(mn)
 mn@plots$step1$p.cancer_position
 map(mn, 30)
@@ -150,33 +149,34 @@ mn <- step3(mn)
 mn@plots$step3$gene_module_heatdata$graph_test.sig
 vis(mn)
 
-sr_cancer <- asjob_seurat(mn, 5)
+sr_cancer <- asjob_seurat(mn, 5, rename = "Cancer")
+vis(sr_cancer, "regroup.hclust")
+
+sr <- map(sr, sr_cancer, "scsa_cell", "regroup.hclust")
+vis(sr, "cell_mapped")
+vis(sr, "scsa_copykat")
 ```
 
 ```{r}
+save.image("./can.RData")
+
 load("./can.RData")
-```
 
-## 肾癌 (TCGA-KIRC)
+sr.hn <- readRDS("./sr.hn.6.rds")
+sr.iga <- readRDS("./sr.iga.6.rds")
+sr.im <- readRDS("./sr.im.6.rds")
 
-### TCGA 数据
-
-```{r}
-tc <- job_tcga("TCGA-KIRC")
-tc <- step1(tc)
-tc <- step2(tc)
-tc <- step3(tc)
-tc <- clear(tc)
-
-lm <- asjob_limma(tc)
-lm@object$samples
+mn.hn <- readRDS("./mn.hn.3.rds")
 ```
 
 ## 血管性疾患
 
-### 高血压性肾炎: GSE210898（hypertensive nephropathy）
+### 高血压性肾炎: GSE210898 (hypertensive nephropathy)
 
-- Single-cell RNA transcriptomics of hypertensive nephropathy patients
+- Single-cell RNA transcriptomics of hypertensive nephropathy patients. We
+  analyzed kidney samples from 3 patients with HTN using single-cell RNA
+  sequencing, compared with previous data of controls
+
 
 ```{r}
 geo.hn <- job_geo("GSE210898")
@@ -207,9 +207,41 @@ sr.hn <- clear(sr.hn)
 sr.hn@plots$step6$p.map_scsa
 ```
 
+#### 共表达分析
+
+```{r}
+mn.hn <- do_monocle(sr.hn, "Proximal")
+vis(mn.hn$sr_sub)
+
+mn.hn <- step1(mn.hn)
+mn.hn@plots$step1$p.prin
+mn.hn <- step2(mn.hn, "Y_2")
+mn.hn@plots$step2$p.pseu
+mn.hn <- step3(mn.hn)
+mn.hn@plots$step3$gene_module_heatdata$graph_test.sig
+
+mn.hn <- clear(mn.hn)
+
+sr_sub.hn <- asjob_seurat(mn.hn, 5, rename = "Proximal_hn")
+vis(sr_sub.hn, "regroup.hclust")
+
+sr.hn <- map(sr.hn, sr_sub.hn, "scsa_cell", "regroup.hclust")
+sr.hn <- clear(sr.hn)
+
+vis(sr.hn, "cell_mapped")
+vis(sr.hn, "scsa_cell")
+```
+
 ## （原发性）肾小球性疾患
 
-### IgA 肾病 (IgA Nephropathy)
+### IgA 肾病: GSE171314 (IgA Nephropathy)
+
+- Single-cell RNA sequencing (scRNA-seq) was applied to kidney biopsies from 4
+  IgAN and 1 control subjects to define the transcriptomic landscape at the
+  single-cell resolution.
+
+- GSE145652, RNA-seq
+- GSE175759, RNA-seq
 
 ```{r}
 geo.iga <- job_geo("GSE171314")
@@ -218,7 +250,7 @@ geo.iga@params$guess
 geo.iga <- step2(geo.iga)
 
 untar("./GSE171314/GSE171314_RAW.tar", exdir = "./GSE171314")
-prepare_10x("./GSE171314/GSM5222730_s200525a4.expression_matrix.txt.gz")
+prepare_10x("./GSE171314/GSM5222730_s200525a4.expression_matrix.txt.gz", single = T)
 ```
 
 #### 细胞聚类和注释
@@ -227,9 +259,9 @@ prepare_10x("./GSE171314/GSM5222730_s200525a4.expression_matrix.txt.gz")
 sr.iga <- job_seurat("./GSE171314/GSM5222730_s200525a4/")
 sr.iga <- step1(sr.iga)
 sr.iga@plots$step1$p.qc
-sr.iga <- step2(sr.iga, 0, 6000, 75)
+sr.iga <- step2(sr.iga, 0, 4000, 80)
 sr.iga@plots$step2$p.pca_rank
-sr.iga <- step3(sr.iga, 1:15, 1.2)
+sr.iga <- step3(sr.iga, 1:15, .8)
 sr.iga@plots$step3$p.umap
 
 sr.iga@step <- 4L
@@ -237,31 +269,145 @@ sr.iga <- step5(sr.iga, 5)
 sr.iga <- step6(sr.iga, "Kidney")
 
 sr.iga@plots$step6$p.map_scsa
+sr.iga <- clear(sr.iga)
 ```
 
+#### 共表达分析
 
+```{r}
+skel(.job_monocle(), ".iga", "Proximal")
 
-- GSE171314, scRNA-seq
-- GSE145652, RNA-seq
-- GSE175759, RNA-seq
+mn.iga <- do_monocle(sr.iga, "Proximal")
 
-### 膜性肾病 (idiopathic membranous nephropathy)
+mn.iga <- step1(mn.iga)
+mn.iga@plots$step1$p.prin
+mn.iga <- step2(mn.iga, "Y_2")
+mn.iga@plots$step2$p.pseu
+mn.iga <- step3(mn.iga)
+mn.iga@plots$step3$gene_module_heatdata$graph_test.sig
+
+sr_sub.iga <- asjob_seurat(mn.iga, 3, rename = "Proximal_iga")
+vis(sr_sub.iga, "regroup.hclust")
+
+mn.iga <- clear(mn.iga)
+
+sr.iga <- map(sr.iga, sr_sub.iga, "scsa_cell", "regroup.hclust")
+vis(sr.iga, "cell_mapped")
+vis(sr.iga, "scsa_cell")
+
+sr.iga <- clear(sr.iga)
+```
+
+### 膜性肾病: GSE241302 (idiopathic membranous nephropathy)
+
+- In order to explore the molecular mechanism of IMN, we collected renal tissue
+  samples from 3 IMN patients and 1 healthy controls and performed analysis by
+  single-cell RNA sequencing.
 
 - GSE241302, scRNA
 - GSE216841, RNA-seq
 - GSE175759, RNA-seq
 
-### 微小病变肾病 (Minimal change disease)
+```{r}
+geo.im <- job_geo("GSE241302")
+geo.im <- step1(geo.im)
+geo.im@params$guess
+geo.im <- step2(geo.im)
 
-- GSE176465, scRNA (only but not fit)
-- GSE216841, RNA-seq
-- GSE175759, RNA-seq
+untar("./GSE241302/GSE241302_RAW.tar", exdir = "./GSE241302")
+prepare_10x("./GSE241302", "GSM7720822_R1_MN")
+```
 
-## （继发性）肾小球性疾患
+#### 细胞聚类和注释
 
-### 糖尿病肾病 (Diabetic kidney disease)
+```{r}
+sr.im <- job_seurat("./GSE241302/GSM7720822_R1_MN_barcodes/")
+sr.im <- step1(sr.im)
+sr.im@plots$step1$p.qc
+sr.im <- step2(sr.im, 0, 9000, 90)
+sr.im@plots$step2$p.pca_rank
+sr.im <- step3(sr.im, 1:15, .5, force = T)
+sr.im@plots$step3$p.umap
 
-- GSE204880, scRNA
-- GSE175759, RNA-seq
-- GSE199838, RNA-seq
-- GSE217709, RNA-seq
+sr.im@step <- 4L
+sr.im <- step5(sr.im, 5)
+sr.im <- step6(sr.im, "Kidney")
+
+sr.im@plots$step6$p.map_scsa
+sr.im <- clear(sr.im)
+```
+
+#### 共表达分析
+
+```{r}
+skel(.job_monocle(), ".im", "Proximal")
+
+mn.im <- do_monocle(sr.im, "Proximal")
+
+mn.im <- step1(mn.im)
+mn.im@plots$step1$p.prin
+mn.im <- step2(mn.im, "Y_21")
+mn.im@plots$step2$p.pseu
+mn.im <- step3(mn.im)
+mn.im@plots$step3$gene_module_heatdata$graph_test.sig
+
+sr_sub.im <- asjob_seurat(mn.im, 3, rename = "Proximal_im")
+vis(sr_sub.im, "regroup.hclust")
+
+mn.im <- clear(mn.im)
+
+sr.im <- map(sr.im, sr_sub.im, "scsa_cell", "regroup.hclust")
+vis(sr.im, "cell_mapped")
+vis(sr.im, "scsa_cell")
+
+sr.im <- clear(sr.im)
+NULL
+```
+
+## 多数据集成：ccRCC 和 CKD scRNA-seq
+
+### 使用 RISC 对不同来源的数据归一化
+
+RISC [@RobustIntegratLiuY2021]
+
+```{r}
+RISC::readsc
+sr.iga@object[[ "SCT" ]]
+
+## obj0 = RISC::scFilter(obj0, min.UMI = 0, max.UMI = Inf, min.gene = 10, min.cell = 3)
+## obj0 = RISC::scNormalize(obj0)
+
+obj0 <- RISC::raw.mat[[5]]
+names(obj0@assay) <- "logcount"
+obj0 <- RISC::scDisperse(obj0)
+
+```
+
+### CKD（HN，IM，IgA）
+
+```{r}
+res <- lapply(namel(sr, sr.hn, sr.im, sr.iga),
+  function(x) {
+    as.character(ids(x, "scsa_cell"))
+  })
+
+p.upset_insCells <- new_upset2(lst = res)
+p.upset_insCells
+```
+
+## 肾癌 bulk RNA-seq (TCGA-KIRC)
+
+### TCGA 数据
+
+```{r}
+tc <- job_tcga("TCGA-KIRC")
+tc <- step1(tc)
+tc <- step2(tc)
+tc <- step3(tc)
+tc <- clear(tc)
+
+lm <- asjob_limma(tc)
+lm@object$samples
+```
+
+

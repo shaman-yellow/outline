@@ -1,0 +1,281 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{frame}
+\listoffigures
+
+\listoftables
+\end{frame}
+
+\begin{frame}{题目}
+\protect\hypertarget{ux9898ux76ee}{}
+\end{frame}
+
+\begin{frame}{摘要}
+\protect\hypertarget{abstract}{}
+\end{frame}
+
+\begin{frame}{前言}
+\protect\hypertarget{introduction}{}
+CKD 与患癌症风险之间的联系尚未明确。尽管多项研究观察到需要透析或肾移植的
+ESRD
+患者患癌症的风险较高，但不太严重的肾脏疾病是否与癌症相关仍知之甚少{[}@OnconephrologyRosner2021;
+@CkdAndTheRisLowran2014; @CancerRiskAndKitchl2022{]}。
+
+肾癌流行病学{[}@EpidemiologyOfBukavi2022{]}
+
+CKD 和肾癌{[}@RenalCellCancSaly2021{]}
+
+Cancer Risk and Mortality in Patients With Kidney Disease: Cancer risk
+was increased in mild to moderate CKD and among transplant
+recipients{[}@CancerRiskAndKitchl2022{]}
+\end{frame}
+
+\begin{frame}{研究设计流程图}
+\protect\hypertarget{route}{}
+TCGA 突变数据 TCGA 转录数据 基因共表达 免疫浸润水平 生存分析 timeROC
+单细胞数据验证
+
+多种慢性肾病的 FC 癌症的 FC 用基因集的 FC 来关联分析 (需要多个 GEO
+数据集)
+
+\begin{itemize}
+\tightlist
+\item
+  Kidney status markers
+\item
+  cancer markers
+\item
+  micro-envir\ldots{}
+\item
+  ferroptosis
+\item
+  \ldots{}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{材料和方法}
+\protect\hypertarget{methods}{}
+\end{frame}
+
+\begin{frame}{分析结果}
+\protect\hypertarget{results}{}
+\end{frame}
+
+\begin{frame}{结论}
+\protect\hypertarget{dis}{}
+\end{frame}
+
+\begin{frame}[fragile]{附：分析流程}
+\protect\hypertarget{ux9644ux5206ux6790ux6d41ux7a0b}{}
+\begin{block}{肾癌 (GEO)}
+\protect\hypertarget{ux80beux764c-geo}{}
+\begin{block}{GSE171306}
+\protect\hypertarget{gse171306}{}
+\begin{verbatim}
+- Single-cell RNA sequencing (scRNA-seq) was performed on bilateral clear
+  cell RCC (ccRCC). Primary kidney samples from 3 patients were used for
+  single cell RNA sequencing by 10X Genomics
+\end{verbatim}
+
+\begin{block}{细胞聚类和注释}
+\protect\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca}{}
+\end{block}
+
+\begin{block}{癌细胞识别}
+\protect\hypertarget{ux764cux7ec6ux80deux8bc6ux522b}{}
+\end{block}
+
+\begin{block}{癌细胞拟时分析}
+\protect\hypertarget{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790}{}
+\end{block}
+\end{block}
+\end{block}
+
+\begin{block}{肾癌 (TCGA-KIRC)}
+\protect\hypertarget{ux80beux764c-tcga-kirc}{}
+\begin{block}{TCGA 数据}
+\protect\hypertarget{tcga-ux6570ux636e}{}
+\end{block}
+\end{block}
+
+\begin{block}{血管性疾患}
+\protect\hypertarget{ux8840ux7ba1ux6027ux75beux60a3}{}
+\begin{block}{高血压性肾炎: GSE210898 (hypertensive nephropathy)}
+\protect\hypertarget{ux9ad8ux8840ux538bux6027ux80beux708e-gse210898-hypertensive-nephropathy}{}
+\begin{itemize}
+\tightlist
+\item
+  Single-cell RNA transcriptomics of hypertensive nephropathy patients.
+  We analyzed kidney samples from 3 patients with HTN using single-cell
+  RNA sequencing, compared with previous data of controls
+\end{itemize}
+
+\begin{block}{细胞聚类和注释}
+\protect\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-1}{}
+\end{block}
+\end{block}
+\end{block}
+
+\begin{block}{（原发性）肾小球性疾患}
+\protect\hypertarget{ux539fux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}{}
+\begin{block}{IgA 肾病: GSE171314 (IgA Nephropathy)}
+\protect\hypertarget{iga-ux80beux75c5-gse171314-iga-nephropathy}{}
+\begin{itemize}
+\item
+  Single-cell RNA sequencing (scRNA-seq) was applied to kidney biopsies
+  from 4 IgAN and 1 control subjects to define the transcriptomic
+  landscape at the single-cell resolution.
+\item
+  GSE145652, RNA-seq
+\item
+  GSE175759, RNA-seq
+\end{itemize}
+
+\begin{block}{细胞聚类和注释}
+\protect\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-2}{}
+\end{block}
+\end{block}
+
+\begin{block}{膜性肾病: GSE241302 (idiopathic membranous nephropathy)}
+\protect\hypertarget{ux819cux6027ux80beux75c5-gse241302-idiopathic-membranous-nephropathy}{}
+\begin{itemize}
+\item
+  In order to explore the molecular mechanism of IMN, we collected renal
+  tissue samples from 3 IMN patients and 1 healthy controls and
+  performed analysis by single-cell RNA sequencing.
+\item
+  GSE241302, scRNA
+\item
+  GSE216841, RNA-seq
+\item
+  GSE175759, RNA-seq
+\end{itemize}
+
+\begin{block}{细胞聚类和注释}
+\protect\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-3}{}
+\end{block}
+\end{block}
+
+\begin{block}{微小病变肾病 (Minimal change disease)}
+\protect\hypertarget{ux5faeux5c0fux75c5ux53d8ux80beux75c5-minimal-change-disease}{}
+\begin{itemize}
+\tightlist
+\item
+  GSE176465, scRNA (only but not fit)
+\item
+  GSE216841, RNA-seq
+\item
+  GSE175759, RNA-seq
+\end{itemize}
+\end{block}
+\end{block}
+
+\begin{block}{（继发性）肾小球性疾患}
+\protect\hypertarget{ux7ee7ux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}{}
+\begin{block}{糖尿病肾病 (Diabetic kidney disease)}
+\protect\hypertarget{ux7cd6ux5c3fux75c5ux80beux75c5-diabetic-kidney-disease}{}
+\begin{itemize}
+\tightlist
+\item
+  GSE204880, scRNA
+\item
+  GSE175759, RNA-seq
+\item
+  GSE199838, RNA-seq
+\item
+  GSE217709, RNA-seq
+\end{itemize}
+\end{block}
+\end{block}
+\end{frame}
+
+\end{document}
