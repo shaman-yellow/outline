@@ -155,18 +155,24 @@ vis(sr_cancer, "regroup.hclust")
 sr <- map(sr, sr_cancer, "scsa_cell", "regroup.hclust")
 vis(sr, "cell_mapped")
 vis(sr, "scsa_copykat")
+
+clear(sr)
+clear(mn)
 ```
 
 ```{r}
 save.image("./can.RData")
-
 load("./can.RData")
+
+sr <- readRDS("./sr.6.rds")
 
 sr.hn <- readRDS("./sr.hn.6.rds")
 sr.iga <- readRDS("./sr.iga.6.rds")
 sr.im <- readRDS("./sr.im.6.rds")
 
 mn.hn <- readRDS("./mn.hn.3.rds")
+mn.im <- readRDS("./mn.im.3.rds")
+mn.iga <- readRDS("./mn.iga.3.rds")
 ```
 
 ## 血管性疾患
@@ -371,16 +377,29 @@ NULL
 RISC [@RobustIntegratLiuY2021]
 
 ```{r}
-RISC::readsc
-sr.iga@object[[ "SCT" ]]
+rs <- asjob_risc(list(RCC = sr, HM = sr.hn, IgA = sr.iga, IMN = sr.im),
+  "Proximal|Cancer", "cell_mapped")
+rs <- step1(rs, 10)
+rs@plots$step1$p.reference
+rs <- step2(rs, "IMN", c("_im", "_hn", "Cancer", "_iga", "tubu"))
+rs@plots$step2$p.umap
+rs <- step3(rs)
+rs@tables$step3$all_markers
+rs <- step4(rs, list(c("Cancer_5", "Proximal_iga_1")))
+rs@tables$step4$contrasts
 
-## obj0 = RISC::scFilter(obj0, min.UMI = 0, max.UMI = Inf, min.gene = 10, min.cell = 3)
-## obj0 = RISC::scNormalize(obj0)
+focus(rs, head(rs@tables$step4$contrasts$Symbol, 100), 3)
 
-obj0 <- RISC::raw.mat[[5]]
-names(obj0@assay) <- "logcount"
-obj0 <- RISC::scDisperse(obj0)
+rs <- readRDS("./rs.3.rds")
+clear(rs)
+```
 
+### 拟时分析
+
+```{r}
+mns <- asjob_monocle(rs)
+mns <- step1(mns)
+mns@plots$step1$p.prin
 ```
 
 ### CKD（HN，IM，IgA）
