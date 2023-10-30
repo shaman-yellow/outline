@@ -127,3 +127,62 @@ test <- ftibble("./GSE178481/GSM5392398_RCC-PR6-Normal.count.csv.gz")
 - GSE175759, RNA-seq
 - GSE199838, RNA-seq
 - GSE217709, RNA-seq
+
+### CKD（HN，IM，IgA）
+
+```{r}
+res <- lapply(namel(sr, sr.hn, sr.im, sr.iga),
+  function(x) {
+    as.character(ids(x, "scsa_cell"))
+  })
+
+p.upset_insCells <- new_upset2(lst = res)
+p.upset_insCells
+```
+
+### 富集分析
+
+```{r}
+sets.iga2can <- list(
+  up = intersect(srs@params$diff_sets_intersection$Cancer_vs_Control.up,
+    srs@params$diff_sets_intersection$IgA_vs_Control.up),
+  down = intersect(srs@params$diff_sets_intersection$Cancer_vs_Control.down,
+    srs@params$diff_sets_intersection$IgA_vs_Control.down))
+```
+
+```{r}
+en <- job_enrich(sets.iga2can)
+en <- step1(en)
+```
+
+```{r}
+
+sets.iga2can <- list(
+  diff.up = setdiff(srs@params$diff_sets_intersection$Cancer_vs_IgA.up,
+    srs@params$diff_sets_intersection$IgA_vs_Control.up),
+  diff.down = setdiff(srs@params$diff_sets_intersection$Cancer_vs_IgA.down,
+    srs@params$diff_sets_intersection$IgA_vs_Control.down))
+
+cancerMarkers <- map(sr@tables$step5$all_markers, "cluster", sr@object@meta.data, "seurat_clusters", "cell_mapped")
+cancerMarkers <- filter(cancerMarkers, grpl(cell_mapped, "Cancer"))
+
+sets.iga2can2canMarker <- lapply(sets.iga2can, function(x) intersect(x, cancerMarkers$gene))
+```
+
+```{r}
+
+en <- job_enrich(list(ids = unlist(sets.iga2can2canMarker, , F)))
+en <- step1(en)
+en@plots$step1$p.kegg$ids
+en@tables$step1$res.kegg
+en@plots$step1$p.go$ids
+
+en <- step2(en, "hsa03010")
+en@plots$step2$p.pathviews$hsa03010
+
+en@tables$step1$res.kegg$ids$geneName_list[[1]]
+p.fos <- focus(srs, en@tables$step1$res.kegg$ids$geneName_list[[1]])
+p.fos$p.vln
+```
+
+

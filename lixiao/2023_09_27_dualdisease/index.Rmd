@@ -164,10 +164,14 @@ clear(mn)
 save.image("./can.RData")
 load("./can.RData")
 
-sr <- readRDS("./sr.6.rds")
+mns <- readRDS("./mns.2.rds")
+srs <- readRDS("./srs.0.rds")
+rs <- readRDS("./rs.3.rds")
 
+sr <- readRDS("./sr.6.rds")
 sr.hn <- readRDS("./sr.hn.6.rds")
 sr.iga <- readRDS("./sr.iga.6.rds")
+sr.hc <- readRDS("./sr.hc.6.rds")
 sr.im <- readRDS("./sr.im.6.rds")
 
 mn.hn <- readRDS("./mn.hn.3.rds")
@@ -370,21 +374,53 @@ sr.im <- clear(sr.im)
 NULL
 ```
 
+## 正常对照 （GSE171314）
+
+#### 细胞聚类和注释
+
+```{r}
+prepare_10x("./GSE171314/GSM5222734_s200707N5.expression_matrix.txt.gz", single = T)
+```
+
+```{r}
+sr.hc <- job_seurat("./GSE171314/GSM5222734_s200707N5")
+sr.hc <- step1(sr.hc)
+sr.hc@plots$step1$p.qc
+sr.hc <- step2(sr.hc, 0, 4000, 80)
+sr.hc@plots$step2$p.pca_rank
+sr.hc <- step3(sr.hc, 1:15, .8, force = T)
+sr.hc@plots$step3$p.umap
+
+sr.hc@step <- 4L
+sr.hc <- step5(sr.hc, 5)
+sr.hc <- step6(sr.hc, "Kidney")
+
+sr.hc@plots$step6$p.map_scsa
+clear(sr.hc)
+```
+
 ## 多数据集成：ccRCC 和 CKD scRNA-seq
 
-### 使用 RISC 对不同来源的数据归一化
+### 使用 RISC 对不同来源的数据集成
 
 RISC [@RobustIntegratLiuY2021]
 
 ```{r}
-rs <- asjob_risc(list(RCC = sr, HM = sr.hn, IgA = sr.iga, IMN = sr.im),
+sr.hc <- mutate(sr.hc, cell_mapped = paste0(gs(scsa_cell, " ", "_"), "_hc"))
+
+sr <- mutate(sr, cell_mapped = ifelse(grpl(cell_mapped, "Proximal"),
+    paste0(gs(cell_mapped, " ", "_"), "_(cancer_normal)"), as.character(cell_mapped)))
+
+rs <- asjob_risc(list(RCC = sr, HM = sr.hn, IgA = sr.iga, IMN = sr.im, HC = sr.hc),
   "Proximal|Cancer", "cell_mapped")
+
 rs <- step1(rs, 10)
 rs@plots$step1$p.reference
-rs <- step2(rs, "IMN", c("_im", "_hn", "Cancer", "_iga", "tubu"))
+rs <- step2(rs, "HC", c("_im", "_hn", "Cancer", "_hc", "_iga", "cancer_normal"))
 rs@plots$step2$p.umap
 rs <- step3(rs)
 rs@tables$step3$all_markers
+
 rs <- step4(rs, list(c("Cancer_5", "Proximal_iga_1")))
 rs@tables$step4$contrasts
 
@@ -396,23 +432,56 @@ clear(rs)
 
 ### 拟时分析
 
+在不同的肾病聚类中，IgA 与 RCC 最为接近。IgA 肾病可能发展成 RCC。
+
 ```{r}
 mns <- asjob_monocle(rs)
 mns <- step1(mns)
 mns@plots$step1$p.prin
+mns <- step2(mns, c("Y_12", "Y_8"))
+mns@plots$step2$p.pseu
+clear(mns)
 ```
 
-### CKD（HN，IM，IgA）
+### IgA、Cancer、HC 差异分析
 
 ```{r}
-res <- lapply(namel(sr, sr.hn, sr.im, sr.iga),
-  function(x) {
-    as.character(ids(x, "scsa_cell"))
-  })
+srs <- asjob_seurat(rs)
 
-p.upset_insCells <- new_upset2(lst = res)
-p.upset_insCells
+srs <- mutate(srs, super_group = ifelse(grpl(cell_mapped, "Cancer"), "Cancer",
+    ifelse(grpl(cell_mapped, "Proximal_iga"), "IgA",
+      ifelse(grpl(cell_mapped, "_hc"), "Control", as.character(cell_mapped)))),
+  super_group = as.factor(super_group))
+
+srs <- diff(srs, "super_group", list(c("Cancer", "Control"), c("IgA", "Control"), c("Cancer", "IgA")))
+srs@params$contrasts
+srs@params$p.diff_sets_intersection
+srs@params$diff_sets_intersection
+clear(srs)
 ```
+
+### 富集分析
+
+#### GSEA
+
+```{r}
+topTable <- filter(srs@params$contrasts, grpl(contrast, "Cancer_vs_IgA"))
+
+mart <- new_biomart()
+anno <- filter_biomart(mart, general_attrs(), "hgnc_symbol", topTable$gene)
+
+gse <- job_gsea(relocate(topTable, hgnc_symbol = gene, logFC = avg_log2FC), anno)
+gse <- step1(gse)
+gse@plots$step1$p.kegg
+gse@plots$step1$p.go
+gse@tables$step1$table_kegg
+
+gse <- step2(gse, c("hsa03010", "hsa00190"))
+gse@plots$step2$p.code
+clear(gse)
+```
+
+### Feature selection
 
 ## 肾癌 bulk RNA-seq (TCGA-KIRC)
 
