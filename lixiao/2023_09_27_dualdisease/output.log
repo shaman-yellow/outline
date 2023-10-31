@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  26 OCT 2023 10:12
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  31 OCT 2023 18:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1185,51 +1185,54 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 9.70718pt on input line 1.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 9.
+(Font)              scaled to size 10.0pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 9.
+(Font)              scaled to size 7.0pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 9.
+(Font)              scaled to size 5.0pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 9.
+(Font)              scaled to size 10.00092pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 9.
+(Font)              scaled to size 7.00064pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 9.
+(Font)              scaled to size 5.00046pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 9.
+(Font)              scaled to size 9.99893pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 9.
+(Font)              scaled to size 6.99925pt on input line 6.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 9.
-)
+(Font)              scaled to size 4.99947pt on input line 6.
+[1
+
+])
 \tf@toc=\write4
 \openout4 = `output.toc'.
 
-(./output.lof)
+(./output.lof [2])
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
-[1
-
-] (./output.lot)
+(./output.lot)
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 94.
+[3]
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 152.
+(Font)              scaled to size 11.64862pt on input line 133.
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
 
 
-Package fontspec Info: FandolFang-Regular scale = 0.941043990458295.
+Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 
 
-Package fontspec Info: FandolFang-Regular scale = 0.941043990458295.
+Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 137.
 
 Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             'FandolFang-Regular' with options
@@ -1239,20 +1242,430 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <->s*[0.941043990458295]"[FandolFang-Regular.otf]/OT:lan
-guage=dflt;"
+(fontspec)             <->s*[0.9694292301336638]"[FandolFang-Regular.otf]/OT:la
+nguage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
-LaTeX Font Info:    Font shape `TU/FandolFang-Regular(0)/m/n' will be
-(Font)              scaled to size 9.4104pt on input line 157.
-[2] [3] [4] (./output.aux) ) 
-Here is how much of TeX's memory you used:
- 31039 strings out of 476191
- 633119 string characters out of 5812072
- 1077745 words of memory out of 5000000
- 51271 multiletter control sequences out of 15000+600000
- 476340 words of font info for 92 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 86i,6n,121p,1003b,873s stack positions out of 5000i,500n,10000p,200000b,80000s
+File: ./Figure+Table/fig1.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig1.pdf>
 
-Output written on output.pdf (4 pages).
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 142.
+See the caption package documentation for explanation.
+
+[4]
+File: ./Figure+Table/fig2.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig2.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 155.
+See the caption package documentation for explanation.
+
+[5]
+File: ./Figure+Table/fig3.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig3.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 168.
+See the caption package documentation for explanation.
+
+[6]
+File: ./Figure+Table/fig4.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig4.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 183.
+See the caption package documentation for explanation.
+
+[7]
+File: ./Figure+Table/fig5.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig5.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 196.
+See the caption package documentation for explanation.
+
+LaTeX Font Info:    Font shape `TU/FandolFang-Regular(0)/m/n' will be
+(Font)              scaled to size 9.69437pt on input line 211.
+[8]
+File: Figure+Table/RCC-data1-QC.pdf Graphic file (type pdf)
+<use Figure+Table/RCC-data1-QC.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 227.
+See the caption package documentation for explanation.
+
+File: Figure+Table/RCC-data1-SCSA-mapping.pdf Graphic file (type pdf)
+<use Figure+Table/RCC-data1-SCSA-mapping.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 239.
+See the caption package documentation for explanation.
+
+[9]
+File: ./figs/copykat_heatmap.png Graphic file (type bmp)
+<./figs/copykat_heatmap.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 254.
+See the caption package documentation for explanation.
+
+[10]
+File: Figure+Table/RCC-data1-SCSA-mapping-with-copykat-prediction.pdf Graphic f
+ile (type pdf)
+<use Figure+Table/RCC-data1-SCSA-mapping-with-copykat-prediction.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 264.
+See the caption package documentation for explanation.
+
+[11]
+File: Figure+Table/RCC-data1-pseudotime.pdf Graphic file (type pdf)
+<use Figure+Table/RCC-data1-pseudotime.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 279.
+See the caption package documentation for explanation.
+
+[12]
+File: Figure+Table/RCC-data1-co-expression-modules.pdf Graphic file (type pdf)
+<use Figure+Table/RCC-data1-co-expression-modules.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 291.
+See the caption package documentation for explanation.
+
+[13]
+File: Figure+Table/RCC-data1-cancer-subtype.pdf Graphic file (type pdf)
+<use Figure+Table/RCC-data1-cancer-subtype.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 301.
+See the caption package documentation for explanation.
+
+[14]
+File: Figure+Table/HN-data-QC.pdf Graphic file (type pdf)
+<use Figure+Table/HN-data-QC.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 328.
+See the caption package documentation for explanation.
+
+[15]
+File: Figure+Table/HN-data-SCSA-mapping.pdf Graphic file (type pdf)
+<use Figure+Table/HN-data-SCSA-mapping.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 338.
+See the caption package documentation for explanation.
+
+[16]
+File: Figure+Table/HN-data-pseudotime.pdf Graphic file (type pdf)
+<use Figure+Table/HN-data-pseudotime.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 351.
+See the caption package documentation for explanation.
+
+File: Figure+Table/HN-data-co-expression-modules.pdf Graphic file (type pdf)
+<use Figure+Table/HN-data-co-expression-modules.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 361.
+See the caption package documentation for explanation.
+
+[17]
+File: Figure+Table/HN-data-Proximal-tubule-cell-subtype.pdf Graphic file (type 
+pdf)
+<use Figure+Table/HN-data-Proximal-tubule-cell-subtype.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 371.
+See the caption package documentation for explanation.
+
+[18]
+File: Figure+Table/IgA-data1-QC.pdf Graphic file (type pdf)
+<use Figure+Table/IgA-data1-QC.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 398.
+See the caption package documentation for explanation.
+
+[19]
+File: Figure+Table/IgA-data1-SCSA-mapping.pdf Graphic file (type pdf)
+<use Figure+Table/IgA-data1-SCSA-mapping.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 408.
+See the caption package documentation for explanation.
+
+[20]
+File: Figure+Table/IgA-data1-pseudotime.pdf Graphic file (type pdf)
+<use Figure+Table/IgA-data1-pseudotime.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 421.
+See the caption package documentation for explanation.
+
+File: Figure+Table/IgA-data1-co-expression-modules.pdf Graphic file (type pdf)
+<use Figure+Table/IgA-data1-co-expression-modules.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 431.
+See the caption package documentation for explanation.
+
+[21]
+File: Figure+Table/IgA-data1-Proximal-tubule-cell-subtype.pdf Graphic file (typ
+e pdf)
+<use Figure+Table/IgA-data1-Proximal-tubule-cell-subtype.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 441.
+See the caption package documentation for explanation.
+
+[22]
+File: Figure+Table/IMN-data-QC.pdf Graphic file (type pdf)
+<use Figure+Table/IMN-data-QC.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 470.
+See the caption package documentation for explanation.
+
+[23]
+File: Figure+Table/IMN-data-SCSA-mapping.pdf Graphic file (type pdf)
+<use Figure+Table/IMN-data-SCSA-mapping.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 480.
+See the caption package documentation for explanation.
+
+[24]
+File: Figure+Table/IMN-data-pseudotime.pdf Graphic file (type pdf)
+<use Figure+Table/IMN-data-pseudotime.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 493.
+See the caption package documentation for explanation.
+
+File: Figure+Table/IMN-data-co-expression-modules.pdf Graphic file (type pdf)
+<use Figure+Table/IMN-data-co-expression-modules.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 503.
+See the caption package documentation for explanation.
+
+[25]
+File: Figure+Table/IMN-data-Proximal-tubule-cell-subtype.pdf Graphic file (type
+ pdf)
+<use Figure+Table/IMN-data-Proximal-tubule-cell-subtype.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 513.
+See the caption package documentation for explanation.
+
+[26]
+File: Figure+Table/HC-data-QC.pdf Graphic file (type pdf)
+<use Figure+Table/HC-data-QC.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 529.
+See the caption package documentation for explanation.
+
+[27]
+File: Figure+Table/HC-data-SCSA-mapping.pdf Graphic file (type pdf)
+<use Figure+Table/HC-data-SCSA-mapping.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 539.
+See the caption package documentation for explanation.
+
+[28]
+File: Figure+Table/SETS1-select-reference-dataset-for-integration.pdf Graphic f
+ile (type pdf)
+<use Figure+Table/SETS1-select-reference-dataset-for-integration.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 557.
+See the caption package documentation for explanation.
+
+[29]
+File: Figure+Table/SETS1-umap-mapping.pdf Graphic file (type pdf)
+<use Figure+Table/SETS1-umap-mapping.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 567.
+See the caption package documentation for explanation.
+
+File: Figure+Table/SETS1-trajectory.pdf Graphic file (type pdf)
+<use Figure+Table/SETS1-trajectory.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 582.
+See the caption package documentation for explanation.
+
+[30]
+File: Figure+Table/SETS1-pseudotime.pdf Graphic file (type pdf)
+<use Figure+Table/SETS1-pseudotime.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 592.
+See the caption package documentation for explanation.
+
+File: Figure+Table/SETS1-intersection-of-contrasts-DEGs.pdf Graphic file (type 
+pdf)
+<use Figure+Table/SETS1-intersection-of-contrasts-DEGs.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 605.
+See the caption package documentation for explanation.
+
+[31] [32]
+File: Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf Graphic file (
+type pdf)
+<use Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 658.
+See the caption package documentation for explanation.
+
+[33]
+File: Figure+Table/SETS1-GSEA-enrichment-of-GO-CancerVsIgA.pdf Graphic file (ty
+pe pdf)
+<use Figure+Table/SETS1-GSEA-enrichment-of-GO-CancerVsIgA.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 668.
+See the caption package documentation for explanation.
+
+[34]
+
+LaTeX Warning: Reference `fig:SETS1-GSEA-show-OXPHOS-pathway' on page 35 undefi
+ned on input line 671.
+
+File: Figure+Table/SETS1-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf Graphic file 
+(type pdf)
+<use Figure+Table/SETS1-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 680.
+See the caption package documentation for explanation.
+
+[35]
+File: pathview2023-10-31_16_52_42.995662/hsa00190.pathview.png Graphic file (ty
+pe bmp)
+<pathview2023-10-31_16_52_42.995662/hsa00190.pathview.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 690.
+See the caption package documentation for explanation.
+
+[36]
+File: Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsControl.pdf Graphic fi
+le (type pdf)
+<use Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsControl.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 706.
+See the caption package documentation for explanation.
+
+File: Figure+Table/SETS1-GSEA-enrichment-of-GO-CancerVsControl.pdf Graphic file
+ (type pdf)
+<use Figure+Table/SETS1-GSEA-enrichment-of-GO-CancerVsControl.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 716.
+See the caption package documentation for explanation.
+
+[37]
+File: Figure+Table/RCC-data2-SCSA-mapping-with-copykat-prediction.pdf Graphic f
+ile (type pdf)
+<use Figure+Table/RCC-data2-SCSA-mapping-with-copykat-prediction.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 743.
+See the caption package documentation for explanation.
+
+[38]
+File: Figure+Table/SETS2-select-reference-dataset-for-integration.pdf Graphic f
+ile (type pdf)
+<use Figure+Table/SETS2-select-reference-dataset-for-integration.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 759.
+See the caption package documentation for explanation.
+
+[39]
+File: Figure+Table/SETS2-umap-mapping.pdf Graphic file (type pdf)
+<use Figure+Table/SETS2-umap-mapping.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 769.
+See the caption package documentation for explanation.
+
+[40]
+File: Figure+Table/SETS2-pseudotime.pdf Graphic file (type pdf)
+<use Figure+Table/SETS2-pseudotime.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 784.
+See the caption package documentation for explanation.
+
+[41]
+File: Figure+Table/SETS2-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf Graphic file (
+type pdf)
+<use Figure+Table/SETS2-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 797.
+See the caption package documentation for explanation.
+
+[42]
+File: Figure+Table/SETS2-GSEA-enrichment-of-GO-CancerVsIgA.pdf Graphic file (ty
+pe pdf)
+<use Figure+Table/SETS2-GSEA-enrichment-of-GO-CancerVsIgA.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 807.
+See the caption package documentation for explanation.
+
+[43]
+
+LaTeX Warning: Reference `fig:SETS2-GSEA-show-OXPHOS-pathway' on page 44 undefi
+ned on input line 810.
+
+
+LaTeX Warning: Reference `fig:SETS1-GSEA-show-OXPHOS-pathway' on page 44 undefi
+ned on input line 810.
+
+File: Figure+Table/SETS2-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf Graphic file 
+(type pdf)
+<use Figure+Table/SETS2-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 819.
+See the caption package documentation for explanation.
+
+[44]
+File: pathview2023-10-31_15_25_14.115006/hsa00190.pathview.png Graphic file (ty
+pe bmp)
+<pathview2023-10-31_15_25_14.115006/hsa00190.pathview.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 829.
+See the caption package documentation for explanation.
+
+[45] [46] (./output.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 31667 strings out of 476191
+ 662129 string characters out of 5812072
+ 1084487 words of memory out of 5000000
+ 51841 multiletter control sequences out of 15000+600000
+ 476356 words of font info for 94 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 86i,9n,121p,1003b,874s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on output.pdf (46 pages).

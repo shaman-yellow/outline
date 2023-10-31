@@ -99,57 +99,111 @@
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
 
-CKD 与患癌症风险之间的联系尚未明确。尽管多项研究观察到需要透析或肾移植的 ESRD 患者患癌症的风险较高，但不太严重的肾脏疾病是否与癌症相关仍知之甚少\textsuperscript{\protect\hyperlink{ref-OnconephrologyRosner2021}{1}--\protect\hyperlink{ref-CancerRiskAndKitchl2022}{3}}。
+慢性肾病（CKD）与患癌症风险之间的联系尚未明确。尽管多项研究观察到需要透析或肾移植的 ESRD 患者患癌症的风险较高，但相对不严重的肾脏疾病是否与癌症相关仍知之甚少\textsuperscript{\protect\hyperlink{ref-OnconephrologyRosner2021}{1}--\protect\hyperlink{ref-CancerRiskAndKitchl2022}{3}}。已有研究论及 CKD 和肾癌之间的关联性和转化的风险\textsuperscript{\protect\hyperlink{ref-CkdAndTheRisLowran2014}{2}--\protect\hyperlink{ref-RenalCellCancSaly2021}{4}}，轻度至中度 CKD 和移植受者的癌症风险增加\textsuperscript{\protect\hyperlink{ref-CancerRiskAndKitchl2022}{3}}。
 
-肾癌流行病学\textsuperscript{\protect\hyperlink{ref-EpidemiologyOfBukavi2022}{4}}
-
-CKD 和肾癌\textsuperscript{\protect\hyperlink{ref-RenalCellCancSaly2021}{5}}
-
-Cancer Risk and Mortality in Patients With Kidney Disease: Cancer risk was increased in mild to moderate CKD and among transplant recipients\textsuperscript{\protect\hyperlink{ref-CancerRiskAndKitchl2022}{3}}
-
-\hypertarget{route}{%
-\section{研究设计流程图}\label{route}}
-
-TCGA 突变数据
-TCGA 转录数据
-基因共表达
-免疫浸润水平
-生存分析
-timeROC
-单细胞数据验证
-
-多种慢性肾病的 FC
-癌症的 FC
-用基因集的 FC 来关联分析 (需要多个 GEO 数据集)
-
-\begin{itemize}
-\tightlist
-\item
-  Kidney status markers
-\item
-  cancer markers
-\item
-  micro-envir\ldots{}
-\item
-  ferroptosis
-\item
-  \ldots{}
-\end{itemize}
+在本研究中，为了探究 CKD 与肾癌（RCC）之间的相关性和转化风险，重新分析了多组公共数据库的单细胞数据集。考虑到 CKD 的复杂性，这里并不采用单一的 CKD 病型研究，而是搜集了不同类型的 CKD（hypertensive nephropathy，HN；IgA；idiopathic membranous nephropathy，IMN），并采用了强大的单细胞数据集成算法 RISC 消除不同来源（不同实验室、不同批次、不同类型患者等不相关因素）批次效应，试探索 CKD 与肾癌之间的相关性。并在此之后，以一批新的 CKD 和 RCC 单细胞数据集验证。
 
 \hypertarget{methods}{%
 \section{材料和方法}\label{methods}}
 
+涉及的 6 个 GEO 数据集可参考 \ref{flow} 的次级标题。
+
+涉及的方法：
+
+\begin{itemize}
+\tightlist
+\item
+  Seurat\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{5},\protect\hyperlink{ref-ComprehensiveIStuart2019}{6}}
+\item
+  Monocle\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{7},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{8}}
+\item
+  copyKAT\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{9}}
+\item
+  RISC\textsuperscript{\protect\hyperlink{ref-RobustIntegratLiuY2021}{10}}
+\item
+  ClusterProfiler\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{11}}
+\item
+  \ldots{}
+\end{itemize}
+
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
+
+\hypertarget{rcc-ux6570ux636eux96c6ux5206ux6790ux9274ux5b9a}{%
+\subsection{RCC 数据集分析鉴定}\label{rcc-ux6570ux636eux96c6ux5206ux6790ux9274ux5b9a}}
+
+Figure \ref{fig:Main-figure-1}为图Main figure 1概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig1.pdf}
+\caption{Main figure 1}\label{fig:Main-figure-1}
+\end{center}
+
+\hypertarget{ux4e0dux540cux7c7bux578b-ckd-ux6570ux636eux5171ux8868ux8fbeux5206ux6790ux548cux91cdux805aux7c7b}{%
+\subsection{不同类型 CKD 数据共表达分析和重聚类}\label{ux4e0dux540cux7c7bux578b-ckd-ux6570ux636eux5171ux8868ux8fbeux5206ux6790ux548cux91cdux805aux7c7b}}
+
+Figure \ref{fig:Main-figure-2}为图Main figure 2概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig2.pdf}
+\caption{Main figure 2}\label{fig:Main-figure-2}
+\end{center}
+
+\hypertarget{rcc-ux548c-ckd-ux6570ux636eux96c6ux6210}{%
+\subsection{RCC 和 CKD 数据集成}\label{rcc-ux548c-ckd-ux6570ux636eux96c6ux6210}}
+
+Figure \ref{fig:Main-figure-3}为图Main figure 3概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig3.pdf}
+\caption{Main figure 3}\label{fig:Main-figure-3}
+\end{center}
+
+Sets 1-5 对应 RCC, HM, IgA, IMN, HC 单细胞数据集。
+
+\hypertarget{ux5deeux5f02ux5206ux6790ux548cux5bccux96c6ux5206ux6790}{%
+\subsection{差异分析和富集分析}\label{ux5deeux5f02ux5206ux6790ux548cux5bccux96c6ux5206ux6790}}
+
+Figure \ref{fig:Main-figure-4}为图Main figure 4概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig4.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig4.pdf}
+\caption{Main figure 4}\label{fig:Main-figure-4}
+\end{center}
+
+\hypertarget{ux4ee5ux65b0ux7684-iga-ux548c-rcc-ux6570ux636eux96c6ux9a8cux8bc1}{%
+\subsection{以新的 IgA 和 RCC 数据集验证}\label{ux4ee5ux65b0ux7684-iga-ux548c-rcc-ux6570ux636eux96c6ux9a8cux8bc1}}
+
+Figure \ref{fig:Main-figure-5}为图Main figure 5概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig5.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig5.pdf}
+\caption{Main figure 5}\label{fig:Main-figure-5}
+\end{center}
 
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
 
-\hypertarget{ux9644ux5206ux6790ux6d41ux7a0b}{%
-\section{附：分析流程}\label{ux9644ux5206ux6790ux6d41ux7a0b}}
+\hypertarget{flow}{%
+\section{附：分析流程}\label{flow}}
 
-\hypertarget{ux80beux764c-geo}{%
-\subsection{肾癌 (GEO)}\label{ux80beux764c-geo}}
+\hypertarget{rcc1}{%
+\subsection{肾癌 (GEO)}\label{rcc1}}
 
 \hypertarget{gse171306}{%
 \subsubsection{GSE171306}\label{gse171306}}
@@ -163,54 +217,238 @@ timeROC
 \hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca}{%
 \paragraph{细胞聚类和注释}\label{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca}}
 
+Figure \ref{fig:RCC-data1-QC}为图RCC data1 QC概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RCC-data1-QC.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RCC-data1-QC.pdf}
+\caption{RCC data1 QC}\label{fig:RCC-data1-QC}
+\end{center}
+
+使用 SCSA 对细胞类型注释（以下注释同）\textsuperscript{\protect\hyperlink{ref-ScsaACellTyCaoY2020}{12}}。
+
+Figure \ref{fig:RCC-data1-SCSA-mapping}为图RCC data1 SCSA mapping概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RCC-data1-SCSA-mapping.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RCC-data1-SCSA-mapping.pdf}
+\caption{RCC data1 SCSA mapping}\label{fig:RCC-data1-SCSA-mapping}
+\end{center}
+
 \hypertarget{ux764cux7ec6ux80deux8bc6ux522b}{%
 \paragraph{癌细胞识别}\label{ux764cux7ec6ux80deux8bc6ux522b}}
 
-\hypertarget{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790}{%
-\paragraph{癌细胞拟时分析}\label{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790}}
+使用 copyKAT 预测癌细胞\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{9}}。
 
-\hypertarget{ux80beux764c-tcga-kirc}{%
-\subsection{肾癌 (TCGA-KIRC)}\label{ux80beux764c-tcga-kirc}}
+Figure \ref{fig:RCC-data1-copykat-prediction}为图RCC data1 copykat prediction概览。
 
-\hypertarget{tcga-ux6570ux636e}{%
-\subsubsection{TCGA 数据}\label{tcga-ux6570ux636e}}
+\textbf{(对应文件为 \texttt{Figure+Table/copykat\_heatmap.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./figs/copykat_heatmap.png}
+\caption{RCC data1 copykat prediction}\label{fig:RCC-data1-copykat-prediction}
+\end{center}
+
+Figure \ref{fig:RCC-data1-SCSA-mapping-with-copykat-prediction}为图RCC data1 SCSA mapping with copykat prediction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RCC-data1-SCSA-mapping-with-copykat-prediction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RCC-data1-SCSA-mapping-with-copykat-prediction.pdf}
+\caption{RCC data1 SCSA mapping with copykat prediction}\label{fig:RCC-data1-SCSA-mapping-with-copykat-prediction}
+\end{center}
+
+\hypertarget{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790ux548cux5171ux8868ux8fbeux5206ux6790}{%
+\paragraph{癌细胞拟时分析和共表达分析}\label{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790ux548cux5171ux8868ux8fbeux5206ux6790}}
+
+使用 monocle3 拟时分析\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{7},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{8}}。
+
+Figure \ref{fig:RCC-data1-pseudotime}为图RCC data1 pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RCC-data1-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RCC-data1-pseudotime.pdf}
+\caption{RCC data1 pseudotime}\label{fig:RCC-data1-pseudotime}
+\end{center}
+
+结合拟时分析和基因共表达模块，将肿瘤细胞类型切分为 5 个类型。
+
+Figure \ref{fig:RCC-data1-co-expression-modules}为图RCC data1 co expression modules概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RCC-data1-co-expression-modules.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RCC-data1-co-expression-modules.pdf}
+\caption{RCC data1 co expression modules}\label{fig:RCC-data1-co-expression-modules}
+\end{center}
+
+Figure \ref{fig:RCC-data1-cancer-subtype}为图RCC data1 cancer subtype概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RCC-data1-cancer-subtype.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RCC-data1-cancer-subtype.pdf}
+\caption{RCC data1 cancer subtype}\label{fig:RCC-data1-cancer-subtype}
+\end{center}
 
 \hypertarget{ux8840ux7ba1ux6027ux75beux60a3}{%
 \subsection{血管性疾患}\label{ux8840ux7ba1ux6027ux75beux60a3}}
 
-\hypertarget{ux9ad8ux8840ux538bux6027ux80beux708ehypertensive-nephropathy}{%
-\subsubsection{高血压性肾炎（hypertensive nephropathy）}\label{ux9ad8ux8840ux538bux6027ux80beux708ehypertensive-nephropathy}}
+\hypertarget{ux9ad8ux8840ux538bux6027ux80beux708e-gse210898-hypertensive-nephropathy}{%
+\subsubsection{高血压性肾炎: GSE210898 (hypertensive nephropathy)}\label{ux9ad8ux8840ux538bux6027ux80beux708e-gse210898-hypertensive-nephropathy}}
 
 \begin{itemize}
 \tightlist
 \item
-  GSE210898: Single-cell RNA transcriptomics of hypertensive nephropathy patients
+  Single-cell RNA transcriptomics of hypertensive nephropathy patients. We
+  analyzed kidney samples from 3 patients with HTN using single-cell RNA
+  sequencing, compared with previous data of controls
 \end{itemize}
 
 \hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-1}{%
 \paragraph{细胞聚类和注释}\label{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-1}}
 
+Figure \ref{fig:HN-data-QC}为图HN data QC概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HN-data-QC.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HN-data-QC.pdf}
+\caption{HN data QC}\label{fig:HN-data-QC}
+\end{center}
+
+Figure \ref{fig:HN-data-SCSA-mapping}为图HN data SCSA mapping概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HN-data-SCSA-mapping.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HN-data-SCSA-mapping.pdf}
+\caption{HN data SCSA mapping}\label{fig:HN-data-SCSA-mapping}
+\end{center}
+
+\hypertarget{ux5171ux8868ux8fbeux5206ux6790}{%
+\paragraph{共表达分析}\label{ux5171ux8868ux8fbeux5206ux6790}}
+
+Figure \ref{fig:HN-data-pseudotime}为图HN data pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HN-data-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HN-data-pseudotime.pdf}
+\caption{HN data pseudotime}\label{fig:HN-data-pseudotime}
+\end{center}
+
+Figure \ref{fig:HN-data-co-expression-modules}为图HN data co expression modules概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HN-data-co-expression-modules.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HN-data-co-expression-modules.pdf}
+\caption{HN data co expression modules}\label{fig:HN-data-co-expression-modules}
+\end{center}
+
+Figure \ref{fig:HN-data-Proximal-tubule-cell-subtype}为图HN data Proximal tubule cell subtype概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HN-data-Proximal-tubule-cell-subtype.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HN-data-Proximal-tubule-cell-subtype.pdf}
+\caption{HN data Proximal tubule cell subtype}\label{fig:HN-data-Proximal-tubule-cell-subtype}
+\end{center}
+
 \hypertarget{ux539fux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}{%
 \subsection{（原发性）肾小球性疾患}\label{ux539fux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}}
 
-\hypertarget{iga-ux80beux75c5-iga-nephropathy}{%
-\subsubsection{IgA 肾病 (IgA Nephropathy)}\label{iga-ux80beux75c5-iga-nephropathy}}
+\hypertarget{iga-ux80beux75c5-gse171314-iga-nephropathy}{%
+\subsubsection{IgA 肾病: GSE171314 (IgA Nephropathy)}\label{iga-ux80beux75c5-gse171314-iga-nephropathy}}
 
 \begin{itemize}
 \tightlist
 \item
-  GSE171314, scRNA-seq
-\item
-  GSE145652, RNA-seq
-\item
-  GSE175759, RNA-seq
+  Single-cell RNA sequencing (scRNA-seq) was applied to kidney biopsies from 4
+  IgAN and 1 control subjects to define the transcriptomic landscape at the
+  single-cell resolution.
 \end{itemize}
 
-\hypertarget{ux819cux6027ux80beux75c5-idiopathic-membranous-nephropathy}{%
-\subsubsection{膜性肾病 (idiopathic membranous nephropathy)}\label{ux819cux6027ux80beux75c5-idiopathic-membranous-nephropathy}}
+\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-2}{%
+\paragraph{细胞聚类和注释}\label{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-2}}
+
+Figure \ref{fig:IgA-data1-QC}为图IgA data1 QC概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IgA-data1-QC.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IgA-data1-QC.pdf}
+\caption{IgA data1 QC}\label{fig:IgA-data1-QC}
+\end{center}
+
+Figure \ref{fig:IgA-data1-SCSA-mapping}为图IgA data1 SCSA mapping概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IgA-data1-SCSA-mapping.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IgA-data1-SCSA-mapping.pdf}
+\caption{IgA data1 SCSA mapping}\label{fig:IgA-data1-SCSA-mapping}
+\end{center}
+
+\hypertarget{ux5171ux8868ux8fbeux5206ux6790-1}{%
+\paragraph{共表达分析}\label{ux5171ux8868ux8fbeux5206ux6790-1}}
+
+Figure \ref{fig:IgA-data1-pseudotime}为图IgA data1 pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IgA-data1-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IgA-data1-pseudotime.pdf}
+\caption{IgA data1 pseudotime}\label{fig:IgA-data1-pseudotime}
+\end{center}
+
+Figure \ref{fig:IgA-data1-co-expression-modules}为图IgA data1 co expression modules概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IgA-data1-co-expression-modules.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IgA-data1-co-expression-modules.pdf}
+\caption{IgA data1 co expression modules}\label{fig:IgA-data1-co-expression-modules}
+\end{center}
+
+Figure \ref{fig:IgA-data1-Proximal-tubule-cell-subtype}为图IgA data1 Proximal tubule cell subtype概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IgA-data1-Proximal-tubule-cell-subtype.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IgA-data1-Proximal-tubule-cell-subtype.pdf}
+\caption{IgA data1 Proximal tubule cell subtype}\label{fig:IgA-data1-Proximal-tubule-cell-subtype}
+\end{center}
+
+\hypertarget{ux819cux6027ux80beux75c5-gse241302-idiopathic-membranous-nephropathy}{%
+\subsubsection{膜性肾病: GSE241302 (idiopathic membranous nephropathy)}\label{ux819cux6027ux80beux75c5-gse241302-idiopathic-membranous-nephropathy}}
 
 \begin{itemize}
-\tightlist
+\item
+  In order to explore the molecular mechanism of IMN, we collected renal tissue
+  samples from 3 IMN patients and 1 healthy controls and performed analysis by
+  single-cell RNA sequencing.
 \item
   GSE241302, scRNA
 \item
@@ -219,49 +457,377 @@ timeROC
   GSE175759, RNA-seq
 \end{itemize}
 
-\hypertarget{ux5faeux5c0fux75c5ux53d8ux80beux75c5-minimal-change-disease}{%
-\subsubsection{微小病变肾病 (Minimal change disease)}\label{ux5faeux5c0fux75c5ux53d8ux80beux75c5-minimal-change-disease}}
+\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-3}{%
+\paragraph{细胞聚类和注释}\label{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-3}}
 
-\begin{itemize}
-\tightlist
-\item
-  GSE176465, scRNA (only but not fit)
-\item
-  GSE216841, RNA-seq
-\item
-  GSE175759, RNA-seq
-\end{itemize}
+Figure \ref{fig:IMN-data-QC}为图IMN data QC概览。
 
-\hypertarget{ux7ee7ux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}{%
-\subsection{（继发性）肾小球性疾患}\label{ux7ee7ux53d1ux6027ux80beux5c0fux7403ux6027ux75beux60a3}}
+\textbf{(对应文件为 \texttt{Figure+Table/IMN-data-QC.pdf})}
 
-\hypertarget{ux7cd6ux5c3fux75c5ux80beux75c5-diabetic-kidney-disease}{%
-\subsubsection{糖尿病肾病 (Diabetic kidney disease)}\label{ux7cd6ux5c3fux75c5ux80beux75c5-diabetic-kidney-disease}}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IMN-data-QC.pdf}
+\caption{IMN data QC}\label{fig:IMN-data-QC}
+\end{center}
 
-\begin{itemize}
-\tightlist
-\item
-  GSE204880, scRNA
-\item
-  GSE175759, RNA-seq
-\item
-  GSE199838, RNA-seq
-\item
-  GSE217709, RNA-seq
-\end{itemize}
+Figure \ref{fig:IMN-data-SCSA-mapping}为图IMN data SCSA mapping概览。
 
-\hypertarget{ux72fcux75aeux6027ux80beux708e-lupus-nephritis}{%
-\subsubsection{狼疮性肾炎 (lupus nephritis)}\label{ux72fcux75aeux6027ux80beux708e-lupus-nephritis}}
+\textbf{(对应文件为 \texttt{Figure+Table/IMN-data-SCSA-mapping.pdf})}
 
-\begin{itemize}
-\tightlist
-\item
-  no scRNA
-\item
-  GSE175759, RNA-seq
-\item
-  GSE157293, RNA-seq
-\end{itemize}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IMN-data-SCSA-mapping.pdf}
+\caption{IMN data SCSA mapping}\label{fig:IMN-data-SCSA-mapping}
+\end{center}
+
+\hypertarget{ux5171ux8868ux8fbeux5206ux6790-2}{%
+\paragraph{共表达分析}\label{ux5171ux8868ux8fbeux5206ux6790-2}}
+
+Figure \ref{fig:IMN-data-pseudotime}为图IMN data pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IMN-data-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IMN-data-pseudotime.pdf}
+\caption{IMN data pseudotime}\label{fig:IMN-data-pseudotime}
+\end{center}
+
+Figure \ref{fig:IMN-data-co-expression-modules}为图IMN data co expression modules概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IMN-data-co-expression-modules.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IMN-data-co-expression-modules.pdf}
+\caption{IMN data co expression modules}\label{fig:IMN-data-co-expression-modules}
+\end{center}
+
+Figure \ref{fig:IMN-data-Proximal-tubule-cell-subtype}为图IMN data Proximal tubule cell subtype概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IMN-data-Proximal-tubule-cell-subtype.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IMN-data-Proximal-tubule-cell-subtype.pdf}
+\caption{IMN data Proximal tubule cell subtype}\label{fig:IMN-data-Proximal-tubule-cell-subtype}
+\end{center}
+
+\hypertarget{ux6b63ux5e38ux5bf9ux7167healthy-controlgse171314}{%
+\subsection{正常对照（Healthy control）（GSE171314）}\label{ux6b63ux5e38ux5bf9ux7167healthy-controlgse171314}}
+
+\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-4}{%
+\paragraph{细胞聚类和注释}\label{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-4}}
+
+Figure \ref{fig:HC-data-QC}为图HC data QC概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HC-data-QC.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HC-data-QC.pdf}
+\caption{HC data QC}\label{fig:HC-data-QC}
+\end{center}
+
+Figure \ref{fig:HC-data-SCSA-mapping}为图HC data SCSA mapping概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HC-data-SCSA-mapping.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HC-data-SCSA-mapping.pdf}
+\caption{HC data SCSA mapping}\label{fig:HC-data-SCSA-mapping}
+\end{center}
+
+\hypertarget{ux591aux6570ux636eux96c6ux6210ccrcc-ux548c-ckd-scrna-seq}{%
+\subsection{多数据集成：ccRCC 和 CKD scRNA-seq}\label{ux591aux6570ux636eux96c6ux6210ccrcc-ux548c-ckd-scrna-seq}}
+
+\hypertarget{ux4f7fux7528-risc-ux5bf9ux4e0dux540cux6765ux6e90ux7684ux6570ux636eux96c6ux6210}{%
+\subsubsection{使用 RISC 对不同来源的数据集成}\label{ux4f7fux7528-risc-ux5bf9ux4e0dux540cux6765ux6e90ux7684ux6570ux636eux96c6ux6210}}
+
+RISC\textsuperscript{\protect\hyperlink{ref-RobustIntegratLiuY2021}{10}}
+
+Figure \ref{fig:SETS1-select-reference-dataset-for-integration}为图SETS1 select reference dataset for integration概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-select-reference-dataset-for-integration.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-select-reference-dataset-for-integration.pdf}
+\caption{SETS1 select reference dataset for integration}\label{fig:SETS1-select-reference-dataset-for-integration}
+\end{center}
+
+Figure \ref{fig:SETS1-umap-mapping}为图SETS1 umap mapping概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-umap-mapping.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-umap-mapping.pdf}
+\caption{SETS1 umap mapping}\label{fig:SETS1-umap-mapping}
+\end{center}
+
+\hypertarget{ux62dfux65f6ux5206ux6790}{%
+\subsubsection{拟时分析}\label{ux62dfux65f6ux5206ux6790}}
+
+在不同的肾病聚类中，IgA 与 RCC 最为接近。IgA 肾病可能发展成 RCC。
+
+Figure \ref{fig:SETS1-trajectory}为图SETS1 trajectory概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-trajectory.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-trajectory.pdf}
+\caption{SETS1 trajectory}\label{fig:SETS1-trajectory}
+\end{center}
+
+Figure \ref{fig:SETS1-pseudotime}为图SETS1 pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-pseudotime.pdf}
+\caption{SETS1 pseudotime}\label{fig:SETS1-pseudotime}
+\end{center}
+
+\hypertarget{igacancerhc-ux5deeux5f02ux5206ux6790}{%
+\subsubsection{IgA、Cancer、HC 差异分析}\label{igacancerhc-ux5deeux5f02ux5206ux6790}}
+
+Figure \ref{fig:SETS1-intersection-of-contrasts-DEGs}为图SETS1 intersection of contrasts DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-intersection-of-contrasts-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-intersection-of-contrasts-DEGs.pdf}
+\caption{SETS1 intersection of contrasts DEGs}\label{fig:SETS1-intersection-of-contrasts-DEGs}
+\end{center}
+
+Table \ref{tab:SETS1-DEGs}为表格SETS1 DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-DEGs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有14359行7列，以下预览的表格可能省略部分数据；表格含有3个唯一`contrast'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:SETS1-DEGs}SETS1 DEGs}\tabularnewline
+\toprule
+contrast & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+contrast & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & gene\tabularnewline
+\midrule
+\endhead
+Cance\ldots{} & 0 & -11.8\ldots{} & 0 & 1 & 0 & MT-RNR1\tabularnewline
+Cance\ldots{} & 0 & -8.47\ldots{} & 0 & 0.809 & 0 & FABP1\tabularnewline
+Cance\ldots{} & 0 & -11.9\ldots{} & 0 & 0.806 & 0 & MTATP6P1\tabularnewline
+Cance\ldots{} & 0 & -12.0\ldots{} & 0 & 0.988 & 0 & ALDOB\tabularnewline
+Cance\ldots{} & 0 & -3.24\ldots{} & 0.97 & 0.056 & 0 & ANXA2\tabularnewline
+Cance\ldots{} & 0 & -9.49\ldots{} & 0 & 0.839 & 0 & SLC5A12\tabularnewline
+Cance\ldots{} & 0 & -4.24\ldots{} & 1 & 0.075 & 0 & VIM\tabularnewline
+Cance\ldots{} & 0 & -1.19\ldots{} & 0.928 & 0.015 & 0 & PFKP\tabularnewline
+Cance\ldots{} & 0 & -0.97\ldots{} & 0.91 & 0.014 & 0 & PERP\tabularnewline
+Cance\ldots{} & 0 & -2.67\ldots{} & 0.933 & 0.03 & 0 & LGALS1\tabularnewline
+Cance\ldots{} & 0 & -1.90\ldots{} & 0.887 & 0.029 & 0 & BST2\tabularnewline
+Cance\ldots{} & 0 & -1.09\ldots{} & 0.848 & 0.017 & 0 & CYTOR\tabularnewline
+Cance\ldots{} & 0 & -2.57\ldots{} & 0.981 & 0.023 & 0 & TIMP1\tabularnewline
+Cance\ldots{} & 0 & 0.906\ldots{} & 0.784 & 0.007 & 0 & MT3\tabularnewline
+Cance\ldots{} & 0 & -1.71\ldots{} & 0.859 & 0.022 & 0 & AHNAK\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5bccux96c6ux5206ux6790gsea}{%
+\subsubsection{富集分析（GSEA）}\label{ux5bccux96c6ux5206ux6790gsea}}
+
+\hypertarget{cancer-vs-iga}{%
+\paragraph{Cancer vs IgA}\label{cancer-vs-iga}}
+
+Figure \ref{fig:SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA}为图SETS1 GSEA enrichment of KEGG CancerVsIgA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf}
+\caption{SETS1 GSEA enrichment of KEGG CancerVsIgA}\label{fig:SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA}
+\end{center}
+
+Figure \ref{fig:SETS1-GSEA-enrichment-of-GO-CancerVsIgA}为图SETS1 GSEA enrichment of GO CancerVsIgA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-GSEA-enrichment-of-GO-CancerVsIgA.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-GSEA-enrichment-of-GO-CancerVsIgA.pdf}
+\caption{SETS1 GSEA enrichment of GO CancerVsIgA}\label{fig:SETS1-GSEA-enrichment-of-GO-CancerVsIgA}
+\end{center}
+
+Fig. \ref{fig:SETS1-GSEA-show-OXPHOS-pathway} 富集于 OXPHOS 通路的基因表达量整体下降。
+
+Figure \ref{fig:SETS1-GSEA-show-OXPHOS-pathway-CancerVsIgA}为图SETS1 GSEA show OXPHOS pathway CancerVsIgA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf}
+\caption{SETS1 GSEA show OXPHOS pathway CancerVsIgA}\label{fig:SETS1-GSEA-show-OXPHOS-pathway-CancerVsIgA}
+\end{center}
+
+Figure \ref{fig:SETS1-GSEA-show-OXPHOS-pathway-by-pathview-CancerVsIgA}为图SETS1 GSEA show OXPHOS pathway by pathview CancerVsIgA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa00190.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2023-10-31_16_52_42.995662/hsa00190.pathview.png}
+\caption{SETS1 GSEA show OXPHOS pathway by pathview CancerVsIgA}\label{fig:SETS1-GSEA-show-OXPHOS-pathway-by-pathview-CancerVsIgA}
+\end{center}
+
+\hypertarget{cancer-vs-control}{%
+\paragraph{Cancer vs Control}\label{cancer-vs-control}}
+
+Fig. \ref{fig:SETS1-GSEA-enrichment-of-KEGG-CancerVsControl} 与 Fig. \ref{fig:SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA} 相比，
+并不富集于 OXPHOS 通路。
+
+Figure \ref{fig:SETS1-GSEA-enrichment-of-KEGG-CancerVsControl}为图SETS1 GSEA enrichment of KEGG CancerVsControl概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsControl.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsControl.pdf}
+\caption{SETS1 GSEA enrichment of KEGG CancerVsControl}\label{fig:SETS1-GSEA-enrichment-of-KEGG-CancerVsControl}
+\end{center}
+
+Figure \ref{fig:SETS1-GSEA-enrichment-of-GO-CancerVsControl}为图SETS1 GSEA enrichment of GO CancerVsControl概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS1-GSEA-enrichment-of-GO-CancerVsControl.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS1-GSEA-enrichment-of-GO-CancerVsControl.pdf}
+\caption{SETS1 GSEA enrichment of GO CancerVsControl}\label{fig:SETS1-GSEA-enrichment-of-GO-CancerVsControl}
+\end{center}
+
+\hypertarget{ux9a8cux8bc1}{%
+\subsection{验证}\label{ux9a8cux8bc1}}
+
+\hypertarget{ux53e6ux4e00ux7ec4-iga-ux80beux75c5-gse127136}{%
+\subsubsection{另一组 IgA 肾病: GSE127136}\label{ux53e6ux4e00ux7ec4-iga-ux80beux75c5-gse127136}}
+
+\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-5}{%
+\paragraph{细胞聚类和注释}\label{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-5}}
+
+\hypertarget{ux53e6ux4e00ux7ec4-rcc-gse202374}{%
+\subsubsection{另一组 RCC: GSE202374}\label{ux53e6ux4e00ux7ec4-rcc-gse202374}}
+
+\hypertarget{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-6}{%
+\paragraph{细胞聚类和注释}\label{ux7ec6ux80deux805aux7c7bux548cux6ce8ux91ca-6}}
+
+同 \ref{rcc1}, 使用 SCSA 注释后，以 copyKAT 预测癌细胞，随后将肿瘤细胞映射到 UMAP 聚类图中。
+
+Figure \ref{fig:RCC-data2-SCSA-mapping-with-copykat-prediction}为图RCC data2 SCSA mapping with copykat prediction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RCC-data2-SCSA-mapping-with-copykat-prediction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RCC-data2-SCSA-mapping-with-copykat-prediction.pdf}
+\caption{RCC data2 SCSA mapping with copykat prediction}\label{fig:RCC-data2-SCSA-mapping-with-copykat-prediction}
+\end{center}
+
+\hypertarget{ux96c6ux6210ux9a8cux8bc1canceriga}{%
+\subsubsection{集成验证：Cancer、IgA}\label{ux96c6ux6210ux9a8cux8bc1canceriga}}
+
+\hypertarget{risc-ux96c6ux6210}{%
+\paragraph{RISC 集成}\label{risc-ux96c6ux6210}}
+
+Figure \ref{fig:SETS2-select-reference-dataset-for-integration}为图SETS2 select reference dataset for integration概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS2-select-reference-dataset-for-integration.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS2-select-reference-dataset-for-integration.pdf}
+\caption{SETS2 select reference dataset for integration}\label{fig:SETS2-select-reference-dataset-for-integration}
+\end{center}
+
+Figure \ref{fig:SETS2-umap-mapping}为图SETS2 umap mapping概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS2-umap-mapping.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS2-umap-mapping.pdf}
+\caption{SETS2 umap mapping}\label{fig:SETS2-umap-mapping}
+\end{center}
+
+\hypertarget{ux62dfux65f6ux5206ux6790-1}{%
+\paragraph{拟时分析}\label{ux62dfux65f6ux5206ux6790-1}}
+
+依据拟时轨迹Fig. \ref{fig:SETS1-pseudotime}，同 Fig. \ref{fig:SETS1-trajectory}相似，IgA 与 RCC 聚类邻近，可能在疾病发展过程中转化为癌症。
+
+Figure \ref{fig:SETS2-pseudotime}为图SETS2 pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS2-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS2-pseudotime.pdf}
+\caption{SETS2 pseudotime}\label{fig:SETS2-pseudotime}
+\end{center}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\paragraph{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+Figure \ref{fig:SETS2-GSEA-enrichment-of-KEGG-CancerVsIgA}为图SETS2 GSEA enrichment of KEGG CancerVsIgA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS2-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS2-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf}
+\caption{SETS2 GSEA enrichment of KEGG CancerVsIgA}\label{fig:SETS2-GSEA-enrichment-of-KEGG-CancerVsIgA}
+\end{center}
+
+Figure \ref{fig:SETS2-GSEA-enrichment-of-GO-CancerVsIgA}为图SETS2 GSEA enrichment of GO CancerVsIgA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS2-GSEA-enrichment-of-GO-CancerVsIgA.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS2-GSEA-enrichment-of-GO-CancerVsIgA.pdf}
+\caption{SETS2 GSEA enrichment of GO CancerVsIgA}\label{fig:SETS2-GSEA-enrichment-of-GO-CancerVsIgA}
+\end{center}
+
+Fig. \ref{fig:SETS2-GSEA-show-OXPHOS-pathway} 富集于 OXPHOS 通路的基因表达量整体上升（与Fig. \ref{fig:SETS1-GSEA-show-OXPHOS-pathway} 相反）。系肿瘤细胞的异质性所致\textsuperscript{\protect\hyperlink{ref-HallmarksOfCaSancho2016}{13}}，RCC 肿瘤可分为 OXPHOS 依赖型和非依赖型代谢增强。
+
+Figure \ref{fig:SETS2-GSEA-show-OXPHOS-pathway-CancerVsIgA}为图SETS2 GSEA show OXPHOS pathway CancerVsIgA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SETS2-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SETS2-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf}
+\caption{SETS2 GSEA show OXPHOS pathway CancerVsIgA}\label{fig:SETS2-GSEA-show-OXPHOS-pathway-CancerVsIgA}
+\end{center}
+
+Figure \ref{fig:SETS2-GSEA-show-OXPHOS-pathway-by-pathview-CancerVsIgA}为图SETS2 GSEA show OXPHOS pathway by pathview CancerVsIgA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa00190.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2023-10-31_15_25_14.115006/hsa00190.pathview.png}
+\caption{SETS2 GSEA show OXPHOS pathway by pathview CancerVsIgA}\label{fig:SETS2-GSEA-show-OXPHOS-pathway-by-pathview-CancerVsIgA}
+\end{center}
 
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
@@ -278,11 +844,35 @@ timeROC
 \leavevmode\hypertarget{ref-CancerRiskAndKitchl2022}{}%
 3. Kitchlu, A. \emph{et al.} Cancer risk and mortality in patients with kidney disease: A population-based cohort study. \emph{American journal of kidney diseases : the official journal of the National Kidney Foundation} \textbf{80}, 436--448.e1 (2022).
 
-\leavevmode\hypertarget{ref-EpidemiologyOfBukavi2022}{}%
-4. Bukavina, L. \emph{et al.} Epidemiology of renal cell carcinoma: 2022 update. \emph{European Urology} \textbf{82}, (2022).
-
 \leavevmode\hypertarget{ref-RenalCellCancSaly2021}{}%
-5. Saly, D. L., Eswarappa, M. S., Street, S. E. \& Deshpande, P. Renal cell cancer and chronic kidney disease. \emph{Advances in chronic kidney disease} \textbf{28}, 460--468.e1 (2021).
+4. Saly, D. L., Eswarappa, M. S., Street, S. E. \& Deshpande, P. Renal cell cancer and chronic kidney disease. \emph{Advances in chronic kidney disease} \textbf{28}, 460--468.e1 (2021).
+
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+5. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
+6. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-ReversedGraphQiuX2017}{}%
+7. Qiu, X. \emph{et al.} Reversed graph embedding resolves complex single-cell trajectories. \emph{Nature Methods} \textbf{14}, (2017).
+
+\leavevmode\hypertarget{ref-TheDynamicsAnTrapne2014}{}%
+8. Trapnell, C. \emph{et al.} The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. \emph{Nature Biotechnology} \textbf{32}, (2014).
+
+\leavevmode\hypertarget{ref-DelineatingCopGaoR2021}{}%
+9. Gao, R. \emph{et al.} Delineating copy number and clonal substructure in human tumors from single-cell transcriptomes. \emph{Nature Biotechnology} \textbf{39}, 599--608 (2021).
+
+\leavevmode\hypertarget{ref-RobustIntegratLiuY2021}{}%
+10. Liu, Y., Wang, T., Zhou, B. \& Zheng, D. Robust integration of multiple single-cell rna sequencing datasets using a single reference space. \emph{Nature biotechnology} \textbf{39}, 877--884 (2021).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+11. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+12. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+
+\leavevmode\hypertarget{ref-HallmarksOfCaSancho2016}{}%
+13. Sancho, P., Barneda, D. \& Heeschen, C. Hallmarks of cancer stem cell metabolism. \emph{British journal of cancer} \textbf{114}, 1305--1312 (2016).
 \end{cslreferences}
 
 \end{document}

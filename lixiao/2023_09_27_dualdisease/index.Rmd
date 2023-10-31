@@ -23,61 +23,147 @@ set_index()
 
 # 前言 {#introduction}
 
-CKD 与患癌症风险之间的联系尚未明确。尽管多项研究观察到需要透析或肾移植的 ESRD 患者患癌症的风险较高，但不太严重的肾脏疾病是否与癌症相关仍知之甚少[@OnconephrologyRosner2021; @CkdAndTheRisLowran2014; @CancerRiskAndKitchl2022]。
+慢性肾病（CKD）与患癌症风险之间的联系尚未明确。尽管多项研究观察到需要透析或肾移植的 ESRD 患者患癌症的风险较高，但相对不严重的肾脏疾病是否与癌症相关仍知之甚少[@OnconephrologyRosner2021; @CkdAndTheRisLowran2014; @CancerRiskAndKitchl2022]。已有研究论及 CKD 和肾癌之间的关联性和转化的风险[@RenalCellCancSaly2021; @CkdAndTheRisLowran2014; @CancerRiskAndKitchl2022]，轻度至中度 CKD 和移植受者的癌症风险增加[@CancerRiskAndKitchl2022]。
 
-肾癌流行病学[@EpidemiologyOfBukavi2022]
-
-CKD 和肾癌[@RenalCellCancSaly2021]
-
-Cancer Risk and Mortality in Patients With Kidney Disease: Cancer risk was increased in mild to moderate CKD and among transplant recipients[@CancerRiskAndKitchl2022]
-
-# 研究设计流程图 {#route}
-
-TCGA 突变数据
-TCGA 转录数据
-基因共表达
-免疫浸润水平
-生存分析
-timeROC
-单细胞数据验证
-
-多种慢性肾病的 FC
-癌症的 FC
-用基因集的 FC 来关联分析 (需要多个 GEO 数据集)
-
-- Kidney status markers
-- cancer markers
-- micro-envir...
-- ferroptosis
-- ...
-
-```{r}
-#| route
-route <- as_network(
-  list("RNA_seq_data:Preprocess",
-    ), "tree"
-)
-p.route <- flowChart(route, 1.1, 1)
-```
-
-```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
-# p.route
-```
+在本研究中，为了探究 CKD 与肾癌（RCC）之间的相关性和转化风险，重新分析了多组公共数据库的单细胞数据集。考虑到 CKD 的复杂性，这里并不采用单一的 CKD 病型研究，而是搜集了不同类型的 CKD（hypertensive nephropathy，HN；IgA；idiopathic membranous nephropathy，IMN），并采用了强大的单细胞数据集成算法 RISC 消除不同来源（不同实验室、不同批次、不同类型患者等不相关因素）批次效应，试探索 CKD 与肾癌之间的相关性。并在此之后，以一批新的 CKD 和 RCC 单细胞数据集验证。
 
 # 材料和方法 {#methods}
 
+涉及的 6 个 GEO 数据集可参考 \@ref(flow) 的次级标题。
+
+涉及的方法：
+
+- Seurat `r sr@cite`
+- Monocle `r mn@cite`
+- copyKAT `r kat.rc2@cite`
+- RISC `r rs@cite`
+- ClusterProfiler `r en@cite`
+- ...
+
 ```{r}
+en <- .job_enrich()
 lite_cancer <- esearch.mj("cancer prediction")
 lite_cancer %>% select(.id, Title) %>% filter(grepl("Nature", .id)) %>% print(n = 100)
 ```
 
 # 分析结果 {#results}
 
+## RCC 数据集分析鉴定
+
+RCC 数据集（RCC1）以 Seurat 预处理、质控、聚类后，以 SCSA 注释细胞类型，随后以 copyKAT 预测肿瘤细胞。
+其中，肿瘤细胞主要为 Proximal tubular cells (PTCs)。
+将癌细胞数据分离，重新聚类，随后以 Monocle3 拟时分析，得到拟时轨迹图。
+并同时以基因共表达分析。此处发现，RCC 细胞主要可以分为 5 种亚型。
+将 RCC 细胞分为亚型，以备 RISC 集成，考察其在多组数据集成后，是否还具备原先数据集的特征。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Main-figure-1
+autor("./Figure+Table/fig1.pdf")
+```
+
+```{r}
+fig1 <- cls(
+  cl("./Figure+Table/RCC-data1-SCSA-mapping.pdf",
+    "./Figure+Table/copykat_heatmap.png",
+    "./Figure+Table/RCC-data1-SCSA-mapping-with-copykat-prediction.pdf"
+    ),
+  cl("./Figure+Table/RCC-data1-pseudotime.pdf",
+    "./Figure+Table/RCC-data1-co-expression-modules.pdf",
+    "./Figure+Table/RCC-data1-cancer-subtype.pdf"
+  )
+)
+render(fig1)
+```
+
+## 不同类型 CKD 数据共表达分析和重聚类
+
+将 3 种类型的 CKD 细胞按相似的步骤处理，以不同共表达模块将细胞群分为多个亚类。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Main-figure-2
+autor("./Figure+Table/fig2.pdf")
+```
+
+```{r}
+fig2 <- cl(
+  rw("./Figure+Table/HN-data-SCSA-mapping.pdf",
+    "./Figure+Table/HN-data-co-expression-modules.pdf",
+    "./Figure+Table/HN-data-Proximal-tubule-cell-subtype.pdf"
+    ),
+  rw("./Figure+Table/IgA-data1-SCSA-mapping.pdf",
+    "./Figure+Table/IgA-data1-co-expression-modules.pdf",
+    "./Figure+Table/IgA-data1-Proximal-tubule-cell-subtype.pdf"
+  ),
+  rw("./Figure+Table/IMN-data-SCSA-mapping.pdf",
+    "./Figure+Table/IMN-data-co-expression-modules.pdf",
+    "./Figure+Table/IMN-data-Proximal-tubule-cell-subtype.pdf"
+  )
+)
+render(fig2)
+```
+
+## RCC 和 CKD 数据集成
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Main-figure-3
+autor("./Figure+Table/fig3.pdf")
+```
+
+Sets 1-5 对应 RCC, HM, IgA, IMN, HC 单细胞数据集。
+
+```{r}
+fig3 <- cls(
+  cl("./Figure+Table/SETS1-select-reference-dataset-for-integration.pdf"),
+  cl("./Figure+Table/SETS1-trajectory.pdf",
+    "./Figure+Table/SETS1-pseudotime.pdf")
+)
+render(fig3)
+```
+
+## 差异分析和富集分析
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Main-figure-4
+autor("./Figure+Table/fig4.pdf")
+```
+
+```{r}
+fig4 <- cl(
+  rw("./Figure+Table/SETS1-intersection-of-contrasts-DEGs.pdf",
+    "./Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf"),
+  rw("./Figure+Table/SETS1-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf",
+    "./Figure+Table/hsa00190.pathview.png"),
+  rw("./Figure+Table/SETS1-GSEA-enrichment-of-GO-CancerVsIgA.pdf",
+    "./Figure+Table/SETS1-GSEA-enrichment-of-KEGG-CancerVsControl.pdf")
+)
+render(fig4)
+```
+
+## 以新的 IgA 和 RCC 数据集验证
+
+```{r eval = T, echo = F, results = "asis"}
+#| Main-figure-5
+autor("./Figure+Table/fig5.pdf")
+```
+
+```{r}
+fig5 <- cls(
+  cl("./Figure+Table/SETS2-select-reference-dataset-for-integration.pdf",
+    "./Figure+Table/SETS2-umap-mapping.pdf"),
+  cl("./Figure+Table/SETS2-GSEA-enrichment-of-KEGG-CancerVsIgA.pdf",
+    "./Figure+Table/SETS2-GSEA-show-OXPHOS-pathway-CancerVsIgA.pdf",
+    "./Figure+Table/SETS2-GSEA-enrichment-of-GO-CancerVsIgA.pdf")
+)
+render(fig5)
+```
+
 # 结论 {#dis}
 
-# 附：分析流程
+# 附：分析流程 {#flow}
 
-## 肾癌 (GEO)
+## 肾癌 (GEO) {#rcc1}
 
 ### GSE171306
 
@@ -105,6 +191,18 @@ fun()
 
 #### 细胞聚类和注释
 
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-data1-QC
+autor(sr@plots$step1$p.qc)
+```
+
+使用 SCSA 对细胞类型注释（以下注释同）[@ScsaACellTyCaoY2020]。
+
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-data1-SCSA-mapping
+autor(sr@plots$step6$p.map_scsa)
+```
+
 ```{r}
 sr <- job_seurat("./GSE171306/sample1")
 sr <- step1(sr)
@@ -119,7 +217,19 @@ sr <- step6(sr, "Kidney")
 sr@plots$step6$p.map_scsa
 ```
 
-#### 癌细胞识别
+#### 癌细胞识别 
+
+使用 copyKAT 预测癌细胞`r kat.rc2@cite`。
+
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-data1-copykat-prediction
+autor(.file_fig("./figs/copykat_heatmap.png"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-data1-SCSA-mapping-with-copykat-prediction
+autor(p.sr_vis)
+```
 
 ```{r}
 kat <- job_kat(sr)
@@ -133,16 +243,35 @@ kat@plots$step2$p.copykat
 
 ```{r}
 sr <- map(sr, kat)
-vis(sr, "scsa_copykat")
+p.sr_vis <- vis(sr, "scsa_copykat")
 ```
 
-#### 癌细胞拟时分析
+#### 癌细胞拟时分析和共表达分析
+
+使用 monocle3 拟时分析`r mn@cite`。
+
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-data1-pseudotime
+autor(mn@plots$step2$p.pseu)
+```
+
+结合拟时分析和基因共表达模块，将肿瘤细胞类型切分为 5 个类型。
+
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-data1-co-expression-modules
+autor(mn@plots$step3$gene_module_heatdata$graph_test.sig)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-data1-cancer-subtype
+autor(p.sr_visCancer)
+```
 
 ```{r}
 mn <- do_monocle(sr, kat)
 mn <- step1(mn)
 mn@plots$step1$p.cancer_position
-map(mn, 30)
+map(mn, cutree = 30)
 mn <- step2(mn, "Y_14")
 mn@plots$step2$p.pseu
 mn <- step3(mn)
@@ -150,10 +279,10 @@ mn@plots$step3$gene_module_heatdata$graph_test.sig
 vis(mn)
 
 sr_cancer <- asjob_seurat(mn, 5, rename = "Cancer")
-vis(sr_cancer, "regroup.hclust")
+p.sr_visCancer <- vis(sr_cancer, "regroup.hclust")
 
 sr <- map(sr, sr_cancer, "scsa_cell", "regroup.hclust")
-vis(sr, "cell_mapped")
+p.sr_vis2 <- vis(sr, "cell_mapped")
 vis(sr, "scsa_copykat")
 
 clear(sr)
@@ -164,11 +293,25 @@ clear(mn)
 save.image("./can.RData")
 load("./can.RData")
 
+kat.rc2 <- readRDS("./copykat_heatmap2.2.rds")
+rs2 <- readRDS("./rs2.2.rds")
+
+mns2 <- readRDS("./mns2.2.rds")
+srs2 <- readRDS("./srs2.0.rds")
+sr.rc2 <- readRDS("./sr.rc2.6.rds")
+sr.iga2 <- readRDS("./sr.iga2.6.rds")
+
+gse <- readRDS("./gse.3.rds")
+gse2 <- readRDS("./gse2.2.rds")
+gse.srs2 <- readRDS("./gse.srs2.3.rds")
+
 mns <- readRDS("./mns.2.rds")
 srs <- readRDS("./srs.0.rds")
 rs <- readRDS("./rs.3.rds")
 
+mn <- readRDS("./mn.3.rds")
 sr <- readRDS("./sr.6.rds")
+
 sr.hn <- readRDS("./sr.hn.6.rds")
 sr.iga <- readRDS("./sr.iga.6.rds")
 sr.hc <- readRDS("./sr.hc.6.rds")
@@ -200,6 +343,16 @@ system("tar -xvf ./GSE210898/GSM6439880_s210722H1_matrix.tar.gz -C ./GSE210898")
 
 #### 细胞聚类和注释
 
+```{r eval = T, echo = F, results = "asis"}
+#| HN-data-QC
+autor(sr.hn@plots$step1$p.qc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HN-data-SCSA-mapping
+autor(sr.hn@plots$step6$p.map_scsa)
+```
+
 ```{r}
 sr.hn <- job_seurat("./GSE210898/s210722H1_matrix_10X")
 sr.hn <- step1(sr.hn)
@@ -219,6 +372,21 @@ sr.hn@plots$step6$p.map_scsa
 
 #### 共表达分析
 
+```{r eval = T, echo = F, results = "asis"}
+#| HN-data-pseudotime
+autor(mn.hn@plots$step2$p.pseu)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HN-data-co-expression-modules
+autor(mn.hn@plots$step3$gene_module_heatdata$graph_test.sig)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HN-data-Proximal-tubule-cell-subtype
+autor(p.sr_sub.hn.vis)
+```
+
 ```{r}
 mn.hn <- do_monocle(sr.hn, "Proximal")
 vis(mn.hn$sr_sub)
@@ -233,7 +401,7 @@ mn.hn@plots$step3$gene_module_heatdata$graph_test.sig
 mn.hn <- clear(mn.hn)
 
 sr_sub.hn <- asjob_seurat(mn.hn, 5, rename = "Proximal_hn")
-vis(sr_sub.hn, "regroup.hclust")
+p.sr_sub.hn.vis <- vis(sr_sub.hn, "regroup.hclust")
 
 sr.hn <- map(sr.hn, sr_sub.hn, "scsa_cell", "regroup.hclust")
 sr.hn <- clear(sr.hn)
@@ -250,9 +418,6 @@ vis(sr.hn, "scsa_cell")
   IgAN and 1 control subjects to define the transcriptomic landscape at the
   single-cell resolution.
 
-- GSE145652, RNA-seq
-- GSE175759, RNA-seq
-
 ```{r}
 geo.iga <- job_geo("GSE171314")
 geo.iga <- step1(geo.iga)
@@ -264,6 +429,17 @@ prepare_10x("./GSE171314/GSM5222730_s200525a4.expression_matrix.txt.gz", single 
 ```
 
 #### 细胞聚类和注释
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-data1-QC
+autor(sr.iga@plots$step1$p.qc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-data1-SCSA-mapping
+autor(sr.iga@plots$step6$p.map_scsa)
+```
 
 ```{r}
 sr.iga <- job_seurat("./GSE171314/GSM5222730_s200525a4/")
@@ -284,6 +460,21 @@ sr.iga <- clear(sr.iga)
 
 #### 共表达分析
 
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-data1-pseudotime
+autor(mn.iga@plots$step2$p.pseu)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-data1-co-expression-modules
+autor(mn.iga@plots$step3$gene_module_heatdata$graph_test.sig)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-data1-Proximal-tubule-cell-subtype
+autor(p.sr_sub.iga.vis)
+```
+
 ```{r}
 skel(.job_monocle(), ".iga", "Proximal")
 
@@ -297,7 +488,7 @@ mn.iga <- step3(mn.iga)
 mn.iga@plots$step3$gene_module_heatdata$graph_test.sig
 
 sr_sub.iga <- asjob_seurat(mn.iga, 3, rename = "Proximal_iga")
-vis(sr_sub.iga, "regroup.hclust")
+p.sr_sub.iga.vis <- vis(sr_sub.iga, "regroup.hclust")
 
 mn.iga <- clear(mn.iga)
 
@@ -330,6 +521,16 @@ prepare_10x("./GSE241302", "GSM7720822_R1_MN")
 
 #### 细胞聚类和注释
 
+```{r eval = T, echo = F, results = "asis"}
+#| IMN-data-QC
+autor(sr.im@plots$step1$p.qc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IMN-data-SCSA-mapping
+autor(sr.im@plots$step6$p.map_scsa)
+```
+
 ```{r}
 sr.im <- job_seurat("./GSE241302/GSM7720822_R1_MN_barcodes/")
 sr.im <- step1(sr.im)
@@ -349,6 +550,21 @@ sr.im <- clear(sr.im)
 
 #### 共表达分析
 
+```{r eval = T, echo = F, results = "asis"}
+#| IMN-data-pseudotime
+autor(mn.im@plots$step2$p.pseu)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IMN-data-co-expression-modules
+autor(mn.im@plots$step3$gene_module_heatdata$graph_test.sig)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IMN-data-Proximal-tubule-cell-subtype
+autor(p.sr_sub.im.vis)
+```
+
 ```{r}
 skel(.job_monocle(), ".im", "Proximal")
 
@@ -362,7 +578,7 @@ mn.im <- step3(mn.im)
 mn.im@plots$step3$gene_module_heatdata$graph_test.sig
 
 sr_sub.im <- asjob_seurat(mn.im, 3, rename = "Proximal_im")
-vis(sr_sub.im, "regroup.hclust")
+p.sr_sub.im.vis <- vis(sr_sub.im, "regroup.hclust")
 
 mn.im <- clear(mn.im)
 
@@ -374,9 +590,19 @@ sr.im <- clear(sr.im)
 NULL
 ```
 
-## 正常对照 （GSE171314）
+## 正常对照（Healthy control）（GSE171314）
 
 #### 细胞聚类和注释
+
+```{r eval = T, echo = F, results = "asis"}
+#| HC-data-QC
+autor(sr.hc@plots$step1$p.qc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HC-data-SCSA-mapping
+autor(sr.hc@plots$step6$p.map_scsa)
+```
 
 ```{r}
 prepare_10x("./GSE171314/GSM5222734_s200707N5.expression_matrix.txt.gz", single = T)
@@ -405,6 +631,16 @@ clear(sr.hc)
 
 RISC [@RobustIntegratLiuY2021]
 
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-select-reference-dataset-for-integration
+autor(rs@plots$step1$p.reference)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-umap-mapping
+autor(wrap(rs@plots$step2$p.umap, 12, 7))
+```
+
 ```{r}
 sr.hc <- mutate(sr.hc, cell_mapped = paste0(gs(scsa_cell, " ", "_"), "_hc"))
 
@@ -421,7 +657,12 @@ rs@plots$step2$p.umap
 rs <- step3(rs)
 rs@tables$step3$all_markers
 
-rs <- step4(rs, list(c("Cancer_5", "Proximal_iga_1")))
+rs <- mutate(rs, super_group = ifelse(grpl(cell_mapped, "Cancer"), "Cancer",
+    ifelse(grpl(cell_mapped, "Proximal_iga"), "IgA",
+      ifelse(grpl(cell_mapped, "_hc"), "Control", as.character(cell_mapped)))),
+  super_group = as.factor(super_group))
+
+rs <- step4(rs, list(c("Cancer", "IgA")), "super_group")
 rs@tables$step4$contrasts
 
 focus(rs, head(rs@tables$step4$contrasts$Symbol, 100), 3)
@@ -434,6 +675,16 @@ clear(rs)
 
 在不同的肾病聚类中，IgA 与 RCC 最为接近。IgA 肾病可能发展成 RCC。
 
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-trajectory
+autor(wrap(mns@plots$step1$p.prin, 9, 5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-pseudotime
+autor(mns@plots$step2$p.pseu)
+```
+
 ```{r}
 mns <- asjob_monocle(rs)
 mns <- step1(mns)
@@ -444,6 +695,16 @@ clear(mns)
 ```
 
 ### IgA、Cancer、HC 差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-intersection-of-contrasts-DEGs
+autor(srs@params$p.diff_sets_intersection)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-DEGs
+autor(srs@params$contrasts)
+```
 
 ```{r}
 srs <- asjob_seurat(rs)
@@ -460,17 +721,34 @@ srs@params$diff_sets_intersection
 clear(srs)
 ```
 
-### 富集分析
+### 富集分析（GSEA）
 
-#### GSEA
+#### Cancer vs IgA
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA
+autor(wrap(gse@plots$step1$p.kegg, 6, 5.5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-GSEA-enrichment-of-GO-CancerVsIgA
+autor(gse@plots$step1$p.go)
+```
+
+Fig. \@ref(fig:SETS1-GSEA-show-OXPHOS-pathway) 富集于 OXPHOS 通路的基因表达量整体下降。
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-GSEA-show-OXPHOS-pathway-CancerVsIgA
+autor(gse@plots$step2$p.code)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-GSEA-show-OXPHOS-pathway-by-pathview-CancerVsIgA
+autor(gse@plots$step3$p.pathviews$hsa00190)
+```
 
 ```{r}
-topTable <- filter(srs@params$contrasts, grpl(contrast, "Cancer_vs_IgA"))
-
-mart <- new_biomart()
-anno <- filter_biomart(mart, general_attrs(), "hgnc_symbol", topTable$gene)
-
-gse <- job_gsea(relocate(topTable, hgnc_symbol = gene, logFC = avg_log2FC), anno)
+gse <- asjob_gsea(srs, "Cancer_vs_IgA")
 gse <- step1(gse)
 gse@plots$step1$p.kegg
 gse@plots$step1$p.go
@@ -479,23 +757,236 @@ gse@tables$step1$table_kegg
 gse <- step2(gse, c("hsa03010", "hsa00190"))
 gse@plots$step2$p.code
 clear(gse)
+
+gse@step <- 2L
+gse <- step3(gse, "hsa00190")
+gse@plots$step3$p.pathviews$hsa00190
+clear(gse)
 ```
 
-### Feature selection
+#### Cancer vs Control
 
-## 肾癌 bulk RNA-seq (TCGA-KIRC)
+Fig. \@ref(fig:SETS1-GSEA-enrichment-of-KEGG-CancerVsControl) 与 Fig. \@ref(fig:SETS1-GSEA-enrichment-of-KEGG-CancerVsIgA) 相比，
+并不富集于 OXPHOS 通路。
 
-### TCGA 数据
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-GSEA-enrichment-of-KEGG-CancerVsControl
+autor(gse2@plots$step1$p.kegg)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS1-GSEA-enrichment-of-GO-CancerVsControl
+autor(gse2@plots$step1$p.go)
+```
 
 ```{r}
-tc <- job_tcga("TCGA-KIRC")
-tc <- step1(tc)
-tc <- step2(tc)
-tc <- step3(tc)
-tc <- clear(tc)
+gse2 <- asjob_gsea(srs, "Cancer_vs_Control")
+gse2@step <- 0L
+gse2 <- step1(gse2)
+gse2@plots$step1$p.kegg
+gse2@plots$step1$p.go
+gse2@tables$step1$table_kegg
 
-lm <- asjob_limma(tc)
-lm@object$samples
+gse2 <- step2(gse2, c("hsa03010", "hsa03040"))
+gse2@plots$step2$p.code
+clear(gse2)
+```
+
+## 验证
+
+### 另一组 IgA 肾病: GSE127136
+
+#### 细胞聚类和注释
+
+```{r}
+geo.iga2 <- job_geo("GSE127136")
+geo.iga2 <- step1(geo.iga2)
+geo.iga2@params$prods
+geo.iga2 <- step2(geo.iga2)
+geo.iga2@params$guess
+
+used.iga2 <- filter(geo.iga2@params$guess, disease.state.ch1 == "IgAN", is.na(cell.type.ch1))
+clear(geo.iga2)
+
+R.utils::gunzip("./GSE127136/GSE127136_project_IgA_nephropathy_counts.csv.gz")
+prepare_10x("./GSE127136/GSE127136_project_IgA_nephropathy_counts.csv", single = T)
+```
+
+```{r}
+sr.iga2 <- job_seurat("./GSE127136/GSE127136_project_IgA_nephropathy_counts/")
+
+skel(.job_seurat(), "sr.iga2")
+
+sr.iga2 <- job_seurat("./GSE127136/GSE127136_project_IgA_nephropathy_counts")
+sr.iga2 <- getsub(sr.iga2, cells = which(colnames(sr.iga2@object) %in% used.iga2$title))
+sr.iga2 <- step1(sr.iga2)
+sr.iga2@plots$step1$p.qc
+sr.iga2 <- step2(sr.iga2, 0, 9500, 35)
+sr.iga2@plots$step2$p.pca_rank
+sr.iga2 <- step3(sr.iga2, 1:15, .8)
+sr.iga2@step <- 4L
+sr.iga2@plots$step3$p.umap
+sr.iga2 <- step5(sr.iga2, 5)
+sr.iga2 <- step6(sr.iga2, "Kidney")
+sr.iga2@plots$step6$p.map_scsa
+clear(sr.iga2)
+NULL
+```
+
+### 另一组 RCC: GSE202374
+
+#### 细胞聚类和注释
+
+同 \@ref(rcc1), 使用 SCSA 注释后，以 copyKAT 预测癌细胞，随后将肿瘤细胞映射到 UMAP 聚类图中。
+
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-data2-SCSA-mapping-with-copykat-prediction
+autor(p.sr.rc2.vis)
+```
+
+```{r}
+geo.rc2 <- job_geo("GSE202374")
+geo.rc2 <- step1(geo.rc2)
+geo.rc2@params$prods
+geo.rc2 <- step2(geo.rc2)
+geo.rc2@params$guess
+clear(geo.rc2)
+geo.rc2 <- readRDS("./geo.rc2.2.rds")
+
+untar("./GSE202374/GSE202374_RAW.tar", exdir = "./GSE202374")
+prepare_10x("./GSE202374/", "GSM6112170_C23")
+```
+
+```{r}
+sr.rc2 <- job_seurat("./GSE202374/GSM6112170_C23_barcodes")
+sr.rc2 <- step1(sr.rc2)
+sr.rc2@plots$step1$p.qc
+sr.rc2 <- step2(sr.rc2, 0, 6000, 50)
+sr.rc2@plots$step2$p.pca_rank
+
+sr.rc2 <- step3(sr.rc2, 1:15, 1.2)
+sr.rc2@step <- 4L
+sr.rc2@plots$step3$p.umap
+sr.rc2 <- step5(sr.rc2, 5)
+sr.rc2 <- step6(sr.rc2, "Kidney")
+sr.rc2@plots$step6$p.map_scsa
+clear(sr.rc2)
+NULL
+```
+
+```{r}
+kat.rc2 <- job_kat(sr.rc2)
+kat.rc2 <- step1(kat.rc2)
+kat.rc2 <- step2(kat.rc2)
+kat.rc2 <- clear(kat.rc2, "copykat2")
+
+kat.rc2@plots$step2$p.copykat
+kat.rc2@tables$step2$res_copykat
+```
+
+```{r}
+sr.rc2 <- map(sr.rc2, kat.rc2)
+p.sr.rc2.vis <- vis(sr.rc2, "scsa_copykat")
+clear(sr.rc2)
+```
+
+### 集成验证：Cancer、IgA 
+
+#### RISC 集成
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS2-select-reference-dataset-for-integration
+autor(rs2@plots$step1$p.reference)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS2-umap-mapping
+autor(p.srs2.vis)
+```
+
+```{r}
+sr.iga2 <- mutate(sr.iga2, cell_mapped = paste0(gs(scsa_cell, " ", "_"), "_iga"))
+
+sr.rc2 <- mutate(sr.rc2, cell_mapped = ifelse(grpl(scsa_copykat, "Proximal"),
+    paste0(gs(scsa_copykat, " ", "_"), "_(cancer_normal)"), as.character(scsa_copykat)))
+
+rs2 <- asjob_risc(list(RCC = sr.rc2, IgA = sr.iga2), "Proximal|Cancer", "cell_mapped")
+
+rs2 <- step1(rs2, 10)
+rs2@plots$step1$p.reference
+rs2 <- step2(rs2, "IgA", c("_iga", "Cancer"))
+rs2@plots$step2$p.umap
+clear(rs2)
+```
+
+```{r}
+srs2 <- asjob_seurat(rs2)
+p.srs2.vis <- vis(srs2, "cell_mapped")
+
+srs2 <- diff(srs2, "cell_mapped", list(c("Cancer cell", "Proximal_tubular_cell_iga")))
+srs2@params$contrasts
+srs2@params$diff_sets_intersection
+clear(srs2)
+```
+
+#### 拟时分析
+
+依据拟时轨迹Fig. \@ref(fig:SETS1-pseudotime)，同 Fig. \@ref(fig:SETS1-trajectory)相似，IgA 与 RCC 聚类邻近，可能在疾病发展过程中转化为癌症。
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS2-pseudotime
+autor(mns2@plots$step2$p.pseu)
+```
+
+```{r}
+mns2 <- asjob_monocle(rs2)
+mns2 <- step1(mns2)
+mns2@plots$step1$p.traj
+mns2 <- step2(mns2, c("Y_17"))
+mns2@plots$step2$p.pseu
+clear(mns2)
+```
+
+#### 富集分析
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS2-GSEA-enrichment-of-KEGG-CancerVsIgA
+autor(wrap(gse.srs2@plots$step1$p.kegg, 6, 5.5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS2-GSEA-enrichment-of-GO-CancerVsIgA
+autor(gse.srs2@plots$step1$p.go)
+```
+
+Fig. \@ref(fig:SETS2-GSEA-show-OXPHOS-pathway) 富集于 OXPHOS 通路的基因表达量整体上升（与Fig. \@ref(fig:SETS1-GSEA-show-OXPHOS-pathway) 相反）。系肿瘤细胞的异质性所致[@HallmarksOfCaSancho2016]，RCC 肿瘤可分为 OXPHOS 依赖型和非依赖型代谢增强。
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS2-GSEA-show-OXPHOS-pathway-CancerVsIgA
+autor(gse.srs2@plots$step2$p.code)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SETS2-GSEA-show-OXPHOS-pathway-by-pathview-CancerVsIgA
+autor(gse.srs2@plots$step3$p.pathviews$hsa00190)
+```
+
+```{r}
+gse.srs2 <- asjob_gsea(srs2, "Cancer cell_vs_Proximal_tubular_cell_iga")
+gse.srs2 <- step1(gse.srs2)
+gse.srs2@plots$step1$p.kegg
+gse.srs2@plots$step1$p.go
+gse.srs2@tables$step1$table_kegg
+
+gse.srs2 <- step2(gse.srs2, c("hsa04714", "hsa00190"))
+gse.srs2@plots$step2$p.code
+clear(gse.srs2)
+
+gse.srs2 <- step3(gse.srs2, "hsa00190")
+gse.srs2@plots$step3$p.pathviews$hsa00190
+clear(gse.srs2)
 ```
 
 

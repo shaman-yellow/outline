@@ -12,6 +12,9 @@ PMID: 24876123
 Hypertensive nephropathy [@HypertensiveNeCarria2020]
 
 
+肾癌流行病学[@EpidemiologyOfBukavi2022]
+
+
 
 
 ### 肾动脉狭窄症（纤维筋形成异常、大动脉炎症综合症、动脉硬化）
@@ -183,6 +186,68 @@ en@plots$step2$p.pathviews$hsa03010
 en@tables$step1$res.kegg$ids$geneName_list[[1]]
 p.fos <- focus(srs, en@tables$step1$res.kegg$ids$geneName_list[[1]])
 p.fos$p.vln
+```
+
+```{r}
+rs@tables$step4$contrasts
+gse.rs <- asjob_gsea(rs, "Cancer_vs_IgA")
+gse.rs <- step1(gse.rs)
+gse.rs@plots$step1$p.kegg
+gse.rs@plots$step1$p.go
+gse.rs@tables$step1$table_kegg
+
+gse.rs <- step2(gse.rs, "hsa00280")
+gse.rs@plots$step2$p.code
+
+```
+
+## 肾癌 bulk RNA-seq (TCGA-KIRC)
+
+### TCGA 数据
+
+```{r}
+tc <- job_tcga("TCGA-KIRC")
+tc <- step1(tc)
+tc <- step2(tc)
+tc <- step3(tc)
+tc <- clear(tc)
+
+lm <- asjob_limma(tc)
+lm@object$samples
+```
+
+TCGA 突变数据
+TCGA 转录数据
+基因共表达
+免疫浸润水平
+生存分析
+timeROC
+单细胞数据验证
+
+多种慢性肾病的 FC
+癌症的 FC
+用基因集的 FC 来关联分析 (需要多个 GEO 数据集)
+
+- Kidney status markers
+- cancer markers
+- micro-envir...
+- ferroptosis
+- ...
+
+
+#### IgA vs Control
+
+```{r}
+gse3 <- asjob_gsea(srs, "IgA_vs_Control")
+gse3@step <- 0L
+gse3 <- step1(gse3)
+gse3@plots$step1$p.kegg
+gse3@plots$step1$p.go
+gse3@tables$step1$table_kegg
+
+gse3 <- step2(gse3, c("hsa03010", "hsa03040"))
+gse3@plots$step2$p.code
+clear(gse3)
 ```
 
 
