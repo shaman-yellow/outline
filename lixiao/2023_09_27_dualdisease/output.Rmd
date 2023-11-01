@@ -49,7 +49,11 @@ set_index()
 
 # 题目
 
+集成多组 CKD 单细胞数据集发现 IgA 相比于其它 CKD 的与 RCC 之间转化的更高风险
+
 # 摘要 {#abstract}
+
+为了探究慢性肾病（CKD）与癌症之间的联系，本研究以 HN、IMN、IgA 类型的 CKD 为例，分析其和 RCC 之间的转化可能和差异关系。为了克服不同来源数据的分析困难（多疾病关联分析往往面临的难题），本研究选用 RISC 集成不同来源的疾病数据。随后，以拟时分析的方式来探究不同疾病之间的近似关系和转化可能。创新性的探究了多种 CKD 疾病和 RCC 癌症之间关系。随后发现 IgA 可能是向 RCC 转化风险更高的一种 CKD 疾病（结论总结见 \@ref(dis)）。
 
 # 前言 {#introduction}
 
@@ -59,16 +63,25 @@ set_index()
 
 # 材料和方法 {#methods}
 
-涉及的 6 个 GEO 数据集可参考 \@ref(flow) 的次级标题。
+## 材料
 
-涉及的方法：
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
 
-- Seurat `r sr@cite`
-- Monocle `r mn@cite`
-- copyKAT `r kat.rc2@cite`
-- RISC `r rs@cite`
-- ClusterProfiler `r en@cite`
-- ...
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+```{r}
+mm1 <- .job_seurat()
+mm2 <- .job_monocle()
+mm3 <- .job_kat()
+mm4 <- .job_risc()
+mm5 <- .job_enrich()
+```
 
 ```{r}
 en <- .job_enrich()
@@ -78,7 +91,15 @@ lite_cancer %>% select(.id, Title) %>% filter(grepl("Nature", .id)) %>% print(n 
 
 # 分析结果 {#results}
 
-## RCC 数据集分析鉴定
+## RCC 数据集分析鉴定 {#res-rcc}
+
+RCC 数据集（RCC1）以 Seurat 预处理、质控、聚类后，以 SCSA 注释细胞类型（Fig. \@ref(fig:Main-figure-1)a）[@ScsaACellTyCaoY2020]，随后以 copyKAT 预测肿瘤细胞`r kat.rc2@cite`（Fig. \@ref(fig:Main-figure-1)b）。
+约 90% 的肿瘤细胞为非整倍体[@CausesAndConsGordon2012]，而人类为二倍体生物，因此可以通过 copyKAT 的非整倍体预测判断肿瘤细胞`r kat.rc2@cite`。对于Fig. \@ref(fig:Main-figure-1)a，由于 SCSA 无法注释肿瘤细胞，而 RCC 是一种源于上皮细胞的癌症，非 B 细胞癌，因此，Fig. \@ref(fig:Main-figure-1)a 中与 Proximal tubular cells (PTCs) 相邻，但在随后被 copyKAT 预测为肿瘤细胞的 B 细胞应是 PTCs 细胞。
+所以 Fig. \@ref(fig:Main-figure-1)c 中，肿瘤细胞主要为 PTCs。
+将癌细胞数据单独分离，以 Seurat 重新聚类，随后以 Monocle3 拟时分析，得到拟时轨迹图 Fig. \@ref(fig:Main-figure-1)d。
+将图示的位置作为拟时起点是因为，我们发现，如果将 Fig. \@ref(fig:Main-figure-1)b 的癌细胞切分成不同数量的聚类簇Fig. \@ref(fig:RCC-Select-start-point-for-pseudotime)，则其中与正常细胞更加近似的细胞会主要分布于 Fig. \@ref(fig:Main-figure-1)d 所示的拟时起点。
+随后，以这些癌细胞的差异基因（Graph test）共表达分析。Fig. \@ref(fig:Main-figure-1)e，根据细胞聚类树，RCC 细胞主要可以分为 5 种亚型（Fig. \@ref(fig:Main-figure-1)f），与拟时分析的结果相对应（Fig. \@ref(fig:Main-figure-1)d）。
+通过将 RCC 细胞分为亚型，以备 RISC 集成，考察其在多组数据集成后，是否还具备原先数据集的特征。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Main-figure-1
@@ -99,7 +120,9 @@ fig1 <- cls(
 render(fig1)
 ```
 
-## 不同类型 CKD 数据共表达分析和重聚类
+## 不同类型 CKD 数据共表达分析和重聚类 {#res-ckd}
+
+对应 CKD 细胞的数据集，这里执行了 \@ref(res-rcc) 中近似的处理。即，以 Seurat 将数据集预处理后，以 SCSA 注释，随后提取 PTCs 重新聚类分析，继之以拟时分析，以 Graph test 获取差异表达基因，以此做聚类共表达分析。总共有 3 组 CKD 数据集，对应疾病 HN、IgA、IMN，分别对应 Fig. \@ref(fig:Main-figure-2)的：a, b, c; d, e, f; g, h, i。对这些 CKD 疾病的亚型区分聚类如 Fig. \@ref(fig:Main-figure-2) c、f、i 所示，可以观察到，HM 和 IgA 型 CKD 具有拟时间梯度的亚型变化，而 IMN 型 CKD 疾病则并不具备这样的亚型分布特征（IM-2 分散在不同的位置）。对于 CKD 的数据集，这里并不做拟时起点的判别，而只是作为 RISC 多数据集成之前的数据检查和质控。事实上，在随后的分析中，可以在 UMAP 图（Fig. \@ref(fig:Main-figure-3)b）中观察到 CKD 或 RCC 这些数据集的亚型特征。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Main-figure-2
@@ -124,8 +147,9 @@ fig2 <- cl(
 render(fig2)
 ```
 
-## RCC 和 CKD 数据集成
+## RCC 和 CKD 数据集成 {#res-rs}
 
+以 RISC `r rs@cite` 将 RCC 和 CKD 的数据集集成。除了上述的 RCC 和 CKD 数据组外，额外加入了一组健康对照（Healthy Control，HC）的数据以供对照。Fig. \@ref(fig:Main-figure-3)a 为 RISC 计算的各个数据集的得分参考（Sets 1-5 对应 RCC, HM, IgA, IMN, HC 单细胞数据集。），据此，选择 HC 数据集作为参考数据，将一共 5 组的单细胞数据集集成。UMAP 聚类如 Fig. \@ref(fig:Main-figure-3)b 所示。同时，Fig. \@ref(fig:Main-figure-3)b、c 也展示了拟时分析轨迹图。这里，我们在 RISC 中实现数据集成和 UMAP 聚类后，将对应的结果转移到 Monocle3 种进行拟时分析，而没有重新以 Monocle3 的算法重新聚类并拟时分析，体现了分析的延续性（考虑到 RISC 的聚类可能更适应于自身的数据集成的结果）。可以发现，RCC 细胞（Cancer 1-5），IgA 细胞（Proximal iga 1-3），HN 细胞（Proximal hn 1-5），三者的聚类结果保留了各自单独数据集的特征（颜色的渐变梯度，源自于单独数据集的亚型区分）。RISC 算法并没有影响各自数据集的特征。进一步观察可以发现，IgA 型细胞与 RCC 细胞的聚类更加相邻，而 HN 型和 IM 型 细胞位于更远端，这可能预示着：相比于 HN 和 IM，IgA 更有可能发展为 RCC。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Main-figure-3
@@ -143,8 +167,9 @@ fig3 <- cls(
 render(fig3)
 ```
 
-## 差异分析和富集分析
+## 差异分析和富集分析 {#res-en}
 
+在 \@ref(res-rs) 中，聚焦于 IgA 和 RCC 发现了两者之间可能存在的转化风险。此处，将 IgA 细胞、RCC 细胞还有 HC 细胞进行了差异分析。将三者的差异分析结果分集得到Fig. \@ref(fig:Main-figure-4)a。取 Cancer vs IgA 的合集（包括 up 组和 down 组），进行 GSEA 的 KEGG 富集分析，发现富集结果首要为 Oxidative phosphorylation (OXPHOS) 和 Ribosome 通路。可以观察到，对比 IgA 肾病，RCC 的两条通路的基因表达主要展现出下调趋势Fig. \@ref(fig:Main-figure-4)c、d。结合已有研究可知，某些亚型的癌细胞需要氧化磷酸化 (OXPHOS) 才能生存，增加的 OXPHOS 依赖性通常是癌症干细胞和细胞对化疗和靶向治疗产生耐药性的标志[@WhyAllTheFusXuYi2020]。GO 富集分析的结果同样引证了 KEGG 分析的结果（Fig. \@ref(fig:Main-figure-4)e）。然而，当以 Cancer vs Control 的差异基因富集分析时（Fig. \@ref(fig:Main-figure-4)f），并没有发现富集到 OXPHOS 这一通路。这一差异通路似乎仅存在于 RCC 和 IgA 之间。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Main-figure-4
@@ -163,7 +188,10 @@ fig4 <- cl(
 render(fig4)
 ```
 
-## 以新的 IgA 和 RCC 数据集验证
+## 以新的 IgA 和 RCC 数据集验证 {#res-valid}
+
+为了验证 \@ref(res-en) 的分析并非数据特异的，接下来的分析以一组全新的 RCC 和 IgA 数据集（来自不同上述的 GSE 数据）重新考察（两个数据集的处理和细胞注释参考 \@ref(flow-valid)）。
+Fig. \@ref(fig:Main-figure-5)a，选择 IgA 数据集作为参考集（Sets 1-2 对应 RCC 和 IgA 数据集），将两个数据集集成。随后的 UMAP 聚类同样发现，RCC 细胞和 IgA 细胞表现出相邻近似的聚类关系（Fig. \@ref(fig:Main-figure-5)b），与 \@ref(res-rs) 的结果一致。随后的差异分析和富集分析表明（Fig. \@ref(fig:Main-figure-5)c），OXPHOS 通路的确是两者的差异通路。然而，GSEA 的富集结果却发现（Fig. \@ref(fig:Main-figure-5)d），新的这一批数据集表现出 RCC 对应 IgA 细胞的 OXPHOS 通路的整体上调趋势。结合 \@ref(res-rs)，合理的推测是：由于肿瘤的异质性，不同亚型的肿瘤细胞区分为 OXPHOS 型或非 OXPHOS 依赖型[@HallmarksOfCaSancho2016]；对于非 OXPHOS 依赖型，使用效率较低的糖酵解来产生 ATP 和结构单元（Warburg effect）是其主要方式[@HallmarksOfCaSancho2016]。进一步结合富集分析结果，在Fig. \@ref(fig:Main-figure-4)b 中可以发现富集的 Ribosome 通路呈总体下调趋势，而对应的 RCC 细胞可能是 OXPHOS 非依赖型，有氧糖酵解是其主要产热方式，而其发生的场所主要为细胞质。而Fig. \@ref(fig:Main-figure-5)c 和 d 的结果相反，没有观察到富集的 Ribosome 通路的整体下调，却可以发现产热（Thermogenesis）可能增强了（基因表达整体上调），说明该 RCC 细胞由于为 OXPHOS 依赖型，并不依赖于糖酵解产生热量，因此 Ribosome 通路没有表现出下调趋势。然而，上述推测还有待进一步验证。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Main-figure-5
@@ -182,6 +210,12 @@ render(fig5)
 ```
 
 # 结论 {#dis}
+
+为了探究 CKD 和 RCC 之间可能存在的转化关系，本研究利用了 GEO 数据库的多组不同类型的 CKD 数据与 RCC 数据集成分析，主要发现：
+
+- 基于拟时分析，相比于 HN 和 IMN 型 CKD，IgA 有更高的可能往 RCC 方向发展（PTCs）。
+- RCC 和 IgA（PTCs）的首要差异通路为 OXPHOS，而这一差异通路没有在 RCC 和 HC 中发现。
+- 以新的数据集验证后，OXPHOS 同样为 RCC 和 IgA 的差异通路，但 RCC 表现出了 OXPHOS 通路表达的异质性（见 \@ref(res-valid)）。
 
 # 附：分析流程 {#flow}
 
@@ -271,6 +305,11 @@ p.sr_vis <- vis(sr, "scsa_copykat")
 #### 癌细胞拟时分析和共表达分析
 
 使用 monocle3 拟时分析`r mn@cite`。
+
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-Select-start-point-for-pseudotime
+autor(mn@plots$step1$p.cancer_position)
+```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| RCC-data1-pseudotime
@@ -814,7 +853,7 @@ gse2@plots$step2$p.code
 clear(gse2)
 ```
 
-## 验证
+## 验证 {#flow-valid}
 
 ### 另一组 IgA 肾病: GSE127136
 

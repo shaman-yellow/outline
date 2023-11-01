@@ -4,7 +4,7 @@
 
 write_articlePdf("index.Rmd", "output.Rmd", "Analysis\nauthor: 'Huang LiChuang of Wie-Biotech'")
 
-id <- "IN2023072803-3+销售：周燕青+客户：戴心怡+斑痕增生+生信分析"
+id <- "BI2023080108：集成多组 CKD 单细胞数据集发现 IgA 相比于其它 CKD 的与 RCC 之间转化的更高风险"
 file.copy("./output.pdf", report <- paste0(id, ".pdf"), T)
 
 package_results(head = NULL, masterZip = NULL, report = report)

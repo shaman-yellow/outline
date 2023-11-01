@@ -93,8 +93,12 @@
 \hypertarget{ux9898ux76ee}{%
 \section{题目}\label{ux9898ux76ee}}
 
+集成多组 CKD 单细胞数据集发现 IgA 相比于其它 CKD 的与 RCC 之间转化的更高风险
+
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
+
+为了探究慢性肾病（CKD）与癌症之间的联系，本研究以 HN、IMN、IgA 类型的 CKD 为例，分析其和 RCC 之间的转化可能和差异关系。为了克服不同来源数据的分析困难（多疾病关联分析往往面临的难题），本研究选用 RISC 集成不同来源的疾病数据。随后，以拟时分析的方式来探究不同疾病之间的近似关系和转化可能。创新性的探究了多种 CKD 疾病和 RCC 癌症之间关系。随后发现 IgA 可能是向 RCC 转化风险更高的一种 CKD 疾病（结论总结见 \ref{dis}）。
 
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
@@ -106,31 +110,62 @@
 \hypertarget{methods}{%
 \section{材料和方法}\label{methods}}
 
-涉及的 6 个 GEO 数据集可参考 \ref{flow} 的次级标题。
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
 
-涉及的方法：
+All used GEO expression data and their design:
+
+\begin{itemize}
+\item
+  \textbf{GSE210898}: We analyzed kidney samples from 3 patients with HTN using single-cell RNA sequencing, compared with previous data of controls. We then identified distinct cell clusters through unsupervised cluste\ldots{}
+\item
+  \textbf{GSE171314}: Single-cell RNA sequencing (scRNA-seq) was applied to kidney biopsies from 4 IgAN and 1 control subjects to define the transcriptomic landscape at the single-cell resolution.
+\item
+  \textbf{GSE127136}: In this study, we collected single cells from 13 IgAN patients' renal biopsies and normal renal cells from 6 kidney cancer patients' paracancerous tissues. As glomerulus are difficult to digest, we\ldots{}
+\item
+  \textbf{GSE241302}: In order to explore the molecular mechanism of IMN, we collected renal tissue samples from 3 IMN patients and 1 healthy controls and performed analysis by single-cell RNA sequencing.
+\item
+  \textbf{GSE202374}: Single cell comparisons of radiotherapy treated resected RCC tumors and nephrectomy only controls.
+\item
+  \textbf{GSE171306}: Primary kidney samples from 3 patients were used for single cell RNA sequencing by 10X Genomics
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
 
 \begin{itemize}
 \tightlist
 \item
-  Seurat\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{5},\protect\hyperlink{ref-ComprehensiveIStuart2019}{6}}
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition .
 \item
-  Monocle\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{7},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{8}}
+  Seurat used for scRNA-seq processing.\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{5},\protect\hyperlink{ref-ComprehensiveIStuart2019}{6}}
 \item
-  copyKAT\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{9}}
+  Monocle3 used for cell pseudotime analysis.\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{7},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{8}}
 \item
-  RISC\textsuperscript{\protect\hyperlink{ref-RobustIntegratLiuY2021}{10}}
+  Package copyKAT used for aneuploid cell or cancer cell prediction.\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{9}}
 \item
-  ClusterProfiler\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{11}}
+  RISC used for scRNA-seq data integration.\textsuperscript{\protect\hyperlink{ref-RobustIntegratLiuY2021}{10}}
 \item
-  \ldots{}
+  ClusterProfiler used for gene enrichment analysis.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{11}}
+\item
+  Other R packages used for statistic analysis or data visualization.
 \end{itemize}
 
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
 
-\hypertarget{rcc-ux6570ux636eux96c6ux5206ux6790ux9274ux5b9a}{%
-\subsection{RCC 数据集分析鉴定}\label{rcc-ux6570ux636eux96c6ux5206ux6790ux9274ux5b9a}}
+\hypertarget{res-rcc}{%
+\subsection{RCC 数据集分析鉴定}\label{res-rcc}}
+
+RCC 数据集（RCC1）以 Seurat 预处理、质控、聚类后，以 SCSA 注释细胞类型（Fig. \ref{fig:Main-figure-1}a）\textsuperscript{\protect\hyperlink{ref-ScsaACellTyCaoY2020}{12}}，随后以 copyKAT 预测肿瘤细胞\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{9}}（Fig. \ref{fig:Main-figure-1}b）。
+约 90\% 的肿瘤细胞为非整倍体\textsuperscript{\protect\hyperlink{ref-CausesAndConsGordon2012}{13}}，而人类为二倍体生物，因此可以通过 copyKAT 的非整倍体预测判断肿瘤细胞\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{9}}。对于Fig. \ref{fig:Main-figure-1}a，由于 SCSA 无法注释肿瘤细胞，而 RCC 是一种源于上皮细胞的癌症，非 B 细胞癌，因此，Fig. \ref{fig:Main-figure-1}a 中与 Proximal tubular cells (PTCs) 相邻，但在随后被 copyKAT 预测为肿瘤细胞的 B 细胞应是 PTCs 细胞。
+所以 Fig. \ref{fig:Main-figure-1}c 中，肿瘤细胞主要为 PTCs。
+将癌细胞数据单独分离，以 Seurat 重新聚类，随后以 Monocle3 拟时分析，得到拟时轨迹图 Fig. \ref{fig:Main-figure-1}d。
+将图示的位置作为拟时起点是因为，我们发现，如果将 Fig. \ref{fig:Main-figure-1}b 的癌细胞切分成不同数量的聚类簇Fig. \ref{fig:RCC-Select-start-point-for-pseudotime}，则其中与正常细胞更加近似的细胞会主要分布于 Fig. \ref{fig:Main-figure-1}d 所示的拟时起点。
+随后，以这些癌细胞的差异基因（Graph test）共表达分析。Fig. \ref{fig:Main-figure-1}e，根据细胞聚类树，RCC 细胞主要可以分为 5 种亚型（Fig. \ref{fig:Main-figure-1}f），与拟时分析的结果相对应（Fig. \ref{fig:Main-figure-1}d）。
+通过将 RCC 细胞分为亚型，以备 RISC 集成，考察其在多组数据集成后，是否还具备原先数据集的特征。
 
 Figure \ref{fig:Main-figure-1}为图Main figure 1概览。
 
@@ -142,8 +177,10 @@ Figure \ref{fig:Main-figure-1}为图Main figure 1概览。
 \caption{Main figure 1}\label{fig:Main-figure-1}
 \end{center}
 
-\hypertarget{ux4e0dux540cux7c7bux578b-ckd-ux6570ux636eux5171ux8868ux8fbeux5206ux6790ux548cux91cdux805aux7c7b}{%
-\subsection{不同类型 CKD 数据共表达分析和重聚类}\label{ux4e0dux540cux7c7bux578b-ckd-ux6570ux636eux5171ux8868ux8fbeux5206ux6790ux548cux91cdux805aux7c7b}}
+\hypertarget{res-ckd}{%
+\subsection{不同类型 CKD 数据共表达分析和重聚类}\label{res-ckd}}
+
+对应 CKD 细胞的数据集，这里执行了 \ref{res-rcc} 中近似的处理。即，以 Seurat 将数据集预处理后，以 SCSA 注释，随后提取 PTCs 重新聚类分析，继之以拟时分析，以 Graph test 获取差异表达基因，以此做聚类共表达分析。总共有 3 组 CKD 数据集，对应疾病 HN、IgA、IMN，分别对应 Fig. \ref{fig:Main-figure-2}的：a, b, c; d, e, f; g, h, i。对这些 CKD 疾病的亚型区分聚类如 Fig. \ref{fig:Main-figure-2} c、f、i 所示，可以观察到，HM 和 IgA 型 CKD 具有拟时间梯度的亚型变化，而 IMN 型 CKD 疾病则并不具备这样的亚型分布特征（IM-2 分散在不同的位置）。对于 CKD 的数据集，这里并不做拟时起点的判别，而只是作为 RISC 多数据集成之前的数据检查和质控。事实上，在随后的分析中，可以在 UMAP 图（Fig. \ref{fig:Main-figure-3}b）中观察到 CKD 或 RCC 这些数据集的亚型特征。
 
 Figure \ref{fig:Main-figure-2}为图Main figure 2概览。
 
@@ -155,8 +192,10 @@ Figure \ref{fig:Main-figure-2}为图Main figure 2概览。
 \caption{Main figure 2}\label{fig:Main-figure-2}
 \end{center}
 
-\hypertarget{rcc-ux548c-ckd-ux6570ux636eux96c6ux6210}{%
-\subsection{RCC 和 CKD 数据集成}\label{rcc-ux548c-ckd-ux6570ux636eux96c6ux6210}}
+\hypertarget{res-rs}{%
+\subsection{RCC 和 CKD 数据集成}\label{res-rs}}
+
+以 RISC\textsuperscript{\protect\hyperlink{ref-RobustIntegratLiuY2021}{10}} 将 RCC 和 CKD 的数据集集成。除了上述的 RCC 和 CKD 数据组外，额外加入了一组健康对照（Healthy Control，HC）的数据以供对照。Fig. \ref{fig:Main-figure-3}a 为 RISC 计算的各个数据集的得分参考（Sets 1-5 对应 RCC, HM, IgA, IMN, HC 单细胞数据集。），据此，选择 HC 数据集作为参考数据，将一共 5 组的单细胞数据集集成。UMAP 聚类如 Fig. \ref{fig:Main-figure-3}b 所示。同时，Fig. \ref{fig:Main-figure-3}b、c 也展示了拟时分析轨迹图。这里，我们在 RISC 中实现数据集成和 UMAP 聚类后，将对应的结果转移到 Monocle3 种进行拟时分析，而没有重新以 Monocle3 的算法重新聚类并拟时分析，体现了分析的延续性（考虑到 RISC 的聚类可能更适应于自身的数据集成的结果）。可以发现，RCC 细胞（Cancer 1-5），IgA 细胞（Proximal iga 1-3），HN 细胞（Proximal hn 1-5），三者的聚类结果保留了各自单独数据集的特征（颜色的渐变梯度，源自于单独数据集的亚型区分）。RISC 算法并没有影响各自数据集的特征。进一步观察可以发现，IgA 型细胞与 RCC 细胞的聚类更加相邻，而 HN 型和 IM 型 细胞位于更远端，这可能预示着：相比于 HN 和 IM，IgA 更有可能发展为 RCC。
 
 Figure \ref{fig:Main-figure-3}为图Main figure 3概览。
 
@@ -170,8 +209,10 @@ Figure \ref{fig:Main-figure-3}为图Main figure 3概览。
 
 Sets 1-5 对应 RCC, HM, IgA, IMN, HC 单细胞数据集。
 
-\hypertarget{ux5deeux5f02ux5206ux6790ux548cux5bccux96c6ux5206ux6790}{%
-\subsection{差异分析和富集分析}\label{ux5deeux5f02ux5206ux6790ux548cux5bccux96c6ux5206ux6790}}
+\hypertarget{res-en}{%
+\subsection{差异分析和富集分析}\label{res-en}}
+
+在 \ref{res-rs} 中，聚焦于 IgA 和 RCC 发现了两者之间可能存在的转化风险。此处，将 IgA 细胞、RCC 细胞还有 HC 细胞进行了差异分析。将三者的差异分析结果分集得到Fig. \ref{fig:Main-figure-4}a。取 Cancer vs IgA 的合集（包括 up 组和 down 组），进行 GSEA 的 KEGG 富集分析，发现富集结果首要为 Oxidative phosphorylation (OXPHOS) 和 Ribosome 通路。可以观察到，对比 IgA 肾病，RCC 的两条通路的基因表达主要展现出下调趋势Fig. \ref{fig:Main-figure-4}c、d。结合已有研究可知，某些亚型的癌细胞需要氧化磷酸化 (OXPHOS) 才能生存，增加的 OXPHOS 依赖性通常是癌症干细胞和细胞对化疗和靶向治疗产生耐药性的标志\textsuperscript{\protect\hyperlink{ref-WhyAllTheFusXuYi2020}{14}}。GO 富集分析的结果同样引证了 KEGG 分析的结果（Fig. \ref{fig:Main-figure-4}e）。然而，当以 Cancer vs Control 的差异基因富集分析时（Fig. \ref{fig:Main-figure-4}f），并没有发现富集到 OXPHOS 这一通路。这一差异通路似乎仅存在于 RCC 和 IgA 之间。
 
 Figure \ref{fig:Main-figure-4}为图Main figure 4概览。
 
@@ -183,8 +224,11 @@ Figure \ref{fig:Main-figure-4}为图Main figure 4概览。
 \caption{Main figure 4}\label{fig:Main-figure-4}
 \end{center}
 
-\hypertarget{ux4ee5ux65b0ux7684-iga-ux548c-rcc-ux6570ux636eux96c6ux9a8cux8bc1}{%
-\subsection{以新的 IgA 和 RCC 数据集验证}\label{ux4ee5ux65b0ux7684-iga-ux548c-rcc-ux6570ux636eux96c6ux9a8cux8bc1}}
+\hypertarget{res-valid}{%
+\subsection{以新的 IgA 和 RCC 数据集验证}\label{res-valid}}
+
+为了验证 \ref{res-en} 的分析并非数据特异的，接下来的分析以一组全新的 RCC 和 IgA 数据集（来自不同上述的 GSE 数据）重新考察（两个数据集的处理和细胞注释参考 \ref{flow-valid}）。
+Fig. \ref{fig:Main-figure-5}a，选择 IgA 数据集作为参考集（Sets 1-2 对应 RCC 和 IgA 数据集），将两个数据集集成。随后的 UMAP 聚类同样发现，RCC 细胞和 IgA 细胞表现出相邻近似的聚类关系（Fig. \ref{fig:Main-figure-5}b），与 \ref{res-rs} 的结果一致。随后的差异分析和富集分析表明（Fig. \ref{fig:Main-figure-5}c），OXPHOS 通路的确是两者的差异通路。然而，GSEA 的富集结果却发现（Fig. \ref{fig:Main-figure-5}d），新的这一批数据集表现出 RCC 对应 IgA 细胞的 OXPHOS 通路的整体上调趋势。结合 \ref{res-rs}，合理的推测是：由于肿瘤的异质性，不同亚型的肿瘤细胞区分为 OXPHOS 型或非 OXPHOS 依赖型\textsuperscript{\protect\hyperlink{ref-HallmarksOfCaSancho2016}{15}}；对于非 OXPHOS 依赖型，使用效率较低的糖酵解来产生 ATP 和结构单元（Warburg effect）是其主要方式\textsuperscript{\protect\hyperlink{ref-HallmarksOfCaSancho2016}{15}}。进一步结合富集分析结果，在Fig. \ref{fig:Main-figure-4}b 中可以发现富集的 Ribosome 通路呈总体下调趋势，而对应的 RCC 细胞可能是 OXPHOS 非依赖型，有氧糖酵解是其主要产热方式，而其发生的场所主要为细胞质。而Fig. \ref{fig:Main-figure-5}c 和 d 的结果相反，没有观察到富集的 Ribosome 通路的整体下调，却可以发现产热（Thermogenesis）可能增强了（基因表达整体上调），说明该 RCC 细胞由于为 OXPHOS 依赖型，并不依赖于糖酵解产生热量，因此 Ribosome 通路没有表现出下调趋势。然而，上述推测还有待进一步验证。
 
 Figure \ref{fig:Main-figure-5}为图Main figure 5概览。
 
@@ -198,6 +242,18 @@ Figure \ref{fig:Main-figure-5}为图Main figure 5概览。
 
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
+
+为了探究 CKD 和 RCC 之间可能存在的转化关系，本研究利用了 GEO 数据库的多组不同类型的 CKD 数据与 RCC 数据集成分析，主要发现：
+
+\begin{itemize}
+\tightlist
+\item
+  基于拟时分析，相比于 HN 和 IMN 型 CKD，IgA 有更高的可能往 RCC 方向发展（PTCs）。
+\item
+  RCC 和 IgA（PTCs）的首要差异通路为 OXPHOS，而这一差异通路没有在 RCC 和 HC 中发现。
+\item
+  以新的数据集验证后，OXPHOS 同样为 RCC 和 IgA 的差异通路，但 RCC 表现出了 OXPHOS 通路表达的异质性（见 \ref{res-valid}）。
+\end{itemize}
 
 \hypertarget{flow}{%
 \section{附：分析流程}\label{flow}}
@@ -268,6 +324,16 @@ Figure \ref{fig:RCC-data1-SCSA-mapping-with-copykat-prediction}为图RCC data1 S
 \paragraph{癌细胞拟时分析和共表达分析}\label{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790ux548cux5171ux8868ux8fbeux5206ux6790}}
 
 使用 monocle3 拟时分析\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{7},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{8}}。
+
+Figure \ref{fig:RCC-Select-start-point-for-pseudotime}为图RCC Select start point for pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RCC-Select-start-point-for-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RCC-Select-start-point-for-pseudotime.pdf}
+\caption{RCC Select start point for pseudotime}\label{fig:RCC-Select-start-point-for-pseudotime}
+\end{center}
 
 Figure \ref{fig:RCC-data1-pseudotime}为图RCC data1 pseudotime概览。
 
@@ -716,8 +782,8 @@ Figure \ref{fig:SETS1-GSEA-enrichment-of-GO-CancerVsControl}为图SETS1 GSEA enr
 \caption{SETS1 GSEA enrichment of GO CancerVsControl}\label{fig:SETS1-GSEA-enrichment-of-GO-CancerVsControl}
 \end{center}
 
-\hypertarget{ux9a8cux8bc1}{%
-\subsection{验证}\label{ux9a8cux8bc1}}
+\hypertarget{flow-valid}{%
+\subsection{验证}\label{flow-valid}}
 
 \hypertarget{ux53e6ux4e00ux7ec4-iga-ux80beux75c5-gse127136}{%
 \subsubsection{另一组 IgA 肾病: GSE127136}\label{ux53e6ux4e00ux7ec4-iga-ux80beux75c5-gse127136}}
@@ -807,7 +873,7 @@ Figure \ref{fig:SETS2-GSEA-enrichment-of-GO-CancerVsIgA}为图SETS2 GSEA enrichm
 \caption{SETS2 GSEA enrichment of GO CancerVsIgA}\label{fig:SETS2-GSEA-enrichment-of-GO-CancerVsIgA}
 \end{center}
 
-Fig. \ref{fig:SETS2-GSEA-show-OXPHOS-pathway} 富集于 OXPHOS 通路的基因表达量整体上升（与Fig. \ref{fig:SETS1-GSEA-show-OXPHOS-pathway} 相反）。系肿瘤细胞的异质性所致\textsuperscript{\protect\hyperlink{ref-HallmarksOfCaSancho2016}{13}}，RCC 肿瘤可分为 OXPHOS 依赖型和非依赖型代谢增强。
+Fig. \ref{fig:SETS2-GSEA-show-OXPHOS-pathway} 富集于 OXPHOS 通路的基因表达量整体上升（与Fig. \ref{fig:SETS1-GSEA-show-OXPHOS-pathway} 相反）。系肿瘤细胞的异质性所致\textsuperscript{\protect\hyperlink{ref-HallmarksOfCaSancho2016}{15}}，RCC 肿瘤可分为 OXPHOS 依赖型和非依赖型代谢增强。
 
 Figure \ref{fig:SETS2-GSEA-show-OXPHOS-pathway-CancerVsIgA}为图SETS2 GSEA show OXPHOS pathway CancerVsIgA概览。
 
@@ -871,8 +937,14 @@ Figure \ref{fig:SETS2-GSEA-show-OXPHOS-pathway-by-pathview-CancerVsIgA}为图SET
 \leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
 12. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
 
+\leavevmode\hypertarget{ref-CausesAndConsGordon2012}{}%
+13. Gordon, D. J., Resio, B. \& Pellman, D. Causes and consequences of aneuploidy in cancer. \emph{Nature Reviews Genetics} \textbf{13}, 189--203 (2012).
+
+\leavevmode\hypertarget{ref-WhyAllTheFusXuYi2020}{}%
+14. Xu, Y., Xue, D., Bankhead, A. \& Neamati, N. Why all the fuss about oxidative phosphorylation (oxphos)? \emph{Journal of medicinal chemistry} \textbf{63}, 14276--14307 (2020).
+
 \leavevmode\hypertarget{ref-HallmarksOfCaSancho2016}{}%
-13. Sancho, P., Barneda, D. \& Heeschen, C. Hallmarks of cancer stem cell metabolism. \emph{British journal of cancer} \textbf{114}, 1305--1312 (2016).
+15. Sancho, P., Barneda, D. \& Heeschen, C. Hallmarks of cancer stem cell metabolism. \emph{British journal of cancer} \textbf{114}, 1305--1312 (2016).
 \end{cslreferences}
 
 \end{document}

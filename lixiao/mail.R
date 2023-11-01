@@ -22,7 +22,7 @@ n <- lst_clear0(n)
 test <- n[[1]]
 att <- test$get_payload(decode = T)
 
-fp <- bt$open("test.xlsx", "wb")
+fp <- bt$open(test$get_filename(), "wb")
 fp$write(att)
 fp$close()
 
