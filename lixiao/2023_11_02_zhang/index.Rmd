@@ -1,0 +1,71 @@
+---
+---
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+deparse_mail()
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+disease: 脑卒中 (cerebral stroke) pusher 综合征 (Pusher syndrome, Lateropulsion)
+treat: 肌内效贴 (Kenisio Tape) 联合常规康复治疗
+method: 应用剪切波弹性成像
+
+肌肉力学数据的改变
+
+- 脑损伤后严重的体位控制障碍 ，患者在坐位或站位时，瘫痪侧的躯干肌张力下降，对侧躯干肌张力相对增强，而参与躯干稳定的如腹肌、腹内外斜肌、竖脊肌等及上下肢一些肌肉受到影响，不能自我调节，导致非瘫痪侧躯体推向瘫痪侧。
+- Pusher 患者不仅主动地将重量从非偏瘫一侧移开，重心跨过身体中线移向偏瘫侧，还会抵抗将重心转移至中线或过中线向非偏瘫侧偏移的自我调适。故而平衡功能严重受损，对日常生活活动如步行、上下楼梯、进食、穿衣、洗澡、如厕等产生重大影响
+
+卒中后患者躯干核心肌群，包括竖脊肌、腹横肌等的生理改变，可能与 pusher 的发生密切相关
+
+assumption: 肌内效贴联合常规康复治疗可改善脑卒中 pusher 综合征患者核心肌群功能
+
+# 前言 {#introduction}
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}

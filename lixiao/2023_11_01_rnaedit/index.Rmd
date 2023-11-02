@@ -20,6 +20,16 @@ set_index()
 
 # 摘要 {#abstract}
 
+- Survey of the binding preferences of RNA-binding proteins to RNA editing events
+- Four Types of RNA Modification Writer-Related lncRNAs Are Effective
+  Predictors of Prognosis and Immunotherapy Response in Serous Ovarian
+  Carcinoma
+
+```{r}
+je <- job_esearch("RNA editing")
+vis(je, "Nature")
+```
+
 # 前言 {#introduction}
 
 # 研究设计流程图 {#route}
