@@ -1,0 +1,21 @@
+
+
+- `term`: 术语，相关的 marker, driver, 等。
+- `symbol`: 基因或蛋白符号。
+- `.id`: 同 `term`。
+- `id`: ID, Febrrdb 的ID，可以忽略。
+- `rcd`: 可忽略。
+- `hgncid`: Hgnc 数据库的ID。
+- `ensgstable`: ensembl 数据库基因 ID。
+- `evidence`: 证据，相关文献中的描述。
+- `testin`: 数据集生物。
+- `pathway`: 相关通路。
+- `confidence`: 置信度，该条目是否已被验证。
+- `experiments`: 相关实验。
+- `caution`: 该数据库策划者的提醒或警示。
+- `uniprotac`: Uniprot 数据库 (蛋白) 的ID。
+- `pmid`: 文献的 Pubmed ID。
+- `remark`: 该数据库策划者的标注。
+- `latestupdate`: 该条目的最近更新时间。
+- `datasource`: 数据来源。
+- `uniformgenetype`: 类型。

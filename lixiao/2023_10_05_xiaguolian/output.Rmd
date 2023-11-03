@@ -13,7 +13,7 @@ output:
     # ]
     keep_tex: true
     toc: true
-    toc_depth: 3
+    toc_depth: 4
     latex_engine: xelatex
 header-includes:
   \usepackage{caption}
@@ -619,39 +619,40 @@ Tab. \@ref(tab:database-FerrDb-V2) 为以下分析所包含的所有 FerrDb V2 �
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Proportion-of-intersected-genes-of-DEGs-with-Ferrdb
-autor(gse@plots$step3$p.pie_insDb)
+autor(gse@plots$step4$p.pie_insDb)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| intersected-genes-of-DEGs-with-Ferrdb
-autor(gse@tables$step3$table_insDb, key = "symbol")
+autor(gse@tables$step4$table_insDb, key = "symbol")
 ```
 
 ### 所有的 DEGs 的富集分析 (GSEA)
 
-将 Fig. \@ref(fig:DEGs-of-model-versus-control) 的 DEGs 以 FerrDb V2 的基因集用于 GSEA 富集分析。
+将 Fig. \@ref(fig:intersection-of-disease-genes-expression-and-treatment-effect-of-TNA) 的 1797 个DEGs 以 FerrDb V2 的基因集用于 GSEA 富集分析。
 
 **注：**结果均不显著 (Tab. \@ref(tab:table-of-All-DEGs-of-GSEA-enrichment-via-FerrDb-V2))，仅用于参考TNA 的治疗与 Ferroptosis 有哪些联系。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| All-DEGs-of-GSEA-enrichment-via-FerrDb-V2
-autor(gse@plots$step3$p.code)
+autor(gse@plots$step4$p.code)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| table-of-All-DEGs-of-GSEA-enrichment-via-FerrDb-V2
-autor(gse@tables$step3$table_gsea)
+autor(gse@tables$step4$table_gsea)
 ```
 
 ```{r}
-gse <- asjob_gsea(lm)
+gse <- asjob_gsea(lm, filter = treat_all)
 gse <- step1(gse)
+gse@plots$step1$p.go
 gse <- step2(gse, c("hsa00982", "hsa00590"))
 gse@plots$step2$p.code
 
-gse@step <- 2L
-gse <- step3(gse, db_fe, 1, map = "driver|supp|marker")
-gse@plots$step3$p.code
+gse@step <- 3L
+gse <- step4(gse, db_fe, 1, map = "driver|supp|marker", pvalue = T)
+gse@plots$step4$p.code
 ```
 
 ### 仅 Ferroptosis 相关基因的富集分析
@@ -679,7 +680,7 @@ autor(en5@plots$step2$p.pathviews$hsa04216)
 ```
 
 ```{r}
-en5 <- job_enrich(list(ids = gse@tables$step3$table_insDb$symbol), anno)
+en5 <- job_enrich(list(ids = gse@tables$step4$table_insDb$symbol), anno)
 en5 <- step1(en5)
 en5@plots$step1$p.kegg
 en5@plots$step1$p.go$ids

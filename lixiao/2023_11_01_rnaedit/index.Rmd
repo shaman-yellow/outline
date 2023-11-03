@@ -20,14 +20,28 @@ set_index()
 
 # 摘要 {#abstract}
 
-- Survey of the binding preferences of RNA-binding proteins to RNA editing events
-- Four Types of RNA Modification Writer-Related lncRNAs Are Effective
-  Predictors of Prognosis and Immunotherapy Response in Serous Ovarian
-  Carcinoma
+- RNA editing underlies genetic risk of common inflammatory diseases
+  [@RnaEditingUndLiQi2022]
+  (Here we show that ADAR-mediated adenosine-to-inosine RNA editing, a
+  post-transcriptional event vital for suppressing cellular double-stranded RNA
+  (dsRNA)-mediated innate immune interferon responses5-11, is an important
+  potential mechanism underlying genetic variants associated with common
+  inflammatory diseases)
+
+检测或预测 RBP 位点
+炎症相关疾病
+scRNA-seq
+RNA velocity: PhyloVelo, cellDancer
 
 ```{r}
 je <- job_esearch("RNA editing")
 vis(je, "Nature")
+
+je1 <- job_esearch("RBPs prediction")
+vis(je1, "Nature")
+
+je2 <- job_esearch("RNA editing scRNA-seq")
+vis(je2)
 ```
 
 # 前言 {#introduction}
