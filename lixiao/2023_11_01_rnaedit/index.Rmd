@@ -80,3 +80,7 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+```{r}
+tkid <- ftibble("./test/GTEx_Analysis_v8_sQTL/Kidney_Cortex.v8.sgenes.txt.gz")
+```
