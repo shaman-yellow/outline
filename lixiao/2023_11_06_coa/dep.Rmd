@@ -1,0 +1,57 @@
+```{r}
+
+data <- as_tibble(lm@params$normed_data$E)
+data <- map(data, "rownames", lm@params$normed_data$genes, "gene_id", "gene_name")
+data <- dplyr::mutate(data, gene_name = gname(gene_name))
+data.sub <- dplyr::filter(data, gene_name %in% dplyr::all_of(unlist(coa)))
+
+data.tops <- dplyr::filter(data, gene_name %in% dplyr::all_of(gname(tops$gene_name)))
+data.tops <- dplyr::distinct(data.tops, gene_name, .keep_all = T)
+
+corp <- cal_corp(data.sub, data.tops, "CoA", "Tops", trans = T)
+
+hp <- new_heatdata(corp)
+hp <- callheatmap(hp)
+p.cor <- wrap(hp, 25, 7)
+
+sig.corp <- filter(corp, sign != "-")
+
+```
+
+## 以 STRINGdb 筛选乙酰酶和蛋白的结合
+
+以上述显著关联的基因 (P < 0.05) 和乙酰酶对应的蛋白构建互作网络 (STRINGdb 构建 PPI)，提取乙酰酶的作用关系。
+
+```{r eval = T, echo = F, results = "asis"}
+#| CoA-enzyme-interact-with-the-proteins
+autor(p.allu)
+```
+
+```{r}
+str <- asjob_stringdb(rm.no(c(sig.corp$CoA, sig.corp$Tops)))
+str <- step1(str)
+
+coaAll <- unlist(coa, use.names = F)
+
+binds <- dplyr::select(str@params$edges, from, to)
+fun <- function(data, ref) {
+  cols <- colnames(data)
+  data <- apply(data, 1, simplify = F,
+    function(x) {
+      if (!all(x %in% ref))
+        unique(c(x[x %in% ref], x))[1:2]
+    })
+  data <- lst_clear0(data)
+  data <- data.frame(from = vapply(data, function(x) x[1], character(1)),
+    to = vapply(data, function(x) x[2], character(1)))
+  data <- dplyr::filter(data, from %in% !!ref)
+  dplyr::distinct(data)
+}
+binds <- fun(binds, coaAll)
+binds$group <- ifelse(binds$from %in% coa[[1]], "acetyltransferase", "deacetylase")
+colnames(binds)[1:2] <- c("Enzyme", "Binding Protein")
+
+p.allu <- new_allu(binds, 3)
+```
+
+

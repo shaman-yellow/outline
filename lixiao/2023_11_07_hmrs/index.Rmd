@@ -20,22 +20,21 @@ set_index()
 
 # 摘要 {#abstract}
 
-```{r}
-je <- job_esearch("RNA editing")
-vis(je, "Nature")
+质子磁共振光谱法 (H-MRS) 
+加巴喷丁 (Gabapentin)
+重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS)
+不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) 
+神经病理性疼痛 (neuropathic pain, NP) 
 
-je1 <- job_esearch("RBPs prediction")
-vis(je1, "Nature")
-
-je2 <- job_esearch("RNA editing scRNA-seq")
-vis(je2)
-```
+iSCI
+- GSE226238
+- GSE133093
+NP
+- GSE115565
+rTMS
+- Transcriptional changes in the (rat) brain induced by repetitive transcranial magnetic stimulation
 
 # 前言 {#introduction}
-
-IgA 肾病发病机制尚不明确，被推测为一种遗传 (genetic) 相关疾病 [@ImmuneAbnormalGentil2023]。
-最近的研究表明，RNA 编辑是常见炎症性疾病遗传风险的基础，相当的 cis-RNA editing QTLs (edQTLs) 在自身免疫和免疫介导疾病的全基因组关联研究信号中显着富集 [@RnaEditingUndLiQi2022]。
-然而，还没有研究从 RNA 编辑的角度阐述 IgA 肾病的发生发展机制。
 
 # 研究设计流程图 {#route}
 

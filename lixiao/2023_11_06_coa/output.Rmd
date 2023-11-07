@@ -96,12 +96,12 @@ clear(lm)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Correlation-heatmap
-autor(p.cor)
+autor(wrap(res.corp$hp, 25, 7))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| tables-of-Correlation-results
-autor(as_tibble(corp))
+autor(as_tibble(res.corp$corp))
 ```
 
 ```{r}
@@ -123,30 +123,40 @@ names(coa) <- c("histone acetyltransferase", "Histone deacetylase")
 ```
 
 ```{r}
-data <- as_tibble(lm@params$normed_data$E)
-data <- map(data, "rownames", lm@params$normed_data$genes, "gene_id", "gene_name")
-data <- dplyr::mutate(data, gene_name = gname(gene_name))
-data.sub <- dplyr::filter(data, gene_name %in% dplyr::all_of(unlist(coa)))
-
-data.tops <- dplyr::filter(data, gene_name %in% dplyr::all_of(gname(tops$gene_name)))
-data.tops <- dplyr::distinct(data.tops, gene_name, .keep_all = T)
-
-corp <- cal_corp(data.sub, data.tops, "CoA", "Tops", trans = T)
-
-hp <- new_heatdata(corp)
-hp <- callheatmap(hp)
-p.cor <- wrap(hp, 25, 7)
-
-sig.corp <- filter(corp, sign != "-")
+res.corp <- cal_corp(lm, NULL, unlist(coa), tops$gene_name, c("CoA", "Tops"))
 ```
 
-## 以 STRINGdb 筛选乙酰酶和蛋白的结合
+## 以 catRapid 筛选乙酰酶和 RNA 的结合
 
-以上述显著关联的基因 (P < 0.05) 和乙酰酶对应的蛋白构建互作网络 (STRINGdb 构建 PPI)，提取乙酰酶的作用关系。
+详细结果可见于 catRapid 服务器： <http://service.tartaglialab.com/email_redir/757168/2e2b07eab4>
+
+在这里，将所有结合可能 (蛋白结合RNA) 去重复后，按 Ranking 取前 30。
 
 ```{r eval = T, echo = F, results = "asis"}
-#| CoA-enzyme-interact-with-the-proteins
-autor(p.allu)
+#| CoA-enzyme-binding-with-candidate-RNA-top30
+autor(cr@plots$step3$p.allu)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-CoA-enzyme-binding-with-candidate-RNA-top30
+autor(cr@tables$step3$dat.ref)
+```
+
+对表格的各列的解释请参考： <http://service.tartaglialab.com/static_files/shared/documentation_omics2.html>
+
+```{r}
+cr <- job_catr(coaAll, tops$gene_name)
+cr <- step1(cr)
+# http://service.tartaglialab.com/email_redir/757168/2e2b07eab4
+cr <- step2(cr)
+cr@plots$step2$p.upset
+cr@tables$step2$top
+
+cr <- step3(cr, top = 30, group = coa, label.auto = F)
+cr@plots$step3$p.allu
+cr@tables$step3$dat.ref
+
+clear(cr)
 ```
 
 以下为上述分析使用的乙酰酶：
@@ -154,33 +164,6 @@ autor(p.allu)
 ```{r eval = T, echo = F, results = "asis"}
 #| CoA
 autor(new_lich(coa))
-```
-
-```{r}
-str <- asjob_stringdb(rm.no(c(sig.corp$CoA, sig.corp$Tops)))
-str <- step1(str)
-
-coaAll <- unlist(coa, use.names = F)
-
-binds <- dplyr::select(str@params$edges, from, to)
-fun <- function(data, ref) {
-  cols <- colnames(data)
-  data <- apply(data, 1, simplify = F,
-    function(x) {
-      if (!all(x %in% ref))
-        unique(c(x[x %in% ref], x))[1:2]
-    })
-  data <- lst_clear0(data)
-  data <- data.frame(from = vapply(data, function(x) x[1], character(1)),
-    to = vapply(data, function(x) x[2], character(1)))
-  data <- dplyr::filter(data, from %in% !!ref)
-  dplyr::distinct(data)
-}
-binds <- fun(binds, coaAll)
-binds$group <- ifelse(binds$from %in% coa[[1]], "acetyltransferase", "deacetylase")
-colnames(binds)[1:2] <- c("Enzyme", "Binding Protein")
-
-p.allu <- new_allu(binds, 3)
 ```
 
 ## CREBBP 在 TCGA 数据集中的表达

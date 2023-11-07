@@ -1,5 +1,10 @@
 
 
+检测或预测 RBP 位点
+炎症相关疾病
+scRNA-seq
+RNA velocity: PhyloVelo, cellDancer
+
 
 - Four Types of RNA Modification Writer-Related lncRNAs Are Effective
   Predictors of Prognosis and Immunotherapy Response in Serous Ovarian
@@ -9,3 +14,8 @@
   A-binding proteins to RNA editing events
 
 - Affinity regression predicts the recognition code of nucleic acid-binding proteins
+
+```{r}
+tkid <- ftibble("./test/GTEx_Analysis_v8_sQTL/Kidney_Cortex.v8.sgenes.txt.gz")
+tt <- ftibble("./test/hg19.txt")
+```

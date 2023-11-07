@@ -198,20 +198,61 @@ SIRT3 & TNMD & 0.09 & 0.0518 & 4.270\ldots{} & \textgreater{} 0.05 & -\tabularne
 \bottomrule
 \end{longtable}
 
-\hypertarget{ux4ee5-stringdb-ux7b5bux9009ux4e59ux9170ux9176ux548cux86cbux767dux7684ux7ed3ux5408}{%
-\subsection{以 STRINGdb 筛选乙酰酶和蛋白的结合}\label{ux4ee5-stringdb-ux7b5bux9009ux4e59ux9170ux9176ux548cux86cbux767dux7684ux7ed3ux5408}}
+\hypertarget{ux4ee5-catrapid-ux7b5bux9009ux4e59ux9170ux9176ux548c-rna-ux7684ux7ed3ux5408}{%
+\subsection{以 catRapid 筛选乙酰酶和 RNA 的结合}\label{ux4ee5-catrapid-ux7b5bux9009ux4e59ux9170ux9176ux548c-rna-ux7684ux7ed3ux5408}}
 
-以上述显著关联的基因 (P \textless{} 0.05) 和乙酰酶对应的蛋白构建互作网络 (STRINGdb 构建 PPI)，提取乙酰酶的作用关系。
+详细结果可见于 catRapid 服务器： \url{http://service.tartaglialab.com/email_redir/757168/2e2b07eab4}
 
-Figure \ref{fig:CoA-enzyme-interact-with-the-proteins} (下方图) 为图CoA enzyme interact with the proteins概览。
+在这里，将所有结合可能 (蛋白结合RNA) 去重复后，按 Ranking 取前 30。
 
-\textbf{(对应文件为 \texttt{Figure+Table/CoA-enzyme-interact-with-the-proteins.pdf})}
+Figure \ref{fig:CoA-enzyme-binding-with-candidate-RNA-top30} (下方图) 为图CoA enzyme binding with candidate RNA top30概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/CoA-enzyme-binding-with-candidate-RNA-top30.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/CoA-enzyme-interact-with-the-proteins.pdf}
-\caption{CoA enzyme interact with the proteins}\label{fig:CoA-enzyme-interact-with-the-proteins}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/CoA-enzyme-binding-with-candidate-RNA-top30.pdf}
+\caption{CoA enzyme binding with candidate RNA top30}\label{fig:CoA-enzyme-binding-with-candidate-RNA-top30}
 \end{center}
+
+Table \ref{tab:tables-of-CoA-enzyme-binding-with-candidate-RNA-top30} (下方表格) 为表格tables of CoA enzyme binding with candidate RNA top30概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-CoA-enzyme-binding-with-candidate-RNA-top30.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有30行13列，以下预览的表格可能省略部分数据；表格含有10个唯一`Protein\_ID'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:tables-of-CoA-enzyme-binding-with-candidate-RNA-top30}Tables of CoA enzyme binding with candidate RNA top30}\tabularnewline
+\toprule
+Prote\ldots{} & RNA\_ID & rnaFr\ldots\ldots3 & rnaFr\ldots\ldots4 & Annot\ldots{} & Inter\ldots{} & Z\_score & RBP\_P\ldots{} & RNA\_B\ldots{} & numof\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Prote\ldots{} & RNA\_ID & rnaFr\ldots\ldots3 & rnaFr\ldots\ldots4 & Annot\ldots{} & Inter\ldots{} & Z\_score & RBP\_P\ldots{} & RNA\_B\ldots{} & numof\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endhead
+HDAC10 & NFIX & 1 & 242 & - & 179.28 & 4.66 & 0.64 & PF00850 & 1 & \ldots{}\tabularnewline
+NCOA1 & NFIX & 1 & 242 & - & 168.64 & 4.26 & 0.58 & PF145\ldots{} & 7 & \ldots{}\tabularnewline
+HDAC3 & MUC7 & 1301 & 1402 & - & 36.68 & 0.57 & 1 & PF00850 & 1 & \ldots{}\tabularnewline
+NCOA1 & HTN3 & 426 & 477 & - & 79.67 & 3.81 & 0.58 & PF145\ldots{} & 7 & \ldots{}\tabularnewline
+HDAC5 & HTN3 & 426 & 477 & - & 68.72 & 3.17 & 0.66 & PF008\ldots{} & 2 & \ldots{}\tabularnewline
+HDAC3 & ZG16B & 1410 & 1469 & - & 26.63 & 0.44 & 1 & PF00850 & 1 & \ldots{}\tabularnewline
+HDAC4 & HTN3 & 426 & 477 & - & 63.67 & 2.88 & 0.69 & PF008\ldots{} & 2 & \ldots{}\tabularnewline
+NCOA3 & NFIX & 1 & 242 & - & 161.02 & 3.98 & 0.55 & PF166\ldots{} & 7 & \ldots{}\tabularnewline
+HDAC3 & HTN3 & 426 & 477 & - & 20.22 & 0.33 & 1 & PF00850 & 1 & \ldots{}\tabularnewline
+HDAC3 & PRH2 & 1261 & 1388 & - & 36.39 & 0.33 & 1 & PF00850 & 1 & \ldots{}\tabularnewline
+HDAC3 & ANGPTL1 & 2493 & 2634 & - & 39.09 & 0.28 & 1 & PF00850 & 1 & \ldots{}\tabularnewline
+HDAC5 & NFIX & 1 & 242 & - & 134.94 & 3 & 0.66 & PF008\ldots{} & 2 & \ldots{}\tabularnewline
+NCOA1 & UBL3 & 87 & 260 & - & 125.65 & 3.62 & 0.58 & PF145\ldots{} & 7 & \ldots{}\tabularnewline
+HDAC11 & TMEM132C & 26 & 233 & - & 145.83 & 3.92 & 0.54 & PF00850 & 1 & \ldots{}\tabularnewline
+HDAC3 & GGTA1 & 3340 & 3479 & - & 35.85 & 0.19 & 1 & PF00850 & 1 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+对表格的各列的解释请参考： \url{http://service.tartaglialab.com/static_files/shared/documentation_omics2.html}
 
 以下为上述分析使用的乙酰酶：
 

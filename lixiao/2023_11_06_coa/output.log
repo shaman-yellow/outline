@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  6 NOV 2023 18:05
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  7 NOV 2023 17:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1217,6 +1217,9 @@ LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 89.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 11.64862pt on input line 97.
+[1
+
+]
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
@@ -1242,9 +1245,6 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 nguage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
-[1
-
-]
 File: Figure+Table/DEGs-of-HNSC.pdf Graphic file (type pdf)
 <use Figure+Table/DEGs-of-HNSC.pdf>
 
@@ -1261,30 +1261,45 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 See the caption package documentation for explanation.
 
 [3]
-File: Figure+Table/CoA-enzyme-interact-with-the-proteins.pdf Graphic file (type
- pdf)
-<use Figure+Table/CoA-enzyme-interact-with-the-proteins.pdf>
+File: Figure+Table/CoA-enzyme-binding-with-candidate-RNA-top30.pdf Graphic file
+ (type pdf)
+<use Figure+Table/CoA-enzyme-binding-with-candidate-RNA-top30.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 213.
+(caption)                particular \caption on input line 215.
 See the caption package documentation for explanation.
 
-[4] [5]
+[4]
+Overfull \hbox (69.76512pt too wide) in alignment at lines 226--231
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (69.76512pt too wide) in alignment at lines 231--235
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (69.76512pt too wide) in alignment at lines 235--253
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[5]
 File: Figure+Table/CREBBP-in-TCGA-dataset.pdf Graphic file (type pdf)
 <use Figure+Table/CREBBP-in-TCGA-dataset.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 257.
+(caption)                particular \caption on input line 298.
 See the caption package documentation for explanation.
 
-[6] (./output.aux) ) 
+[6] [7] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31032 strings out of 476191
- 631638 string characters out of 5812072
- 1079372 words of memory out of 5000000
- 51264 multiletter control sequences out of 15000+600000
+ 31036 strings out of 476191
+ 631782 string characters out of 5812072
+ 1082599 words of memory out of 5000000
+ 51268 multiletter control sequences out of 15000+600000
  476324 words of font info for 90 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,9n,121p,1003b,558s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,9n,121p,1003b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (6 pages).
+Output written on output.pdf (7 pages).
