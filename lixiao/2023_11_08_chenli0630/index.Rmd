@@ -20,22 +20,22 @@ set_index()
 
 # 摘要 {#abstract}
 
-```{r}
-je <- job_esearch("RNA editing")
-vis(je, "Nature")
+preeclampsia, PE
 
-je1 <- job_esearch("RBPs prediction")
-vis(je1, "Nature")
+<https://mp.weixin.qq.com/s?__biz=Mzg2Mjg4OTI2Mw==&mid=2247498654&idx=3&sn=713da5430e5b4daae2ad3bd222a96b32&chksm=ce024fdef975c6c8f49ba37bf5243a1e8954f2e917eef759dbcddfa0361503d42b1aa4ce1348&mpshare=1&scene=24&srcid=0619w5chTx4O60lNBB3FcHiv&sharer_sharetime=1687128996048&sharer_shareid=b9fc51b0646cc26770ccfba2790fc2dd#rd>
 
-je2 <- job_esearch("RNA editing scRNA-seq")
-vis(je2)
-```
+Identification of Bioactive Compounds and Potential Mechanisms of Kuntai
+Capsule in the Treatment of Polycystic Ovary Syndrome by Integrating Network
+Pharmacology and Bioinformatics
+
+- DisGeNet <https://www.disgenet.org/downloads#> OK
+- Genecards <https://www.genecards.org/> OK
+- PharmGKB <https://www.pharmgkb.org/downloads> OK
+- OMIM <https://www.omim.org/downloads> OK
+
+- NCBI <https://www.ncbi.nlm.nih.gov/>
 
 # 前言 {#introduction}
-
-IgA 肾病发病机制尚不明确，被推测为一种遗传 (genetic) 相关疾病 [@ImmuneAbnormalGentil2023]。
-最近的研究表明，RNA 编辑是常见炎症性疾病遗传风险的基础，相当的 cis-RNA editing QTLs (edQTLs) 在自身免疫和免疫介导疾病的全基因组关联研究信号中显着富集 [@RnaEditingUndLiQi2022]。
-然而，还没有研究从 RNA 编辑的角度阐述 IgA 肾病的发生发展机制。
 
 # 研究设计流程图 {#route}
 
@@ -71,12 +71,3 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
-
-## GTEx edQTLs
-
-- <https://gtexportal.org/home/downloads/adult-gtex#variants>
-
-```{r}
-ed <- job_edqtl()
-ed <- step1(ed, "Kidney-Cortex")
-```

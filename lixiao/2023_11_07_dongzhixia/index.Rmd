@@ -20,6 +20,14 @@ set_index()
 
 # 摘要 {#abstract}
 
+胆固醇结石 (Cholesterol gallstones, CGS)
+
+成岩饮食 (LD) 诱导的 CGS 动物模型
+
+猪胆酸 (Hyocholic acid, HCA)
+
+TGR5 (GPBAR) [@Tgr5SignalingHolter2020]
+
 # 前言 {#introduction}
 
 # 研究设计流程图 {#route}
@@ -56,3 +64,54 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+## RNA 定量
+
+### FastQ 文件质控
+
+```{r}
+fp <- job_fastp("~/disk_sda1/rawdata/")
+fp <- step1(fp, c("R1", "R2"), suffix = ".raw.fastq.gz")
+fp <- step2(fp)
+
+fp@params$metadata
+```
+
+### 获取参考基因注释
+
+下载 cDNA 参考基因注释 (使用的是 mus musculus 的参考基因) 。
+<https://ftp.ensembl.org/pub/release-110/fasta/mus_musculus/>
+
+```{r}
+cdRun("wget https://ftp.ensembl.org/pub/release-110/fasta/mus_musculus/cdna/Mus_musculus.GRCm39.cdna.all.fa.gz", path = "../")
+```
+
+### 使用 Kallisto 定量
+
+```{r}
+kal <- asjob_kall(fp)
+kal <- step1(kal, "../mus39_mrna.idx", "../Mus_musculus.GRCm39.cdna.all.fa.gz")
+kal <- step2(kal)
+kal <- step3(kal)
+kal@tables$step3$counts
+kal@tables$step3$metadata
+```
+
+```{r}
+metadata <- kal@tables$step3$metadata
+```
+
+## 差异分析
+
+```{r}
+options(mart_dataset = "mmu")
+```
+
+### 回肠组织 (Theileum)
+
+```{r}
+save_small()
+load("./small.rdata")
+```
+
+### 肝脏组织 (Liver) 
