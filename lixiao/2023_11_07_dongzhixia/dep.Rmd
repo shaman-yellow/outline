@@ -1,0 +1,14 @@
+
+
+## Bile acid 相关基因集 {#db-c2}
+
+```{r}
+bm0 <- job_biomart("mmu", F)
+bm0 <- step1(bm0, "GPBAR-1", "hgnc", c("hgnc_symbol", "mgi_symbol", "entrezgene_id"))
+```
+
+```{r}
+db_c2 <- get_c2_data("bile.*acid", "mmu")
+```
+
+

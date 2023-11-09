@@ -20,7 +20,7 @@ set_index()
 
 # 摘要 {#abstract}
 
-胆固醇结石 (Cholesterol gallstones, CGS)
+胆固醇结石 (Cholesterol gallstones, CGS) [@TheScienceOfCole2019]
 
 成岩饮食 (LD) 诱导的 CGS 动物模型
 
@@ -99,19 +99,206 @@ kal@tables$step3$metadata
 
 ```{r}
 metadata <- kal@tables$step3$metadata
+metadata <- mutate(metadata,
+  ident = stringr::str_extract(sample, "[a-zA-Z0-9]*$"),
+  tissue = ifelse(grpl(ident, "GA"), "Liver", "Theileum"),
+  group = stringr::str_extract(ident, "[0-9]+"),
+  group = ifelse(nchar(group) == 1, "Control",
+    ifelse(grpl(group, "^1"), "Model", "Treatment"))
+)
+metadata <- relocate(metadata, sample, group)
 ```
 
-## 差异分析
+## RNA 注释
+
+### 使用 Biomart 注释
 
 ```{r}
-options(mart_dataset = "mmu")
+bm <- job_biomart("mmu")
+bm <- step1(bm, kal@tables$step3$counts$target_id, "ensembl_trans")
+bm$anno
 ```
 
-### 回肠组织 (Theileum)
+## 肝脏组织 (Liver) 
+
+### 差异分析
+
+```{r}
+lm.l <- job_limma(new_dge(filter(metadata, tissue == "Liver"), kal@tables$step3$counts, bm$anno))
+lm.l <- step1(lm.l, norm_vis = T)
+lm.l@plots$step1$p.filter
+lm.l@plots$step1$p.norm
+lm.l <- step2(lm.l, Model - Control, Treatment - Model, label = "mgi_symbol", use = "P")
+
+lm.l@plots$step2$p.valcano[[1]]
+lm.l@plots$step2$p.valcano[[2]]
+lm.l <- step3(lm.l, use.gene = "mgi_symbol")
+lm.l@params$guess_use
+```
+
+### GSEA 富集分析
+
+#### Model vs Control
+
+```{r}
+# Model - Control
+gs.l <- asjob_gsea(lm.l, 1)
+gs.l <- step1(gs.l, org.Mm.eg.db::org.Mm.eg.db, "mmu")
+wrap(gs.l@plots$step1$p.kegg, , 3)
+gs.l@tables$step1$table_kegg
+gs.l <- step2(gs.l, c("mmu05169", "mmu00100"))
+gs.l@plots$step2$p.code
+```
+
+#### Treatment vs Model
+
+```{r}
+# Treatment - Model
+gs.l2 <- asjob_gsea(lm.l, 2)
+gs.l2 <- step1(gs.l2, org.Mm.eg.db::org.Mm.eg.db, "mmu")
+wrap(gs.l2@plots$step1$p.kegg, , 2.5)
+gs.l2@tables$step1$table_kegg
+gs.l2 <- step2(gs.l2, "mmu00100")
+gs.l2@plots$step2$p.code
+gs.l2 <- step3(gs.l2, "mmu00100")
+gs.l2@plots$step3$p.pathviews$mmu00100
+```
+
+```{r}
+gs.l2@tables$step1$table_kegg$geneName_list[[1]]
+p.expr.stb <- map(lm.l, gs.l2@tables$step1$table_kegg$geneName_list[[1]], "mgi_symbol", pvalue = F)
+p.expr.stb
+
+lm.l@params$normed_data
+```
+
+### Classical 富集分析
+
+将有药物调控作用的 DEGs 以传统的富集方式分析。
+
+```{r}
+lm.l@params$guess_use
+bm$anno
+
+en.l <- job_enrich(list(ids = lm.l@params$guess_use), bm$anno, "mgi_symbol")
+en.l <- step1(en.l, 'mmu', "org.Mm.eg.db")
+z7(en.l@plots$step1$p.kegg$ids, 1.2, 1)
+z7(en.l@plots$step1$p.go$ids, 1.2, 1)
+en.l@tables$step1$res.kegg
+en.l <- step2(en.l, "mmu00140")
+en.l@plots$step2$p.pathviews$mmu00140
+
+```
+
+### 聚焦于 Bile acids 的富集分析
+
+#### Treatment vs Model
+
+```{r}
+# Treatment - Model
+gs.l.b2 <- asjob_gsea(lm.l, 2)
+gs.l.b2 <- filter(gs.l.b2, unlist(db_c2), "ent")
+```
+
+## 回肠组织 (Theileum)
+
+### 差异分析
 
 ```{r}
 save_small()
 load("./small.rdata")
+
+save.image()
 ```
 
-### 肝脏组织 (Liver) 
+```{r}
+lm.t <- job_limma(new_dge(filter(metadata, tissue == "Theileum"), kal@tables$step3$counts, bm$anno))
+lm.t <- step1(lm.t)
+lm.t <- step2(lm.t, Model - Control, Treatment - Model, label = "mgi_symbol", use = "P")
+lm.t@plots$step2$p.valcano[[1]]
+lm.t@plots$step2$p.valcano[[2]]
+lm.t <- step3(lm.t, use.gene = "mgi_symbol")
+lm.t@params$guess_use
+```
+
+### GSEA 富集分析
+
+#### Model vs Control
+
+```{r}
+gs.t1 <- asjob_gsea(lm.t, 1)
+gs.t1 <- step1(gs.t1, org.Mm.eg.db::org.Mm.eg.db, "mmu")
+gs.t1@plots$step1$p.kegg
+gs.t1@tables$step1$table_kegg
+gs.t1@plots$step1$p.go
+## NOD-like
+gs.t1 <- step2(gs.t1, "mmu04621")
+gs.t1@plots$step2$p.code
+gs.t1 <- step3(gs.t1, "mmu04621")
+gs.t1@plots$step3$p.pathviews$mmu04621
+```
+
+#### Treatment vs Model
+
+```{r}
+gs.t2 <- asjob_gsea(lm.t, 2)
+gs.t2 <- step1(gs.t2, org.Mm.eg.db::org.Mm.eg.db, "mmu")
+gs.t2@plots$step1$p.kegg
+gs.t2@tables$step1$table_kegg
+gs.t2@plots$step1$p.go
+gs.t2 <- step2(gs.t2, "mmu00980")
+gs.t2@plots$step2$p.code
+```
+
+```{r}
+gs.t <- asjob_gsea(lm.t, 2, filter = lm.t@params$guess_use)
+gs.t <- step1(gs.t, org.Mm.eg.db::org.Mm.eg.db, "mmu")
+gs.t@plots$step1$p.kegg
+gs.t@tables$step1$table_kegg
+```
+
+## TGR5 (Gpbar1) 相关信息
+
+TGR5 Signaling in Hepatic Metabolic Health [@Tgr5SignalingHolter2020]
+
+```{r}
+Description <- "TGR5 is a transmembrane G-protein coupled receptor (GPCR) for bile acids that
+is ubiquitously expressed in mouse and human tissues. Bile acids are
+amphipathic steroid molecules, synthesized from cholesterol in the liver, that
+signal through the nuclear receptor, Farnesoid X receptor (FXR), and TGR5, to
+regulate lipid, glucose, and energy metabolism and to maintain metabolic
+homeostasis. Dysregulated bile acid signaling has been implicated in the
+pathogenesis of insulin resistance and type 2 diabetes"
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| tgr5-Description
+autor(new_lich(list(`TGR5 Signaling in Hepatic Metabolic Health` = Description)))
+```
+
+```{r}
+bm$anno
+anno.tgr5 <- filter(bm$anno, grpl(hgnc_symbol, "TGR|GPBAR"))
+```
+
+### Gpbar1 表达水平
+
+Mgi Symbol 为 Gpbar1
+
+```{r}
+grp(lm.l@params$normed_data$genes$mgi_symbol, "Gpbar1")
+p.level.gpbar1 <- map(lm.l, "Gpbar1", "mgi_symbol")
+p.level.gpbar1
+```
+
+```{r}
+
+filter(bm$anno, grpl(mgi_symbol, "Gpbar1"))
+Gpbar1.trans <- "ENSMUST00000077985"
+
+filter(kal@tables$step3$counts, target_id == !!Gpbar1.trans)
+## Count level 100 ~ 100000
+
+```
+
+
