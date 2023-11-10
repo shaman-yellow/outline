@@ -1,0 +1,742 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analysis},
+  pdfauthor={Huang LiChuang of Wie-Biotech},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\title{Analysis}
+\author{Huang LiChuang of Wie-Biotech}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{4}
+\tableofcontents
+}
+\listoffigures
+
+\listoftables
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+分析客户数据差异基因，查看是否存在胆固醇膜受体 GPBAR/TGR5 及其相关信号通路。
+结果见 \ref{results}。
+
+\begin{itemize}
+\tightlist
+\item
+  胆固醇结石 (Cholesterol gallstones, CGS)\textsuperscript{\protect\hyperlink{ref-TheScienceOfCole2019}{1}}
+\item
+  成岩饮食 (LD) 诱导的 CGS 动物模型
+\item
+  猪胆酸 (Hyocholic acid, HCA)
+\item
+  TGR5 (GPBAR)\textsuperscript{\protect\hyperlink{ref-Tgr5SignalingHolter2020}{2}}
+\end{itemize}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Package biomaRt used for gene annotation.\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{3}}
+\item
+  ClusterProfiler used for gene enrichment analysis.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{4}}
+\item
+  Fastp used for Fastq data preprocessing.\textsuperscript{\protect\hyperlink{ref-UltrafastOnePChen2023}{5}}
+\item
+  ClusterProfiler used for GSEA enrichment .
+\item
+  Kallisto used for RNA-seq mapping and quantification.\textsuperscript{\protect\hyperlink{ref-NearOptimalPrBray2016}{6}}
+\item
+  Limma and edgeR used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{7},\protect\hyperlink{ref-EdgerDifferenChen}{8}}
+\item
+  Other R packages used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\begin{itemize}
+\tightlist
+\item
+  对原始数据的处理分质控和比对参考基因组，结果见 \ref{quant} 和对应文件。
+\item
+  肝脏组织和回肠组织的数据分别进行了差异分析和通路富集分析 (Fig. \ref{fig:Main-fig1} 和 Fig. \ref{fig:Main-fig3})
+\item
+  肝脏组织：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Model vs Control (Fig. \ref{fig:Main-fig1}a, d, e), `Steroid biosynthesis' 为首要富集通路，且总体表达呈现下调趋势
+  \item
+    Treatment vs Model (Fig. \ref{fig:Main-fig1}b, f, g), `Steroid biosynthesis' 同样为首要富集通路，总体表达呈现上调趋势
+  \item
+    结合两组对比，药物干预改变了 `Steroid biosynthesis' 通路基因的表达水平 (使其上调)。药物的治疗作用可能和其下游 `steroid degradation' 有关 (Fig. \ref{fig:Main-fig2}a)。
+  \item
+    将药物有调控的基因 (详情见 \ref{classical}) 进行富集分析 (Fig. \ref{fig:Main-fig2}b, c) ，
+    发现富集于 `Steroid hormone biosynthesis' (KEGG),
+    `fatty acid metabolic process' (GO), `steroid metabolic process' (GO)。
+  \end{itemize}
+\item
+  回肠组织完成了类似上述肝脏组织的分析模式。
+\item
+  关于 TGR5 (TGR5 也就是 Gpbar1)，由于该基因表达量过低 (可能是该基因本身表达量低，且测序深度不足)，因此难以判断 TGR5 的显著性 (尤其是肝脏) (在 \ref{about-tgr} 做了 TGR5 和 另一个相关蛋白 S1pr2 的讨论)。
+\end{itemize}
+
+Figure \ref{fig:Main-fig1} (下方图) 为图Main fig1概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig1.pdf}
+\caption{Main fig1}\label{fig:Main-fig1}
+\end{center}
+
+Figure \ref{fig:Main-fig2} (下方图) 为图Main fig2概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig2.pdf}
+\caption{Main fig2}\label{fig:Main-fig2}
+\end{center}
+
+Figure \ref{fig:Main-fig3} (下方图) 为图Main fig3概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig3.pdf}
+\caption{Main fig3}\label{fig:Main-fig3}
+\end{center}
+
+Figure \ref{fig:Main-fig4} (下方图) 为图Main fig4概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig4.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig4.pdf}
+\caption{Main fig4}\label{fig:Main-fig4}
+\end{center}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{quant}{%
+\subsection{RNA 定量}\label{quant}}
+
+\hypertarget{fastq-ux6587ux4ef6ux8d28ux63a7}{%
+\subsubsection{FastQ 文件质控}\label{fastq-ux6587ux4ef6ux8d28ux63a7}}
+
+`Fastp QC reports' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./fastp\_report/})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./fastp\_report/共包含18个文件。
+
+\begin{enumerate}\tightlist
+\item L1EFL061318--GA1..html
+\item L1EFL061319--GA2..html
+\item L1EFL061320--GA3..html
+\item L1EFL061321--GA11..html
+\item L1EFL061322--GA12..html
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux83b7ux53d6ux53c2ux8003ux57faux56e0ux6ce8ux91ca}{%
+\subsubsection{获取参考基因注释}\label{ux83b7ux53d6ux53c2ux8003ux57faux56e0ux6ce8ux91ca}}
+
+下载 cDNA 参考基因注释 (使用的是 mus musculus 的参考基因) 。
+\url{https://ftp.ensembl.org/pub/release-110/fasta/mus_musculus/}
+
+\hypertarget{ux4f7fux7528-kallisto-ux5b9aux91cf}{%
+\subsubsection{使用 Kallisto 定量}\label{ux4f7fux7528-kallisto-ux5b9aux91cf}}
+
+所有样本的 RNA 表达定量数据已提供。
+
+`Kallisto quantification' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./kallisto\_quantification})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./kallisto\_quantification共包含18个文件。
+
+\begin{enumerate}\tightlist
+\item L1EFL061318--GA1
+\item L1EFL061319--GA2
+\item L1EFL061320--GA3
+\item L1EFL061321--GA11
+\item L1EFL061322--GA12
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux6837ux672cux5143ux6570ux636e}{%
+\subsection{样本元数据}\label{ux6837ux672cux5143ux6570ux636e}}
+
+根据客户提供的样本信息，整理的元数据：
+
+Table \ref{tab:metadata-of-all-samples} (下方表格) 为表格metadata of all samples概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata-of-all-samples.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有18行6列，以下预览的表格可能省略部分数据；表格含有18个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:metadata-of-all-samples}Metadata of all samples}\tabularnewline
+\toprule
+sample & group & file & direc\ldots{} & ident & tissue\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sample & group & file & direc\ldots{} & ident & tissue\tabularnewline
+\midrule
+\endhead
+L1EFL\ldots{} & Control & kalli\ldots{} & kalli\ldots{} & GA1 & Liver\tabularnewline
+L1EFL\ldots{} & Control & kalli\ldots{} & kalli\ldots{} & GA2 & Liver\tabularnewline
+L1EFL\ldots{} & Control & kalli\ldots{} & kalli\ldots{} & GA3 & Liver\tabularnewline
+L1EFL\ldots{} & Model & kalli\ldots{} & kalli\ldots{} & GA11 & Liver\tabularnewline
+L1EFL\ldots{} & Model & kalli\ldots{} & kalli\ldots{} & GA12 & Liver\tabularnewline
+L1EFL\ldots{} & Model & kalli\ldots{} & kalli\ldots{} & GA13 & Liver\tabularnewline
+L1EFL\ldots{} & Treat\ldots{} & kalli\ldots{} & kalli\ldots{} & GA31 & Liver\tabularnewline
+L1EFL\ldots{} & Treat\ldots{} & kalli\ldots{} & kalli\ldots{} & GA32 & Liver\tabularnewline
+L1EFL\ldots{} & Treat\ldots{} & kalli\ldots{} & kalli\ldots{} & GA33 & Liver\tabularnewline
+L1EFL\ldots{} & Control & kalli\ldots{} & kalli\ldots{} & HA1 & Theileum\tabularnewline
+L1EFL\ldots{} & Control & kalli\ldots{} & kalli\ldots{} & HA2 & Theileum\tabularnewline
+L1EFL\ldots{} & Control & kalli\ldots{} & kalli\ldots{} & HA3 & Theileum\tabularnewline
+L1EFL\ldots{} & Model & kalli\ldots{} & kalli\ldots{} & HA11 & Theileum\tabularnewline
+L1EFL\ldots{} & Model & kalli\ldots{} & kalli\ldots{} & HA12 & Theileum\tabularnewline
+L1EFL\ldots{} & Model & kalli\ldots{} & kalli\ldots{} & HA13 & Theileum\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{rna-ux6ce8ux91ca}{%
+\subsection{RNA 注释}\label{rna-ux6ce8ux91ca}}
+
+\hypertarget{ux4f7fux7528-biomart-ux6ce8ux91ca}{%
+\subsubsection{使用 Biomart 注释}\label{ux4f7fux7528-biomart-ux6ce8ux91ca}}
+
+由于实验数据来源于小暑，因此首要关注的基因名称是 \texttt{mgi\_symbol}
+
+Table \ref{tab:Gene-annotation} (下方表格) 为表格Gene annotation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Gene-annotation.tsv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有116873行5列，以下预览的表格可能省略部分数据；表格含有35815个唯一`mgi\_symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:Gene-annotation}Gene annotation}\tabularnewline
+\toprule
+ensem\ldots{} & mgi\_s\ldots{} & entre\ldots{} & hgnc\_\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensem\ldots{} & mgi\_s\ldots{} & entre\ldots{} & hgnc\_\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endhead
+ENSMU\ldots{} & mt-Nd1 & 17716 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Nd2 & 17717 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Co1 & 17708 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Co2 & 17709 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Atp8 & 17706 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Atp6 & 17705 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Co3 & 17710 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Nd3 & 17718 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Nd4l & 17720 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Nd4 & 17719 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Nd5 & 17721 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Nd6 & 17722 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & mt-Cytb & 17711 & NA & mitoc\ldots{}\tabularnewline
+ENSMU\ldots{} & & NA & NA &\tabularnewline
+ENSMU\ldots{} & & 671917 & NA &\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux809dux810fux7ec4ux7ec7-liver}{%
+\subsection{肝脏组织 (Liver)}\label{ux809dux810fux7ec4ux7ec7-liver}}
+
+\hypertarget{liver-deg}{%
+\subsubsection{差异分析}\label{liver-deg}}
+
+Figure \ref{fig:Liver-Model-vs-Control} (下方图) 为图Liver Model vs Control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-Model-vs-Control.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-Model-vs-Control.pdf}
+\caption{Liver Model vs Control}\label{fig:Liver-Model-vs-Control}
+\end{center}
+
+Figure \ref{fig:Liver-Treatment-vs-Model} (下方图) 为图Liver Treatment vs Model概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-Treatment-vs-Model.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-Treatment-vs-Model.pdf}
+\caption{Liver Treatment vs Model}\label{fig:Liver-Treatment-vs-Model}
+\end{center}
+
+Figure \ref{fig:Liver-DEGs-intersection} (下方图) 为图Liver DEGs intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-DEGs-intersection.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-DEGs-intersection.pdf}
+\caption{Liver DEGs intersection}\label{fig:Liver-DEGs-intersection}
+\end{center}
+
+`Data of DEGs of Liver' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/data-of-DEGs-of-Liver})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/data-of-DEGs-of-Liver共包含2个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Model - Control.csv
+\item 2\_Treatment - Model.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{gsea-ux5bccux96c6ux5206ux6790}{%
+\subsubsection{GSEA 富集分析}\label{gsea-ux5bccux96c6ux5206ux6790}}
+
+\hypertarget{model-vs-control}{%
+\paragraph{Model vs Control}\label{model-vs-control}}
+
+Figure \ref{fig:Liver-KEGG-Model-vs-Control} (下方图) 为图Liver KEGG Model vs Control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-KEGG-Model-vs-Control.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-KEGG-Model-vs-Control.pdf}
+\caption{Liver KEGG Model vs Control}\label{fig:Liver-KEGG-Model-vs-Control}
+\end{center}
+
+Figure \ref{fig:Liver-GSEA-plot-of-pathways-Model-vs-Control} (下方图) 为图Liver GSEA plot of pathways Model vs Control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-GSEA-plot-of-pathways-Model-vs-Control.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-GSEA-plot-of-pathways-Model-vs-Control.pdf}
+\caption{Liver GSEA plot of pathways Model vs Control}\label{fig:Liver-GSEA-plot-of-pathways-Model-vs-Control}
+\end{center}
+
+\hypertarget{treatment-vs-model}{%
+\paragraph{Treatment vs Model}\label{treatment-vs-model}}
+
+Figure \ref{fig:Liver-KEGG-Treatment-vs-Model} (下方图) 为图Liver KEGG Treatment vs Model概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-KEGG-Treatment-vs-Model.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-KEGG-Treatment-vs-Model.pdf}
+\caption{Liver KEGG Treatment vs Model}\label{fig:Liver-KEGG-Treatment-vs-Model}
+\end{center}
+
+Figure \ref{fig:Liver-GSEA-plot-of-pathways-Treatment-vs-Model} (下方图) 为图Liver GSEA plot of pathways Treatment vs Model概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-GSEA-plot-of-pathways-Treatment-vs-Model.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-GSEA-plot-of-pathways-Treatment-vs-Model.pdf}
+\caption{Liver GSEA plot of pathways Treatment vs Model}\label{fig:Liver-GSEA-plot-of-pathways-Treatment-vs-Model}
+\end{center}
+
+Figure \ref{fig:Liver-pathway-of-Steroid-biosynthesis-Treatment-vs-Model} (下方图) 为图Liver pathway of Steroid biosynthesis Treatment vs Model概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/mmu00100.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2023-11-09_14_33_20.636961/mmu00100.pathview.png}
+\caption{Liver pathway of Steroid biosynthesis Treatment vs Model}\label{fig:Liver-pathway-of-Steroid-biosynthesis-Treatment-vs-Model}
+\end{center}
+
+\hypertarget{classical}{%
+\subsubsection{Classical 富集分析}\label{classical}}
+
+将有药物调控作用的 DEGs 以传统的富集方式分析。
+
+\begin{itemize}
+\tightlist
+\item
+  模型组相比对照组，基因上调；而以药物处理后，基因下调（相比于模型组）。
+\item
+  模型组相比对照组，基因下调；而以药物处理后，基因上调（相比于模型组）。
+\end{itemize}
+
+Figure \ref{fig:Liver-drug-regulated-DEGs-KEGG-enrichment} (下方图) 为图Liver drug regulated DEGs KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-drug-regulated-DEGs-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-drug-regulated-DEGs-KEGG-enrichment.pdf}
+\caption{Liver drug regulated DEGs KEGG enrichment}\label{fig:Liver-drug-regulated-DEGs-KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:Liver-drug-regulated-DEGs-GO-enrichment} (下方图) 为图Liver drug regulated DEGs GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-drug-regulated-DEGs-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-drug-regulated-DEGs-GO-enrichment.pdf}
+\caption{Liver drug regulated DEGs GO enrichment}\label{fig:Liver-drug-regulated-DEGs-GO-enrichment}
+\end{center}
+
+\hypertarget{ux56deux80a0ux7ec4ux7ec7-theileum}{%
+\subsection{回肠组织 (Theileum)}\label{ux56deux80a0ux7ec4ux7ec7-theileum}}
+
+\hypertarget{theil-deg}{%
+\subsubsection{差异分析}\label{theil-deg}}
+
+Figure \ref{fig:Theileum-Model-vs-Control} (下方图) 为图Theileum Model vs Control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Theileum-Model-vs-Control.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Theileum-Model-vs-Control.pdf}
+\caption{Theileum Model vs Control}\label{fig:Theileum-Model-vs-Control}
+\end{center}
+
+Figure \ref{fig:Theileum-Treatment-vs-Model} (下方图) 为图Theileum Treatment vs Model概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Theileum-Treatment-vs-Model.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Theileum-Treatment-vs-Model.pdf}
+\caption{Theileum Treatment vs Model}\label{fig:Theileum-Treatment-vs-Model}
+\end{center}
+
+Figure \ref{fig:Theileum-DEGs-intersection} (下方图) 为图Theileum DEGs intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Theileum-DEGs-intersection.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Theileum-DEGs-intersection.pdf}
+\caption{Theileum DEGs intersection}\label{fig:Theileum-DEGs-intersection}
+\end{center}
+
+`Data of DEGs of Theileum' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/data-of-DEGs-of-Theileum})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/data-of-DEGs-of-Theileum共包含2个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Model - Control.csv
+\item 2\_Treatment - Model.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{gsea-ux5bccux96c6ux5206ux6790-1}{%
+\subsubsection{GSEA 富集分析}\label{gsea-ux5bccux96c6ux5206ux6790-1}}
+
+\hypertarget{model-vs-control-1}{%
+\paragraph{Model vs Control}\label{model-vs-control-1}}
+
+Figure \ref{fig:Theileum-KEGG-Model-vs-Control} (下方图) 为图Theileum KEGG Model vs Control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Theileum-KEGG-Model-vs-Control.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Theileum-KEGG-Model-vs-Control.pdf}
+\caption{Theileum KEGG Model vs Control}\label{fig:Theileum-KEGG-Model-vs-Control}
+\end{center}
+
+Figure \ref{fig:Theileum-GSEA-plot-of-pathways-Model-vs-Control} (下方图) 为图Theileum GSEA plot of pathways Model vs Control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Theileum-GSEA-plot-of-pathways-Model-vs-Control.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Theileum-GSEA-plot-of-pathways-Model-vs-Control.pdf}
+\caption{Theileum GSEA plot of pathways Model vs Control}\label{fig:Theileum-GSEA-plot-of-pathways-Model-vs-Control}
+\end{center}
+
+\hypertarget{treatment-vs-model-1}{%
+\paragraph{Treatment vs Model}\label{treatment-vs-model-1}}
+
+Figure \ref{fig:Theileum-KEGG-Treatment-vs-Model} (下方图) 为图Theileum KEGG Treatment vs Model概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Theileum-KEGG-Treatment-vs-Model.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Theileum-KEGG-Treatment-vs-Model.pdf}
+\caption{Theileum KEGG Treatment vs Model}\label{fig:Theileum-KEGG-Treatment-vs-Model}
+\end{center}
+
+Figure \ref{fig:Theileum-GSEA-plot-of-pathways-Treatment-vs-Model} (下方图) 为图Theileum GSEA plot of pathways Treatment vs Model概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Theileum-GSEA-plot-of-pathways-Treatment-vs-Model.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Theileum-GSEA-plot-of-pathways-Treatment-vs-Model.pdf}
+\caption{Theileum GSEA plot of pathways Treatment vs Model}\label{fig:Theileum-GSEA-plot-of-pathways-Treatment-vs-Model}
+\end{center}
+
+\hypertarget{about-tgr}{%
+\subsection{TGR5 (Gpbar1) 相关信息}\label{about-tgr}}
+
+TGR5 Signaling in Hepatic Metabolic Health\textsuperscript{\protect\hyperlink{ref-Tgr5SignalingHolter2020}{2},\protect\hyperlink{ref-BileAcidActivKeitel2019}{9}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+TGR5 Signaling in Hepatic Metabolic Health
+:}
+
+\vspace{0.5em}
+
+    TGR5 is a transmembrane G-protein coupled receptor
+(GPCR) for bile acids that is ubiquitously expressed in
+mouse and human tissues ...
+
+\vspace{2em}
+
+
+\textbf{
+Bile Acid-Activated Receptors: GPBAR1 (TGR5) and Other G Protein-Coupled Receptors
+:}
+
+\vspace{0.5em}
+
+    The BA-responsive GPCRs S1PR2 and TGR5 are almost
+ubiquitously expressed in human and rodent tissues. In the
+liver, S1PR2 is expressed in all cell types, while TGR5 is
+predominately found in non-parenchymal cells. In contrast
+to S1PR2, which is mainly activated by conjugated bile
+acids (BAs), all BAs serve as ligands for TGR5 irrespective
+of their conjugation state and substitution pattern.Mice
+with targeted deletion of either S1PR2 or TGR5 are viable
+and develop no overt phenotype ...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{gpbar1-ux76f8ux5173ux8868ux8fbeux6c34ux5e73-count}{%
+\subsubsection{Gpbar1 相关表达水平 (count)}\label{gpbar1-ux76f8ux5173ux8868ux8fbeux6c34ux5e73-count}}
+
+TGR5 (GPBAR) 的 Mgi Symbol (对应小鼠的基因名称) 为 Gpbar1
+
+此外，这里还测试了文献\textsuperscript{\protect\hyperlink{ref-BileAcidActivKeitel2019}{9}} 中提到的 S1pr2 基因 (和 Gpbar1 同属于 GPCR) 的表达。
+
+Table \ref{tab:Gpbar1-and-S1pr2-of-GPCRs} (下方表格) 为表格Gpbar1 and S1pr2 of GPCRs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Gpbar1-and-S1pr2-of-GPCRs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5行5列，以下预览的表格可能省略部分数据；表格含有5个唯一`ensembl\_transcript\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:Gpbar1-and-S1pr2-of-GPCRs}Gpbar1 and S1pr2 of GPCRs}\tabularnewline
+\toprule
+ensem\ldots{} & mgi\_s\ldots{} & entre\ldots{} & hgnc\_\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensem\ldots{} & mgi\_s\ldots{} & entre\ldots{} & hgnc\_\ldots{} & descr\ldots{}\tabularnewline
+\midrule
+\endhead
+ENSMU\ldots{} & S1pr2 & 14739 & NA & sphin\ldots{}\tabularnewline
+ENSMU\ldots{} & S1pr2 & 14739 & NA & sphin\ldots{}\tabularnewline
+ENSMU\ldots{} & S1pr2 & 14739 & NA & sphin\ldots{}\tabularnewline
+ENSMU\ldots{} & S1pr2 & 14739 & NA & sphin\ldots{}\tabularnewline
+ENSMU\ldots{} & Gpbar1 & 227289 & NA & G pro\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+在所有数据集中，仅 转录因子 `ENSMUST00000054197' (对应 S1pr2) 有一定表达量 (Fig. \ref{fig:Counts-level-of-the-GPCRs})，
+而其它全部为零表达。这可能是测序深度不足，导致表达量较低的基因无法被涵盖。
+所以这里难以判断这些基因的表达水平在疾病或药物干预下的变化。
+
+(一般 Count 水平可能在 100 \textasciitilde{} 1000000 以上不等)
+
+Figure \ref{fig:Counts-level-of-the-GPCRs} (下方图) 为图Counts level of the GPCRs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Counts-level-of-the-GPCRs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Counts-level-of-the-GPCRs.pdf}
+\caption{Counts level of the GPCRs}\label{fig:Counts-level-of-the-GPCRs}
+\end{center}
+
+\hypertarget{gpbar1-ux6216-s1pr2-ux8868ux8fbeux6c34ux5e73-normalized}{%
+\subsubsection{Gpbar1 或 S1pr2 表达水平 (normalized)}\label{gpbar1-ux6216-s1pr2-ux8868ux8fbeux6c34ux5e73-normalized}}
+
+\hypertarget{ux809dux810f}{%
+\paragraph{肝脏}\label{ux809dux810f}}
+
+Figure \ref{fig:Normalized-expression-level-of-S1pr2-in-Liver} (下方图) 为图Normalized expression level of S1pr2 in Liver概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Normalized-expression-level-of-S1pr2-in-Liver.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Normalized-expression-level-of-S1pr2-in-Liver.pdf}
+\caption{Normalized expression level of S1pr2 in Liver}\label{fig:Normalized-expression-level-of-S1pr2-in-Liver}
+\end{center}
+
+S1pr2 不属于肝脏差异分析的显著 DEGs (\ref{liver-deg}) 。
+
+\hypertarget{ux56deux80a0}{%
+\paragraph{回肠}\label{ux56deux80a0}}
+
+Figure \ref{fig:Normalized-expression-level-of-S1pr2-in-Theileum} (下方图) 为图Normalized expression level of S1pr2 in Theileum概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Normalized-expression-level-of-S1pr2-in-Theileum.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Normalized-expression-level-of-S1pr2-in-Theileum.pdf}
+\caption{Normalized expression level of S1pr2 in Theileum}\label{fig:Normalized-expression-level-of-S1pr2-in-Theileum}
+\end{center}
+
+Gpbar1 和 S1pr2 不属于回肠差异分析的显著 DEGs (\ref{theil-deg}) 。
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-TheScienceOfCole2019}{}%
+1. Cole, T. J., Short, K. L. \& Hooper, S. B. The science of steroids. \emph{Seminars in Fetal and Neonatal Medicine} \textbf{24}, 170--175 (2019).
+
+\leavevmode\hypertarget{ref-Tgr5SignalingHolter2020}{}%
+2. Holter, M. M., Chirikjian, M. K., Govani, V. N. \& Cummings, B. P. TGR5 signaling in hepatic metabolic health. \emph{Nutrients} \textbf{12}, (2020).
+
+\leavevmode\hypertarget{ref-MappingIdentifDurinc2009}{}%
+3. Durinck, S., Spellman, P. T., Birney, E. \& Huber, W. Mapping identifiers for the integration of genomic datasets with the r/bioconductor package biomaRt. \emph{Nature protocols} \textbf{4}, 1184--1191 (2009).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+4. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-UltrafastOnePChen2023}{}%
+5. Chen, S. Ultrafast one-pass fastq data preprocessing, quality control, and deduplication using fastp. \emph{iMeta} \textbf{2}, (2023).
+
+\leavevmode\hypertarget{ref-NearOptimalPrBray2016}{}%
+6. Bray, N. L., Pimentel, H., Melsted, P. \& Pachter, L. Near-optimal probabilistic rna-seq quantification. \emph{Nature Biotechnology} \textbf{34}, (2016).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+7. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+8. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-BileAcidActivKeitel2019}{}%
+9. Keitel, V., Stindt, J. \& Häussinger, D. Bile acid-activated receptors: GPBAR1 (tgr5) and other g protein-coupled receptors. \emph{Handbook of experimental pharmacology} \textbf{256}, 19--49 (2019).
+\end{cslreferences}
+
+\end{document}

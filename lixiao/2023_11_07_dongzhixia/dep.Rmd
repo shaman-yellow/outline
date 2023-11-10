@@ -1,5 +1,26 @@
 
 
+## Bile acids 相关基因表达
+
+### Bile acids 相关通路基因获取
+
+```{r}
+db_c2 <- get_c2_data("bile.*acid", "mmu")
+```
+
+### 在肝脏数据集中的表达量
+
+```{r}
+fun <- function(x, lst, use = "entrezgene_id") {
+  x <- x@params$normed_data
+  x <- x[ as.character(x$genes[[ use ]]) %in% as.character(unlist(lst)), ]
+  exprs <- x$E
+  hp <- new_heatdata(exprs)
+  callheatmap(hp)
+}
+fun(lm.l, db_c2)
+```
+
 ## Bile acid 相关基因集 {#db-c2}
 
 ```{r}
@@ -9,6 +30,49 @@ bm0 <- step1(bm0, "GPBAR-1", "hgnc", c("hgnc_symbol", "mgi_symbol", "entrezgene_
 
 ```{r}
 db_c2 <- get_c2_data("bile.*acid", "mmu")
+```
+
+### 聚焦于 Bile acids 的富集分析
+
+#### Treatment vs Model
+
+```{r}
+# Treatment - Model
+gs.l.b2 <- asjob_gsea(lm.l, 2)
+gs.l.b2 <- filter(gs.l.b2, unlist(db_c2), "ent")
+```
+
+```{r}
+gs.t <- asjob_gsea(lm.t, 2, filter = lm.t@params$guess_use)
+gs.t <- step1(gs.t, org.Mm.eg.db::org.Mm.eg.db, "mmu")
+gs.t@plots$step1$p.kegg
+gs.t@tables$step1$table_kegg
+```
+
+```{r}
+bm$anno
+anno.tgr5 <- filter(bm$anno, grpl(hgnc_symbol, "TGR|GPBAR"))
+```
+
+```{r}
+grp(lm.l@params$normed_data$genes$mgi_symbol, "Gpbar1")
+p.level.gpbar1 <- map(lm.l, "Gpbar1", "mgi_symbol")
+p.level.gpbar1
+```
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
 ```
 
 
