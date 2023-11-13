@@ -83,3 +83,78 @@ auto_method()
 ed <- job_edqtl()
 ed <- step1(ed, "Kidney-Cortex")
 ```
+
+## IgA scRNA-seq
+
+```{r}
+geo.iga <- job_geo("GSE171314")
+geo.iga <- step1(geo.iga)
+geo.iga@params$prods
+geo.iga <- step2(geo.iga)
+geo.iga@params$guess
+system(paste0("mv ../2023_09_27_dualdisease/GSE171314/ -t . "))
+```
+
+```{r}
+skel(.job_seurat(), "sr.iga")
+
+sr.iga <- job_seurat("./GSE171314/GSM5222730_s200525a4/")
+
+sig(sr.iga) <- "IgA"
+sr.iga <- step1(sr.iga)
+sr.iga@plots$step1$p.qc
+sr.iga <- step2(sr.iga, 0, 6000, 75)
+sr.iga@plots$step2$p.pca_rank
+sr.iga <- step3(sr.iga, 1:10, .8)
+sr.iga@step <- 4L
+sr.iga@plots$step3$p.umap
+sr.iga <- step5(sr.iga, 5)
+sr.iga <- step6(sr.iga, "Kidney")
+sr.iga@plots$step6$p.map_scsa
+clear(sr.iga)
+```
+
+## Normal scRNA-seq
+
+```{r}
+sr.nor <- job_seurat("./GSE171314/GSM5222734_s200707N5")
+
+sig(sr.nor) <- "Normal"
+sr.nor <- step1(sr.nor)
+sr.nor@plots$step1$p.qc
+sr.nor <- step2(sr.nor, 0, 6000, 75)
+sr.nor@plots$step2$p.pca_rank
+sr.nor <- step3(sr.nor, 1:10, .8, force = T)
+sr.nor@step <- 4L
+sr.nor@plots$step3$p.umap
+sr.nor <- step5(sr.nor, 5)
+sr.nor <- step6(sr.nor, "Kidney")
+sr.nor@plots$step6$p.map_scsa
+clear(sr.nor)
+
+```
+
+## RISC integration
+
+```{r}
+sr.nor <- mutate(sr.nor, cell_mapped = paste0("Normal_", gs(scsa_cell, " ", "_")))
+sr.iga <- mutate(sr.iga, cell_mapped = paste0("IgA_", gs(scsa_cell, " ", "_")))
+vis(sr.iga, "cell_mapped")
+
+rs <- asjob_risc(list(Normal = sr.nor, IgA = sr.iga), NULL, group.by = "cell_mapped")
+rs <- step1(rs, 10)
+rs@plots$step1$p.reference
+pattern <- unique(gs(c(ids(sr.iga), ids(sr.nor)), " ", "_"))
+rs <- step2(rs, "IgA", pattern)
+rs@plots$step2$p.umap
+clear(rs)
+```
+
+
+
+```{r}
+load("./small.rdata")
+sr.nor <- readRDS("./sr.nor.6.rds")
+sr.iga <- readRDS("./sr.iga.6.rds")
+rs <- readRDS("./rs.2.rds")
+```

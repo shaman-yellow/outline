@@ -19,3 +19,25 @@ RNA velocity: PhyloVelo, cellDancer
 tkid <- ftibble("./test/GTEx_Analysis_v8_sQTL/Kidney_Cortex.v8.sgenes.txt.gz")
 tt <- ftibble("./test/hg19.txt")
 ```
+
+```{r}
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-Quality-Control
+autor(sr.iga@plots$step1$p.qc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-UMAP-Clustering
+autor(sr.iga@plots$step3$p.umap)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-SCSA-Cell-type-annotation
+autor(sr.iga@plots$step6$p.map_scsa)
+```
+
+

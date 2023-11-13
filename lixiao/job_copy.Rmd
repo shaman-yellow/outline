@@ -40,6 +40,10 @@ cp("~/outline/lixiao/2023_07_07_eval/IN2023072803-3+销售：周燕青+客户：
 cp("~/outline/lixiao/2023_07_24_base/BI2023072101-3+昼夜节律相关+未见肿瘤报道+预后关联单细胞分析+3-5分.zip", thedir(8))
 cp("~/outline/lixiao/2023_08_24_eval/沈顺订单.zip", thedir(8))
 writeLines("沈顺订单分为两部分，本月为第一部分。", "~/disk_sdb1/my_job/202308/ps.txt")
+
+move_rds("~/outline/lixiao/2023_07_24_base", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_07_07_eval", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_08_24_eval", "~/disk_sdb1")
 ```
 
 ## 2023-09
@@ -50,6 +54,9 @@ cp("~/outline/lixiao/2023_08_24_eval/沈顺订单.zip", thedir(9))
 cp("~/outline/lixiao/2023_09_13_pdb/results_touchPDB.zip", thedir(9))
 cp("~/outline/lixiao/2023_07_20_yuye/IN2023072801-3+销售：王双+客户：于骅+恶性肿瘤肌少症+2-3分.zip", thedir(9))
 writeLines("沈顺订单分为两部分，本月为第二部分。", "~/disk_sdb1/my_job/202309/ps.txt")
+
+move_rds("~/outline/lixiao/2023_08_17_eval", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_07_20_yuye", "~/disk_sdb1")
 ```
 
 ## 2023-10
@@ -60,6 +67,9 @@ cp("~/outline/lixiao/2023_10_05_xiaguolian/夏国连生信支持.zip", thedir(10
 cp("~/outline/lixiao/2023_10_06_lunST/曹卓空间转录组.zip", thedir(10))
 cp("~/outline/lixiao/2023_10_18_revise/修改业务：2023041204-潘一伟&魏伦全.zip", thedir(10))
 cp("~/outline/lixiao/2023_09_27_dualdisease/BI2023080108：集成多组 CKD 单细胞数据集发现 IgA 相比于其它 CKD 的与 RCC 之间转化的更高风险.zip", thedir(10))
+
+move_rds("~/outline/lixiao/2023_10_06_lunST", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_09_27_dualdisease", "~/disk_sdb1")
 ```
 
 Eval:
