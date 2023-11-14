@@ -75,15 +75,6 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
-## GTEx edQTLs
-
-- <https://gtexportal.org/home/downloads/adult-gtex#variants>
-
-```{r}
-ed <- job_edqtl()
-ed <- step1(ed, "Kidney-Cortex")
-```
-
 ## IgA scRNA-seq
 
 ```{r}
@@ -150,11 +141,49 @@ rs@plots$step2$p.umap
 clear(rs)
 ```
 
+## Seurat object
 
+```{r}
+srs <- asjob_seurat(rs)
+p.srs <- vis(srs, "cell_mapped")
+
+srs <- diff(srs, "cell_mapped", list(c("IgA_B_cell", "Normal_B_cell")))
+srs@params$contrasts
+srs@params$diff_sets_intersection
+clear(srs)
+```
 
 ```{r}
 load("./small.rdata")
 sr.nor <- readRDS("./sr.nor.6.rds")
 sr.iga <- readRDS("./sr.iga.6.rds")
 rs <- readRDS("./rs.2.rds")
+srs <- readRDS("./srs.3.rds")
+```
+
+## GTEx edQTLs
+
+- <https://gtexportal.org/home/downloads/adult-gtex#variants>
+
+```{r}
+ed <- job_edqtl()
+ed <- step1(ed, "Kidney-Cortex")
+ed@object$signif_variant_site_pairs
+
+```
+
+```{r}
+bm <- job_biomart("hsa")
+sig(bm, "Top-DEGs")
+bm <- step1(bm, srs@params$contrasts$gene, "hg")
+bm <- map(bm, ed)
+bm@params$p.edqtl
+```
+
+## Enrichment
+
+```{r}
+en <- job_enrich(unique(bm@params$edqtl$ref_gene), bm$anno)
+sig(en) <- "Matched genes"
+en@object
 ```
