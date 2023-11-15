@@ -1,0 +1,31 @@
+
+## DR tools
+
+EyePACS: an adaptable telemedicine system for diabetic retinopathy screening (20144289)
+
+Automated Diabetic Retinopathy Screening and Monitoring Using Retinal Fundus Image Analysis (26888972) [@AutomatedDiabeBhaska2016]
+
+## Others
+
+Chákṣu: A glaucoma specific fundus image database (36737439)
+
+Assessment of image quality on color fundus retinal images using the automatic retinal image analysis (35729197)
+Kaggle database
+
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+# p.route
+```
+
+

@@ -39,4 +39,41 @@ autor(sr.iga@plots$step3$p.umap)
 autor(sr.iga@plots$step6$p.map_scsa)
 ```
 
+```{r}
+skel(.job_monocle(), "bc", "B_cell$")
+mn.bc <- do_monocle(srs, "B_cell$")
 
+mn.bc <- step1(mn.bc)
+mn.bc@plots$step1$p.prin
+mn.bc <- step2(mn.bc, "Y_5")
+mn.bc@plots$step2$p.pseu
+mn.bc <- step3(mn.bc)
+mn.bc@plots$step3$gene_module_heatdata$graph_test.sig
+
+sr_sub.bc <- asjob_seurat(mn.bc, 5, rename = "B_cell$_bc")
+vis(sr_sub.bc, "regroup.hclust")
+
+mn.bc <- clear(mn.bc)
+
+sr.bc <- map(sr.bc, sr_sub.bc, "scsa_cell", "regroup.hclust")
+vis(sr.bc, "cell_mapped")
+vis(sr.bc, "scsa_cell")
+
+sr.bc <- clear(sr.bc)
+NULL
+
+```
+
+
+```{r}
+en <- job_enrich(unique(bm@params$edqtl$ref_gene), bm$anno)
+sig(en) <- "Matched genes"
+en@object
+```
+
+```{r}
+gse@step <- 1L
+gse <- step2(gse, c("hsa01100"))
+gse@plots$step2$p.code
+gse <- step3(gse, c("hsa01100"))
+```

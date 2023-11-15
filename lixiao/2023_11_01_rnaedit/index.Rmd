@@ -153,12 +153,33 @@ srs@params$diff_sets_intersection
 clear(srs)
 ```
 
+## Enrichment
+
 ```{r}
-load("./small.rdata")
-sr.nor <- readRDS("./sr.nor.6.rds")
-sr.iga <- readRDS("./sr.iga.6.rds")
-rs <- readRDS("./rs.2.rds")
-srs <- readRDS("./srs.3.rds")
+gse <- asjob_gsea(srs)
+gse <- step1(gse)
+gse@plots$step1$p.kegg
+gse@plots$step1$p.go
+gse@tables$step1$table_kegg
+gse <- step2(gse, c("hsa04658"))
+gse@plots$step2$p.code
+gse <- step3(gse, c("hsa04658"))
+gse@plots$step3$p.pathviews$hsa04658
+clear(gse)
+
+fun <- function() {
+  g.list <- gse@tables$step1$table_kegg$geneName_list
+  ref <- unique(bm@params$edqtl$ref_gene)
+  isThat <- vapply(g.list, FUN.VALUE = logical(1),
+    function(lst) {
+      any(lst %in% ref)
+    })
+  data <- filter(gse@tables$step1$table_kegg, isThat)
+  list(data = data, id = data$ID)
+}
+lst.find <- fun()
+
+g.th12 <- filter(gse@tables$step1$table_kegg, grpl(Description, "Th1 and Th2"))$geneName_list[[1]]
 ```
 
 ## GTEx edQTLs
@@ -178,12 +199,36 @@ sig(bm, "Top-DEGs")
 bm <- step1(bm, srs@params$contrasts$gene, "hg")
 bm <- map(bm, ed)
 bm@params$p.edqtl
+m.ed <- unique(bm@params$edqtl$ref_gene)
+bm@params$edqtl
 ```
 
-## Enrichment
+## Correlation
 
 ```{r}
-en <- job_enrich(unique(bm@params$edqtl$ref_gene), bm$anno)
-sig(en) <- "Matched genes"
-en@object
+p.cor <- cal_corp(srs, NULL, m.ed, g.th12, names = c("Editing RNA", "Pathway hsa04658"))
+wrap(p.cor$hp, 7, 5)
+g.hcor <- c("MAF", "CYP4F3")
+p.srs
+```
+
+## Communication
+
+```{r}
+```
+
+## Expression level
+
+```{r}
+p.expr <- focus(srs, g.hcor)
+wrap(p.expr$p.vln, 17, 6)
+```
+
+```{r}
+save_small()
+load("./small.rdata")
+sr.nor <- readRDS("./sr.nor.6.rds")
+sr.iga <- readRDS("./sr.iga.6.rds")
+rs <- readRDS("./rs.2.rds")
+srs <- readRDS("./srs.3.rds")
 ```

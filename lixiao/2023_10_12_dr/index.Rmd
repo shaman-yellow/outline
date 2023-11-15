@@ -2,6 +2,10 @@
 ---
 
 ```{r include = F}
+deparse_mail()
+```
+
+```{r include = F}
 #| setup
 if (!requireNamespace("utils.tool"))
   devtools::load_all("~/utils.tool/")
@@ -17,45 +21,72 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
 set_index()
 ```
 
+# 题目
+
+光学相干断层扫描血管成像技术 (OCTA) 在糖尿病视网膜病变 (DR) 中的应用
+
 # 摘要 {#abstract}
 
-糖尿病视网膜病变与眼底图像的计量分析
+糖尿病视网膜病变 (diabetic retinopathy, DR)
+光学相干断层扫描血管成像技术 (Optical Coherence Tomography Angiography, OCTA)
 
-## DR tools
+- 时间分布 (发表) (趋势) 
+- 国家
+- 协作 
+- 引用
+- Top 10 keywords with the strongest citation
+- top 10 article
+- top country
+- Collaboration
+- The co-occurrence map of keywords
 
-EyePACS: an adaptable telemedicine system for diabetic retinopathy screening (20144289)
+topic:
 
-Automated Diabetic Retinopathy Screening and Monitoring Using Retinal Fundus Image Analysis (26888972) [@AutomatedDiabeBhaska2016]
-
-## Others
-
-Chákṣu: A glaucoma specific fundus image database (36737439)
-
-Assessment of image quality on color fundus retinal images using the automatic retinal image analysis (35729197)
-Kaggle database
-
+- Trend analysis of publications and citations
+- Publication pattern and collaboration analysis
+- Research domains and targeted sources
+- Keywords analysis
 
 # 前言 {#introduction}
 
-# 研究设计流程图 {#route}
-
-```{r}
-#| route
-route <- as_network(
-  list("RNA_seq_data:Preprocess",
-    ), "tree"
-)
-p.route <- flowChart(route, 1.1, 1)
-```
-
-```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
-p.route
-```
-
 # 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+Web of Science Core Collection (WoSCC)
 
 # 分析结果 {#results}
 
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+```{r}
+kds <- list(
+  dr = c("diabetic retinopathy", "diabetic macular edema",
+    "diabetic retinal damage", "diabetic retina"
+    ),
+  octa = c("Optical Coherence Tomography Angiography",
+    "OCT Angiography", "OCTA"
+  )
+)
+
+bi <- job_biblio(kds)
+bi <- step1(bi, 2)
+bi@params$summary
+bi@tables$step1$alls$YY
+bi <- step2(bi)
+bi@plots$step2$p.most_ave
+
+```
+
