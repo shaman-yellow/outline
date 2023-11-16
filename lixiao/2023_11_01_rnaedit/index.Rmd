@@ -36,9 +36,10 @@ vis(je2)
 
 # 前言 {#introduction}
 
-IgA 肾病发病机制尚不明确，被推测为一种遗传 (genetic) 相关疾病 [@ImmuneAbnormalGentil2023]。
 最近的研究表明，RNA 编辑是常见炎症性疾病遗传风险的基础，相当的 cis-RNA editing QTLs (edQTLs) 在自身免疫和免疫介导疾病的全基因组关联研究信号中显着富集 [@RnaEditingUndLiQi2022]。
-然而，还没有研究从 RNA 编辑的角度阐述 IgA 肾病的发生发展机制。
+RNA 编辑蛋白 ADAR 介导的腺苷-肌苷（A-to-I）RNA编辑是防止细胞自身双链RNA（dsRNA）引发先天免疫干扰素应答的重要转录后事件，因遗传因素引起的双链RNA编辑水平的降低，是导致炎症性疾病遗传风险升高的重要因素[@RnaEditingUndLiQi2022]。
+RNA 编辑拓宽了自身免疫性疾病治疗和机制探究的领域。
+IgA 肾病 (IgA nephropathy) 是 CKD 和肾衰竭的主要原因[@IgaNephropathyRodrig2017], 发病机制尚不明确，被推测为一种遗传 (genetic) 相关疾病 [@ImmuneAbnormalGentil2023]。然而，还没有研究从 RNA 编辑的角度阐述 IgA 肾病的发生发展机制。
 
 # 研究设计流程图 {#route}
 
@@ -146,6 +147,10 @@ clear(rs)
 ```{r}
 srs <- asjob_seurat(rs)
 p.srs <- vis(srs, "cell_mapped")
+p.srs
+
+## more contrasts
+cons <- table(gs(ids(srs), "^[a-zA-Z]+_", "")) %>% .[. == 2] %>% names()
 
 srs <- diff(srs, "cell_mapped", list(c("IgA_B_cell", "Normal_B_cell")))
 srs@params$contrasts
@@ -222,6 +227,13 @@ p.srs
 ```{r}
 p.expr <- focus(srs, g.hcor)
 wrap(p.expr$p.vln, 17, 6)
+
+fun <- function() {
+  grpf(rownames(object(srs)), "MDA|ADAR")
+  grpf(srs@params$contrasts$gene, "MDA|ADAR")
+}
+fun()
+
 ```
 
 ```{r}
