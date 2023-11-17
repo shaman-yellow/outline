@@ -28,4 +28,30 @@ p.route <- flowChart(route, 1.1, 1)
 # p.route
 ```
 
+# 前言 {#introduction}
+
+
+- 时间分布 (发表) (趋势) 
+- 国家
+- 协作 
+- 引用
+- Top 10 keywords with the strongest citation
+- top 10 article
+- top country
+- Collaboration
+- The co-occurrence map of keywords
+
+topic:
+
+- Trend analysis of publications and citations
+- Publication pattern and collaboration analysis
+- Research domains and targeted sources
+- Keywords analysis
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
 

@@ -67,6 +67,11 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
 
 \author{}
 \date{\vspace{-2.5em}}
@@ -75,9 +80,10 @@
 
 \begin{titlepage} \newgeometry{top=7.5cm}
 \ThisCenterWallPaper{1.12}{../cover_page.pdf}
-\begin{center} \textbf{\Huge title} \vspace{4em}
+\begin{center} \textbf{\Huge OCTA
+在糖尿病视网膜病变中的应用} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-11-16}}
+\textbf{\textcolor{white}{2023-11-17}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -105,114 +111,654 @@
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
 
-糖尿病视网膜病变 (diabetic retinopathy, DR)
-光学相干断层扫描血管成像技术 (Optical Coherence Tomography Angiography, OCTA)
-
 \begin{itemize}
 \tightlist
 \item
-  时间分布 (发表) (趋势)
+  糖尿病视网膜病变 (diabetic retinopathy, DR)
 \item
-  国家
-\item
-  协作
-\item
-  引用
-\item
-  Top 10 keywords with the strongest citation
-\item
-  top 10 article
-\item
-  top country
-\item
-  Collaboration
-\item
-  The co-occurrence map of keywords
+  光学相干断层扫描血管成像技术 (Optical Coherence Tomography Angiography, OCTA)
 \end{itemize}
-
-topic:
-
-\begin{itemize}
-\tightlist
-\item
-  Trend analysis of publications and citations
-\item
-  Publication pattern and collaboration analysis
-\item
-  Research domains and targeted sources
-\item
-  Keywords analysis
-\end{itemize}
-
-\hypertarget{introduction}{%
-\section{前言}\label{introduction}}
 
 \hypertarget{methods}{%
 \section{材料和方法}\label{methods}}
 
-\hypertarget{ux6750ux6599}{%
-\subsection{材料}\label{ux6750ux6599}}
-
-All used GEO expression data and their design:
-
-\hypertarget{ux65b9ux6cd5}{%
-\subsection{方法}\label{ux65b9ux6cd5}}
+\hypertarget{meth}{%
+\subsection{方法}\label{meth}}
 
 Mainly used method:
 
 \begin{itemize}
 \tightlist
 \item
-  Package bibliometrix used for quantitative research in bibliometrics and scientometrics.\textsuperscript{{\textbf{???}}}
+  Package bibliometrix used for quantitative research in bibliometrics and scientometrics.\textsuperscript{\protect\hyperlink{ref-BibliometrixAria2017}{1}}
 \item
   Other R packages used for statistic analysis or data visualization.
 \end{itemize}
 
-Web of Science Core Collection (WoSCC)
+在 Web of Science Core Collection (WoSCC) 搜索 DR 和 OCTA 相关信息：
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+dr
+:}
+
+\vspace{0.5em}
+
+    diabetic retinopathy, diabetic macular edema, diabetic
+retinal damage, diabetic retina
+
+\vspace{2em}
+
+
+\textbf{
+octa
+:}
+
+\vspace{0.5em}
+
+    Optical Coherence Tomography Angiography, OCT
+Angiography, OCTA
+
+\vspace{2em}
+
+
+\textbf{
+query
+:}
+
+\vspace{0.5em}
+
+    ((((ALL=(diabetic retinopathy)) OR ALL=(diabetic
+macular edema)) OR ALL=(diabetic retinal damage)) OR
+ALL=(diabetic retina)) AND (((ALL=(Optical Coherence
+Tomography Angiography)) OR ALL=(OCT Angiography)) OR
+ALL=(OCTA))
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
 
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
 
-\hypertarget{dis}{%
-\section{结论}\label{dis}}
+\begin{itemize}
+\tightlist
+\item
+  搜索策略和分析的方法见 \ref{meth}
+\item
+  文献概览和发表趋势见 \ref{overview} 或 Fig. \ref{fig:MAIN-overview-of-all-documents}
+\item
+  高被引文献 (依据平均每年被引用排名) 和主要出版社 (根据出版数排名) 见
+  Tab. \ref{tab:DR-and-OCTA-top-ranked-documents-of-citation-per-year} 和
+  Tab. \ref{tab:DR-and-OCTA-top-publication-journal-by-count}。
+\item
+  国家协作 (country collaboration) 分析结果见 Fig. \ref{fig:DR-and-OCTA-country-collaboration-network}
+\item
+  共同引用分析 (注，分析的是文献引用的参考文献，即哪些文献共同引用的文献) 见
+  Fig. \ref{fig:DR-and-OCTA-top-ranked-of-co-citation}
+\item
+  共同关键词分析聚类结果见 Fig. \ref{fig:DR-and-OCTA-top-ranked-keywords-of-co-occurrences}。
+\item
+  MCA 分析 (Multiple Correspondence Analysis, MCA) 的概念结构图见
+  Fig. \ref{fig:DR-and-OCTA-conceptual-structure-map-of-a-scientific-field}
+\item
+  如果其他还需要一些表格 (图涉及的数据)，见 \ref{extra}
+\end{itemize}
+
+注：这里 MCA 分析使用 keywords 来源于 ``Keywords Plus associated by ISI or SCOPUS database''
+
+Figure \ref{fig:MAIN-overview-of-all-documents} (下方图) 为图MAIN overview of all documents概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig1.pdf}
+\caption{MAIN overview of all documents}\label{fig:MAIN-overview-of-all-documents}
+\end{center}
 
 \hypertarget{workflow}{%
 \section{附：分析流程}\label{workflow}}
 
-\hypertarget{level-2}{%
-\subsection{level 2}\label{level-2}}
+\hypertarget{stra}{%
+\subsection{搜索策略}\label{stra}}
 
-\hypertarget{level-3}{%
-\subsubsection{level 3}\label{level-3}}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+dr
+:}
 
-\hypertarget{level-4}{%
-\paragraph{level 4}\label{level-4}}
+\vspace{0.5em}
 
-\hypertarget{level-2-1}{%
-\subsection{level 2}\label{level-2-1}}
+    diabetic retinopathy, diabetic macular edema, diabetic
+retinal damage, diabetic retina
 
-\hypertarget{level-3-1}{%
-\subsubsection{level 3}\label{level-3-1}}
+\vspace{2em}
 
-\hypertarget{level-4-1}{%
-\paragraph{level 4}\label{level-4-1}}
 
-\hypertarget{level-2-2}{%
-\subsection{level 2}\label{level-2-2}}
+\textbf{
+octa
+:}
 
-\hypertarget{level-3-2}{%
-\subsubsection{level 3}\label{level-3-2}}
+\vspace{0.5em}
 
-\hypertarget{level-4-2}{%
-\paragraph{level 4}\label{level-4-2}}
+    Optical Coherence Tomography Angiography, OCT
+Angiography, OCTA
 
-\hypertarget{level-2-3}{%
-\subsection{level 2}\label{level-2-3}}
+\vspace{2em}
 
-\hypertarget{level-3-3}{%
-\subsubsection{level 3}\label{level-3-3}}
 
-\hypertarget{level-4-3}{%
-\paragraph{level 4}\label{level-4-3}}
+\textbf{
+query
+:}
+
+\vspace{0.5em}
+
+    ((((ALL=(diabetic retinopathy)) OR ALL=(diabetic
+macular edema)) OR ALL=(diabetic retinal damage)) OR
+ALL=(diabetic retina)) AND (((ALL=(Optical Coherence
+Tomography Angiography)) OR ALL=(OCT Angiography)) OR
+ALL=(OCTA))
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{overview}{%
+\subsection{研究概览}\label{overview}}
+
+\hypertarget{ux7c7bux578bux6bd4ux4f8b}{%
+\subsubsection{类型比例}\label{ux7c7bux578bux6bd4ux4f8b}}
+
+Figure \ref{fig:DR-and-OCTA-Total-documents-1801} (下方图) 为图DR and OCTA Total documents 1801概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-Total-documents-1801.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-Total-documents-1801.pdf}
+\caption{DR and OCTA Total documents 1801}\label{fig:DR-and-OCTA-Total-documents-1801}
+\end{center}
+
+\hypertarget{ux4e3bux8981ux4ea7ux51fa}{%
+\subsubsection{主要产出}\label{ux4e3bux8981ux4ea7ux51fa}}
+
+Figure \ref{fig:DR-and-OCTA-MostProdAuthors} (下方图) 为图DR and OCTA MostProdAuthors概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-MostProdAuthors.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-MostProdAuthors.pdf}
+\caption{DR and OCTA MostProdAuthors}\label{fig:DR-and-OCTA-MostProdAuthors}
+\end{center}
+
+Figure \ref{fig:DR-and-OCTA-MostProdCountries} (下方图) 为图DR and OCTA MostProdCountries概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-MostProdCountries.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-MostProdCountries.pdf}
+\caption{DR and OCTA MostProdCountries}\label{fig:DR-and-OCTA-MostProdCountries}
+\end{center}
+
+\hypertarget{ux603bux4f53ux8d8bux52bf}{%
+\subsubsection{总体趋势}\label{ux603bux4f53ux8d8bux52bf}}
+
+Figure \ref{fig:DR-and-OCTA-AnnualScientProd} (下方图) 为图DR and OCTA AnnualScientProd概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-AnnualScientProd.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-AnnualScientProd.pdf}
+\caption{DR and OCTA AnnualScientProd}\label{fig:DR-and-OCTA-AnnualScientProd}
+\end{center}
+
+Figure \ref{fig:DR-and-OCTA-AverArtCitperYear} (下方图) 为图DR and OCTA AverArtCitperYear概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-AverArtCitperYear.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-AverArtCitperYear.pdf}
+\caption{DR and OCTA AverArtCitperYear}\label{fig:DR-and-OCTA-AverArtCitperYear}
+\end{center}
+
+Figure \ref{fig:DR-and-OCTA-AverTotCitperYear} (下方图) 为图DR and OCTA AverTotCitperYear概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-AverTotCitperYear.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-AverTotCitperYear.pdf}
+\caption{DR and OCTA AverTotCitperYear}\label{fig:DR-and-OCTA-AverTotCitperYear}
+\end{center}
+
+\hypertarget{ux9ad8ux88abux5f15ux6587ux732e}{%
+\subsubsection{高被引文献}\label{ux9ad8ux88abux5f15ux6587ux732e}}
+
+Table \ref{tab:DR-and-OCTA-top-ranked-documents-of-citation-per-year} (下方表格) 为表格DR and OCTA top ranked documents of citation per year概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-top-ranked-documents-of-citation-per-year.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有30行7列，以下预览的表格可能省略部分数据；表格含有29个唯一`Title'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:DR-and-OCTA-top-ranked-documents-of-citation-per-year}DR and OCTA top ranked documents of citation per year}\tabularnewline
+\toprule
+Docum\ldots{} & Journal & Language & Publi\ldots{} & Scien\ldots{} & Title & Total\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Docum\ldots{} & Journal & Language & Publi\ldots{} & Scien\ldots{} & Title & Total\ldots{}\tabularnewline
+\midrule
+\endhead
+REVIEW & PROGR\ldots{} & ENGLISH & 2018 & OPHTH\ldots{} & OPTIC\ldots{} & 895\tabularnewline
+ARTICLE & LANCET & ENGLISH & 2012 & MEDIC\ldots{} & EMBRY\ldots{} & 1026\tabularnewline
+REVIEW & PROGR\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & OPTIC\ldots{} & 551\tabularnewline
+ARTICLE & PROCE\ldots{} & ENGLISH & 2015 & MULTI\ldots{} & QUANT\ldots{} & 489\tabularnewline
+REVIEW & OPHTH\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & GUIDE\ldots{} & 364\tabularnewline
+ARTICLE & AMERI\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & OPTIC\ldots{} & 431\tabularnewline
+ARTICLE & INVES\ldots{} & ENGLISH & 2016 & OPHTH\ldots{} & QUANT\ldots{} & 350\tabularnewline
+ARTICLE & ELECT\ldots{} & ENGLISH & 2020 & COMPU\ldots{} & EARLY\ldots{} & 154\tabularnewline
+ARTICLE & RETIN\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & RETIN\ldots{} & 328\tabularnewline
+ARTICLE & RETIN\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & ENLAR\ldots{} & 324\tabularnewline
+ARTICLE & JAMA \ldots{} & ENGLISH & 2016 & OPHTH\ldots{} & AUTOM\ldots{} & 272\tabularnewline
+ARTICLE & JAMA \ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{} & 231\tabularnewline
+ARTICLE & OPHTH\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{} & 227\tabularnewline
+ARTICLE & INVES\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{} & 220\tabularnewline
+ARTICLE & INVES\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{} & 219\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux4e3bux8981ux51faux7248ux793e}{%
+\subsubsection{主要出版社}\label{ux4e3bux8981ux51faux7248ux793e}}
+
+Table \ref{tab:DR-and-OCTA-top-publication-journal-by-count} (下方表格) 为表格DR and OCTA top publication journal by count概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-top-publication-journal-by-count.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有30行4列，以下预览的表格可能省略部分数据；表格含有30个唯一`journal'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:DR-and-OCTA-top-publication-journal-by-count}DR and OCTA top publication journal by count}\tabularnewline
+\toprule
+journal & count & CATEGORY & 2022IF\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+journal & count & CATEGORY & 2022IF\tabularnewline
+\midrule
+\endhead
+INVES\ldots{} & 312 & OPHTH\ldots{} & 4.4\tabularnewline
+RETIN\ldots{} & 149 & OPHTH\ldots{} & 3.3\tabularnewline
+SCIEN\ldots{} & 69 & MULTI\ldots{} & 4.6\tabularnewline
+BRITI\ldots{} & 58 & OPHTH\ldots{} & 4.1\tabularnewline
+GRAEF\ldots{} & 55 & OPHTH\ldots{} & 2.7\tabularnewline
+AMERI\ldots{} & 54 & OPHTH\ldots{} & 4.2\tabularnewline
+TRANS\ldots{} & 51 & OPHTH\ldots{} & 3\tabularnewline
+BIOME\ldots{} & 47 & BIOCH\ldots{} & 3.4\tabularnewline
+EUROP\ldots{} & 46 & OPHTH\ldots{} & 1.7\tabularnewline
+BMC O\ldots{} & 41 & OPHTH\ldots{} & 42.1\tabularnewline
+PLOS ONE & 40 & MULTI\ldots{} & 3.7\tabularnewline
+ACTA \ldots{} & 39 & OPHTH\ldots{} & 3.4\tabularnewline
+EYE & 39 & OPHTH\ldots{} & 3.9\tabularnewline
+JOURN\ldots{} & 34 & MEDIC\ldots{} & 42.1\tabularnewline
+OPHTH\ldots{} & 28 & SURGE\ldots{} & 1\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux56fdux5bb6ux534fux4f5c}{%
+\subsection{国家协作}\label{ux56fdux5bb6ux534fux4f5c}}
+
+Figure \ref{fig:DR-and-OCTA-country-collaboration-network} (下方图) 为图DR and OCTA country collaboration network概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-country-collaboration-network.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-country-collaboration-network.pdf}
+\caption{DR and OCTA country collaboration network}\label{fig:DR-and-OCTA-country-collaboration-network}
+\end{center}
+
+\hypertarget{ux5171ux5f15ux7528ux5206ux6790-ux53c2ux8003ux6587ux732eux5206ux6790}{%
+\subsection{共引用分析 (参考文献分析)}\label{ux5171ux5f15ux7528ux5206ux6790-ux53c2ux8003ux6587ux732eux5206ux6790}}
+
+Figure \ref{fig:DR-and-OCTA-top-ranked-of-co-citation} (下方图) 为图DR and OCTA top ranked of co citation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-top-ranked-of-co-citation.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-top-ranked-of-co-citation.pdf}
+\caption{DR and OCTA top ranked of co citation}\label{fig:DR-and-OCTA-top-ranked-of-co-citation}
+\end{center}
+
+\hypertarget{ux5171ux540cux5173ux952eux8bcd}{%
+\subsection{共同关键词}\label{ux5171ux540cux5173ux952eux8bcd}}
+
+Figure \ref{fig:DR-and-OCTA-top-ranked-keywords-of-co-occurrences} (下方图) 为图DR and OCTA top ranked keywords of co occurrences概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-top-ranked-keywords-of-co-occurrences.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-top-ranked-keywords-of-co-occurrences.pdf}
+\caption{DR and OCTA top ranked keywords of co occurrences}\label{fig:DR-and-OCTA-top-ranked-keywords-of-co-occurrences}
+\end{center}
+
+\hypertarget{ux6982ux5ff5ux805aux7c7bux5206ux6790}{%
+\subsection{概念聚类分析}\label{ux6982ux5ff5ux805aux7c7bux5206ux6790}}
+
+Figure \ref{fig:DR-and-OCTA-conceptual-structure-map-of-a-scientific-field} (下方图) 为图DR and OCTA conceptual structure map of a scientific field概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-conceptual-structure-map-of-a-scientific-field.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-conceptual-structure-map-of-a-scientific-field.pdf}
+\caption{DR and OCTA conceptual structure map of a scientific field}\label{fig:DR-and-OCTA-conceptual-structure-map-of-a-scientific-field}
+\end{center}
+
+\hypertarget{extra}{%
+\subsection{其它表格}\label{extra}}
+
+\hypertarget{ux4e3bux8981ux68c0ux7d22ux4fe1ux606f}{%
+\subsubsection{主要检索信息}\label{ux4e3bux8981ux68c0ux7d22ux4fe1ux606f}}
+
+Table \ref{tab:DR-and-OCTA-data-MainInformationDF} (下方表格) 为表格DR and OCTA data MainInformationDF概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-MainInformationDF})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有36行2列，以下预览的表格可能省略部分数据；表格含有36个唯一`Description'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:DR-and-OCTA-data-MainInformationDF}DR and OCTA data MainInformationDF}\tabularnewline
+\toprule
+Descr\ldots{} & Results\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Descr\ldots{} & Results\tabularnewline
+\midrule
+\endhead
+MAIN \ldots{} &\tabularnewline
+Timespan & 2012:\ldots{}\tabularnewline
+Sourc\ldots{} & 193\tabularnewline
+Docum\ldots{} & 1801\tabularnewline
+Annua\ldots{} & 17.74\tabularnewline
+Docum\ldots{} & 3.85\tabularnewline
+Avera\ldots{} & 21.22\tabularnewline
+Avera\ldots{} & 3.498\tabularnewline
+Refer\ldots{} & 26863\tabularnewline
+DOCUM\ldots{} &\tabularnewline
+article & 1313\tabularnewline
+artic\ldots{} & 2\tabularnewline
+artic\ldots{} & 35\tabularnewline
+artic\ldots{} & 18\tabularnewline
+corre\ldots{} & 4\tabularnewline
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5e74ux5ea6ux4ea7ux51fa}{%
+\subsubsection{年度产出}\label{ux5e74ux5ea6ux4ea7ux51fa}}
+
+Table \ref{tab:DR-and-OCTA-data-AnnualProduction} (下方表格) 为表格DR and OCTA data AnnualProduction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-AnnualProduction.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有12行2列，以下预览的表格可能省略部分数据；表格含有12个唯一`Year...'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:DR-and-OCTA-data-AnnualProduction}DR and OCTA data AnnualProduction}\tabularnewline
+\toprule
+Year\ldots{} & Articles\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Year\ldots{} & Articles\tabularnewline
+\midrule
+\endhead
+2012 & 33\tabularnewline
+2013 & 50\tabularnewline
+2014 & 41\tabularnewline
+2015 & 67\tabularnewline
+2016 & 123\tabularnewline
+2017 & 169\tabularnewline
+2018 & 203\tabularnewline
+2019 & 209\tabularnewline
+2020 & 223\tabularnewline
+2021 & 278\tabularnewline
+2022 & 206\tabularnewline
+2023 & 199\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6700ux9ad8ux4ea7ux7684ux4f5cux8005}{%
+\subsubsection{最高产的作者}\label{ux6700ux9ad8ux4ea7ux7684ux4f5cux8005}}
+
+Table \ref{tab:DR-and-OCTA-data-MostProdAuthors} (下方表格) 为表格DR and OCTA data MostProdAuthors概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-MostProdAuthors.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行4列，以下预览的表格可能省略部分数据；表格含有10个唯一`Authors.......'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:DR-and-OCTA-data-MostProdAuthors}DR and OCTA data MostProdAuthors}\tabularnewline
+\toprule
+Autho\ldots{} & Articles & Autho\ldots{} & Artic\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Autho\ldots{} & Articles & Autho\ldots{} & Artic\ldots{}\tabularnewline
+\midrule
+\endhead
+JIA Y\ldots{} & 53 & FAWZI\ldots{} & 8.00\tabularnewline
+BANDE\ldots{} & 51 & BANDE\ldots{} & 7.65\tabularnewline
+HWANG\ldots{} & 46 & JIA Y\ldots{} & 7.19\tabularnewline
+QUERQ\ldots{} & 43 & SPAID\ldots{} & 6.90\tabularnewline
+HUANG\ldots{} & 42 & QUERQ\ldots{} & 6.42\tabularnewline
+WANG \ldots{} & 41 & HWANG\ldots{} & 6.08\tabularnewline
+WAHEE\ldots{} & 38 & SADDA\ldots{} & 5.89\tabularnewline
+DUKER\ldots{} & 34 & WANG \ldots{} & 5.38\tabularnewline
+FAWZI\ldots{} & 33 & HUANG\ldots{} & 5.34\tabularnewline
+SADDA\ldots{} & 32 & YAO X\ldots{} & 4.69\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6700ux9ad8ux5f15ux7528}{%
+\subsubsection{最高引用}\label{ux6700ux9ad8ux5f15ux7528}}
+
+Table \ref{tab:DR-and-OCTA-data-MostCitedPapers} (下方表格) 为表格DR and OCTA data MostCitedPapers概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-MostCitedPapers.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行5列，以下预览的表格可能省略部分数据；表格含有10个唯一`Paper.........'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:DR-and-OCTA-data-MostCitedPapers}DR and OCTA data MostCitedPapers}\tabularnewline
+\toprule
+Paper\ldots{} & DOI & TC & TCper\ldots{} & NTC\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Paper\ldots{} & DOI & TC & TCper\ldots{} & NTC\tabularnewline
+\midrule
+\endhead
+SCHWA\ldots{} & 10.10\ldots{} & 1026 & 85.5 & 13.28\tabularnewline
+SPAID\ldots{} & 10.10\ldots{} & 895 & 149.2 & 31.77\tabularnewline
+KASHA\ldots{} & 10.10\ldots{} & 551 & 78.7 & 13.50\tabularnewline
+JIA Y\ldots{} & 10.10\ldots{} & 489 & 54.3 & 8.25\tabularnewline
+ISHIB\ldots{} & 10.10\ldots{} & 431 & 47.9 & 7.27\tabularnewline
+SCHMI\ldots{} & 10.11\ldots{} & 364 & 52.0 & 8.92\tabularnewline
+KIM A\ldots{} & 10.11\ldots{} & 350 & 43.8 & 6.72\tabularnewline
+AGEMY\ldots{} & 10.10\ldots{} & 328 & 36.4 & 5.53\tabularnewline
+TAKAS\ldots{} & 10.10\ldots{} & 324 & 36.0 & 5.46\tabularnewline
+LEITG\ldots{} & 10.10\ldots{} & 277 & 27.7 & 7.79\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6700ux9ad8ux4ea7ux7684ux56fdux5bb6}{%
+\subsubsection{最高产的国家}\label{ux6700ux9ad8ux4ea7ux7684ux56fdux5bb6}}
+
+Table \ref{tab:DR-and-OCTA-data-MostProdCountries} (下方表格) 为表格DR and OCTA data MostProdCountries概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-MostProdCountries.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行6列，以下预览的表格可能省略部分数据；表格含有10个唯一`Country'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:DR-and-OCTA-data-MostProdCountries}DR and OCTA data MostProdCountries}\tabularnewline
+\toprule
+Country & Articles & Freq & SCP & MCP & MCP\_R\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Country & Articles & Freq & SCP & MCP & MCP\_R\ldots{}\tabularnewline
+\midrule
+\endhead
+USA \ldots{} & 489 & 0.2895 & 299 & 190 & 0.3885\tabularnewline
+CHINA\ldots{} & 274 & 0.1622 & 225 & 49 & 0.1788\tabularnewline
+ITALY\ldots{} & 136 & 0.0805 & 103 & 33 & 0.2426\tabularnewline
+JAPAN\ldots{} & 104 & 0.0616 & 100 & 4 & 0.0385\tabularnewline
+KOREA\ldots{} & 73 & 0.0432 & 68 & 5 & 0.0685\tabularnewline
+FRANC\ldots{} & 56 & 0.0332 & 42 & 14 & 0.2500\tabularnewline
+INDIA\ldots{} & 52 & 0.0308 & 36 & 16 & 0.3077\tabularnewline
+GERMA\ldots{} & 47 & 0.0278 & 37 & 10 & 0.2128\tabularnewline
+UNITE\ldots{} & 46 & 0.0272 & 20 & 26 & 0.5652\tabularnewline
+TURKE\ldots{} & 44 & 0.0261 & 44 & 0 & 0.0000\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux56fdux5bb6ux5f15ux7528ux6570}{%
+\subsubsection{国家引用数}\label{ux56fdux5bb6ux5f15ux7528ux6570}}
+
+Table \ref{tab:DR-and-OCTA-data-TCperCountries} (下方表格) 为表格DR and OCTA data TCperCountries概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-TCperCountries.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行3列，以下预览的表格可能省略部分数据；表格含有10个唯一`Country.....'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:DR-and-OCTA-data-TCperCountries}DR and OCTA data TCperCountries}\tabularnewline
+\toprule
+Count\ldots{} & Total\ldots{} & Avera\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Count\ldots{} & Total\ldots{} & Avera\ldots{}\tabularnewline
+\midrule
+\endhead
+USA \ldots{} & 17522 & 35.83\tabularnewline
+JAPAN\ldots{} & 3046 & 29.29\tabularnewline
+CHINA\ldots{} & 2850 & 10.40\tabularnewline
+ITALY\ldots{} & 2654 & 19.51\tabularnewline
+KOREA\ldots{} & 1568 & 21.48\tabularnewline
+FRANC\ldots{} & 1450 & 25.89\tabularnewline
+AUSTR\ldots{} & 1128 & 29.68\tabularnewline
+UNITE\ldots{} & 1105 & 24.02\tabularnewline
+SINGA\ldots{} & 827 & 29.54\tabularnewline
+AUSTR\ldots{} & 776 & 36.95\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux4e3bux8981ux673aux6784}{%
+\subsubsection{主要机构}\label{ux4e3bux8981ux673aux6784}}
+
+Table \ref{tab:DR-and-OCTA-data-MostRelSources} (下方表格) 为表格DR and OCTA data MostRelSources概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-MostRelSources.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行2列，以下预览的表格可能省略部分数据；表格含有10个唯一`Sources.......'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:DR-and-OCTA-data-MostRelSources}DR and OCTA data MostRelSources}\tabularnewline
+\toprule
+Sourc\ldots{} & Articles\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Sourc\ldots{} & Articles\tabularnewline
+\midrule
+\endhead
+INVES\ldots{} & 312\tabularnewline
+RETIN\ldots{} & 149\tabularnewline
+SCIEN\ldots{} & 69\tabularnewline
+BRITI\ldots{} & 58\tabularnewline
+GRAEF\ldots{} & 55\tabularnewline
+AMERI\ldots{} & 54\tabularnewline
+TRANS\ldots{} & 51\tabularnewline
+BIOME\ldots{} & 47\tabularnewline
+EUROP\ldots{} & 46\tabularnewline
+BMC O\ldots{} & 41\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6700ux76f8ux5173ux7684ux5173ux952eux8bcd}{%
+\subsubsection{最相关的关键词}\label{ux6700ux76f8ux5173ux7684ux5173ux952eux8bcd}}
+
+Table \ref{tab:DR-and-OCTA-data-MostRelKeywords} (下方表格) 为表格DR and OCTA data MostRelKeywords概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-MostRelKeywords.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行4列，以下预览的表格可能省略部分数据；表格含有10个唯一`Author.Keywords..DE......'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:DR-and-OCTA-data-MostRelKeywords}DR and OCTA data MostRelKeywords}\tabularnewline
+\toprule
+Autho\ldots{} & Articles & Keywo\ldots{} & Artic\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Autho\ldots{} & Articles & Keywo\ldots{} & Artic\ldots{}\tabularnewline
+\midrule
+\endhead
+DIABE\ldots{} & 428 & RETIN\ldots{} & 317\tabularnewline
+OPTIC\ldots{} & 392 & DIABE\ldots{} & 296\tabularnewline
+OPTIC\ldots{} & 207 & OPTIC\ldots{} & 287\tabularnewline
+DIABE\ldots{} & 130 & FOVEA\ldots{} & 263\tabularnewline
+RETIN\ldots{} & 128 & EYES \ldots{} & 250\tabularnewline
+FOVEA\ldots{} & 81 & FLUOR\ldots{} & 246\tabularnewline
+FLUOR\ldots{} & 80 & COHER\ldots{} & 181\tabularnewline
+VESSE\ldots{} & 74 & ANGIO\ldots{} & 159\tabularnewline
+OCTA \ldots{} & 73 & DENSI\ldots{} & 131\tabularnewline
+OCT A\ldots{} & 63 & MACUL\ldots{} & 126\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-BibliometrixAria2017}{}%
+1. Aria, M. \& Cuccurullo, C. Bibliometrix : An r-tool for comprehensive science mapping analysis. \emph{Journal of Informetrics} \textbf{11}, 959--975 (2017).
+\end{cslreferences}
 
 \end{document}

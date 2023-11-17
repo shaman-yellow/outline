@@ -18,7 +18,7 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-set_cover("title")
+set_cover("OCTA 在糖尿病视网膜病变中的应用")
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -31,49 +31,204 @@ set_index()
 
 # 摘要 {#abstract}
 
-糖尿病视网膜病变 (diabetic retinopathy, DR)
-光学相干断层扫描血管成像技术 (Optical Coherence Tomography Angiography, OCTA)
-
-- 时间分布 (发表) (趋势) 
-- 国家
-- 协作 
-- 引用
-- Top 10 keywords with the strongest citation
-- top 10 article
-- top country
-- Collaboration
-- The co-occurrence map of keywords
-
-topic:
-
-- Trend analysis of publications and citations
-- Publication pattern and collaboration analysis
-- Research domains and targeted sources
-- Keywords analysis
-
-# 前言 {#introduction}
+- 糖尿病视网膜病变 (diabetic retinopathy, DR)
+- 光学相干断层扫描血管成像技术 (Optical Coherence Tomography Angiography, OCTA)
 
 # 材料和方法 {#methods}
 
-## 材料
-
-```{r eval = T, echo = F, results = "asis"}
-auto_material()
-```
-
-## 方法
+## 方法 {#meth}
 
 ```{r eval = T, echo = F, results = "asis"}
 auto_method()
 ```
 
-Web of Science Core Collection (WoSCC)
+在 Web of Science Core Collection (WoSCC) 搜索 DR 和 OCTA 相关信息：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Keywords-for-query-rep
+autor(bi$keywords)
+```
 
 # 分析结果 {#results}
 
-# 结论 {#dis}
+- 搜索策略和分析的方法见 \@ref(meth)
+- 文献概览和发表趋势见 \@ref(overview) 或 Fig. \@ref(fig:MAIN-overview-of-all-documents)
+- 高被引文献 (依据平均每年被引用排名) 和主要出版社 (根据出版数排名) 见
+  Tab. \@ref(tab:DR-and-OCTA-top-ranked-documents-of-citation-per-year) 和
+  Tab. \@ref(tab:DR-and-OCTA-top-publication-journal-by-count)。
+- 国家协作 (country collaboration) 分析结果见 Fig. \@ref(fig:DR-and-OCTA-country-collaboration-network)
+- 共同引用分析 (注，分析的是文献引用的参考文献，即哪些文献共同引用的文献) 见
+  Fig. \@ref(fig:DR-and-OCTA-top-ranked-of-co-citation)
+- 共同关键词分析聚类结果见 Fig. \@ref(fig:DR-and-OCTA-top-ranked-keywords-of-co-occurrences)。
+- MCA 分析 (Multiple Correspondence Analysis, MCA) 的概念结构图见
+  Fig. \@ref(fig:DR-and-OCTA-conceptual-structure-map-of-a-scientific-field)
+- 如果其他还需要一些表格 (图涉及的数据)，见 \@ref(extra)
+
+注：这里 MCA 分析使用 keywords 来源于 "Keywords Plus associated by ISI or SCOPUS database"
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-overview-of-all-documents
+autor("./Figure+Table/fig1.pdf")
+```
+
+```{r}
+fig1 <- cl(
+  rw("./Figure+Table/DR-and-OCTA-Total-documents-1801.pdf",
+    "./Figure+Table/DR-and-OCTA-MostProdCountries.pdf"),
+  rw("./Figure+Table/DR-and-OCTA-MostProdAuthors.pdf",
+    "./Figure+Table/DR-and-OCTA-AverArtCitperYear.pdf"),
+  rw("./Figure+Table/DR-and-OCTA-AnnualScientProd.pdf",
+    "./Figure+Table/DR-and-OCTA-AverTotCitperYear.pdf")
+)
+render(fig1)
+```
 
 # 附：分析流程 {#workflow}
+
+## 搜索策略 {#stra}
+
+```{r eval = T, echo = F, results = "asis"}
+#| Keywords-for-query
+autor(bi$keywords)
+```
+
+## 研究概览 {#overview}
+
+### 类型比例
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-Total-documents-1801
+autor(bi@plots$step2$p.dt)
+```
+
+### 主要产出
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-MostProdAuthors
+autor(bi@plots$step2$p.most_ave[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-MostProdCountries
+autor(bi@plots$step2$p.most_ave[[2]])
+```
+
+### 总体趋势
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-AnnualScientProd
+autor(bi@plots$step2$p.most_ave[[3]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-AverArtCitperYear
+autor(bi@plots$step2$p.most_ave[[4]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-AverTotCitperYear
+autor(bi@plots$step2$p.most_ave[[5]])
+```
+
+### 高被引文献
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-top-ranked-documents-of-citation-per-year
+autor(bi@tables$step3$t.most_citation[, -1], key = "Title")
+```
+
+### 主要出版社
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-top-publication-journal-by-count
+autor(bi@tables$step3$t.journal_top)
+```
+
+## 国家协作
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-country-collaboration-network
+autor(bi@plots$step3$p.co_country)
+```
+
+## 共引用分析 (参考文献分析)
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-top-ranked-of-co-citation
+autor(bi@plots$step3$p.co_citation)
+```
+
+## 共同关键词
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-top-ranked-keywords-of-co-occurrences
+autor(bi@plots$step3$p.co_keywords)
+```
+
+## 概念聚类分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-conceptual-structure-map-of-a-scientific-field
+autor(bi@plots$step4$p.conceptual_structure)
+```
+
+## 其它表格 {#extra}
+
+### 主要检索信息
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-data-MainInformationDF
+autor(bi@tables$step2$t.summary[[1]])
+```
+
+### 年度产出
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-data-AnnualProduction
+autor(bi@tables$step2$t.summary[[2]])
+```
+
+### 最高产的作者
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-data-MostProdAuthors
+autor(bi@tables$step2$t.summary[[3]])
+```
+
+### 最高引用
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-data-MostCitedPapers
+autor(bi@tables$step2$t.summary[[4]])
+```
+
+### 最高产的国家
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-data-MostProdCountries
+autor(bi@tables$step2$t.summary[[5]])
+```
+
+### 国家引用数
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-data-TCperCountries
+autor(bi@tables$step2$t.summary[[6]])
+```
+
+### 主要机构
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-data-MostRelSources
+autor(bi@tables$step2$t.summary[[7]])
+```
+
+### 最相关的关键词
+
+```{r eval = T, echo = F, results = "asis"}
+#| DR-and-OCTA-data-MostRelKeywords
+autor(bi@tables$step2$t.summary[[8]])
+```
 
 ```{r}
 kds <- list(
@@ -86,19 +241,36 @@ kds <- list(
 )
 
 bi <- job_biblio(kds)
-bi@params$keywords
+sig(bi) <- "DR and OCTA"
 bi <- step1(bi, 4)
-bi@params$summary
-bi@tables$step1$alls
-clear(bi)
-
-bi <- readRDS("./bi.1.rds")
 bi <- step2(bi)
 bi <- step3(bi)
+clear(bi)
 
+bi@params$summary
+
+bi <- readRDS("./bi.3.rds")
+bi <- step4(bi)
+bi@params$cs
+bi@plots$step4$p.conceptual_structure
+
+bi@plots$step3$p.co_citation
+bi@plots$step3$p.co_country
+
+bi@tables$step3$t.journal_top
+dplyr::filter(bi@tables$step3$t.journal_top, is.na(`2022IF`))
+ex <- list(`BRITISH JOURNAL OF OPHTHALMOLOGY` = 4.1,
+  `PHOTODIAGNOSIS AND PHOTODYNAMIC THERAPY` = 3.3
+)
+bi@tables$step3$t.journal_top %<>% fill("journal", "2022IF", ex)
+bi@tables$step3$t.journal_top
+
+# journal ok
+# citation ok
+# institution
+# country
 
 load("./small.rdata")
-bi <- step4(bi)
 save_small(100)
 ```
 
