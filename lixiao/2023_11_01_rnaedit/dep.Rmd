@@ -77,3 +77,66 @@ gse <- step2(gse, c("hsa01100"))
 gse@plots$step2$p.code
 gse <- step3(gse, c("hsa01100"))
 ```
+
+### Proximal tubular cells
+
+```{r}
+gse.pr <- asjob_gsea(srs, "Proximal")
+gse.pr <- step1(gse.pr)
+gse.pr@plots$step1$p.go
+```
+
+## Communication
+
+```{r}
+```
+
+# 研究设计流程图 {#route}
+
+```{r}
+#| route
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
+p.route
+```
+
+
+ADAR1 [@TheRoleOfRnaSong2022]
+
+```{r}
+
+
+fun <- function() {
+  g.list <- gse@tables$step1$table_kegg$geneName_list
+  ref <- unique(bm@params$edqtl$ref_gene)
+  isThat <- vapply(g.list, FUN.VALUE = logical(1),
+    function(lst) {
+      any(lst %in% ref)
+    })
+  data <- filter(gse@tables$step1$table_kegg, isThat)
+  list(data = data, id = data$ID)
+}
+lst.find <- fun()
+```
+
+
+## IgA WES 数据
+
+```{r}
+# 19-21
+qpdf::pdf_subset("./article_supp_wes/JOIM-281-189-s001.pdf", 19:21, "./article_supp_wes/supp19_21.pdf")
+# https://www.totalpdf.com/pdf_ocr_excel
+supp.wes <- fxlsx("./article_supp_wes/supp19_21.xlsx", startRow = 2)
+supp.wes <- select(supp.wes, -1)
+supp.wes <- filter(supp.wes, !is.na(GENE.SYMBOL))
+supp.wes <- mutate(supp.wes, variant_id = paste0("chr", CH.R, "_", POS, "_", REF, "_", ALT, "_b38"))
+
+supp.match <- filter(supp.wes, variant_id %in% ed@object$signif_variant_site_pairs$variant_id)
+
+```

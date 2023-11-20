@@ -1,0 +1,485 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
+---
+
+
+```{r include = F}
+deparse_mail()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover("以 GTEx edQTL 分析 IgA 肾病中的 RNA 编辑")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+je <- job_esearch("RNA editing")
+vis(je, "Nature")
+
+je1 <- job_esearch("RBPs prediction")
+vis(je1, "Nature")
+
+je2 <- job_esearch("RNA editing scRNA-seq")
+vis(je2)
+```
+
+# 前言 {#introduction}
+
+最近的研究表明，RNA 编辑是常见炎症性疾病遗传风险的基础，相当的 cis-RNA editing QTLs (edQTLs) 在自身免疫和免疫介导疾病的全基因组关联研究信号中显着富集 [@RnaEditingUndLiQi2022]。
+RNA 编辑蛋白 ADAR 介导的腺苷-肌苷（A-to-I）RNA编辑是防止细胞自身双链RNA（dsRNA）引发先天免疫干扰素应答的重要转录后事件，因遗传因素引起的双链RNA编辑水平的降低，是导致炎症性疾病遗传风险升高的重要因素[@RnaEditingUndLiQi2022]。
+RNA 编辑拓宽了自身免疫性疾病治疗和机制探究的领域。
+IgA 肾病 (IgA nephropathy) 是 CKD 和肾衰竭的主要原因[@IgaNephropathyRodrig2017], 发病机制尚不明确，被推测为一种遗传 (genetic) 相关疾病 [@ImmuneAbnormalGentil2023]。然而，还没有研究从 RNA 编辑的角度阐述 IgA 肾病的发生或发展机制。在本研究中，选用了一组 IgA 肾病的单细胞数据集 (scRNA-seq) ，并借助 GTEx 的 edQTL 数据集，探究 IgA 肾病细胞中可能的 RNA 编辑事件。 
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+## IgA 肾病组织和 Normal 组织
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-IgA-and-Normal-dataset
+autor("./Figure+Table/fig1.pdf")
+```
+
+```{r}
+fig1 <- cls(
+  cl("./Figure+Table/Normal-Quality-Control.pdf",
+    "./Figure+Table/Normal-UMAP-Clustering.pdf",
+    "./Figure+Table/Normal-SCSA-Cell-type-annotation.pdf"),
+  cl("./Figure+Table/IgA-Quality-Control.pdf",
+    "./Figure+Table/IgA-UMAP-Clustering.pdf",
+    "./Figure+Table/IgA-SCSA-Cell-type-annotation.pdf")
+)
+render(fig1)
+```
+
+## IgA 肾病组织的细胞通讯
+
+## IgA 和 Normal 的集成分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-integrated-dataset-of-B-cells
+autor("./Figure+Table/fig2.pdf")
+```
+
+```{r}
+fig3 <- cl(
+  rw("./Figure+Table/Integrated-dataset-select-reference-dataset-for-integration.pdf",
+    "./Figure+Table/Integrated-dataset-The-cell-mapped.pdf"),
+  rw("./Figure+Table/Integrated-IgA-B-cell-vs-Normal-B-cell.pdf",
+    "./Figure+Table/Integrated-dataset-IgA-B-cell-vs-Normal-B-cell-KEGG-enrichment.pdf",
+    "./Figure+Table/Integrated-dataset-IgA-B-cell-vs-Normal-B-cell-GSEA-plot-of-pathway.pdf")
+)
+render(fig3)
+```
+
+## IgA 肾病 B 细胞可能的 RNA 编辑
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-possibly-RNA-editing-site-in-B-cells
+autor("./Figure+Table/fig3.pdf")
+```
+
+```{r}
+fig4 <- cl(
+  rw("./Figure+Table/Top-DEGs-The-matched-RNA-editing-site.pdf",
+    "./Figure+Table/Possibly-RNA-editing-site-correlation-with-the-pathway-genes.pdf"),
+  "./Figure+Table/Integrated-violing-plot-of-expression-level-of-the-genes.pdf"
+)
+render(fig4)
+```
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## IgA 肾病和正常组织相比
+
+### IgA scRNA-seq
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-Quality-Control
+autor(sr.iga@plots$step1$p.qc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-Ranking-of-principle-components
+autor(sr.iga@plots$step2$p.pca_rank)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-UMAP-Clustering
+autor(sr.iga@plots$step3$p.umap)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-SCSA-Cell-type-annotation
+autor(sr.iga@plots$step6$p.map_scsa)
+```
+
+```{r}
+geo.iga <- job_geo("GSE171314")
+geo.iga <- step1(geo.iga)
+geo.iga@params$prods
+geo.iga <- step2(geo.iga)
+geo.iga@params$guess
+system(paste0("mv ../2023_09_27_dualdisease/GSE171314/ -t . "))
+```
+
+```{r}
+skel(.job_seurat(), "sr.iga")
+
+sr.iga <- job_seurat("./GSE171314/GSM5222730_s200525a4/")
+
+sig(sr.iga) <- "IgA"
+sr.iga <- step1(sr.iga)
+sr.iga@plots$step1$p.qc
+sr.iga <- step2(sr.iga, 0, 6000, 75)
+sr.iga@plots$step2$p.pca_rank
+sr.iga <- step3(sr.iga, 1:10, .8)
+sr.iga@step <- 4L
+sr.iga@plots$step3$p.umap
+sr.iga <- step5(sr.iga, 5)
+sr.iga <- step6(sr.iga, "Kidney")
+sr.iga@plots$step6$p.map_scsa
+clear(sr.iga)
+```
+
+### Normal scRNA-seq
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Normal-Quality-Control
+autor(sr.nor@plots$step1$p.qc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Normal-Ranking-of-principle-components
+autor(sr.nor@plots$step2$p.pca_rank)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Normal-UMAP-Clustering
+autor(sr.nor@plots$step3$p.umap)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Normal-SCSA-Cell-type-annotation
+autor(sr.nor@plots$step6$p.map_scsa)
+```
+
+```{r}
+sr.nor <- job_seurat("./GSE171314/GSM5222734_s200707N5")
+
+sig(sr.nor) <- "Normal"
+sr.nor <- step1(sr.nor)
+sr.nor@plots$step1$p.qc
+sr.nor <- step2(sr.nor, 0, 6000, 75)
+sr.nor@plots$step2$p.pca_rank
+sr.nor <- step3(sr.nor, 1:10, .8, force = T)
+sr.nor@step <- 4L
+sr.nor@plots$step3$p.umap
+sr.nor <- step5(sr.nor, 5)
+sr.nor <- step6(sr.nor, "Kidney")
+sr.nor@plots$step6$p.map_scsa
+clear(sr.nor)
+
+```
+
+## IgA 肾病细胞的通讯
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-overall-communication-count
+autor(cc@plots$step1$p.aggre_count)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-Cell-communication-heatmap
+autor(wrap(cc@plots$step2$cell_comm_heatmap$ALL$main))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-All-ligand-receptor-role
+autor(wrap(cc@plots$step2$lr_role_heatmap$all, 6, 5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-ligand-receptor-of-B-cell-communicate-with-Mast-cell
+autor(wrap(p.cc$p, 8, 4))
+```
+
+```{r}
+cc <- asjob_cellchat(sr.iga)
+sig(cc) <- "IgA"
+cc <- step1(cc)
+cc <- step2(cc)
+clear(cc)
+
+cc@plots$step2$cell_comm_heatmap$ALL
+cc@plots$step2$lr_comm_bubble
+
+lp_net.b <- select_pathway(cc, "B cell|Mast cell", "lps")
+g.lp <- unique(c(lp_net.b$ligand, lp_net.b$receptor))
+
+filter(p.cor$sig.corp, Editing.RNA %in% !!g.lp | Pathway.hsa04658 %in% !!g.lp)
+
+p.cc <- map(cc, "B cell", "Mast cell")
+wrap(p.cc$p, 8, 4)
+```
+
+## IgA 和 Normal 的集成分析
+
+### RISC integration
+
+```{r eval = T, echo = F, results = "asis"}
+#| Integrated-dataset-select-reference-dataset-for-integration
+autor(rs@plots$step1$p.reference)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Integrated-dataset-The-cell-mapped
+autor(p.srs)
+```
+
+```{r}
+sr.nor <- mutate(sr.nor, cell_mapped = paste0("Normal_", gs(scsa_cell, " ", "_")))
+sr.iga <- mutate(sr.iga, cell_mapped = paste0("IgA_", gs(scsa_cell, " ", "_")))
+vis(sr.iga, "cell_mapped")
+
+rs <- asjob_risc(list(Normal = sr.nor, IgA = sr.iga), NULL, group.by = "cell_mapped")
+sig(rs) <- "Integrated dataset"
+rs <- step1(rs, 10)
+rs@plots$step1$p.reference
+
+pattern <- unique(gs(c(ids(sr.iga), ids(sr.nor)), " ", "_"))
+rs <- step2(rs, "IgA", pattern)
+rs@plots$step2$p.umap
+clear(rs)
+```
+
+### AS Seurat object
+
+```{r eval = T, echo = F, results = "asis"}
+#| Integrated-IgA-B-cell-vs-Normal-B-cell
+autor(p.volca)
+```
+
+在 R 中，重新将 RISC 对象转化为 Seurat 对象进行差异分析。
+
+```{r}
+srs <- asjob_seurat(rs)
+p.srs <- vis(srs, "cell_mapped")
+p.srs
+
+## more contrasts
+cons <- table(gs(ids(srs), "^[a-zA-Z]+_", "")) %>% .[. == 2] %>% names()
+
+srs <- diff(srs, "cell_mapped",
+  lapply(cons, function(x) paste0(c("IgA_", "Normal_"), x)))
+
+srs@params$contrasts
+srs@params$diff_sets_intersection
+srs@params$p.diff_sets_intersection
+clear(srs)
+```
+
+```{r}
+p.volca <- plot_valcano(dplyr::rename(srs@params$contrasts, logFC = avg_log2FC), label = "gene", use = "p_val_adj")
+p.volca <- .set_lab(p.volca, sig(srs), "IgA B cell vs Normal B cell")
+```
+
+### Enrichment
+
+```{r eval = T, echo = F, results = "asis"}
+#| Integrated-dataset-IgA-B-cell-vs-Normal-B-cell-KEGG-enrichment
+autor(gse@plots$step1$p.kegg)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Integrated-dataset-IgA-B-cell-vs-Normal-B-cell-GO-enrichment
+autor(gse@plots$step1$p.go)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Integrated-dataset-IgA-B-cell-vs-Normal-B-cell-GSEA-plot-of-pathway
+autor(gse@plots$step2$p.code)
+```
+
+```{r}
+gse <- asjob_gsea(srs, "B_cells")
+sig(gse) <- "Integrated dataset IgA B cell vs Normal B cell"
+gse <- step1(gse)
+gse@plots$step1$p.kegg
+gse@plots$step1$p.go
+gse@tables$step1$table_kegg
+gse <- step2(gse, c("hsa04658"))
+gse@plots$step2$p.code
+gse <- step3(gse, c("hsa04658"))
+gse@plots$step3$p.pathviews$hsa04658
+clear(gse)
+
+g.th12 <- filter(gse@tables$step1$table_kegg, grpl(Description, "Th1 and Th2"))$geneName_list[[1]]
+```
+
+## GTEx edQTLs 数据
+
+- <https://gtexportal.org/home/downloads/adult-gtex#variants>
+
+### The matched RNA editing site (using top DEGs)
+
+```{r eval = T, echo = F, results = "asis"}
+#| Top-DEGs-The-matched-RNA-editing-site
+autor(bm@params$p.edqtl)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Top-DEGs-The-matched-RNA-editing-site-DATA
+autor(bm@params$edqtl)
+```
+
+```{r}
+ed <- job_edqtl()
+ed <- step1(ed, "Kidney-Cortex")
+ed@object$signif_variant_site_pairs
+
+```
+
+```{r}
+bm <- job_biomart("hsa")
+sig(bm) <- "Top-DEGs"
+bm <- step1(bm, srs@params$contrasts$gene, "hg")
+bm <- map(bm, ed)
+bm@params$p.edqtl
+m.ed <- unique(bm@params$edqtl$ref_gene)
+bm@params$edqtl
+```
+
+### Correlation
+
+```{r eval = T, echo = F, results = "asis"}
+#| Possibly-RNA-editing-site-correlation-with-the-pathway-genes
+autor(p.hp)
+```
+
+```{r}
+p.cor <- cal_corp(srs, NULL, m.ed, g.th12, names = c("Editing RNA", "Pathway hsa04658"))
+p.hp <- wrap(p.cor$hp, 7, 5)
+p.hp <- .set_lab(p.hp, "possibly RNA editing site correlation with the pathway genes")
+
+g.hcor <- c("MAF", "CYP4F3")
+p.srs
+
+# MAF 4094
+filter(bm$anno, hgnc_symbol %in% g.hcor)
+filter(srs@params$contrasts, grpl(contrast, "B_cell"), gene %in% !!g.hcor)
+
+en <- job_enrich(g.hcor, bm$anno)
+en <- step1(en)
+en@plots$step1$p.kegg
+en@plots$step1$p.go
+en@tables$step1$res.kegg
+
+en@tables$step1$res.go
+```
+
+### Expression level
+
+```{r eval = T, echo = F, results = "asis"}
+#| Integrated-violing-plot-of-expression-level-of-the-genes
+autor(wrap(p.expr$p.vln, 17, 6))
+```
+
+```{r}
+p.expr <- focus(srs, g.hcor)
+wrap(p.expr$p.vln, 17, 6)
+
+p.expr.adar <- focus(srs, "ADAR")
+p.expr.adar
+
+fun <- function() {
+  grpf(rownames(object(srs)), "MDA|ADAR")
+  grpf(srs@params$contrasts$gene, "MDA|ADAR")
+}
+fun()
+
+```
+
+
+
+```{r}
+save_small()
+
+load("./small.rdata")
+sr.nor <- readRDS("./sr.nor.6.rds")
+sr.iga <- readRDS("./sr.iga.6.rds")
+rs <- readRDS("./rs.2.rds")
+srs <- readRDS("./srs.3.rds")
+cc <- readRDS("./cc.2.rds")
+```
+
+```{r}
+je <- job_esearch("ADAR1")
+vis(je)
+
+```
+
