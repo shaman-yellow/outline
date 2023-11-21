@@ -51,7 +51,7 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-set_cover("以 GTEx edQTL 分析 IgA 肾病中的 RNA 编辑")
+set_cover("RNA 编辑和 IgA 肾病中 B 细胞免疫行为的关联性")
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -59,6 +59,8 @@ set_index()
 ```
 
 # 摘要 {#abstract}
+
+IgA 肾病 (IgA nephropathy) 的发病机制尚不明确，被推断为遗传相关疾病。最近的研究表明，RNA 编辑是常见炎症性疾病遗传风险的基础。本研究从 IgA 肾病的单细胞数据集出发，结合 RNA 编辑的角度分析，试探究 IgA 肾病潜在的 RNA 编辑事件的风险。 (结果见 \@ref(dis)) 
 
 ```{r}
 je <- job_esearch("RNA editing")
@@ -76,7 +78,7 @@ vis(je2)
 最近的研究表明，RNA 编辑是常见炎症性疾病遗传风险的基础，相当的 cis-RNA editing QTLs (edQTLs) 在自身免疫和免疫介导疾病的全基因组关联研究信号中显着富集 [@RnaEditingUndLiQi2022]。
 RNA 编辑蛋白 ADAR 介导的腺苷-肌苷（A-to-I）RNA编辑是防止细胞自身双链RNA（dsRNA）引发先天免疫干扰素应答的重要转录后事件，因遗传因素引起的双链RNA编辑水平的降低，是导致炎症性疾病遗传风险升高的重要因素[@RnaEditingUndLiQi2022]。
 RNA 编辑拓宽了自身免疫性疾病治疗和机制探究的领域。
-IgA 肾病 (IgA nephropathy) 是 CKD 和肾衰竭的主要原因[@IgaNephropathyRodrig2017], 发病机制尚不明确，被推测为一种遗传 (genetic) 相关疾病 [@ImmuneAbnormalGentil2023]。然而，还没有研究从 RNA 编辑的角度阐述 IgA 肾病的发生或发展机制。在本研究中，选用了一组 IgA 肾病的单细胞数据集 (scRNA-seq) ，并借助 GTEx 的 edQTL 数据集，探究 IgA 肾病细胞中可能的 RNA 编辑事件。 
+IgA 肾病 (IgA nephropathy) 是 CKD 和肾衰竭的主要原因[@IgaNephropathyRodrig2017], 发病机制尚不明确，被推测为一种遗传 (genetic) 相关疾病 [@ImmuneAbnormalGentil2023]。然而，还没有研究从 RNA 编辑的角度阐述 IgA 肾病的发生或发展机制。在本研究中，选用了一组 IgA 肾病相关的单细胞数据集 (scRNA-seq) ，并借助 GTEx 的 edQTL 数据集，探究 IgA 肾病细胞中可能的 RNA 编辑事件。 
 
 # 材料和方法 {#methods}
 
@@ -95,6 +97,8 @@ auto_method()
 # 分析结果 {#results}
 
 ## IgA 肾病组织和 Normal 组织
+
+将来源于 GSE171314 的 IgA 肾病组织样本和 Normal 对照样本分别以 Seurat 预处理和细胞聚类，再以 SCSA [@ScsaACellTyCaoY2020] 注释细胞类型 (Fig. \@ref(fig:MAIN-IgA-and-Normal-dataset), a、b、c 对应 Normal，d、e、f 对应 IgA )。两组样本来源于同一个 GSE 数据集，因此数据质量总体相近 (Fig. \@ref(fig:MAIN-IgA-and-Normal-dataset)a、d)。SCSA 对 Normal 和 IgA 注释结果有较大区别。IgA 组织 (Fig. \@ref(fig:MAIN-IgA-and-Normal-dataset)f) 中出现了巨噬细胞聚类团，反映了 IgA 肾炎过程中的免疫浸润，而这在 Normal 中是不存在的 (Fig. \@ref(fig:MAIN-IgA-and-Normal-dataset)c)。IgA 组织中还出现了肥大细胞 (Mast cell) (Fig. \@ref(fig:MAIN-IgA-and-Normal-dataset)f)。已有研究表明，高密度的肾肥大细胞与 IgA 肾病患者的不良预后相关[@HighRenalMastWang2023]。此外，IgA 组织中没有足细胞 (Podocyte cell) 的聚类团 (Fig. \@ref(fig:MAIN-IgA-and-Normal-dataset)f) ，而 Normal 中有足细胞的单独聚类团 (Fig. \@ref(fig:MAIN-IgA-and-Normal-dataset)c)。这预示着 IgA 组织中的 足细胞损伤。足细胞损伤是肾脏疾病蛋白尿的主要原因，足细胞持续丢失会导致肾脏疾病快速不可逆转的进展[@SirtuinsAsNovLiuT2022]。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| MAIN-IgA-and-Normal-dataset
@@ -115,11 +119,31 @@ render(fig1)
 
 ## IgA 肾病组织的细胞通讯
 
-## IgA 和 Normal 的集成分析
+为了进一步探究 IgA 肾病中各细胞的状态以及彼此的关系，这里将 IgA 肾病组织数据以 CellChat 作细胞通讯分析。总体通讯如Fig. \@ref(fig:MAIN-IgA-cell-communication)a、b 所示。明显的，IgA 肾病中肥大细胞 (Mast cell) 与 B 细胞的通讯作用是最强烈的，Mast 细胞主要作为通讯的源细胞，B 细胞作为接收通讯的细胞 (Fig. \@ref(fig:MAIN-IgA-cell-communication)b) 。Mast cell 被认为是针对病原体的先天性和适应性免疫反应的关键发起者和调节者[@MastCellsAsSMukai2018; @MastCellRespoMarsha2004]。研究表明，Mast cell 可以极大地改变 B 细胞的生成和活性，肥大细胞在许多组织环境中与 B 细胞共定位并产生大量细胞因子，对 B 细胞发育、类别转换重组事件和随后的抗体产生深远影响[@MastCellModulPalma2021]。接下来，本研究进一步分析了 B 细胞和 Mast cell 中担任通讯角色的通路。B 细胞和 Mast cell 作为输入或输出细胞发挥通讯作用的通路如 Fig. \@ref(fig:MAIN-IgA-cell-communication)c、d 所示。除了 B 细胞，内皮细胞 (Endothelial cell) 和巨噬细胞 (Macrophage) 也是细胞通讯中的主要接收者。其中 APP 通路是最为强烈的通讯通路。根据 Fig. \@ref(fig:MAIN-IgA-cell-communication)d，可以观察到，APP 通路主要来源于 B 细胞，而 B 细胞的行为恰恰受到 Mast cell 的调控。随后，我们单独提取了 Mast cell 和 B 细胞之间的通讯 (Fig. \@ref(fig:MAIN-IgA-cell-communication)e)。Mast cell 和 B 细胞中的通讯的配体主要有 COL4A1、LAMB1、GRN。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-IgA-cell-communication
+autor("./Figure+Table/fig2.pdf")
+```
+
+```{r}
+fig2 <- cls(
+  cl("./Figure+Table/IgA-overall-communication-count.pdf",
+    "./Figure+Table/IgA-Cell-communication-heatmap.pdf"),
+  cl("./Figure+Table/IgA-incoming-ligand-receptor-role.pdf",
+    "./Figure+Table/IgA-outgoing-ligand-receptor-role.pdf",
+    "./Figure+Table/IgA-ligand-receptor-of-B-cell-communicate-with-Mast-cell.pdf")
+)
+render(fig2)
+```
+
+## IgA 和 Normal 的集成分析 {#bpath}
+
+上述了解了 IgA 肾病中细胞通讯的主要特征，随后，本研究将 IgA 和 Normal 组织数据以 RISC 集成分析。我们选择 IgA 数据集作为参考细胞数据 (Set-2)，将两个组织的数据集成 (Fig. \@ref(fig:MAIN-integrated-dataset-of-B-cells)) 。这里主要聚焦于两者共有的细胞，同时也是 IgA 中受特征性的 Mast cell 调控的细胞，B 细胞，进一步分析。IgA 和 Normal 的差异基因被分析 (Fig. \@ref(fig:MAIN-integrated-dataset-of-B-cells)c，IgA vs Normal B cell)。进一步的 KEGG 富集分析发现，两者的首要差异基因富集于 'Th1 and Th2 cell differentiation' 通路，这可能和 B 细胞 与 T 辅助细胞之间的相互作用有关[@IncreasedPropoDuWa2022]。根据 GSEA 作图分析，IgA 肾病相比于 Normal，该通路总体呈下调趋势 (Fig. \@ref(fig:MAIN-integrated-dataset-of-B-cells)e) 。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| MAIN-integrated-dataset-of-B-cells
-autor("./Figure+Table/fig2.pdf")
+autor("./Figure+Table/fig3.pdf")
 ```
 
 ```{r}
@@ -133,16 +157,18 @@ fig3 <- cl(
 render(fig3)
 ```
 
-## IgA 肾病 B 细胞可能的 RNA 编辑
+## IgA 肾病导致 B cell 行为的 RNA 编辑
+
+在上述中 (\@ref(bpath)) ，B 细胞在 IgA 肾病和 Normal 组织中的主要差异被发现，聚焦于 'Th1 and Th2 cell differentiation' 通路。随后，本研究试图从 RNA 编辑的角度，探究导致 B 细胞免疫行为的源由。我们在 GTEx 数据库中 (<https://gtexportal.org/home/downloads/adult-gtex#variants>) 下载了 RNA 编辑相关的数据组 (edQTL 数据)，使用肾脏的子数据集 (Kidney, Tab. \@ref(tab:source-edQTL-data)) ，并将 RNA 编辑位点对应到基因上。现在，这些数据 (edQTL subset) 对应了 RNA 编辑位点，RNA 编辑位点对应的基因 (mRNA)，突变位点之间的关系。随后，我们计算了所有 IgA 和 Normal 组织共有的细胞的差异基因 (Tab. \@ref(tab:All-DEGs)) ，这些细胞包括：B cell, Distal tubularcell, Endothelial cell, Loop ofHenlecell, Principal cell, Proximal tubular cell。将这些差异基因以 edQTL subset 筛选 (Fig. \@ref(fig:MAIN-possibly-RNA-editing-site-in-IgA)a) 。之后，我们将这些筛选到的基因 (Fig. \@ref(fig:MAIN-possibly-RNA-editing-site-in-IgA)a 中 Symbol) 和 B 细胞富集于 'Th1 and Th2 cell differentiation' 通路的差异基因关联分析，以此筛选最终导致 B 细胞免疫行为的源由。如 Fig. \@ref(fig:MAIN-possibly-RNA-editing-site-in-IgA)b 所示，我们发现了一组显著关联的基因，SFXN1、PGPEP1、CYP4F3、GLS (P < 0.001, cor > 0.3)。这些基因与 'Th1 and Th2 cell differentiation' 通路的 MAF 基因相关。进一步分析发现，上述包括 MAF 的基因在内，都在 Normal 的 'Proximal tubular cell' 细胞中高表达，而 IgA 对应组织中显著下降。这些线索表明，'Proximal tubular cell' 中这些基因的 RNA 编辑事件可能与 IgA 肾病的病机相关。
 
 ```{r eval = T, echo = F, results = "asis"}
-#| MAIN-possibly-RNA-editing-site-in-B-cells
-autor("./Figure+Table/fig3.pdf")
+#| MAIN-possibly-RNA-editing-site-in-IgA
+autor("./Figure+Table/fig4.pdf")
 ```
 
 ```{r}
 fig4 <- cl(
-  rw("./Figure+Table/Top-DEGs-The-matched-RNA-editing-site.pdf",
+  rw("./Figure+Table/DEGs-of-common-cells-The-matched-RNA-editing-site.pdf",
     "./Figure+Table/Possibly-RNA-editing-site-correlation-with-the-pathway-genes.pdf"),
   "./Figure+Table/Integrated-violing-plot-of-expression-level-of-the-genes.pdf"
 )
@@ -150,6 +176,15 @@ render(fig4)
 ```
 
 # 结论 {#dis}
+
+本研究以一组 IgA 肾病相关的单细胞数据集，结合 GTEx 数据库 edQTL 数据库，探究了可能涉及 IgA 肾病病机的 RNA 编辑。
+
+- 在 IgA 和 Normal 的单独分析中，发现了 IgA 组织中的 Mast 细胞和 Macrophage 细胞的浸软，以及 Podocyte 细胞的损伤。
+- 细胞通讯发现，Mast 细胞对 B 细胞发挥了主要通讯功能，涉及调节 B 细胞的免疫行为[@MastCellModulPalma2021]。
+- 针对 IgA 和 Normal 共有的 B 细胞的差异分析表明，差异基因首要富集于 'Th1 and Th2 cell differentiation' ，且该通路的 DEGs 在 IgA 组织中整体下调。
+- 与 GTEx 数据库的 edQTL 数据关联分析发现，SFXN1、PGPEP1、CYP4F3、GLS 等基因与通路 'Th1 and Th2 cell differentiation' 的差异基因 MAF 显著关联，暗示 SFXN1、PGPEP1、CYP4F3、GLS 等基因的 RNA 编辑事件可能会影响 IgA 肾病的免疫反应，最终导致 B 细胞在 'Th1 and Th2 cell differentiation' 通路上的差异。
+
+进一步的验证分析，可以通过在单细胞数据集中预测检测突变的方式[@DeNovoDetectiMuyas2023]，验证 edQTL 对应的突变是否发生，以取证 RNA 编辑的发生。
 
 # 附：分析流程 {#workflow}
 
@@ -248,6 +283,8 @@ clear(sr.nor)
 
 ## IgA 肾病细胞的通讯
 
+### 总体通讯
+
 ```{r eval = T, echo = F, results = "asis"}
 #| IgA-overall-communication-count
 autor(cc@plots$step1$p.aggre_count)
@@ -255,17 +292,26 @@ autor(cc@plots$step1$p.aggre_count)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| IgA-Cell-communication-heatmap
-autor(wrap(cc@plots$step2$cell_comm_heatmap$ALL$main))
+autor(wrap(cc@plots$step2$cell_comm_heatmap$ALL$main, 6, 5))
+```
+
+### 通讯特征
+
+```{r eval = T, echo = F, results = "asis"}
+#| IgA-incoming-ligand-receptor-role
+autor(wrap(cc@plots$step2$lr_role_heatmap$incoming, 6, 5))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| IgA-All-ligand-receptor-role
-autor(wrap(cc@plots$step2$lr_role_heatmap$all, 6, 5))
+#| IgA-outgoing-ligand-receptor-role
+autor(wrap(cc@plots$step2$lr_role_heatmap$outgoing, 6, 5))
 ```
+
+### B 细胞和 Mast (肥大) 细胞
 
 ```{r eval = T, echo = F, results = "asis"}
 #| IgA-ligand-receptor-of-B-cell-communicate-with-Mast-cell
-autor(wrap(p.cc$p, 8, 4))
+autor(wrap(p.cc$p, 6, 3.5))
 ```
 
 ```{r}
@@ -388,13 +434,23 @@ g.th12 <- filter(gse@tables$step1$table_kegg, grpl(Description, "Th1 and Th2"))$
 ### The matched RNA editing site (using top DEGs)
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Top-DEGs-The-matched-RNA-editing-site
+#| DEGs-of-common-cells-The-matched-RNA-editing-site
 autor(bm@params$p.edqtl)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Top-DEGs-The-matched-RNA-editing-site-DATA
+#| DEGs-of-common-cells-The-matched-RNA-editing-site-DATA
 autor(bm@params$edqtl)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-DEGs
+autor(srs@params$contrasts)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| source-edQTL-data
+autor(ed@object$signif_variant_site_pairs)
 ```
 
 ```{r}
@@ -406,15 +462,17 @@ ed@object$signif_variant_site_pairs
 
 ```{r}
 bm <- job_biomart("hsa")
-sig(bm) <- "Top-DEGs"
+sig(bm) <- "DEGs of common cells"
 bm <- step1(bm, srs@params$contrasts$gene, "hg")
-bm <- map(bm, ed)
+bm <- map(bm, ed, label.factor = 45)
 bm@params$p.edqtl
 m.ed <- unique(bm@params$edqtl$ref_gene)
 bm@params$edqtl
 ```
 
 ### Correlation
+
+探究所有和 B 细胞差异通路的基因关联的其它基因的 RNA 编辑事件 (可能是 B 细胞差异的根源) 。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Possibly-RNA-editing-site-correlation-with-the-pathway-genes
@@ -423,48 +481,26 @@ autor(p.hp)
 
 ```{r}
 p.cor <- cal_corp(srs, NULL, m.ed, g.th12, names = c("Editing RNA", "Pathway hsa04658"))
-p.hp <- wrap(p.cor$hp, 7, 5)
+p.hp <- wrap(p.cor$hp, 10, 7)
 p.hp <- .set_lab(p.hp, "possibly RNA editing site correlation with the pathway genes")
 
-g.hcor <- c("MAF", "CYP4F3")
-p.srs
-
+g.hcor <- c("MAF", "CYP4F3", "GLS", "PGPEP1", "SFXN1")
 # MAF 4094
 filter(bm$anno, hgnc_symbol %in% g.hcor)
 filter(srs@params$contrasts, grpl(contrast, "B_cell"), gene %in% !!g.hcor)
-
-en <- job_enrich(g.hcor, bm$anno)
-en <- step1(en)
-en@plots$step1$p.kegg
-en@plots$step1$p.go
-en@tables$step1$res.kegg
-
-en@tables$step1$res.go
 ```
 
 ### Expression level
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Integrated-violing-plot-of-expression-level-of-the-genes
-autor(wrap(p.expr$p.vln, 17, 6))
+autor(wrap(p.expr$p.vln, 17, 12))
 ```
 
 ```{r}
 p.expr <- focus(srs, g.hcor)
-wrap(p.expr$p.vln, 17, 6)
-
-p.expr.adar <- focus(srs, "ADAR")
-p.expr.adar
-
-fun <- function() {
-  grpf(rownames(object(srs)), "MDA|ADAR")
-  grpf(srs@params$contrasts$gene, "MDA|ADAR")
-}
-fun()
-
+wrap(p.expr$p.vln, 17, 12)
 ```
-
-
 
 ```{r}
 save_small()
@@ -475,6 +511,7 @@ sr.iga <- readRDS("./sr.iga.6.rds")
 rs <- readRDS("./rs.2.rds")
 srs <- readRDS("./srs.3.rds")
 cc <- readRDS("./cc.2.rds")
+gse <- readRDS("./gse.3.rds")
 ```
 
 ```{r}

@@ -327,6 +327,8 @@ autor(z7(en.l@plots$step1$p.go$ids, 1.2, 1))
 lm.l@params$guess_use
 bm$anno
 
+writeLines(lm.l@params$guess_use, "Liver-drug-regulated-degs.txt")
+
 en.l <- job_enrich(list(ids = lm.l@params$guess_use), bm$anno, "mgi_symbol")
 en.l <- step1(en.l, 'mmu', "org.Mm.eg.db")
 z7(en.l@plots$step1$p.kegg$ids, 1.2, 1)

@@ -1,0 +1,1406 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge title} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2023-11-21}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+All used GEO expression data and their design:
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Other R packages used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux5df2ux6709ux7684ux5206ux6790-ux80a0ux9053ux83ccux5206ux6790-16s-rrna}{%
+\subsection{(已有的分析) 肠道菌分析 (16s rRNA)}\label{ux5df2ux6709ux7684ux5206ux6790-ux80a0ux9053ux83ccux5206ux6790-16s-rrna}}
+
+\hypertarget{pcoa-ux6837ux672cux805aux7c7b}{%
+\subsubsection{PCOA 样本聚类}\label{pcoa-ux6837ux672cux805aux7c7b}}
+
+Figure \ref{fig:microbiota-pcoa} (下方图) 为图microbiota pcoa概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/chartExport\_2116.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/PCOA/unweighted-unifrac/chartExport_2116.png}
+\caption{Microbiota pcoa}\label{fig:microbiota-pcoa}
+\end{center}
+
+\hypertarget{alpha-ux591aux6837ux6027}{%
+\subsubsection{Alpha 多样性}\label{alpha-ux591aux6837ux6027}}
+
+Figure \ref{fig:microbiota-alpha-diversity-ace} (下方图) 为图microbiota alpha diversity ace概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/chartExport\_2113.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/ALpha多样性组间差异盒形图/group/ace/chartExport_2113.png}
+\caption{Microbiota alpha diversity ace}\label{fig:microbiota-alpha-diversity-ace}
+\end{center}
+
+对应 5 种检测方法的 P 值：
+
+Table \ref{tab:microbiota-alpha-pvalue-results} (下方表格) 为表格microbiota alpha pvalue results概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/microbiota-alpha-pvalue-results.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行6列，以下预览的表格可能省略部分数据；表格含有1个唯一`sobs'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:microbiota-alpha-pvalue-results}Microbiota alpha pvalue results}\tabularnewline
+\toprule
+sobs & chao & ace & shannon & simpson & coverage\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sobs & chao & ace & shannon & simpson & coverage\tabularnewline
+\midrule
+\endhead
+0.04694 & 0.07939 & 0.4298 & 0.09915 & 0.4298 & 0.17669\tabularnewline
+\bottomrule
+\end{longtable}
+
+根据该表格，总体无显著差异。
+
+\hypertarget{alpha-ux7a00ux758fux66f2ux7ebf}{%
+\subsubsection{Alpha 稀疏曲线}\label{alpha-ux7a00ux758fux66f2ux7ebf}}
+
+Figure \ref{fig:microbiota-alpha-rare-ace} (下方图) 为图microbiota alpha rare ace概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/chartExport\_2116.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/ALpha多样性稀释曲线/ace/chartExport_2116.png}
+\caption{Microbiota alpha rare ace}\label{fig:microbiota-alpha-rare-ace}
+\end{center}
+
+\hypertarget{beta-ux591aux6837ux6027}{%
+\subsubsection{Beta 多样性}\label{beta-ux591aux6837ux6027}}
+
+Figure \ref{fig:microbiota-beta-diversity} (下方图) 为图microbiota beta diversity概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/chartExport\_2084.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/Beta多样性组间差异盒形图/group/unweighted-unifrac/chartExport_2084.png}
+\caption{Microbiota beta diversity}\label{fig:microbiota-beta-diversity}
+\end{center}
+
+Table \ref{tab:microbiota-beta-pvalue-results} (下方表格) 为表格microbiota beta pvalue results概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/microbiota-beta-pvalue-results.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行2列，以下预览的表格可能省略部分数据；表格含有1个唯一`比较组方案'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:microbiota-beta-pvalue-results}Microbiota beta pvalue results}\tabularnewline
+\toprule
+比较组方案 & p\_value\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+比较组方案 & p\_value\tabularnewline
+\midrule
+\endhead
+Contr\ldots{} & 0.670\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+根据该表格，无显著差异。
+
+\hypertarget{ux7269ux79cdux5deeux5f02ux5206ux6790}{%
+\subsubsection{物种差异分析}\label{ux7269ux79cdux5deeux5f02ux5206ux6790}}
+
+Figure \ref{fig:microbiota-overview-of-beta-diversity-difference} (下方图) 为图microbiota overview of beta diversity difference概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Control-Model-CTCH.group.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/Graphlan图/group/Control-Model-CTCH.group.png}
+\caption{Microbiota overview of beta diversity difference}\label{fig:microbiota-overview-of-beta-diversity-difference}
+\end{center}
+
+重新整理差异分析结果 (目录 ``王益斐测序/16s测序（儿茶素）/分析结果/物种差异分析/'' 下所有统计结果)
+
+注意，该目录下包含许多重复无用的文件 (只需要取第一个文件就足够)：
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+物种差异分析//class/Deferribacteres/speciesDiff\_2090.xls
+:}
+
+\vspace{0.5em}
+
+    First file
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//class/Gammaproteobacteria/speciesDiff\_2090.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//family/Deferribacteraceae/speciesDiff\_2091.xls
+:}
+
+\vspace{0.5em}
+
+    First file
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//family/Enterobacteriaceae/speciesDiff\_2091.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//family/Peptostreptococcaceae/speciesDiff\_2091.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//genus/Escherichia/speciesDiff\_2095.xls
+:}
+
+\vspace{0.5em}
+
+    First file
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//genus/Faecalimonas/speciesDiff\_2095.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//genus/Fumia/speciesDiff\_2096.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//genus/Guopingia/speciesDiff\_2096.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//genus/Longibaculum/speciesDiff\_2095.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//genus/Mucispirillum/speciesDiff\_2095.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//genus/Romboutsia/speciesDiff\_2096.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//genus/Schaedlerella/speciesDiff\_2094.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//genus/Zhenhengia/speciesDiff\_2094.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//order/Deferribacterales/speciesDiff\_2097.xls
+:}
+
+\vspace{0.5em}
+
+    First file
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//order/Enterobacterales/speciesDiff\_2097.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//phylum/Deferribacterota/speciesDiff\_2096.xls
+:}
+
+\vspace{0.5em}
+
+    First file
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//species/arabinosiphila/speciesDiff\_2092.xls
+:}
+
+\vspace{0.5em}
+
+    First file
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//species/massiliensis/speciesDiff\_2093.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//species/obesi/speciesDiff\_2092.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//species/saccharogumia/speciesDiff\_2093.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//species/schaedleri/speciesDiff\_2092.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//species/umbilicata/speciesDiff\_2092.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//species/xinanensis/speciesDiff\_2093.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+
+
+\textbf{
+物种差异分析//species/yiwuensis/speciesDiff\_2091.xls
+:}
+
+\vspace{0.5em}
+
+    Duplicated
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+重新整理后的表格如下：
+
+Table \ref{tab:microbiota-all-differential-analysis-results-data} (下方表格) 为表格microbiota all differential analysis results data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/microbiota-all-differential-analysis-results-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有387行10列，以下预览的表格可能省略部分数据；表格含有6个唯一`ontology'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:microbiota-all-differential-analysis-results-data}Microbiota all differential analysis results data}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.06\columnwidth}\raggedright
+ontology\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+name\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots3\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(Co\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots5\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(CTCH)\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(Mo\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+p.value\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+FDR\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.06\columnwidth}\raggedright
+ontology\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+name\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots3\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(Co\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots5\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(CTCH)\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(Mo\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+p.value\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+FDR\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Actin\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.19755\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.098986\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.124977\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.095363\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.186711\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.178879\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.67032\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.732632\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Alpha\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.163428\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.036833\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.168957\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.053195\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.204376\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.048095\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.586646\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.696642\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Bacilli\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+10.66\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+7.492595\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+2.412824\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+1.662637\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+3.745124\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+1.985404\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.252138\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.581745\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Bacil\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002951\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.005112\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.151333\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.199848\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.031775\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.038993\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.105097\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.430513\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Bacte\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+15.77\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+6.884027\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+18.05\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+17.91\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+10.50\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+10.36\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.732632\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.732632\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Betap\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.051472\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.005451\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.348248\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.299284\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.022184\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.020403\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.19312\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.548006\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Campy\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002202\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.003813\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.003686\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.003502\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.68E-4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001157\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.499907\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.633216\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Clost\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+67.35\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+16.83\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+65.50\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+12.82\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+48.77\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+20.40\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.429796\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.583295\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Corio\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.344068\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.146788\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.275358\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.057012\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.920519\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+1.16138\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.732632\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.732632\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Cyano\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.001472\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001275\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.43E-4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001114\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002762\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.002399\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.331864\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.581745\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Defer\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.006819\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.007986\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.43E-4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001114\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002717\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001121\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.049648\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.430513\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Delta\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.589006\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.052503\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.61634\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.219326\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.843911\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.388925\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.393241\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.581745\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Erysi\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.435771\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.546653\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+2.058573\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.570611\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+3.994485\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+2.761446\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.201897\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.548006\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Flavo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.006051\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.007022\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.0\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.0\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.009367\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.016224\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.349595\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.581745\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Gamma\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.137838\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.058958\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.130784\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.280976\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.330105\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.656679\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.03899\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.430513\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+显著 (p.value \textless{} 0.05) 的数据：
+
+Table \ref{tab:microbiota-significant-differential-analysis-results-data} (下方表格) 为表格microbiota significant differential analysis results data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/microbiota-significant-differential-analysis-results-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有25行10列，以下预览的表格可能省略部分数据；表格含有25个唯一`name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:microbiota-significant-differential-analysis-results-data}Microbiota significant differential analysis results data}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.06\columnwidth}\raggedright
+ontology\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+name\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots3\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(Co\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots5\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(CTCH)\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(Mo\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+p.value\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+FDR\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.06\columnwidth}\raggedright
+ontology\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+name\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots3\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(Co\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots5\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(CTCH)\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+mean(\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+SD(Mo\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+p.value\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+FDR\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Defer\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.006819\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.007986\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.43E-4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001114\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002717\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001121\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.049648\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.430513\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Class\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Gamma\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.137838\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.058958\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.130784\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.280976\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.330105\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.656679\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.03899\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.430513\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Family\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Defer\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.006819\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.007986\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.43E-4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001114\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002717\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001121\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.049648\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.354469\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Family\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Enter\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.124487\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.058497\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.115644\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.272004\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.294876\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.622387\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.03899\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.354469\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Family\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Pepto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.154207\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.061097\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+4.351093\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+1.67563\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.938729\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+1.545964\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.03899\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.354469\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Genus\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Esche\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.079418\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.030655\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.11487\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.270667\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.294155\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.621254\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.03899\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.344183\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Genus\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Faeca\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002214\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.003834\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.112957\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.121458\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.244526\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.197866\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.049648\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.344183\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Genus\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Fumia\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002966\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.003354\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.045083\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.037047\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.100655\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.031663\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.03899\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.344183\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Genus\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Guopi\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.068944\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.031532\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.013422\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.005207\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.022387\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.00676\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.03899\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.344183\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Genus\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Longi\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.001502\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001301\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.021181\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.006278\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.088744\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.088691\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.027324\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.344183\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Genus\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Mucis\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.006819\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.007986\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.43E-4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001114\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002717\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001121\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.049648\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.344183\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Genus\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Rombo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.106659\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.067311\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+4.288643\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+1.7017\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.902039\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+1.522525\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.03899\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.344183\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Genus\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Schae\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.844317\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.772301\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.29005\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.022126\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.148634\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.02111\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.03899\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.344183\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Genus\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Zhenh\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+7.38E-4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001278\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.00278\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001149\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.061027\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.06696\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.037942\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.344183\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+Order\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+Defer\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.006819\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.007986\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+6.43E-4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001114\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+0.002717\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.001121\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.049648\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.570952\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5df2ux6709ux7684ux5206ux6790-ux4ee3ux8c22ux7269}{%
+\subsection{(已有的分析) 代谢物}\label{ux5df2ux6709ux7684ux5206ux6790-ux4ee3ux8c22ux7269}}
+
+\end{document}

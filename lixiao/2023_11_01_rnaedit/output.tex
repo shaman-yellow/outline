@@ -80,10 +80,10 @@
 
 \begin{titlepage} \newgeometry{top=7.5cm}
 \ThisCenterWallPaper{1.12}{../cover_page.pdf}
-\begin{center} \textbf{\Huge 以 GTEx edQTL 分析
-IgA 肾病中的 RNA 编辑} \vspace{4em}
+\begin{center} \textbf{\Huge RNA 编辑和 IgA
+肾病中 B 细胞免疫行为的关联性} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-11-20}}
+\textbf{\textcolor{white}{2023-11-21}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -106,13 +106,15 @@ IgA 肾病中的 RNA 编辑} \vspace{4em}
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
 
+IgA 肾病 (IgA nephropathy) 的发病机制尚不明确，被推断为遗传相关疾病。最近的研究表明，RNA 编辑是常见炎症性疾病遗传风险的基础。本研究从 IgA 肾病的单细胞数据集出发，结合 RNA 编辑的角度分析，试探究 IgA 肾病潜在的 RNA 编辑事件的风险。 (结果见 \ref{dis})
+
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
 
 最近的研究表明，RNA 编辑是常见炎症性疾病遗传风险的基础，相当的 cis-RNA editing QTLs (edQTLs) 在自身免疫和免疫介导疾病的全基因组关联研究信号中显着富集\textsuperscript{\protect\hyperlink{ref-RnaEditingUndLiQi2022}{1}}。
 RNA 编辑蛋白 ADAR 介导的腺苷-肌苷（A-to-I）RNA编辑是防止细胞自身双链RNA（dsRNA）引发先天免疫干扰素应答的重要转录后事件，因遗传因素引起的双链RNA编辑水平的降低，是导致炎症性疾病遗传风险升高的重要因素\textsuperscript{\protect\hyperlink{ref-RnaEditingUndLiQi2022}{1}}。
 RNA 编辑拓宽了自身免疫性疾病治疗和机制探究的领域。
-IgA 肾病 (IgA nephropathy) 是 CKD 和肾衰竭的主要原因\textsuperscript{\protect\hyperlink{ref-IgaNephropathyRodrig2017}{2}}, 发病机制尚不明确，被推测为一种遗传 (genetic) 相关疾病\textsuperscript{\protect\hyperlink{ref-ImmuneAbnormalGentil2023}{3}}。然而，还没有研究从 RNA 编辑的角度阐述 IgA 肾病的发生或发展机制。在本研究中，选用了一组 IgA 肾病的单细胞数据集 (scRNA-seq) ，并借助 GTEx 的 edQTL 数据集，探究 IgA 肾病细胞中可能的 RNA 编辑事件。
+IgA 肾病 (IgA nephropathy) 是 CKD 和肾衰竭的主要原因\textsuperscript{\protect\hyperlink{ref-IgaNephropathyRodrig2017}{2}}, 发病机制尚不明确，被推测为一种遗传 (genetic) 相关疾病\textsuperscript{\protect\hyperlink{ref-ImmuneAbnormalGentil2023}{3}}。然而，还没有研究从 RNA 编辑的角度阐述 IgA 肾病的发生或发展机制。在本研究中，选用了一组 IgA 肾病相关的单细胞数据集 (scRNA-seq) ，并借助 GTEx 的 edQTL 数据集，探究 IgA 肾病细胞中可能的 RNA 编辑事件。
 
 \hypertarget{methods}{%
 \section{材料和方法}\label{methods}}
@@ -142,13 +144,9 @@ Mainly used method:
 \item
   The edQTL data were abtained from GTEx database.\textsuperscript{\protect\hyperlink{ref-TheGtexConsorNone2020}{6}}
 \item
-  ClusterProfiler used for gene enrichment analysis.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{7}}
-\item
   GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition .
 \item
   ClusterProfiler used for GSEA enrichment.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{7}}
-\item
-  .
 \item
   RISC used for scRNA-seq data integration.\textsuperscript{\protect\hyperlink{ref-RobustIntegratLiuY2021}{8}}
 \item
@@ -163,6 +161,8 @@ Mainly used method:
 \hypertarget{iga-ux80beux75c5ux7ec4ux7ec7ux548c-normal-ux7ec4ux7ec7}{%
 \subsection{IgA 肾病组织和 Normal 组织}\label{iga-ux80beux75c5ux7ec4ux7ec7ux548c-normal-ux7ec4ux7ec7}}
 
+将来源于 GSE171314 的 IgA 肾病组织样本和 Normal 对照样本分别以 Seurat 预处理和细胞聚类，再以 SCSA\textsuperscript{\protect\hyperlink{ref-ScsaACellTyCaoY2020}{11}} 注释细胞类型 (Fig. \ref{fig:MAIN-IgA-and-Normal-dataset}, a、b、c 对应 Normal，d、e、f 对应 IgA )。两组样本来源于同一个 GSE 数据集，因此数据质量总体相近 (Fig. \ref{fig:MAIN-IgA-and-Normal-dataset}a、d)。SCSA 对 Normal 和 IgA 注释结果有较大区别。IgA 组织 (Fig. \ref{fig:MAIN-IgA-and-Normal-dataset}f) 中出现了巨噬细胞聚类团，反映了 IgA 肾炎过程中的免疫浸润，而这在 Normal 中是不存在的 (Fig. \ref{fig:MAIN-IgA-and-Normal-dataset}c)。IgA 组织中还出现了肥大细胞 (Mast cell) (Fig. \ref{fig:MAIN-IgA-and-Normal-dataset}f)。已有研究表明，高密度的肾肥大细胞与 IgA 肾病患者的不良预后相关\textsuperscript{\protect\hyperlink{ref-HighRenalMastWang2023}{12}}。此外，IgA 组织中没有足细胞 (Podocyte cell) 的聚类团 (Fig. \ref{fig:MAIN-IgA-and-Normal-dataset}f) ，而 Normal 中有足细胞的单独聚类团 (Fig. \ref{fig:MAIN-IgA-and-Normal-dataset}c)。这预示着 IgA 组织中的 足细胞损伤。足细胞损伤是肾脏疾病蛋白尿的主要原因，足细胞持续丢失会导致肾脏疾病快速不可逆转的进展\textsuperscript{\protect\hyperlink{ref-SirtuinsAsNovLiuT2022}{13}}。
+
 Figure \ref{fig:MAIN-IgA-and-Normal-dataset} (下方图) 为图MAIN IgA and Normal dataset概览。
 
 \textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
@@ -176,34 +176,66 @@ Figure \ref{fig:MAIN-IgA-and-Normal-dataset} (下方图) 为图MAIN IgA and Norm
 \hypertarget{iga-ux80beux75c5ux7ec4ux7ec7ux7684ux7ec6ux80deux901aux8baf}{%
 \subsection{IgA 肾病组织的细胞通讯}\label{iga-ux80beux75c5ux7ec4ux7ec7ux7684ux7ec6ux80deux901aux8baf}}
 
-\hypertarget{iga-ux548c-normal-ux7684ux96c6ux6210ux5206ux6790}{%
-\subsection{IgA 和 Normal 的集成分析}\label{iga-ux548c-normal-ux7684ux96c6ux6210ux5206ux6790}}
+为了进一步探究 IgA 肾病中各细胞的状态以及彼此的关系，这里将 IgA 肾病组织数据以 CellChat 作细胞通讯分析。总体通讯如Fig. \ref{fig:MAIN-IgA-cell-communication}a、b 所示。明显的，IgA 肾病中肥大细胞 (Mast cell) 与 B 细胞的通讯作用是最强烈的，Mast 细胞主要作为通讯的源细胞，B 细胞作为接收通讯的细胞 (Fig. \ref{fig:MAIN-IgA-cell-communication}b) 。Mast cell 被认为是针对病原体的先天性和适应性免疫反应的关键发起者和调节者\textsuperscript{\protect\hyperlink{ref-MastCellsAsSMukai2018}{14},\protect\hyperlink{ref-MastCellRespoMarsha2004}{15}}。研究表明，Mast cell 可以极大地改变 B 细胞的生成和活性，肥大细胞在许多组织环境中与 B 细胞共定位并产生大量细胞因子，对 B 细胞发育、类别转换重组事件和随后的抗体产生深远影响\textsuperscript{\protect\hyperlink{ref-MastCellModulPalma2021}{16}}。接下来，本研究进一步分析了 B 细胞和 Mast cell 中担任通讯角色的通路。B 细胞和 Mast cell 作为输入或输出细胞发挥通讯作用的通路如 Fig. \ref{fig:MAIN-IgA-cell-communication}c、d 所示。除了 B 细胞，内皮细胞 (Endothelial cell) 和巨噬细胞 (Macrophage) 也是细胞通讯中的主要接收者。其中 APP 通路是最为强烈的通讯通路。根据 Fig. \ref{fig:MAIN-IgA-cell-communication}d，可以观察到，APP 通路主要来源于 B 细胞，而 B 细胞的行为恰恰受到 Mast cell 的调控。随后，我们单独提取了 Mast cell 和 B 细胞之间的通讯 (Fig. \ref{fig:MAIN-IgA-cell-communication}e)。Mast cell 和 B 细胞中的通讯的配体主要有 COL4A1、LAMB1、GRN。
 
-Figure \ref{fig:MAIN-integrated-dataset-of-B-cells} (下方图) 为图MAIN integrated dataset of B cells概览。
+Figure \ref{fig:MAIN-IgA-cell-communication} (下方图) 为图MAIN IgA cell communication概览。
 
 \textbf{(对应文件为 \texttt{./Figure+Table/fig2.pdf})}
 
 \def\@captype{figure}
 \begin{center}
 \includegraphics[width = 0.9\linewidth]{./Figure+Table/fig2.pdf}
-\caption{MAIN integrated dataset of B cells}\label{fig:MAIN-integrated-dataset-of-B-cells}
+\caption{MAIN IgA cell communication}\label{fig:MAIN-IgA-cell-communication}
 \end{center}
 
-\hypertarget{iga-ux80beux75c5-b-ux7ec6ux80deux53efux80fdux7684-rna-ux7f16ux8f91}{%
-\subsection{IgA 肾病 B 细胞可能的 RNA 编辑}\label{iga-ux80beux75c5-b-ux7ec6ux80deux53efux80fdux7684-rna-ux7f16ux8f91}}
+\hypertarget{bpath}{%
+\subsection{IgA 和 Normal 的集成分析}\label{bpath}}
 
-Figure \ref{fig:MAIN-possibly-RNA-editing-site-in-B-cells} (下方图) 为图MAIN possibly RNA editing site in B cells概览。
+上述了解了 IgA 肾病中细胞通讯的主要特征，随后，本研究将 IgA 和 Normal 组织数据以 RISC 集成分析。我们选择 IgA 数据集作为参考细胞数据 (Set-2)，将两个组织的数据集成 (Fig. \ref{fig:MAIN-integrated-dataset-of-B-cells}) 。这里主要聚焦于两者共有的细胞，同时也是 IgA 中受特征性的 Mast cell 调控的细胞，B 细胞，进一步分析。IgA 和 Normal 的差异基因被分析 (Fig. \ref{fig:MAIN-integrated-dataset-of-B-cells}c，IgA vs Normal B cell)。进一步的 KEGG 富集分析发现，两者的首要差异基因富集于 `Th1 and Th2 cell differentiation' 通路，这可能和 B 细胞 与 T 辅助细胞之间的相互作用有关\textsuperscript{\protect\hyperlink{ref-IncreasedPropoDuWa2022}{17}}。根据 GSEA 作图分析，IgA 肾病相比于 Normal，该通路总体呈下调趋势 (Fig. \ref{fig:MAIN-integrated-dataset-of-B-cells}e) 。
+
+Figure \ref{fig:MAIN-integrated-dataset-of-B-cells} (下方图) 为图MAIN integrated dataset of B cells概览。
 
 \textbf{(对应文件为 \texttt{./Figure+Table/fig3.pdf})}
 
 \def\@captype{figure}
 \begin{center}
 \includegraphics[width = 0.9\linewidth]{./Figure+Table/fig3.pdf}
-\caption{MAIN possibly RNA editing site in B cells}\label{fig:MAIN-possibly-RNA-editing-site-in-B-cells}
+\caption{MAIN integrated dataset of B cells}\label{fig:MAIN-integrated-dataset-of-B-cells}
+\end{center}
+
+\hypertarget{iga-ux80beux75c5ux5bfcux81f4-b-cell-ux884cux4e3aux7684-rna-ux7f16ux8f91}{%
+\subsection{IgA 肾病导致 B cell 行为的 RNA 编辑}\label{iga-ux80beux75c5ux5bfcux81f4-b-cell-ux884cux4e3aux7684-rna-ux7f16ux8f91}}
+
+在上述中 (\ref{bpath}) ，B 细胞在 IgA 肾病和 Normal 组织中的主要差异被发现，聚焦于 `Th1 and Th2 cell differentiation' 通路。随后，本研究试图从 RNA 编辑的角度，探究导致 B 细胞免疫行为的源由。我们在 GTEx 数据库中 (\url{https://gtexportal.org/home/downloads/adult-gtex\#variants}) 下载了 RNA 编辑相关的数据组 (edQTL 数据)，使用肾脏的子数据集 (Kidney, Tab. \ref{tab:source-edQTL-data}) ，并将 RNA 编辑位点对应到基因上。现在，这些数据 (edQTL subset) 对应了 RNA 编辑位点，RNA 编辑位点对应的基因 (mRNA)，突变位点之间的关系。随后，我们计算了所有 IgA 和 Normal 组织共有的细胞的差异基因 (Tab. \ref{tab:All-DEGs}) ，这些细胞包括：B cell, Distal tubularcell, Endothelial cell, Loop ofHenlecell, Principal cell, Proximal tubular cell。将这些差异基因以 edQTL subset 筛选 (Fig. \ref{fig:MAIN-possibly-RNA-editing-site-in-IgA}a) 。之后，我们将这些筛选到的基因 (Fig. \ref{fig:MAIN-possibly-RNA-editing-site-in-IgA}a 中 Symbol) 和 B 细胞富集于 `Th1 and Th2 cell differentiation' 通路的差异基因关联分析，以此筛选最终导致 B 细胞免疫行为的源由。如 Fig. \ref{fig:MAIN-possibly-RNA-editing-site-in-IgA}b 所示，我们发现了一组显著关联的基因，SFXN1、PGPEP1、CYP4F3、GLS (P \textless{} 0.001, cor \textgreater{} 0.3)。这些基因与 `Th1 and Th2 cell differentiation' 通路的 MAF 基因相关。进一步分析发现，上述包括 MAF 的基因在内，都在 Normal 的 `Proximal tubular cell' 细胞中高表达，而 IgA 对应组织中显著下降。这些线索表明，`Proximal tubular cell' 中这些基因的 RNA 编辑事件可能与 IgA 肾病的病机相关。
+
+Figure \ref{fig:MAIN-possibly-RNA-editing-site-in-IgA} (下方图) 为图MAIN possibly RNA editing site in IgA概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig4.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig4.pdf}
+\caption{MAIN possibly RNA editing site in IgA}\label{fig:MAIN-possibly-RNA-editing-site-in-IgA}
 \end{center}
 
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
+
+本研究以一组 IgA 肾病相关的单细胞数据集，结合 GTEx 数据库 edQTL 数据库，探究了可能涉及 IgA 肾病病机的 RNA 编辑。
+
+\begin{itemize}
+\tightlist
+\item
+  在 IgA 和 Normal 的单独分析中，发现了 IgA 组织中的 Mast 细胞和 Macrophage 细胞的浸软，以及 Podocyte 细胞的损伤。
+\item
+  细胞通讯发现，Mast 细胞对 B 细胞发挥了主要通讯功能，涉及调节 B 细胞的免疫行为\textsuperscript{\protect\hyperlink{ref-MastCellModulPalma2021}{16}}。
+\item
+  针对 IgA 和 Normal 共有的 B 细胞的差异分析表明，差异基因首要富集于 `Th1 and Th2 cell differentiation' ，且该通路的 DEGs 在 IgA 组织中整体下调。
+\item
+  与 GTEx 数据库的 edQTL 数据关联分析发现，SFXN1、PGPEP1、CYP4F3、GLS 等基因与通路 `Th1 and Th2 cell differentiation' 的差异基因 MAF 显著关联，暗示 SFXN1、PGPEP1、CYP4F3、GLS 等基因的 RNA 编辑事件可能会影响 IgA 肾病的免疫反应，最终导致 B 细胞在 `Th1 and Th2 cell differentiation' 通路上的差异。
+\end{itemize}
+
+进一步的验证分析，可以通过在单细胞数据集中预测检测突变的方式\textsuperscript{\protect\hyperlink{ref-DeNovoDetectiMuyas2023}{18}}，验证 edQTL 对应的突变是否发生，以取证 RNA 编辑的发生。
 
 \hypertarget{workflow}{%
 \section{附：分析流程}\label{workflow}}
@@ -300,6 +332,9 @@ Figure \ref{fig:Normal-SCSA-Cell-type-annotation} (下方图) 为图Normal SCSA 
 \hypertarget{iga-ux80beux75c5ux7ec6ux80deux7684ux901aux8baf}{%
 \subsection{IgA 肾病细胞的通讯}\label{iga-ux80beux75c5ux7ec6ux80deux7684ux901aux8baf}}
 
+\hypertarget{ux603bux4f53ux901aux8baf}{%
+\subsubsection{总体通讯}\label{ux603bux4f53ux901aux8baf}}
+
 Figure \ref{fig:IgA-overall-communication-count} (下方图) 为图IgA overall communication count概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/IgA-overall-communication-count.pdf})}
@@ -320,15 +355,31 @@ Figure \ref{fig:IgA-Cell-communication-heatmap} (下方图) 为图IgA Cell commu
 \caption{IgA Cell communication heatmap}\label{fig:IgA-Cell-communication-heatmap}
 \end{center}
 
-Figure \ref{fig:IgA-All-ligand-receptor-role} (下方图) 为图IgA All ligand receptor role概览。
+\hypertarget{ux901aux8bafux7279ux5f81}{%
+\subsubsection{通讯特征}\label{ux901aux8bafux7279ux5f81}}
 
-\textbf{(对应文件为 \texttt{Figure+Table/IgA-All-ligand-receptor-role.pdf})}
+Figure \ref{fig:IgA-incoming-ligand-receptor-role} (下方图) 为图IgA incoming ligand receptor role概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IgA-incoming-ligand-receptor-role.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/IgA-All-ligand-receptor-role.pdf}
-\caption{IgA All ligand receptor role}\label{fig:IgA-All-ligand-receptor-role}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IgA-incoming-ligand-receptor-role.pdf}
+\caption{IgA incoming ligand receptor role}\label{fig:IgA-incoming-ligand-receptor-role}
 \end{center}
+
+Figure \ref{fig:IgA-outgoing-ligand-receptor-role} (下方图) 为图IgA outgoing ligand receptor role概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IgA-outgoing-ligand-receptor-role.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/IgA-outgoing-ligand-receptor-role.pdf}
+\caption{IgA outgoing ligand receptor role}\label{fig:IgA-outgoing-ligand-receptor-role}
+\end{center}
+
+\hypertarget{b-ux7ec6ux80deux548c-mast-ux80a5ux5927-ux7ec6ux80de}{%
+\subsubsection{B 细胞和 Mast (肥大) 细胞}\label{b-ux7ec6ux80deux548c-mast-ux80a5ux5927-ux7ec6ux80de}}
 
 Figure \ref{fig:IgA-ligand-receptor-of-B-cell-communicate-with-Mast-cell} (下方图) 为图IgA ligand receptor of B cell communicate with Mast cell概览。
 
@@ -340,8 +391,8 @@ Figure \ref{fig:IgA-ligand-receptor-of-B-cell-communicate-with-Mast-cell} (下�
 \caption{IgA ligand receptor of B cell communicate with Mast cell}\label{fig:IgA-ligand-receptor-of-B-cell-communicate-with-Mast-cell}
 \end{center}
 
-\hypertarget{iga-ux548c-normal-ux7684ux96c6ux6210ux5206ux6790-1}{%
-\subsection{IgA 和 Normal 的集成分析}\label{iga-ux548c-normal-ux7684ux96c6ux6210ux5206ux6790-1}}
+\hypertarget{iga-ux548c-normal-ux7684ux96c6ux6210ux5206ux6790}{%
+\subsection{IgA 和 Normal 的集成分析}\label{iga-ux548c-normal-ux7684ux96c6ux6210ux5206ux6790}}
 
 \hypertarget{risc-integration}{%
 \subsubsection{RISC integration}\label{risc-integration}}
@@ -426,26 +477,26 @@ Figure \ref{fig:Integrated-dataset-IgA-B-cell-vs-Normal-B-cell-GSEA-plot-of-path
 \hypertarget{the-matched-rna-editing-site-using-top-degs}{%
 \subsubsection{The matched RNA editing site (using top DEGs)}\label{the-matched-rna-editing-site-using-top-degs}}
 
-Figure \ref{fig:Top-DEGs-The-matched-RNA-editing-site} (下方图) 为图Top DEGs The matched RNA editing site概览。
+Figure \ref{fig:DEGs-of-common-cells-The-matched-RNA-editing-site} (下方图) 为图DEGs of common cells The matched RNA editing site概览。
 
-\textbf{(对应文件为 \texttt{Figure+Table/Top-DEGs-The-matched-RNA-editing-site.pdf})}
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-common-cells-The-matched-RNA-editing-site.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/Top-DEGs-The-matched-RNA-editing-site.pdf}
-\caption{Top DEGs The matched RNA editing site}\label{fig:Top-DEGs-The-matched-RNA-editing-site}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DEGs-of-common-cells-The-matched-RNA-editing-site.pdf}
+\caption{DEGs of common cells The matched RNA editing site}\label{fig:DEGs-of-common-cells-The-matched-RNA-editing-site}
 \end{center}
 
-Table \ref{tab:Top-DEGs-The-matched-RNA-editing-site-DATA} (下方表格) 为表格Top DEGs The matched RNA editing site DATA概览。
+Table \ref{tab:DEGs-of-common-cells-The-matched-RNA-editing-site-DATA} (下方表格) 为表格DEGs of common cells The matched RNA editing site DATA概览。
 
-\textbf{(对应文件为 \texttt{Figure+Table/Top-DEGs-The-matched-RNA-editing-site-DATA.csv})}
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-common-cells-The-matched-RNA-editing-site-DATA.csv})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有154行13列，以下预览的表格可能省略部分数据；表格含有7个唯一`ref\_gene'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1220行13列，以下预览的表格可能省略部分数据；表格含有21个唯一`ref\_gene'。
 \end{tcolorbox}
 \end{center}
 
 \begin{longtable}[]{@{}llllllllllll@{}}
-\caption{\label{tab:Top-DEGs-The-matched-RNA-editing-site-DATA}Top DEGs The matched RNA editing site DATA}\tabularnewline
+\caption{\label{tab:DEGs-of-common-cells-The-matched-RNA-editing-site-DATA}DEGs of common cells The matched RNA editing site DATA}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.06\columnwidth}\raggedright
 ref\_gene\strut
@@ -553,327 +604,327 @@ chr1\_\ldots{}\strut
 \ldots{}\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\raggedright
-TPM1\strut
+THEM4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--10628\strut
+269249\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-10\strut
+52\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-11\strut
+69\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.075\ldots{}\strut
+0.472603\strut
 \end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-3.571\ldots{}\strut
+5.531\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--1.97185\strut
+-0.56\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.337299\strut
+0.098\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-6.188\ldots{}\strut
+1.173\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
 \ldots{}\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\raggedright
-TPM1\strut
+THEM4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--7409\strut
+270650\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-38\strut
+52\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-46\strut
+69\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.315068\strut
+0.472603\strut
 \end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-5.453\ldots{}\strut
+5.531\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-1.52632\strut
+-0.56\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.184497\strut
+0.098\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-6.188\ldots{}\strut
+1.173\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
 \ldots{}\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\raggedright
-TPM1\strut
+THEM4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-5614\strut
+279478\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-15\strut
+52\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-16\strut
+69\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.109589\strut
+0.472603\strut
 \end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-1.700\ldots{}\strut
+5.531\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--1.89669\strut
+-0.56\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.283645\strut
+0.098\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-6.188\ldots{}\strut
+1.173\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
 \ldots{}\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\raggedright
-TPM1\strut
+THEM4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-7177\strut
+291758\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-11\strut
+52\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-12\strut
+69\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.082\ldots{}\strut
+0.472603\strut
 \end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-3.314\ldots{}\strut
+5.531\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--1.94319\strut
+-0.56\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.33122\strut
+0.098\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-6.188\ldots{}\strut
+1.173\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
 \ldots{}\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\raggedright
-TPM1\strut
+THEM4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-14803\strut
+292320\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-40\strut
+52\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-49\strut
+69\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.340278\strut
+0.472603\strut
 \end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-1.892\ldots{}\strut
+5.531\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--1.42903\strut
+-0.56\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.237289\strut
+0.098\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-6.188\ldots{}\strut
+1.173\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
 \ldots{}\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\raggedright
-TPM1\strut
+THEM4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr15\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-22273\strut
+293027\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-45\strut
+54\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-60\strut
+71\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.410959\strut
+0.486301\strut
 \end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-1.032\ldots{}\strut
+3.677\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--1.23182\strut
+0.603699\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.199004\strut
+0.093\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-6.188\ldots{}\strut
+1.173\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
 \ldots{}\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\raggedright
-CYP4F3\strut
+THEM4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr19\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr19\ldots{}\strut
+chr1\_\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--869875\strut
+293302\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-32\strut
+54\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+71\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.486301\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+3.677\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.603699\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.093\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.173\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+THEM4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+294085\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+54\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+71\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.486301\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+3.677\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.603699\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.093\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.173\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+THEM4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+294215\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+54\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+71\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.486301\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+3.677\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.603699\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.093\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.173\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+THEM4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+294392\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+54\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+71\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.486301\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+3.677\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.603699\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.093\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.173\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+THEM4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+294685\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+54\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+71\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.486301\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+3.677\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.603699\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.093\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.173\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+SRP9\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-5641\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+39\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+48\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.333333\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+8.658\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.954629\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.138908\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+1.068\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+SRP9\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-5600\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
 33\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.226027\strut
+38\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.296875\strut
 \end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-1.024\ldots{}\strut
+7.611\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--0.94\ldots{}\strut
+1.03519\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.138261\strut
+0.183712\strut
 \end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-5.444\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright
-GDF15\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr19\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr19\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-15\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-22\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-23\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.157534\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-2.261\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--1.24849\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.188924\strut
-\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-4.188\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright
-GDF15\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr19\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr19\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-987\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-21\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-22\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.150685\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-1.557\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--1.217\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.200289\strut
-\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-4.188\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright
-SULT1C2\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr2\_\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr2\_\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--12306\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-23\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-28\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.191781\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-2.907\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--0.89944\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.137543\strut
-\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-1.135\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright
-SULT1C2\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr2\_\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr2\_\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--3973\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-22\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-30\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.205479\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-3.388\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--0.89\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.125638\strut
-\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-1.135\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright
-SULT1C2\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr2\_\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr2\_\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--3634\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-22\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-29\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.19863\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-1.141\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--0.92\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.124944\strut
-\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-1.135\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
-\ldots{}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright
-SULT1C2\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr2\_\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-chr2\_\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--3556\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-22\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-29\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.19863\strut
-\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
-1.141\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
--0.92\ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
-0.124944\strut
-\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
-1.135\ldots{}\strut
+1.068\ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
 \ldots{}\strut
 \end{minipage}\tabularnewline
@@ -905,8 +956,516 @@ chr2\_\ldots{}\strut
 \bottomrule
 \end{longtable}
 
+Table \ref{tab:All-DEGs} (下方表格) 为表格All DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-DEGs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5466行7列，以下预览的表格可能省略部分数据；表格含有6个唯一`contrast'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:All-DEGs}All DEGs}\tabularnewline
+\toprule
+contrast & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+contrast & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & gene\tabularnewline
+\midrule
+\endhead
+IgA\_B\ldots{} & 5.573\ldots{} & 4.226\ldots{} & 0.911 & 0.097 & 9.655\ldots{} & SLC12A1\tabularnewline
+IgA\_B\ldots{} & 8.295\ldots{} & 3.364\ldots{} & 0.932 & 0.389 & 1.437\ldots{} & WFDC2\tabularnewline
+IgA\_B\ldots{} & 8.869\ldots{} & 5.887\ldots{} & 0.568 & 0.019 & 1.536\ldots{} & CLDN16\tabularnewline
+IgA\_B\ldots{} & 1.669\ldots{} & 6.087\ldots{} & 0.57 & 0.024 & 2.892\ldots{} & ITGB6\tabularnewline
+IgA\_B\ldots{} & 5.002\ldots{} & 4.928\ldots{} & 0.581 & 0.034 & 8.666\ldots{} & PLCB1\tabularnewline
+IgA\_B\ldots{} & 3.280\ldots{} & 2.497\ldots{} & 0.884 & 0.675 & 5.683\ldots{} & S100A6\tabularnewline
+IgA\_B\ldots{} & 6.134\ldots{} & 1.904\ldots{} & 0.905 & 0.972 & 1.062\ldots{} & PEBP1\tabularnewline
+IgA\_B\ldots{} & 1.206\ldots{} & 2.374\ldots{} & 0.859 & 0.866 & 2.090\ldots{} & DSTN\tabularnewline
+IgA\_B\ldots{} & 2.239\ldots{} & 2.455\ldots{} & 0.862 & 0.674 & 3.879\ldots{} & MAL\tabularnewline
+IgA\_B\ldots{} & 1.258\ldots{} & 3.293\ldots{} & 0.657 & 0.14 & 2.180\ldots{} & TACSTD2\tabularnewline
+IgA\_B\ldots{} & 1.556\ldots{} & 5.049\ldots{} & 0.446 & 0.007 & 2.696\ldots{} & SLPI\tabularnewline
+IgA\_B\ldots{} & 1.256\ldots{} & 1.934\ldots{} & 0.932 & 0.861 & 2.176\ldots{} & ATP1A1\tabularnewline
+IgA\_B\ldots{} & 1.129\ldots{} & 2.098\ldots{} & 0.846 & 0.964 & 1.957\ldots{} & LDHB\tabularnewline
+IgA\_B\ldots{} & 1.424\ldots{} & 6.010\ldots{} & 0.459 & 0.027 & 2.467\ldots{} & PAPPA2\tabularnewline
+IgA\_B\ldots{} & 2.606\ldots{} & 0.597\ldots{} & 0.062 & 0.712 & 4.515\ldots{} & ALDOB\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:source-edQTL-data} (下方表格) 为表格source edQTL data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/source-edQTL-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有11537行12列，以下预览的表格可能省略部分数据；表格含有6865个唯一`variant\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllllll@{}}
+\caption{\label{tab:source-edQTL-data}Source edQTL data}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.06\columnwidth}\raggedright
+varia\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+gene\_id\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+tss\_d\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+ma\_sa\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+ma\_count\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+maf\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+pval\_\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+slope\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+slope\_se\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+pval\_\ldots\ldots10\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+min\_p\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.06\columnwidth}\raggedright
+varia\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+gene\_id\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+tss\_d\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+ma\_sa\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+ma\_count\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+maf\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+pval\_\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+slope\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+slope\_se\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+pval\_\ldots\ldots10\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+min\_p\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+1507\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+23\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+24\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.166667\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+5.428\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.510092\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.072\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.536\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.428\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+4394\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+23\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+24\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.166667\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+2.843\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.483823\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.073\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.536\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.428\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+4988\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+23\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+24\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.166667\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+2.843\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.483823\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.073\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.536\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.428\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5163\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+23\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+24\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.169014\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+2.826\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.486519\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.074\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.536\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.428\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5167\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+25\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+28\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.194444\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+8.938\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.419317\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.067\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.536\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.428\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+6022\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+23\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+24\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.166667\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+2.843\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.483823\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.073\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.536\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.428\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+6059\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+23\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+24\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.166667\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+2.843\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.483823\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.073\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.536\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+5.428\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-89726\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+19\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+20\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.151515\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+1.233\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-0.74\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.121567\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.153\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+2.479\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-88920\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+23\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+25\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.171233\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+5.794\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-0.69\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.091\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.153\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+2.479\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-78759\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+24\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+26\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.180556\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+1.482\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-0.65\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.107959\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.153\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+2.479\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-75692\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+26\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+31\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.212329\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+2.790\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-0.57446\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.087\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.153\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+2.479\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-69775\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+26\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+29\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.19863\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+2.479\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-0.67\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.086364\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.153\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+2.479\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-69545\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+28\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+33\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.226027\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+4.786\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-0.59\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.084\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.153\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+2.479\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-63544\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+23\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+24\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.166667\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+3.119\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-0.76\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.106291\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.153\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+2.479\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+chr1\_\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-63024\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+27\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+31\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.212329\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+6.843\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+-0.62\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+0.082\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+5.153\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+2.479\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.02\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
 \hypertarget{correlation}{%
 \subsubsection{Correlation}\label{correlation}}
+
+探究所有和 B 细胞差异通路的基因关联的其它基因的 RNA 编辑事件 (可能是 B 细胞差异的根源) 。
 
 Figure \ref{fig:Possibly-RNA-editing-site-correlation-with-the-pathway-genes} (下方图) 为图Possibly RNA editing site correlation with the pathway genes概览。
 
@@ -966,6 +1525,30 @@ Figure \ref{fig:Integrated-violing-plot-of-expression-level-of-the-genes} (下�
 
 \leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
 10. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+11. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+
+\leavevmode\hypertarget{ref-HighRenalMastWang2023}{}%
+12. Wang, S. \emph{et al.} High renal mast cell density is associated with poor prognosis in patients with immunoglobulin a nephropathy. \emph{American journal of nephrology} \textbf{54}, 106--116 (2023).
+
+\leavevmode\hypertarget{ref-SirtuinsAsNovLiuT2022}{}%
+13. Liu, T. \emph{et al.} Sirtuins as novel pharmacological targets in podocyte injury and related glomerular diseases. \emph{Biomedicine \textbackslash\&amp; Pharmacotherapy} \textbf{155}, 113620 (2022).
+
+\leavevmode\hypertarget{ref-MastCellsAsSMukai2018}{}%
+14. Mukai, K., Tsai, M., Saito, H. \& Galli, S. J. Mast cells as sources of cytokines, chemokines, and growth factors. \emph{Immunological reviews} \textbf{282}, 121--150 (2018).
+
+\leavevmode\hypertarget{ref-MastCellRespoMarsha2004}{}%
+15. Marshall, J. S. Mast-cell responses to pathogens. \emph{Nature reviews. Immunology} \textbf{4}, 787--799 (2004).
+
+\leavevmode\hypertarget{ref-MastCellModulPalma2021}{}%
+16. Palma, A. M., Hanes, M. R. \& Marshall, J. S. Mast cell modulation of b cell responses: An under-appreciated partnership in host defence. \emph{Frontiers in immunology} \textbf{12}, (2021).
+
+\leavevmode\hypertarget{ref-IncreasedPropoDuWa2022}{}%
+17. Du, W. \emph{et al.} Increased proportion of follicular helper t cells is associated with b cell activation and disease severity in iga nephropathy. \emph{Frontiers in immunology} \textbf{13}, (2022).
+
+\leavevmode\hypertarget{ref-DeNovoDetectiMuyas2023}{}%
+18. Muyas, F. \emph{et al.} De novo detection of somatic mutations in high-throughput single-cell profiling data sets. \emph{Nature Biotechnology} (2023) doi:\href{https://doi.org/10.1038/s41587-023-01863-z}{10.1038/s41587-023-01863-z}.
 \end{cslreferences}
 
 \end{document}

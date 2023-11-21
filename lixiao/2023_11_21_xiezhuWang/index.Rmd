@@ -1,0 +1,180 @@
+---
+---
+
+```{r include = F}
+deparse_mail()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover("title")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## (已有的分析) 肠道菌分析 (16s rRNA) 
+
+下述内容主要为已有的分析数据。
+
+### PCOA 样本聚类 (QC)
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-pcoa
+autor(f("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/PCOA/unweighted-unifrac/chartExport_2116.png"))
+```
+
+### Alpha 多样性
+
+```{r}
+alpha.sig <- fxlsx("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/ALpha多样性组间差异盒形图/group/ace/alpha-pValue_2113.xlsx")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-alpha-diversity-ace
+autor(f("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/ALpha多样性组间差异盒形图/group/ace/chartExport_2113.png"))
+```
+
+对应 5 种检测方法的 P 值 (上图为 ace)：
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-alpha-pvalue-results
+autor(alpha.sig)
+```
+
+根据该表格，总体无显著差异。
+
+### Alpha 稀疏曲线
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-alpha-rare-ace
+autor(f("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/ALpha多样性稀释曲线/ace/chartExport_2116.png"))
+```
+
+### Beta 多样性
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-overview-of-beta-diversity-difference
+autor(f("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/Graphlan图/group/Control-Model-CTCH.group.png"))
+```
+
+```{r}
+beta.sig <- fxlsx("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/Beta多样性组间差异盒形图/group/unweighted-unifrac/betaBox_2084.xlsx")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-beta-diversity
+autor(f("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/Beta多样性组间差异盒形图/group/unweighted-unifrac/chartExport_2084.png"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-beta-pvalue-results
+autor(beta.sig)
+```
+
+根据该表格，无显著差异。
+
+### 物种差异分析
+
+重新整理差异分析结果 (目录 "王益斐测序/16s测序（儿茶素）/分析结果/物种差异分析/" 下所有统计结果)
+
+```{r}
+mt.diff.files <- list.files("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/物种差异分析/",
+  "\\.xls$", full.names = T, recursive = T)
+mt.diff.files
+
+mt.diff <- sapply(mt.diff.files, simplify = F,
+  function(file) {
+    readxl::read_xlsx(file)
+  })
+
+isDup <- nl(gs(names(mt.diff), "/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/", ""),
+  ifelse(duplicated(mt.diff), "Duplicated", "First file"))
+
+mt.diffn <- mt.diff[!duplicated(mt.diff)]
+
+mt.data <- lapply(1:length(mt.diffn),
+  function(n) {
+    data <- mt.diffn[[n]]
+    data$ontology <- colnames(data)[1]
+    colnames(data)[1] <- "name"
+    data
+  })
+mt.data <- relocate(data.table::rbindlist(mt.data), ontology)
+
+mt.sig <- dplyr::filter(mt.data, p.value < .05)
+```
+
+注意，该目录下包含许多重复无用的文件 (只需要取第一个文件就足够)：
+
+```{r eval = T, echo = F, results = "asis"}
+autor(new_lich(isDup))
+```
+
+重新整理后的表格如下：
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-all-differential-analysis-results-data
+autor(mt.data)
+```
+
+显著 (p.value < 0.05) 的数据：
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-significant-differential-analysis-results-data
+autor(mt.sig, key = "name")
+```
+
+## (已有的分析) 代谢物
+
+注：该客户代谢组的数据分为正离子和负离子的数据集，可以简单理解为，它们是同一个数据集从不同层面检测获得的数据，互为补充。
+
+### 样本 PCA 聚类 (QC) 
+
+```{r eval = T, echo = F, results = "asis"}
+autor(f("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/01. QC/QC-NEG.png"))
+```
+
+```{r}
+f("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/")
+f("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/01. QC/QC-NEG.png")
+```
+
+
+

@@ -125,18 +125,45 @@ fun <- function() {
 lst.find <- fun()
 ```
 
+```{r}
 
-## IgA WES 数据
+```
+
+
+### IgA WES 数据
 
 ```{r}
 # 19-21
 qpdf::pdf_subset("./article_supp_wes/JOIM-281-189-s001.pdf", 19:21, "./article_supp_wes/supp19_21.pdf")
 # https://www.totalpdf.com/pdf_ocr_excel
+
 supp.wes <- fxlsx("./article_supp_wes/supp19_21.xlsx", startRow = 2)
 supp.wes <- select(supp.wes, -1)
 supp.wes <- filter(supp.wes, !is.na(GENE.SYMBOL))
 supp.wes <- mutate(supp.wes, variant_id = paste0("chr", CH.R, "_", POS, "_", REF, "_", ALT, "_b38"))
 
 supp.match <- filter(supp.wes, variant_id %in% ed@object$signif_variant_site_pairs$variant_id)
+
+```
+
+```{r}
+
+p.expr.adar <- focus(srs, "ADAR")
+p.expr.adar
+
+fun <- function() {
+  grpf(rownames(object(srs)), "MDA|ADAR")
+  grpf(srs@params$contrasts$gene, "MDA|ADAR")
+}
+fun()
+
+
+
+en <- job_enrich(p.cor$sig.corp$Editing.RNA, bm$anno)
+en <- step1(en)
+en@plots$step1$p.kegg
+en@plots$step1$p.go
+en@tables$step1$res.kegg
+en@tables$step1$res.go
 
 ```
