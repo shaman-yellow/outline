@@ -1,0 +1,47 @@
+
+control, model: F E D G I H
+model, ctch: G I H C A B
+
+### 样品对应关系
+
+肠道菌数据样品名称：
+
+control: D, E, F
+model: G, H, I
+treatment (ctch): A, B, C
+
+代谢组数据样品名称：
+
+control: control1, control2, control3
+model: model1, model2, model3
+treatment (clpc): clpc1, clpc2, clpc3
+
+
+
+### 差异分析（多元统计的VIP值） 
+
+OPLS-DA 统计分析结果的 VIP 值常用于差异代谢物的筛选。
+
+以下重新整理了对应的表格：
+
+
+#### NEG
+
+```{r eval = T, echo = F, results = "asis"}
+#| metabolite-VIP-neg
+autor(mb.vip.neg)
+```
+
+#### POS
+
+```{r eval = T, echo = F, results = "asis"}
+#| metabolite-VIP-pos
+autor(mb.vip.pos)
+```
+
+```{r}
+mb.vip.neg <- fxlsx2("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Multivariate Statistical Analysis/VIP-NEG.xlsx", .id = "contrast")
+mb.vip.pos <- fxlsx2("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Multivariate Statistical Analysis/VIP-POS.xlsx", .id = "contrast")
+```
+
+

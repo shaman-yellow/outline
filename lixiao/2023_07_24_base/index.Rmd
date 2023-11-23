@@ -1,6 +1,11 @@
 ---
 ---
 
+
+```{r include = F}
+deparse_mail()
+```
+
 ```{r include = F}
 #| setup
 if (!requireNamespace("utils.tool"))

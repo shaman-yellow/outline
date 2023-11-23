@@ -18,7 +18,7 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-set_cover("title")
+set_cover("脓毒症肠损伤联合肠道菌与代谢物分析")
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -27,29 +27,13 @@ set_index()
 
 # 摘要 {#abstract}
 
-# 前言 {#introduction}
-
-# 材料和方法 {#methods}
-
-## 材料
-
-```{r eval = T, echo = F, results = "asis"}
-auto_material()
-```
-
-## 方法
-
-```{r eval = T, echo = F, results = "asis"}
-auto_method()
-```
-
-# 分析结果 {#results}
-
-# 结论 {#dis}
+- 对肠道菌的数据做了主要步骤的整理，附上了整理后的表格或已有的图片，并做了简要的说明，见 \@ref(micro)。
+- 对代谢物的数据做了主要步骤的整理，附上了整理后的表格或已有的图片，并做了简要的说明，见 \@ref(metabo)。
+- 对上述两组数据做了关联分析，见 \@ref(corr)。
 
 # 附：分析流程 {#workflow}
 
-## (已有的分析) 肠道菌分析 (16s rRNA) 
+## (已有的分析) 肠道菌分析 (16s rRNA) {#micro}
 
 下述内容主要为已有的分析数据。
 
@@ -71,7 +55,7 @@ alpha.sig <- fxlsx("/media/echo/My Passport/王益斐测序/16s测序（儿茶�
 autor(f("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/分析结果/ALpha多样性组间差异盒形图/group/ace/chartExport_2113.png"))
 ```
 
-对应 5 种检测方法的 P 值 (上图为 ace)：
+对应 5 种检测方法的 P 值 (上图为 ace, 只附上了一张图)：
 
 ```{r eval = T, echo = F, results = "asis"}
 #| microbiota-alpha-pvalue-results
@@ -161,20 +145,250 @@ autor(mt.data)
 autor(mt.sig, key = "name")
 ```
 
-## (已有的分析) 代谢物
+## (已有的分析) 代谢物 {#metabo}
 
-注：该客户代谢组的数据分为正离子和负离子的数据集，可以简单理解为，它们是同一个数据集从不同层面检测获得的数据，互为补充。
+注：该客户代谢组的数据分为正离子 (POS) 和负离子 (NEG) 的数据集，可以简单理解为，它们是同一个数据集从不同层面检测获得的数据，互为补充。
 
 ### 样本 PCA 聚类 (QC) 
 
+#### NEG
+
 ```{r eval = T, echo = F, results = "asis"}
+#| metabolite-QC-neg
 autor(f("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/01. QC/QC-NEG.png"))
+```
+
+#### POS
+
+```{r eval = T, echo = F, results = "asis"}
+#| metabolite-QC-pos
+autor(f("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/01. QC/QC-POS.png"))
+```
+
+### 鉴定到的代谢物统计
+
+注：该统计是正离子和负离子模式两者的合计结果 (原报告说明) 。
+
+```{r eval = T, echo = F, results = "asis"}
+#| metabolites-all-identified-compounds
+autor(f("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/02. Identified Metabolites_Stat/Superclass_pie.pdf"))
+```
+
+### 差异分析
+
+```{r}
+dir.create("./Figure+Table/metabolites-diff")
+file.copy("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Differential Metabolites/Control_vs_CLPC", "./Figure+Table/metabolites-diff", recursive = T)
+file.copy("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Differential Metabolites/Control_vs_Model", "./Figure+Table/metabolites-diff", recursive = T)
+file.copy("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Differential Metabolites/Model_vs_CLPC", "./Figure+Table/metabolites-diff", recursive = T)
+
+mb.diff.neg <- fxlsx2("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Differential Metabolites/附件1_样本NEG_定性.xlsx", .id = "contrast")
+mb.diff.pos <- fxlsx2("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Differential Metabolites/附件1_样本POS_定性.xlsx", .id = "contrast")
+```
+
+这里附上了差异分析的结果图片 (在对应文件夹) ：
+
+```{r eval = T, echo = F, results = "asis"}
+#| metabolites-view-diff
+autor("./Figure+Table/metabolites-diff")
+```
+
+以下，重新整理了差异分析的数据表格：
+
+#### NEG
+
+```{r eval = T, echo = F, results = "asis"}
+#| metabolite-diff-data-neg
+autor(mb.diff.neg)
+```
+
+#### POS
+
+```{r eval = T, echo = F, results = "asis"}
+#| metabolite-diff-data-pos
+autor(mb.diff.pos)
+```
+
+### 富集分析
+
+注：该富集分析结果是正离子和负离子模式两者 (差异代谢物) 的合计富集结果 (原报告说明) 。
+
+这里附上了富集分析的结果图片 (在对应文件夹) ：
+
+```{r eval = T, echo = F, results = "asis"}
+#| metabolite-enrich-view
+autor("./Figure+Table/metabolites-enrich")
+```
+
+```{r}
+dir.create("./Figure+Table/metabolites-enrich")
+file.copy("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Differential Metabolites/Model_vs_CLPC", "./Figure+Table/metabolites-enrich", recursive = T)
+file.copy("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Differential Metabolites/Control_vs_CLPC", "./Figure+Table/metabolites-enrich", recursive = T)
+file.copy("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/03. Difference Analysis/Differential Metabolites/Control_vs_Model", "./Figure+Table/metabolites-enrich", recursive = T)
+```
+
+## 整合肠道菌和代谢组 {#corr}
+
+### 差异肠道菌的丰度数据
+
+选择 Tab. \@ref(tab:microbiota-significant-differential-analysis-results-data) 中的差异肠道菌。
+
+以下重新整理了这些差异菌的丰度数据 (用于关联分析)： 
+
+```{r eval = T, echo = F, results = "asis"}
+#| microbiota-The-abundance-data-of-significant-microbiota
+autor(mt.abun.sig)
+```
+
+```{r}
+dir.create("mt_abundance")
+untar("/media/echo/My Passport/王益斐测序/16s测序（儿茶素）/王益斐原始数据/儿茶素处理脓毒症大鼠肠道菌群的影响/difference.tar.gz",
+  exdir = "./mt_abundance")
+
+mt.group <- as_df.lst(list(
+  control = c("D", "E", "F"),
+  model = c("G", "H", "I"),
+  ctch = c("A", "B", "C")
+))
+
+mt.abun <- lapply(list.files("./mt_abundance/difference/", "Control-Model-CTCH.abundance", full.names = T),
+  function(file) {
+    onto <- get_realname(file)
+    data <- data.frame(ftibble(file))
+    rownames(data) <- data[[1]]
+    data <- data[, -1]
+    data <- data.frame(t(data))
+    data$ontology <- onto
+    dplyr::rename(as_tibble(data), name = rownames)
+  })
+mt.abun <- as_tibble(data.table::rbindlist(mt.abun))
+mt.abun <- dplyr::relocate(mt.abun, ontology, name)
+mt.abun <- tidyr::gather(mt.abun, sample, value, -ontology, -name)
+mt.abun <- dplyr::mutate(mt.abun,
+  group = dplyr::recode(sample, !!!nl(mt.group$name, mt.group$type)),
+  value = as.double(value))
+mt.abun.sig <- dplyr::filter(mt.abun, name %in% !!mt.sig$name)
+
+mt.sig
+```
+
+### 差异代谢物含量数据
+
+以下为正离子和负离子差异代谢物的筛选条件：
+
+- VIP > 1
+- |log2(fold change)| > 0.3
+- p-value < 0.05
+- 模型组相比对照组，代谢物上调；而以药物处理后，代谢物下调（相比于模型组）。
+- 模型组相比对照组，代谢物下调；而以药物处理后，代谢物上调（相比于模型组）。
+
+以下为重新整理的表格 (用于关联分析) (含量转化为 log~2~(x))：
+
+```{r eval = T, echo = F, results = "asis"}
+#| metabolite-The-level-of-significant-metabolite
+autor(mb.sig, key = "new_id")
+```
+
+```{r}
+fun <- function(x, y) {
+  res <- lapply(list(x, y),
+    function(data) {
+      data <- dplyr::mutate(data, log2FC = log2(Fold.change))
+      data <- dplyr::filter(data, contrast %in% c("Control_vs_Model", "Model_vs_CLPC"),
+        VIP > 1, abs(log2FC) > .3, `p-value` < .05)
+      data <- dplyr::mutate(data, status = ifelse(log2FC > 0, "up", "down"),
+        contrast.change = paste0(contrast, ".", status))
+      lst <- split(data$ID, data$contrast.change)
+      p.mb.ins <- new_upset(lst = lst)
+      guess <- .guess_intersect(lst)
+      data.g <- dplyr::filter(data, ID %in% !!guess)
+      data.g <- dplyr::select(data.g, ID, Name, tidyselect::starts_with(c("Control", "Model", "CLPC")))
+      data.g <- dplyr::distinct(data.g)
+      namel(data, p.mb.ins, guess, data.g)
+    })
+  names(res) <- c("neg", "pos")
+  return(res)
+}
+mb.res <- fun(mb.diff.neg, mb.diff.pos)
+mb.sig <- data.table::rbindlist(lapply(mb.res, function(x) x$data.g), idcol = T)
+mb.sig <- rename(mb.sig, ion = .id)
+mb.sig <- mutate(mb.sig, new_id = paste0(ion, "_", ID))
+mb.sig <- relocate(mb.sig, ion, new_id)
+mb.sig <- tidyr::gather(mb.sig, sample, value, -new_id, -ion, -ID, -Name)
+mb.sig <- mutate(mb.sig, value = log2(value + 1))
 ```
 
 ```{r}
 f("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/")
-f("/media/echo/My Passport/王益斐测序/代谢物测序/报告与附件/报告及附件/附件2 Result/01. QC/QC-NEG.png")
 ```
 
+### 关联分析 (Pearson)
 
+将 Tab. \@ref(tab:microbiota-The-abundance-data-of-significant-microbiota) 和 Tab. \@ref(tab:metabolite-The-level-of-significant-metabolite) 对应的数据做 pearson 关联分析。
 
+注：样品对应关系如下：
+
+- 肠道菌数据样品名称
+    - control: D, E, F
+    - model: G, H, I
+    - treatment (ctch): A, B, C
+- 代谢组数据样品名称：
+    - control: control1, control2, control3
+    - model: model1, model2, model3
+    - treatment (clpc): clpc1, clpc2, clpc3
+
+```{r eval = T, echo = F, results = "asis"}
+#| correlation-heatmap
+autor(p.hp)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| all-correlation-results
+autor(f.corp)
+```
+
+根据以下条件过滤：
+
+- p.value < 0.05
+- cor > 0.3 (关联系数)
+- 代谢物鉴定到名称
+
+得到：
+
+```{r eval = T, echo = F, results = "asis"}
+#| filtered-correlation-results
+autor(f.corp.f)
+```
+
+```{r}
+fm1 <- function(mb) {
+  mb <- mutate(mb, group = stringr::str_extract(sample, "^[a-zA-Z]+"),
+    seq = stringr::str_extract(sample, "[0-9]"),
+    group = dplyr::recode(group, Control = "control", Model = "model", CLPC = "treatment"),
+    r.sample = paste0(group, "_", seq)
+  )
+  mb <- select(mb, r.sample, new_id, value)
+  tidyr::spread(mb, r.sample, value)
+}
+di.mb <- fm1(mb.sig)
+
+fm2 <- function(mt) {
+  mt <- mutate(mt, seq = dplyr::recode(sample, !!!nl(LETTERS[1:9], as.character(rep(1:3, 3)))),
+    group = dplyr::recode(group, ctch = "treatment", .default = group),
+    r.sample = paste0(group, "_", seq)
+  )
+  mt <- select(mt, r.sample, name, value)
+  tidyr::spread(mt, r.sample, value)
+}
+di.mt <- fm2(mt.abun.sig)
+
+corp <- cal_corp(di.mt, di.mb, "Microbiota", "Metabolites", trans = T)
+p.hp <- wrap(callheatmap(new_heatdata(corp)), 25, 8)
+
+f.corp <- mutate(corp,
+  Microbiota_ontology = dplyr::recode(Microbiota, !!!nl(mt.abun.sig$name, mt.abun.sig$ontology)),
+  Metabolites_name = dplyr::recode(Metabolites, !!!nl(mb.sig$new_id, mb.sig$Name))
+)
+f.corp <- relocate(f.corp, dplyr::starts_with("M"))
+f.corp.f <- filter(f.corp, pvalue < .05, cor > .3, !is.na(Metabolites_name))
+```
