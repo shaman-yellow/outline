@@ -7,17 +7,15 @@ write_articlePdf("index.Rmd", "output.Rmd", "Analysis\nauthor: 'Huang LiChuang o
 file.copy("./output.pdf", report <- paste0("说明.pdf"), T)
 zip("results.zip", c(report, "./touchPDB_0.0.0.9000.tar.gz", "./annotation.html"))
 
-
-id <- "IN2023072803-3+销售：周燕青+客户：戴心怡+斑痕增生+生信分析"
-file.copy("./output.pdf", report <- paste0(id, ".pdf"), T)
-
-package_results(head = NULL, masterZip = NULL, report = report)
-file.rename("./client.zip", paste0(id, ".zip"))
-
-## for check
-
-"孙慧 <sunhui@wie-biotech.com>"
-"汪丽-业务进度 <wl@hzlxsw.com>"
-
-## final:
-"陈芳媛 <wengyuan@wie-biotech.com>"
+info <- items(
+  type = "固定业务",
+  title = "蛋白质信息获取",
+  status = "完成",
+  coef = .25,
+  date = "2023-09-19",
+  info = od_get_info(),
+  id = od_get_id(),
+  receive_date = "2023-09-12",
+  score = od_get_score(),
+  member = "黄礼闯"
+)

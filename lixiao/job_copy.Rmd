@@ -31,6 +31,9 @@ cp <- function(from, to) {
 ```{r}
 cp("~/outline/lixiao/2023_06_25_fix/N2023062002.zip", thedir(7))
 cp("~/outline/lixiao/2023_06_30_eval/results_chem_docking.zip", thedir(7))
+
+move_rds("~/outline/lixiao/2023_06_25_fix", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_06_30_eval", "~/disk_sdb1")
 ```
 
 ## 2023-08

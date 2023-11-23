@@ -18,35 +18,20 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
+set_cover("肺癌和癌旁组织单细胞数据对比分析")
+```
+
+```{r eval = T, echo = F, results = "asis"}
 set_index()
 ```
 
 # 摘要 {#abstract}
 
-# 前言 {#introduction}
-
-# 研究设计流程图 {#route}
-
-```{r}
-#| route
-route <- as_network(
-  list("RNA_seq_data:Preprocess",
-    ), "tree"
-)
-p.route <- flowChart(route, 1.1, 1)
-```
-
-```{r, eval = T, echo = F, fig.width = 10, fig.height = 7, fig.cap = NULL}
-p.route
-```
+- 分析不同组织样本中各细胞比例的情况，包括上皮细胞（肿瘤细胞或正常乳腺细胞）、淋系细胞、髓系细胞等等。
+- 对比肺癌与癌旁组织中各细胞的比例，分析在肺癌进展过程中细胞成分的变化，探索在肺癌进展过程中是否出现新的细胞亚群。
+- 进化树分析（trajectory analysis）揭示在肺癌进展过程中细胞分化与进化的情况。
 
 # 材料和方法 {#methods}
-
-## 材料
-
-```{r eval = T, echo = F, results = "asis"}
-auto_material()
-```
 
 ## 方法
 
@@ -59,3 +44,111 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+## 癌组织切片分析
+
+### 空间转录组数据前处理与可视化
+
+使用 Seurat 前处理空间转录组数据集，完成降维聚类，使用 SCSA 对细胞进行注释。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Cancer-tissue-SCSA-annotation
+autor(p.scsa)
+```
+
+```{r}
+## use the previous data
+st0 <- readRDS("~/disk_sdb1/2023_10_06_lunST/st.6.rds")
+st0 <- upd(st0)
+p.scsa <- vis(st0, "scsa_cell")
+```
+
+### 癌细胞鉴定
+
+- 使用 copyKAT 鉴定癌细胞。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Cancer-tissue-copyKAT-prediction-of-aneuploidy
+autor(p.kat)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Cancer-tissue-cell-mapped-of-copyKAT-prediction
+autor(p.scsa_kat)
+```
+
+```{r}
+p.kat <- f("../2023_10_06_lunST/Figure+Table/copykat_heatmap.png")
+p.scsa_kat <- vis(st0, group.by = "scsa_copykat")
+```
+
+### 细胞比例分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| Cancer-tissue-cell-proportion
+autor(p.st0.pp)
+```
+
+```{r}
+p.st0.pp <- wrap(new_pie(ids(st0, "scsa_copykat", unique = F), use.ggplot = T, fun_text = ggrepel::geom_label_repel), 7, 7)
+p.st0.pp
+```
+
+## 癌旁组织切片分析
+
+### 空间转录组数据前处理与可视化
+
+使用 Seurat 前处理空间转录组数据集，完成降维聚类，使用 SCSA 对细胞进行注释。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Paracancerous-tissue-SCSA-annotation
+autor(p.st2.scsa)
+```
+
+```{r}
+# stc2 <- step1(stc2)
+# stc2 <- step2(stc2, 1, 7000, max.percent.mt = 30)
+st2 <- readRDS("~/disk_sdb1/2023_10_06_lunST/st2.2.rds")
+st2 <- upd(st2)
+sig(st2) <- "Paracancerous tissue"
+st2 <- step3(st2, 1:15, 1.2)
+st2@step <- 4L
+st2 <- step5(st2, 8)
+st2 <- step6(st2, "Lung")
+p.st2.scsa <- vis(st2, "scsa_cell")
+p.st2.scsa
+```
+
+### 细胞比例分析
+
+```{r}
+p.st2.pp <- wrap(new_pie(ids(st2, "scsa_cell", unique = F), use.ggplot = T, fun_text = ggrepel::geom_label_repel), 7, 7)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Paracancerous-tissue-cell-proportion
+autor(p.st2.pp)
+```
+
+## 癌组织和癌旁组织整合分析
+
+### 集成癌组织和癌旁组织数据
+
+```{r}
+st0 <- mutate(st0, cell_type = scsa_copykat)
+st2 <- mutate(st2, cell_type = scsa_cell)
+rs <- asjob_risc(list(Cancer = st0, Paracancer = st2), NULL, "cell_type")
+rs <- step1(rs)
+pattern <- unique(gs(c(ids(st0, "cell_type"), ids(st2, "cell_type")), " ", "_"))
+rs <- step2(rs, "Paracancer", pattern)
+
+```
+
+
+
+```{r}
+save.image("before_rs.Rdata")
+load("before_rs.Rdata")
+
+save_small()
+```

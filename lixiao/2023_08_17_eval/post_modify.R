@@ -9,3 +9,15 @@ package_results(head = NULL, masterZip = NULL, report = "白晓霞订单.pdf")
 
 file.rename("./client.zip", "白晓霞订单.zip")
 
+info <- items(
+  type = "固定业务",
+  title = "白晓霞订单：妊娠期肝内胆汁淤积症筛选基因突变",
+  status = "完成",
+  coef = .25,
+  date = "2023-09-08",
+  info = od_get_info(),
+  id = od_get_id(),
+  receive_date = od_get_date(),
+  score = od_get_score(),
+  member = "黄礼闯"
+)

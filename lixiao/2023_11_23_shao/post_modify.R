@@ -2,23 +2,24 @@
 # render as report
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-write_articlePdf("index.Rmd", "output.Rmd", "Analysis\nauthor: 'Huang LiChuang of Wie-Biotech'")
+write_articlePdf("index.Rmd", "output.Rmd", "")
 
-id <- "夏国连生信支持+补充分析+补充分析2"
+id <- "IN2023072803-3+销售：周燕青+客户：戴心怡+斑痕增生+生信分析"
 file.copy("./output.pdf", report <- paste0(id, ".pdf"), T)
 
 package_results(head = NULL, masterZip = NULL, report = report)
 file.rename("./client.zip", paste0(id, ".zip"))
 
-info <- items(
+info <- list(
   type = "固定业务",
-  title = "夏国连生信支持：筛选丹参酮治疗脓毒症的关键差异表达基因及相关信号通路",
+  title = "...",
   status = "完成",
   coef = .25,
-  date = "2023-10-09",
+  date = Sys.Date(),
+  receive_date = od_get_date(),
   info = od_get_info(),
   id = od_get_id(),
-  receive_date = "2023-10-05",
   score = od_get_score(),
   member = "黄礼闯"
 )
+
