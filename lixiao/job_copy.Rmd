@@ -1,6 +1,31 @@
 
 # Set-up
 
+## All jobs
+
+```{r}
+all <- get_orders()
+filter(all, is.na(coef))
+```
+
+## Summary month
+
+```{r}
+summary_month()
+update_registers()
+
+# summary_month(Sys.Date() - 30, rm = T)
+# summary_month(Sys.Date() - 60, rm = T)
+```
+
+## Send summary
+
+```{r}
+send_summary("me")
+send_prin("me")
+send_registers("me")
+```
+
 ## Functions
 
 ```{r}
@@ -71,6 +96,8 @@ cp("~/outline/lixiao/2023_10_06_lunST/曹卓空间转录组.zip", thedir(10))
 cp("~/outline/lixiao/2023_10_18_revise/修改业务：2023041204-潘一伟&魏伦全.zip", thedir(10))
 cp("~/outline/lixiao/2023_09_27_dualdisease/BI2023080108：集成多组 CKD 单细胞数据集发现 IgA 相比于其它 CKD 的与 RCC 之间转化的更高风险.zip", thedir(10))
 
+move_rds("~/outline/lixiao/2023_10_18_revise", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_10_05_xiaguolian", "~/disk_sdb1")
 move_rds("~/outline/lixiao/2023_10_06_lunST", "~/disk_sdb1")
 move_rds("~/outline/lixiao/2023_09_27_dualdisease", "~/disk_sdb1")
 ```
@@ -102,6 +129,8 @@ cp("~/outline/lixiao/2023_10_12_dr/IN2023110603-3+销售：吴航贵+客户：�
 cp("~/outline/lixiao/2023_11_07_dongzhixia/董志霞-生信支持.zip", thedir(11))
 cp("~/outline/lixiao/2023_11_06_coa/上海东方医院周久立-生信支持申请.zip", thedir(11))
 cp("~/outline/lixiao/2023_11_21_xiezhuWang/协助业务：A2023060507-c+客户：王益斐+销售：龙艳+脓毒症肠损伤+2-3分-生信分析.zip", thedir(11))
+
+move_rds("~/outline/lixiao/2023_11_01_rnaedit", "~/disk_sdb1")
 ```
 
 Eval:
@@ -110,4 +139,3 @@ Eval:
 - 张医生加急评估，应用1H-MRS分析重复经颅磁刺激联合加巴喷丁治疗对不完全性脊髓损伤神经病理性疼痛患者海马区代谢产物的影响
 - 何小波（陈力）评估，通过网络药理学、生物信息学、分子对接等方法研究天麻钩藤饮治疗子痫前期（PE）的靶点和分子机制
 - 曹卓评估，附件5个单子需要评估生信是否能用公司做的已有的测序结果或者公共数据库进行分析
-

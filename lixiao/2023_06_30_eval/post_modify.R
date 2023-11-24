@@ -9,6 +9,7 @@ file.copy("./output.pdf", "eval.pdf", T)
 package_results(head = NULL, masterZip = NULL)
 
 info <- items(
+  belong = odate(7),
   type = "固定业务",
   title = "分子对接分析",
   status = "完成",

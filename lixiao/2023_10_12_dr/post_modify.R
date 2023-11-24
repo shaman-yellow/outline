@@ -11,6 +11,7 @@ package_results(head = NULL, masterZip = NULL, report = report)
 file.rename("./client.zip", paste0(id, ".zip"))
 
 info <- items(
+  belong = odate(11),
   type = "固定业务",
   title = "OCTA 在糖尿病视网膜病变中的应用",
   status = "完成",

@@ -11,6 +11,7 @@ package_results(head = NULL, masterZip = NULL, report = report)
 file.rename("./client.zip", paste0(id, ".zip"))
 
 info <- items(
+  belong = odate(11),
   type = "备单业务",
   title = "RNA 编辑和 IgA 肾病中 B 细胞免疫行为的关联性",
   status = "完成",

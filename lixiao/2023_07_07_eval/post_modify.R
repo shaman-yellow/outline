@@ -13,6 +13,7 @@ package_results(head = NULL, masterZip = NULL, report = report)
 file.rename("./client.zip", paste0(id, ".zip"))
 
 info <- items(
+  belong = odate(8),
   type = "固定业务",
   title = "筛出（瘢痕增生）能够与 TCF-AS1 结合又能与 TCF4 结合的 RNA 结合蛋白",
   status = "完成",

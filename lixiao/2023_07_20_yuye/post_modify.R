@@ -11,6 +11,7 @@ package_results(head = NULL, masterZip = NULL, report = report)
 file.rename("./client.zip", paste0(id, ".zip"))
 
 info <- items(
+  belong = odate(9),
   type = "固定业务",
   title = "筛选肌少症（Sarcopenia）、结直肠癌（colorectal cancer）、化疗（Chemotherapy）共同的通路",
   status = "完成",

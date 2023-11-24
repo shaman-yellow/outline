@@ -244,7 +244,10 @@ bi <- job_biblio(kds)
 sig(bi) <- "DR and OCTA"
 bi <- step1(bi, 4)
 bi <- step2(bi)
+
+bi@step <- 2L
 bi <- step3(bi)
+autosv(bi@tables$step3$t.most_citation[, -1], "correct-Most-citation-per-year")
 clear(bi)
 
 bi@params$summary

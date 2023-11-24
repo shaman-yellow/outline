@@ -9,6 +9,7 @@ write_thesisDocx("index.Rmd", "output.Rmd", "Report of Analysis\nauthor: 'Huang 
 package_results()
 
 info <- items(
+  belong = odate(7),
   type = "固定业务",
   title = "化合物靶点功能通路分析",
   status = "完成",
