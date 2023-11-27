@@ -12,13 +12,13 @@ file.rename("./client.zip", paste0(id, ".zip"))
 
 info <- items(
   belong = odate(11),
-  type = "固定业务",
-  title = od_get_title(),
-  status = "完成",
-  coef = .25,
-  date = "2023-11-28",
+  type = "其他业务",
+  title = "曹卓交付三个订单所需数据",
+  status = "待完成",
+  coef = NA,
+  date = "2023-11-27",
   info = od_get_info(),
-  id = "曹卓肺癌和癌旁组织对比分析",
+  id = "曹卓补充订单",
   receive_date = od_get_date(),
   score = od_get_score(),
   member = "黄礼闯"

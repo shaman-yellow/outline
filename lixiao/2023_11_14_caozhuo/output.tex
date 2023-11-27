@@ -1,0 +1,360 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge
+肺癌和癌旁组织单细胞数据对比分析} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2023-11-27}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\begin{itemize}
+\tightlist
+\item
+  分析不同组织样本中各细胞比例的情况，包括上皮细胞（肿瘤细胞或正常乳腺细胞）、淋系细胞、髓系细胞等等。
+\item
+  对比肺癌与癌旁组织中各细胞的比例，分析在肺癌进展过程中细胞成分的变化，探索在肺癌进展过程中是否出现新的细胞亚群。
+\item
+  进化树分析（trajectory analysis）揭示在肺癌进展过程中细胞分化与进化的情况。
+\end{itemize}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  ClusterProfiler used for GSEA enrichment.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{1}}
+\item
+  Monocle3 used for cell pseudotime analysis.\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{2},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{3}}
+\item
+  Seurat used for scRNA-seq processing; SCSA used for cell type annotation.\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{4}--\protect\hyperlink{ref-ScsaACellTyCaoY2020}{6}}
+\item
+  Seurat used for spatial scRNA-seq analysis.\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{4},\protect\hyperlink{ref-ComprehensiveIStuart2019}{5}}
+\item
+  Other R packages used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux764cux7ec4ux7ec7ux5207ux7247ux5206ux6790}{%
+\subsection{癌组织切片分析}\label{ux764cux7ec4ux7ec7ux5207ux7247ux5206ux6790}}
+
+\hypertarget{ux7a7aux95f4ux8f6cux5f55ux7ec4ux6570ux636eux524dux5904ux7406ux4e0eux53efux89c6ux5316}{%
+\subsubsection{空间转录组数据前处理与可视化}\label{ux7a7aux95f4ux8f6cux5f55ux7ec4ux6570ux636eux524dux5904ux7406ux4e0eux53efux89c6ux5316}}
+
+使用 Seurat 前处理空间转录组数据集，完成降维聚类，使用 SCSA 对细胞进行注释。
+
+Figure \ref{fig:Cancer-tissue-SCSA-annotation} (下方图) 为图Cancer tissue SCSA annotation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Cancer-tissue-SCSA-annotation.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Cancer-tissue-SCSA-annotation.pdf}
+\caption{Cancer tissue SCSA annotation}\label{fig:Cancer-tissue-SCSA-annotation}
+\end{center}
+
+\hypertarget{ux764cux7ec6ux80deux9274ux5b9a}{%
+\subsubsection{癌细胞鉴定}\label{ux764cux7ec6ux80deux9274ux5b9a}}
+
+\begin{itemize}
+\tightlist
+\item
+  使用 copyKAT 鉴定癌细胞。
+\end{itemize}
+
+Figure \ref{fig:Cancer-tissue-copyKAT-prediction-of-aneuploidy} (下方图) 为图Cancer tissue copyKAT prediction of aneuploidy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/copykat\_heatmap.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{../2023_10_06_lunST/Figure+Table/copykat_heatmap.png}
+\caption{Cancer tissue copyKAT prediction of aneuploidy}\label{fig:Cancer-tissue-copyKAT-prediction-of-aneuploidy}
+\end{center}
+
+Figure \ref{fig:Cancer-tissue-cell-mapped-of-copyKAT-prediction} (下方图) 为图Cancer tissue cell mapped of copyKAT prediction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Cancer-tissue-cell-mapped-of-copyKAT-prediction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Cancer-tissue-cell-mapped-of-copyKAT-prediction.pdf}
+\caption{Cancer tissue cell mapped of copyKAT prediction}\label{fig:Cancer-tissue-cell-mapped-of-copyKAT-prediction}
+\end{center}
+
+\hypertarget{ux7ec6ux80deux6bd4ux4f8bux5206ux6790}{%
+\subsubsection{细胞比例分析}\label{ux7ec6ux80deux6bd4ux4f8bux5206ux6790}}
+
+Figure \ref{fig:Cancer-tissue-cell-proportion} (下方图) 为图Cancer tissue cell proportion概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Cancer-tissue-cell-proportion.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Cancer-tissue-cell-proportion.pdf}
+\caption{Cancer tissue cell proportion}\label{fig:Cancer-tissue-cell-proportion}
+\end{center}
+
+\hypertarget{ux764cux65c1ux7ec4ux7ec7ux5207ux7247ux5206ux6790}{%
+\subsection{癌旁组织切片分析}\label{ux764cux65c1ux7ec4ux7ec7ux5207ux7247ux5206ux6790}}
+
+\hypertarget{ux7a7aux95f4ux8f6cux5f55ux7ec4ux6570ux636eux524dux5904ux7406ux4e0eux53efux89c6ux5316-1}{%
+\subsubsection{空间转录组数据前处理与可视化}\label{ux7a7aux95f4ux8f6cux5f55ux7ec4ux6570ux636eux524dux5904ux7406ux4e0eux53efux89c6ux5316-1}}
+
+使用 Seurat 前处理空间转录组数据集，完成降维聚类，使用 SCSA 对细胞进行注释。
+
+Figure \ref{fig:Paracancerous-tissue-SCSA-annotation} (下方图) 为图Paracancerous tissue SCSA annotation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Paracancerous-tissue-SCSA-annotation.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Paracancerous-tissue-SCSA-annotation.pdf}
+\caption{Paracancerous tissue SCSA annotation}\label{fig:Paracancerous-tissue-SCSA-annotation}
+\end{center}
+
+\hypertarget{ux7ec6ux80deux6bd4ux4f8bux5206ux6790-1}{%
+\subsubsection{细胞比例分析}\label{ux7ec6ux80deux6bd4ux4f8bux5206ux6790-1}}
+
+Figure \ref{fig:Paracancerous-tissue-cell-proportion} (下方图) 为图Paracancerous tissue cell proportion概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Paracancerous-tissue-cell-proportion.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Paracancerous-tissue-cell-proportion.pdf}
+\caption{Paracancerous tissue cell proportion}\label{fig:Paracancerous-tissue-cell-proportion}
+\end{center}
+
+\hypertarget{ux764cux7ec4ux7ec7ux548cux764cux65c1ux7ec4ux7ec7ux6574ux5408ux5206ux6790}{%
+\subsection{癌组织和癌旁组织整合分析}\label{ux764cux7ec4ux7ec7ux548cux764cux65c1ux7ec4ux7ec7ux6574ux5408ux5206ux6790}}
+
+\hypertarget{ux96c6ux6210ux764cux7ec4ux7ec7ux548cux764cux65c1ux7ec4ux7ec7ux6570ux636e}{%
+\subsubsection{集成癌组织和癌旁组织数据}\label{ux96c6ux6210ux764cux7ec4ux7ec7ux548cux764cux65c1ux7ec4ux7ec7ux6570ux636e}}
+
+Figure \ref{fig:Integrated-The-cell-type} (下方图) 为图Integrated The cell type概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Integrated-The-cell-type.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Integrated-The-cell-type.pdf}
+\caption{Integrated The cell type}\label{fig:Integrated-The-cell-type}
+\end{center}
+
+\hypertarget{ux5de8ux566cux7ec6ux80deux7684ux4e9aux7fa4ux5206ux6790}{%
+\subsubsection{巨噬细胞的亚群分析}\label{ux5de8ux566cux7ec6ux80deux7684ux4e9aux7fa4ux5206ux6790}}
+
+Figure \ref{fig:Macrophage-subtypes-The-regroup-hclust} (下方图) 为图Macrophage subtypes The regroup hclust概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Macrophage-subtypes-The-regroup-hclust.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Macrophage-subtypes-The-regroup-hclust.pdf}
+\caption{Macrophage subtypes The regroup hclust}\label{fig:Macrophage-subtypes-The-regroup-hclust}
+\end{center}
+
+Figure \ref{fig:Macrophage-subtypes-gene-module-heatmap} (下方图) 为图Macrophage subtypes gene module heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Macrophage-subtypes-gene-module-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Macrophage-subtypes-gene-module-heatmap.pdf}
+\caption{Macrophage subtypes gene module heatmap}\label{fig:Macrophage-subtypes-gene-module-heatmap}
+\end{center}
+
+\hypertarget{ux5de8ux566cux7ec6ux80deux4e9aux7fa4ux95f4ux5deeux5f02ux5206ux6790}{%
+\subsubsection{巨噬细胞亚群间差异分析}\label{ux5de8ux566cux7ec6ux80deux4e9aux7fa4ux95f4ux5deeux5f02ux5206ux6790}}
+
+Figure \ref{fig:Macrophage-subtypes-contrasts-DEGs-intersection} (下方图) 为图Macrophage subtypes contrasts DEGs intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Macrophage-subtypes-contrasts-DEGs-intersection.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Macrophage-subtypes-contrasts-DEGs-intersection.pdf}
+\caption{Macrophage subtypes contrasts DEGs intersection}\label{fig:Macrophage-subtypes-contrasts-DEGs-intersection}
+\end{center}
+
+\hypertarget{ux5de8ux566cux7ec6ux80deux4e9aux7fa4ux95f4ux5deeux5f02ux529fux80fdux5206ux6790}{%
+\subsubsection{巨噬细胞亚群间差异功能分析}\label{ux5de8ux566cux7ec6ux80deux4e9aux7fa4ux95f4ux5deeux5f02ux529fux80fdux5206ux6790}}
+
+\hypertarget{m3-vs-m1}{%
+\paragraph{M3 vs M1}\label{m3-vs-m1}}
+
+Figure \ref{fig:Macrophage-3-vs-Macrophage-1-GSEA-plot-of-the-pathways} (下方图) 为图Macrophage 3 vs Macrophage 1 GSEA plot of the pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Macrophage-3-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Macrophage-3-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf}
+\caption{Macrophage 3 vs Macrophage 1 GSEA plot of the pathways}\label{fig:Macrophage-3-vs-Macrophage-1-GSEA-plot-of-the-pathways}
+\end{center}
+
+\hypertarget{m2-vs-m1}{%
+\paragraph{M2 vs M1}\label{m2-vs-m1}}
+
+Figure \ref{fig:Macrophage-2-vs-Macrophage-1-GSEA-plot-of-the-pathways} (下方图) 为图Macrophage 2 vs Macrophage 1 GSEA plot of the pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Macrophage-2-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Macrophage-2-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf}
+\caption{Macrophage 2 vs Macrophage 1 GSEA plot of the pathways}\label{fig:Macrophage-2-vs-Macrophage-1-GSEA-plot-of-the-pathways}
+\end{center}
+
+\hypertarget{m3-vs-m2}{%
+\paragraph{M3 vs M2}\label{m3-vs-m2}}
+
+Figure \ref{fig:Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways} (下方图) 为图Macrophage 3 vs Macrophage 2 GSEA plot of the pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways.pdf}
+\caption{Macrophage 3 vs Macrophage 2 GSEA plot of the pathways}\label{fig:Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways}
+\end{center}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+1. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-ReversedGraphQiuX2017}{}%
+2. Qiu, X. \emph{et al.} Reversed graph embedding resolves complex single-cell trajectories. \emph{Nature Methods} \textbf{14}, (2017).
+
+\leavevmode\hypertarget{ref-TheDynamicsAnTrapne2014}{}%
+3. Trapnell, C. \emph{et al.} The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. \emph{Nature Biotechnology} \textbf{32}, (2014).
+
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+4. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
+5. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+6. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+\end{cslreferences}
+
+\end{document}

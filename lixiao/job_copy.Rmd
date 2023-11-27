@@ -11,7 +11,7 @@ filter(all, is.na(coef))
 ## Summary month
 
 ```{r}
-summary_month()
+summary_month(rm = T)
 update_registers()
 
 # summary_month(Sys.Date() - 30, rm = T)
@@ -21,9 +21,11 @@ update_registers()
 ## Send summary
 
 ```{r}
-send_summary("me")
-send_prin("me")
-send_registers("me")
+send_eval("sunhui")
+send_prin("sunhui")
+
+send_summary("sunhui")
+send_registers("sunhui")
 ```
 
 ## Functions
@@ -139,3 +141,5 @@ Eval:
 - 张医生加急评估，应用1H-MRS分析重复经颅磁刺激联合加巴喷丁治疗对不完全性脊髓损伤神经病理性疼痛患者海马区代谢产物的影响
 - 何小波（陈力）评估，通过网络药理学、生物信息学、分子对接等方法研究天麻钩藤饮治疗子痫前期（PE）的靶点和分子机制
 - 曹卓评估，附件5个单子需要评估生信是否能用公司做的已有的测序结果或者公共数据库进行分析
+
+
