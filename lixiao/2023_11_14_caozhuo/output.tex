@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 肺癌和癌旁组织单细胞数据对比分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-11-27}}
+\textbf{\textcolor{white}{2023-11-28}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -141,8 +141,58 @@ Mainly used method:
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
 
-\hypertarget{dis}{%
-\section{结论}\label{dis}}
+\begin{itemize}
+\tightlist
+\item
+  不同组织样本细胞比例如图所示 (Fig. \ref{fig:MAIN-fig1-cells-proportion}) 。
+  (a、c、d 为癌组织切片； b、e 为癌旁组织切片) 。
+  癌旁组织同样发生了大量的巨噬细胞浸润，整体比例甚至高于癌组织切片。
+  对癌组织的癌细胞分化来源分析，占据癌细胞比例的为上皮细胞和基底细胞 (Epithelial cells、basal cells)。
+\item
+  根据 Fig. \ref{fig:MAIN-fig1-cells-proportion}
+  两组织切片的共有细胞，随后，本研究主要分析了免疫细胞的巨噬细胞的亚类
+  (Fig. \ref{fig:MAIN-fig2-Macrophage-subtypes-analysis}) 。
+  根据拟时分析和细胞重聚类 (Fig. \ref{fig:MAIN-fig2-Macrophage-subtypes-analysis}b、c)，将巨噬细胞分为三种类型：M1、M2、M3。
+  M3、M2 为癌组织切片中的巨噬细胞，M1 为癌旁组织切片的巨噬细胞，
+  它们的差异基因 (Fig. \ref{fig:MAIN-fig2-Macrophage-subtypes-analysis}d) 的富集通路如
+  Fig. \ref{fig:MAIN-fig2-Macrophage-subtypes-analysis} e (M3 vs M1) 、f (M2 vs M1) 、g (M3 vs M2) 。
+  其中，``Lysosome''、``Spliceosome''、``Phagosome'' 对应通路可能是三者功能的重要区分。
+\item
+  对癌细胞的进化树分析如图 (Epithelial cell -\textgreater{} Cancer cell) (Fig. \ref{fig:MAIN-fig3-Trajectory-analysis-of-cancer-cells}) 。
+  癌旁上皮细胞向癌细胞的发展分化 (拟时轨迹) ，通路 ``ATP−dependent chromatin
+  remodeling''、``Rap1 signaling pathway''、``Spliceosome'' 发生显著变化。
+  (Fig. \ref{fig:MAIN-fig3-Trajectory-analysis-of-cancer-cells} d 为拟时热图)
+\end{itemize}
+
+Figure \ref{fig:MAIN-fig1-cells-proportion} (下方图) 为图MAIN fig1 cells proportion概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig1.pdf}
+\caption{MAIN fig1 cells proportion}\label{fig:MAIN-fig1-cells-proportion}
+\end{center}
+
+Figure \ref{fig:MAIN-fig2-Macrophage-subtypes-analysis} (下方图) 为图MAIN fig2 Macrophage subtypes analysis概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig2.pdf}
+\caption{MAIN fig2 Macrophage subtypes analysis}\label{fig:MAIN-fig2-Macrophage-subtypes-analysis}
+\end{center}
+
+Figure \ref{fig:MAIN-fig3-Trajectory-analysis-of-cancer-cells} (下方图) 为图MAIN fig3 Trajectory analysis of cancer cells概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig3.pdf}
+\caption{MAIN fig3 Trajectory analysis of cancer cells}\label{fig:MAIN-fig3-Trajectory-analysis-of-cancer-cells}
+\end{center}
 
 \hypertarget{workflow}{%
 \section{附：分析流程}\label{workflow}}
@@ -330,6 +380,58 @@ Figure \ref{fig:Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways} (下方�
 \begin{center}
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways.pdf}
 \caption{Macrophage 3 vs Macrophage 2 GSEA plot of the pathways}\label{fig:Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways}
+\end{center}
+
+\hypertarget{ux764cux7ec6ux80deux8fdbux5316ux6811ux5206ux6790trajectory-analysis}{%
+\subsubsection{癌细胞进化树分析（trajectory analysis）}\label{ux764cux7ec6ux80deux8fdbux5316ux6811ux5206ux6790trajectory-analysis}}
+
+\hypertarget{ux4e0aux76aeux7ec6ux80deux5411ux764cux7ec6ux80deux7684ux884dux5316}{%
+\paragraph{上皮细胞向癌细胞的衍化}\label{ux4e0aux76aeux7ec6ux80deux5411ux764cux7ec6ux80deux7684ux884dux5316}}
+
+Figure \ref{fig:cancer-trajectory-pseudotime} (下方图) 为图cancer trajectory pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/cancer-trajectory-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/cancer-trajectory-pseudotime.pdf}
+\caption{Cancer trajectory pseudotime}\label{fig:cancer-trajectory-pseudotime}
+\end{center}
+
+\hypertarget{ux4e0aux76aeux7ec6ux80deux548cux764cux7ec6ux80deux7684ux5deeux5f02ux5206ux6790}{%
+\paragraph{上皮细胞和癌细胞的差异分析}\label{ux4e0aux76aeux7ec6ux80deux548cux764cux7ec6ux80deux7684ux5deeux5f02ux5206ux6790}}
+
+Figure \ref{fig:Cancer-trajectory-contrasts-DEGs-intersection} (下方图) 为图Cancer trajectory contrasts DEGs intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Cancer-trajectory-contrasts-DEGs-intersection.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Cancer-trajectory-contrasts-DEGs-intersection.pdf}
+\caption{Cancer trajectory contrasts DEGs intersection}\label{fig:Cancer-trajectory-contrasts-DEGs-intersection}
+\end{center}
+
+\hypertarget{ux4e0aux76aeux7ec6ux80deux548cux764cux7ec6ux80deux7684ux5deeux5f02ux7684ux529fux80fdux5206ux6790}{%
+\paragraph{上皮细胞和癌细胞的差异的功能分析}\label{ux4e0aux76aeux7ec6ux80deux548cux764cux7ec6ux80deux7684ux5deeux5f02ux7684ux529fux80fdux5206ux6790}}
+
+Figure \ref{fig:Cancer-vs-Epithelial-GSEA-plot-of-the-pathways} (下方图) 为图Cancer vs Epithelial GSEA plot of the pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Cancer-vs-Epithelial-GSEA-plot-of-the-pathways.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Cancer-vs-Epithelial-GSEA-plot-of-the-pathways.pdf}
+\caption{Cancer vs Epithelial GSEA plot of the pathways}\label{fig:Cancer-vs-Epithelial-GSEA-plot-of-the-pathways}
+\end{center}
+
+Figure \ref{fig:Cancer-trajectory-show-pathway-genes-in-pseudotime} (下方图) 为图Cancer trajectory show pathway genes in pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Cancer-trajectory-show-pathway-genes-in-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Cancer-trajectory-show-pathway-genes-in-pseudotime.pdf}
+\caption{Cancer trajectory show pathway genes in pseudotime}\label{fig:Cancer-trajectory-show-pathway-genes-in-pseudotime}
 \end{center}
 
 \hypertarget{bibliography}{%

@@ -41,7 +41,75 @@ auto_method()
 
 # 分析结果 {#results}
 
-# 结论 {#dis}
+- 不同组织样本细胞比例如图所示 (Fig. \@ref(fig:MAIN-fig1-cells-proportion)) 。
+   (a、c、d 为癌组织切片； b、e 为癌旁组织切片) 。
+  癌旁组织同样发生了大量的巨噬细胞浸润，整体比例甚至高于癌组织切片。
+  对癌组织的癌细胞分化来源分析，占据癌细胞比例的为上皮细胞和基底细胞 (Epithelial cells、basal cells)。 
+- 根据 Fig. \@ref(fig:MAIN-fig1-cells-proportion)
+  两组织切片的共有细胞，随后，本研究主要分析了免疫细胞的巨噬细胞的亚类
+  (Fig. \@ref(fig:MAIN-fig2-Macrophage-subtypes-analysis)) 。
+  根据拟时分析和细胞重聚类 (Fig. \@ref(fig:MAIN-fig2-Macrophage-subtypes-analysis)b、c)，将巨噬细胞分为三种类型：M1、M2、M3。
+  M3、M2 为癌组织切片中的巨噬细胞，M1 为癌旁组织切片的巨噬细胞，
+  它们的差异基因 (Fig. \@ref(fig:MAIN-fig2-Macrophage-subtypes-analysis)d) 的富集通路如
+  Fig. \@ref(fig:MAIN-fig2-Macrophage-subtypes-analysis) e (M3 vs M1) 、f (M2 vs M1) 、g (M3 vs M2) 。
+  其中，"Lysosome"、"Spliceosome"、"Phagosome" 对应通路可能是三者功能的重要区分。
+- 对癌细胞的进化树分析如图 (Epithelial cell -> Cancer cell) (Fig. \@ref(fig:MAIN-fig3-Trajectory-analysis-of-cancer-cells)) 。
+  癌旁上皮细胞向癌细胞的发展分化 (拟时轨迹) ，通路 "ATP−dependent chromatin
+  remodeling"、"Rap1 signaling pathway"、"Spliceosome" 发生显著变化。
+  (Fig. \@ref(fig:MAIN-fig3-Trajectory-analysis-of-cancer-cells) d 为拟时热图)
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-fig1-cells-proportion
+autor("./Figure+Table/fig1.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-fig2-Macrophage-subtypes-analysis
+autor("./Figure+Table/fig2.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-fig3-Trajectory-analysis-of-cancer-cells
+autor("./Figure+Table/fig3.pdf")
+```
+
+```{r}
+fig1 <- cl(
+  rw("./Figure+Table/Cancer-tissue-cell-mapped-of-copyKAT-prediction.pdf",
+    "./Figure+Table/Paracancerous-tissue-SCSA-annotation.pdf"),
+  rw("./Figure+Table/copykat_heatmap.png",
+    "./Figure+Table/Cancer-tissue-cell-proportion.pdf",
+    "./Figure+Table/Paracancerous-tissue-cell-proportion.pdf"
+  )
+)
+render(fig1)
+```
+
+```{r}
+fig2 <- cls(
+  cl("./Figure+Table/Integrated-The-cell-type.pdf",
+    "./Figure+Table/Macrophage-subtypes-The-regroup-hclust.pdf",
+    "./Figure+Table/Macrophage-subtypes-gene-module-heatmap.pdf"
+  ),
+  cl(
+    "./Figure+Table/Macrophage-subtypes-contrasts-DEGs-intersection.pdf",
+    "./Figure+Table/Macrophage-3-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf",
+    "./Figure+Table/Macrophage-2-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf",
+    "./Figure+Table/Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways.pdf"
+  )
+)
+render(fig2)
+```
+
+```{r}
+fig3 <- cls(
+  cl("./Figure+Table/cancer-trajectory-pseudotime.pdf",
+    "./Figure+Table/Cancer-trajectory-contrasts-DEGs-intersection.pdf",
+    "./Figure+Table/Cancer-vs-Epithelial-GSEA-plot-of-the-pathways.pdf"),
+  cl("./Figure+Table/Cancer-trajectory-show-pathway-genes-in-pseudotime.pdf")
+)
+render(fig3)
+```
 
 # 附：分析流程 {#workflow}
 
@@ -150,6 +218,11 @@ rs <- step2(rs, "Cancer", pattern)
 rs@plots$step2$p.umap
 clear(rs)
 
+rs@step <- 3L
+rs <- step4(rs, list(c("Cancer cell_cancer", "Epithelial cell_cancer")))
+rs@tables$step4$contrasts
+clear(rs)
+
 srs <- asjob_seurat(rs)
 p.srs <- wrap(vis(srs, "cell_type"), 9, 6)
 
@@ -159,6 +232,12 @@ contrast <- table(gs(ids(srs), "_cancer|_paracancer", "")) %>% .[. == 2] %>%
 clear(srs)
 ```
 
+```{r}
+ge.rs <-  asjob_gsea(rs)
+ge.rs <- step1(ge.rs)
+ge.rs@plots$step1$p.go
+ge.rs@tables$step1$table_go
+```
 
 ### 巨噬细胞的亚群分析
 
@@ -222,9 +301,11 @@ sig(ge.31)
 ge.31 <- step1(ge.31)
 ge.31@plots$step1$p.kegg
 ge.31@tables$step1$table_kegg
-ge.31 <- step2(ge.31, "hsa04142")
+ge.31 <- step2(ge.31, c("hsa04142", "hsa03013"))
 ge.31@plots$step2$p.code
 clear(ge.31)
+
+map(mns, ge.31, "hsa04142", group.by = "cell_type")
 ```
 
 #### M2 vs M1
@@ -243,6 +324,8 @@ ge.21@tables$step1$table_kegg
 ge.21 <- step2(ge.21, c("hsa04080", "hsa03040"))
 ge.21@plots$step2$p.code
 clear(ge.21)
+
+map(mns, ge.21, c("hsa04080", "hsa03040"), group.by = "cell_type")
 ```
 
 #### M3 vs M2
@@ -289,6 +372,7 @@ vis(sr.c, "regroup.hclust")
 sr.c@params$contrasts <- NULL
 sr.c <- diff(sr.c, "regroup.hclust", combn(paste0("Cancer_vs_Epithelial_", 1:2), 2, simplify = F))
 clear(sr.c)
+sr.c@params$contrasts
 
 sr.c@params$diff_sets_intersection
 ```
@@ -300,22 +384,42 @@ sr.c@params$diff_sets_intersection
 autor(ge.ec@plots$step2$p.code)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| Cancer-trajectory-show-pathway-genes-in-pseudotime
+autor(p.hp.pseu)
+```
+
 ```{r}
 ge.ec <- asjob_gsea(sr.c, "Cancer_vs_Epithelial")
 ge.ec <- step1(ge.ec)
 ge.ec@plots$step1$p.kegg
 ge.ec@tables$step1$table_kegg
-ge.ec <- step2(ge.ec, c("hsa03082", "hsa03040", "hsa04015"))
+ge.ec <- step2(ge.ec, path.ec <- c("hsa03082", "hsa03040", "hsa04015"))
 ge.ec@plots$step2$p.code
 clear(ge.ec)
 
+p.hp.pseu <- map(mn.c, ge.ec, path.ec, group.by = "cell_type", smooth = F)
+p.hp.pseu <- wrap(p.hp.pseu, 10, 12)
+
+# mn.c == contrast != spline
 ```
 
 ```{r}
+ge.ec <- readRDS("./ge.ec.2.rds")
+ge.31 <- readRDS("./ge.31.2.rds")
+ge.32 <- readRDS("./ge.32.2.rds")
+ge.21 <- readRDS("./ge.21.2.rds")
+
+srs.m <- readRDS("./srs.m.3.rds")
+
+mn.c <- readRDS("./mn.c.3.rds")
 mns <- readRDS("./mns.3.rds")
 srs <- readRDS("./srs.3.rds")
+rs <- readRDS("./rs.2.rds")
+sr.c <- readRDS("./sr.c.3.rds")
 save.image("before_rs.Rdata")
 load("before_rs.Rdata")
 
+load("./small.rdata")
 save_small()
 ```

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  27 NOV 2023 16:26
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  28 NOV 2023 18:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1277,13 +1277,13 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@toc=\write4
 \openout4 = `output.toc'.
 
-(./output.lof)
+(./output.lof [1
+
+])
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
-[1
-
-] (./output.lot)
+(./output.lot)
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
@@ -1303,7 +1303,7 @@ Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 160.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 169.
 
 Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             'FandolFang-Regular' with options
@@ -1317,81 +1317,105 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 nguage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
-File: Figure+Table/Cancer-tissue-SCSA-annotation.pdf Graphic file (type pdf)
-<use Figure+Table/Cancer-tissue-SCSA-annotation.pdf>
+File: ./Figure+Table/fig1.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig1.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 165.
+(caption)                particular \caption on input line 174.
 See the caption package documentation for explanation.
 
 [1]
-File: ../2023_10_06_lunST/Figure+Table/copykat_heatmap.png Graphic file (type b
-mp)
-<../2023_10_06_lunST/Figure+Table/copykat_heatmap.png>
+File: ./Figure+Table/fig2.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig2.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 184.
 See the caption package documentation for explanation.
 
 [2]
-File: Figure+Table/Cancer-tissue-cell-mapped-of-copyKAT-prediction.pdf Graphic 
-file (type pdf)
-<use Figure+Table/Cancer-tissue-cell-mapped-of-copyKAT-prediction.pdf>
+File: ./Figure+Table/fig3.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig3.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 194.
 See the caption package documentation for explanation.
 
 [3]
+File: Figure+Table/Cancer-tissue-SCSA-annotation.pdf Graphic file (type pdf)
+<use Figure+Table/Cancer-tissue-SCSA-annotation.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 215.
+See the caption package documentation for explanation.
+
+[4]
+File: ../2023_10_06_lunST/Figure+Table/copykat_heatmap.png Graphic file (type b
+mp)
+<../2023_10_06_lunST/Figure+Table/copykat_heatmap.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 234.
+See the caption package documentation for explanation.
+
+[5]
+File: Figure+Table/Cancer-tissue-cell-mapped-of-copyKAT-prediction.pdf Graphic 
+file (type pdf)
+<use Figure+Table/Cancer-tissue-cell-mapped-of-copyKAT-prediction.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 244.
+See the caption package documentation for explanation.
+
+[6]
 File: Figure+Table/Cancer-tissue-cell-proportion.pdf Graphic file (type pdf)
 <use Figure+Table/Cancer-tissue-cell-proportion.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 207.
+(caption)                particular \caption on input line 257.
 See the caption package documentation for explanation.
 
-[4]
+[7]
 File: Figure+Table/Paracancerous-tissue-SCSA-annotation.pdf Graphic file (type 
 pdf)
 <use Figure+Table/Paracancerous-tissue-SCSA-annotation.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 225.
+(caption)                particular \caption on input line 275.
 See the caption package documentation for explanation.
 
-[5]
+[8]
 File: Figure+Table/Paracancerous-tissue-cell-proportion.pdf Graphic file (type 
 pdf)
 <use Figure+Table/Paracancerous-tissue-cell-proportion.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 238.
+(caption)                particular \caption on input line 288.
 See the caption package documentation for explanation.
 
-[6]
+[9]
 File: Figure+Table/Integrated-The-cell-type.pdf Graphic file (type pdf)
 <use Figure+Table/Integrated-The-cell-type.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 254.
+(caption)                particular \caption on input line 304.
 See the caption package documentation for explanation.
 
-[7]
+[10]
 File: Figure+Table/Macrophage-subtypes-The-regroup-hclust.pdf Graphic file (typ
 e pdf)
 <use Figure+Table/Macrophage-subtypes-The-regroup-hclust.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 267.
+(caption)                particular \caption on input line 317.
 See the caption package documentation for explanation.
 
-[8]
+[11]
 File: Figure+Table/Macrophage-subtypes-gene-module-heatmap.pdf Graphic file (ty
 pe pdf)
 <use Figure+Table/Macrophage-subtypes-gene-module-heatmap.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 277.
+(caption)                particular \caption on input line 327.
 See the caption package documentation for explanation.
 
 File: Figure+Table/Macrophage-subtypes-contrasts-DEGs-intersection.pdf Graphic 
@@ -1399,44 +1423,79 @@ file (type pdf)
 <use Figure+Table/Macrophage-subtypes-contrasts-DEGs-intersection.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 290.
+(caption)                particular \caption on input line 340.
 See the caption package documentation for explanation.
 
-[9]
+[12]
 File: Figure+Table/Macrophage-3-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf G
 raphic file (type pdf)
 <use Figure+Table/Macrophage-3-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 306.
+(caption)                particular \caption on input line 356.
 See the caption package documentation for explanation.
 
-[10]
+[13]
 File: Figure+Table/Macrophage-2-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf G
 raphic file (type pdf)
 <use Figure+Table/Macrophage-2-vs-Macrophage-1-GSEA-plot-of-the-pathways.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 319.
+(caption)                particular \caption on input line 369.
 See the caption package documentation for explanation.
 
-[11]
+[14]
 File: Figure+Table/Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways.pdf G
 raphic file (type pdf)
 <use Figure+Table/Macrophage-3-vs-Macrophage-2-GSEA-plot-of-the-pathways.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 332.
+(caption)                particular \caption on input line 382.
 See the caption package documentation for explanation.
 
-[12] [13] (./output.aux) ) 
+[15]
+File: Figure+Table/cancer-trajectory-pseudotime.pdf Graphic file (type pdf)
+<use Figure+Table/cancer-trajectory-pseudotime.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 398.
+See the caption package documentation for explanation.
+
+[16]
+File: Figure+Table/Cancer-trajectory-contrasts-DEGs-intersection.pdf Graphic fi
+le (type pdf)
+<use Figure+Table/Cancer-trajectory-contrasts-DEGs-intersection.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 411.
+See the caption package documentation for explanation.
+
+[17]
+File: Figure+Table/Cancer-vs-Epithelial-GSEA-plot-of-the-pathways.pdf Graphic f
+ile (type pdf)
+<use Figure+Table/Cancer-vs-Epithelial-GSEA-plot-of-the-pathways.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 424.
+See the caption package documentation for explanation.
+
+[18]
+File: Figure+Table/Cancer-trajectory-show-pathway-genes-in-pseudotime.pdf Graph
+ic file (type pdf)
+<use Figure+Table/Cancer-trajectory-show-pathway-genes-in-pseudotime.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 434.
+See the caption package documentation for explanation.
+
+[19] [20] [21] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31509 strings out of 476191
- 644691 string characters out of 5812072
- 1084848 words of memory out of 5000000
- 51712 multiletter control sequences out of 15000+600000
+ 31623 strings out of 476191
+ 651281 string characters out of 5812072
+ 1087509 words of memory out of 5000000
+ 51818 multiletter control sequences out of 15000+600000
  473482 words of font info for 78 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1003b,570s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (16 pages).
+Output written on output.pdf (24 pages).
