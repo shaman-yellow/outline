@@ -4,7 +4,7 @@
 
 write_articlePdf("index.Rmd", "output.Rmd", "")
 
-id <- "IN2023072803-3+销售：周燕青+客户：戴心怡+斑痕增生+生信分析"
+id <- "曹卓肺癌和癌旁组织对比分析"
 file.copy("./output.pdf", report <- paste0(id, ".pdf"), T)
 
 package_results(head = NULL, masterZip = NULL, report = report)

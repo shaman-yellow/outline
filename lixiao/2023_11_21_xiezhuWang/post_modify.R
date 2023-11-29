@@ -15,7 +15,7 @@ info <- items(
   type = "其他业务",
   title = "脓毒症肠损伤联合肠道菌与代谢物分析",
   status = "完成",
-  coef = NA,
+  coef = cf(500),
   date = "2023-11-22",
   info = od_get_info(),
   id = "A2023060507",

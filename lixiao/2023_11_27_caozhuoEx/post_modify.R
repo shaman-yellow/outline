@@ -4,7 +4,7 @@
 
 write_articlePdf("index.Rmd", "output.Rmd", "")
 
-id <- "IN2023072803-3+销售：周燕青+客户：戴心怡+斑痕增生+生信分析"
+id <- "曹卓三个补充订单"
 file.copy("./output.pdf", report <- paste0(id, ".pdf"), T)
 
 package_results(head = NULL, masterZip = NULL, report = report)
@@ -14,8 +14,8 @@ info <- items(
   belong = odate(11),
   type = "其他业务",
   title = "曹卓交付三个订单所需数据",
-  status = "待完成",
-  coef = NA,
+  status = "完成",
+  coef = cf(500),
   date = "2023-11-27",
   info = od_get_info(),
   id = "曹卓补充订单",

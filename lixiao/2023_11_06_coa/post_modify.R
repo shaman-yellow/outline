@@ -15,7 +15,7 @@ info <- items(
   type = "其他业务",
   title = "头颈部鳞癌中crebbp的表达",
   status = "完成",
-  coef = NA,
+  coef = cf(500),
   date = "2023-11-06",
   info = od_get_info(),
   id = "周久立生信支持",

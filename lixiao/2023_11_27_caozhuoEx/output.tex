@@ -1,0 +1,406 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge ST 和 IMS 联合分析}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2023-11-29}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux66f9ux5353ux8865ux5b9eux9a8c}{%
+\subsection{2-48512+曹卓+补实验}\label{ux66f9ux5353ux8865ux5b9eux9a8c}}
+
+\hypertarget{ux4ee3ux8c22ux7269ux7684ux8868ux8fbe}{%
+\subsubsection{代谢物的表达}\label{ux4ee3ux8c22ux7269ux7684ux8868ux8fbe}}
+
+Table \ref{tab:metabolites-expression} (下方表格) 为表格metabolites expression概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metabolites-expression.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有64行502列，以下预览的表格可能省略部分数据；表格含有32个唯一`KEGG'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:metabolites-expression}Metabolites expression}\tabularnewline
+\toprule
+KEGG & group & V1 & V2 & V3 & V4 & V5 & V6 & V7 & V8\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+KEGG & group & V1 & V2 & V3 & V4 & V5 & V6 & V7 & V8\tabularnewline
+\midrule
+\endhead
+C06142 & LC & -23.1\ldots{} & 6.440\ldots{} & 25.81\ldots{} & 10.16\ldots{} & -6.84\ldots{} & -1.12\ldots{} & -4.87\ldots{} & 56.90\ldots{}\tabularnewline
+C06142 & N & 206.8\ldots{} & 53.76\ldots{} & 217.4\ldots{} & 225.0\ldots{} & 107.8\ldots{} & 142.1\ldots{} & 398.8\ldots{} & -160\ldots.\tabularnewline
+C00854 & LC & 5.584\ldots{} & 23.56\ldots{} & 24.16\ldots{} & -14.1\ldots{} & 8.792\ldots{} & 2.588\ldots{} & 9.924\ldots{} & -3.55\ldots{}\tabularnewline
+C00854 & N & 135.1\ldots{} & 227.9\ldots{} & 476.9\ldots{} & -12.3\ldots{} & 167.2\ldots{} & 301.6\ldots{} & 343.3\ldots{} & 63.20\ldots{}\tabularnewline
+C16834 & LC & 5.378\ldots{} & 43.13\ldots{} & -40.4\ldots{} & 31.91\ldots{} & 57.59\ldots{} & 2.177\ldots{} & 32.43\ldots{} & 66.31\ldots{}\tabularnewline
+C16834 & N & 159.6\ldots{} & 102.9\ldots{} & 183.9\ldots{} & 565.5\ldots{} & -263\ldots. & 302.1\ldots{} & 221.6\ldots{} & 417.2\ldots{}\tabularnewline
+C00741 & LC & -3.05\ldots{} & -21.9\ldots{} & -7.10\ldots{} & 1.853\ldots{} & 5.090\ldots{} & -20.2\ldots{} & 21.87\ldots{} & 23.41\ldots{}\tabularnewline
+C00741 & N & 175.9\ldots{} & 523.6\ldots{} & -404\ldots. & -203\ldots. & -70.7\ldots{} & 585.7\ldots{} & 1051\ldots. & -59.6\ldots{}\tabularnewline
+C02845 & LC & -2.48\ldots{} & 20.88\ldots{} & 15.45\ldots{} & 64.56\ldots{} & 16.32\ldots{} & 5.333\ldots{} & 35.69\ldots{} & 24.03\ldots{}\tabularnewline
+C02845 & N & 926.6\ldots{} & -612\ldots. & 257.3\ldots{} & 1732\ldots. & 2358\ldots. & 2393\ldots. & -3.36\ldots{} & 741.9\ldots{}\tabularnewline
+C19377 & LC & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\tabularnewline
+C19377 & N & 1760\ldots. & 1075\ldots. & 774.8\ldots{} & -838\ldots. & -140\ldots. & 862.9\ldots{} & 733.4\ldots{} & 1464\ldots.\tabularnewline
+C08380 & LC & 19.19\ldots{} & 20.78\ldots{} & 17.04\ldots{} & -2.41\ldots{} & -3.67\ldots{} & 28.75\ldots{} & 18.27\ldots{} & -8.64\ldots{}\tabularnewline
+C08380 & N & 473.4\ldots{} & -624\ldots. & -168\ldots. & 849.4\ldots{} & 766.8\ldots{} & 513.4\ldots{} & -98.0\ldots{} & 2.788\ldots{}\tabularnewline
+C01949 & LC & 26.83\ldots{} & 57.65\ldots{} & 29.98\ldots{} & 61.95\ldots{} & 54.43\ldots{} & 12.21\ldots{} & 117.9\ldots{} & -7.28\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux4ee3ux8c22ux7269ux548cux4ee3ux8c22ux901aux8defux5728ux7ec6ux80deux4e9aux7fa4ux4e2dux7684ux52a8ux6001ux53d8ux5316}{%
+\subsubsection{代谢物和代谢通路在细胞亚群中的动态变化}\label{ux4ee3ux8c22ux7269ux548cux4ee3ux8c22ux901aux8defux5728ux7ec6ux80deux4e9aux7fa4ux4e2dux7684ux52a8ux6001ux53d8ux5316}}
+
+Table \ref{tab:metabolites-expression-in-pseudotime-of-cancer-subtypes} (下方表格) 为表格metabolites expression in pseudotime of cancer subtypes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metabolites-expression-in-pseudotime-of-cancer-subtypes.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有16000行8列，以下预览的表格可能省略部分数据；表格含有32个唯一`KEGG'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:metabolites-expression-in-pseudotime-of-cancer-subtypes}Metabolites expression in pseudotime of cancer subtypes}\tabularnewline
+\toprule
+KEGG & pse & name & group & value & row & col & barcodes\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+KEGG & pse & name & group & value & row & col & barcodes\tabularnewline
+\midrule
+\endhead
+C06142 & 3.086\ldots{} & V1 & LC & -23.1\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C00854 & 3.086\ldots{} & V1 & LC & 5.584\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C16834 & 3.086\ldots{} & V1 & LC & 5.378\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C00741 & 3.086\ldots{} & V1 & LC & -3.05\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C02845 & 3.086\ldots{} & V1 & LC & -2.48\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C19377 & 3.086\ldots{} & V1 & LC & 0 & 42 & 28 & AAACC\ldots{}\tabularnewline
+C08380 & 3.086\ldots{} & V1 & LC & 19.19\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C01949 & 3.086\ldots{} & V1 & LC & 26.83\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C07329 & 3.086\ldots{} & V1 & LC & -7.47\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C07287 & 3.086\ldots{} & V1 & LC & 35.55\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C00466 & 3.086\ldots{} & V1 & LC & 65.99\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C00207 & 3.086\ldots{} & V1 & LC & 121.4\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C00261 & 3.086\ldots{} & V1 & LC & -143\ldots. & 42 & 28 & AAACC\ldots{}\tabularnewline
+C00601 & 3.086\ldots{} & V1 & LC & 10.04\ldots{} & 42 & 28 & AAACC\ldots{}\tabularnewline
+C01412 & 3.086\ldots{} & V1 & LC & 0 & 42 & 28 & AAACC\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux80bfux7624ux4e0aux76aeux7ec6ux80deux548cux514dux75abux7ec6ux80deux7684ux76f8ux4e92ux4f5cux7528}{%
+\subsubsection{肿瘤/上皮细胞和免疫细胞的相互作用}\label{ux80bfux7624ux4e0aux76aeux7ec6ux80deux548cux514dux75abux7ec6ux80deux7684ux76f8ux4e92ux4f5cux7528}}
+
+Table \ref{tab:cell-communication-probability-of-PATHWAY} (下方表格) 为表格cell communication probability of PATHWAY概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/cell-communication-probability-of-PATHWAY.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2111行5列，以下预览的表格可能省略部分数据；表格含有12个唯一`source'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:cell-communication-probability-of-PATHWAY}Cell communication probability of PATHWAY}\tabularnewline
+\toprule
+source & target & pathw\ldots{} & prob & pval\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+source & target & pathw\ldots{} & prob & pval\tabularnewline
+\midrule
+\endhead
+Basal\ldots{} & Basal\ldots{} & CD46 & 0.146\ldots{} & 0.03\tabularnewline
+Basal\ldots{} & Basal\ldots{} & CDH & 0.052\ldots{} & 0\tabularnewline
+Basal\ldots{} & Basal\ldots{} & CDH1 & 0.088\ldots{} & 0\tabularnewline
+Basal\ldots{} & Basal\ldots{} & COLLAGEN & 0.236\ldots{} & 0.003\ldots{}\tabularnewline
+Basal\ldots{} & Basal\ldots{} & CXCL & 0.101\ldots{} & 0\tabularnewline
+Basal\ldots{} & Basal\ldots{} & DESMO\ldots{} & 0.111\ldots{} & 0\tabularnewline
+Basal\ldots{} & Basal\ldots{} & EPHA & 0.007\ldots{} & 0.02\tabularnewline
+Basal\ldots{} & Basal\ldots{} & JAM & 0.233\ldots{} & 0\tabularnewline
+Basal\ldots{} & Basal\ldots{} & LAMININ & 1.611\ldots{} & 0.004\tabularnewline
+Basal\ldots{} & Basal\ldots{} & MIF & 0.225\ldots{} & 0\tabularnewline
+Basal\ldots{} & Basal\ldots{} & NECTIN & 0.011\ldots{} & 0\tabularnewline
+Basal\ldots{} & Basal\ldots{} & NOTCH & 0.114\ldots{} & 0\tabularnewline
+Basal\ldots{} & Basal\ldots{} & SPP1 & 0.271\ldots{} & 0\tabularnewline
+Basal\ldots{} & Basal\ldots{} & TENASCIN & 0.117\ldots{} & 0.03\tabularnewline
+Basal\ldots{} & Basal\ldots{} & THBS & 0.027\ldots{} & 0.02\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux80bfux7624ux4e0aux76aeux7ec6ux80deux548cux514dux75abux7ec6ux80deux7684ux4ee3ux8c22ux4f5cux7528}{%
+\subsubsection{肿瘤/上皮细胞和免疫细胞的代谢作用}\label{ux80bfux7624ux4e0aux76aeux7ec6ux80deux548cux514dux75abux7ec6ux80deux7684ux4ee3ux8c22ux4f5cux7528}}
+
+Table \ref{tab:cells-metabolite-levels} (下方表格) 为表格cells metabolite levels概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/cells-metabolite-levels.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有16000行6列，以下预览的表格可能省略部分数据；表格含有500个唯一`name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:cells-metabolite-levels}Cells metabolite levels}\tabularnewline
+\toprule
+name & KEGG & group & value & scsa\_\ldots{} & .barc\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+name & KEGG & group & value & scsa\_\ldots{} & .barc\ldots{}\tabularnewline
+\midrule
+\endhead
+V1 & C06142 & LC & -23.1\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C00854 & LC & 5.584\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C16834 & LC & 5.378\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C00741 & LC & -3.05\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C02845 & LC & -2.48\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C19377 & LC & 0 & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C08380 & LC & 19.19\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C01949 & LC & 26.83\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C07329 & LC & -7.47\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C07287 & LC & 35.55\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C00466 & LC & 65.99\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C00207 & LC & 121.4\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C00261 & LC & -143\ldots. & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C00601 & LC & 10.04\ldots{} & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+V1 & C01412 & LC & 0 & Cance\ldots{} & AAACC\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux66f9ux5353ux8865ux5b9eux9a8c-1}{%
+\subsection{7-48470+曹卓+补实验}\label{ux66f9ux5353ux8865ux5b9eux9a8c-1}}
+
+\hypertarget{ux80bfux7624ux4e0aux76aeux7ec6ux80deux548cux514dux75abux7ec6ux80deux7684ux4ee3ux8c22ux4f5cux7528-1}{%
+\subsubsection{肿瘤/上皮细胞和免疫细胞的代谢作用}\label{ux80bfux7624ux4e0aux76aeux7ec6ux80deux548cux514dux75abux7ec6ux80deux7684ux4ee3ux8c22ux4f5cux7528-1}}
+
+Table \ref{tab:cell-metabolites-levels-average} (下方表格) 为表格cell metabolites levels average概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/cell-metabolites-levels-average.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有32行3列，以下预览的表格可能省略部分数据；表格含有1个唯一`scsa\_copykat'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:cell-metabolites-levels-average}Cell metabolites levels average}\tabularnewline
+\toprule
+scsa\_\ldots{} & KEGG & mean\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+scsa\_\ldots{} & KEGG & mean\tabularnewline
+\midrule
+\endhead
+Cance\ldots{} & C00207 & 29.43\ldots{}\tabularnewline
+Cance\ldots{} & C00246 & 20.98\ldots{}\tabularnewline
+Cance\ldots{} & C00261 & 157.0\ldots{}\tabularnewline
+Cance\ldots{} & C00463 & 125.5\ldots{}\tabularnewline
+Cance\ldots{} & C00466 & 22.78\ldots{}\tabularnewline
+Cance\ldots{} & C00469 & 33.77\ldots{}\tabularnewline
+Cance\ldots{} & C00601 & 21.12\ldots{}\tabularnewline
+Cance\ldots{} & C00741 & 14.17\ldots{}\tabularnewline
+Cance\ldots{} & C00747 & 1.830\ldots{}\tabularnewline
+Cance\ldots{} & C00803 & 16.61\ldots{}\tabularnewline
+Cance\ldots{} & C00854 & 12.43\ldots{}\tabularnewline
+Cance\ldots{} & C01412 & 0\tabularnewline
+Cance\ldots{} & C01468 & 1071\ldots.\tabularnewline
+Cance\ldots{} & C01949 & 18.85\ldots{}\tabularnewline
+Cance\ldots{} & C02845 & 13.68\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux66f9ux5353ux8865ux5b9eux9a8c-2}{%
+\subsection{6-45140+曹卓+补实验}\label{ux66f9ux5353ux8865ux5b9eux9a8c-2}}
+
+\hypertarget{ux4ee3ux8c22ux7269ux548cux4ee3ux8c22ux901aux8defux5728ux7ec6ux80deux4e9aux7fa4ux4e2dux7684ux52a8ux6001ux53d8ux5316-1}{%
+\subsubsection{代谢物和代谢通路在细胞亚群中的动态变化}\label{ux4ee3ux8c22ux7269ux548cux4ee3ux8c22ux901aux8defux5728ux7ec6ux80deux4e9aux7fa4ux4e2dux7684ux52a8ux6001ux53d8ux5316-1}}
+
+Table \ref{tab:metabolites-expression-in-pseudotime-average-levels} (下方表格) 为表格metabolites expression in pseudotime average levels概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metabolites-expression-in-pseudotime-average-levels.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有224行3列，以下预览的表格可能省略部分数据；表格含有32个唯一`KEGG'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:metabolites-expression-in-pseudotime-average-levels}Metabolites expression in pseudotime average levels}\tabularnewline
+\toprule
+KEGG & round\ldots{} & mean\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+KEGG & round\ldots{} & mean\tabularnewline
+\midrule
+\endhead
+C00207 & 0 & 20.68\ldots{}\tabularnewline
+C00207 & 1 & 28.18\ldots{}\tabularnewline
+C00207 & 2 & 36.93\ldots{}\tabularnewline
+C00207 & 3 & 35.84\ldots{}\tabularnewline
+C00207 & 4 & 24.45\ldots{}\tabularnewline
+C00207 & 5 & 34.33\ldots{}\tabularnewline
+C00207 & 7 & 30.63\ldots{}\tabularnewline
+C00246 & 0 & 24.75\ldots{}\tabularnewline
+C00246 & 1 & 16.38\ldots{}\tabularnewline
+C00246 & 2 & 27.03\ldots{}\tabularnewline
+C00246 & 3 & 14.57\ldots{}\tabularnewline
+C00246 & 4 & 14.70\ldots{}\tabularnewline
+C00246 & 5 & 22.28\ldots{}\tabularnewline
+C00246 & 7 & 19.91\ldots{}\tabularnewline
+C00261 & 0 & 170.7\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux80bfux7624ux4e0aux76aeux7ec6ux80deux548cux514dux75abux7ec6ux80deux7684ux76f8ux4e92ux4f5cux7528-1}{%
+\subsubsection{肿瘤/上皮细胞和免疫细胞的相互作用}\label{ux80bfux7624ux4e0aux76aeux7ec6ux80deux548cux514dux75abux7ec6ux80deux7684ux76f8ux4e92ux4f5cux7528-1}}
+
+Table \ref{tab:cell-communication-probability-of-LIGAND-RECEPTORs} (下方表格) 为表格cell communication probability of LIGAND RECEPTORs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/cell-communication-probability-of-LIGAND-RECEPTORs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有6817行11列，以下预览的表格可能省略部分数据；表格含有12个唯一`source'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:cell-communication-probability-of-LIGAND-RECEPTORs}Cell communication probability of LIGAND RECEPTORs}\tabularnewline
+\toprule
+source & target & ligand & receptor & prob & pval & inter\ldots\ldots7 & inter\ldots\ldots8 & pathw\ldots{} & annot\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+source & target & ligand & receptor & prob & pval & inter\ldots\ldots7 & inter\ldots\ldots8 & pathw\ldots{} & annot\ldots{}\tabularnewline
+\midrule
+\endhead
+cancer\_2 & Basal\ldots{} & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0.04 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Endot\ldots{} & Basal\ldots{} & TGFB1 & ACVR1\ldots{} & 0.001\ldots{} & 0.01 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+cancer\_2 & cancer\_1 & TGFB1 & ACVR1\ldots{} & 0.001\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+cancer\_3 & cancer\_1 & TGFB1 & ACVR1\ldots{} & 0.001\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Endot\ldots{} & cancer\_1 & TGFB1 & ACVR1\ldots{} & 0.002\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Fibro\ldots{} & cancer\_1 & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0.04 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Inter\ldots{} & cancer\_1 & TGFB1 & ACVR1\ldots{} & 0.001\ldots{} & 0.01 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Plasm\ldots{} & cancer\_1 & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0.03 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+cancer\_2 & cancer\_2 & TGFB1 & ACVR1\ldots{} & 0.002\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+cancer\_3 & cancer\_2 & TGFB1 & ACVR1\ldots{} & 0.001\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Endot\ldots{} & cancer\_2 & TGFB1 & ACVR1\ldots{} & 0.002\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Epith\ldots{} & cancer\_2 & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0.01 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Fibro\ldots{} & cancer\_2 & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Inter\ldots{} & cancer\_2 & TGFB1 & ACVR1\ldots{} & 0.001\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+Macro\ldots{} & cancer\_2 & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0.01 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\end{document}

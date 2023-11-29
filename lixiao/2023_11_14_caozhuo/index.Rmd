@@ -405,6 +405,8 @@ p.hp.pseu <- wrap(p.hp.pseu, 10, 12)
 ```
 
 ```{r}
+save.image()
+
 ge.ec <- readRDS("./ge.ec.2.rds")
 ge.31 <- readRDS("./ge.31.2.rds")
 ge.32 <- readRDS("./ge.32.2.rds")
