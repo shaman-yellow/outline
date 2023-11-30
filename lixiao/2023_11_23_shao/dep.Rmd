@@ -1,0 +1,19 @@
+```{r}
+
+
+ge <- job_gsea(select(data, mgi_symbol = gene_name, logFC = `log2(fc)`), bi$anno, "mgi_symbol")
+ge <- step1(ge, org.Mm.eg.db::org.Mm.eg.db, "mmu")
+ge@plots$step1$p.kegg
+ge@tables$step1$table_kegg
+
+en <- job_enrich(data$gene_id, bi$anno, "ensembl_gene_id")
+en <- step1(en, "mmu", "org.Mm.eg.db")
+tt <<- en@tables$step1$res.kegg
+
+data <- fxlsx("./order_material/Ssb1VSCCl4_Gene_differential_expression.xlsx")
+data <- filter(data, qval < .05)
+bi <- job_biomart("mmu")
+bi <- step1(bi, data$gene_id, "ensembl_gene_id")
+
+t1 <- en@plots$step1$p.kegg$ids
+```
