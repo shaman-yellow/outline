@@ -82,6 +82,13 @@ auto_method()
 autor(bi$keywords)
 ```
 
+对检索结果进行了预处理筛选：
+
+```{r eval = T, echo = F, results = "asis"}
+#| prefilter2
+autor(bi$prefilter.lich)
+```
+
 # 分析结果 {#results}
 
 - 搜索策略和分析的方法见 \@ref(meth)
@@ -125,12 +132,19 @@ render(fig1)
 autor(bi$keywords)
 ```
 
+## 检索结果预筛选
+
+```{r eval = T, echo = F, results = "asis"}
+#| prefilter
+autor(bi$prefilter.lich)
+```
+
 ## 研究概览 {#overview}
 
 ### 类型比例
 
 ```{r eval = T, echo = F, results = "asis"}
-#| DR-and-OCTA-Total-documents-1801
+#| DR-and-OCTA-Total-documents
 autor(bi@plots$step2$p.dt)
 ```
 
@@ -272,17 +286,15 @@ kds <- list(
     "OCT Angiography", "OCTA"
   )
 )
-
 bi <- job_biblio(kds)
 sig(bi) <- "DR and OCTA"
 bi <- step1(bi, 4)
 bi <- step2(bi)
+
+bi@step <- 2L
 bi <- step3(bi)
+autosv(bi@tables$step3$t.most_citation[, -1], "correct-Most-citation-per-year")
 clear(bi)
-
-bi@params$summary
-
-bi <- readRDS("./bi.3.rds")
 bi <- step4(bi)
 bi@params$cs
 bi@plots$step4$p.conceptual_structure

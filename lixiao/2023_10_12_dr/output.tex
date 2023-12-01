@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge OCTA
 在糖尿病视网膜病变中的应用} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-11-20}}
+\textbf{\textcolor{white}{2023-12-01}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -132,7 +132,7 @@ Mainly used method:
 \item
   Package bibliometrix used for quantitative research in bibliometrics and scientometrics.\textsuperscript{\protect\hyperlink{ref-BibliometrixAria2017}{1}}
 \item
-  Other R packages used for statistic analysis or data visualization.
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
 
 在 Web of Science Core Collection (WoSCC) 搜索 DR 和 OCTA 相关信息：
@@ -173,6 +173,65 @@ macular edema)) OR ALL=(diabetic retinal damage)) OR
 ALL=(diabetic retina)) AND (((ALL=(Optical Coherence
 Tomography Angiography)) OR ALL=(OCT Angiography)) OR
 ALL=(OCTA))
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+对检索结果进行了预处理筛选：
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Step 1: filter out the duplicated by Title
+:}
+
+\vspace{0.5em}
+
+    24
+
+\vspace{2em}
+
+
+\textbf{
+Step 2: filter out the non-Englich documents
+:}
+
+\vspace{0.5em}
+
+    30
+
+\vspace{2em}
+
+
+\textbf{
+Step 3: filter out the abstract of which documents is not available
+:}
+
+\vspace{0.5em}
+
+    237
+
+\vspace{2em}
+
+
+\textbf{
+Step 4: filter out the abstract of which not contain the keywords
+:}
+
+\vspace{0.5em}
+
+    761
+
+\vspace{2em}
+
+
+\textbf{
+Finaly documents number
+:}
+
+\vspace{0.5em}
+
+    749
 
 \vspace{2em}
 \end{tcolorbox}
@@ -264,20 +323,80 @@ ALL=(OCTA))
 \end{tcolorbox}
 \end{center}
 
+\hypertarget{ux68c0ux7d22ux7ed3ux679cux9884ux7b5bux9009}{%
+\subsection{检索结果预筛选}\label{ux68c0ux7d22ux7ed3ux679cux9884ux7b5bux9009}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Step 1: filter out the duplicated by Title
+:}
+
+\vspace{0.5em}
+
+    24
+
+\vspace{2em}
+
+
+\textbf{
+Step 2: filter out the non-Englich documents
+:}
+
+\vspace{0.5em}
+
+    30
+
+\vspace{2em}
+
+
+\textbf{
+Step 3: filter out the abstract of which documents is not available
+:}
+
+\vspace{0.5em}
+
+    237
+
+\vspace{2em}
+
+
+\textbf{
+Step 4: filter out the abstract of which not contain the keywords
+:}
+
+\vspace{0.5em}
+
+    761
+
+\vspace{2em}
+
+
+\textbf{
+Finaly documents number
+:}
+
+\vspace{0.5em}
+
+    749
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
 \hypertarget{overview}{%
 \subsection{研究概览}\label{overview}}
 
 \hypertarget{ux7c7bux578bux6bd4ux4f8b}{%
 \subsubsection{类型比例}\label{ux7c7bux578bux6bd4ux4f8b}}
 
-Figure \ref{fig:DR-and-OCTA-Total-documents-1801} (下方图) 为图DR and OCTA Total documents 1801概览。
+Figure \ref{fig:DR-and-OCTA-Total-documents} (下方图) 为图DR and OCTA Total documents概览。
 
-\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-Total-documents-1801.pdf})}
+\textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-Total-documents.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-Total-documents-1801.pdf}
-\caption{DR and OCTA Total documents 1801}\label{fig:DR-and-OCTA-Total-documents-1801}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/DR-and-OCTA-Total-documents.pdf}
+\caption{DR and OCTA Total documents}\label{fig:DR-and-OCTA-Total-documents}
 \end{center}
 
 \hypertarget{ux4e3bux8981ux4ea7ux51fa}{%
@@ -343,36 +462,36 @@ Table \ref{tab:DR-and-OCTA-top-ranked-documents-of-citation-per-year} (下方表
 
 \textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-top-ranked-documents-of-citation-per-year.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有30行7列，以下预览的表格可能省略部分数据；表格含有29个唯一`Title'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有30行12列，以下预览的表格可能省略部分数据；表格含有30个唯一`Title'。
 \end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}lllllll@{}}
+\begin{longtable}[]{@{}llllllllll@{}}
 \caption{\label{tab:DR-and-OCTA-top-ranked-documents-of-citation-per-year}DR and OCTA top ranked documents of citation per year}\tabularnewline
 \toprule
-Docum\ldots{} & Journal & Language & Publi\ldots{} & Scien\ldots{} & Title & Total\ldots{}\tabularnewline
+Abstract & Affil\ldots{} & Author & Corre\ldots{} & Docum\ldots{} & Journal & Language & Publi\ldots{} & Scien\ldots{} & Title\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-Docum\ldots{} & Journal & Language & Publi\ldots{} & Scien\ldots{} & Title & Total\ldots{}\tabularnewline
+Abstract & Affil\ldots{} & Author & Corre\ldots{} & Docum\ldots{} & Journal & Language & Publi\ldots{} & Scien\ldots{} & Title\tabularnewline
 \midrule
 \endhead
-REVIEW & PROGR\ldots{} & ENGLISH & 2018 & OPHTH\ldots{} & OPTIC\ldots{} & 895\tabularnewline
-ARTICLE & LANCET & ENGLISH & 2012 & MEDIC\ldots{} & EMBRY\ldots{} & 1026\tabularnewline
-REVIEW & PROGR\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & OPTIC\ldots{} & 551\tabularnewline
-ARTICLE & PROCE\ldots{} & ENGLISH & 2015 & MULTI\ldots{} & QUANT\ldots{} & 489\tabularnewline
-REVIEW & OPHTH\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & GUIDE\ldots{} & 364\tabularnewline
-ARTICLE & AMERI\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & OPTIC\ldots{} & 431\tabularnewline
-ARTICLE & INVES\ldots{} & ENGLISH & 2016 & OPHTH\ldots{} & QUANT\ldots{} & 350\tabularnewline
-ARTICLE & ELECT\ldots{} & ENGLISH & 2020 & COMPU\ldots{} & EARLY\ldots{} & 154\tabularnewline
-ARTICLE & RETIN\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & RETIN\ldots{} & 328\tabularnewline
-ARTICLE & RETIN\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & ENLAR\ldots{} & 324\tabularnewline
-ARTICLE & JAMA \ldots{} & ENGLISH & 2016 & OPHTH\ldots{} & AUTOM\ldots{} & 272\tabularnewline
-ARTICLE & JAMA \ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{} & 231\tabularnewline
-ARTICLE & OPHTH\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{} & 227\tabularnewline
-ARTICLE & INVES\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{} & 220\tabularnewline
-ARTICLE & INVES\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{} & 219\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+OPTIC\ldots{} & VITRE\ldots{} & SPAID\ldots{} & SPAID\ldots{} & REVIEW & PROGR\ldots{} & ENGLISH & 2018 & OPHTH\ldots{} & OPTIC\ldots{}\tabularnewline
+OCT H\ldots{} & UNIV \ldots{} & KASHA\ldots{} & KASHA\ldots{} & REVIEW & PROGR\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & OPTIC\ldots{}\tabularnewline
+RETIN\ldots{} & OREGO\ldots{} & JIA Y\ldots{} & HUANG\ldots{} & ARTICLE & PROCE\ldots{} & ENGLISH & 2015 & MULTI\ldots{} & QUANT\ldots{}\tabularnewline
+PURPO\ldots{} & ASAHI\ldots{} & ISHIB\ldots{} & ISHIB\ldots{} & ARTICLE & AMERI\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & OPTIC\ldots{}\tabularnewline
+PURPO\ldots{} & UNIV \ldots{} & KIM A\ldots{} & KASHA\ldots{} & ARTICLE & INVES\ldots{} & ENGLISH & 2016 & OPHTH\ldots{} & QUANT\ldots{}\tabularnewline
+PURPO\ldots{} & NEW Y\ldots{} & AGEMY\ldots{} & ROSEN\ldots{} & ARTICLE & RETIN\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & RETIN\ldots{}\tabularnewline
+PURPO\ldots{} & NAGOY\ldots{} & TAKAS\ldots{} & NOZAK\ldots{} & ARTICLE & RETIN\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & ENLAR\ldots{}\tabularnewline
+IMPOR\ldots{} & OREGO\ldots{} & HWANG\ldots{} & JIA, \ldots{} & ARTICLE & JAMA \ldots{} & ENGLISH & 2016 & OPHTH\ldots{} & AUTOM\ldots{}\tabularnewline
+IMPOR\ldots{} & CARL \ldots{} & DURBI\ldots{} & DURBI\ldots{} & ARTICLE & JAMA \ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{}\tabularnewline
+PURPO\ldots{} & THOMA\ldots{} & SAMAR\ldots{} & HO, A\ldots{} & ARTICLE & OPHTH\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{}\tabularnewline
+PURPO\ldots{} & NORTH\ldots{} & NESPE\ldots{} & FAWZI\ldots{} & ARTICLE & INVES\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{}\tabularnewline
+PURPO\ldots{} & CITY \ldots{} & DIMIT\ldots{} & DIMIT\ldots{} & ARTICLE & INVES\ldots{} & ENGLISH & 2017 & OPHTH\ldots{} & QUANT\ldots{}\tabularnewline
+PURPO\ldots{} & CTR H\ldots{} & COSCA\ldots{} & COSCA\ldots{} & ARTICLE & INVES\ldots{} & ENGLISH & 2016 & OPHTH\ldots{} & NORMA\ldots{}\tabularnewline
+PURPO\ldots{} & CHINE\ldots{} & SUN Z\ldots{} & CHEUN\ldots{} & ARTICLE & OPHTH\ldots{} & ENGLISH & 2019 & OPHTH\ldots{} & OCT A\ldots{}\tabularnewline
+PURPO\ldots{} & OREGO\ldots{} & HWANG\ldots{} & HUANG\ldots{} & ARTICLE & RETIN\ldots{} & ENGLISH & 2015 & OPHTH\ldots{} & OPTIC\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -397,21 +516,21 @@ journal & count & CATEGORY & 2022IF\tabularnewline
 journal & count & CATEGORY & 2022IF\tabularnewline
 \midrule
 \endhead
-INVES\ldots{} & 312 & OPHTH\ldots{} & 4.4\tabularnewline
-RETIN\ldots{} & 149 & OPHTH\ldots{} & 3.3\tabularnewline
-SCIEN\ldots{} & 69 & MULTI\ldots{} & 4.6\tabularnewline
-BRITI\ldots{} & 58 & OPHTH\ldots{} & 4.1\tabularnewline
-GRAEF\ldots{} & 55 & OPHTH\ldots{} & 2.7\tabularnewline
-AMERI\ldots{} & 54 & OPHTH\ldots{} & 4.2\tabularnewline
-TRANS\ldots{} & 51 & OPHTH\ldots{} & 3\tabularnewline
-BIOME\ldots{} & 47 & BIOCH\ldots{} & 3.4\tabularnewline
-EUROP\ldots{} & 46 & OPHTH\ldots{} & 1.7\tabularnewline
-BMC O\ldots{} & 41 & OPHTH\ldots{} & 42.1\tabularnewline
-PLOS ONE & 40 & MULTI\ldots{} & 3.7\tabularnewline
-ACTA \ldots{} & 39 & OPHTH\ldots{} & 3.4\tabularnewline
-EYE & 39 & OPHTH\ldots{} & 3.9\tabularnewline
-JOURN\ldots{} & 34 & MEDIC\ldots{} & 42.1\tabularnewline
-OPHTH\ldots{} & 28 & SURGE\ldots{} & 1\tabularnewline
+RETIN\ldots{} & 62 & OPHTH\ldots{} & 3.3\tabularnewline
+INVES\ldots{} & 54 & OPHTH\ldots{} & 4.4\tabularnewline
+SCIEN\ldots{} & 38 & MULTI\ldots{} & 4.6\tabularnewline
+GRAEF\ldots{} & 30 & OPHTH\ldots{} & 2.7\tabularnewline
+TRANS\ldots{} & 29 & OPHTH\ldots{} & 3\tabularnewline
+BRITI\ldots{} & 28 & OPHTH\ldots{} & NA\tabularnewline
+BIOME\ldots{} & 25 & BIOCH\ldots{} & 3.4\tabularnewline
+AMERI\ldots{} & 24 & OPHTH\ldots{} & 4.2\tabularnewline
+BMC O\ldots{} & 20 & OPHTH\ldots{} & 42.1\tabularnewline
+JOURN\ldots{} & 19 & MEDIC\ldots{} & 42.1\tabularnewline
+OPHTH\ldots{} & 19 & SURGE\ldots{} & 1\tabularnewline
+PLOS ONE & 18 & MULTI\ldots{} & 3.7\tabularnewline
+EUROP\ldots{} & 17 & OPHTH\ldots{} & 1.7\tabularnewline
+ACTA \ldots{} & 15 & ENDOC\ldots{} & 3.8\tabularnewline
+OPHTH\ldots{} & 15 & OPHTH\ldots{} & 2.6\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -478,7 +597,7 @@ Table \ref{tab:DR-and-OCTA-data-MainInformationDF} (下方表格) 为表格DR an
 
 \textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-MainInformationDF.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有36行2列，以下预览的表格可能省略部分数据；表格含有36个唯一`Description'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有29行2列，以下预览的表格可能省略部分数据；表格含有29个唯一`Description'。
 \end{tcolorbox}
 \end{center}
 
@@ -493,20 +612,20 @@ Descr\ldots{} & Results\tabularnewline
 \midrule
 \endhead
 MAIN \ldots{} &\tabularnewline
-Timespan & 2012:\ldots{}\tabularnewline
-Sourc\ldots{} & 193\tabularnewline
-Docum\ldots{} & 1801\tabularnewline
-Annua\ldots{} & 17.74\tabularnewline
-Docum\ldots{} & 3.85\tabularnewline
-Avera\ldots{} & 21.22\tabularnewline
-Avera\ldots{} & 3.498\tabularnewline
-Refer\ldots{} & 26863\tabularnewline
+Timespan & 2013:\ldots{}\tabularnewline
+Sourc\ldots{} & 115\tabularnewline
+Docum\ldots{} & 749\tabularnewline
+Annua\ldots{} & 61.54\tabularnewline
+Docum\ldots{} & 2.74\tabularnewline
+Avera\ldots{} & 25.23\tabularnewline
+Avera\ldots{} & 4.573\tabularnewline
+Refer\ldots{} & 12301\tabularnewline
 DOCUM\ldots{} &\tabularnewline
-article & 1313\tabularnewline
-artic\ldots{} & 2\tabularnewline
-artic\ldots{} & 35\tabularnewline
-artic\ldots{} & 18\tabularnewline
-corre\ldots{} & 4\tabularnewline
+article & 638\tabularnewline
+artic\ldots{} & 23\tabularnewline
+artic\ldots{} & 7\tabularnewline
+edito\ldots{} & 1\tabularnewline
+retra\ldots{} & 1\tabularnewline
 \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -518,7 +637,7 @@ Table \ref{tab:DR-and-OCTA-data-AnnualProduction} (下方表格) 为表格DR and
 
 \textbf{(对应文件为 \texttt{Figure+Table/DR-and-OCTA-data-AnnualProduction.csv})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有12行2列，以下预览的表格可能省略部分数据；表格含有12个唯一`Year...'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行2列，以下预览的表格可能省略部分数据；表格含有10个唯一`Year...'。
 \end{tcolorbox}
 \end{center}
 
@@ -532,18 +651,16 @@ Year\ldots{} & Articles\tabularnewline
 Year\ldots{} & Articles\tabularnewline
 \midrule
 \endhead
-2012 & 33\tabularnewline
-2013 & 50\tabularnewline
-2014 & 41\tabularnewline
-2015 & 67\tabularnewline
-2016 & 123\tabularnewline
-2017 & 169\tabularnewline
-2018 & 203\tabularnewline
-2019 & 209\tabularnewline
-2020 & 223\tabularnewline
-2021 & 278\tabularnewline
-2022 & 206\tabularnewline
-2023 & 199\tabularnewline
+2013 & 1\tabularnewline
+2015 & 9\tabularnewline
+2016 & 35\tabularnewline
+2017 & 43\tabularnewline
+2018 & 60\tabularnewline
+2019 & 97\tabularnewline
+2020 & 121\tabularnewline
+2021 & 152\tabularnewline
+2022 & 110\tabularnewline
+2023 & 121\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -568,16 +685,16 @@ Autho\ldots{} & Articles & Autho\ldots{} & Artic\ldots{}\tabularnewline
 Autho\ldots{} & Articles & Autho\ldots{} & Artic\ldots{}\tabularnewline
 \midrule
 \endhead
-JIA Y\ldots{} & 53 & FAWZI\ldots{} & 8.00\tabularnewline
-BANDE\ldots{} & 51 & BANDE\ldots{} & 7.65\tabularnewline
-HWANG\ldots{} & 46 & JIA Y\ldots{} & 7.19\tabularnewline
-QUERQ\ldots{} & 43 & SPAID\ldots{} & 6.90\tabularnewline
-HUANG\ldots{} & 42 & QUERQ\ldots{} & 6.42\tabularnewline
-WANG \ldots{} & 41 & HWANG\ldots{} & 6.08\tabularnewline
-WAHEE\ldots{} & 38 & SADDA\ldots{} & 5.89\tabularnewline
-DUKER\ldots{} & 34 & WANG \ldots{} & 5.38\tabularnewline
-FAWZI\ldots{} & 33 & HUANG\ldots{} & 5.34\tabularnewline
-SADDA\ldots{} & 32 & YAO X\ldots{} & 4.69\tabularnewline
+JIA Y\ldots{} & 26 & FAWZI\ldots{} & 5.64\tabularnewline
+HWANG\ldots{} & 25 & BANDE\ldots{} & 3.74\tabularnewline
+BANDE\ldots{} & 24 & QUERQ\ldots{} & 3.43\tabularnewline
+QUERQ\ldots{} & 24 & JIA Y\ldots{} & 3.22\tabularnewline
+WANG \ldots{} & 24 & HWANG\ldots{} & 3.14\tabularnewline
+FAWZI\ldots{} & 23 & CUNHA\ldots{} & 3.08\tabularnewline
+WAHEE\ldots{} & 23 & WANG \ldots{} & 3.06\tabularnewline
+HUANG\ldots{} & 20 & SADDA\ldots{} & 2.90\tabularnewline
+PARRA\ldots{} & 20 & WAHEE\ldots{} & 2.56\tabularnewline
+DUKER\ldots{} & 19 & PARRA\ldots{} & 2.51\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -602,16 +719,16 @@ Paper\ldots{} & DOI & TC & TCper\ldots{} & NTC\tabularnewline
 Paper\ldots{} & DOI & TC & TCper\ldots{} & NTC\tabularnewline
 \midrule
 \endhead
-SCHWA\ldots{} & 10.10\ldots{} & 1026 & 85.5 & 13.28\tabularnewline
-SPAID\ldots{} & 10.10\ldots{} & 895 & 149.2 & 31.77\tabularnewline
-KASHA\ldots{} & 10.10\ldots{} & 551 & 78.7 & 13.50\tabularnewline
-JIA Y\ldots{} & 10.10\ldots{} & 489 & 54.3 & 8.25\tabularnewline
-ISHIB\ldots{} & 10.10\ldots{} & 431 & 47.9 & 7.27\tabularnewline
-SCHMI\ldots{} & 10.11\ldots{} & 364 & 52.0 & 8.92\tabularnewline
-KIM A\ldots{} & 10.11\ldots{} & 350 & 43.8 & 6.72\tabularnewline
-AGEMY\ldots{} & 10.10\ldots{} & 328 & 36.4 & 5.53\tabularnewline
-TAKAS\ldots{} & 10.10\ldots{} & 324 & 36.0 & 5.46\tabularnewline
-LEITG\ldots{} & 10.10\ldots{} & 277 & 27.7 & 7.79\tabularnewline
+SPAID\ldots{} & 10.10\ldots{} & 895 & 149.2 & 17.245\tabularnewline
+KASHA\ldots{} & 10.10\ldots{} & 551 & 78.7 & 6.589\tabularnewline
+JIA Y\ldots{} & 10.10\ldots{} & 489 & 54.3 & 1.914\tabularnewline
+ISHIB\ldots{} & 10.10\ldots{} & 431 & 47.9 & 1.687\tabularnewline
+KIM A\ldots{} & 10.11\ldots{} & 350 & 43.8 & 3.300\tabularnewline
+AGEMY\ldots{} & 10.10\ldots{} & 328 & 36.4 & 1.284\tabularnewline
+TAKAS\ldots{} & 10.10\ldots{} & 324 & 36.0 & 1.268\tabularnewline
+HWANG\ldots{} & 10.10\ldots{} & 272 & 34.0 & 2.565\tabularnewline
+HWANG\ldots{} & 10.10\ldots{} & 254 & 28.2 & 0.994\tabularnewline
+COSCA\ldots{} & 10.11\ldots{} & 245 & 30.6 & 2.310\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -636,16 +753,16 @@ Country & Articles & Freq & SCP & MCP & MCP\_R\ldots{}\tabularnewline
 Country & Articles & Freq & SCP & MCP & MCP\_R\ldots{}\tabularnewline
 \midrule
 \endhead
-USA \ldots{} & 489 & 0.2895 & 299 & 190 & 0.3885\tabularnewline
-CHINA\ldots{} & 274 & 0.1622 & 225 & 49 & 0.1788\tabularnewline
-ITALY\ldots{} & 136 & 0.0805 & 103 & 33 & 0.2426\tabularnewline
-JAPAN\ldots{} & 104 & 0.0616 & 100 & 4 & 0.0385\tabularnewline
-KOREA\ldots{} & 73 & 0.0432 & 68 & 5 & 0.0685\tabularnewline
-FRANC\ldots{} & 56 & 0.0332 & 42 & 14 & 0.2500\tabularnewline
-INDIA\ldots{} & 52 & 0.0308 & 36 & 16 & 0.3077\tabularnewline
-GERMA\ldots{} & 47 & 0.0278 & 37 & 10 & 0.2128\tabularnewline
-UNITE\ldots{} & 46 & 0.0272 & 20 & 26 & 0.5652\tabularnewline
-TURKE\ldots{} & 44 & 0.0261 & 44 & 0 & 0.0000\tabularnewline
+USA & 202 & 0.2704 & 106 & 96 & 0.4752\tabularnewline
+CHINA & 147 & 0.1968 & 123 & 24 & 0.1633\tabularnewline
+ITALY & 78 & 0.1044 & 59 & 19 & 0.2436\tabularnewline
+JAPAN & 42 & 0.0562 & 40 & 2 & 0.0476\tabularnewline
+KOREA & 33 & 0.0442 & 30 & 3 & 0.0909\tabularnewline
+TURKEY & 24 & 0.0321 & 24 & 0 & 0.0000\tabularnewline
+FRANCE & 22 & 0.0295 & 15 & 7 & 0.3182\tabularnewline
+INDIA & 22 & 0.0295 & 14 & 8 & 0.3636\tabularnewline
+PORTUGAL & 19 & 0.0254 & 11 & 8 & 0.4211\tabularnewline
+IRAN & 16 & 0.0214 & 10 & 6 & 0.3750\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -670,16 +787,16 @@ Count\ldots{} & Total\ldots{} & Avera\ldots{}\tabularnewline
 Count\ldots{} & Total\ldots{} & Avera\ldots{}\tabularnewline
 \midrule
 \endhead
-USA \ldots{} & 17522 & 35.83\tabularnewline
-JAPAN\ldots{} & 3046 & 29.29\tabularnewline
-CHINA\ldots{} & 2850 & 10.40\tabularnewline
-ITALY\ldots{} & 2654 & 19.51\tabularnewline
-KOREA\ldots{} & 1568 & 21.48\tabularnewline
-FRANC\ldots{} & 1450 & 25.89\tabularnewline
-AUSTR\ldots{} & 1128 & 29.68\tabularnewline
-UNITE\ldots{} & 1105 & 24.02\tabularnewline
-SINGA\ldots{} & 827 & 29.54\tabularnewline
-AUSTR\ldots{} & 776 & 36.95\tabularnewline
+USA \ldots{} & 10098 & 49.99\tabularnewline
+ITALY\ldots{} & 1505 & 19.29\tabularnewline
+JAPAN\ldots{} & 1449 & 34.50\tabularnewline
+CHINA\ldots{} & 1436 & 9.77\tabularnewline
+FRANC\ldots{} & 870 & 39.55\tabularnewline
+KOREA\ldots{} & 636 & 19.27\tabularnewline
+PORTU\ldots{} & 299 & 15.74\tabularnewline
+SWITZ\ldots{} & 285 & 25.91\tabularnewline
+UNITE\ldots{} & 242 & 20.17\tabularnewline
+INDIA\ldots{} & 237 & 10.77\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -704,16 +821,16 @@ Sourc\ldots{} & Articles\tabularnewline
 Sourc\ldots{} & Articles\tabularnewline
 \midrule
 \endhead
-INVES\ldots{} & 312\tabularnewline
-RETIN\ldots{} & 149\tabularnewline
-SCIEN\ldots{} & 69\tabularnewline
-BRITI\ldots{} & 58\tabularnewline
-GRAEF\ldots{} & 55\tabularnewline
-AMERI\ldots{} & 54\tabularnewline
-TRANS\ldots{} & 51\tabularnewline
-BIOME\ldots{} & 47\tabularnewline
-EUROP\ldots{} & 46\tabularnewline
-BMC O\ldots{} & 41\tabularnewline
+RETIN\ldots{} & 62\tabularnewline
+INVES\ldots{} & 54\tabularnewline
+SCIEN\ldots{} & 38\tabularnewline
+GRAEF\ldots{} & 30\tabularnewline
+TRANS\ldots{} & 29\tabularnewline
+BRITI\ldots{} & 28\tabularnewline
+BIOME\ldots{} & 25\tabularnewline
+AMERI\ldots{} & 24\tabularnewline
+BMC O\ldots{} & 20\tabularnewline
+JOURN\ldots{} & 19\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -738,16 +855,16 @@ Autho\ldots{} & Articles & Keywo\ldots{} & Artic\ldots{}\tabularnewline
 Autho\ldots{} & Articles & Keywo\ldots{} & Artic\ldots{}\tabularnewline
 \midrule
 \endhead
-DIABE\ldots{} & 428 & RETIN\ldots{} & 317\tabularnewline
-OPTIC\ldots{} & 392 & DIABE\ldots{} & 296\tabularnewline
-OPTIC\ldots{} & 207 & OPTIC\ldots{} & 287\tabularnewline
-DIABE\ldots{} & 130 & FOVEA\ldots{} & 263\tabularnewline
-RETIN\ldots{} & 128 & EYES \ldots{} & 250\tabularnewline
-FOVEA\ldots{} & 81 & FLUOR\ldots{} & 246\tabularnewline
-FLUOR\ldots{} & 80 & COHER\ldots{} & 181\tabularnewline
-VESSE\ldots{} & 74 & ANGIO\ldots{} & 159\tabularnewline
-OCTA \ldots{} & 73 & DENSI\ldots{} & 131\tabularnewline
-OCT A\ldots{} & 63 & MACUL\ldots{} & 126\tabularnewline
+DIABE\ldots{} & 288 & RETIN\ldots{} & 166\tabularnewline
+OPTIC\ldots{} & 268 & FOVEA\ldots{} & 160\tabularnewline
+OPTIC\ldots{} & 70 & EYES \ldots{} & 154\tabularnewline
+RETIN\ldots{} & 68 & FLUOR\ldots{} & 127\tabularnewline
+VESSE\ldots{} & 54 & COHER\ldots{} & 116\tabularnewline
+DIABE\ldots{} & 53 & OPTIC\ldots{} & 111\tabularnewline
+OCTA \ldots{} & 48 & DENSI\ldots{} & 84\tabularnewline
+FOVEA\ldots{} & 45 & MACUL\ldots{} & 68\tabularnewline
+OCT A\ldots{} & 41 & QUANT\ldots{} & 68\tabularnewline
+IMAGI\ldots{} & 34 & NONPE\ldots{} & 59\tabularnewline
 \bottomrule
 \end{longtable}
 

@@ -27,11 +27,7 @@ set_index()
 
 # 摘要 {#abstract}
 
-脑卒中 (stroke)
-
-metabolites-GWAS 
-
-孟德尔随机化 (Mendelian randomization)
+randomForestSRC
 
 # 前言 {#introduction}
 
@@ -56,6 +52,27 @@ auto_method()
 # 附：分析流程 {#workflow}
 
 ```{r}
-sr <- .job_seurat()
-not(sr)
+tc <- job_tcga("TCGA-LUAD")
+not(tc)
+tc <- step1(tc, query = c("mutation", "clinical"), F)
+tc@tables$step1$cons
+tc <- step2(tc)
+tc <- step3(tc, query = "mutation")
+
 ```
+
+```{r}
+mf <- asjob_maf(tc)
+mf@params$info.lich
+mf <- step1(mf)
+mf@plots$step1$p.summary
+mf@plots$step1$p.oncoplot
+
+x <- maftools::genesToBarcodes(mf@object, mf@object@gene.summary[[1]], justNames = T)
+
+eg$res <- as.factor(letters[1:10])
+obj <- randomForestSRC::rfsrc(res ~ ., data = eg, splitrule = 'gini')
+imp <- randomForestSRC::vimp(obj)
+```
+
+
