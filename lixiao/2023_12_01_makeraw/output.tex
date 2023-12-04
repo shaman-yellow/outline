@@ -1,0 +1,287 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge 原始数据和图整理}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2023-12-04}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+下载 TCGA 原始数据，绘制 Fig 1-3 内容。
+
+\hypertarget{ux6570ux636eux7edfux8ba1}{%
+\subsection{数据统计}\label{ux6570ux636eux7edfux8ba1}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All dowloaded data number
+:}
+
+\vspace{0.5em}
+
+    616
+
+\vspace{2em}
+
+
+\textbf{
+TCGAbiolinks filtered
+:}
+
+\vspace{0.5em}
+
+    557
+
+\vspace{2em}
+
+
+\textbf{
+With clinical data (vital\_status)
+:}
+
+\vspace{0.5em}
+
+    424
+
+\vspace{2em}
+
+
+\textbf{
+Finaly used sample number
+:}
+
+\vspace{0.5em}
+
+    424
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux539fux59cbux6570ux636e}{%
+\subsection{原始数据}\label{ux539fux59cbux6570ux636e}}
+
+\hypertarget{ux6587ux4ef6}{%
+\subsubsection{文件}\label{ux6587ux4ef6}}
+
+`TCGA LUAD raw' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./GDCdata/TCGA-LUAD/Simple\_Nucleotide\_Variation/Masked\_Somatic\_Mutation/})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./GDCdata/TCGA-LUAD/Simple\_Nucleotide\_Variation/Masked\_Somatic\_Mutation/共包含618个文件。
+
+\begin{enumerate}\tightlist
+\item 009254a2-ea81-4c76-8044-7267a9f81364
+\item 010ba621-7ec1-452e-9115-b7ec5f9b37d2
+\item 0121a6c3-c7ae-4619-b07a-27bb28541478
+\item 0182902d-bb3b-4b9d-bb2a-1b00c14e3b11
+\item 01e89769-e754-4eca-a5a3-b1b72ac4953f
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux4e34ux5e8aux6570ux636e}{%
+\subsubsection{临床数据}\label{ux4e34ux5e8aux6570ux636e}}
+
+Table \ref{tab:LUAD-clinical-data-filtered-by-vital-status} (下方表格) 为表格LUAD clinical data filtered by vital status概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUAD-clinical-data-filtered-by-vital-status.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有424行30列，以下预览的表格可能省略部分数据；表格含有424个唯一`bcr\_followup\_barcode'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:LUAD-clinical-data-filtered-by-vital-status}LUAD clinical data filtered by vital status}\tabularnewline
+\toprule
+follo\ldots\ldots1 & bcr\_f\ldots\ldots2 & bcr\_f\ldots\ldots3 & lost\_\ldots{} & vital\ldots{} & prima\ldots{} & days\_\ldots\ldots7 & days\_\ldots\ldots8 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+follo\ldots\ldots1 & bcr\_f\ldots\ldots2 & bcr\_f\ldots\ldots3 & lost\_\ldots{} & vital\ldots{} & prima\ldots{} & days\_\ldots\ldots7 & days\_\ldots\ldots8 & \ldots{}\tabularnewline
+\midrule
+\endhead
+follo\ldots{} & TCGA-\ldots{} & 277C6\ldots{} & NO & 1 & Compl\ldots{} & 474 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & 88DF8\ldots{} & NO & 1 & Compl\ldots{} & 186 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & FD821\ldots{} & NO & 1 & Compl\ldots{} & 889 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & 8288A\ldots{} & NO & 0 & Compl\ldots{} & NA & 999 & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & DF6E5\ldots{} & YES & 1 & Compl\ldots{} & 119 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & 58A4C\ldots{} & NO & 1 & Compl\ldots{} & 617 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & 5CE9E\ldots{} & NO & 1 & Compl\ldots{} & 492 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & CD19E\ldots{} & NO & 1 & Parti\ldots{} & 609 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & f2d5e\ldots{} & & 0 & & 711 & 711 & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & 452c5\ldots{} & & 1 & Compl\ldots{} & 1938 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & 932b0\ldots{} & & 1 & & 760 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & cca64\ldots{} & & 0 & Compl\ldots{} & NA & 1492 & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & 6E245\ldots{} & NO & 1 & Compl\ldots{} & 1175 & NA & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & 9a2d2\ldots{} & & 0 & & NA & 593 & \ldots{}\tabularnewline
+follo\ldots{} & TCGA-\ldots{} & 01b8e\ldots{} & & 0 & Progr\ldots{} & NA & 244 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{figure-1-3}{%
+\subsection{Figure 1-3}\label{figure-1-3}}
+
+Figure \ref{fig:LUAD-summary-of-mutation} (下方图) 为图LUAD summary of mutation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUAD-summary-of-mutation.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUAD-summary-of-mutation.pdf}
+\caption{LUAD summary of mutation}\label{fig:LUAD-summary-of-mutation}
+\end{center}
+
+Figure \ref{fig:LUAD-oncoplot-of-top-genes} (下方图) 为图LUAD oncoplot of top genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUAD-oncoplot-of-top-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUAD-oncoplot-of-top-genes.pdf}
+\caption{LUAD oncoplot of top genes}\label{fig:LUAD-oncoplot-of-top-genes}
+\end{center}
+
+Figure \ref{fig:LUAD-Variable-importance} (下方图) 为图LUAD Variable importance概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUAD-Variable-importance.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUAD-Variable-importance.pdf}
+\caption{LUAD Variable importance}\label{fig:LUAD-Variable-importance}
+\end{center}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Package `maftools' used for analyzing and visualizing Mutation Annotation Format (MAF) files.\textsuperscript{\protect\hyperlink{ref-MaftoolsEfficMayako2018}{1}}
+\item
+  Package randomForestSRC for feature selection .
+\item
+  TCGAbiolinks used for abtain TCGA dataset.\textsuperscript{\protect\hyperlink{ref-TcgabiolinksAColapr2015}{2}}
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-MaftoolsEfficMayako2018}{}%
+1. Mayakonda, A., Lin, D.-C., Assenov, Y., Plass, C. \& Koeffler, H. P. Maftools: Efficient and comprehensive analysis of somatic variants in cancer. \emph{Genome Research} \textbf{28}, 1747--1756 (2018).
+
+\leavevmode\hypertarget{ref-TcgabiolinksAColapr2015}{}%
+2. Colaprico, A. \emph{et al.} TCGAbiolinks: An r/bioconductor package for integrative analysis of tcga data. \emph{Nucleic Acids Research} \textbf{44}, (2015).
+\end{cslreferences}
+
+\end{document}

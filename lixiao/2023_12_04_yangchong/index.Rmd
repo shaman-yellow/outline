@@ -1,0 +1,116 @@
+---
+---
+
+```{r include = F}
+deparse_mail()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover("title")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+ccRCC 单细胞数据的 T-reg 细胞差异表达分析
+
+<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8268947/>
+[@SingleCellSeqKrishn2021]
+We identified a cluster of regulatory T cells (“CD4+ Treg”) characterized by
+expression of the transcription factor FOXP3, as well BATF, CTLA4, and TIGIT
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+GSE210038
+
+```{r}
+go <- job_geo("GSE210038")
+not(go)
+go <- step1(go)
+go <- step2(go)
+
+untar("./GSE210038/GSE210038_RAW.tar", exdir = "./GSE210038/")
+ftibble("./GSE210038/GSM6415686_T1_raw_counts.tsv.gz")
+
+lapply(list.files("./GSE210038/", "_[TN][1-2]_.*gz$", full.names = T),
+  function(file) {
+    prepare_10x(file, single = T)
+  })
+
+skel(.job_seurat(), "sr.t1")
+
+sr.t1 <- job_seurat("./GSE210038/GSM6415686_T1_raw_counts")
+sr.t1 <- step1(sr.t1)
+sr.t1@plots$step1$p.qc
+sr.t1 <- step2(sr.t1, 0, 5000, 20)
+sr.t1@plots$step2$p.pca_rank
+sr.t1 <- step3(sr.t1, 1:10, 1.2)
+sr.t1@step <- 4L
+sr.t1@plots$step3$p.umap
+sr.t1 <- step5(sr.t1, 5)
+sr.t1 <- step6(sr.t1, "Kidney")
+sr.t1@plots$step6$p.map_scsa
+clear(sr.t1)
+NULL
+
+sr.t1.t <- getsub(sr.t1, cells = grp(sr.t1@object@meta.data[[ "scsa_cell" ]], "T cell"))
+
+
+skel(.job_seurat(), "sr.n1")
+sr.n1 <- job_seurat("./GSE210038/GSM6415694_N2_raw_counts")
+sr.n1 <- step1(sr.n1)
+sr.n1@plots$step1$p.qc
+sr.n1 <- step2(sr.n1, 0, 4000, 20)
+sr.n1@plots$step2$p.pca_rank
+
+sr.n1 <- step3(sr.n1, 1:15, 1.2)
+sr.n1@step <- 4L
+sr.n1@plots$step3$p.umap
+sr.n1 <- step5(sr.n1, 5)
+sr.n1 <- step6(sr.n1, "Kidney")
+sr.n1@plots$step6$p.map_scsa
+clear(sr.n1)
+NULL
+
+```
+
+```{r}
+save_small()
+sr.n1 <- readRDS("./sr.n1.2.rds")
+sr.t1 <- readRDS("./sr.t1.6.rds")
+```

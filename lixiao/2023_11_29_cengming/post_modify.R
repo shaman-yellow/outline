@@ -20,6 +20,6 @@ info <- items(
   info = od_get_info(),
   id = od_get_id(),
   receive_date = od_get_date(),
-  score = od_get_score(),
+  score = "3-5",
   member = "黄礼闯"
 )

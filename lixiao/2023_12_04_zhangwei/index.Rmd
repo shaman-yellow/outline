@@ -27,17 +27,22 @@ set_index()
 
 # 摘要 {#abstract}
 
-脑卒中 (stroke)
+质子磁共振光谱法 (H-MRS) 
+加巴喷丁 (Gabapentin)
+重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS)
+不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) 
+神经病理性疼痛 (neuropathic pain, NP) 
 
-metabolites-GWAS 
-<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5968830/>
-(S Table 11)
-<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9576777/>
-<https://www.megastroke.org/index.html>
-孟德尔随机化 (Mendelian randomization)
+iSCI
+- GSE226238
+- GSE133093
+NP
+- GSE115565
+rTMS
+- Transcriptional changes in the (rat) brain induced by repetitive transcranial magnetic stimulation
+- GSE206765 (16s)
 
-survival (clinical data)
-<https://pubmed.ncbi.nlm.nih.gov/?term=stroke+survival+analysis&filter=datesearch.y_10>
+GEO 有 iSCI、NP、rTMS 各自的基因表达数据集，可以从三者之间的关联性寻找 rTMS 可能的疗效和机制
 
 # 前言 {#introduction}
 
@@ -60,6 +65,3 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
-
-```{r}
-```
