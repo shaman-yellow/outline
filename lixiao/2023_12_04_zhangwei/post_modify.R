@@ -11,11 +11,11 @@ package_results(head = NULL, masterZip = NULL, report = report)
 file.rename("./client.zip", paste0(id, ".zip"))
 
 info <- items(
-  belong = odate(6),
-  type = "固定业务",
+  belong = odate(12),
+  type = "其他业务",
   title = od_get_title(),
   status = "完成",
-  coef = .25,
+  coef = NA,
   date = "2023-06-29",
   info = od_get_info(),
   id = od_get_id(),

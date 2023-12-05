@@ -7,4 +7,45 @@ Setd2 缺失
 对照组	Setd2缺失组
 生物信息学分析		
 
+```{r}
 
+skel(.job_seurat(), "sr.n1")
+sr.n1 <- job_seurat("./GSE210038/GSM6415693_N1_raw_counts/")
+sr.n1 <- step1(sr.n1)
+sr.n1@plots$step1$p.qc
+sr.n1 <- step2(sr.n1, 0, 2000, 20)
+sr.n1@plots$step2$p.pca_rank
+sr.n1 <- step3(sr.n1, 1:10, 1.2)
+sr.n1@step <- 4L
+sr.n1@plots$step3$p.umap
+sr.n1 <- step5(sr.n1, 5)
+sr.n1 <- step6(sr.n1, "Kidney")
+sr.n1@plots$step6$p.map_scsa
+clear(sr.n1)
+NULL
+
+fun_treg(sr.n1)
+
+skel(.job_seurat(), "sr.n2")
+sr.n2 <- job_seurat("./GSE210038/GSM6415694_N2_raw_counts")
+sr.n2 <- step1(sr.n2)
+sr.n2@plots$step1$p.qc
+sr.n2 <- step2(sr.n2, 0, 4000, 20)
+sr.n2@plots$step2$p.pca_rank
+sr.n2 <- step3(sr.n2, 1:15, 1.2)
+sr.n2@step <- 4L
+sr.n2@plots$step3$p.umap
+sr.n2 <- step5(sr.n2, 5)
+sr.n2 <- step6(sr.n2, "Kidney")
+sr.n2@plots$step6$p.map_scsa
+clear(sr.n2)
+NULL
+
+fun_treg(sr.n2)
+
+
+```
+
+[@SingleCellSeqKrishn2021]
+"We identified a cluster of regulatory T cells (“CD4+ Treg”) characterized by
+expression of the transcription factor FOXP3, as well BATF, CTLA4, and TIGIT"

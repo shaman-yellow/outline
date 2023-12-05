@@ -1,0 +1,382 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge ccRCC 单细胞数据的
+Treg 细胞差异表达基因} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2023-12-05}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\begin{itemize}
+\tightlist
+\item
+  ccRCC Treg 细胞的差异表达基因见 Tab. \ref{tab:Treg-DEGs}
+\item
+  Treg 的差异基因和下游靶点的筛选可参考 Tab. \ref{tab:Interaction-of-pathways}、Tab. \ref{tab:Interaction-of-ligand-and-receptor} (细胞通讯角度)
+\item
+  或者参考通路富集筛选差异基因和下游靶点 \ref{enrich}
+\end{itemize}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+All used GEO expression data and their design:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GSE210038}: Seven tumoral and two normal adjacent tissue samples from patients presenting clear-cell Renal Cell Carcinoma were analyzed by single-cell RNA sequencing.
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  CellChat used for cell communication analysis.\textsuperscript{\protect\hyperlink{ref-InferenceAndAJinS2021}{1}}
+\item
+  ClusterProfiler used for GSEA enrichment.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition .
+\item
+  Seurat used for scRNA-seq processing; SCSA used for cell type annotation.\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{3}--\protect\hyperlink{ref-ScsaACellTyCaoY2020}{5}}
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ccrcc-ux5355ux7ec6ux80deux6570ux636e}{%
+\subsection{ccRCC 单细胞数据}\label{ccrcc-ux5355ux7ec6ux80deux6570ux636e}}
+
+Figure \ref{fig:UMAP-Clustering} (下方图) 为图UMAP Clustering概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/UMAP-Clustering.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/UMAP-Clustering.pdf}
+\caption{UMAP Clustering}\label{fig:UMAP-Clustering}
+\end{center}
+
+\hypertarget{ux9274ux5b9a-treg-ux7ec6ux80de}{%
+\subsection{鉴定 Treg 细胞}\label{ux9274ux5b9a-treg-ux7ec6ux80de}}
+
+根据文献\textsuperscript{\protect\hyperlink{ref-SingleCellSeqKrishn2021}{6}}，使用 FOXP3, BATF, CTLA4, TIGIT" 作为 marker 鉴定 Treg 细胞。
+
+Figure \ref{fig:Heatmap-show-the-reference-genes} (下方图) 为图Heatmap show the reference genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Heatmap-show-the-reference-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Heatmap-show-the-reference-genes.pdf}
+\caption{Heatmap show the reference genes}\label{fig:Heatmap-show-the-reference-genes}
+\end{center}
+
+显然，Cluster 6 为 Treg 细胞。
+
+其余细胞以 SCSA 注释。
+
+Figure \ref{fig:The-cell-type} (下方图) 为图The cell type概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/The-cell-type.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/The-cell-type.pdf}
+\caption{The cell type}\label{fig:The-cell-type}
+\end{center}
+
+\hypertarget{treg-ux7ec6ux80deux7684ux5deeux5f02ux8868ux8fbeux57faux56e0-ux5bf9ux6bd4ux5176ux5b83ux7ec6ux80de}{%
+\subsection{Treg 细胞的差异表达基因 (对比其它细胞)}\label{treg-ux7ec6ux80deux7684ux5deeux5f02ux8868ux8fbeux57faux56e0-ux5bf9ux6bd4ux5176ux5b83ux7ec6ux80de}}
+
+Table \ref{tab:Treg-DEGs} (下方表格) 为表格Treg DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Treg-DEGs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有652行8列，以下预览的表格可能省略部分数据；表格含有652个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:Treg-DEGs}Treg DEGs}\tabularnewline
+\toprule
+rownames & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & cluster & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & cluster & gene\tabularnewline
+\midrule
+\endhead
+CTLA4 & 0 & 3.608\ldots{} & 0.688 & 0.046 & 0 & 6 & CTLA4\tabularnewline
+TBC1D4 & 0 & 3.051\ldots{} & 0.749 & 0.086 & 0 & 6 & TBC1D4\tabularnewline
+FOXP3 & 0 & 2.156\ldots{} & 0.315 & 0.006 & 0 & 6 & FOXP3\tabularnewline
+ICOS & 8.465\ldots{} & 2.946\ldots{} & 0.599 & 0.053 & 1.520\ldots{} & 6 & ICOS\tabularnewline
+TIGIT1 & 1.433\ldots{} & 3.012\ldots{} & 0.733 & 0.101 & 2.575\ldots{} & 6 & TIGIT\tabularnewline
+RTKN2 & 2.467\ldots{} & 2.752\ldots{} & 0.354 & 0.015 & 4.433\ldots{} & 6 & RTKN2\tabularnewline
+RP11-\ldots{} & 2.973\ldots{} & 2.298\ldots{} & 0.298 & 0.011 & 5.342\ldots{} & 6 & RP11-\ldots{}\tabularnewline
+LTB1 & 3.956\ldots{} & 2.917\ldots{} & 0.766 & 0.125 & 7.108\ldots{} & 6 & LTB\tabularnewline
+BATF3 & 3.925\ldots{} & 3.204\ldots{} & 0.76 & 0.139 & 7.052\ldots{} & 6 & BATF\tabularnewline
+TNFRSF18 & 3.680\ldots{} & 3.126\ldots{} & 0.507 & 0.051 & 6.612\ldots{} & 6 & TNFRSF18\tabularnewline
+SLAMF1 & 6.452\ldots{} & 2.463\ldots{} & 0.432 & 0.036 & 1.159\ldots{} & 6 & SLAMF1\tabularnewline
+CD271 & 3.806\ldots{} & 2.380\ldots{} & 0.702 & 0.118 & 6.838\ldots{} & 6 & CD27\tabularnewline
+IL2RA & 2.908\ldots{} & 2.084\ldots{} & 0.256 & 0.012 & 5.225\ldots{} & 6 & IL2RA\tabularnewline
+STAM & 2.076\ldots{} & 2.388\ldots{} & 0.529 & 0.077 & 3.730\ldots{} & 6 & STAM\tabularnewline
+IKZF2 & 8.030\ldots{} & 2.235\ldots{} & 0.451 & 0.053 & 1.442\ldots{} & 6 & IKZF2\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{enrich}{%
+\subsection{Treg 差异基因通路富集}\label{enrich}}
+
+Figure \ref{fig:KEGG-enrichment} (下方图) 为图KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-enrichment.pdf}
+\caption{KEGG enrichment}\label{fig:KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:GSEA-plot-of-the-pathways} (下方图) 为图GSEA plot of the pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GSEA-plot-of-the-pathways.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GSEA-plot-of-the-pathways.pdf}
+\caption{GSEA plot of the pathways}\label{fig:GSEA-plot-of-the-pathways}
+\end{center}
+
+Figure \ref{fig:view-pathway-of-hsa04060} (下方图) 为图view pathway of hsa04060概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04060.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2023-12-05_11_50_32.043774/hsa04060.pathview.png}
+\caption{View pathway of hsa04060}\label{fig:view-pathway-of-hsa04060}
+\end{center}
+
+\hypertarget{treg-ux7ec6ux80deux901aux8bafux4fe1ux606f}{%
+\subsection{Treg 细胞通讯信息}\label{treg-ux7ec6ux80deux901aux8bafux4fe1ux606f}}
+
+Figure \ref{fig:Overall-communication-count} (下方图) 为图Overall communication count概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-communication-count.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-communication-count.pdf}
+\caption{Overall communication count}\label{fig:Overall-communication-count}
+\end{center}
+
+Table \ref{tab:Interaction-of-pathways} (下方表格) 为表格Interaction of pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Interaction-of-pathways.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有57行5列，以下预览的表格可能省略部分数据；表格含有10个唯一`source'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:Interaction-of-pathways}Interaction of pathways}\tabularnewline
+\toprule
+source & target & pathw\ldots{} & prob & pval\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+source & target & pathw\ldots{} & prob & pval\tabularnewline
+\midrule
+\endhead
+B cell & Treg \ldots{} & MHC-II & 0.008\ldots{} & 0\tabularnewline
+B cell & Treg \ldots{} & MIF & 0.022\ldots{} & 0\tabularnewline
+CD8+ \ldots{} & Treg \ldots{} & CD137 & 0.007\ldots{} & 0\tabularnewline
+CD8+ \ldots{} & Treg \ldots{} & MHC-II & 0.029\ldots{} & 0\tabularnewline
+CD8+ \ldots{} & Treg \ldots{} & TNF & 0.002\ldots{} & 0\tabularnewline
+Endot\ldots{} & Treg \ldots{} & APP & 0.074\ldots{} & 0\tabularnewline
+Endot\ldots{} & Treg \ldots{} & COLLAGEN & 0.128\ldots{} & 0\tabularnewline
+Endot\ldots{} & Treg \ldots{} & CXCL & 0.024\ldots{} & 0\tabularnewline
+Endot\ldots{} & Treg \ldots{} & FN1 & 0.049\ldots{} & 0\tabularnewline
+Endot\ldots{} & Treg \ldots{} & LAMININ & 0.038\ldots{} & 0\tabularnewline
+Endot\ldots{} & Treg \ldots{} & MHC-II & 0.016\ldots{} & 0\tabularnewline
+Macro\ldots{} & Treg \ldots{} & CD86 & 0.010\ldots{} & 0\tabularnewline
+Macro\ldots{} & Treg \ldots{} & CXCL & 0.006\ldots{} & 0\tabularnewline
+Macro\ldots{} & Treg \ldots{} & GALECTIN & 0.025\ldots{} & 0\tabularnewline
+Macro\ldots{} & Treg \ldots{} & MHC-II & 0.265\ldots{} & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:Interaction-of-ligand-and-receptor} (下方表格) 为表格Interaction of ligand and receptor概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Interaction-of-ligand-and-receptor.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有136行11列，以下预览的表格可能省略部分数据；表格含有10个唯一`source'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Interaction-of-ligand-and-receptor}Interaction of ligand and receptor}\tabularnewline
+\toprule
+source & target & ligand & receptor & prob & pval & inter\ldots\ldots7 & inter\ldots\ldots8 & pathw\ldots{} & annot\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+source & target & ligand & receptor & prob & pval & inter\ldots\ldots7 & inter\ldots\ldots8 & pathw\ldots{} & annot\ldots{}\tabularnewline
+\midrule
+\endhead
+Endot\ldots{} & Treg \ldots{} & CXCL12 & CXCR4 & 0.024\ldots{} & 0 & CXCL1\ldots{} & CXCL1\ldots{} & CXCL & Secre\ldots{}\tabularnewline
+Macro\ldots{} & Treg \ldots{} & CXCL16 & CXCR6 & 0.006\ldots{} & 0 & CXCL1\ldots{} & CXCL1\ldots{} & CXCL & Secre\ldots{}\tabularnewline
+Treg \ldots{} & B cell & MIF & CD74\_\ldots{} & 0.012\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & CD8+ \ldots{} & MIF & CD74\_\ldots{} & 0.015\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & Endot\ldots{} & MIF & CD74\_\ldots{} & 0.006\ldots{} & 0.03 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & Macro\ldots{} & MIF & CD74\_\ldots{} & 0.028\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & Mast \ldots{} & MIF & CD74\_\ldots{} & 0.013\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & Natur\ldots{} & MIF & CD74\_\ldots{} & 0.005\ldots{} & 0.03 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & Neutr\ldots{} & MIF & CD74\_\ldots{} & 0.011\ldots{} & 0.01 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+B cell & Treg \ldots{} & MIF & CD74\_\ldots{} & 0.014\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Proxi\ldots{} & Treg \ldots{} & MIF & CD74\_\ldots{} & 0.105\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & Treg \ldots{} & MIF & CD74\_\ldots{} & 0.014\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & B cell & MIF & CD74\_\ldots{} & 0.004\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & CD8+ \ldots{} & MIF & CD74\_\ldots{} & 0.007\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+Treg \ldots{} & Macro\ldots{} & MIF & CD74\_\ldots{} & 0.016\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-InferenceAndAJinS2021}{}%
+1. Jin, S. \emph{et al.} Inference and analysis of cell-cell communication using cellchat. \emph{Nature Communications} \textbf{12}, (2021).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+2. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+3. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
+4. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+5. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+
+\leavevmode\hypertarget{ref-SingleCellSeqKrishn2021}{}%
+6. Krishna, C. \emph{et al.} Single-cell sequencing links multiregional immune landscapes and tissue-resident t~cells in ccRCC to tumor topology and therapy efficacy. \emph{Cancer cell} \textbf{39}, 662--677.e6 (2021).
+\end{cslreferences}
+
+\end{document}

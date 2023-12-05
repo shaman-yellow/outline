@@ -29,17 +29,16 @@ set_index()
 
 质子磁共振光谱法 (H-MRS) 
 加巴喷丁 (Gabapentin)
-重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS)
-不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) 
-神经病理性疼痛 (neuropathic pain, NP) 
 
-iSCI
+不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) 
 - GSE226238
-- GSE133093
-NP
-- GSE115565
-rTMS
+
+神经病理性疼痛 (neuropathic pain, NP) 
+- GSE126611
+
+重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS)
 - Transcriptional changes in the (rat) brain induced by repetitive transcranial magnetic stimulation
+- GSE230150
 - GSE206765 (16s)
 
 GEO 有 iSCI、NP、rTMS 各自的基因表达数据集，可以从三者之间的关联性寻找 rTMS 可能的疗效和机制
@@ -65,3 +64,141 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+## 不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) 
+
+### 元数据
+
+- GSE226238
+
+根据文献提供的数据整理信息[@ProfilingImmunMorris2023]：
+
+Complete: AIS A-B
+Incomplete: AIS C-D
+
+使用的样本的信息：
+
+```{r eval = T, echo = F, results = "asis"}
+#| SCI-used-sample-metadata
+autor(lm.sci@params$metadata)
+```
+
+```{r}
+go.sci <- job_geo("GSE226238")
+go.sci <- step1(go.sci)
+go.sci@params$guess
+go.sci@params$prods
+go.sci <- step2(go.sci)
+
+t.sci <- get_table.html("./GSE226238/article.html")[[2]]
+n <- ""
+t.sci <- apply(t.sci, 1,
+  function(x) {
+    if (is.na(x[[4]])) {
+      x <- c(n, x[1:3])
+    } else {
+      n <<- x[[1]]
+    }
+    return(x)
+  })
+t.sci <- as_tibble(t(t.sci))
+colnames(t.sci) <- c("id", "status", "AIS", "NLI")
+t.sci <- mutate(t.sci, complete = ifelse(AIS %in% c("A", "B"), "Complete", "Incomplete"),
+  status = stringr::str_extract(status, "[0-9]+"),
+  status = ifelse(is.na(status), "0", status),
+  sample = paste0("ID", id, "v", status)
+)
+print(t.sci, n = Inf)
+
+data <- fxlsx("./GSE226238/GSE226238_Morrison_et_al_processed_data.xlsx")
+fun <- function(x) {
+  rownames <- x[[1]]
+  x <- data.frame(t(x[, -1]))
+  colnames(x) <- toupper(rownames)
+  rownames <- gs(rownames(x), ".*?([A-Z0-9]+)$", "\\1")
+  x <- x[ !duplicated(rownames), ]
+  rownames(x) <- rownames[ !duplicated(rownames) ]
+  print(x[1:5, 1:10])
+  x
+}
+data <- fun(data)
+
+metadata <- dplyr::mutate(go.sci@params$guess, sample = gs(title, "^([0-9A-Za-z]+).*", "\\1"),
+  group = ifelse(is.na(treatment.ch1), "control", paste0("sci.", treatment.ch1))
+)
+metadata <- tbmerge(metadata, t.sci, by = "sample", all.x = T)
+metadata <- filter(metadata, is.na(complete) | complete == "Incomplete")
+metadata <- mutate(metadata, group = ifelse(is.na(complete), "control", "sci"),
+  sample = toupper(sample)
+)
+print(metadata, n = Inf)
+```
+
+### 差异分析
+
+```{r}
+lm.sci <- job_limma_normed(data, metadata)
+lm.sci <- step1(lm.sci, lm.sci$metadata$group, no.filter = T, no.norm = T)
+lm.sci <- step2(lm.sci, sci - control)
+lm.sci@tables$step2$tops
+clear(lm.sci)
+
+```
+
+
+## 神经病理性疼痛 (neuropathic pain, NP) 
+
+### 元数据
+
+```{r eval = T, echo = F, results = "asis"}
+#| NP-metadata
+autor(lm.np@params$normed_data$targets)
+```
+
+```{r}
+go.np <- job_geo("GSE126611")
+go.np <- step1(go.np)
+go.np <- step2(go.np)
+
+metadata <- mutate(go.np@params$guess, sample = title,
+  group = gs(sample, "([0-9A-Za-z\\-]+).*", "\\1"),
+  group = make.names(group)
+)
+metadata <- relocate(metadata, sample, group)
+
+data <- ftibble("./GSE126611/GSE126611_Read_per_features_combined.csv.gz")
+data <- mutate(data, symbol = stringr::str_extract(Attributes, "(?<=gene_name\\=)[A-Z0-9]+"))
+data <- distinct(data, symbol, .keep_all = T)
+genes <- select(data, symbol, Chr:Attributes)
+data <- select(data, !(Chr:Attributes))
+data <- relocate(data, symbol)
+```
+
+### 差异分析
+
+```{r}
+lm.np <- job_limma(new_dge(metadata, data, genes))
+sig(lm.np) <- "NP"
+lm.np <- step1(lm.np)
+lm.np <- step2(lm.np, NL.1 - Control, label = "symbol", use = "P")
+clear(lm.np)
+
+lm.np@tables$step2$tops
+lm.np@plots$step2$p.valcano[[1]]
+```
+
+## SCI 和 NP 关联分析
+
+```{r}
+degs <- list(
+  SCI_DEGs = lm.sci@tables$step2$tops[[1]]$rownames,
+  NP_DEGs = lm.np@tables$step2$tops[[1]]$symbol
+)
+degs.ins <- ins(lst = degs)
+p.venn <- new_venn(lst = degs)
+```
+
+```{r}
+cp.sci <- cal_corp(lm.sci, NULL, degs.ins, degs.ins, use = "rownames")
+```
+
