@@ -49,3 +49,29 @@ fun_treg(sr.n2)
 [@SingleCellSeqKrishn2021]
 "We identified a cluster of regulatory T cells (“CD4+ Treg”) characterized by
 expression of the transcription factor FOXP3, as well BATF, CTLA4, and TIGIT"
+
+
+## 正常肾组织单细胞数据
+
+```{r}
+skel(.job_seurat(), "sr.n1")
+sr.n1 <- job_seurat("./GSE210038/GSM6415694_N2_raw_counts")
+sr.n1 <- step1(sr.n1)
+sr.n1@plots$step1$p.qc
+sr.n1 <- step2(sr.n1, 0, 4000, 20)
+sr.n1@plots$step2$p.pca_rank
+sr.n1 <- step3(sr.n1, 1:15, 1.5)
+sr.n1@step <- 4L
+sr.n1@plots$step3$p.umap
+sr.n1 <- step5(sr.n1, 5)
+sr.n1 <- step6(sr.n1, "Kidney")
+sr.n1@plots$step6$p.map_scsa
+clear(sr.n1)
+NULL
+
+fun_treg(sr.n1)
+p.sr.n1 <- focus(sr.n1, "FOXP3")
+p.sr.n1$p.vln
+```
+
+

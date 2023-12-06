@@ -1,0 +1,163 @@
+---
+---
+
+```{r include = F}
+deparse_mail()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover("补肾健脾汤网络药理学分析")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+补肾健脾汤网络药理学 (党参9 g、白术12 g、茯苓12 g、甘草6 g、山药12 g、泽泻9 g、地黄12 g、山茱萸9 g、牡丹皮9 g、黄芪12 g，补骨脂9 g，杜仲9 g)，绘制药方-草药-主要活性成分-靶点图。
+
+结果见 Fig. \@ref(fig:Herbs-compounds-and-targets)
+
+# 材料和方法 {#methods}
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 补肾健脾汤网络药理学分析
+
+### 成分
+
+```{r}
+hb <- job_herb(c("党参", "白术", "茯苓", "甘草", "山药", "泽泻", "地黄", "山茱萸", "牡丹皮", "黄芪", "补骨脂", "杜仲"))
+hb <- step1(hb)
+hb <- step2(hb, 100)
+hb <- step3(hb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-information
+autor(hb@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Components-of-Herbs
+autor(hb@tables$step1$herbs_compounds, key = "Ingredient.name")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-compounds
+autor(wrap(hb@plots$step3$p.herbs_compounds, 12))
+```
+
+### 成分靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-Herbs-compounds-and-targets
+autor(hb@params$easyRead)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets
+autor("./Figure+Table/Herbs-compounds-and-targets.png")
+```
+
+```{r}
+data.allu <- select(hb@params$easyRead, Herb_pinyin_name, Ingredient.name, Target.name)
+data.allu <- filter(data.allu, !is.na(Target.name))
+p.allu <- new_allu(data.allu, axes = 1:3, label.auto = T, label.freq = 200)
+wrap(p.allu, 15, 12)
+p.allu
+
+pdf_convert("./Figure+Table/Herbs-compounds-and-targets.pdf", filenames = "./Figure+Table/Herbs-compounds-and-targets.png", dpi = 300)
+
+save.image()
+```
+
+```{r}
+fun <- function(data) {
+  colnames(data) <- c("Herb", "Compound", "Target")
+  nodes <- tidyr::gather(data, type, value)
+  nodes <- dplyr::distinct(nodes)
+  nodes <- dplyr::relocate(nodes, name = value, type)
+  layouts <- c("circle", "circle", "grid")
+  n <- 0L
+  coords <- lapply(split(nodes, ~type),
+    function(nodes) {
+      n <<- n + 1L
+      lay <- get_layout(edges = NULL,
+        layout = layouts[order(colnames(data))][n],
+        nodes = nodes)
+      dplyr::select(lay, name, x, y)
+    })
+  shift <- function(data, x = 0, y = 0) {
+    data$x <- data$x + x
+    data$y <- data$y + y
+    data
+  }
+  resize <- function(data, f) {
+    data$x <- data$x * f
+    data$y <- data$y * f
+    data
+  }
+  f.resize <- max(coords$Target$x)
+  coords$Herb %<>% resize(f.resize * 1)
+  coords$Compound %<>% resize(f.resize * .8)
+  # space <- max(coords$Herb$x) * 1.5
+  # coords$Compound %<>% shift(max(coords$Herb$x) + space)
+  coords$Target %<>% shift(-max(coords$Target$x) / 2, -max(coords$Target$y) / 2)
+  coords <- as_tibble(data.table::rbindlist(coords))
+  edges <- lapply(1:2,
+    function(n) {
+      edges <- dplyr::distinct(data, dplyr::pick(n:(n+1)))
+      colnames(edges) <- c("source", "target")
+      edges
+    })
+  edges <- do.call(dplyr::bind_rows, edges)
+  layout <- dplyr::select(coords, x, y)
+  nodes <- nodes[ match(coords$name, nodes$name), ]
+  fast_layout(edges,
+    layout = layout,
+    nodes = nodes
+  )
+}
+x <- fun(data.allu)
+
+data <- as_tibble(data.frame(x))
+data <- dplyr::mutate(
+  data, cent = ifelse(type == "Herb", cent * 150,
+    ifelse(type == "Compound", cent * 30, cent)))
+ggraph(x) +
+  geom_edge_link(color = "lightyellow", alpha = .5) +
+  geom_node_point(data = data, aes(x = x, y = y, color = type, size = cent)) +
+  ggrepel::geom_text_repel(
+    data = dplyr::filter(data, cent > 1000),
+    aes(x = x, y = y)) +
+  scale_size(range = c(.5, 20)) +
+  guides(size = "none") +
+  scale_color_manual(values = color_set()) +
+  theme_grey()
+
+# grid, circle
+```

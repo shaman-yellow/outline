@@ -1,0 +1,98 @@
+---
+---
+
+```{r include = F}
+deparse_mail()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover("补肾健脾汤网络药理学分析")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+半夏泻心汤 (半夏15g、甘草15g、黄芩15g、人参15g、干姜15g、黄连5g、大枣4枚) 绘制药方-草药-主要活性成分-靶点图。
+
+结果见 Fig. \@ref(fig:Herbs-compounds-and-targets)
+
+# 材料和方法 {#methods}
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 半夏泻心汤网络药理学分析
+
+### 成分
+
+```{r}
+hb <- job_herb(c("半夏", "甘草", "黄芩", "人参", "干姜", "黄连", "大枣"))
+hb <- step1(hb)
+hb <- step2(hb, 100)
+hb <- step3(hb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-information
+autor(hb@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Components-of-Herbs
+autor(hb@tables$step1$herbs_compounds, key = "Ingredient.name")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-compounds
+autor(wrap(hb@plots$step3$p.herbs_compounds, 12))
+```
+
+### 成分靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-Herbs-compounds-and-targets
+autor(hb@params$easyRead)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets
+autor("./Figure+Table/Herbs-compounds-and-targets.png")
+```
+
+```{r}
+data.allu <- select(hb@params$easyRead, Herb_pinyin_name, Ingredient.name, Target.name)
+data.allu <- filter(data.allu, !is.na(Target.name))
+p.allu <- new_allu(data.allu, axes = 1:3, label.auto = T, label.freq = 200)
+wrap(p.allu, 15, 12)
+p.allu
+
+pdf_convert("./Figure+Table/Herbs-compounds-and-targets.pdf", filenames = "./Figure+Table/Herbs-compounds-and-targets.png", dpi = 300)
+
+save.image()
+```
+
+

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  5 DEC 2023 12:01
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  6 DEC 2023 14:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1291,7 +1291,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 107.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 123.
+(Font)              scaled to size 11.64862pt on input line 124.
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
@@ -1316,12 +1316,12 @@ guage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 160.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 161.
 File: Figure+Table/UMAP-Clustering.pdf Graphic file (type pdf)
 <use Figure+Table/UMAP-Clustering.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 165.
+(caption)                particular \caption on input line 166.
 See the caption package documentation for explanation.
 
 [1]
@@ -1330,7 +1330,7 @@ File: Figure+Table/Heatmap-show-the-reference-genes.pdf Graphic file (type pdf)
 <use Figure+Table/Heatmap-show-the-reference-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 180.
+(caption)                particular \caption on input line 181.
 See the caption package documentation for explanation.
 
 [2]
@@ -1338,7 +1338,7 @@ File: Figure+Table/The-cell-type.pdf Graphic file (type pdf)
 <use Figure+Table/The-cell-type.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 194.
+(caption)                particular \caption on input line 195.
 See the caption package documentation for explanation.
 
 [3] [4]
@@ -1346,23 +1346,23 @@ File: Figure+Table/KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 247.
+(caption)                particular \caption on input line 248.
 See the caption package documentation for explanation.
 
 File: Figure+Table/GSEA-plot-of-the-pathways.pdf Graphic file (type pdf)
 <use Figure+Table/GSEA-plot-of-the-pathways.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 257.
+(caption)                particular \caption on input line 258.
 See the caption package documentation for explanation.
 
 [5]
-File: pathview2023-12-05_11_50_32.043774/hsa04060.pathview.png Graphic file (ty
+File: pathview2023-12-06_14_25_28.762807/hsa04060.pathview.png Graphic file (ty
 pe bmp)
-<pathview2023-12-05_11_50_32.043774/hsa04060.pathview.png>
+<pathview2023-12-06_14_25_28.762807/hsa04060.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 267.
+(caption)                particular \caption on input line 268.
 See the caption package documentation for explanation.
 
 [6]
@@ -1370,17 +1370,33 @@ File: Figure+Table/Overall-communication-count.pdf Graphic file (type pdf)
 <use Figure+Table/Overall-communication-count.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 280.
+(caption)                particular \caption on input line 281.
 See the caption package documentation for explanation.
 
-[7] [8] [9] [10] (./output.aux) ) 
+[7] [8] [9]
+File: Figure+Table/S-Heatmap-show-the-reference-genes.pdf Graphic file (type pd
+f)
+<use Figure+Table/S-Heatmap-show-the-reference-genes.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 380.
+See the caption package documentation for explanation.
+
+File: Figure+Table/S-The-Treg-cells.pdf Graphic file (type pdf)
+<use Figure+Table/S-The-Treg-cells.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 392.
+See the caption package documentation for explanation.
+
+[10] [11] [12] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31479 strings out of 476191
- 640318 string characters out of 5812072
- 1096310 words of memory out of 5000000
- 51686 multiletter control sequences out of 15000+600000
+ 31508 strings out of 476191
+ 641432 string characters out of 5812072
+ 1096767 words of memory out of 5000000
+ 51713 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1003b,570s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (12 pages).
+Output written on output.pdf (14 pages).

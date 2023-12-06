@@ -64,6 +64,8 @@ set_index()
 - Treg 的差异基因和下游靶点的筛选可参考 Tab. \@ref(tab:Interaction-of-pathways)、Tab. \@ref(tab:Interaction-of-ligand-and-receptor)  (细胞通讯角度) 
 - 或者参考通路富集筛选差异基因和下游靶点 \@ref(enrich)
 
+- **Normal Treg vs RCC Treg 差异表达基因见** Tab. \@ref(tab:RCC-and-Normal-DEGs-of-the-contrasts)
+
 # 材料和方法 {#methods}
 
 ## 材料
@@ -105,6 +107,7 @@ autor(sr.t1@plots$step3$p.umap)
 ```
 
 ```{r}
+
 sr.t1 <- job_seurat("./GSE210038/GSM6415686_T1_raw_counts")
 sr.t1 <- step1(sr.t1)
 sr.t1@plots$step1$p.qc
@@ -120,7 +123,7 @@ NULL
 
 ```
 
-## 鉴定 Treg 细胞
+### 鉴定 Treg 细胞 {#t1-treg}
 
 根据文献[@SingleCellSeqKrishn2021]，使用 FOXP3, BATF, CTLA4, TIGIT" 作为 marker 鉴定 Treg 细胞。
 
@@ -194,6 +197,7 @@ ge@tables$step1$table_kegg
 ge <- step2(ge, c("hsa04060", "hsa04659", "hsa04660", "hsa04658"))
 ge <- step3(ge, "hsa04060")
 ge@plots$step3$p.pathviews$hsa04060
+clear(ge)
 
 ge@plots$step2$p.code
 t.treg
@@ -221,15 +225,110 @@ cc <- asjob_cellchat(sr.t1, "cell_type")
 cc <- step1(cc)
 cc@tables$step1$lp_net
 cc@plots$step1$p.aggre_count
+clear(cc)
 
 t.path <- select_pathway(cc, "Treg", "path")
 t.lp <- select_pathway(cc, "Treg", "lp")
 
+save(p.hp, file = "test.rds")
+```
+
+# 补充：Normal 组织和 RCC 组织的 Treg 细胞比对
+
+## 以 Seurat 集成处理 Normal 和 RCC 组织 单细胞数据
+
+使用的数据集来自于样本 GSM6415686、GSM6415694。
+
+```{r}
+srn <- job_seuratn(c("./GSE210038/GSM6415686_T1_raw_counts", "./GSE210038/GSM6415694_N2_raw_counts"))
+srn <- step1(srn, 0, 5000, 20)
+srn <- step2(srn, 5)
+srn@plots$step2$p.pca_rank
+srn <- step3(srn, 1:15, 1.2)
+srn@plots$step3$p.umap
+srn@step <- 4L
+srn <- step5(srn, 5)
+srn <- step6(srn, "Kidney")
+srn@plots$step6$p.map_scsa
+
+```
+
+### Marker 基因
+
+根据文献[@SingleCellSeqKrishn2021]，使用 FOXP3, BATF, CTLA4, TIGIT" 作为 marker 鉴定 Treg 细胞。
+
+以下，仅图示基因为高变基因 (Variable feautre) 。鉴定 cluster 6 为 Treg 细胞群 (\@ref(t1-treg) 的 Treg 细胞同属于这个细胞聚类团)。
+
+```{r eval = T, echo = F, results = "asis"}
+#| S-Heatmap-show-the-reference-genes
+autor(p.hp.srn)
+```
+
+随后，细胞类型注释为：
+
+```{r eval = T, echo = F, results = "asis"}
+#| S-The-Treg-cells
+autor(p.isTreg)
+```
+
+```{r}
+
+clear(srn)
+srn <- readRDS("./srn.6.rds")
+fun_treg(srn)
+
+fun <- function() {
+  x1 <- filter(as_tibble(sr.t1@object@meta.data), seurat_clusters == "6")$rownames
+  x2 <- filter(as_tibble(srn@object@meta.data), seurat_clusters == "6")$rownames
+  x2 <- x2[ grpl(x2, "_1$") ]
+  x2 <- gs(x2, "_1", "")
+  table(x1 %in% x2)
+}
+fun()
+
+srn <- mutate(srn, cell_type = ifelse(seurat_clusters == "6", "Treg cell", as.character(scsa_cell)),
+  cell_type = ifelse(grpl(colnames(srn@object), "_2$"),
+    paste0(cell_type, "_Normal"), paste0(cell_type, "_RCC")),
+  cell_type = as.factor(cell_type),
+  isTreg = as.factor(ifelse(grpl(cell_type, "Treg"), as.character(cell_type), "Other cells"))
+)
+
+p.isTreg <- vis(srn, "isTreg")
+p.isTreg
+
+marker.treg <- c("BATF", "CTLA4", "TIGIT", "FOXP3")
+p.hp.srn <- map(srn, marker.treg)
+p.hp.srn
+
+```
+
+### 差异表达
+
+```{r eval = T, echo = F, results = "asis"}
+#| RCC-and-Normal-DEGs-of-the-contrasts
+autor(srn@params$contrasts)
+```
+
+```{r}
+clear(srn)
+
+sig(srn) <- "RCC-and-Normal"
+srn <- diff(srn, "isTreg", list(c("Treg cell_RCC", "Treg cell_Normal")))
+ids(srn, "isTreg")
+
+srn@params$contrasts
+```
+
+```{r}
+gse.int <- asjob_gsea(srn)
+gse.int <- step1(gse.int)
 ```
 
 ```{r}
 save_small()
 load("./small.rdata")
 sr.t1 <- readRDS("./sr.t1.6.rds")
+cc <- readRDS("./cc.1.rds")
+srn <- readRDS("./srn.6.rds")
 ```
 

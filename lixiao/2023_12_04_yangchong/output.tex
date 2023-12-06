@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge ccRCC 单细胞数据的
 Treg 细胞差异表达基因} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-12-05}}
+\textbf{\textcolor{white}{2023-12-06}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -107,13 +107,14 @@ Treg 细胞差异表达基因} \vspace{4em}
 \section{摘要}\label{abstract}}
 
 \begin{itemize}
-\tightlist
 \item
   ccRCC Treg 细胞的差异表达基因见 Tab. \ref{tab:Treg-DEGs}
 \item
   Treg 的差异基因和下游靶点的筛选可参考 Tab. \ref{tab:Interaction-of-pathways}、Tab. \ref{tab:Interaction-of-ligand-and-receptor} (细胞通讯角度)
 \item
   或者参考通路富集筛选差异基因和下游靶点 \ref{enrich}
+\item
+  \textbf{Normal Treg vs RCC Treg 差异表达基因见} Tab. \ref{tab:RCC-and-Normal-DEGs-of-the-contrasts}
 \end{itemize}
 
 \hypertarget{methods}{%
@@ -165,8 +166,8 @@ Figure \ref{fig:UMAP-Clustering} (下方图) 为图UMAP Clustering概览。
 \caption{UMAP Clustering}\label{fig:UMAP-Clustering}
 \end{center}
 
-\hypertarget{ux9274ux5b9a-treg-ux7ec6ux80de}{%
-\subsection{鉴定 Treg 细胞}\label{ux9274ux5b9a-treg-ux7ec6ux80de}}
+\hypertarget{t1-treg}{%
+\subsubsection{鉴定 Treg 细胞}\label{t1-treg}}
 
 根据文献\textsuperscript{\protect\hyperlink{ref-SingleCellSeqKrishn2021}{6}}，使用 FOXP3, BATF, CTLA4, TIGIT" 作为 marker 鉴定 Treg 细胞。
 
@@ -263,7 +264,7 @@ Figure \ref{fig:view-pathway-of-hsa04060} (下方图) 为图view pathway of hsa0
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{pathview2023-12-05_11_50_32.043774/hsa04060.pathview.png}
+\includegraphics[width = 0.9\linewidth]{pathview2023-12-06_14_25_28.762807/hsa04060.pathview.png}
 \caption{View pathway of hsa04060}\label{fig:view-pathway-of-hsa04060}
 \end{center}
 
@@ -351,6 +352,83 @@ Treg \ldots{} & B cell & MIF & CD74\_\ldots{} & 0.004\ldots{} & 0 & MIF\_C\ldots
 Treg \ldots{} & CD8+ \ldots{} & MIF & CD74\_\ldots{} & 0.007\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
 Treg \ldots{} & Macro\ldots{} & MIF & CD74\_\ldots{} & 0.016\ldots{} & 0 & MIF\_C\ldots{} & MIF -\ldots{} & MIF & Secre\ldots{}\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux8865ux5145normal-ux7ec4ux7ec7ux548c-rcc-ux7ec4ux7ec7ux7684-treg-ux7ec6ux80deux6bd4ux5bf9}{%
+\section{补充：Normal 组织和 RCC 组织的 Treg 细胞比对}\label{ux8865ux5145normal-ux7ec4ux7ec7ux548c-rcc-ux7ec4ux7ec7ux7684-treg-ux7ec6ux80deux6bd4ux5bf9}}
+
+\hypertarget{ux4ee5-seurat-ux96c6ux6210ux5904ux7406-normal-ux548c-rcc-ux7ec4ux7ec7-ux5355ux7ec6ux80deux6570ux636e}{%
+\subsection{以 Seurat 集成处理 Normal 和 RCC 组织 单细胞数据}\label{ux4ee5-seurat-ux96c6ux6210ux5904ux7406-normal-ux548c-rcc-ux7ec4ux7ec7-ux5355ux7ec6ux80deux6570ux636e}}
+
+使用的数据集来自于样本 GSM6415686、GSM6415694。
+
+\hypertarget{marker-ux57faux56e0}{%
+\subsubsection{Marker 基因}\label{marker-ux57faux56e0}}
+
+根据文献\textsuperscript{\protect\hyperlink{ref-SingleCellSeqKrishn2021}{6}}，使用 FOXP3, BATF, CTLA4, TIGIT" 作为 marker 鉴定 Treg 细胞。
+
+以下，仅图示基因为高变基因 (Variable feautre) 。鉴定 cluster 6 为 Treg 细胞群 (\ref{t1-treg} 的 Treg 细胞同属于这个细胞聚类团)。
+
+Figure \ref{fig:S-Heatmap-show-the-reference-genes} (下方图) 为图S Heatmap show the reference genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/S-Heatmap-show-the-reference-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/S-Heatmap-show-the-reference-genes.pdf}
+\caption{S Heatmap show the reference genes}\label{fig:S-Heatmap-show-the-reference-genes}
+\end{center}
+
+随后，细胞类型注释为：
+
+Figure \ref{fig:S-The-Treg-cells} (下方图) 为图S The Treg cells概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/S-The-Treg-cells.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/S-The-Treg-cells.pdf}
+\caption{S The Treg cells}\label{fig:S-The-Treg-cells}
+\end{center}
+
+\hypertarget{ux5deeux5f02ux8868ux8fbe}{%
+\subsubsection{差异表达}\label{ux5deeux5f02ux8868ux8fbe}}
+
+Table \ref{tab:RCC-and-Normal-DEGs-of-the-contrasts} (下方表格) 为表格RCC and Normal DEGs of the contrasts概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RCC-and-Normal-DEGs-of-the-contrasts.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有704行7列，以下预览的表格可能省略部分数据；表格含有1个唯一`contrast'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:RCC-and-Normal-DEGs-of-the-contrasts}RCC and Normal DEGs of the contrasts}\tabularnewline
+\toprule
+contrast & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+contrast & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & gene\tabularnewline
+\midrule
+\endhead
+Treg \ldots{} & 9.236\ldots{} & -1.12\ldots{} & 0.512 & 0.027 & 2.770\ldots{} & ITGAX\tabularnewline
+Treg \ldots{} & 3.286\ldots{} & -4.47\ldots{} & 0.234 & 0.036 & 9.860\ldots{} & CHML\tabularnewline
+Treg \ldots{} & 8.063\ldots{} & -2.89\ldots{} & 0.867 & 0.062 & 2.418\ldots{} & AURKA\tabularnewline
+Treg \ldots{} & 1.414\ldots{} & 7.436\ldots{} & 0.178 & 0.027 & 4.244\ldots{} & ZBTB37\tabularnewline
+Treg \ldots{} & 1.000\ldots{} & -2.33\ldots{} & 0.739 & 0.089 & 3.001\ldots{} & PDK1\tabularnewline
+Treg \ldots{} & 4.158\ldots{} & -4.69\ldots{} & 0.596 & 0.062 & 1.247\ldots{} & ARHGAP10\tabularnewline
+Treg \ldots{} & 1.966\ldots{} & 3.428\ldots{} & 0.112 & 0.062 & 5.898\ldots{} & CCDC14\tabularnewline
+Treg \ldots{} & 7.855\ldots{} & -1.47\ldots{} & 0.82 & 0.027 & 2.356\ldots{} & MKI67\tabularnewline
+Treg \ldots{} & 1.038\ldots{} & -4.16\ldots{} & 0.258 & 0.054 & 3.116\ldots{} & ENC1\tabularnewline
+Treg \ldots{} & 4.089\ldots{} & -6.47\ldots{} & 0.519 & 0.098 & 1.226\ldots{} & AOAH\tabularnewline
+Treg \ldots{} & 3.070\ldots{} & 0.532\ldots{} & 0.157 & 0.027 & 9.212\ldots{} & TMIGD2\tabularnewline
+Treg \ldots{} & 4.034\ldots{} & -8.29\ldots{} & 0.829 & 0.134 & 1.210\ldots{} & ERCC5\tabularnewline
+Treg \ldots{} & 1.316\ldots{} & 17.34\ldots{} & 0.144 & 0 & 3.949\ldots{} & HBB\tabularnewline
+Treg \ldots{} & 5.742\ldots{} & -2.05\ldots{} & 0.872 & 0.089 & 1.722\ldots{} & GPR18\tabularnewline
+Treg \ldots{} & 1.017\ldots{} & 4.533\ldots{} & 0.034 & 0.188 & 3.053\ldots{} & CAPS\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
 

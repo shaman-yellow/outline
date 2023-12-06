@@ -189,6 +189,8 @@ lm.np@plots$step2$p.valcano[[1]]
 
 ## SCI 和 NP 关联分析
 
+### 共同差异基因 coDEGs
+
 ```{r}
 degs <- list(
   SCI_DEGs = lm.sci@tables$step2$tops[[1]]$rownames,
@@ -198,7 +200,27 @@ degs.ins <- ins(lst = degs)
 p.venn <- new_venn(lst = degs)
 ```
 
+### SCI 的 coDEGs 的关联性分析
+
 ```{r}
 cp.sci <- cal_corp(lm.sci, NULL, degs.ins, degs.ins, use = "rownames")
+cp.sci$hp
 ```
 
+### NP 的 coDEGs 的关联性分析
+
+```{r}
+cp.np <- cal_corp(lm.np, NULL, degs.ins, degs.ins, use = "symbol")
+cp.np$hp
+```
+
+### SCI 和 NP 共同显著关联的基因集 sig-coDEGs
+
+
+
+```{r}
+space()
+save_small()
+
+load("./small.rdata")
+```
