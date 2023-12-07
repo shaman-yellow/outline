@@ -214,9 +214,21 @@ cp.np <- cal_corp(lm.np, NULL, degs.ins, degs.ins, use = "symbol")
 cp.np$hp
 ```
 
-### SCI 和 NP 共同显著关联的基因集 sig-coDEGs
+### SCI 和 NP 数据集共同显著关联的基因集 sig-coDEGs
 
-
+```{r}
+fun <- function(...) {
+  lst <- lapply(list(...),
+    function(x) {
+      dplyr::filter(x, From != To)
+  })
+  res <- lst[[1]]
+  for (i in 2:length(lst)) {
+    res <- dplyr::filter(res) 
+  }
+}
+fun(cp.sci$sig.corp, cp.np$sig.corp)
+```
 
 ```{r}
 space()

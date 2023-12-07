@@ -62,7 +62,7 @@ set_index()
 
 补肾健脾汤网络药理学 (党参9 g、白术12 g、茯苓12 g、甘草6 g、山药12 g、泽泻9 g、地黄12 g、山茱萸9 g、牡丹皮9 g、黄芪12 g，补骨脂9 g，杜仲9 g)，绘制药方-草药-主要活性成分-靶点图。
 
-结果见 Fig. \@ref(fig:Herbs-compounds-and-targets)
+结果见 Fig. \@ref(fig:Herbs-compounds-and-targets-Network)
 
 # 材料和方法 {#methods}
 
@@ -112,6 +112,11 @@ autor(hb@params$easyRead)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets-Network
+autor(p.ph)
+```
+
+```{r eval = T, echo = F, results = "asis"}
 #| Herbs-compounds-and-targets
 autor("./Figure+Table/Herbs-compounds-and-targets.png")
 ```
@@ -124,6 +129,12 @@ wrap(p.allu, 15, 12)
 p.allu
 
 pdf_convert("./Figure+Table/Herbs-compounds-and-targets.pdf", filenames = "./Figure+Table/Herbs-compounds-and-targets.png", dpi = 300)
+
+save.image()
 ```
 
+```{r}
+p.ph <- plot_network.pharm(data.allu)
+# grid, circle
+```
 

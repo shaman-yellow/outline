@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  6 DEC 2023 13:44
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  7 DEC 2023 11:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1360,21 +1360,29 @@ See the caption package documentation for explanation.
 Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
 ex-text;!
 [3]
-File: ./Figure+Table/Herbs-compounds-and-targets.png Graphic file (type bmp)
-<./Figure+Table/Herbs-compounds-and-targets.png>
+File: Figure+Table/Herbs-compounds-and-targets-Network.pdf Graphic file (type p
+df)
+<use Figure+Table/Herbs-compounds-and-targets-Network.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 271.
 See the caption package documentation for explanation.
 
-[4] (./output.aux) ) 
+File: ./Figure+Table/Herbs-compounds-and-targets.png Graphic file (type bmp)
+<./Figure+Table/Herbs-compounds-and-targets.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 281.
+See the caption package documentation for explanation.
+
+[4] [5] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31431 strings out of 476191
- 638336 string characters out of 5812072
- 1089989 words of memory out of 5000000
- 51643 multiletter control sequences out of 15000+600000
+ 31440 strings out of 476191
+ 638831 string characters out of 5812072
+ 1090047 words of memory out of 5000000
+ 51651 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1003b,568s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (6 pages).
+Output written on output.pdf (7 pages).

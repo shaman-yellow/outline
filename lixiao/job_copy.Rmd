@@ -5,6 +5,8 @@
 
 ```{r}
 all <- get_orders()
+print(all, n = Inf)
+
 filter(all, is.na(coef))
 ```
 
