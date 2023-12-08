@@ -1,0 +1,325 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge title} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2023-12-08}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+质子磁共振光谱法 (H-MRS)
+加巴喷丁 (Gabapentin)
+
+不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI)
+- GSE226238
+
+神经病理性疼痛 (neuropathic pain, NP)
+- GSE126611
+
+重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS)
+- Transcriptional changes in the (rat) brain induced by repetitive transcranial magnetic stimulation
+- GSE230150
+- GSE206765 (16s)
+
+GEO 有 iSCI、NP、rTMS 各自的基因表达数据集，可以从三者之间的关联性寻找 rTMS 可能的疗效和机制
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+All used GEO expression data and their design:
+
+\begin{itemize}
+\item
+  \textbf{GSE126611}: We investigated n=14 samples, no replicates, comparison between two patient groups, and patient group with healthy controls. (NL-1) is with nerve lesion and (NL-0) is without neuropathic pain.
+\item
+  \textbf{GSE226238}: RNAsequencing from whole blood taken from participants with SCI within 3 days of injury, at 3 MPI, 6 MPI and 12 MPI. Data was compared to un-injured participants as controls. Inclusion and exclusio\ldots{}
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition .
+\item
+  Limma and edgeR used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{1},\protect\hyperlink{ref-EdgerDifferenChen}{2}}
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24-incomplete-spinal-cord-injury-isci}{%
+\subsection{不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI)}\label{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24-incomplete-spinal-cord-injury-isci}}
+
+\hypertarget{ux5143ux6570ux636e}{%
+\subsubsection{元数据}\label{ux5143ux6570ux636e}}
+
+\begin{itemize}
+\tightlist
+\item
+  GSE226238
+\end{itemize}
+
+根据文献提供的数据整理信息\textsuperscript{{\textbf{???}}}：
+
+Complete: AIS A-B
+Incomplete: AIS C-D
+
+使用的样本的信息：
+
+Table \ref{tab:SCI-used-sample-metadata} (下方表格) 为表格SCI used sample metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCI-used-sample-metadata.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有19行12列，以下预览的表格可能省略部分数据；表格含有19个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:SCI-used-sample-metadata}SCI used sample metadata}\tabularnewline
+\toprule
+sample & rownames & title & group\ldots{} & tissu\ldots{} & treat\ldots{} & group & id & status & AIS\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sample & rownames & title & group\ldots{} & tissu\ldots{} & treat\ldots{} & group & id & status & AIS\tabularnewline
+\midrule
+\endhead
+ID13 & GSM70\ldots{} & ID13,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID16 & GSM70\ldots{} & ID16,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID14 & GSM70\ldots{} & ID14,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID15 & GSM70\ldots{} & ID15,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID17 & GSM70\ldots{} & ID17,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID1V0 & GSM70\ldots{} & ID1v0\ldots{} & SCI & Whole\ldots{} & Acute & sci & 1 & 0 & D\tabularnewline
+ID18 & GSM70\ldots{} & ID18,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID19 & GSM70\ldots{} & ID19,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID1V12 & GSM70\ldots{} & ID1v1\ldots{} & SCI & Whole\ldots{} & 12mpi & sci & 1 & 12 & D\tabularnewline
+ID20 & GSM70\ldots{} & ID20,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID1V3 & GSM70\ldots{} & ID1v3\ldots{} & SCI & Whole\ldots{} & 3mpi & sci & 1 & 3 & D\tabularnewline
+ID1V6 & GSM70\ldots{} & ID1v6\ldots{} & SCI & Whole\ldots{} & 6mpi & sci & 1 & 6 & D\tabularnewline
+ID21 & GSM70\ldots{} & ID21,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID2V3 & GSM70\ldots{} & ID2v3\ldots{} & SCI & Whole\ldots{} & 3mpi & sci & 2 & 3 & D\tabularnewline
+ID2V0 & GSM70\ldots{} & ID2v0\ldots{} & SCI & Whole\ldots{} & Acute & sci & 2 & 0 & D\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+\hypertarget{ux795eux7ecfux75c5ux7406ux6027ux75bcux75db-neuropathic-pain-np}{%
+\subsection{神经病理性疼痛 (neuropathic pain, NP)}\label{ux795eux7ecfux75c5ux7406ux6027ux75bcux75db-neuropathic-pain-np}}
+
+\hypertarget{ux5143ux6570ux636e-1}{%
+\subsubsection{元数据}\label{ux5143ux6570ux636e-1}}
+
+Table \ref{tab:NP-metadata} (下方表格) 为表格NP metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/NP-metadata.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有14行7列，以下预览的表格可能省略部分数据；表格含有14个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:NP-metadata}NP metadata}\tabularnewline
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & title & tissu\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm\ldots. & sample & title & tissu\ldots{}\tabularnewline
+\midrule
+\endhead
+Contr\ldots{} & Control & 37694\ldots{} & 0.993\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
+Contr\ldots{} & Control & 35123\ldots{} & 0.984\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
+Contr\ldots{} & Control & 40623\ldots{} & 1.038\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
+Contr\ldots{} & Control & 31254\ldots{} & 0.900\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
+Contr\ldots{} & Control & 36785\ldots{} & 1.092\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
+NL.0\_\ldots{} & NL.0 & 39063\ldots{} & 0.998\ldots{} & NL.0\_\ldots{} & NL-0\_\ldots{} & white\ldots{}\tabularnewline
+NL.0\_\ldots{} & NL.0 & 30209\ldots{} & 0.838\ldots{} & NL.0\_\ldots{} & NL-0\_\ldots{} & white\ldots{}\tabularnewline
+NL.0\_\ldots{} & NL.0 & 33541\ldots{} & 0.873\ldots{} & NL.0\_\ldots{} & NL-0\_\ldots{} & white\ldots{}\tabularnewline
+NL.0\_\ldots{} & NL.0 & 43997\ldots{} & 1.105\ldots{} & NL.0\_\ldots{} & NL-0\_\ldots{} & white\ldots{}\tabularnewline
+NL.1\_\ldots{} & NL.1 & 35856\ldots{} & 0.947\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
+NL.1\_\ldots{} & NL.1 & 47176\ldots{} & 1.217\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
+NL.1\_\ldots{} & NL.1 & 33852\ldots{} & 0.947\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
+NL.1\_\ldots{} & NL.1 & 37527\ldots{} & 0.991\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
+NL.1\_\ldots{} & NL.1 & 45702\ldots{} & 1.142\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5deeux5f02ux5206ux6790-1}{%
+\subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790-1}}
+
+\hypertarget{sci-ux548c-np-ux5173ux8054ux5206ux6790}{%
+\subsection{SCI 和 NP 关联分析}\label{sci-ux548c-np-ux5173ux8054ux5206ux6790}}
+
+\hypertarget{ux5171ux540cux5deeux5f02ux57faux56e0-codegs}{%
+\subsubsection{共同差异基因 coDEGs}\label{ux5171ux540cux5deeux5f02ux57faux56e0-codegs}}
+
+Figure \ref{fig:SCI-NP-coDEGs} (下方图) 为图SCI NP coDEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCI-NP-coDEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCI-NP-coDEGs.pdf}
+\caption{SCI NP coDEGs}\label{fig:SCI-NP-coDEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    PDE4A, ADA, LIMS1, FLYWCH2, LDLR, GOLGA8N, NUDT2,
+CNTLN, CTSS, KNOP1, PRF1, MAP3K7CL, CLDN5, SHISA8, CMC1,
+SLAMF8, ELOVL7, AIFM3, GNGT2, PPT1, DAPP1, AOC1, PSMC1,
+PF4, CBLN3, LPAR6, CPM, EGF, SH3PXD2A, SH3YL1, ATF3, PTCRA,
+SMIM1, EVI2A
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCI-NP-coDEGs-content})}
+
+\hypertarget{sci-ux7684-codegs-ux7684ux5173ux8054ux6027ux5206ux6790}{%
+\subsubsection{SCI 的 coDEGs 的关联性分析}\label{sci-ux7684-codegs-ux7684ux5173ux8054ux6027ux5206ux6790}}
+
+\hypertarget{np-ux7684-codegs-ux7684ux5173ux8054ux6027ux5206ux6790}{%
+\subsubsection{NP 的 coDEGs 的关联性分析}\label{np-ux7684-codegs-ux7684ux5173ux8054ux6027ux5206ux6790}}
+
+\hypertarget{sci-ux548c-np-ux6570ux636eux96c6ux5171ux540cux663eux8457ux5173ux8054ux7684ux57faux56e0ux96c6-sig-codegs}{%
+\subsubsection{SCI 和 NP 数据集共同显著关联的基因集 sig-coDEGs}\label{sci-ux548c-np-ux6570ux636eux96c6ux5171ux540cux663eux8457ux5173ux8054ux7684ux57faux56e0ux96c6-sig-codegs}}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+1. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+2. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+\end{cslreferences}
+
+\end{document}

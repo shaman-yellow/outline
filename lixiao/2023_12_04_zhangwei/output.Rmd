@@ -1,5 +1,38 @@
 ---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
 ---
+
 
 ```{r include = F}
 deparse_mail()
@@ -65,7 +98,7 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
-## 不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) (Human)
+## 不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) 
 
 ### 元数据
 
@@ -146,7 +179,7 @@ clear(lm.sci)
 ```
 
 
-## 神经病理性疼痛 (neuropathic pain, NP) (Human)
+## 神经病理性疼痛 (neuropathic pain, NP) 
 
 ### 元数据
 
@@ -209,26 +242,16 @@ p.venn
 
 ### SCI 的 coDEGs 的关联性分析
 
-```{r eval = T, echo = F, results = "asis"}
-#| SCI-genes-correlation-heatmap
-autor(wrap(cp.sci$hp, 10))
-```
-
 ```{r}
 cp.sci <- cal_corp(lm.sci, NULL, degs.ins, degs.ins, use = "rownames")
-wrap(cp.sci$hp, 10)
+cp.sci$hp
 ```
 
 ### NP 的 coDEGs 的关联性分析
 
-```{r eval = T, echo = F, results = "asis"}
-#| NP-genes-correlation-heatmap
-autor(wrap(cp.np$hp, 10))
-```
-
 ```{r}
 cp.np <- cal_corp(lm.np, NULL, degs.ins, degs.ins, use = "symbol")
-wrap(cp.np$hp, 10)
+cp.np$hp
 ```
 
 ### SCI 和 NP 数据集共同显著关联的基因集 sig-coDEGs
@@ -241,47 +264,13 @@ fun <- function(...) {
   })
   tbmerge(lst[[1]], lst[[2]], by = c("From", "To"))
 }
-sig.coDegs <- fun(cp.sci$sig.corp, cp.np$sig.corp)
-sig.coDegs <- unique(unlist(dplyr::select(sig.coDegs, 1:2)))
-sig.coDegs
-
+fun(cp.sci$sig.corp, cp.np$sig.corp)
 ```
-
-## 重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS) (Rat)
-
-```{r}
-go.rtms <- job_geo("GSE230149")
-go.rtms <- step1(go.rtms)
-
-go.rtms@params$guess
-
-metadata <- filter(go.rtms@params$guess, grpl(age.ch1, "."))
-metadata <- dplyr::mutate(metadata, group = gs(title, "[^_]*_([^_]+)_.*", "\\1"),
-  group = paste0(stringr::str_extract(title, "^[A-Z]+"),
-    ".", substr(tissue.region.ch1, 1, 1),
-    ".", group))
-metadata <- dplyr::relocate(metadata, sample = rownames, group)
-
-```
-
-```{r}
-
-lm.rtms <- asjob_limma(go.rtms, metadata, normed = T)
-lm.rtms <- step1(lm.rtms)
-lm.rtms <- step2(lm.rtms,
-  AU.H.iTBS - AU.H.Sham, AU.P.iTBS - AU.P.iTBS,
-  AI.H.iTBS - AI.H.Sham, AI.P.iTBS - AI.P.iTBS,
-  use = "P")
-
-lm.rtms@plots$step2$p.valcano[[1]]
-
-toupper(lm.rtms@tables$step2$tops[[1]][[1]]) %in% sig.coDegs
-```
-
 
 ```{r}
 space()
-save_small(100)
+save_small()
 
 load("./small.rdata")
 ```
+

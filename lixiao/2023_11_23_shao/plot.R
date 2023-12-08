@@ -35,8 +35,8 @@ nodes <- relocate(nodes, name)
 graph <- fast_layout(edges, select(nodes, x, y), nodes = select(nodes, -x, -y))
 
 p <- ggraph(graph) +
-  geom_edge_bend(aes(x = x, y = y, width = abs(log2fc)),
-    color = "grey92", strength = .3) +
+  geom_edge_diagonal(aes(x = x, y = y, width = abs(log2fc)),
+    color = "grey92", strength = 1, flipped = T) +
   geom_node_label(
     data = filter(nodes, type == "Symbol"),
     aes(label = name, x = x, y = y, fill = log2fc),
@@ -60,4 +60,21 @@ p <- ggraph(graph) +
 p <- wrap(p, 8, 7)
 
 autosv(p, "enrichment")
+
+ge <- readRDS("~/disk_sdb1/2023_09_27_dualdisease/gse.3.rds")
+
+fun <- function(data) {
+  split_lapply_rbind(data, ~ ID,
+    function(x) {
+      symbol <- x$geneName_list[[ 1 ]]
+      x <- dplyr::select(x, -dplyr::contains("_list"))
+      x <- dplyr::slice(x, rep(1, length(!!symbol)))
+      x <- dplyr::mutate(x, Symbol = !!symbol)
+      return(x)
+    })
+}
+
+names(ge@object) <- c("symbol", "entrezgene_id")
+
+plot_highlight_enrich(ge@tables$step1$table_kegg, "hsa03010", object(ge)$symbol)
 
