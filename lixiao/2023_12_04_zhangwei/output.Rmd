@@ -51,7 +51,7 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-set_cover("title")
+set_cover(info$title)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -70,9 +70,7 @@ set_index()
 - GSE126611
 
 重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS)
-- Transcriptional changes in the (rat) brain induced by repetitive transcranial magnetic stimulation
 - GSE230150
-- GSE206765 (16s)
 
 GEO 有 iSCI、NP、rTMS 各自的基因表达数据集，可以从三者之间的关联性寻找 rTMS 可能的疗效和机制
 
@@ -94,11 +92,19 @@ auto_method()
 
 # 分析结果 {#results}
 
+## 不完全性脊髓损伤和神经病理性疼痛 (SCI) (NP)
+
+## SCI 和 NP 关联分析
+
+## 重复经颅磁刺激治疗 (rTMS) 
+
+## rTMS 和 SCI、NP 的关联
+
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
 
-## 不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) 
+## 不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) (Human)
 
 ### 元数据
 
@@ -169,17 +175,28 @@ print(metadata, n = Inf)
 
 ### 差异分析
 
+```{r eval = T, echo = F, results = "asis"}
+#| SCI-data-DEGs
+autor(lm.sci@tables$step2$tops[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SCI-sci-vs-control-DEGs
+autor(lm.sci@plots$step2$p.valcano[[1]])
+```
+
 ```{r}
 lm.sci <- job_limma_normed(data, metadata)
 lm.sci <- step1(lm.sci, lm.sci$metadata$group, no.filter = T, no.norm = T)
 lm.sci <- step2(lm.sci, sci - control)
 lm.sci@tables$step2$tops
+lm.sci@plots$step2$p.valcano[[1]]
 clear(lm.sci)
 
 ```
 
 
-## 神经病理性疼痛 (neuropathic pain, NP) 
+## 神经病理性疼痛 (neuropathic pain, NP) (Human)
 
 ### 元数据
 
@@ -208,6 +225,16 @@ data <- relocate(data, symbol)
 ```
 
 ### 差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| NP-data-NL-1-vs-Control-DEGs
+autor(lm.np@tables$step2$tops[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| NP-NL-1-vs-Control-DEGs
+autor(lm.np@plots$step2$p.valcano[[1]])
+```
 
 ```{r}
 lm.np <- job_limma(new_dge(metadata, data, genes))
@@ -238,23 +265,44 @@ degs.ins <- ins(lst = degs)
 
 p.venn <- new_venn(lst = degs)
 p.venn
+
 ```
 
 ### SCI 的 coDEGs 的关联性分析
 
+```{r eval = T, echo = F, results = "asis"}
+#| SCI-genes-correlation-heatmap
+autor(wrap(cp.sci$hp, 10))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SCI-data-significant-genes-of-correlation
+autor(cp.sci$sig.corp)
+```
+
 ```{r}
 cp.sci <- cal_corp(lm.sci, NULL, degs.ins, degs.ins, use = "rownames")
-cp.sci$hp
+wrap(cp.sci$hp, 10)
 ```
 
 ### NP 的 coDEGs 的关联性分析
 
-```{r}
-cp.np <- cal_corp(lm.np, NULL, degs.ins, degs.ins, use = "symbol")
-cp.np$hp
+```{r eval = T, echo = F, results = "asis"}
+#| NP-genes-correlation-heatmap
+autor(wrap(cp.np$hp, 10))
 ```
 
-### SCI 和 NP 数据集共同显著关联的基因集 sig-coDEGs
+```{r eval = T, echo = F, results = "asis"}
+#| NP-data-significant-genes-of-correlation
+autor(cp.np$sig.corp)
+```
+
+```{r}
+cp.np <- cal_corp(lm.np, NULL, degs.ins, degs.ins, use = "symbol")
+wrap(cp.np$hp, 10)
+```
+
+### SCI 和 NP 数据集共同显著关联的基因集 sigCoDEGs
 
 ```{r}
 fun <- function(...) {
@@ -264,12 +312,138 @@ fun <- function(...) {
   })
   tbmerge(lst[[1]], lst[[2]], by = c("From", "To"))
 }
-fun(cp.sci$sig.corp, cp.np$sig.corp)
+sig.coDegs <- fun(cp.sci$sig.corp, cp.np$sig.corp)
+sig.coDegs <- unique(unlist(dplyr::select(sig.coDegs, 1:2)))
+sig.coDegs
+
+```
+
+## 重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS) (Rat)
+
+### 元数据
+
+```{r eval = T, echo = F, results = "asis"}
+#| rTMS-used-sample-metadata
+autor(lm.rtms@params$metadata, key = "group")
+```
+
+### 差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| rTMS-All-DEGs-of-contrasts
+autor(lm.rtms@plots$step2$p.contrast_cols)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| rTMS-data-DEGs
+autor(lm.rtms@tables$step2$tops)
 ```
 
 ```{r}
+go.rtms <- job_geo("GSE230149")
+go.rtms <- step1(go.rtms)
+
+go.rtms@params$guess
+
+metadata <- filter(go.rtms@params$guess, grpl(age.ch1, "."))
+metadata <- dplyr::mutate(metadata, group = gs(title, "[^_]*_([^_]+)_.*", "\\1"),
+  group = paste0(stringr::str_extract(title, "^[A-Z]+"),
+    ".", substr(tissue.region.ch1, 1, 1),
+    ".", group))
+metadata <- dplyr::relocate(metadata, sample = rownames, group)
+
+```
+
+```{r}
+lm.rtms <- asjob_limma(go.rtms, metadata, normed = T)
+lm.rtms <- step1(lm.rtms)
+lm.rtms <- step2(lm.rtms,
+  AU.H.iTBS - AU.H.Sham, AU.P.iTBS - AU.P.iTBS,
+  AI.H.iTBS - AI.H.Sham, AI.P.iTBS - AI.P.iTBS,
+  Y.H.iTBS - Y.H.Sham, Y.P.iTBS - Y.P.iTBS,
+  use = "P", label = "rownames")
+
+lm.rtms@tables$step2$tops
+lm.rtms@plots$step2$p.valcano[[1]]
+lm.rtms@plots$step2$p.contrast_cols
+
+```
+
+## rTMS 和 SCI、NP 的关联
+
+### rTMS 数据的差异基因与 sig.coDegs 的关联性
+
+```{r eval = T, echo = F, results = "asis"}
+#| NP-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap
+autor(wrap(tms.np$hp, 20))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| NP-sigCoDEGs-with-rTMS-DEGs-significant-correlation
+autor(tms.np$sig.corp)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SCI-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap
+autor(tms.sci$hp)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SCI-sigCoDEGs-with-rTMS-DEGs-significant-correlation
+autor(tms.sci$sig.corp)
+```
+
+```{r}
+sigInHomo <- lst_clear0(lapply(lm.rtms@tables$step2$tops,
+  function(x) {
+    sig <- toupper(x[[1]])
+    fun <- function(x) {
+      gene <- x@params$normed_data$genes[[1]]
+      gene[gene %in% sig]
+    }
+    gene.sci <- fun(lm.sci)
+    gene.np <- fun(lm.np)
+    lst_clear0(namel(gene.sci, gene.np))
+  }))
+sigInHomo <- lapply(sigInHomo, as_df.lst)
+sigInHomo <- data.table::rbindlist(sigInHomo, idcol = T)
+sigInHomo <- split(as_tibble(sigInHomo), ~type)
+
+tms.np <- cal_corp(lm.np, NULL, sig.coDegs, sigInHomo[[1]]$name, use = "symbol", theme = "sigCoDEGs with rTMS DEGs")
+tms.sci <- cal_corp(lm.sci, NULL, sig.coDegs, sigInHomo[[1]]$name, use = "rownames", theme = "sigCoDEGs with rTMS DEGs")
+```
+
+```{r}
+tms2d <- lapply(list(tms.np, tms.sci),
+  function(x) {
+    unique(unlist(x$sig.corp[, 1:2], use.names = F))
+  })
+
+unlist(tms2d) %>% 
+  .[ !. %in% sig.coDegs ]
+```
+
+### 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| RTMS-SCI-NP-correlated-sci-GO-enrichment
+autor(wrap(en@plots$step1$p.go$sci, 8, 5))
+```
+
+```{r}
+names(tms2d) <- c("np", "sci")
+
+en <- job_enrich(tms2d)
+sig(en) <- "rTMS-SCI-NP-correlated"
+en <- step1(en)
+wrap(en@plots$step1$p.go$sci, 8, 5)
+en@tables$step1$res.go
+```
+
+
+```{r}
 space()
-save_small()
+save_small(100)
 
 load("./small.rdata")
 ```

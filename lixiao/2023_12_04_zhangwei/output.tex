@@ -80,9 +80,10 @@
 
 \begin{titlepage} \newgeometry{top=7.5cm}
 \ThisCenterWallPaper{1.12}{../cover_page.pdf}
-\begin{center} \textbf{\Huge title} \vspace{4em}
+\begin{center} \textbf{\Huge RNA-seq 探究 rTMS 对
+SCI 和 NP 的影响} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-12-08}}
+\textbf{\textcolor{white}{2023-12-11}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -115,9 +116,7 @@
 - GSE126611
 
 重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS)
-- Transcriptional changes in the (rat) brain induced by repetitive transcranial magnetic stimulation
 - GSE230150
-- GSE206765 (16s)
 
 GEO 有 iSCI、NP、rTMS 各自的基因表达数据集，可以从三者之间的关联性寻找 rTMS 可能的疗效和机制
 
@@ -136,6 +135,8 @@ All used GEO expression data and their design:
 \item
   \textbf{GSE126611}: We investigated n=14 samples, no replicates, comparison between two patient groups, and patient group with healthy controls. (NL-1) is with nerve lesion and (NL-0) is without neuropathic pain.
 \item
+  \textbf{GSE230149}: Gene expression microarray analysis of 48 mouse brain samples, consisting of matched sets of hippocampus (HIPP, N=24) and parietal cortex (PCTX, N=24) from young sham (Y\_Sham, N=4), young iTBS (Y\_i\ldots{}
+\item
   \textbf{GSE226238}: RNAsequencing from whole blood taken from participants with SCI within 3 days of injury, at 3 MPI, 6 MPI and 12 MPI. Data was compared to un-injured participants as controls. Inclusion and exclusio\ldots{}
 \end{itemize}
 
@@ -147,9 +148,11 @@ Mainly used method:
 \begin{itemize}
 \tightlist
 \item
+  ClusterProfiler used for gene enrichment analysis.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{1}}
+\item
   GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition .
 \item
-  Limma and edgeR used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{1},\protect\hyperlink{ref-EdgerDifferenChen}{2}}
+  Limma and edgeR used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{2},\protect\hyperlink{ref-EdgerDifferenChen}{3}}
 \item
   Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
@@ -157,14 +160,26 @@ Mainly used method:
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
 
+\hypertarget{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24ux548cux795eux7ecfux75c5ux7406ux6027ux75bcux75db-sci-np}{%
+\subsection{不完全性脊髓损伤和神经病理性疼痛 (SCI) (NP)}\label{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24ux548cux795eux7ecfux75c5ux7406ux6027ux75bcux75db-sci-np}}
+
+\hypertarget{sci-ux548c-np-ux5173ux8054ux5206ux6790}{%
+\subsection{SCI 和 NP 关联分析}\label{sci-ux548c-np-ux5173ux8054ux5206ux6790}}
+
+\hypertarget{ux91cdux590dux7ecfux9885ux78c1ux523aux6fc0ux6cbbux7597-rtms}{%
+\subsection{重复经颅磁刺激治疗 (rTMS)}\label{ux91cdux590dux7ecfux9885ux78c1ux523aux6fc0ux6cbbux7597-rtms}}
+
+\hypertarget{rtms-ux548c-scinp-ux7684ux5173ux8054}{%
+\subsection{rTMS 和 SCI、NP 的关联}\label{rtms-ux548c-scinp-ux7684ux5173ux8054}}
+
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
 
 \hypertarget{workflow}{%
 \section{附：分析流程}\label{workflow}}
 
-\hypertarget{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24-incomplete-spinal-cord-injury-isci}{%
-\subsection{不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI)}\label{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24-incomplete-spinal-cord-injury-isci}}
+\hypertarget{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24-incomplete-spinal-cord-injury-isci-human}{%
+\subsection{不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) (Human)}\label{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24-incomplete-spinal-cord-injury-isci-human}}
 
 \hypertarget{ux5143ux6570ux636e}{%
 \subsubsection{元数据}\label{ux5143ux6570ux636e}}
@@ -175,7 +190,7 @@ Mainly used method:
   GSE226238
 \end{itemize}
 
-根据文献提供的数据整理信息\textsuperscript{{\textbf{???}}}：
+根据文献提供的数据整理信息\textsuperscript{\protect\hyperlink{ref-ProfilingImmunMorris2023}{4}}：
 
 Complete: AIS A-B
 Incomplete: AIS C-D
@@ -188,6 +203,11 @@ Table \ref{tab:SCI-used-sample-metadata} (下方表格) 为表格SCI used sample
 
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有19行12列，以下预览的表格可能省略部分数据；表格含有19个唯一`sample'。
 \end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample: 样品名称
+\item group: 分组名称
+\end{enumerate}\end{tcolorbox}
 \end{center}
 
 \begin{longtable}[]{@{}llllllllll@{}}
@@ -222,8 +242,63 @@ ID2V0 & GSM70\ldots{} & ID2v0\ldots{} & SCI & Whole\ldots{} & Acute & sci & 2 & 
 \hypertarget{ux5deeux5f02ux5206ux6790}{%
 \subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
 
-\hypertarget{ux795eux7ecfux75c5ux7406ux6027ux75bcux75db-neuropathic-pain-np}{%
-\subsection{神经病理性疼痛 (neuropathic pain, NP)}\label{ux795eux7ecfux75c5ux7406ux6027ux75bcux75db-neuropathic-pain-np}}
+Table \ref{tab:SCI-data-DEGs} (下方表格) 为表格SCI data DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCI-data-DEGs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3508行7列，以下预览的表格可能省略部分数据；表格含有3508个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC: estimate of the log2-fold-changescorresponding to the effect or contrasts(for ‘topTableF’ there may be severalscolumns of log-fold-changes)
+\item AveExpr: average log2-expression for the probesover all arrays and channels, same ass‘Amean’ in the ‘MarrayLM’ object
+\item t: moderated t-statistic (omitted fors‘topTableF’)
+\item P.Value: raw p-value
+\item B: log-odds that the gene is differentiallysexpressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:SCI-data-DEGs}SCI data DEGs}\tabularnewline
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P\ldots{} & B\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P\ldots{} & B\tabularnewline
+\midrule
+\endhead
+SLC66A1 & -5.39\ldots{} & -2.85\ldots{} & -22.2\ldots{} & 2.059\ldots{} & 1.472\ldots{} & 24.69\ldots{}\tabularnewline
+CDKN1C & -6.41\ldots{} & -2.34\ldots{} & -18.8\ldots{} & 4.387\ldots{} & 1.146\ldots{} & 22.02\ldots{}\tabularnewline
+PGAM1 & 3.931229 & 4.391\ldots{} & 18.79\ldots{} & 4.812\ldots{} & 1.146\ldots{} & 21.93\ldots{}\tabularnewline
+KLHL26 & -6.30\ldots{} & -2.31\ldots{} & -17.0\ldots{} & 2.823\ldots{} & 5.046\ldots{} & 20.33\ldots{}\tabularnewline
+48 & -5.43\ldots{} & -2.32\ldots{} & -16.3\ldots{} & 6.538\ldots{} & 9.349\ldots{} & 19.56\ldots{}\tabularnewline
+120 & -2.92\ldots{} & 1.653\ldots{} & -15.7\ldots{} & 1.211\ldots{} & 1.313\ldots{} & 18.98\ldots{}\tabularnewline
+DUSP23 & -6.94\ldots{} & -1.69\ldots{} & -15.7\ldots{} & 1.286\ldots{} & 1.313\ldots{} & 18.93\ldots{}\tabularnewline
+HIC1 & -5.41\ldots{} & -2.45\ldots{} & -15.1\ldots{} & 2.686\ldots{} & 2.401\ldots{} & 18.24\ldots{}\tabularnewline
+FAM229A & -5.57\ldots{} & -2.12\ldots{} & -14.6\ldots{} & 4.877\ldots{} & 3.874\ldots{} & 17.68\ldots{}\tabularnewline
+METTL26 & -5.53\ldots{} & -2.19\ldots{} & -13.6\ldots{} & 1.714\ldots{} & 1.225\ldots{} & 16.48\ldots{}\tabularnewline
+CLTB & 5.104\ldots{} & -0.35\ldots{} & 12.86\ldots{} & 4.864\ldots{} & 3.162\ldots{} & 15.48\ldots{}\tabularnewline
+LSP1 & 5.033352 & 3.102\ldots{} & 12.31\ldots{} & 1.052\ldots{} & 6.271\ldots{} & 14.74\ldots{}\tabularnewline
+HADH & -4.96\ldots{} & -2.83\ldots{} & -12.2\ldots{} & 1.153\ldots{} & 6.345\ldots{} & 14.65\ldots{}\tabularnewline
+METTL21A & -4.65\ldots{} & -2.82\ldots{} & -12.1\ldots{} & 1.299\ldots{} & 6.638\ldots{} & 14.53\ldots{}\tabularnewline
+LRRC24 & -4.27\ldots{} & -2.48\ldots{} & -12.0\ldots{} & 1.540\ldots{} & 7.125\ldots{} & 14.37\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:SCI-sci-vs-control-DEGs} (下方图) 为图SCI sci vs control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCI-sci-vs-control-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCI-sci-vs-control-DEGs.pdf}
+\caption{SCI sci vs control DEGs}\label{fig:SCI-sci-vs-control-DEGs}
+\end{center}
+
+\hypertarget{ux795eux7ecfux75c5ux7406ux6027ux75bcux75db-neuropathic-pain-np-human}{%
+\subsection{神经病理性疼痛 (neuropathic pain, NP) (Human)}\label{ux795eux7ecfux75c5ux7406ux6027ux75bcux75db-neuropathic-pain-np-human}}
 
 \hypertarget{ux5143ux6570ux636e-1}{%
 \subsubsection{元数据}\label{ux5143ux6570ux636e-1}}
@@ -234,6 +309,11 @@ Table \ref{tab:NP-metadata} (下方表格) 为表格NP metadata概览。
 
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有14行7列，以下预览的表格可能省略部分数据；表格含有14个唯一`rownames'。
 \end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample: 样品名称
+\item group: 分组名称
+\end{enumerate}\end{tcolorbox}
 \end{center}
 
 \begin{longtable}[]{@{}lllllll@{}}
@@ -266,8 +346,67 @@ NL.1\_\ldots{} & NL.1 & 45702\ldots{} & 1.142\ldots{} & NL.1\_\ldots{} & NL-1\_\
 \hypertarget{ux5deeux5f02ux5206ux6790-1}{%
 \subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790-1}}
 
-\hypertarget{sci-ux548c-np-ux5173ux8054ux5206ux6790}{%
-\subsection{SCI 和 NP 关联分析}\label{sci-ux548c-np-ux5173ux8054ux5206ux6790}}
+Table \ref{tab:NP-data-NL-1-vs-Control-DEGs} (下方表格) 为表格NP data NL 1 vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/NP-data-NL-1-vs-Control-DEGs.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有263行17列，以下预览的表格可能省略部分数据；表格含有263个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item Chr: 染色体
+\item Start: 起始点
+\item End: 结束点
+\item symbol: 基因或蛋白符号。
+\item logFC: estimate of the log2-fold-changescorresponding to the effect or contrasts(for ‘topTableF’ there may be severalscolumns of log-fold-changes)
+\item AveExpr: average log2-expression for the probesover all arrays and channels, same ass‘Amean’ in the ‘MarrayLM’ object
+\item t: moderated t-statistic (omitted fors‘topTableF’)
+\item P.Value: raw p-value
+\item B: log-odds that the gene is differentiallysexpressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:NP-data-NL-1-vs-Control-DEGs}NP data NL 1 vs Control DEGs}\tabularnewline
+\toprule
+rownames & symbol & Chr & Source & Feature & Start & End & Frame & Strand & V8\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & symbol & Chr & Source & Feature & Start & End & Frame & Strand & V8\tabularnewline
+\midrule
+\endhead
+1992 & ID2 & chr2 & HAVANA & gene & 8678845 & 8684453 & 0 & + & 0\tabularnewline
+9282 & DDIT4 & chr10 & HAVANA & gene & 72273920 & 72276036 & 0 & + & 0\tabularnewline
+17418 & MAP3K7CL & chr21 & HAVANA & gene & 29077471 & 29175889 & 0 & + & 0\tabularnewline
+5167 & ENC1 & chr5 & HAVANA & gene & 74627406 & 74641424 & 0 & - & 0\tabularnewline
+14324 & PER1 & chr17 & HAVANA & gene & 8140472 & 8156506 & 0 & - & 0\tabularnewline
+6603 & TNFAIP3 & chr6 & HAVANA & gene & 13786\ldots{} & 13788\ldots{} & 0 & + & 0\tabularnewline
+15786 & PDE4A & chr19 & HAVANA & gene & 10416773 & 10469631 & 0 & + & 0\tabularnewline
+14577 & CCL4 & chr17 & HAVANA & gene & 36103590 & 36105621 & 0 & + & 0\tabularnewline
+4463 & HOPX & chr4 & HAVANA & gene & 56647988 & 56681899 & 0 & - & 0\tabularnewline
+10202 & MS4A14 & chr11 & HAVANA & gene & 60378530 & 60417756 & 0 & + & 0\tabularnewline
+12419 & PTGDR & chr14 & HAVANA & gene & 52267713 & 52276724 & 0 & + & 0\tabularnewline
+6372 & SH3BGRL2 & chr6 & HAVANA & gene & 79631283 & 79703659 & 0 & + & 0\tabularnewline
+5266 & PAM & chr5 & HAVANA & gene & 10275\ldots{} & 10303\ldots{} & 0 & + & 0\tabularnewline
+4533 & PPBP & chr4 & HAVANA & gene & 73987038 & 73988197 & 0 & - & 0\tabularnewline
+6909 & MTURN & chr7 & HAVANA & gene & 30134810 & 30162762 & 0 & + & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:NP-NL-1-vs-Control-DEGs} (下方图) 为图NP NL 1 vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/NP-NL-1-vs-Control-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/NP-NL-1-vs-Control-DEGs.pdf}
+\caption{NP NL 1 vs Control DEGs}\label{fig:NP-NL-1-vs-Control-DEGs}
+\end{center}
+
+\hypertarget{sci-ux548c-np-ux5173ux8054ux5206ux6790-1}{%
+\subsection{SCI 和 NP 关联分析}\label{sci-ux548c-np-ux5173ux8054ux5206ux6790-1}}
 
 \hypertarget{ux5171ux540cux5deeux5f02ux57faux56e0-codegs}{%
 \subsubsection{共同差异基因 coDEGs}\label{ux5171ux540cux5deeux5f02ux57faux56e0-codegs}}
@@ -298,16 +437,332 @@ SMIM1, EVI2A
 \end{tcolorbox}
 \end{center}
 
-\textbf{(对应文件为 \texttt{Figure+Table/SCI-NP-coDEGs-content})}
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/SCI-NP-coDEGs-content})}
 
 \hypertarget{sci-ux7684-codegs-ux7684ux5173ux8054ux6027ux5206ux6790}{%
 \subsubsection{SCI 的 coDEGs 的关联性分析}\label{sci-ux7684-codegs-ux7684ux5173ux8054ux6027ux5206ux6790}}
 
+Figure \ref{fig:SCI-genes-correlation-heatmap} (下方图) 为图SCI genes correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCI-genes-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCI-genes-correlation-heatmap.pdf}
+\caption{SCI genes correlation heatmap}\label{fig:SCI-genes-correlation-heatmap}
+\end{center}
+
+Table \ref{tab:SCI-data-significant-genes-of-correlation} (下方表格) 为表格SCI data significant genes of correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCI-data-significant-genes-of-correlation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有796行7列，以下预览的表格可能省略部分数据；表格含有34个唯一`From'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor: 皮尔逊关联系数，正关联或负关联。
+\item pvalue: 显著性 P。
+\item -log2(P.value): P 的对数转化。
+\item significant: 显著性。
+\item sign: 人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:SCI-data-significant-genes-of-correlation}SCI data significant genes of correlation}\tabularnewline
+\toprule
+From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endhead
+ADA & ADA & 1 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
+PPT1 & ADA & -0.66 & 0.0022 & 8.828\ldots{} & \textless{} 0.05 & *\tabularnewline
+LDLR & ADA & 0.86 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
+EVI2A & ADA & -0.63 & 0.0036 & 8.117\ldots{} & \textless{} 0.05 & *\tabularnewline
+CPM & ADA & -0.46 & 0.0452 & 4.467\ldots{} & \textless{} 0.05 & *\tabularnewline
+KNOP1 & ADA & 0.69 & 0.0012 & 9.702\ldots{} & \textless{} 0.05 & *\tabularnewline
+AIFM3 & ADA & 0.82 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
+CBLN3 & ADA & 0.59 & 0.0077 & 7.020\ldots{} & \textless{} 0.05 & *\tabularnewline
+PRF1 & ADA & 0.77 & 1e-04 & 13.28\ldots{} & \textless{} 0.001 & **\tabularnewline
+AOC1 & ADA & 0.66 & 0.0019 & 9.039\ldots{} & \textless{} 0.05 & *\tabularnewline
+PDE4A & ADA & 0.91 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
+CNTLN & ADA & -0.65 & 0.0027 & 8.532\ldots{} & \textless{} 0.05 & *\tabularnewline
+FLYWCH2 & ADA & -0.7 & 8e-04 & 10.28\ldots{} & \textless{} 0.001 & **\tabularnewline
+SH3YL1 & ADA & 0.5 & 0.0301 & 5.054\ldots{} & \textless{} 0.05 & *\tabularnewline
+NUDT2 & ADA & 0.69 & 0.0011 & 9.828\ldots{} & \textless{} 0.05 & *\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
 \hypertarget{np-ux7684-codegs-ux7684ux5173ux8054ux6027ux5206ux6790}{%
 \subsubsection{NP 的 coDEGs 的关联性分析}\label{np-ux7684-codegs-ux7684ux5173ux8054ux6027ux5206ux6790}}
 
-\hypertarget{sci-ux548c-np-ux6570ux636eux96c6ux5171ux540cux663eux8457ux5173ux8054ux7684ux57faux56e0ux96c6-sig-codegs}{%
-\subsubsection{SCI 和 NP 数据集共同显著关联的基因集 sig-coDEGs}\label{sci-ux548c-np-ux6570ux636eux96c6ux5171ux540cux663eux8457ux5173ux8054ux7684ux57faux56e0ux96c6-sig-codegs}}
+Figure \ref{fig:NP-genes-correlation-heatmap} (下方图) 为图NP genes correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/NP-genes-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/NP-genes-correlation-heatmap.pdf}
+\caption{NP genes correlation heatmap}\label{fig:NP-genes-correlation-heatmap}
+\end{center}
+
+Table \ref{tab:NP-data-significant-genes-of-correlation} (下方表格) 为表格NP data significant genes of correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/NP-data-significant-genes-of-correlation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有262行7列，以下预览的表格可能省略部分数据；表格含有34个唯一`From'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor: 皮尔逊关联系数，正关联或负关联。
+\item pvalue: 显著性 P。
+\item -log2(P.value): P 的对数转化。
+\item significant: 显著性。
+\item sign: 人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:NP-data-significant-genes-of-correlation}NP data significant genes of correlation}\tabularnewline
+\toprule
+From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endhead
+SMIM1 & SMIM1 & 1 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
+CMC1 & SMIM1 & -0.56 & 0.0377 & 4.729\ldots{} & \textless{} 0.05 & *\tabularnewline
+PF4 & SMIM1 & 0.58 & 0.0302 & 5.049\ldots{} & \textless{} 0.05 & *\tabularnewline
+NUDT2 & SMIM1 & 0.59 & 0.0264 & 5.243\ldots{} & \textless{} 0.05 & *\tabularnewline
+PPT1 & PPT1 & 1 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
+CTSS & PPT1 & 0.66 & 0.01 & 6.643\ldots{} & \textless{} 0.05 & *\tabularnewline
+DAPP1 & PPT1 & 0.58 & 0.028 & 5.158\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3PXD2A & PPT1 & 0.62 & 0.0173 & 5.853\ldots{} & \textless{} 0.05 & *\tabularnewline
+CBLN3 & PPT1 & -0.68 & 0.0069 & 7.179\ldots{} & \textless{} 0.05 & *\tabularnewline
+PSMC1 & PPT1 & 0.64 & 0.0135 & 6.210\ldots{} & \textless{} 0.05 & *\tabularnewline
+FLYWCH2 & PPT1 & -0.78 & 9e-04 & 10.11\ldots{} & \textless{} 0.001 & **\tabularnewline
+GNGT2 & PPT1 & -0.74 & 0.0026 & 8.587\ldots{} & \textless{} 0.05 & *\tabularnewline
+PPT1 & CTSS & 0.66 & 0.01 & 6.643\ldots{} & \textless{} 0.05 & *\tabularnewline
+CTSS & CTSS & 1 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
+DAPP1 & CTSS & 0.92 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{sci-ux548c-np-ux6570ux636eux96c6ux5171ux540cux663eux8457ux5173ux8054ux7684ux57faux56e0ux96c6-sigcodegs}{%
+\subsubsection{SCI 和 NP 数据集共同显著关联的基因集 sigCoDEGs}\label{sci-ux548c-np-ux6570ux636eux96c6ux5171ux540cux663eux8457ux5173ux8054ux7684ux57faux56e0ux96c6-sigcodegs}}
+
+\hypertarget{ux91cdux590dux7ecfux9885ux78c1ux523aux6fc0ux6cbbux7597-repeat-transcranial-magnetic-stimulation-rtms-rat}{%
+\subsection{重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS) (Rat)}\label{ux91cdux590dux7ecfux9885ux78c1ux523aux6fc0ux6cbbux7597-repeat-transcranial-magnetic-stimulation-rtms-rat}}
+
+\hypertarget{ux5143ux6570ux636e-2}{%
+\subsubsection{元数据}\label{ux5143ux6570ux636e-2}}
+
+Table \ref{tab:rTMS-used-sample-metadata} (下方表格) 为表格rTMS used sample metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/rTMS-used-sample-metadata.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有56行11列，以下预览的表格可能省略部分数据；表格含有12个唯一`group'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample: 样品名称
+\item group: 分组名称
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:rTMS-used-sample-metadata}RTMS used sample metadata}\tabularnewline
+\toprule
+sample & group & title & age.ch1 & cogni\ldots{} & post\ldots. & Sex.ch1 & strai\ldots{} & tissu\ldots\ldots9 & tissu\ldots\ldots10\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sample & group & title & age.ch1 & cogni\ldots{} & post\ldots. & Sex.ch1 & strai\ldots{} & tissu\ldots\ldots9 & tissu\ldots\ldots10\tabularnewline
+\midrule
+\endhead
+GSM71\ldots{} & Y.H.Sham & Y\_Sha\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & Y.H.Sham & Y\_Sha\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & Y.H.Sham & Y\_Sha\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & Y.H.Sham & Y\_Sha\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & Y.H.iTBS & Y\_iTB\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & Y.H.iTBS & Y\_iTB\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & Y.H.iTBS & Y\_iTB\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & Y.H.iTBS & Y\_iTB\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & AU.H\ldots. & AU\_Sh\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & AU.H\ldots. & AU\_Sh\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & AU.H\ldots. & AU\_Sh\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & AU.H\ldots. & AU\_Sh\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & AU.H\ldots. & AU\_iT\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & AU.H\ldots. & AU\_iT\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+GSM71\ldots{} & AU.H\ldots. & AU\_iT\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5deeux5f02ux5206ux6790-2}{%
+\subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790-2}}
+
+Figure \ref{fig:rTMS-All-DEGs-of-contrasts} (下方图) 为图rTMS All DEGs of contrasts概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/rTMS-All-DEGs-of-contrasts.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/rTMS-All-DEGs-of-contrasts.pdf}
+\caption{RTMS All DEGs of contrasts}\label{fig:rTMS-All-DEGs-of-contrasts}
+\end{center}
+
+`RTMS data DEGs' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/rTMS-data-DEGs})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/rTMS-data-DEGs共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_AU.H.iTBS - AU.H.Sham.csv
+\item 2\_AU.P.iTBS - AU.P.iTBS.csv
+\item 3\_AI.H.iTBS - AI.H.Sham.csv
+\item 4\_AI.P.iTBS - AI.P.iTBS.csv
+\item 5\_Y.H.iTBS - Y.H.Sham.csv
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{rtms-ux548c-scinp-ux7684ux5173ux8054-1}{%
+\subsection{rTMS 和 SCI、NP 的关联}\label{rtms-ux548c-scinp-ux7684ux5173ux8054-1}}
+
+\hypertarget{rtms-ux6570ux636eux7684ux5deeux5f02ux57faux56e0ux4e0e-sig.codegs-ux7684ux5173ux8054ux6027}{%
+\subsubsection{rTMS 数据的差异基因与 sig.coDegs 的关联性}\label{rtms-ux6570ux636eux7684ux5deeux5f02ux57faux56e0ux4e0e-sig.codegs-ux7684ux5173ux8054ux6027}}
+
+Figure \ref{fig:NP-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap} (下方图) 为图NP sigCoDEGs with rTMS DEGs correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/NP-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/NP-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap.pdf}
+\caption{NP sigCoDEGs with rTMS DEGs correlation heatmap}\label{fig:NP-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap}
+\end{center}
+
+Table \ref{tab:NP-sigCoDEGs-with-rTMS-DEGs-significant-correlation} (下方表格) 为表格NP sigCoDEGs with rTMS DEGs significant correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/NP-sigCoDEGs-with-rTMS-DEGs-significant-correlation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有297行7列，以下预览的表格可能省略部分数据；表格含有34个唯一`From'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor: 皮尔逊关联系数，正关联或负关联。
+\item pvalue: 显著性 P。
+\item -log2(P.value): P 的对数转化。
+\item significant: 显著性。
+\item sign: 人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:NP-sigCoDEGs-with-rTMS-DEGs-significant-correlation}NP sigCoDEGs with rTMS DEGs significant correlation}\tabularnewline
+\toprule
+From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endhead
+CMC1 & UBXN10 & 0.58 & 0.0311 & 5.006\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3PXD2A & UBXN10 & -0.64 & 0.0142 & 6.137\ldots{} & \textless{} 0.05 & *\tabularnewline
+CTSS & LDLRAP1 & -0.61 & 0.0202 & 5.629\ldots{} & \textless{} 0.05 & *\tabularnewline
+SHISA8 & LDLRAP1 & 0.54 & 0.047 & 4.411\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3YL1 & ZFP69 & 0.55 & 0.0417 & 4.583\ldots{} & \textless{} 0.05 & *\tabularnewline
+CPM & ZFP69 & 0.56 & 0.0381 & 4.714\ldots{} & \textless{} 0.05 & *\tabularnewline
+LPAR6 & ZFP69 & 0.54 & 0.0451 & 4.470\ldots{} & \textless{} 0.05 & *\tabularnewline
+CLDN5 & ZFP69 & -0.57 & 0.0332 & 4.912\ldots{} & \textless{} 0.05 & *\tabularnewline
+CMC1 & FOXD2 & 0.58 & 0.0305 & 5.035\ldots{} & \textless{} 0.05 & *\tabularnewline
+PRF1 & FOXD2 & 0.6 & 0.0222 & 5.493\ldots{} & \textless{} 0.05 & *\tabularnewline
+GNGT2 & FOXD2 & 0.62 & 0.0186 & 5.748\ldots{} & \textless{} 0.05 & *\tabularnewline
+PDE4A & FOXD2 & 0.58 & 0.0299 & 5.063\ldots{} & \textless{} 0.05 & *\tabularnewline
+ADA & FOXD2 & 0.61 & 0.02 & 5.643\ldots{} & \textless{} 0.05 & *\tabularnewline
+PPT1 & PTGFR & 0.59 & 0.0254 & 5.299\ldots{} & \textless{} 0.05 & *\tabularnewline
+CTSS & PTGFR & 0.79 & 7e-04 & 10.48\ldots{} & \textless{} 0.001 & **\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:SCI-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap} (下方图) 为图SCI sigCoDEGs with rTMS DEGs correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCI-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCI-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap.pdf}
+\caption{SCI sigCoDEGs with rTMS DEGs correlation heatmap}\label{fig:SCI-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap}
+\end{center}
+
+Table \ref{tab:SCI-sigCoDEGs-with-rTMS-DEGs-significant-correlation} (下方表格) 为表格SCI sigCoDEGs with rTMS DEGs significant correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCI-sigCoDEGs-with-rTMS-DEGs-significant-correlation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有406行7列，以下预览的表格可能省略部分数据；表格含有34个唯一`From'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor: 皮尔逊关联系数，正关联或负关联。
+\item pvalue: 显著性 P。
+\item -log2(P.value): P 的对数转化。
+\item significant: 显著性。
+\item sign: 人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:SCI-sigCoDEGs-with-rTMS-DEGs-significant-correlation}SCI sigCoDEGs with rTMS DEGs significant correlation}\tabularnewline
+\toprule
+From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+\midrule
+\endhead
+PPT1 & CD40LG & -0.54 & 0.0173 & 5.853\ldots{} & \textless{} 0.05 & *\tabularnewline
+CPM & CD40LG & -0.52 & 0.0214 & 5.546\ldots{} & \textless{} 0.05 & *\tabularnewline
+KNOP1 & CD40LG & 0.54 & 0.017 & 5.878\ldots{} & \textless{} 0.05 & *\tabularnewline
+CNTLN & CD40LG & -0.49 & 0.0331 & 4.917\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3YL1 & CD40LG & 0.62 & 0.0046 & 7.764\ldots{} & \textless{} 0.05 & *\tabularnewline
+LIMS1 & CD40LG & -0.5 & 0.028 & 5.158\ldots{} & \textless{} 0.05 & *\tabularnewline
+MAP3K7CL & CD40LG & -0.52 & 0.0231 & 5.435\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3PXD2A & CD40LG & 0.61 & 0.0052 & 7.587\ldots{} & \textless{} 0.05 & *\tabularnewline
+ADA & F5 & -0.47 & 0.0425 & 4.556\ldots{} & \textless{} 0.05 & *\tabularnewline
+LDLR & F5 & -0.52 & 0.0228 & 5.454\ldots{} & \textless{} 0.05 & *\tabularnewline
+CPM & F5 & 0.52 & 0.021 & 5.573\ldots{} & \textless{} 0.05 & *\tabularnewline
+KNOP1 & F5 & -0.7 & 8e-04 & 10.28\ldots{} & \textless{} 0.001 & **\tabularnewline
+PDE4A & F5 & -0.5 & 0.0285 & 5.132\ldots{} & \textless{} 0.05 & *\tabularnewline
+CNTLN & F5 & 0.63 & 0.0036 & 8.117\ldots{} & \textless{} 0.05 & *\tabularnewline
+FLYWCH2 & F5 & 0.52 & 0.0237 & 5.398\ldots{} & \textless{} 0.05 & *\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+Figure \ref{fig:RTMS-SCI-NP-correlated-sci-GO-enrichment} (下方图) 为图RTMS SCI NP correlated sci GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RTMS-SCI-NP-correlated-sci-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RTMS-SCI-NP-correlated-sci-GO-enrichment.pdf}
+\caption{RTMS SCI NP correlated sci GO enrichment}\label{fig:RTMS-SCI-NP-correlated-sci-GO-enrichment}
+\end{center}
 
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
@@ -315,11 +770,17 @@ SMIM1, EVI2A
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+1. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
 \leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
-1. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+2. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
 
 \leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
-2. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+3. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-ProfilingImmunMorris2023}{}%
+4. Morrison, D. \emph{et al.} Profiling immunological phenotypes in individuals during the first year after traumatic spinal cord injury: A longitudinal analysis. \emph{Journal of Neurotrauma} \textbf{40}, 2621--2637 (2023).
 \end{cslreferences}
 
 \end{document}
