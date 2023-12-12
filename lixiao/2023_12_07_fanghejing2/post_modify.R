@@ -18,7 +18,7 @@ info <- items(
   coef = NA,
   date = "2023-12-08",
   info = od_get_info(),
-  id = id,
+  id = paste0(odb("hname"), "-", id),
   receive_date = od_get_date(),
   score = od_get_score(),
   member = "黄礼闯"

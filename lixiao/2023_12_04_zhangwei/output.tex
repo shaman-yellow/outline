@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge RNA-seq 探究 rTMS 对
 SCI 和 NP 的影响} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-12-11}}
+\textbf{\textcolor{white}{2023-12-12}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -106,22 +106,16 @@ SCI 和 NP 的影响} \vspace{4em}
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
 
-质子磁共振光谱法 (H-MRS)
-加巴喷丁 (Gabapentin)
-
-不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI)
-- GSE226238
-
-神经病理性疼痛 (neuropathic pain, NP)
-- GSE126611
-
-重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS)
-- GSE230150
-
-GEO 有 iSCI、NP、rTMS 各自的基因表达数据集，可以从三者之间的关联性寻找 rTMS 可能的疗效和机制
+为探究 rTMS 缓解 iSCI 所致 NP 的潜在机理，利用多组 RNA-seq 数据寻找潜在关联基因。结果见 \ref{dis}
 
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
+
+脊髓损伤 (SCI) 是一种使人衰弱的疾病，经常伴有神经性疼痛。尽管 SCI 后神经性疼痛的发病率很高，但其确切的潜在机制仍不完全清楚\textsuperscript{\protect\hyperlink{ref-TheDualRoleOSunC2023}{1}}。
+经颅磁刺激（TMS）是一种无创、无痛的刺激人脑的方法。单脉冲和成对脉冲 TMS 范式是研究神经退行性疾病病理生理机制的有力方法\textsuperscript{\protect\hyperlink{ref-TranscranialMaNiZh2015}{2}}。
+已有研究发现，重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS) 刺激脑卒中患者病灶侧大脑半球运动区，发现其能减轻患者脑卒中后 神经病理性疼痛 (neuropathic pain, NP)\textsuperscript{\protect\hyperlink{ref-DifferentialEfAmeli2009}{3},\protect\hyperlink{ref-ReductionOfInHiraya2006}{4}}。
+然而，目前未有研究阐述 rTMS 缓解 SCI 所致 NP 的机理。
+本研究借助分析公共 不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) 、神经病理性疼痛 (neuropathic pain, NP) 和 重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS) RNA-seq 数据集，探究 rTMS 缓解 iSCI 所致 NP 的潜在机理。
 
 \hypertarget{methods}{%
 \section{材料和方法}\label{methods}}
@@ -148,11 +142,11 @@ Mainly used method:
 \begin{itemize}
 \tightlist
 \item
-  ClusterProfiler used for gene enrichment analysis.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{1}}
+  ClusterProfiler used for gene enrichment analysis.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{5}}
 \item
   GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition .
 \item
-  Limma and edgeR used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{2},\protect\hyperlink{ref-EdgerDifferenChen}{3}}
+  Limma and edgeR used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{6},\protect\hyperlink{ref-EdgerDifferenChen}{7}}
 \item
   Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
@@ -160,20 +154,97 @@ Mainly used method:
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
 
-\hypertarget{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24ux548cux795eux7ecfux75c5ux7406ux6027ux75bcux75db-sci-np}{%
-\subsection{不完全性脊髓损伤和神经病理性疼痛 (SCI) (NP)}\label{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24ux548cux795eux7ecfux75c5ux7406ux6027ux75bcux75db-sci-np}}
+\hypertarget{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24-incomplete-spinal-cord-injury-isci-ux548c-ux795eux7ecfux75c5ux7406ux6027ux75bcux75db-neuropathic-pain-np}{%
+\subsection{不完全性脊髓损伤 (Incomplete spinal cord injury, iSCI) 和 神经病理性疼痛 (neuropathic pain, NP)}\label{ux4e0dux5b8cux5168ux6027ux810aux9ad3ux635fux4f24-incomplete-spinal-cord-injury-isci-ux548c-ux795eux7ecfux75c5ux7406ux6027ux75bcux75db-neuropathic-pain-np}}
+
+筛选 GEO 数据库，获取 SCI (GSE226238) 和 NP (GSE126611) 数据集 (来源 Homo sapiens，即，人类的 RNA-seq 数据集)，进行差异表达分析。SCI 数据集 (SCI vs control, Fig. \ref{fig:MAIN-fig-1}a) 和 NP 数据集 (NP vs control, Fig. \ref{fig:MAIN-fig-1}b) 的差异基因 (DEGs, p-value 或 adjust p-value \textless{} 0.05, \textbar log\textsubscript{2}(FC)\textbar{} \textgreater{} 0.3) 交集如图 Fig. \ref{fig:MAIN-fig-1}c 所示 (具体基因见 Fig. \ref{fig:SCI-NP-coDEGs})。
+
+Figure \ref{fig:MAIN-fig-1} (下方图) 为图MAIN fig 1概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig1.pdf}
+\caption{MAIN fig 1}\label{fig:MAIN-fig-1}
+\end{center}
 
 \hypertarget{sci-ux548c-np-ux5173ux8054ux5206ux6790}{%
 \subsection{SCI 和 NP 关联分析}\label{sci-ux548c-np-ux5173ux8054ux5206ux6790}}
 
-\hypertarget{ux91cdux590dux7ecfux9885ux78c1ux523aux6fc0ux6cbbux7597-rtms}{%
-\subsection{重复经颅磁刺激治疗 (rTMS)}\label{ux91cdux590dux7ecfux9885ux78c1ux523aux6fc0ux6cbbux7597-rtms}}
+将上述交集基因 (记为 coDEGs) 在 SCI 和 NP 各自的数据集进行关联分析 (Fig. \ref{fig:MAIN-fig-2}a、b) ，筛选显著关联基因 (p-value \textless{} 0.05) ，并将之合并 (sig-coDegs, 见 \ref{sigCoDEGs}) 。我们发现，所有的 coDEGs 都属于 sig-coDegs，即，在 SCI 和 NP 数据集中，这些基因彼此都至少有一个显著关联的基因。
+
+Figure \ref{fig:MAIN-fig-2} (下方图) 为图MAIN fig 2概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig2.pdf}
+\caption{MAIN fig 2}\label{fig:MAIN-fig-2}
+\end{center}
+
+\hypertarget{res-rtms}{%
+\subsection{重复经颅磁刺激治疗 (rTMS)}\label{res-rtms}}
+
+为了探究 rTMS 刺激所致的大脑转录变化，本研究选用了 GEO 的 rTMS 数据集 (GSE230149) (来源 Rattus norvegicus)。
+该数据集包含多种因素分组：
+
+\begin{itemize}
+\tightlist
+\item
+  Young, Y (age)
+\item
+  Aged, A (age)
+\item
+  Impaired, I (cognitive status)
+\item
+  Unimpaired, U (cognitive status)
+\item
+  Hippocampus, H (tissue region)
+\item
+  Parietal cortex, P (tissue, region)
+\end{itemize}
+
+控制变量以差异分析 (Fig. \ref{fig:MAIN-fig-3}) 。可以发现，rTMS 对大脑带来的主要转录变化发生于 Hippocampus，而对 Parietal cortex 几乎不造成转录影响。取 Fig. \ref{fig:MAIN-fig-3} 的合集 (记为 rTMS-DEGs)。
+
+Figure \ref{fig:MAIN-fig-3} (下方图) 为图MAIN fig 3概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig3.pdf}
+\caption{MAIN fig 3}\label{fig:MAIN-fig-3}
+\end{center}
 
 \hypertarget{rtms-ux548c-scinp-ux7684ux5173ux8054}{%
 \subsection{rTMS 和 SCI、NP 的关联}\label{rtms-ux548c-scinp-ux7684ux5173ux8054}}
 
+假设 rTMS 对人类和对大鼠大脑的影响是相似的，则我们可以把 \ref{res-rtms} 的差异基因 (rTMS-DEGs) 对应到 SCI 和 NP 的数据集中 (见 \ref{mapping}) 。随后，分别以 SCI 和 NP 数据集，对 sig-coDegs 基因集和 rTMS-DEGs 基因集进行关联分析 (Fig. \ref{fig:MAIN-fig-4}a、b)。取显著关联的基因 (见 Tab. \ref{tab:NP-sigCoDEGs-with-rTMS-DEGs-significant-correlation} 和 Tab. \ref{tab:SCI-sigCoDEGs-with-rTMS-DEGs-significant-correlation})。为了挖掘这些关联基因对于 rTMS 于 SCI 和 NP 的潜在功能，我们对这些基因进行了 GO 富集分析。NP 中的关联基因没有富集到通路，而 SCI 的富集结果如图 Fig. \ref{fig:MAIN-fig-4}c 所示。可以发现，这些基因主要与免疫细胞 (lymphocyte、leukocyte、B cell、T cell) 的行为相关，涉及免疫反应 。可以推测，rTMS 对于 SCI 所致的 NP 的缓解作用可能与调节免疫反应相关。
+
+注：The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+
+Figure \ref{fig:MAIN-fig-4} (下方图) 为图MAIN fig 4概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig4.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig4.pdf}
+\caption{MAIN fig 4}\label{fig:MAIN-fig-4}
+\end{center}
+
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
+
+\begin{itemize}
+\tightlist
+\item
+  本研究发现了一组 SCI 和 NP 中共同存在的 DEGs，并且这些基因相互显著关联。
+\item
+  rTMS 对大脑刺激会带来 Hippocampus 的转录变化，影响上述基因的转录；通路富集表明，影响的基因主要涉及免疫细胞行为和免疫反应 (Fig. \ref{fig:MAIN-fig-4}c)。
+\end{itemize}
 
 \hypertarget{workflow}{%
 \section{附：分析流程}\label{workflow}}
@@ -190,7 +261,7 @@ Mainly used method:
   GSE226238
 \end{itemize}
 
-根据文献提供的数据整理信息\textsuperscript{\protect\hyperlink{ref-ProfilingImmunMorris2023}{4}}：
+根据文献提供的数据整理信息\textsuperscript{\protect\hyperlink{ref-ProfilingImmunMorris2023}{8}}：
 
 Complete: AIS A-B
 Incomplete: AIS C-D
@@ -213,28 +284,28 @@ Table \ref{tab:SCI-used-sample-metadata} (下方表格) 为表格SCI used sample
 \begin{longtable}[]{@{}llllllllll@{}}
 \caption{\label{tab:SCI-used-sample-metadata}SCI used sample metadata}\tabularnewline
 \toprule
-sample & rownames & title & group\ldots{} & tissu\ldots{} & treat\ldots{} & group & id & status & AIS\tabularnewline
+sample & rownames & title & group.ch1 & tissue\ldots{} & treatm\ldots{} & group & id & status & AIS\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-sample & rownames & title & group\ldots{} & tissu\ldots{} & treat\ldots{} & group & id & status & AIS\tabularnewline
+sample & rownames & title & group.ch1 & tissue\ldots{} & treatm\ldots{} & group & id & status & AIS\tabularnewline
 \midrule
 \endhead
-ID13 & GSM70\ldots{} & ID13,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
-ID16 & GSM70\ldots{} & ID16,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
-ID14 & GSM70\ldots{} & ID14,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
-ID15 & GSM70\ldots{} & ID15,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
-ID17 & GSM70\ldots{} & ID17,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
-ID1V0 & GSM70\ldots{} & ID1v0\ldots{} & SCI & Whole\ldots{} & Acute & sci & 1 & 0 & D\tabularnewline
-ID18 & GSM70\ldots{} & ID18,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
-ID19 & GSM70\ldots{} & ID19,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
-ID1V12 & GSM70\ldots{} & ID1v1\ldots{} & SCI & Whole\ldots{} & 12mpi & sci & 1 & 12 & D\tabularnewline
-ID20 & GSM70\ldots{} & ID20,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
-ID1V3 & GSM70\ldots{} & ID1v3\ldots{} & SCI & Whole\ldots{} & 3mpi & sci & 1 & 3 & D\tabularnewline
-ID1V6 & GSM70\ldots{} & ID1v6\ldots{} & SCI & Whole\ldots{} & 6mpi & sci & 1 & 6 & D\tabularnewline
-ID21 & GSM70\ldots{} & ID21,\ldots{} & CTL & Whole\ldots{} & NA & control & NA & NA & NA\tabularnewline
-ID2V3 & GSM70\ldots{} & ID2v3\ldots{} & SCI & Whole\ldots{} & 3mpi & sci & 2 & 3 & D\tabularnewline
-ID2V0 & GSM70\ldots{} & ID2v0\ldots{} & SCI & Whole\ldots{} & Acute & sci & 2 & 0 & D\tabularnewline
+ID13 & GSM706\ldots{} & ID13, \ldots{} & CTL & Whole \ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID16 & GSM706\ldots{} & ID16, \ldots{} & CTL & Whole \ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID14 & GSM706\ldots{} & ID14, \ldots{} & CTL & Whole \ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID15 & GSM706\ldots{} & ID15, \ldots{} & CTL & Whole \ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID17 & GSM706\ldots{} & ID17, \ldots{} & CTL & Whole \ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID1V0 & GSM706\ldots{} & ID1v0,\ldots{} & SCI & Whole \ldots{} & Acute & sci & 1 & 0 & D\tabularnewline
+ID18 & GSM706\ldots{} & ID18, \ldots{} & CTL & Whole \ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID19 & GSM706\ldots{} & ID19, \ldots{} & CTL & Whole \ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID1V12 & GSM706\ldots{} & ID1v12\ldots{} & SCI & Whole \ldots{} & 12mpi & sci & 1 & 12 & D\tabularnewline
+ID20 & GSM706\ldots{} & ID20, \ldots{} & CTL & Whole \ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID1V3 & GSM706\ldots{} & ID1v3,\ldots{} & SCI & Whole \ldots{} & 3mpi & sci & 1 & 3 & D\tabularnewline
+ID1V6 & GSM706\ldots{} & ID1v6,\ldots{} & SCI & Whole \ldots{} & 6mpi & sci & 1 & 6 & D\tabularnewline
+ID21 & GSM706\ldots{} & ID21, \ldots{} & CTL & Whole \ldots{} & NA & control & NA & NA & NA\tabularnewline
+ID2V3 & GSM706\ldots{} & ID2v3,\ldots{} & SCI & Whole \ldots{} & 3mpi & sci & 2 & 3 & D\tabularnewline
+ID2V0 & GSM706\ldots{} & ID2v0,\ldots{} & SCI & Whole \ldots{} & Acute & sci & 2 & 0 & D\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -261,29 +332,281 @@ Table \ref{tab:SCI-data-DEGs} (下方表格) 为表格SCI data DEGs概览。
 \begin{longtable}[]{@{}lllllll@{}}
 \caption{\label{tab:SCI-data-DEGs}SCI data DEGs}\tabularnewline
 \toprule
-rownames & logFC & AveExpr & t & P.Value & adj.P\ldots{} & B\tabularnewline
+\begin{minipage}[b]{0.08\columnwidth}\raggedright
+rownames\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+logFC\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+AveExpr\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+t\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+P.Value\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+adj.P.Val\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+B\strut
+\end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-rownames & logFC & AveExpr & t & P.Value & adj.P\ldots{} & B\tabularnewline
+\begin{minipage}[b]{0.08\columnwidth}\raggedright
+rownames\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+logFC\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+AveExpr\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+t\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+P.Value\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+adj.P.Val\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+B\strut
+\end{minipage}\tabularnewline
 \midrule
 \endhead
-SLC66A1 & -5.39\ldots{} & -2.85\ldots{} & -22.2\ldots{} & 2.059\ldots{} & 1.472\ldots{} & 24.69\ldots{}\tabularnewline
-CDKN1C & -6.41\ldots{} & -2.34\ldots{} & -18.8\ldots{} & 4.387\ldots{} & 1.146\ldots{} & 22.02\ldots{}\tabularnewline
-PGAM1 & 3.931229 & 4.391\ldots{} & 18.79\ldots{} & 4.812\ldots{} & 1.146\ldots{} & 21.93\ldots{}\tabularnewline
-KLHL26 & -6.30\ldots{} & -2.31\ldots{} & -17.0\ldots{} & 2.823\ldots{} & 5.046\ldots{} & 20.33\ldots{}\tabularnewline
-48 & -5.43\ldots{} & -2.32\ldots{} & -16.3\ldots{} & 6.538\ldots{} & 9.349\ldots{} & 19.56\ldots{}\tabularnewline
-120 & -2.92\ldots{} & 1.653\ldots{} & -15.7\ldots{} & 1.211\ldots{} & 1.313\ldots{} & 18.98\ldots{}\tabularnewline
-DUSP23 & -6.94\ldots{} & -1.69\ldots{} & -15.7\ldots{} & 1.286\ldots{} & 1.313\ldots{} & 18.93\ldots{}\tabularnewline
-HIC1 & -5.41\ldots{} & -2.45\ldots{} & -15.1\ldots{} & 2.686\ldots{} & 2.401\ldots{} & 18.24\ldots{}\tabularnewline
-FAM229A & -5.57\ldots{} & -2.12\ldots{} & -14.6\ldots{} & 4.877\ldots{} & 3.874\ldots{} & 17.68\ldots{}\tabularnewline
-METTL26 & -5.53\ldots{} & -2.19\ldots{} & -13.6\ldots{} & 1.714\ldots{} & 1.225\ldots{} & 16.48\ldots{}\tabularnewline
-CLTB & 5.104\ldots{} & -0.35\ldots{} & 12.86\ldots{} & 4.864\ldots{} & 3.162\ldots{} & 15.48\ldots{}\tabularnewline
-LSP1 & 5.033352 & 3.102\ldots{} & 12.31\ldots{} & 1.052\ldots{} & 6.271\ldots{} & 14.74\ldots{}\tabularnewline
-HADH & -4.96\ldots{} & -2.83\ldots{} & -12.2\ldots{} & 1.153\ldots{} & 6.345\ldots{} & 14.65\ldots{}\tabularnewline
-METTL21A & -4.65\ldots{} & -2.82\ldots{} & -12.1\ldots{} & 1.299\ldots{} & 6.638\ldots{} & 14.53\ldots{}\tabularnewline
-LRRC24 & -4.27\ldots{} & -2.48\ldots{} & -12.0\ldots{} & 1.540\ldots{} & 7.125\ldots{} & 14.37\ldots{}\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+SLC66A1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-5.3985318\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.8574726\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-22.211843\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.05919519\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.47232456\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+24.6914363\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+CDKN1C\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-6.4116063\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.3451973\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-18.884709\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.38737275\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.14693897\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+22.0223243\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+PGAM1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.931229\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.39159789\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+18.7916191\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.81233135\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.14693897\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+21.9396078\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+KLHL26\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-6.3060655\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.3125193\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-17.087291\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.82330652\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.04666040\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+20.3361194\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+48\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-5.4354855\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.3299163\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-16.327301\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.53810955\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.34949665\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+19.5624017\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+120\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.9235652\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.65380258\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-15.788203\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.21118622\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.31385918\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+18.9895854\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+DUSP23\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-6.9434252\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-1.6984921\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-15.736427\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.28629570\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.31385918\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+18.9334793\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+HIC1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-5.417897\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.4574677\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-15.114200\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.68695492\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.40146596\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+18.2436942\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+FAM229A\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-5.5729105\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.1258822\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-14.626022\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.87741832\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.87483788\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+17.6817026\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+METTL26\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-5.5332784\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.1951593\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-13.639833\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.71439162\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.22579001\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+16.4867721\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+CLTB\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.10489364\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.3518483\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+12.8635600\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.86472129\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.16206884\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+15.4859145\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+LSP1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.033352\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.10275063\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+12.3121841\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.05255843\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.27149402\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+14.7403014\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+HADH\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-4.9657345\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.8300059\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-12.247863\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.15375141\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.34563279\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+14.6513584\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+METTL21A\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-4.6597681\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.8250994\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-12.164725\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.29982020\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.63836746\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+14.5357743\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+LRRC24\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-4.2782732\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.4806355\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-12.046955\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.54061013\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.12568004\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+14.3708323\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -319,27 +642,251 @@ Table \ref{tab:NP-metadata} (下方表格) 为表格NP metadata概览。
 \begin{longtable}[]{@{}lllllll@{}}
 \caption{\label{tab:NP-metadata}NP metadata}\tabularnewline
 \toprule
-rownames & group & lib.size & norm\ldots. & sample & title & tissu\ldots{}\tabularnewline
+\begin{minipage}[b]{0.12\columnwidth}\raggedright
+rownames\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+group\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\raggedright
+lib.size\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\raggedright
+norm.factors\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+sample\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+title\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\raggedright
+tissue.ch1\strut
+\end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-rownames & group & lib.size & norm\ldots. & sample & title & tissu\ldots{}\tabularnewline
+\begin{minipage}[b]{0.12\columnwidth}\raggedright
+rownames\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+group\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\raggedright
+lib.size\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\raggedright
+norm.factors\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+sample\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+title\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\raggedright
+tissue.ch1\strut
+\end{minipage}\tabularnewline
 \midrule
 \endhead
-Contr\ldots{} & Control & 37694\ldots{} & 0.993\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
-Contr\ldots{} & Control & 35123\ldots{} & 0.984\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
-Contr\ldots{} & Control & 40623\ldots{} & 1.038\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
-Contr\ldots{} & Control & 31254\ldots{} & 0.900\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
-Contr\ldots{} & Control & 36785\ldots{} & 1.092\ldots{} & Contr\ldots{} & Contr\ldots{} & white\ldots{}\tabularnewline
-NL.0\_\ldots{} & NL.0 & 39063\ldots{} & 0.998\ldots{} & NL.0\_\ldots{} & NL-0\_\ldots{} & white\ldots{}\tabularnewline
-NL.0\_\ldots{} & NL.0 & 30209\ldots{} & 0.838\ldots{} & NL.0\_\ldots{} & NL-0\_\ldots{} & white\ldots{}\tabularnewline
-NL.0\_\ldots{} & NL.0 & 33541\ldots{} & 0.873\ldots{} & NL.0\_\ldots{} & NL-0\_\ldots{} & white\ldots{}\tabularnewline
-NL.0\_\ldots{} & NL.0 & 43997\ldots{} & 1.105\ldots{} & NL.0\_\ldots{} & NL-0\_\ldots{} & white\ldots{}\tabularnewline
-NL.1\_\ldots{} & NL.1 & 35856\ldots{} & 0.947\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
-NL.1\_\ldots{} & NL.1 & 47176\ldots{} & 1.217\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
-NL.1\_\ldots{} & NL.1 & 33852\ldots{} & 0.947\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
-NL.1\_\ldots{} & NL.1 & 37527\ldots{} & 0.991\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
-NL.1\_\ldots{} & NL.1 & 45702\ldots{} & 1.142\ldots{} & NL.1\_\ldots{} & NL-1\_\ldots{} & white\ldots{}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Control\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+37694075.5\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+0.99341849\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep1\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep2\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Control\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+35123400.4\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+0.98433148\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep2\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep2\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep3\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Control\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+40623787.2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+1.03883062\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep3\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep3\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep4\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Control\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+31254712.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+0.90039899\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep4\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep4\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep5\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Control\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+36785783.3\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+1.09239376\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep5\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Control\_Rep5\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.0\_Rep1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+NL.0\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+39063868.2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+0.99869084\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.0\_Rep1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL-0\_Rep1\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.0\_Rep2\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+NL.0\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+30209440.6\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+0.83816556\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.0\_Rep2\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL-0\_Rep2\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.0\_Rep3\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+NL.0\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+33541489.3\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+0.87392250\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.0\_Rep3\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL-0\_Rep3\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.0\_Rep4\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+NL.0\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+43997974.4\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+1.10515311\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.0\_Rep4\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL-0\_Rep4\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+NL.1\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+35856170.7\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+0.94729121\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL-1\_Rep1\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep2\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+NL.1\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+47176469.2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+1.21729671\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep2\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL-1\_Rep2\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep3\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+NL.1\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+33852268.1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+0.94708847\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep3\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL-1\_Rep3\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep4\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+NL.1\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+37527290.3\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+0.99176588\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep4\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL-1\_Rep4\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep5\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+NL.1\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+45702943.0\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+1.14296121\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL.1\_Rep5\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NL-1\_Rep5\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright
+white bloo\ldots{}\strut
+\end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -381,14 +928,14 @@ rownames & symbol & Chr & Source & Feature & Start & End & Frame & Strand & V8\t
 17418 & MAP3K7CL & chr21 & HAVANA & gene & 29077471 & 29175889 & 0 & + & 0\tabularnewline
 5167 & ENC1 & chr5 & HAVANA & gene & 74627406 & 74641424 & 0 & - & 0\tabularnewline
 14324 & PER1 & chr17 & HAVANA & gene & 8140472 & 8156506 & 0 & - & 0\tabularnewline
-6603 & TNFAIP3 & chr6 & HAVANA & gene & 13786\ldots{} & 13788\ldots{} & 0 & + & 0\tabularnewline
+6603 & TNFAIP3 & chr6 & HAVANA & gene & 137867188 & 137883312 & 0 & + & 0\tabularnewline
 15786 & PDE4A & chr19 & HAVANA & gene & 10416773 & 10469631 & 0 & + & 0\tabularnewline
 14577 & CCL4 & chr17 & HAVANA & gene & 36103590 & 36105621 & 0 & + & 0\tabularnewline
 4463 & HOPX & chr4 & HAVANA & gene & 56647988 & 56681899 & 0 & - & 0\tabularnewline
 10202 & MS4A14 & chr11 & HAVANA & gene & 60378530 & 60417756 & 0 & + & 0\tabularnewline
 12419 & PTGDR & chr14 & HAVANA & gene & 52267713 & 52276724 & 0 & + & 0\tabularnewline
 6372 & SH3BGRL2 & chr6 & HAVANA & gene & 79631283 & 79703659 & 0 & + & 0\tabularnewline
-5266 & PAM & chr5 & HAVANA & gene & 10275\ldots{} & 10303\ldots{} & 0 & + & 0\tabularnewline
+5266 & PAM & chr5 & HAVANA & gene & 102753981 & 103031105 & 0 & + & 0\tabularnewline
 4533 & PPBP & chr4 & HAVANA & gene & 73987038 & 73988197 & 0 & - & 0\tabularnewline
 6909 & MTURN & chr7 & HAVANA & gene & 30134810 & 30162762 & 0 & + & 0\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
@@ -471,28 +1018,28 @@ Table \ref{tab:SCI-data-significant-genes-of-correlation} (下方表格) 为表�
 \begin{longtable}[]{@{}lllllll@{}}
 \caption{\label{tab:SCI-data-significant-genes-of-correlation}SCI data significant genes of correlation}\tabularnewline
 \toprule
-From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+From & To & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+From & To & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
 \midrule
 \endhead
-ADA & ADA & 1 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
-PPT1 & ADA & -0.66 & 0.0022 & 8.828\ldots{} & \textless{} 0.05 & *\tabularnewline
-LDLR & ADA & 0.86 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
-EVI2A & ADA & -0.63 & 0.0036 & 8.117\ldots{} & \textless{} 0.05 & *\tabularnewline
-CPM & ADA & -0.46 & 0.0452 & 4.467\ldots{} & \textless{} 0.05 & *\tabularnewline
-KNOP1 & ADA & 0.69 & 0.0012 & 9.702\ldots{} & \textless{} 0.05 & *\tabularnewline
-AIFM3 & ADA & 0.82 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
-CBLN3 & ADA & 0.59 & 0.0077 & 7.020\ldots{} & \textless{} 0.05 & *\tabularnewline
-PRF1 & ADA & 0.77 & 1e-04 & 13.28\ldots{} & \textless{} 0.001 & **\tabularnewline
-AOC1 & ADA & 0.66 & 0.0019 & 9.039\ldots{} & \textless{} 0.05 & *\tabularnewline
-PDE4A & ADA & 0.91 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
-CNTLN & ADA & -0.65 & 0.0027 & 8.532\ldots{} & \textless{} 0.05 & *\tabularnewline
-FLYWCH2 & ADA & -0.7 & 8e-04 & 10.28\ldots{} & \textless{} 0.001 & **\tabularnewline
-SH3YL1 & ADA & 0.5 & 0.0301 & 5.054\ldots{} & \textless{} 0.05 & *\tabularnewline
-NUDT2 & ADA & 0.69 & 0.0011 & 9.828\ldots{} & \textless{} 0.05 & *\tabularnewline
+ADA & ADA & 1 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+PPT1 & ADA & -0.66 & 0.0022 & 8.82828076\ldots{} & \textless{} 0.05 & *\tabularnewline
+LDLR & ADA & 0.86 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+EVI2A & ADA & -0.63 & 0.0036 & 8.11778737\ldots{} & \textless{} 0.05 & *\tabularnewline
+CPM & ADA & -0.46 & 0.0452 & 4.46753341\ldots{} & \textless{} 0.05 & *\tabularnewline
+KNOP1 & ADA & 0.69 & 0.0012 & 9.70274987\ldots{} & \textless{} 0.05 & *\tabularnewline
+AIFM3 & ADA & 0.82 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+CBLN3 & ADA & 0.59 & 0.0077 & 7.02092583\ldots{} & \textless{} 0.05 & *\tabularnewline
+PRF1 & ADA & 0.77 & 1e-04 & 13.2877123\ldots{} & \textless{} 0.001 & **\tabularnewline
+AOC1 & ADA & 0.66 & 0.0019 & 9.03978486\ldots{} & \textless{} 0.05 & *\tabularnewline
+PDE4A & ADA & 0.91 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+CNTLN & ADA & -0.65 & 0.0027 & 8.53282487\ldots{} & \textless{} 0.05 & *\tabularnewline
+FLYWCH2 & ADA & -0.7 & 8e-04 & 10.2877123\ldots{} & \textless{} 0.001 & **\tabularnewline
+SH3YL1 & ADA & 0.5 & 0.0301 & 5.05409270\ldots{} & \textless{} 0.05 & *\tabularnewline
+NUDT2 & ADA & 0.69 & 0.0011 & 9.82828076\ldots{} & \textless{} 0.05 & *\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -529,34 +1076,51 @@ Table \ref{tab:NP-data-significant-genes-of-correlation} (下方表格) 为表�
 \begin{longtable}[]{@{}lllllll@{}}
 \caption{\label{tab:NP-data-significant-genes-of-correlation}NP data significant genes of correlation}\tabularnewline
 \toprule
-From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+From & To & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+From & To & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
 \midrule
 \endhead
-SMIM1 & SMIM1 & 1 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
-CMC1 & SMIM1 & -0.56 & 0.0377 & 4.729\ldots{} & \textless{} 0.05 & *\tabularnewline
-PF4 & SMIM1 & 0.58 & 0.0302 & 5.049\ldots{} & \textless{} 0.05 & *\tabularnewline
-NUDT2 & SMIM1 & 0.59 & 0.0264 & 5.243\ldots{} & \textless{} 0.05 & *\tabularnewline
-PPT1 & PPT1 & 1 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
-CTSS & PPT1 & 0.66 & 0.01 & 6.643\ldots{} & \textless{} 0.05 & *\tabularnewline
-DAPP1 & PPT1 & 0.58 & 0.028 & 5.158\ldots{} & \textless{} 0.05 & *\tabularnewline
-SH3PXD2A & PPT1 & 0.62 & 0.0173 & 5.853\ldots{} & \textless{} 0.05 & *\tabularnewline
-CBLN3 & PPT1 & -0.68 & 0.0069 & 7.179\ldots{} & \textless{} 0.05 & *\tabularnewline
-PSMC1 & PPT1 & 0.64 & 0.0135 & 6.210\ldots{} & \textless{} 0.05 & *\tabularnewline
-FLYWCH2 & PPT1 & -0.78 & 9e-04 & 10.11\ldots{} & \textless{} 0.001 & **\tabularnewline
-GNGT2 & PPT1 & -0.74 & 0.0026 & 8.587\ldots{} & \textless{} 0.05 & *\tabularnewline
-PPT1 & CTSS & 0.66 & 0.01 & 6.643\ldots{} & \textless{} 0.05 & *\tabularnewline
-CTSS & CTSS & 1 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
-DAPP1 & CTSS & 0.92 & 0 & 16.60\ldots{} & \textless{} 0.001 & **\tabularnewline
+SMIM1 & SMIM1 & 1 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+CMC1 & SMIM1 & -0.56 & 0.0377 & 4.72929166\ldots{} & \textless{} 0.05 & *\tabularnewline
+PF4 & SMIM1 & 0.58 & 0.0302 & 5.04930764\ldots{} & \textless{} 0.05 & *\tabularnewline
+NUDT2 & SMIM1 & 0.59 & 0.0264 & 5.24331826\ldots{} & \textless{} 0.05 & *\tabularnewline
+PPT1 & PPT1 & 1 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+CTSS & PPT1 & 0.66 & 0.01 & 6.64385618\ldots{} & \textless{} 0.05 & *\tabularnewline
+DAPP1 & PPT1 & 0.58 & 0.028 & 5.15842936\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3PXD2A & PPT1 & 0.62 & 0.0173 & 5.85308415\ldots{} & \textless{} 0.05 & *\tabularnewline
+CBLN3 & PPT1 & -0.68 & 0.0069 & 7.17918792\ldots{} & \textless{} 0.05 & *\tabularnewline
+PSMC1 & PPT1 & 0.64 & 0.0135 & 6.21089678\ldots{} & \textless{} 0.05 & *\tabularnewline
+FLYWCH2 & PPT1 & -0.78 & 9e-04 & 10.1177873\ldots{} & \textless{} 0.001 & **\tabularnewline
+GNGT2 & PPT1 & -0.74 & 0.0026 & 8.58727266\ldots{} & \textless{} 0.05 & *\tabularnewline
+PPT1 & CTSS & 0.66 & 0.01 & 6.64385618\ldots{} & \textless{} 0.05 & *\tabularnewline
+CTSS & CTSS & 1 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+DAPP1 & CTSS & 0.92 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
 
-\hypertarget{sci-ux548c-np-ux6570ux636eux96c6ux5171ux540cux663eux8457ux5173ux8054ux7684ux57faux56e0ux96c6-sigcodegs}{%
-\subsubsection{SCI 和 NP 数据集共同显著关联的基因集 sigCoDEGs}\label{sci-ux548c-np-ux6570ux636eux96c6ux5171ux540cux663eux8457ux5173ux8054ux7684ux57faux56e0ux96c6-sigcodegs}}
+\hypertarget{sigCoDEGs}{%
+\subsubsection{SCI 和 NP 数据集共同显著关联的基因集 sigCoDEGs}\label{sigCoDEGs}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+sig-coDEGs
+:}
+
+\vspace{0.5em}
+
+    ADA, AIFM3, AOC1, ATF3, CBLN3, CLDN5, CMC1, CNTLN, CPM,
+CTSS, DAPP1, EGF, ELOVL7, EVI2A, FLYWCH2, GNGT2, GOLGA8N,
+KNOP1, LDLR, LIMS1, LPAR6, MAP3K7CL, NUDT2, PDE4A, PF4,
+PPT1, PRF1, PSMC1, PTCRA, SH3PXD2A, SH3YL1, SHISA8, SLAMF8,
+SMIM1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
 
 \hypertarget{ux91cdux590dux7ecfux9885ux78c1ux523aux6fc0ux6cbbux7597-repeat-transcranial-magnetic-stimulation-rtms-rat}{%
 \subsection{重复经颅磁刺激治疗 (repeat transcranial magnetic stimulation, rTMS) (Rat)}\label{ux91cdux590dux7ecfux9885ux78c1ux523aux6fc0ux6cbbux7597-repeat-transcranial-magnetic-stimulation-rtms-rat}}
@@ -577,32 +1141,32 @@ Table \ref{tab:rTMS-used-sample-metadata} (下方表格) 为表格rTMS used samp
 \end{enumerate}\end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}llllllllll@{}}
+\begin{longtable}[]{@{}lllllllllll@{}}
 \caption{\label{tab:rTMS-used-sample-metadata}RTMS used sample metadata}\tabularnewline
 \toprule
-sample & group & title & age.ch1 & cogni\ldots{} & post\ldots. & Sex.ch1 & strai\ldots{} & tissu\ldots\ldots9 & tissu\ldots\ldots10\tabularnewline
+sample & group & title & age.ch1 & cognit\ldots{} & post.t\ldots{} & Sex.ch1 & strain\ldots{} & tissue\ldots\ldots9 & tissue\ldots\ldots10 & \ldots{}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-sample & group & title & age.ch1 & cogni\ldots{} & post\ldots. & Sex.ch1 & strai\ldots{} & tissu\ldots\ldots9 & tissu\ldots\ldots10\tabularnewline
+sample & group & title & age.ch1 & cognit\ldots{} & post.t\ldots{} & Sex.ch1 & strain\ldots{} & tissue\ldots\ldots9 & tissue\ldots\ldots10 & \ldots{}\tabularnewline
 \midrule
 \endhead
-GSM71\ldots{} & Y.H.Sham & Y\_Sha\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & Y.H.Sham & Y\_Sha\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & Y.H.Sham & Y\_Sha\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & Y.H.Sham & Y\_Sha\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & Y.H.iTBS & Y\_iTB\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & Y.H.iTBS & Y\_iTB\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & Y.H.iTBS & Y\_iTB\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & Y.H.iTBS & Y\_iTB\ldots{} & Young\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & AU.H\ldots. & AU\_Sh\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & AU.H\ldots. & AU\_Sh\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & AU.H\ldots. & AU\_Sh\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & AU.H\ldots. & AU\_Sh\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & AU.H\ldots. & AU\_iT\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & AU.H\ldots. & AU\_iT\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-GSM71\ldots{} & AU.H\ldots. & AU\_iT\ldots{} & Aged;\ldots{} & unimp\ldots{} & 48 & Male & Long-\ldots{} & Hippo\ldots{} & Brain\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+GSM718\ldots{} & Y.H.Sham & Y\_Sham\ldots{} & Young;\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & Y.H.Sham & Y\_Sham\ldots{} & Young;\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & Y.H.Sham & Y\_Sham\ldots{} & Young;\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & Y.H.Sham & Y\_Sham\ldots{} & Young;\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & Y.H.iTBS & Y\_iTBS\ldots{} & Young;\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & Y.H.iTBS & Y\_iTBS\ldots{} & Young;\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & Y.H.iTBS & Y\_iTBS\ldots{} & Young;\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & Y.H.iTBS & Y\_iTBS\ldots{} & Young;\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & AU.H.Sham & AU\_Sha\ldots{} & Aged;2\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & AU.H.Sham & AU\_Sha\ldots{} & Aged;2\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & AU.H.Sham & AU\_Sha\ldots{} & Aged;2\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & AU.H.Sham & AU\_Sha\ldots{} & Aged;2\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & AU.H.iTBS & AU\_iTB\ldots{} & Aged;2\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & AU.H.iTBS & AU\_iTB\ldots{} & Aged;2\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+GSM718\ldots{} & AU.H.iTBS & AU\_iTB\ldots{} & Aged;2\ldots{} & unimpa\ldots{} & 48 & Male & Long-E\ldots{} & Hippoc\ldots{} & Brain & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -638,8 +1202,24 @@ Figure \ref{fig:rTMS-All-DEGs-of-contrasts} (下方图) 为图rTMS All DEGs of c
 \hypertarget{rtms-ux548c-scinp-ux7684ux5173ux8054-1}{%
 \subsection{rTMS 和 SCI、NP 的关联}\label{rtms-ux548c-scinp-ux7684ux5173ux8054-1}}
 
-\hypertarget{rtms-ux6570ux636eux7684ux5deeux5f02ux57faux56e0ux4e0e-sig.codegs-ux7684ux5173ux8054ux6027}{%
-\subsubsection{rTMS 数据的差异基因与 sig.coDegs 的关联性}\label{rtms-ux6570ux636eux7684ux5deeux5f02ux57faux56e0ux4e0e-sig.codegs-ux7684ux5173ux8054ux6027}}
+\hypertarget{mapping}{%
+\subsubsection{rTMS 数据的差异基因与 sig.coDegs 的关联性}\label{mapping}}
+
+这里，首先将 rTMS 的差异基因对应到 SCI、NP 中的基因 (假设 rTMS 对大鼠和对人的基因转录的影响是相同的，改变相同的基因) ：
+
+`Mapping rTMS DEGs to SCI and NP dataset' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Mapping-rTMS-DEGs-to-SCI-and-NP-dataset})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Mapping-rTMS-DEGs-to-SCI-and-NP-dataset共包含2个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_gene.np.csv
+\item 2\_gene.sci.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+随后，进行关联分析：
 
 Figure \ref{fig:NP-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap} (下方图) 为图NP sigCoDEGs with rTMS DEGs correlation heatmap概览。
 
@@ -670,28 +1250,28 @@ Table \ref{tab:NP-sigCoDEGs-with-rTMS-DEGs-significant-correlation} (下方表�
 \begin{longtable}[]{@{}lllllll@{}}
 \caption{\label{tab:NP-sigCoDEGs-with-rTMS-DEGs-significant-correlation}NP sigCoDEGs with rTMS DEGs significant correlation}\tabularnewline
 \toprule
-From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+From & To & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+From & To & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
 \midrule
 \endhead
-CMC1 & UBXN10 & 0.58 & 0.0311 & 5.006\ldots{} & \textless{} 0.05 & *\tabularnewline
-SH3PXD2A & UBXN10 & -0.64 & 0.0142 & 6.137\ldots{} & \textless{} 0.05 & *\tabularnewline
-CTSS & LDLRAP1 & -0.61 & 0.0202 & 5.629\ldots{} & \textless{} 0.05 & *\tabularnewline
-SHISA8 & LDLRAP1 & 0.54 & 0.047 & 4.411\ldots{} & \textless{} 0.05 & *\tabularnewline
-SH3YL1 & ZFP69 & 0.55 & 0.0417 & 4.583\ldots{} & \textless{} 0.05 & *\tabularnewline
-CPM & ZFP69 & 0.56 & 0.0381 & 4.714\ldots{} & \textless{} 0.05 & *\tabularnewline
-LPAR6 & ZFP69 & 0.54 & 0.0451 & 4.470\ldots{} & \textless{} 0.05 & *\tabularnewline
-CLDN5 & ZFP69 & -0.57 & 0.0332 & 4.912\ldots{} & \textless{} 0.05 & *\tabularnewline
-CMC1 & FOXD2 & 0.58 & 0.0305 & 5.035\ldots{} & \textless{} 0.05 & *\tabularnewline
-PRF1 & FOXD2 & 0.6 & 0.0222 & 5.493\ldots{} & \textless{} 0.05 & *\tabularnewline
-GNGT2 & FOXD2 & 0.62 & 0.0186 & 5.748\ldots{} & \textless{} 0.05 & *\tabularnewline
-PDE4A & FOXD2 & 0.58 & 0.0299 & 5.063\ldots{} & \textless{} 0.05 & *\tabularnewline
-ADA & FOXD2 & 0.61 & 0.02 & 5.643\ldots{} & \textless{} 0.05 & *\tabularnewline
-PPT1 & PTGFR & 0.59 & 0.0254 & 5.299\ldots{} & \textless{} 0.05 & *\tabularnewline
-CTSS & PTGFR & 0.79 & 7e-04 & 10.48\ldots{} & \textless{} 0.001 & **\tabularnewline
+CMC1 & UBXN10 & 0.58 & 0.0311 & 5.00694160\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3PXD2A & UBXN10 & -0.64 & 0.0142 & 6.13796526\ldots{} & \textless{} 0.05 & *\tabularnewline
+CTSS & LDLRAP1 & -0.61 & 0.0202 & 5.62950089\ldots{} & \textless{} 0.05 & *\tabularnewline
+SHISA8 & LDLRAP1 & 0.54 & 0.047 & 4.41119543\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3YL1 & ZFP69 & 0.55 & 0.0417 & 4.58380880\ldots{} & \textless{} 0.05 & *\tabularnewline
+CPM & ZFP69 & 0.56 & 0.0381 & 4.71406519\ldots{} & \textless{} 0.05 & *\tabularnewline
+LPAR6 & ZFP69 & 0.54 & 0.0451 & 4.47072875\ldots{} & \textless{} 0.05 & *\tabularnewline
+CLDN5 & ZFP69 & -0.57 & 0.0332 & 4.91267294\ldots{} & \textless{} 0.05 & *\tabularnewline
+CMC1 & FOXD2 & 0.58 & 0.0305 & 5.03504694\ldots{} & \textless{} 0.05 & *\tabularnewline
+PRF1 & FOXD2 & 0.6 & 0.0222 & 5.49329651\ldots{} & \textless{} 0.05 & *\tabularnewline
+GNGT2 & FOXD2 & 0.62 & 0.0186 & 5.74855356\ldots{} & \textless{} 0.05 & *\tabularnewline
+PDE4A & FOXD2 & 0.58 & 0.0299 & 5.06371070\ldots{} & \textless{} 0.05 & *\tabularnewline
+ADA & FOXD2 & 0.61 & 0.02 & 5.64385618\ldots{} & \textless{} 0.05 & *\tabularnewline
+PPT1 & PTGFR & 0.59 & 0.0254 & 5.29902769\ldots{} & \textless{} 0.05 & *\tabularnewline
+CTSS & PTGFR & 0.79 & 7e-04 & 10.4803574\ldots{} & \textless{} 0.001 & **\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -725,28 +1305,28 @@ Table \ref{tab:SCI-sigCoDEGs-with-rTMS-DEGs-significant-correlation} (下方表�
 \begin{longtable}[]{@{}lllllll@{}}
 \caption{\label{tab:SCI-sigCoDEGs-with-rTMS-DEGs-significant-correlation}SCI sigCoDEGs with rTMS DEGs significant correlation}\tabularnewline
 \toprule
-From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+From & To & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-From & To & cor & pvalue & -log2\ldots{} & signi\ldots{} & sign\tabularnewline
+From & To & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
 \midrule
 \endhead
-PPT1 & CD40LG & -0.54 & 0.0173 & 5.853\ldots{} & \textless{} 0.05 & *\tabularnewline
-CPM & CD40LG & -0.52 & 0.0214 & 5.546\ldots{} & \textless{} 0.05 & *\tabularnewline
-KNOP1 & CD40LG & 0.54 & 0.017 & 5.878\ldots{} & \textless{} 0.05 & *\tabularnewline
-CNTLN & CD40LG & -0.49 & 0.0331 & 4.917\ldots{} & \textless{} 0.05 & *\tabularnewline
-SH3YL1 & CD40LG & 0.62 & 0.0046 & 7.764\ldots{} & \textless{} 0.05 & *\tabularnewline
-LIMS1 & CD40LG & -0.5 & 0.028 & 5.158\ldots{} & \textless{} 0.05 & *\tabularnewline
-MAP3K7CL & CD40LG & -0.52 & 0.0231 & 5.435\ldots{} & \textless{} 0.05 & *\tabularnewline
-SH3PXD2A & CD40LG & 0.61 & 0.0052 & 7.587\ldots{} & \textless{} 0.05 & *\tabularnewline
-ADA & F5 & -0.47 & 0.0425 & 4.556\ldots{} & \textless{} 0.05 & *\tabularnewline
-LDLR & F5 & -0.52 & 0.0228 & 5.454\ldots{} & \textless{} 0.05 & *\tabularnewline
-CPM & F5 & 0.52 & 0.021 & 5.573\ldots{} & \textless{} 0.05 & *\tabularnewline
-KNOP1 & F5 & -0.7 & 8e-04 & 10.28\ldots{} & \textless{} 0.001 & **\tabularnewline
-PDE4A & F5 & -0.5 & 0.0285 & 5.132\ldots{} & \textless{} 0.05 & *\tabularnewline
-CNTLN & F5 & 0.63 & 0.0036 & 8.117\ldots{} & \textless{} 0.05 & *\tabularnewline
-FLYWCH2 & F5 & 0.52 & 0.0237 & 5.398\ldots{} & \textless{} 0.05 & *\tabularnewline
+PPT1 & CD40LG & -0.54 & 0.0173 & 5.85308415\ldots{} & \textless{} 0.05 & *\tabularnewline
+CPM & CD40LG & -0.52 & 0.0214 & 5.54624539\ldots{} & \textless{} 0.05 & *\tabularnewline
+KNOP1 & CD40LG & 0.54 & 0.017 & 5.87832144\ldots{} & \textless{} 0.05 & *\tabularnewline
+CNTLN & CD40LG & -0.49 & 0.0331 & 4.91702497\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3YL1 & CD40LG & 0.62 & 0.0046 & 7.76415042\ldots{} & \textless{} 0.05 & *\tabularnewline
+LIMS1 & CD40LG & -0.5 & 0.028 & 5.15842936\ldots{} & \textless{} 0.05 & *\tabularnewline
+MAP3K7CL & CD40LG & -0.52 & 0.0231 & 5.43596333\ldots{} & \textless{} 0.05 & *\tabularnewline
+SH3PXD2A & CD40LG & 0.61 & 0.0052 & 7.58727266\ldots{} & \textless{} 0.05 & *\tabularnewline
+ADA & F5 & -0.47 & 0.0425 & 4.55639334\ldots{} & \textless{} 0.05 & *\tabularnewline
+LDLR & F5 & -0.52 & 0.0228 & 5.45482236\ldots{} & \textless{} 0.05 & *\tabularnewline
+CPM & F5 & 0.52 & 0.021 & 5.57346686\ldots{} & \textless{} 0.05 & *\tabularnewline
+KNOP1 & F5 & -0.7 & 8e-04 & 10.2877123\ldots{} & \textless{} 0.001 & **\tabularnewline
+PDE4A & F5 & -0.5 & 0.0285 & 5.13289427\ldots{} & \textless{} 0.05 & *\tabularnewline
+CNTLN & F5 & 0.63 & 0.0036 & 8.11778737\ldots{} & \textless{} 0.05 & *\tabularnewline
+FLYWCH2 & F5 & 0.52 & 0.0237 & 5.39896913\ldots{} & \textless{} 0.05 & *\tabularnewline
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -770,17 +1350,29 @@ Figure \ref{fig:RTMS-SCI-NP-correlated-sci-GO-enrichment} (下方图) 为图RTMS
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-TheDualRoleOSunC2023}{}%
+1. Sun, C. \emph{et al.} The dual role of microglia in neuropathic pain after spinal cord injury: Detrimental and protective effects. \emph{Experimental neurology} \textbf{370}, (2023).
+
+\leavevmode\hypertarget{ref-TranscranialMaNiZh2015}{}%
+2. Ni, Z. \& Chen, R. Transcranial magnetic stimulation to understand pathophysiology and as potential treatment for neurodegenerative diseases. \emph{Translational neurodegeneration} \textbf{4}, (2015).
+
+\leavevmode\hypertarget{ref-DifferentialEfAmeli2009}{}%
+3. Ameli, M. \emph{et al.} Differential effects of high-frequency repetitive transcranial magnetic stimulation over ipsilesional primary motor cortex in cortical and subcortical middle cerebral artery stroke. \emph{Annals of neurology} \textbf{66}, 298--309 (2009).
+
+\leavevmode\hypertarget{ref-ReductionOfInHiraya2006}{}%
+4. Hirayama, A. \emph{et al.} Reduction of intractable deafferentation pain by navigation-guided repetitive transcranial magnetic stimulation of the primary motor cortex. \emph{Pain} \textbf{122}, 22--27 (2006).
+
 \leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
-1. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+5. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
 
 \leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
-2. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+6. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
 
 \leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
-3. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+7. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
 
 \leavevmode\hypertarget{ref-ProfilingImmunMorris2023}{}%
-4. Morrison, D. \emph{et al.} Profiling immunological phenotypes in individuals during the first year after traumatic spinal cord injury: A longitudinal analysis. \emph{Journal of Neurotrauma} \textbf{40}, 2621--2637 (2023).
+8. Morrison, D. \emph{et al.} Profiling immunological phenotypes in individuals during the first year after traumatic spinal cord injury: A longitudinal analysis. \emph{Journal of Neurotrauma} \textbf{40}, 2621--2637 (2023).
 \end{cslreferences}
 
 \end{document}

@@ -27,18 +27,31 @@ set_index()
 
 # 摘要 {#abstract}
 
+为探究 rTMS 缓解 iSCI 所致 NP 的潜在机理，利用多组 RNA-seq 数据寻找潜在关联基因。结果见 \@ref(dis)
+
 ```{r}
-dic("H-MRS", "", "质子磁共振光谱法",
-  "GBP", "Gabapentin", "加巴喷丁",
-  "iSCI", "Incomplete spinal cord injury", "不完全性脊髓损伤",
-  "NP", "neuropathic pain", "神经病理性疼痛",
-  "rTMS", "repeat transcranial magnetic stimulation", "重复经颅磁刺激治疗"
+dic(di("质子磁共振光谱法", "", "H-MRS"),
+  di("加巴喷丁", "Gabapentin", "GBP"),
+  di("不完全性脊髓损伤", "Incomplete spinal cord injury", "iSCI"),
+  di("神经病理性疼痛", "neuropathic pain", "NP"),
+  di("重复经颅磁刺激治疗", "repeat transcranial magnetic stimulation", "rTMS")
 )
+
+# H-MRS:  质子磁共振光谱法
+# GBP: Gabapentin 加巴喷丁
+# iSCI: Incomplete spinal cord injury 不完全性脊髓损伤
+# NP: neuropathic pain 神经病理性疼痛
+# rTMS: repeat transcranial magnetic stimulation 重复经颅磁刺激治疗
 ```
 
-GEO 有 iSCI、NP、rTMS 各自的基因表达数据集，可以从三者之间的关联性寻找 rTMS 可能的疗效和机制
-
 # 前言 {#introduction}
+
+脊髓损伤 (SCI) 是一种使人衰弱的疾病，经常伴有神经性疼痛。尽管 SCI 后神经性疼痛的发病率很高，但其确切的潜在机制仍不完全清楚[@TheDualRoleOSunC2023]。
+经颅磁刺激（TMS）是一种无创、无痛的刺激人脑的方法。单脉冲和成对脉冲 TMS 范式是研究神经退行性疾病病理生理机制的有力方法[@TranscranialMaNiZh2015]。
+已有研究发现，`r d("rtms")` 刺激脑卒中患者病灶侧大脑半球运动区，发现其能减轻患者脑卒中后 `r d("np")` [@DifferentialEfAmeli2009; @ReductionOfInHiraya2006]。
+然而，目前未有研究阐述 rTMS 缓解 SCI 所致 NP 的机理。
+本研究借助分析公共 `r d("isci")`、`r d("np")` 和 `r d("rtms")` RNA-seq 数据集，探究 rTMS 缓解 iSCI 所致 NP 的潜在机理。
+
 
 # 材料和方法 {#methods}
 
@@ -56,15 +69,87 @@ auto_method()
 
 # 分析结果 {#results}
 
-## 不完全性脊髓损伤和神经病理性疼痛 (SCI) (NP)
+## `r d("isci")` 和 `r d("np")`
+
+筛选 GEO 数据库，获取 SCI (`r go.sci@object`) 和 NP (`r go.np@object`) 数据集 (来源 Homo sapiens，即，人类的 RNA-seq 数据集)，进行差异表达分析。SCI 数据集 (SCI vs control, Fig. \@ref(fig:MAIN-fig-1)a) 和 NP  数据集 (NP vs control, Fig. \@ref(fig:MAIN-fig-1)b) 的差异基因 (DEGs, p-value 或 adjust p-value &lt; 0.05, |log~2~(FC)| > 0.3) 交集如图 Fig. \@ref(fig:MAIN-fig-1)c 所示 (具体基因见 Fig. \@ref(fig:SCI-NP-coDEGs))。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-fig-1
+autor("./Figure+Table/fig1.pdf")
+```
+
+```{r}
+fig1 <- cl(
+  rw("./Figure+Table/SCI-sci-vs-control-DEGs.pdf",
+  "./Figure+Table/NP-NL-1-vs-Control-DEGs.pdf"),
+  rw("./Figure+Table/SCI-NP-coDEGs.pdf")
+)
+render(fig1)
+```
 
 ## SCI 和 NP 关联分析
 
-## 重复经颅磁刺激治疗 (rTMS) 
+将上述交集基因 (记为 coDEGs) 在 SCI 和 NP 各自的数据集进行关联分析 (Fig. \@ref(fig:MAIN-fig-2)a、b) ，筛选显著关联基因 (p-value &lt; 0.05) ，并将之合并 (sig-coDegs, 见 \@ref(sigCoDEGs)) 。我们发现，所有的 coDEGs 都属于 sig-coDegs，即，在 SCI 和 NP 数据集中，这些基因彼此都至少有一个显著关联的基因。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-fig-2
+autor("./Figure+Table/fig2.pdf")
+```
+
+```{r}
+fig2 <- cl(
+  rw("./Figure+Table/SCI-genes-correlation-heatmap.pdf",
+  "./Figure+Table/NP-genes-correlation-heatmap.pdf")
+)
+render(fig2)
+```
+
+## 重复经颅磁刺激治疗 (rTMS) {#res-rtms}
+
+为了探究 rTMS 刺激所致的大脑转录变化，本研究选用了 GEO 的 rTMS 数据集 (`r go.rtms@object`) (来源 Rattus norvegicus)。
+该数据集包含多种因素分组： 
+
+- Young, Y (age)
+- Aged, A (age)
+- Impaired, I (cognitive status)
+- Unimpaired, U (cognitive status)
+- Hippocampus, H (tissue region)
+- Parietal cortex, P (tissue, region)
+
+控制变量以差异分析 (Fig. \@ref(fig:MAIN-fig-3)) 。可以发现，rTMS 对大脑带来的主要转录变化发生于 Hippocampus，而对 Parietal cortex 几乎不造成转录影响。取 Fig. \@ref(fig:MAIN-fig-3) 的合集 (记为 rTMS-DEGs)。 
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-fig-3
+autor("./Figure+Table/fig3.pdf")
+```
+
+```{r}
+fig3 <- cl("./Figure+Table/rTMS-All-DEGs-of-contrasts.pdf")
+render(fig3)
+```
 
 ## rTMS 和 SCI、NP 的关联
 
+假设 rTMS 对人类和对大鼠大脑的影响是相似的，则我们可以把 \@ref(res-rtms) 的差异基因 (rTMS-DEGs) 对应到 SCI 和 NP 的数据集中 (见 \@ref(mapping)) 。随后，分别以 SCI 和 NP 数据集，对 sig-coDegs 基因集和 rTMS-DEGs 基因集进行关联分析 (Fig. \@ref(fig:MAIN-fig-4)a、b)。取显著关联的基因 (见 Tab. \@ref(tab:NP-sigCoDEGs-with-rTMS-DEGs-significant-correlation) 和 Tab. \@ref(tab:SCI-sigCoDEGs-with-rTMS-DEGs-significant-correlation))。为了挖掘这些关联基因对于 rTMS 于 SCI 和 NP 的潜在功能，我们对这些基因进行了 GO 富集分析。NP 中的关联基因没有富集到通路，而 SCI 的富集结果如图 Fig. \@ref(fig:MAIN-fig-4)c 所示。可以发现，这些基因主要与免疫细胞 (lymphocyte、leukocyte、B cell、T cell) 的行为相关，涉及免疫反应 。可以推测，rTMS 对于 SCI 所致的 NP 的缓解作用可能与调节免疫反应相关。
+
+注：The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-fig-4
+autor("./Figure+Table/fig4.pdf")
+```
+
+```{r}
+fig4 <- cl("./Figure+Table/NP-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap.pdf",
+  rw("./Figure+Table/SCI-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap.pdf",
+    "./Figure+Table/RTMS-SCI-NP-correlated-sci-GO-enrichment.pdf"))
+render(fig4)
+```
+
 # 结论 {#dis}
+
+- 本研究发现了一组 SCI 和 NP 中共同存在的 DEGs，并且这些基因相互显著关联。
+- rTMS 对大脑刺激会带来 Hippocampus 的转录变化，影响上述基因的转录；通路富集表明，影响的基因主要涉及免疫细胞行为和免疫反应 (Fig. \@ref(fig:MAIN-fig-4)c)。
 
 # 附：分析流程 {#workflow}
 
@@ -266,7 +351,12 @@ cp.np <- cal_corp(lm.np, NULL, degs.ins, degs.ins, use = "symbol")
 wrap(cp.np$hp, 10)
 ```
 
-### SCI 和 NP 数据集共同显著关联的基因集 sigCoDEGs
+### SCI 和 NP 数据集共同显著关联的基因集 sigCoDEGs {#sigCoDEGs}
+
+```{r eval = T, echo = F, results = "asis"}
+#| sig-coDegs
+autor(new_lich(list(`sig-coDEGs` = sig.coDegs)))
+```
 
 ```{r}
 fun <- function(...) {
@@ -335,7 +425,16 @@ lm.rtms@plots$step2$p.contrast_cols
 
 ## rTMS 和 SCI、NP 的关联
 
-### rTMS 数据的差异基因与 sig.coDegs 的关联性
+### rTMS 数据的差异基因与 sig.coDegs 的关联性 {#mapping}
+
+这里，首先将 rTMS 的差异基因对应到 SCI、NP 中的基因 (假设 rTMS 对大鼠和对人的基因转录的影响是相同的，改变相同的基因) ：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Mapping-rTMS-DEGs-to-SCI-and-NP-dataset
+autor(sigInHomo)
+```
+
+随后，进行关联分析：
 
 ```{r eval = T, echo = F, results = "asis"}
 #| NP-sigCoDEGs-with-rTMS-DEGs-correlation-heatmap
