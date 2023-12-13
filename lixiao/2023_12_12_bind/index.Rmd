@@ -32,6 +32,8 @@ dic("DEGs", "Differential Expressed Genes", "差异表达基因"
 )
 ```
 
+寻找 circRNA6783 与 miR-770-5p 的结合靶点，miR-770-5p 与 VRK2 的结合靶点
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -53,3 +55,24 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+<https://rnasysu.com/encori/>
+
+targetscan
+
+```{r}
+je <- job_esearch("circRNA miRNA interaction")
+grpf(je@object$Title, "interaction", ignore.case = T)
+
+filter(je@object, grpl(Title, "starBase"))
+
+je.n <- job_esearch("circRNA-miRNA")
+vis(je.n)
+
+```
+
+```{r}
+mart <- new_biomart()
+
+install.packages("refGenome") 
+```
