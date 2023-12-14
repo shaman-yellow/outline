@@ -11,9 +11,11 @@
     - `description`: 基因介绍
 - 统计值
     - `logFC`: 倍率变换，log~2~(Fold change)，Fold change 为两组基因表达值的商，例如，Group.A vs Group.B，则 A/B. (Estimate of the log2-fold-change corresponding to the effect or contrast)
+    - `log2FoldChange`: 倍率变换，log~2~(Fold change)，Fold change 为两组基因表达值的商，例如，Group.A vs Group.B，则 A/B. (Estimate of the log2-fold-change corresponding to the effect or contrast)
     - `AveExpr`: average log2-expression for the probe (Gene) over all arrays (Sample) and channels
     - `t`: moderated t-statistics.
     - `P.Value`: two-sided p-values corresponding to the t-statistics.
     - `adj.P.Val`: adjusted p-value
+    - `padj`: adjusted p-value
     - `B`: log-odds that the gene is differentially expressed
 

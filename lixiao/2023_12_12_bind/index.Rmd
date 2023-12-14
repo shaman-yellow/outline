@@ -28,8 +28,7 @@ set_index()
 # 摘要 {#abstract}
 
 ```{r}
-dic("DEGs", "Differential Expressed Genes", "差异表达基因"
-)
+dic("DEGs", "Differential Expressed Genes", "差异表达基因")
 ```
 
 寻找 circRNA6783 与 miR-770-5p 的结合靶点，miR-770-5p 与 VRK2 的结合靶点
@@ -56,12 +55,8 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
-<https://rnasysu.com/encori/>
-
-targetscan
-
 ```{r}
-je <- job_esearch("circRNA miRNA interaction")
+je <- job_esearch("circRNA-miRNA")
 grpf(je@object$Title, "interaction", ignore.case = T)
 
 filter(je@object, grpl(Title, "starBase"))
@@ -71,8 +66,37 @@ vis(je.n)
 
 ```
 
-```{r}
-mart <- new_biomart()
+## circRNA 结合 miRNA
 
-install.packages("refGenome") 
+<https://github.com/annadalmolin/CRAFT>
+
+## miRNA 结合 mRNA
+
+### 使用的序列 (Fasta)
+
+```{r eval = T, echo = F, results = "asis"}
+autor("./miranda2023-12-14_17_34_38.593871/")
+```
+
+### 预测结果
+
+```{r eval = T, echo = F, results = "asis"}
+#| MiRNA-bind-mRNA-overview-of-all-candidates
+autor(mi@plots$step2$p.overs)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| VRK2-Top-match
+autor(mi@plots$step2$p.tops$VRK2)
+```
+
+```{r}
+mi <- job_miranda("miR-770-5p", c("VRK2"))
+sig(mi) <- "miRNA-bind-mRNA"
+mi <- step1(mi)
+
+mi@step <- 1L
+mi <- step2(mi)
+mi@plots$step2$p.tops     
+mi@plots$step2$p.overs
 ```

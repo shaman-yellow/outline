@@ -1,0 +1,452 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge
+陈云杰测序数据分析++} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2023-12-14}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux5deeux5f02ux57faux56e0ux5206ux6790}{%
+\subsection{差异基因分析}\label{ux5deeux5f02ux57faux56e0ux5206ux6790}}
+
+结果见 \ref{all}
+
+\hypertarget{ux8fdbux4e00ux6b65ux5206ux6790}{%
+\subsection{进一步分析}\label{ux8fdbux4e00ux6b65ux5206ux6790}}
+
+\begin{itemize}
+\tightlist
+\item
+  取 N-M vs M 上调、Z-O-M vs N-M 上调、Z-K-M vs Z-O-M 下调基因交集可视化。
+
+  \begin{itemize}
+  \tightlist
+  \item
+    见 \ref{w2-t1}
+  \end{itemize}
+\item
+  取 N-M vs M 上调、Z-O-M vs N-M 上调交集基因富集分析。
+
+  \begin{itemize}
+  \tightlist
+  \item
+    见 \ref{w2-t2}
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{1}}
+\item
+  Limma and edgeR used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{2},\protect\hyperlink{ref-EdgerDifferenChen}{3}}
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux5143ux6570ux636e}{%
+\subsection{元数据}\label{ux5143ux6570ux636e}}
+
+Table \ref{tab:sample-metadata} (下方表格) 为表格sample metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/sample-metadata.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有12行2列，以下预览的表格可能省略部分数据；表格含有12个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample: 样品名称
+\item group: 分组名称
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:sample-metadata}Sample metadata}\tabularnewline
+\toprule
+sample & group\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sample & group\tabularnewline
+\midrule
+\endhead
+Count\_.M-1 & M\tabularnewline
+Count\_.M-2 & M\tabularnewline
+Count\_.M-3 & M\tabularnewline
+Count\_.N-M-1 & N\_M\tabularnewline
+Count\_.N-M-2 & N\_M\tabularnewline
+Count\_.N-M-3 & N\_M\tabularnewline
+Count\_.Z-O-M-1 & Z\_O\_M\tabularnewline
+Count\_.Z-O-M-2 & Z\_O\_M\tabularnewline
+Count\_.Z-O-M-3 & Z\_O\_M\tabularnewline
+Count\_.Z-K-M-1 & Z\_K\_M\tabularnewline
+Count\_.Z-K-M-2 & Z\_K\_M\tabularnewline
+Count\_.Z-K-M-3 & Z\_K\_M\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{all}{%
+\subsection{差异分析}\label{all}}
+
+\hypertarget{ux706bux5c71ux56fe}{%
+\subsubsection{火山图}\label{ux706bux5c71ux56fe}}
+
+`Volcano plot' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Volcano-plot})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Volcano-plot共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Z\_K\_M - N\_M.pdf
+\item 2\_Z\_O\_M - N\_M.pdf
+\item 3\_Z\_K\_M - Z\_O\_M.pdf
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux5deeux5f02ux57faux56e0}{%
+\subsubsection{差异基因}\label{ux5deeux5f02ux57faux56e0}}
+
+按照 \textbar log\textsubscript{2}(FC)\textbar{} \textgreater{} 0.03, P-value \textless{} 0.05 筛选 DEGs：
+
+`DEGs' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/DEGs共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Z\_K\_M - N\_M.csv
+\item 2\_Z\_O\_M - N\_M.csv
+\item 3\_Z\_K\_M - Z\_O\_M.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{workflow2}{%
+\section{附：进一步分析}\label{workflow2}}
+
+\hypertarget{n-m-vs-m-ux7ec4ux6570ux636e}{%
+\subsection{N-M vs M 组数据}\label{n-m-vs-m-ux7ec4ux6570ux636e}}
+
+注：N-M vs M 的数据取自测序公司的分析结果，并非上述分析 (\ref{all}) 所得，方法上可能有差异。
+
+N-M vs M 上调取: \textbar log\textsubscript{2}(FC)\textbar{} (log2FoldChange) \textgreater{} 0.03, adjusted P-value (padj) \textless{} 0.05
+
+Table \ref{tab:Source-NM-vs-M-data} (下方表格) 为表格Source NM vs M data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Source-NM-vs-M-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4324行14列，以下预览的表格可能省略部分数据；表格含有4324个唯一`gene\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item symbol: 基因或蛋白符号。
+\item pvalue: 显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Source-NM-vs-M-data}Source NM vs M data}\tabularnewline
+\toprule
+gene\_id & N-M\_re\ldots{} & M\_read\ldots{} & log2Fo\ldots{} & pvalue & padj & N-M-1 & N-M-2 & N-M-3 & M-1\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+gene\_id & N-M\_re\ldots{} & M\_read\ldots{} & log2Fo\ldots{} & pvalue & padj & N-M-1 & N-M-2 & N-M-3 & M-1\tabularnewline
+\midrule
+\endhead
+ENSG00\ldots{} & 3365.97 & 168.56 & 4.3215 & 4.6753\ldots{} & 1.1787\ldots{} & 27.981\ldots{} & 26.642\ldots{} & 23.652\ldots{} & 1.2021\ldots{}\tabularnewline
+ENSG00\ldots{} & 4199.47 & 92.13 & 5.5128 & 2.7715\ldots{} & 3.4937\ldots{} & 60.455\ldots{} & 42.834\ldots{} & 24.984\ldots{} & 0.8167\ldots{}\tabularnewline
+ENSG00\ldots{} & 15.07 & 2400.45 & -7.3158 & 3.9538\ldots{} & 3.3227\ldots{} & 0.0438\ldots{} & 0.0320\ldots{} & 0.0384\ldots{} & 12.583\ldots{}\tabularnewline
+ENSG00\ldots{} & 147.49 & 3264.66 & -4.4688 & 7.0628\ldots{} & 4.4515\ldots{} & 1.4207\ldots{} & 3.7049\ldots{} & 3.4416\ldots{} & 61.869\ldots{}\tabularnewline
+ENSG00\ldots{} & 65955.39 & 5078.61 & 3.699 & 1.2619\ldots{} & 6.3627\ldots{} & 204.29\ldots{} & 291.06\ldots{} & 173.27\ldots{} & 19.678\ldots{}\tabularnewline
+ENSG00\ldots{} & 5062.63 & 397.68 & 3.6705 & 2.825e-34 & 1.187e-30 & 19.294\ldots{} & 25.215\ldots{} & 16.449\ldots{} & 1.7147\ldots{}\tabularnewline
+ENSG00\ldots{} & 10668.43 & 1186.39 & 3.1686 & 6.4503\ldots{} & 2.3231\ldots{} & 29.626\ldots{} & 47.622\ldots{} & 31.720\ldots{} & 3.9347\ldots{}\tabularnewline
+ENSG00\ldots{} & 30.33 & 523.44 & -4.1091 & 1.2134\ldots{} & 3.824e-25 & 0.3787\ldots{} & 0.3508\ldots{} & 0.3640\ldots{} & 6.2172\ldots{}\tabularnewline
+ENSG00\ldots{} & 249.53 & 2683.41 & -3.4276 & 2.3189\ldots{} & 6.4959\ldots{} & 1.7546\ldots{} & 1.6100\ldots{} & 2.2335\ldots{} & 14.101\ldots{}\tabularnewline
+ENSG00\ldots{} & 63.41 & 1341.53 & -4.4039 & 6.0081\ldots{} & 1.5147\ldots{} & 0.2705\ldots{} & 0.4045\ldots{} & 0.4096\ldots{} & 7.6234\ldots{}\tabularnewline
+ENSG00\ldots{} & 72.37 & 1935.8 & -4.7441 & 1.1484\ldots{} & 2.6321\ldots{} & 1.5756\ldots{} & 2.5555\ldots{} & 3.7379\ldots{} & 31.653\ldots{}\tabularnewline
+ENSG00\ldots{} & 1902.56 & 153.47 & 3.6331 & 3.0773\ldots{} & 6.4651\ldots{} & 5.2568\ldots{} & 4.4495\ldots{} & 3.7893\ldots{} & 0.3906\ldots{}\tabularnewline
+ENSG00\ldots{} & 471.51 & 4670.83 & -3.3081 & 1.0975\ldots{} & 2.1284\ldots{} & 8.2448\ldots{} & 6.5732\ldots{} & 6.3058\ldots{} & 49.982\ldots{}\tabularnewline
+ENSG00\ldots{} & 1439.36 & 113.34 & 3.6665 & 6.7856\ldots{} & 1.2219\ldots{} & 6.7058\ldots{} & 10.766\ldots{} & 5.2679\ldots{} & 0.6395\ldots{}\tabularnewline
+ENSG00\ldots{} & 40.59 & 1629.34 & -5.3345 & 3.5876\ldots{} & 6.0297\ldots{} & 0.2881\ldots{} & 1.2878\ldots{} & 2.4561\ldots{} & 33.419\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{w2-t1}{%
+\subsection{N-M vs M 上调、Z-O-M vs N-M 上调、Z-K-M vs Z-O-M 下调}\label{w2-t1}}
+
+Figure \ref{fig:Three-sets-intersection} (下方图) 为图Three sets intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Three-sets-intersection.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Three-sets-intersection.pdf}
+\caption{Three sets intersection}\label{fig:Three-sets-intersection}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    POGLUT3, ALCAM, GUCY1B1, GCNT4, CTSO, CNTN3, ITGA8
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Three-sets-intersection-content})}
+
+\hypertarget{w2-t2}{%
+\subsection{N-M vs M 上调、Z-O-M vs N-M 上调交集}\label{w2-t2}}
+
+\hypertarget{kegg}{%
+\subsubsection{KEGG}\label{kegg}}
+
+Figure \ref{fig:Two-sets-KEGG-enrichment} (下方图) 为图Two sets KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Two-sets-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Two-sets-KEGG-enrichment.pdf}
+\caption{Two sets KEGG enrichment}\label{fig:Two-sets-KEGG-enrichment}
+\end{center}
+
+Table \ref{tab:Two-sets-KEGG-enrichment-data} (下方表格) 为表格Two sets KEGG enrichment data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Two-sets-KEGG-enrichment-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有51行9列，以下预览的表格可能省略部分数据；表格含有51个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue: 显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:Two-sets-KEGG-enrichment-data}Two sets KEGG enrichment data}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa04142 & Lysosome & 2/11 & 132/8644 & 0.0116\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 1519/2581 & 2\tabularnewline
+hsa04514 & Cell a\ldots{} & 2/11 & 158/8644 & 0.0163\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 214/8516 & 2\tabularnewline
+hsa01523 & Antifo\ldots{} & 1/11 & 30/8644 & 0.0375\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 9429 & 1\tabularnewline
+hsa00512 & Mucin \ldots{} & 1/11 & 36/8644 & 0.0448\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 51301 & 1\tabularnewline
+hsa02010 & ABC tr\ldots{} & 1/11 & 45/8644 & 0.0558\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 9429 & 1\tabularnewline
+hsa00600 & Sphing\ldots{} & 1/11 & 54/8644 & 0.0666\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 2581 & 1\tabularnewline
+hsa05134 & Legion\ldots{} & 1/11 & 56/8644 & 0.0690\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 834 & 1\tabularnewline
+hsa00480 & Glutat\ldots{} & 1/11 & 57/8644 & 0.0702\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 493869 & 1\tabularnewline
+hsa04730 & Long-t\ldots{} & 1/11 & 60/8644 & 0.0737\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 2983 & 1\tabularnewline
+hsa05014 & Amyotr\ldots{} & 2/11 & 364/8644 & 0.0756\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 834/49\ldots{} & 2\tabularnewline
+hsa00140 & Steroi\ldots{} & 1/11 & 62/8644 & 0.0761\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 1646 & 1\tabularnewline
+hsa04924 & Renin \ldots{} & 1/11 & 69/8644 & 0.0844\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 2983 & 1\tabularnewline
+hsa05204 & Chemic\ldots{} & 1/11 & 70/8644 & 0.0856\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 1646 & 1\tabularnewline
+hsa04623 & Cytoso\ldots{} & 1/11 & 75/8644 & 0.0914\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 834 & 1\tabularnewline
+hsa04918 & Thyroi\ldots{} & 1/11 & 75/8644 & 0.0914\ldots{} & 0.2356\ldots{} & 0.2285\ldots{} & 493869 & 1\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{go}{%
+\subsubsection{GO}\label{go}}
+
+Figure \ref{fig:Two-sets-GO-enrichment} (下方图) 为图Two sets GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Two-sets-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Two-sets-GO-enrichment.pdf}
+\caption{Two sets GO enrichment}\label{fig:Two-sets-GO-enrichment}
+\end{center}
+
+Table \ref{tab:Two-sets-GO-enrichment-data} (下方表格) 为表格Two sets GO enrichment data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Two-sets-GO-enrichment-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有717行10列，以下预览的表格可能省略部分数据；表格含有3个唯一`ont'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue: 显著性 P。
+\item ont: One of "BP", "MF", and "CC" subontologies. The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Two-sets-GO-enrichment-data}Two sets GO enrichment data}\tabularnewline
+\toprule
+ont & ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ont & ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+BP & \url{GO:000}\ldots{} & mesode\ldots{} & 2/26 & 75/18614 & 0.0048\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 8516/6862 & 2\tabularnewline
+BP & \url{GO:004}\ldots{} & mesode\ldots{} & 2/26 & 77/18614 & 0.0051\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 8516/6862 & 2\tabularnewline
+BP & \url{GO:000}\ldots{} & protei\ldots{} & 2/26 & 99/18614 & 0.0083\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 51301/\ldots{} & 2\tabularnewline
+BP & \url{GO:000}\ldots{} & integr\ldots{} & 2/26 & 112/18614 & 0.0106\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 8516/5764 & 2\tabularnewline
+BP & \url{GO:199}\ldots{} & cellul\ldots{} & 2/26 & 115/18614 & 0.0111\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 9429/4\ldots{} & 2\tabularnewline
+BP & \url{GO:000}\ldots{} & memory & 2/26 & 124/18614 & 0.0128\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 8516/5764 & 2\tabularnewline
+BP & \url{GO:009}\ldots{} & cellul\ldots{} & 2/26 & 124/18614 & 0.0128\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 9429/4\ldots{} & 2\tabularnewline
+BP & \url{GO:000}\ldots{} & icosan\ldots{} & 2/26 & 125/18614 & 0.0130\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 1646/834 & 2\tabularnewline
+BP & \url{GO:000}\ldots{} & format\ldots{} & 2/26 & 127/18614 & 0.0134\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 8516/6862 & 2\tabularnewline
+BP & \url{GO:001}\ldots{} & protei\ldots{} & 1/26 & 10/18614 & 0.0138\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 143888 & 1\tabularnewline
+BP & \url{GO:003}\ldots{} & polyke\ldots{} & 1/26 & 10/18614 & 0.0138\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 1646 & 1\tabularnewline
+BP & \url{GO:003}\ldots{} & aminog\ldots{} & 1/26 & 10/18614 & 0.0138\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 1646 & 1\tabularnewline
+BP & \url{GO:004}\ldots{} & doxoru\ldots{} & 1/26 & 10/18614 & 0.0138\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 1646 & 1\tabularnewline
+BP & \url{GO:014}\ldots{} & dendri\ldots{} & 1/26 & 10/18614 & 0.0138\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 5764 & 1\tabularnewline
+BP & \url{GO:200}\ldots{} & positi\ldots{} & 1/26 & 10/18614 & 0.0138\ldots{} & 0.2203\ldots{} & 0.1821\ldots{} & 5764 & 1\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+1. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+2. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+3. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+\end{cslreferences}
+
+\end{document}

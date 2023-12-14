@@ -1,0 +1,224 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \definecolor{shadecolor}{RGB}{242,242,242}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
+---
+
+
+```{r include = F}
+deparse_mail()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic("DEGs", "Differential Expressed Genes", "差异表达基因")
+```
+
+## 差异基因分析
+
+结果见 \@ref(all)
+
+## 进一步分析
+
+- 取 N-M vs M 上调、Z-O-M vs N-M 上调、Z-K-M vs Z-O-M 下调基因交集可视化。
+    - 见 \@ref(w2-t1)
+- 取 N-M vs M 上调、Z-O-M vs N-M 上调交集基因富集分析。
+    - 见 \@ref(w2-t2)
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 元数据
+
+```{r eval = T, echo = F, results = "asis"}
+#| sample-metadata
+autor(metadata)
+```
+
+```{r}
+dir <- "/media/echo/My Passport/陈云杰转录组测序/下载FDrive 分享链接文件：YAS202310250040-1/YAS202310250040-1/YAS202310250040-1_lims/YAS202310250040-1_lims"
+
+counts <- fxlsx("/media/echo/My Passport/陈云杰转录组测序/下载FDrive 分享链接文件：YAS202310250040-1/YAS202310250040-1/YAS202310250040-1_lims/YAS202310250040-1_lims/3_1_FPKM_Calculation/Allgene_info.xlsx")
+counts <- dplyr::select(counts, gene_id, symbol, description, dplyr::starts_with("Count_"))
+counts
+
+metadata <- group_strings(grpf(colnames(counts), "^Count_"),
+  c(M = "\\.M-[0-9]", N_M = "\\.N-M-[0-9]", Z_O_M = "\\.Z-O-M-[0-9]", Z_K_M = "\\.Z-K-M-[0-9]"),
+  target = "sample"
+)
+
+genes <- select(counts, gene_id, symbol, description)
+```
+
+## 差异分析 {#all}
+
+```{r}
+lm.sam <- job_limma(new_dge(metadata, counts, genes))
+lm.sam <- step1(lm.sam)
+lm.sam@plots$step1$p.filter
+lm.sam <- step2(lm.sam, label = "symbol", Z_K_M - N_M, Z_O_M - N_M, Z_K_M - Z_O_M, use = "P")
+lm.sam@plots$step2$p.contrast_cols
+```
+
+### 火山图
+
+```{r eval = T, echo = F, results = "asis"}
+#| Volcano-plot
+autor(lm.sam@plots$step2$p.valcano)
+```
+
+### 差异基因
+
+按照 |log~2~(FC)| &gt; 0.03, P-value &lt; 0.05 筛选 DEGs：
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs
+autor(lm.sam@tables$step2$tops)
+```
+
+```{r}
+load("../2023_12_12_chengyunjie/small.rdata")
+```
+
+# 附：进一步分析 {#workflow2}
+
+```{r}
+save_small(100)
+```
+
+## N-M vs M 组数据 
+
+注：N-M vs M 的数据取自测序公司的分析结果，并非上述分析 (\@ref(all)) 所得，方法上可能有差异。
+
+N-M vs M 上调取: |log~2~(FC)| (log2FoldChange) &gt; 0.03, adjusted P-value (padj) &lt; 0.05
+
+```{r eval = T, echo = F, results = "asis"}
+#| Source-NM-vs-M-data
+autor(nm2m)
+```
+
+```{r}
+nm2m <- fxlsx("/media/echo/My Passport/陈云杰转录组测序/下载FDrive 分享链接文件：YAS202310250040-1/YAS202310250040-1/YAS202310250040-1_lims/YAS202310250040-1_lims/11_DEG_pvalue_result/11_1_GeneDiffAnalysis_result/N-M_vs_M/DEG_list/DEG.xlsx")
+
+nm2m.u <- dplyr::filter(nm2m, log2FoldChange > 0, padj < .05)$symbol
+```
+
+## N-M vs M 上调、Z-O-M vs N-M 上调、Z-K-M vs Z-O-M 下调 {#w2-t1}
+
+```{r eval = T, echo = F, results = "asis"}
+#| Three-sets-intersection
+autor(p.upset_uud)
+```
+
+```{r}
+lm.sam@tables$step2$tops
+lm.sam <- step3(lm.sam, use.gene = "symbol")
+
+lst.uud <- lm.sam@params$sets_intersection %>% 
+  .[ names(.) %in% c("Z_O_M - N_M.up", "Z_K_M - Z_O_M.down") ]
+lst.uud <- c(lst.uud, list(`N_M - M.up` = nm2m.u))
+lst.uud <- lapply(lst.uud, function(x) x[ x!= "-" ])
+names(lst.uud) %<>% gs(" - ", " vs ")
+
+p.upset_uud <- new_upset(lst = lst.uud)
+attr(p.upset_uud, "lich") <- new_lich(list(All_intersection = ins(lst = lst.uud)))
+```
+
+## N-M vs M 上调、Z-O-M vs N-M 上调交集 {#w2-t2}
+
+### KEGG
+
+```{r eval = T, echo = F, results = "asis"}
+#| Two-sets-KEGG-enrichment
+autor(en@plots$step1$p.kegg[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Two-sets-KEGG-enrichment-data
+autor(en@tables$step1$res.kegg[[1]])
+```
+
+### GO
+
+```{r eval = T, echo = F, results = "asis"}
+#| Two-sets-GO-enrichment
+autor(en@plots$step1$p.go[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Two-sets-GO-enrichment-data
+autor(en@tables$step1$res.go[[1]])
+```
+
+```{r}
+en <- job_enrich(list(`Two-sets` = ins(lst = lst.uud[1:2])))
+en <- step1(en)
+
+en@plots$step1$p.kegg
+en@plots$step1$p.go$ids
+en@tables$step1$res.kegg
+```
+
