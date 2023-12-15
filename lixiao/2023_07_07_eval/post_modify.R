@@ -18,7 +18,7 @@ info <- items(
   title = "筛出（瘢痕增生）能够与 TCF-AS1 结合又能与 TCF4 结合的 RNA 结合蛋白",
   status = "完成",
   coef = .34,
-  date = "2023-07-18",
+  date = "2023-08-18",
   info = od_get_info(),
   id = "IN2023072803",
   receive_date = od_get_date(),
