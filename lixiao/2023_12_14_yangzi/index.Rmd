@@ -31,9 +31,19 @@ set_index()
 
 # 摘要 {#abstract}
 
+<https://old.tcmsp-e.com/>
+<https://tcmsp-e.com/>
+
+- 白芍总苷 Total glucosides of paeony 中主要化学成分10-20个（TCMSP筛选下口服利用度等）及各个化学成分对应的作用靶点（gene与AR过敏性鼻炎相关），最终形成drug-chemical-target gene靶点图
+- 将获得的靶点进行GO, KEGG富集分析，目标靶点为USP5，关联成分为芍药苷Paeoniflorin
+- 将芍药苷pae单独拎出，形成pae-targets-pathway网络，此处形成的target genes的GO、KEGG富集图也需要，备注USP5参与哪些部分（功能、通路）
+- 分子对接模拟芍药苷与USP5互作
+- 转至第2步目标靶点为SOX18，关联成分为芍药苷Paeoniflorin
+- 第3步中备注SOX18参与哪些部分（功能、通路）
+- 分子对接模拟芍药苷与SOX18互作
+
 ```{r}
-dic("DEGs", "Differential Expressed Genes", "差异表达基因"
-)
+dic(di("白芍总苷", "Total glucosides of paeony", "TGP"))
 ```
 
 # 前言 {#introduction}
@@ -57,3 +67,12 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+
+
+```{r}
+hb <- job_herb("白芍")
+hb <- step1(hb)
+hb@tables$step1$herbs_compounds %>% filter(grpl(Ingredient.name, "glucose$", ignore.case = T))
+hb <- step2(hb)
+```

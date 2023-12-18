@@ -1,0 +1,122 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(12), coef = NA)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+Model vs Control
+
+Route:
+
+DEGs -> eQTL -> SNP -> GWAS -> Metabolites and Microbiota
+
+## genes (GWAS) and Metabolites
+
+Mendelian randomization analyses support causal relationships between blood
+metabolites and the gut microbiome
+[@MendelianRandoLiuX2022]
+
+## Gallstones genes metabolites
+
+## GWAS (SNP) and metabolites
+
+An atlas of genetic influences on human blood metabolites
+<https://pubmed.ncbi.nlm.nih.gov/24816252/>
+
+## Gallstones 16s (and metabolites)
+
+<https://pubmed.ncbi.nlm.nih.gov/?term=gallstones%2016s&filter=datesearch.y_10>
+
+Metagenomics of pigmented and cholesterol gallstones: the putative role of bacteria
+<https://trace.ncbi.nlm.nih.gov/Traces/?view=study&acc=SRP136827>
+
+Changes and Correlations of the Intestinal Flora and Liver Metabolite Profiles in Mice With Gallstones
+<https://www.ncbi.nlm.nih.gov/bioproject/PRJNA736820/>
+tables
+<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8416897/>
+
+Carrying asymptomatic gallstones is not associated with changes in intestinal
+microbiota composition and diversity but cholecystectomy with significant
+dysbiosis
+<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7988160/>
+
+[@InteractionsBeKeren2015]
+Interactions between the intestinal microbiota and bile acids in gallstones patients
+
+Biliary Microbiota and Bile Acid Composition in Cholelithiasis
+<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7352139/>
+16s RNA seq
+<https://www.ebi.ac.uk/ena/browser/view/PRJEB12755>
+
+Patients with Primary and Secondary Bile Duct Stones Harbor Distinct Biliary
+Microbial Composition and Metabolic Potential
+<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9082501/>
+16s 
+<https://www.ncbi.nlm.nih.gov/bioproject/PRJNA580086/>
+
+Biliary Microbial Structure of Gallstone Patients With a History of Endoscopic Sphincterotomy Surgery
+16s
+bile microbiome
+<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7873689/>
+
+```{r}
+dic(di("胆结石"),
+  di("胆固醇"),
+  di("蛋白质组学"),
+  di(en = "Cholesterol Gallstone Disease")
+)
+
+# G: gallstones 胆结石
+# C: cholesterol 胆固醇
+# P: proteomics 蛋白质组学
+# CGD: Cholesterol Gallstone Disease 胆固醇胆结石疾病
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
