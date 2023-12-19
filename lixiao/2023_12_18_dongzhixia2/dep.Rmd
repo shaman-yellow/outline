@@ -1,0 +1,7 @@
+
+
+```{r}
+og <- job_ogwas("stones")
+og@step <- 0L
+og <- step1(og, "ieu-a-298")
+```

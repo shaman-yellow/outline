@@ -120,3 +120,28 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+```{r}
+eq <- job_edqtl("eqtl")
+eq <- step1(eq, "Liver")
+eq <- step2(eq)
+```
+
+```{r}
+lm.l <- readRDS("../2023_11_07_dongzhixia/lm.l3.rds")
+lm.l@plots$step2$p.valcano[[1]]
+lm.l@tables$step2$tops[[1]]
+l.tops <- lm.l@tables$step2$tops[[1]]
+```
+
+```{r}
+l.inset <- filter(eq@params$use.eq, hgnc_symbol %in% toupper(l.tops$mgi_symbol))
+l.inset
+```
+
+```{r}
+pb.mr <- get_data.mrlx2022()
+filter(pb.mr@object$snp_microbiota, variant_id %in% unique(l.inset$variant_id))
+filter(pb.mr@object$snp_metabolite, variant_id %in% unique(l.inset$variant_id))
+```
+

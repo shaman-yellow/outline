@@ -243,6 +243,9 @@ lm.l@plots$step2$p.valcano[[2]]
 lm.l <- step3(lm.l, use.gene = "mgi_symbol")
 lm.l@plots$step3$p.sets_intersection
 lm.l@params$guess_use
+
+lm.l <- upd(lm.l)
+clear(lm.l)
 ```
 
 ### GSEA 富集分析
@@ -371,6 +374,8 @@ lm.t@plots$step2$p.valcano[[1]]
 lm.t@plots$step2$p.valcano[[2]]
 lm.t <- step3(lm.t, use.gene = "mgi_symbol")
 lm.t@params$guess_use
+lm.t <- upd(lm.t)
+clear(lm.t)
 ```
 
 ### GSEA 富集分析

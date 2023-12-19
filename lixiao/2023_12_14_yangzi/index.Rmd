@@ -76,3 +76,7 @@ hb <- step1(hb)
 hb@tables$step1$herbs_compounds %>% filter(grpl(Ingredient.name, "glucose$", ignore.case = T))
 hb <- step2(hb)
 ```
+
+```{r}
+
+```
