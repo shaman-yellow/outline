@@ -75,6 +75,7 @@ hb <- job_herb("白芍")
 hb <- step1(hb)
 hb@tables$step1$herbs_compounds %>% filter(grpl(Ingredient.name, "glucose$", ignore.case = T))
 hb <- step2(hb)
+cpds <- unique(hb@tables$step2$compounds_targets$Ingredient_id)
 ```
 
 ```{r}

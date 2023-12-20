@@ -138,6 +138,10 @@ cp("~/outline/lixiao/2023_11_21_xiezhuWang/协助业务：A2023060507-c+客户�
 cp("~/outline/lixiao/2023_11_27_caozhuoEx/曹卓三个补充订单.zip", thedir(11))
 
 move_rds("~/outline/lixiao/2023_11_01_rnaedit", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_10_12_dr", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_11_14_caozhuo", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_11_21_xiezhuWang", "~/disk_sdb1")
+move_rds("~/outline/lixiao/2023_11_06_coa", "~/disk_sdb1")
 ```
 
 Eval:
@@ -150,5 +154,5 @@ Eval:
 ## 2023-12
 
 ```{r}
-cp(, thedir(12))
+backup_jobs(alls)
 ```

@@ -37,54 +37,20 @@ Route:
 
 DEGs -> eQTL -> SNP -> GWAS -> Metabolites and Microbiota
 
-## genes (GWAS) and Metabolites
-
-Mendelian randomization analyses support causal relationships between blood
-metabolites and the gut microbiome
-[@MendelianRandoLiuX2022]
-
-## Gallstones genes metabolites
-
-## GWAS (SNP) and metabolites
-
-An atlas of genetic influences on human blood metabolites
-<https://pubmed.ncbi.nlm.nih.gov/24816252/>
-
 ## Gallstones 16s (and metabolites)
 
-<https://pubmed.ncbi.nlm.nih.gov/?term=gallstones%2016s&filter=datesearch.y_10>
+### Human
 
-Metagenomics of pigmented and cholesterol gallstones: the putative role of bacteria
-<https://trace.ncbi.nlm.nih.gov/Traces/?view=study&acc=SRP136827>
+[@GutMicrobiotaHuHa2022]
+Gut microbiota promotes cholesterol gallstone formation by modulating bile acid composition and biliary cholesterol secretion
+<https://www.ncbi.nlm.nih.gov/Traces/study/?query_key=3&WebEnv=MCID_6582888ced1ec968fda6f29f&o=acc_s%3Aa>
+
+### Mice
 
 Changes and Correlations of the Intestinal Flora and Liver Metabolite Profiles in Mice With Gallstones
 <https://www.ncbi.nlm.nih.gov/bioproject/PRJNA736820/>
 tables
 <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8416897/>
-
-Carrying asymptomatic gallstones is not associated with changes in intestinal
-microbiota composition and diversity but cholecystectomy with significant
-dysbiosis
-<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7988160/>
-
-[@InteractionsBeKeren2015]
-Interactions between the intestinal microbiota and bile acids in gallstones patients
-
-Biliary Microbiota and Bile Acid Composition in Cholelithiasis
-<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7352139/>
-16s RNA seq
-<https://www.ebi.ac.uk/ena/browser/view/PRJEB12755>
-
-Patients with Primary and Secondary Bile Duct Stones Harbor Distinct Biliary
-Microbial Composition and Metabolic Potential
-<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9082501/>
-16s 
-<https://www.ncbi.nlm.nih.gov/bioproject/PRJNA580086/>
-
-Biliary Microbial Structure of Gallstone Patients With a History of Endoscopic Sphincterotomy Surgery
-16s
-bile microbiome
-<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7873689/>
 
 ```{r}
 dic(di("胆结石"),
@@ -121,11 +87,7 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
-```{r}
-eq <- job_edqtl("eqtl")
-eq <- step1(eq, "Liver")
-eq <- step2(eq)
-```
+## 差异表达基因
 
 ```{r}
 lm.l <- readRDS("../2023_11_07_dongzhixia/lm.l3.rds")
@@ -134,14 +96,83 @@ lm.l@tables$step2$tops[[1]]
 l.tops <- lm.l@tables$step2$tops[[1]]
 ```
 
+## DEGs 从 Mouce 到 Human
+
+## edQTL 数据: 寻找基因表达变化 (DEGs) 和突变 (SNP) 的关联 
+
+```{r}
+eq <- job_edqtl("eqtl")
+eq <- step1(eq, "Liver")
+eq <- step2(eq)
+```
+
 ```{r}
 l.inset <- filter(eq@params$use.eq, hgnc_symbol %in% toupper(l.tops$mgi_symbol))
 l.inset
 ```
 
+## GWAS 数据：寻找与突变类型显著关联的肠道微生物或代谢物
+
 ```{r}
 pb.mr <- get_data.mrlx2022()
-filter(pb.mr@object$snp_microbiota, variant_id %in% unique(l.inset$variant_id))
+pb.mr.mc <- filter(pb.mr@object$snp_microbiota, variant_id %in% unique(l.inset$variant_id))
 filter(pb.mr@object$snp_metabolite, variant_id %in% unique(l.inset$variant_id))
 ```
 
+## 肠道菌和代谢物关联数据库筛选
+
+```{r}
+gm <- job_gutmd()
+gm <- step1(gm, pb.mr.mc$.gutmd_pattern)
+```
+
+## 已有的 `r d("g")` 的微生物和代谢物关联研究
+
+## `r d("g")`差异微生物
+
+### 获取数据和元数据
+
+```{r}
+sra <- job_sra("PRJNA773136")
+sra <- step1(sra)
+sra@params$info %<>% dplyr::filter(grpl(SampleName, "^H_"))
+sra <- step2(sra)
+sra <- step3(sra)
+sra$info <- dplyr::mutate(sra$info, SampleName = LibraryName)
+sra <- step4(sra)
+sra$metadata <- dplyr::mutate(sra$metadata, group = ifelse(grpl(`sample-id`, "GSF$"), "Control", "Disease"))
+```
+
+### Qiime2
+
+```{r}
+qi <- asjob_qiime(sra)
+qi <- step1(qi)
+qi <- step2(qi, 220, 150)
+qi <- step3(qi)
+qi@plots$step3[[2]]
+qi <- step4(qi, 1)
+qi@plots$step4$weighted_unifrac_emperor
+qi <- step5(qi, 240)
+qi@plots$step5$diversity_beta_group_significant$weighted_unifrac_group_significance
+qi <- step6(qi)
+qi@plots$step6[[1]]
+clear(qi)
+```
+
+```{r}
+save.image()
+```
+
+### MicrobiotaProcess
+
+```{r}
+mp <- asjob_mp(qi)
+mp <- step1(mp)
+mp@plots$step1$p.alpha_index
+mp <- step2(mp)
+mp@plots$step2$p.rel_abundance$Species
+mp <- step3(mp)
+mp@plots$step3$p.hier
+mp <- step4(mp)
+```
