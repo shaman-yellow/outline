@@ -39,12 +39,6 @@ DEGs -> eQTL -> SNP -> GWAS -> Metabolites and Microbiota
 
 ## Gallstones 16s (and metabolites)
 
-### Human
-
-[@GutMicrobiotaHuHa2022]
-Gut microbiota promotes cholesterol gallstone formation by modulating bile acid composition and biliary cholesterol secretion
-<https://www.ncbi.nlm.nih.gov/Traces/study/?query_key=3&WebEnv=MCID_6582888ced1ec968fda6f29f&o=acc_s%3Aa>
-
 ### Mice
 
 Changes and Correlations of the Intestinal Flora and Liver Metabolite Profiles in Mice With Gallstones
@@ -93,10 +87,30 @@ auto_method()
 lm.l <- readRDS("../2023_11_07_dongzhixia/lm.l3.rds")
 lm.l@plots$step2$p.valcano[[1]]
 lm.l@tables$step2$tops[[1]]
-l.tops <- lm.l@tables$step2$tops[[1]]
+
+ge <- asjob_gsea(lm.l)
+ge <- step1(ge, org.Mm.eg.db::org.Mm.eg.db, "mmu")
 ```
 
-## DEGs 从 Mouce 到 Human
+## DEGs 从 Mouce 到 Human 映射
+
+```{r}
+l.tops <- lm.l@tables$step2$tops[[1]]
+
+mart.mmu <- new_biomart("mmu", host = "https://dec2021.archive.ensembl.org/")
+mart.hsa <- new_biomart("hsa", host = "https://dec2021.archive.ensembl.org/")
+
+x <- biomaRt::getLDS("mgi_symbol",
+  filters = "mgi_symbol",
+  values = rm.no(lm.l@tables$step2$tops[[1]]$mgi_symbol),
+  mart = mart.mmu,
+  attributesL = "hgnc_symbol",
+  martL = mart.hsa,
+  uniqueRows = T
+)
+
+
+```
 
 ## edQTL 数据: 寻找基因表达变化 (DEGs) 和突变 (SNP) 的关联 
 
@@ -107,7 +121,7 @@ eq <- step2(eq)
 ```
 
 ```{r}
-l.inset <- filter(eq@params$use.eq, hgnc_symbol %in% toupper(l.tops$mgi_symbol))
+l.inset <- dplyr::filter(eq@params$use.eq, hgnc_symbol %in% toupper(l.tops$mgi_symbol), hgnc_symbol != "")
 l.inset
 ```
 
@@ -116,63 +130,35 @@ l.inset
 ```{r}
 pb.mr <- get_data.mrlx2022()
 pb.mr.mc <- filter(pb.mr@object$snp_microbiota, variant_id %in% unique(l.inset$variant_id))
+pb.mr.mc
 filter(pb.mr@object$snp_metabolite, variant_id %in% unique(l.inset$variant_id))
 ```
 
-## 肠道菌和代谢物关联数据库筛选
+### 对应的 DEGs
 
 ```{r}
-gm <- job_gutmd()
-gm <- step1(gm, pb.mr.mc$.gutmd_pattern)
+degs.key <- dplyr::filter(l.inset, variant_id %in% pb.mr.mc$variant_id)$gene_id
+
+bm <- job_biomart("hsa")
+bm <- step1(bm, gname(degs.key), "ensembl_gene_id")
+bm$anno
+
+l.tops
 ```
 
 ## 已有的 `r d("g")` 的微生物和代谢物关联研究
 
-## `r d("g")`差异微生物
-
-### 获取数据和元数据
-
 ```{r}
-sra <- job_sra("PRJNA773136")
-sra <- step1(sra)
-sra@params$info %<>% dplyr::filter(grpl(SampleName, "^H_"))
-sra <- step2(sra)
-sra <- step3(sra)
-sra$info <- dplyr::mutate(sra$info, SampleName = LibraryName)
-sra <- step4(sra)
-sra$metadata <- dplyr::mutate(sra$metadata, group = ifelse(grpl(`sample-id`, "GSF$"), "Control", "Disease"))
+pb.ca <- get_data.cacc2021()
+pb.ca@object
+
+mc.match <- matchThats(fuzzy(pb.ca@object$microbiota), fuzzy(gs(pb.mr.mc$.gutmd_pattern, "^([^ ]+).*", "\\1")))
+pb.ca.match <- lapply(names(mc.match),
+  function(pat) {
+    pattern <- paste0("\\b", pat, "\\b")
+    data <- dplyr::filter(pb.ca@object, grpl(microbiota, pattern, T))
+    data
+  })
+pb.ca.match
 ```
 
-### Qiime2
-
-```{r}
-qi <- asjob_qiime(sra)
-qi <- step1(qi)
-qi <- step2(qi, 220, 150)
-qi <- step3(qi)
-qi@plots$step3[[2]]
-qi <- step4(qi, 1)
-qi@plots$step4$weighted_unifrac_emperor
-qi <- step5(qi, 240)
-qi@plots$step5$diversity_beta_group_significant$weighted_unifrac_group_significance
-qi <- step6(qi)
-qi@plots$step6[[1]]
-clear(qi)
-```
-
-```{r}
-save.image()
-```
-
-### MicrobiotaProcess
-
-```{r}
-mp <- asjob_mp(qi)
-mp <- step1(mp)
-mp@plots$step1$p.alpha_index
-mp <- step2(mp)
-mp@plots$step2$p.rel_abundance$Species
-mp <- step3(mp)
-mp@plots$step3$p.hier
-mp <- step4(mp)
-```

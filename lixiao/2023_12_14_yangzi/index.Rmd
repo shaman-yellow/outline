@@ -32,7 +32,7 @@ set_index()
 # 摘要 {#abstract}
 
 <https://old.tcmsp-e.com/>
-<https://tcmsp-e.com/>
+<https://tcmsp-e.com/tcmsp.php>
 
 - 白芍总苷 Total glucosides of paeony 中主要化学成分10-20个（TCMSP筛选下口服利用度等）及各个化学成分对应的作用靶点（gene与AR过敏性鼻炎相关），最终形成drug-chemical-target gene靶点图
 - 将获得的靶点进行GO, KEGG富集分析，目标靶点为USP5，关联成分为芍药苷Paeoniflorin
@@ -75,9 +75,17 @@ hb <- job_herb("白芍")
 hb <- step1(hb)
 hb@tables$step1$herbs_compounds %>% filter(grpl(Ingredient.name, "glucose$", ignore.case = T))
 hb <- step2(hb)
-cpds <- unique(hb@tables$step2$compounds_targets$Ingredient_id)
+
+bs.cpds <- unique(hb@tables$step2$compounds_targets$Ingredient_id)
+allcpds <- dplyr::filter(hb@object$component, !is.na(PubChem_id), Ingredient_id %in% dplyr::all_of(!!bs.cpds))
 ```
 
-```{r}
+[@ClassyfireAutDjoumb2016; @PubchemSubstanKimS2015]
 
+```{r}
+rd.inchi <- query_inchikey(allcpds$PubChem_id, "inchikey", type = "cid", curl_cl = 3)
+rd.class <- query_classification(allcpds$PubChem_id, "classify", rd.inchi)
+
+hb.inchi <- extract_rdata_list(rd.inchi)
+hb.class <- extract_rdata_list(rd.class)
 ```

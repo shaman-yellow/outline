@@ -6,6 +6,12 @@ og@step <- 0L
 og <- step1(og, "ieu-a-298")
 ```
 
+### Human
+
+[@GutMicrobiotaHuHa2022]
+Gut microbiota promotes cholesterol gallstone formation by modulating bile acid composition and biliary cholesterol secretion
+<https://www.ncbi.nlm.nih.gov/Traces/study/?query_key=3&WebEnv=MCID_6582888ced1ec968fda6f29f&o=acc_s%3Aa>
+
 
 ## genes (GWAS) and Metabolites
 
@@ -56,3 +62,126 @@ bile microbiome
 <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7873689/>
 
 
+```{r}
+qi <- step4(qi, 1)
+qi@plots$step4$weighted_unifrac_emperor
+qi <- step5(qi, 240)
+qi@plots$step5$diversity_beta_group_significant$weighted_unifrac_group_significance
+qi <- step6(qi)
+qi@plots$step6[[1]]
+```
+
+```{r}
+qi2 <- asjob_qiime(sra, "./qiime_data2")
+qi2 <- step1(qi2)
+qi2@plots$step1$demux
+qi2 <- step2(qi2, 180, 100)
+qi2 <- step3(qi2)
+qi2@plots$step3[[2]]
+qi2 <- step4(qi2, 10)
+qi2@plots$step4$weighted_unifrac_emperor
+qi2 <- step5(qi2, 373)
+qi2@plots$step5$diversity_alpha_group_significant$evenness
+qi2 <- step6(qi2)
+qi2@plots$step6[[1]]
+clear(qi2)
+```
+
+## 已有的 `r d("g")` 的微生物和代谢物关联研究
+
+## `r d("g")`差异微生物
+
+### 获取数据和元数据
+
+[@GutMicrobiotaHuHa2022]
+
+```{r}
+sra <- job_sra("PRJNA773136")
+sra <- step1(sra)
+sra@params$info %<>% dplyr::filter(grpl(SampleName, "^H_"))
+sra <- step2(sra)
+sra <- step3(sra)
+sra$info <- dplyr::mutate(sra$info, SampleName = LibraryName)
+sra <- step4(sra)
+sra$metadata <- dplyr::mutate(sra$metadata, group = ifelse(grpl(`sample-id`, "GSF$"), "Control", "Disease"))
+```
+
+### Qiime2
+
+```{r}
+qi <- asjob_qiime(sra)
+qi <- step1(qi)
+qi@plots$step1$demux
+qi <- step2(qi, 220, 150)
+qi <- step3(qi)
+qi@plots$step3[[2]]
+clear(qi)
+
+```
+
+```{r}
+file.copy("~/Downloads/q2_feature_table _ summarize.html", "./qiime_data/q2_summarize.html")
+
+qi.sum <- get_table.html("./qiime_data/q2_summarize.html")[[1]]
+qi.sum <- dplyr::rename_all(qi.sum, make.names)
+qi.sum <- dplyr::filter(qi.sum, as.double(X.Frequency.) >= 10)
+
+sra2 <- sra
+sra2$metadata <- dplyr::filter(sra2$metadata, `sample-id` %in% qi.sum$Sample.ID)
+sra2$metadata
+
+qi2 <- asjob_qiime(sra2, "qiime_data2")
+qi2 <- step1(qi2)
+qi2@plots$step1$demux
+qi2 <- step2(qi2, 200, 150)
+qi2 <- step3(qi2)
+qi2@plots$step3[[2]]
+qi2 <- step4(qi2, 10)
+qi2@plots$step4$weighted_unifrac_emperor
+qi2 <- step5(qi2, 259)
+qi2@plots$step5$diversity_beta_group_significant$weighted_unifrac_group_significance
+qi2@plots$step5$diversity_alpha_group_significant$evenness
+qi2 <- step6(qi2)
+clear(qi2)
+```
+
+### MicrobiotaProcess
+
+```{r}
+qi2 <- readRDS("./qi2.6.rds")
+mp <- asjob_mp(qi2)
+mp <- step1(mp)
+mp@plots$step1$p.alpha_index
+mp <- step2(mp)
+mp@plots$step2$p.rel_abundance$Species
+mp <- step3(mp)
+mp@plots$step3$p.hier
+mp <- step4(mp)
+```
+
+```{r}
+save.image()
+qi2 <- readRDS("./qi2.6.rds")
+```
+
+## 肠道菌和代谢物关联数据库筛选
+
+```{r}
+gm <- job_gutmd()
+gm <- step1(gm, pb.mr.mc$.gutmd_pattern)
+gm@params$db_matched
+```
+
+```{r}
+mart.mmu <- new_biomart("mmu", host = "https://dec2021.archive.ensembl.org/")
+mart.hsa <- new_biomart("hsa", host = "https://dec2021.archive.ensembl.org/")
+
+x <- biomaRt::getLDS("mgi_symbol",
+  filters = "mgi_symbol",
+  values = rm.no(lm.l@tables$step2$tops[[1]]$mgi_symbol),
+  mart = mart.mmu,
+  attributesL = "hgnc_symbol",
+  martL = mart.hsa,
+  uniqueRows = T
+)
+```
