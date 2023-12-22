@@ -185,3 +185,16 @@ x <- biomaRt::getLDS("mgi_symbol",
   uniqueRows = T
 )
 ```
+
+```{r}
+
+mc.match <- matchThats(fuzzy(pb.ca@object$microbiota), fuzzy(gs(l.pbMicro$.gutmd_pattern, "^([^ ]+).*", "\\1")))
+pb.ca.match <- lapply(names(mc.match),
+  function(pat) {
+    pattern <- paste0("\\b", pat, "\\b")
+    data <- dplyr::filter(pb.ca@object, grpl(microbiota, pattern, T))
+    data
+  })
+pb.ca.match
+
+```

@@ -83,82 +83,185 @@ auto_method()
 
 ## 差异表达基因
 
-```{r}
-lm.l <- readRDS("../2023_11_07_dongzhixia/lm.l3.rds")
-lm.l@plots$step2$p.valcano[[1]]
-lm.l@tables$step2$tops[[1]]
+### Model vs Control
 
-ge <- asjob_gsea(lm.l)
-ge <- step1(ge, org.Mm.eg.db::org.Mm.eg.db, "mmu")
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-raw-DEGs
+autor(lm.liver@tables$step2$tops[[1]])
+```
+
+```{r}
+lm.liver <- readRDS("../2023_11_07_dongzhixia/lm.liver3.rds")
+sig(lm.liver) <- "LIVER"
+lm.liver@plots$step2$p.valcano[[1]]
+lm.liver@tables$step2$tops[[1]]
 ```
 
 ## DEGs 从 Mouce 到 Human 映射
 
+### Biomart mapping
+
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-DEGs-mapping-from-Mice-to-Human
+autor(l.tops)
+```
+
 ```{r}
-l.tops <- lm.l@tables$step2$tops[[1]]
+lm.liver@tables$step2$tops[[1]]
 
-mart.mmu <- new_biomart("mmu", host = "https://dec2021.archive.ensembl.org/")
-mart.hsa <- new_biomart("hsa", host = "https://dec2021.archive.ensembl.org/")
+bm2.liver <- job_biomart2(lm.liver@tables$step2$tops[[1]]$mgi_symbol, "mmu", "hsa")
+bm2.liver <- step1(bm2.liver)
+bm2.liver <- step2(bm2.liver, lm.liver@tables$step2$tops[[1]])
+l.tops <- bm2.liver@params$tops_mapped
+l.tops <- dplyr::relocate(l.tops, hgnc_symbol, mgi_symbol)
+l.tops
+```
 
-x <- biomaRt::getLDS("mgi_symbol",
-  filters = "mgi_symbol",
-  values = rm.no(lm.l@tables$step2$tops[[1]]$mgi_symbol),
-  mart = mart.mmu,
-  attributesL = "hgnc_symbol",
-  martL = mart.hsa,
-  uniqueRows = T
-)
+## GSEA 富集 (Human)
 
+### pathways
 
+```{r eval = T, echo = F, results = "asis"}
+#| LIVER-KEGG-enrichment-with-enriched-genes
+autor(wrap(ge.liver@plots$step2$p.highlight, 9, 6))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LIVER-GSEA-plot-of-the-pathways
+autor(ge.liver@plots$step2$p.code)
+```
+
+```{r}
+ge.liver <- job_gsea(l.tops, use = "hgnc_symbol")
+ge.liver <- step1(ge.liver)
+ge.liver@plots$step1$p.kegg
+ge.liver@tables$step1$table_kegg
+l.path.hi <- c("hsa00100", "hsa00860", "hsa04662")
+ge.liver <- step2(ge.liver, l.path.hi, l.path.hi)
+wrap(ge.liver@plots$step2$p.highlight, 9, 6)
+ge.liver@plots$step2$p.code
 ```
 
 ## edQTL 数据: 寻找基因表达变化 (DEGs) 和突变 (SNP) 的关联 
 
-```{r}
-eq <- job_edqtl("eqtl")
-eq <- step1(eq, "Liver")
-eq <- step2(eq)
+### edQTL 数据
+
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-edQTLs
+autor(eq.liver@params$use.eq)
 ```
 
 ```{r}
-l.inset <- dplyr::filter(eq@params$use.eq, hgnc_symbol %in% toupper(l.tops$mgi_symbol), hgnc_symbol != "")
-l.inset
+eq.liver <- job_edqtl("eqtl")
+eq.liver <- step1(eq.liver, "Liver")
+eq.liver <- step2(eq.liver)
+```
+
+### Variant (与 DEGs 相关)
+
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-DEGs-edQTL
+autor(l.eqMatch)
+```
+
+```{r}
+l.eqMatch <- dplyr::filter(eq.liver@params$use.eq, hgnc_symbol %in% l.tops$hgnc_symbol)
+l.eqMatch
 ```
 
 ## GWAS 数据：寻找与突变类型显著关联的肠道微生物或代谢物
 
-```{r}
-pb.mr <- get_data.mrlx2022()
-pb.mr.mc <- filter(pb.mr@object$snp_microbiota, variant_id %in% unique(l.inset$variant_id))
-pb.mr.mc
-filter(pb.mr@object$snp_metabolite, variant_id %in% unique(l.inset$variant_id))
+### GWAS 数据 (microbiota)
+
+```{r eval = T, echo = F, results = "asis"}
+#| PUBLISHED-MendelianRandoLiuX2022
+autor(pb.mr@object)
 ```
 
-### 对应的 DEGs
+```{r}
+pb.mr <- get_data.mrlx2022()
+```
+
+### Microbiota (与 Variant 相关)
+
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-DEGs-edQTL-variant-correlated-microbiota
+autor(l.pbMicro)
+```
 
 ```{r}
-degs.key <- dplyr::filter(l.inset, variant_id %in% pb.mr.mc$variant_id)$gene_id
+l.pbMicro <- filter(pb.mr@object$snp_microbiota, variant_id %in% unique(l.eqMatch$variant_id))
+l.pbMicro
+```
 
-bm <- job_biomart("hsa")
-bm <- step1(bm, gname(degs.key), "ensembl_gene_id")
-bm$anno
+#### 对应的 DEGs (Liver-DEGs-microbiota)
 
-l.tops
+```{r}
+# this is the `nearby` genes, can not use this: l.pbMicro$Gene
+l.micro2degs <- dplyr::filter(l.eqMatch, variant_id %in% l.pbMicro$variant_id)$hgnc_symbol
+l.micro2degs
+```
+
+### Metabolite (与 Variant 相关)
+
+#### Metabolite
+
+```{r eval = T, echo = F, results = "asis"}
+autor(l.pbMetab)
+```
+
+```{r}
+l.pbMetab <- filter(pb.mr@object$snp_metabolite, variant_id %in% unique(l.eqMatch$variant_id))
+l.pbMetab
+```
+
+#### 对应的 DEGs (Liver-DEGs-metabolite)
+
+```{r}
+# this is the `nearby` genes, can not use this: l.pbMicro$Gene
+metab2degs <- dplyr::filter(l.eqMatch, variant_id %in% l.pbMetab$variant_id)
+metab2degs <- dplyr::relocate(metab2degs, hgnc_symbol)
+l.metab2degs <- metab2degs$hgnc_symbol
+```
+
+## 肠道菌和代谢物关联数据库筛选
+
+### 以 Metabolite (与 Variant 相关) 筛选 
+
+```{r eval = T, echo = F, results = "asis"}
+#| gutMDisorder-filtered-Metabolite-related-to-Variant
+autor(l.gmMetab)
+```
+
+```{r}
+gm <- job_gutmd()
+l.gmMetab <- dplyr::filter(gm@object, Substrate == l.pbMetab[[1]] | Metabolite == l.pbMetab[[1]])
+l.gmMetab
 ```
 
 ## 已有的 `r d("g")` 的微生物和代谢物关联研究
 
+### ChangesAndCorChen2021
+
+数据来源于`r pb.ca@cite`
+
+```{r eval = T, echo = F, results = "asis"}
+#| PUBLISHED-ChangesAndCorChen2021-correlation-heatmap
+autor(pb.ca@params$heatmap)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PUBLISHED-ChangesAndCorChen2021-correlation-significant
+autor(pb.ca@object)
+```
+
 ```{r}
 pb.ca <- get_data.cacc2021()
-pb.ca@object
+dplyr::filter(pb.ca@object)
 
-mc.match <- matchThats(fuzzy(pb.ca@object$microbiota), fuzzy(gs(pb.mr.mc$.gutmd_pattern, "^([^ ]+).*", "\\1")))
-pb.ca.match <- lapply(names(mc.match),
+pb2 <- lapply(l.gmMetab[[1]],
   function(pat) {
-    pattern <- paste0("\\b", pat, "\\b")
-    data <- dplyr::filter(pb.ca@object, grpl(microbiota, pattern, T))
-    data
-  })
-pb.ca.match
+    dplyr::filter(pb.ca@object, grpl(microbiota, pat, T))
+  })[[1]]
 ```
 

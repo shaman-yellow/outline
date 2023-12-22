@@ -12,7 +12,8 @@
 - `ExonicFunc`: 外显子突变功能，细节请参考<https://annovar.openbioinformatics.org/en/latest/user-guide/gene/>
 - `AAChange`: 包含有关突变如何影响基因结构的各种注释
 - `cytoBand`: `cytoBand` 数据库的注释
-- `hgnc_symbol`: 基因名
+- `hgnc_symbol`: 基因名 (Human)
+- `mgi_symbol`: 基因名 (Mice)
 - `dna_coding`: DNA 突变的 hgvs 名称
 - `protein_coding`: 蛋白质突变的 hgvs 名称
 
