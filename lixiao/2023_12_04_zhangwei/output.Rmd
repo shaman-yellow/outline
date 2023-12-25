@@ -149,7 +149,7 @@ render(fig2)
 - Hippocampus, H (tissue region)
 - Parietal cortex, P (tissue, region)
 
-控制变量以差异分析 (Fig. \@ref(fig:MAIN-fig-3)) 。可以发现，rTMS 对大脑带来的主要转录变化发生于 Hippocampus，而对 Parietal cortex 几乎不造成转录影响。取 Fig. \@ref(fig:MAIN-fig-3) 的合集 (记为 rTMS-DEGs)。 
+控制变量以差异分析 (Fig. \@ref(fig:MAIN-fig-3)) 。海马是中枢痛觉感知、认知形成的关键核团，NP 可能诱发和促进海马神经元退行性病变，而海马神经元的改变又是 NP 产生的关键病理环节之一[@EffectOfBrainMagari2011; @CombinationPhaChapar2012]。因此，随后分析取 Fig. \@ref(fig:MAIN-fig-3) 中 Hippocampus 的合集 (记为 rTMS-DEGs)。 
 
 ```{r eval = T, echo = F, results = "asis"}
 #| MAIN-fig-3
@@ -445,9 +445,9 @@ metadata <- dplyr::relocate(metadata, sample = rownames, group)
 lm.rtms <- asjob_limma(go.rtms, metadata, normed = T)
 lm.rtms <- step1(lm.rtms)
 lm.rtms <- step2(lm.rtms,
-  AU.H.iTBS - AU.H.Sham, AU.P.iTBS - AU.P.iTBS,
-  AI.H.iTBS - AI.H.Sham, AI.P.iTBS - AI.P.iTBS,
-  Y.H.iTBS - Y.H.Sham, Y.P.iTBS - Y.P.iTBS,
+  AU.H.iTBS - AU.H.Sham, AU.P.iTBS - AU.P.Sham,
+  AI.H.iTBS - AI.H.Sham, AI.P.iTBS - AI.P.Sham,
+  Y.H.iTBS - Y.H.Sham, Y.P.iTBS - Y.P.Sham,
   use = "P", label = "rownames")
 
 lm.rtms@tables$step2$tops
@@ -460,7 +460,7 @@ lm.rtms@plots$step2$p.contrast_cols
 
 ### rTMS 数据的差异基因与 sig.coDegs 的关联性 {#mapping}
 
-这里，首先将 rTMS 的差异基因对应到 SCI、NP 中的基因 (假设 rTMS 对大鼠和对人的基因转录的影响是相同的，改变相同的基因) ：
+这里，首先将 rTMS 的差异基因 (取 Hippocampus 的差异基因) 对应到 SCI、NP 中的基因 (假设 rTMS 对大鼠和对人的基因转录的影响是相同的，改变相同的基因) ：
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Mapping-rTMS-DEGs-to-SCI-and-NP-dataset
@@ -490,7 +490,7 @@ autor(tms.sci$sig.corp)
 ```
 
 ```{r}
-sigInHomo <- lst_clear0(lapply(lm.rtms@tables$step2$tops,
+sigInHomo <- lst_clear0(lapply(lm.rtms@tables$step2$tops %>% .[ grpl(names(.), "\\.H\\.") ],
   function(x) {
     sig <- toupper(x[[1]])
     fun <- function(x) {

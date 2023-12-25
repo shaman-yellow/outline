@@ -80,12 +80,23 @@ bs.cpds <- unique(hb@tables$step2$compounds_targets$Ingredient_id)
 allcpds <- dplyr::filter(hb@object$component, !is.na(PubChem_id), Ingredient_id %in% dplyr::all_of(!!bs.cpds))
 ```
 
-[@ClassyfireAutDjoumb2016; @PubchemSubstanKimS2015]
-
 ```{r}
 rd.inchi <- query_inchikey(allcpds$PubChem_id, "inchikey", type = "cid", curl_cl = 3)
 rd.class <- query_classification(allcpds$PubChem_id, "classify", rd.inchi)
 
 hb.inchi <- extract_rdata_list(rd.inchi)
 hb.class <- extract_rdata_list(rd.class)
+
+fun <- function() {
+  hb.class <- frbind(hb.class, idcol = T)
+  hb.class <- dplyr::filter(hb.class, grpl(Classification, "gly", T))
+  hb.inchi <- frbind(hb.inchi)
+  hb.inchi <- dplyr::mutate(hb.inchi, inchikey2d = stringr::str_extract(InChIKey, "^[A-Z]+"))
+  hb.inchi <- dplyr::filter(hb.inchi, inchikey2d %in% hb.class$.id)
+  res <- dplyr::filter(allcpds, PubChem_id %in% hb.inchi$CID)
+  res
+}
+fun()
 ```
+
+

@@ -198,3 +198,58 @@ pb.ca.match <- lapply(names(mc.match),
 pb.ca.match
 
 ```
+
+
+
+### Microbiota (与 Variant 相关)
+
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-DEGs-edQTL-variant-correlated-microbiota
+autor(l.pbMicro)
+```
+
+```{r}
+l.pbMicro <- filter(pb.mr@object$snp_microbiota, variant_id %in% unique(l.eqMatch$variant_id))
+l.pbMicro
+```
+
+#### 对应的 DEGs (Liver-DEGs-microbiota)
+
+```{r}
+# this is the `nearby` genes, can not use this: l.pbMicro$Gene
+l.micro2degs <- dplyr::filter(l.eqMatch, variant_id %in% l.pbMicro$variant_id)$hgnc_symbol
+l.micro2degs
+```
+
+### Metabolite (与 Variant 相关)
+
+#### Metabolite
+
+```{r eval = T, echo = F, results = "asis"}
+autor(l.pbMetab)
+```
+
+```{r}
+l.pbMetab <- filter(pb.mr@object$snp_metabolite, variant_id %in% unique(l.eqMatch$variant_id))
+l.pbMetab
+```
+
+#### 对应的 DEGs (Liver-DEGs-metabolite)
+
+```{r}
+# this is the `nearby` genes, can not use this: l.pbMicro$Gene
+metab2degs <- dplyr::filter(l.eqMatch, variant_id %in% l.pbMetab$variant_id)
+metab2degs <- dplyr::relocate(metab2degs, hgnc_symbol)
+l.metab2degs <- metab2degs$hgnc_symbol
+```
+
+## Gallstones 16s (and metabolites)
+
+### Mice
+
+Changes and Correlations of the Intestinal Flora and Liver Metabolite Profiles in Mice With Gallstones
+<https://www.ncbi.nlm.nih.gov/bioproject/PRJNA736820/>
+tables
+<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8416897/>
+
+

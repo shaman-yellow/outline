@@ -1,0 +1,956 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge
+胆结石RNA-seq结合肠道菌、代谢物筛选关键差异表达基因}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2023-12-25}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+需求：
+
+根据客户提供的RNA-seq，结合肠道菌、代谢物筛选关键差异表达基因，基因不要是FXR及其相关信号通路（CYP7A1等），要与胆固醇代谢、胆固醇摄取、胆固醇合成、胆固醇重吸收和胆汁酸代谢相关；同时结合肠道菌群大数据库，结合菌群代谢产物。注：客户研究的疾病是胆固醇胆结石（cholesterol gallstones），如果没有使用胆结石也可。
+
+结果：见 \ref{results}。
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+客户拥有的数据类型仅为 RNA-seq，反映的是组织 mRNA 水平。当前公共数据缺少同时结合 胆结石 (gallstones, G) 疾病的 RNA-seq、肠道菌、代谢组的分析类型。因此，为了将客户的 RNA-seq 分析结果与肠道菌和代谢物建立联系，设计思路为：
+
+\begin{itemize}
+\tightlist
+\item
+  DEGs -\textgreater{} eQTL -\textgreater{} SNP -\textgreater{} GWAS -\textgreater{} Metabolites and Microbiota
+\end{itemize}
+
+eQTL 分析的本质是以全部的 DNA 变异位点为自变量，轮流以每种 mRNA 表达量为因变量，用大量的个体数据做样本进行线性回归，得到每一个SNP位点和每一个mRNA表达量间的关系 (\url{https://www.nature.com/scitable/topicpage/quantitative-trait-locus-qtl-analysis-53904/})。
+
+本次分析，通过寻找 mRNA 和 SNP 之间的关联，让 RNA-seq 筛选的 DEGs 联系到已有的关于代谢物或微生物的 GWAS 大数据研究 (\ref{method} 这些数据反映了 SNP 与 代谢物或微生物之间的关联性) (即 SNP 作为桥梁) 筛选出关键 DEGs 和对应的肠道微生物和代谢物，最后再联系已有的 胆结石 (gallstones, G) 的肠道菌或代谢物的研究进行验证。
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{material}{%
+\subsection{材料}\label{material}}
+
+Other data obtained from published article (e.g., supplementary tables):
+
+\begin{itemize}
+\tightlist
+\item
+  Supplementary file from article refer to\textsuperscript{\protect\hyperlink{ref-ChangesAndCorChen2021}{1}}.
+\item
+  Supplementary file from article refer to\textsuperscript{\protect\hyperlink{ref-MendelianRandoLiuX2022}{2}}.
+\end{itemize}
+
+\hypertarget{method}{%
+\subsection{方法}\label{method}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{biomaRt} used for gene annotation.\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{3}}
+\item
+  The \texttt{biomart} was used for mapping genes between organism (e.g., mgi\_symbol to hgnc\_symbol).\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{3}}
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{4}}
+\item
+  The QTL data were abtained from GTEx database.\textsuperscript{\protect\hyperlink{ref-TheGtexConsorNone2020}{5}}
+\item
+  R package \texttt{ClusterProfiler} used for GSEA enrichment.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{4}}
+\item
+  Database \texttt{gutMDisorder} used for finding associations between gut microbiota and metabolites.\textsuperscript{\protect\hyperlink{ref-GutmdisorderACheng2019}{6}}
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{7},\protect\hyperlink{ref-EdgerDifferenChen}{8}}
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{liver}{%
+\subsection{Liver:}\label{liver}}
+
+\begin{itemize}
+\tightlist
+\item
+  根据 Model vs Control 初步筛选 DEGs (Tab. \ref{tab:Liver-raw-DEGs-Model-vs-control})
+\item
+  DEGs 从 Mouce 到 Human 映射 (Tab. \ref{tab:Liver-DEGs-mapping-from-Mice-to-Human})
+\item
+  对上述映射后的基因进行 KEGG 的 GSEA 富集，结果发现 `Steroid biosynthesis' 为首要富集结果 (Fig. \ref{fig:LIVER-KEGG-enrichment-with-enriched-genes}
+\item
+  为了找到 DEGs 可能对应的 SNP，使用 eQTL 数据集，并筛选该数据集 (Fig. \ref{fig:LIVER-database-of-eQTL-intersect-with-DEGs})\\
+\item
+  上述数据建立了：DEGs -\textgreater{} SNP 之间的关联，随后需要建立 SNP -\textgreater{} metablite 或者 microbiota 的关联，因此这里使用了相关的 GWAS 数据，并做了筛选 (Tab. \ref{tab:LIVER-filtered-eQTL-data-intersect-with-microbiota-related-DATA}、Tab. \ref{tab:LIVER-filtered-eQTL-data-intersect-with-metabolite-related-DATA}) 。这样，SNP -\textgreater{} metablite 或者 microbiota 的关联就确立了。往上对应到 DEGs (Human)，它们是：ITGB3, C9orf152。
+\item
+  随后，为了发现更多的与上述筛选的 metabolite 或者 microbiota 相关的 metabolite 或者 microbiota，使用了 gutMDisorder 数据库，挖掘到的信息见 Tab. \ref{tab:Liver-gutMDisorder-Matched-metabolites-and-their-related-microbiota}
+\item
+  为了验证上述的发现，使用了\textsuperscript{\protect\hyperlink{ref-ChangesAndCorChen2021}{1}}的数据 (这是一批研究 胆结石 (gallstones, G) 的代谢物和肠道微生物的 mice 的数据) (Fig. \ref{fig:PUBLISHED-ChangesAndCorChen2021-correlation-heatmap}) 。筛选后发现，Ruminococcus 的确在 胆结石 (gallstones, G) 中属于差异微生物。这样，串联上述线索，发现了关系链：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Microbiota:Ruminococcus -\textgreater{} Metabolite:Leucine -\textgreater{} SNP:\texttt{chr17\_47247224\_A\_G\_b38} -\textgreater{} DEG:ITGB3
+  \end{itemize}
+\item
+  这里，进一步将 ITGB3, C9orf152 与 Steroid biosynthesis 通路的其它基因做了关联分析，发现它们主要成显著的负关联 (Fig. \ref{fig:LIVER-correlation-heatmap})。
+\item
+  这些基因在 human 或者 mice 中的基因名的对应关系见 Tab. \ref{tab:Mapping-of-ITGB3-and-other-genes-from-hgncSymbol-to-mgiSymbol}
+\item
+  建议以 ITGB3 或上述其它基因 (Steroid biosynthesis 通路) 作为目标基因进一步分析。
+\end{itemize}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程 (Liver)}\label{workflow}}
+
+\hypertarget{ux5deeux5f02ux8868ux8fbeux57faux56e0}{%
+\subsection{差异表达基因}\label{ux5deeux5f02ux8868ux8fbeux57faux56e0}}
+
+\hypertarget{model-vs-control}{%
+\subsubsection{Model vs Control}\label{model-vs-control}}
+
+Table \ref{tab:Liver-raw-DEGs-Model-vs-control} (下方表格) 为表格Liver raw DEGs Model vs control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-raw-DEGs-Model-vs-control.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3908行11列，以下预览的表格可能省略部分数据；表格含有3908个唯一`ensembl\_transcript\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Liver-raw-DEGs-Model-vs-control}Liver raw DEGs Model vs control}\tabularnewline
+\toprule
+ensemb\ldots{} & mgi\_sy\ldots{} & entrez\ldots{} & hgnc\_s\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensemb\ldots{} & mgi\_sy\ldots{} & entrez\ldots{} & hgnc\_s\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endhead
+ENSMUS\ldots{} & Cyp2c70 & 226105 & NA & cytoch\ldots{} & 4.1662\ldots{} & 5.9781\ldots{} & 23.094\ldots{} & 1.2533\ldots{} & 3.9223\ldots{}\tabularnewline
+ENSMUS\ldots{} & Scd1 & 20249 & NA & stearo\ldots{} & 2.8187\ldots{} & 11.748\ldots{} & 19.213\ldots{} & 6.8879\ldots{} & 0.0001\ldots{}\tabularnewline
+ENSMUS\ldots{} & Ces2a & 102022 & & carbox\ldots{} & 1.6614\ldots{} & 8.8361\ldots{} & 15.281\ldots{} & 5.6258\ldots{} & 0.0004\ldots{}\tabularnewline
+ENSMUS\ldots{} & Hsd17b6 & 27400 & & hydrox\ldots{} & 2.8011\ldots{} & 8.6106\ldots{} & 14.201\ldots{} & 1.0950\ldots{} & 0.0006\ldots{}\tabularnewline
+ENSMUS\ldots{} & Fmo5 & 14263 & & flavin\ldots{} & 1.2618\ldots{} & 8.1280\ldots{} & 13.790\ldots{} & 1.4285\ldots{} & 0.0007\ldots{}\tabularnewline
+ENSMUS\ldots{} & Hsd17b6 & 27400 & & hydrox\ldots{} & 3.0271\ldots{} & 4.8530\ldots{} & 13.490\ldots{} & 1.7415\ldots{} & 0.0007\ldots{}\tabularnewline
+ENSMUS\ldots{} & Enho & 69638 & NA & energy\ldots{} & -4.453\ldots{} & 2.2957\ldots{} & -17.04\ldots{} & 2.0685\ldots{} & 0.0002\ldots{}\tabularnewline
+ENSMUS\ldots{} & Abcb11 & 27413 & & ATP-bi\ldots{} & 1.2515\ldots{} & 7.7893\ldots{} & 11.121\ldots{} & 9.7706\ldots{} & 0.0033\ldots{}\tabularnewline
+ENSMUS\ldots{} & Hsd17b6 & 27400 & & hydrox\ldots{} & 3.6061\ldots{} & 4.4081\ldots{} & 11.158\ldots{} & 9.4863\ldots{} & 0.0033\ldots{}\tabularnewline
+ENSMUS\ldots{} & Gsta4 & 14860 & NA & glutat\ldots{} & 1.9687\ldots{} & 6.1777\ldots{} & 10.257\ldots{} & 1.9887\ldots{} & 0.0056\ldots{}\tabularnewline
+ENSMUS\ldots{} & Gnat1 & 14685 & NA & G prot\ldots{} & -2.232\ldots{} & 2.9799\ldots{} & -10.64\ldots{} & 1.4365\ldots{} & 0.0044\ldots{}\tabularnewline
+ENSMUS\ldots{} & Nnmt & 18113 & NA & nicoti\ldots{} & -3.804\ldots{} & 5.1567\ldots{} & -9.928\ldots{} & 2.6415\ldots{} & 0.0065\ldots{}\tabularnewline
+ENSMUS\ldots{} & Csad & 246277 & NA & cystei\ldots{} & -1.560\ldots{} & 7.2232\ldots{} & -9.535\ldots{} & 3.7482\ldots{} & 0.0083\ldots{}\tabularnewline
+ENSMUS\ldots{} & Hsd17b6 & 27400 & & hydrox\ldots{} & 2.9137\ldots{} & 3.3218\ldots{} & 9.8923\ldots{} & 2.7263\ldots{} & 0.0065\ldots{}\tabularnewline
+ENSMUS\ldots{} & Mup7 & 100041658 & NA & major \ldots{} & -10.24\ldots{} & 7.5916\ldots{} & -9.232\ldots{} & 4.9474\ldots{} & 0.0087\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:Liver-plot-DEGs-Model-vs-control} (下方图) 为图Liver plot DEGs Model vs control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-plot-DEGs-Model-vs-control.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Liver-plot-DEGs-Model-vs-control.pdf}
+\caption{Liver plot DEGs Model vs control}\label{fig:Liver-plot-DEGs-Model-vs-control}
+\end{center}
+
+\hypertarget{degs-ux4ece-mouce-ux5230-human-ux6620ux5c04}{%
+\subsection{DEGs 从 Mouce 到 Human 映射}\label{degs-ux4ece-mouce-ux5230-human-ux6620ux5c04}}
+
+\hypertarget{biomart-mapping}{%
+\subsubsection{Biomart mapping}\label{biomart-mapping}}
+
+客户的数据为 Mouce 的数据，这里将 Mouce 的基因映射为 Human 的基因 (因为后续的数据来源主要为 Human)。
+
+Table \ref{tab:Liver-DEGs-mapping-from-Mice-to-Human} (下方表格) 为表格Liver DEGs mapping from Mice to Human概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-DEGs-mapping-from-Mice-to-Human.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2998行11列，以下预览的表格可能省略部分数据；表格含有2998个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Liver-DEGs-mapping-from-Mice-to-Human}Liver DEGs mapping from Mice to Human}\tabularnewline
+\toprule
+hgnc\_s\ldots{} & mgi\_sy\ldots{} & ensemb\ldots{} & entrez\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_s\ldots{} & mgi\_sy\ldots{} & ensemb\ldots{} & entrez\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endhead
+ENHO & Enho & ENSMUS\ldots{} & 69638 & energy\ldots{} & -4.453\ldots{} & 2.2957\ldots{} & -17.04\ldots{} & 2.0685\ldots{} & 0.0002\ldots{}\tabularnewline
+CES2 & Ces2a & ENSMUS\ldots{} & 102022 & carbox\ldots{} & 1.6614\ldots{} & 8.8361\ldots{} & 15.281\ldots{} & 5.6258\ldots{} & 0.0004\ldots{}\tabularnewline
+HSD17B6 & Hsd17b6 & ENSMUS\ldots{} & 27400 & hydrox\ldots{} & 2.8011\ldots{} & 8.6106\ldots{} & 14.201\ldots{} & 1.0950\ldots{} & 0.0006\ldots{}\tabularnewline
+FMO5 & Fmo5 & ENSMUS\ldots{} & 14263 & flavin\ldots{} & 1.2618\ldots{} & 8.1280\ldots{} & 13.790\ldots{} & 1.4285\ldots{} & 0.0007\ldots{}\tabularnewline
+ABCB11 & Abcb11 & ENSMUS\ldots{} & 27413 & ATP-bi\ldots{} & 1.2515\ldots{} & 7.7893\ldots{} & 11.121\ldots{} & 9.7706\ldots{} & 0.0033\ldots{}\tabularnewline
+GNAT1 & Gnat1 & ENSMUS\ldots{} & 14685 & G prot\ldots{} & -2.232\ldots{} & 2.9799\ldots{} & -10.64\ldots{} & 1.4365\ldots{} & 0.0044\ldots{}\tabularnewline
+NNMT & Nnmt & ENSMUS\ldots{} & 18113 & nicoti\ldots{} & -3.804\ldots{} & 5.1567\ldots{} & -9.928\ldots{} & 2.6415\ldots{} & 0.0065\ldots{}\tabularnewline
+CSAD & Csad & ENSMUS\ldots{} & 246277 & cystei\ldots{} & -1.560\ldots{} & 7.2232\ldots{} & -9.535\ldots{} & 3.7482\ldots{} & 0.0083\ldots{}\tabularnewline
+ABCB1 & Abcb1a & ENSMUS\ldots{} & 18671 & ATP-bi\ldots{} & 3.2131\ldots{} & 3.2740\ldots{} & 9.4563\ldots{} & 4.0267\ldots{} & 0.0084\ldots{}\tabularnewline
+FGFR2 & Fgfr2 & ENSMUS\ldots{} & 14183 & fibrob\ldots{} & 2.9129\ldots{} & 4.2716\ldots{} & 9.2494\ldots{} & 4.8706\ldots{} & 0.0087\ldots{}\tabularnewline
+DDAH1 & Ddah1 & ENSMUS\ldots{} & 69219 & dimeth\ldots{} & 1.3322\ldots{} & 6.8518\ldots{} & 9.1694\ldots{} & 5.2476\ldots{} & 0.0087\ldots{}\tabularnewline
+ABCG5 & Abcg5 & ENSMUS\ldots{} & 27409 & ATP bi\ldots{} & 1.5044\ldots{} & 7.3228\ldots{} & 9.0073\ldots{} & 6.1127\ldots{} & 0.0089\ldots{}\tabularnewline
+SLC1A2 & Slc1a2 & ENSMUS\ldots{} & 20511 & solute\ldots{} & -1.900\ldots{} & 5.0951\ldots{} & -8.951\ldots{} & 6.4435\ldots{} & 0.0089\ldots{}\tabularnewline
+TTC39C & Ttc39c & ENSMUS\ldots{} & 72747 & tetrat\ldots{} & -1.946\ldots{} & 6.2930\ldots{} & -8.431\ldots{} & 1.0707\ldots{} & 0.0106\ldots{}\tabularnewline
+WNK4 & Wnk4 & ENSMUS\ldots{} & 69847 & WNK ly\ldots{} & 2.3302\ldots{} & 2.6719\ldots{} & 8.3971\ldots{} & 1.1085\ldots{} & 0.0106\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{gsea-ux5bccux96c6-human}{%
+\subsection{GSEA 富集 (Human)}\label{gsea-ux5bccux96c6-human}}
+
+\hypertarget{pathways}{%
+\subsubsection{pathways}\label{pathways}}
+
+对映射完毕的 DEGs (Tab. \ref{tab:Liver-DEGs-mapping-from-Mice-to-Human}) 进行富集分析，首要富集结果为 `Steroid biosynthesis'。
+
+Figure \ref{fig:LIVER-KEGG-enrichment-with-enriched-genes} (下方图) 为图LIVER KEGG enrichment with enriched genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-KEGG-enrichment-with-enriched-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LIVER-KEGG-enrichment-with-enriched-genes.pdf}
+\caption{LIVER KEGG enrichment with enriched genes}\label{fig:LIVER-KEGG-enrichment-with-enriched-genes}
+\end{center}
+
+Figure \ref{fig:LIVER-GSEA-plot-of-the-pathways} (下方图) 为图LIVER GSEA plot of the pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-GSEA-plot-of-the-pathways.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LIVER-GSEA-plot-of-the-pathways.pdf}
+\caption{LIVER GSEA plot of the pathways}\label{fig:LIVER-GSEA-plot-of-the-pathways}
+\end{center}
+
+\hypertarget{eqtl-ux6570ux636e-ux5bfbux627eux57faux56e0ux8868ux8fbeux53d8ux5316-degs-ux548cux7a81ux53d8-snp-ux7684ux5173ux8054}{%
+\subsection{eQTL 数据: 寻找基因表达变化 (DEGs) 和突变 (SNP) 的关联}\label{eqtl-ux6570ux636e-ux5bfbux627eux57faux56e0ux8868ux8fbeux53d8ux5316-degs-ux548cux7a81ux53d8-snp-ux7684ux5173ux8054}}
+
+\hypertarget{eqtl-ux6570ux636e}{%
+\subsubsection{eQTL 数据}\label{eqtl-ux6570ux636e}}
+
+使用的 eQTL 数据集 (经过注释的，来源见 \ref{method} QTL 说明)：
+
+Table \ref{tab:LIVER-all-used-eQTL-data} (下方表格) 为表格LIVER all used eQTL data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-all-used-eQTL-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有341233行13列，以下预览的表格可能省略部分数据；表格含有221715个唯一`variant\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item variant\_id:  variant ID in the format \{chr\}\_\{pos\_first\_ref\_base\}\_\{ref\_seq\}\_\{alt\_seq\}\_b38
+\item tss\_distance:  distance between variant and transcription start site (TSS). Positive when variant is downstream of the TSS, negative otherwise
+\item maf:  minor allele frequency observed in the set of donors for a given tissue
+\item pval\_nominal:  nominal p-value associated with the most significant variant for this gene
+\item slope:  regression slope
+\item slope\_se:  standard error of the regression slope
+\item pval\_beta:  beta-approximated permutation p-value
+\item pval\_nominal\_threshold:  nominal p-value threshold for calling a variant-gene pair significant for the gene
+\item ma\_samples:  number of samples carrying the minor allele
+\item ma\_count:  total number of minor alleles across individuals
+\item min\_pval\_nominal:  smallest nominal p-value for the gene
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:LIVER-all-used-eQTL-data}LIVER all used eQTL data}\tabularnewline
+\toprule
+varian\ldots{} & gene\_id & tss\_di\ldots{} & ma\_sam\ldots{} & ma\_count & maf & pval\_n\ldots\ldots7 & slope & slope\_se & pval\_n\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+varian\ldots{} & gene\_id & tss\_di\ldots{} & ma\_sam\ldots{} & ma\_count & maf & pval\_n\ldots\ldots7 & slope & slope\_se & pval\_n\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endhead
+chr1\_1\ldots{} & ENSG00\ldots{} & -282825 & 21 & 21 & 0.0504808 & 1.2263\ldots{} & -0.992022 & 0.197055 & 7.3643\ldots{} & \ldots{}\tabularnewline
+chr1\_5\ldots{} & ENSG00\ldots{} & -38486 & 3 & 3 & 0.0072\ldots{} & 1.4398\ldots{} & 1.9902 & 0.445336 & 4.4165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 819409 & 7 & 7 & 0.0168269 & 5.0290\ldots{} & 1.44172 & 0.27575 & 4.4165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 995083 & 77 & 86 & 0.206731 & 2.6972\ldots{} & 0.386875 & 0.08962 & 4.4165\ldots{} & \ldots{}\tabularnewline
+chr1\_9\ldots{} & ENSG00\ldots{} & 193015 & 3 & 3 & 0.0072\ldots{} & 3.7957\ldots{} & -2.4096 & 0.504028 & 4.9560\ldots{} & \ldots{}\tabularnewline
+chr1\_2\ldots{} & ENSG00\ldots{} & -510872 & 10 & 10 & 0.0240385 & 4.3979\ldots{} & -0.97553 & 0.232511 & 4.4931\ldots{} & \ldots{}\tabularnewline
+chr1\_9\ldots{} & ENSG00\ldots{} & 158610 & 6 & 6 & 0.0144231 & 7.4378\ldots{} & -1.47776 & 0.319499 & 4.4931\ldots{} & \ldots{}\tabularnewline
+chr1\_9\ldots{} & ENSG00\ldots{} & 170420 & 26 & 27 & 0.0652174 & 1.5197\ldots{} & 0.665794 & 0.149414 & 4.4931\ldots{} & \ldots{}\tabularnewline
+chr1\_9\ldots{} & ENSG00\ldots{} & 183319 & 27 & 28 & 0.0673077 & 8.0998\ldots{} & 0.680912 & 0.147854 & 4.4931\ldots{} & \ldots{}\tabularnewline
+chr1\_7\ldots{} & ENSG00\ldots{} & -98104 & 45 & 49 & 0.117788 & 3.8806\ldots{} & -0.430994 & 0.081567 & 4.4917\ldots{} & \ldots{}\tabularnewline
+chr1\_7\ldots{} & ENSG00\ldots{} & -97896 & 44 & 48 & 0.115385 & 1.3477\ldots{} & -0.408977 & 0.0815771 & 4.4917\ldots{} & \ldots{}\tabularnewline
+chr1\_7\ldots{} & ENSG00\ldots{} & -97661 & 53 & 64 & 0.153846 & 2.6452\ldots{} & 0.343539 & 0.0794932 & 4.4917\ldots{} & \ldots{}\tabularnewline
+chr1\_7\ldots{} & ENSG00\ldots{} & -66787 & 45 & 49 & 0.117788 & 1.1198\ldots{} & -0.405186 & 0.0801673 & 4.4917\ldots{} & \ldots{}\tabularnewline
+chr1\_7\ldots{} & ENSG00\ldots{} & -66695 & 45 & 48 & 0.115385 & 7.1610\ldots{} & -0.421834 & 0.0818781 & 4.4917\ldots{} & \ldots{}\tabularnewline
+chr1\_7\ldots{} & ENSG00\ldots{} & -28800 & 44 & 47 & 0.112981 & 4.1144\ldots{} & -0.396941 & 0.0833519 & 4.4917\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{variant-ux4e0e-degs-ux76f8ux5173}{%
+\subsubsection{Variant (与 DEGs 相关)}\label{variant-ux4e0e-degs-ux76f8ux5173}}
+
+根据 DEGs 的基因名过滤 eQTL 数据：
+
+Figure \ref{fig:LIVER-database-of-eQTL-intersect-with-DEGs} (下方图) 为图LIVER database of eQTL intersect with DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-database-of-eQTL-intersect-with-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LIVER-database-of-eQTL-intersect-with-DEGs.pdf}
+\caption{LIVER database of eQTL intersect with DEGs}\label{fig:LIVER-database-of-eQTL-intersect-with-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    ENHO, SLC22A3, STARD10, GNMT, TLCD2, PON1, SIK1, DDTL,
+APOC4, SPRYD3, GM2A, UGT3A2, RHPN2, SULT1C2, MRPL15,
+C9orf152, SLC39A4, RHOD, SAA4, SLC10A1, NUDT18, ANG, IPO7,
+PROB1, GNG12, MPZL3, OST4, ASAH2B, FOLR3, CTAGE15, CD1D,
+APOC2, KISS1, GOLT1A, PAQR9, DPP3, HUNK, MIF, HPR, HP,
+SULT2A1, IL17RB, FADS3, DELE1, SCCPDH, CYP2A6, CYP2A13,
+GNPNAT1, LINGO4, C14orf119, MRPL14, NEMP1, AP1M1, PXMP2,
+PSMB3, OTUD1, MBL2, RCN1, E2F2, TMEM238, EPPK1, CMTM6,
+IKBKE, ALDH16A1, C2orf42, TRABD, RTEL1, COL5A3, CTDSP1,
+DIPK2A, TXN2, IMMP2L, CA5A, GRIK5, TMEM176A, ATP23, GJC3,
+ZNF429, TPMT, OMD, RAP2C, CRCP, L3MBTL3, ACY3, PRMT6,
+CD2BP2, IL22RA1, RNF168, BRI3, ITPRIPL1, ORM2, KPNA2,
+CHMP4C, PPDPF, CCL15, OXSM, COPS7A, CYP3A7-CYP3A51P,
+MBLAC2, ACOT12, SEC11C, SURF6, TRUB1, ELOVL2, MLYCD,
+MARVELD3, ZBTB33, PPIL1, AMIGO1, CYC1, C11orf96, ITGB3,
+GLUD2, TMEM134, DHRS3, PRRG4, LLPH, GLO1, IL1RAP, NOCT,
+NTAQ1, VSIG10L, LRRC46, AMDHD1, LRRC57, SERPINA12, UFL1,
+CCL27, FAM136A, RAB22A, FCGR2C, ZFPM1, TMEM218, GCNT4,
+TADA1, GNG10, ANKRD9, DECR1, ZNF408, TCEA3, DSG1, INMT,
+IVD, LARS2, CYP27A1, PLIN3, TMEM47, CYSTM1, FXYD1, EVI5L,
+NME6, NSA2, GTF2I, LCMT2, PPP1CB, AGXT, CLDN1, PARG
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/LIVER-database-of-eQTL-intersect-with-DEGs-content})}
+
+Table \ref{tab:LIVER-database-of-eQTL-intersect-with-DEGs-DATA} (下方表格) 为表格LIVER database of eQTL intersect with DEGs DATA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-database-of-eQTL-intersect-with-DEGs-DATA.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有9785行13列，以下预览的表格可能省略部分数据；表格含有9455个唯一`variant\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item variant\_id:  variant ID in the format \{chr\}\_\{pos\_first\_ref\_base\}\_\{ref\_seq\}\_\{alt\_seq\}\_b38
+\item tss\_distance:  distance between variant and transcription start site (TSS). Positive when variant is downstream of the TSS, negative otherwise
+\item maf:  minor allele frequency observed in the set of donors for a given tissue
+\item pval\_nominal:  nominal p-value associated with the most significant variant for this gene
+\item slope:  regression slope
+\item slope\_se:  standard error of the regression slope
+\item pval\_beta:  beta-approximated permutation p-value
+\item pval\_nominal\_threshold:  nominal p-value threshold for calling a variant-gene pair significant for the gene
+\item ma\_samples:  number of samples carrying the minor allele
+\item ma\_count:  total number of minor alleles across individuals
+\item min\_pval\_nominal:  smallest nominal p-value for the gene
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:LIVER-database-of-eQTL-intersect-with-DEGs-DATA}LIVER database of eQTL intersect with DEGs DATA}\tabularnewline
+\toprule
+varian\ldots{} & gene\_id & tss\_di\ldots{} & ma\_sam\ldots{} & ma\_count & maf & pval\_n\ldots\ldots7 & slope & slope\_se & pval\_n\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+varian\ldots{} & gene\_id & tss\_di\ldots{} & ma\_sam\ldots{} & ma\_count & maf & pval\_n\ldots\ldots7 & slope & slope\_se & pval\_n\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endhead
+chr1\_1\ldots{} & ENSG00\ldots{} & -837790 & 32 & 35 & 0.0841346 & 1.7084\ldots{} & 0.446491 & 0.100836 & 3.1656\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -808267 & 24 & 25 & 0.0600962 & 2.8012\ldots{} & -0.470158 & 0.109147 & 3.1656\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -270870 & 11 & 11 & 0.0264423 & 5.3189\ldots{} & 0.79694 & 0.169447 & 3.1656\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -270849 & 11 & 11 & 0.0264423 & 5.3189\ldots{} & 0.79694 & 0.169447 & 3.1656\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -193795 & 13 & 13 & 0.03125 & 4.2127\ldots{} & 0.739458 & 0.155452 & 3.1656\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -124521 & 13 & 13 & 0.03125 & 4.2127\ldots{} & 0.739458 & 0.155452 & 3.1656\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -94331 & 13 & 13 & 0.03125 & 4.2127\ldots{} & 0.739458 & 0.155452 & 3.1656\ldots{} & \ldots{}\tabularnewline
+chr1\_2\ldots{} & ENSG00\ldots{} & -829148 & 4 & 4 & 0.0096\ldots{} & 8.5729\ldots{} & 0.771259 & 0.167959 & 4.9989\ldots{} & \ldots{}\tabularnewline
+chr1\_2\ldots{} & ENSG00\ldots{} & -828022 & 4 & 4 & 0.0096\ldots{} & 8.5729\ldots{} & 0.771259 & 0.167959 & 4.9989\ldots{} & \ldots{}\tabularnewline
+chr1\_2\ldots{} & ENSG00\ldots{} & 40717 & 62 & 70 & 0.168269 & 4.0212\ldots{} & 0.173992 & 0.0412498 & 4.9989\ldots{} & \ldots{}\tabularnewline
+chr1\_2\ldots{} & ENSG00\ldots{} & 356991 & 11 & 11 & 0.0264423 & 6.9192\ldots{} & -1.03253 & 0.222426 & 3.5636\ldots{} & \ldots{}\tabularnewline
+chr1\_2\ldots{} & ENSG00\ldots{} & -135634 & 14 & 15 & 0.0360577 & 3.6543\ldots{} & -0.674426 & 0.158994 & 4.9389\ldots{} & \ldots{}\tabularnewline
+chr1\_2\ldots{} & ENSG00\ldots{} & -52692 & 20 & 23 & 0.0552885 & 3.2148\ldots{} & -0.512818 & 0.119997 & 4.9389\ldots{} & \ldots{}\tabularnewline
+chr1\_2\ldots{} & ENSG00\ldots{} & -25624 & 21 & 23 & 0.0552885 & 2.0117\ldots{} & -0.553662 & 0.126165 & 4.9389\ldots{} & \ldots{}\tabularnewline
+chr1\_2\ldots{} & ENSG00\ldots{} & -23866 & 19 & 21 & 0.0504808 & 4.0686\ldots{} & -0.550719 & 0.130654 & 4.9389\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{gwas-ux6570ux636eux5bfbux627eux4e0eux7a81ux53d8ux7c7bux578bux663eux8457ux5173ux8054ux7684ux80a0ux9053ux5faeux751fux7269ux6216ux4ee3ux8c22ux7269}{%
+\subsection{GWAS 数据：寻找与突变类型显著关联的肠道微生物或代谢物}\label{gwas-ux6570ux636eux5bfbux627eux4e0eux7a81ux53d8ux7c7bux578bux663eux8457ux5173ux8054ux7684ux80a0ux9053ux5faeux751fux7269ux6216ux4ee3ux8c22ux7269}}
+
+\hypertarget{gwas-ux6570ux636e}{%
+\subsubsection{GWAS 数据}\label{gwas-ux6570ux636e}}
+
+以下为使用的 GWAS 数据 (代谢物或微生物与 variant 的显著关系，来源见 \ref{material})：
+
+`PUBLISHED MendelianRandoLiuX2022' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PUBLISHED-MendelianRandoLiuX2022})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/PUBLISHED-MendelianRandoLiuX2022共包含2个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_snp\_microbiota.csv
+\item 2\_snp\_metabolite.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+以下，结合 Tab. \ref{tab:LIVER-database-of-eQTL-intersect-with-DEGs-DATA}，根据 variant\_id 筛选上述数据。
+
+\hypertarget{f-mic}{%
+\subsubsection{Microbiota}\label{f-mic}}
+
+Figure \ref{fig:LIVER-filtered-eQTL-data-intersect-with-microbiota-related} (下方图) 为图LIVER filtered eQTL data intersect with microbiota related概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-filtered-eQTL-data-intersect-with-microbiota-related.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LIVER-filtered-eQTL-data-intersect-with-microbiota-related.pdf}
+\caption{LIVER filtered eQTL data intersect with microbiota related}\label{fig:LIVER-filtered-eQTL-data-intersect-with-microbiota-related}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    chr9\_110149941\_A\_G\_b38
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/LIVER-filtered-eQTL-data-intersect-with-microbiota-related-content})}
+
+Table \ref{tab:LIVER-filtered-eQTL-data-intersect-with-microbiota-related-DATA} (下方表格) 为表格LIVER filtered eQTL data intersect with microbiota related DATA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-filtered-eQTL-data-intersect-with-microbiota-related-DATA.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行3列，以下预览的表格可能省略部分数据；表格含有1个唯一`variant\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item variant\_id:  variant ID in the format \{chr\}\_\{pos\_first\_ref\_base\}\_\{ref\_seq\}\_\{alt\_seq\}\_b38
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:LIVER-filtered-eQTL-data-intersect-with-microbiota-related-DATA}LIVER filtered eQTL data intersect with microbiota related DATA}\tabularnewline
+\toprule
+variant\_id & Microbiome.features & hgnc\_symbol\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+variant\_id & Microbiome.features & hgnc\_symbol\tabularnewline
+\midrule
+\endhead
+chr9\_110149941\_A\_G\_b38 & s\_Mobiluncus\_mulieris & C9orf152\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{f-met}{%
+\subsubsection{Metabolite}\label{f-met}}
+
+Figure \ref{fig:LIVER-filtered-eQTL-data-intersect-with-metabolite-related} (下方图) 为图LIVER filtered eQTL data intersect with metabolite related概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-filtered-eQTL-data-intersect-with-metabolite-related.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LIVER-filtered-eQTL-data-intersect-with-metabolite-related.pdf}
+\caption{LIVER filtered eQTL data intersect with metabolite related}\label{fig:LIVER-filtered-eQTL-data-intersect-with-metabolite-related}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    chr17\_47247224\_A\_G\_b38
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/LIVER-filtered-eQTL-data-intersect-with-metabolite-related-content})}
+
+Table \ref{tab:LIVER-filtered-eQTL-data-intersect-with-metabolite-related-DATA} (下方表格) 为表格LIVER filtered eQTL data intersect with metabolite related DATA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-filtered-eQTL-data-intersect-with-metabolite-related-DATA.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行3列，以下预览的表格可能省略部分数据；表格含有1个唯一`variant\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item variant\_id:  variant ID in the format \{chr\}\_\{pos\_first\_ref\_base\}\_\{ref\_seq\}\_\{alt\_seq\}\_b38
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:LIVER-filtered-eQTL-data-intersect-with-metabolite-related-DATA}LIVER filtered eQTL data intersect with metabolite related DATA}\tabularnewline
+\toprule
+variant\_id & Metabolic.traits & hgnc\_symbol\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+variant\_id & Metabolic.traits & hgnc\_symbol\tabularnewline
+\midrule
+\endhead
+chr17\_47247224\_A\_G\_b38 & Leucine & ITGB3\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269ux5173ux8054ux6570ux636eux5e93ux7b5bux9009}{%
+\subsection{肠道菌和代谢物关联数据库筛选}\label{ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269ux5173ux8054ux6570ux636eux5e93ux7b5bux9009}}
+
+在 \ref{f-mic} 和 \ref{f-met} 中，分别筛选到了一组 SNP 与 microbiota 或者 SNP 与 metabolite 之间的关联。
+以下，以 gutMDisorder 数据库寻找与该 microbiota 或 metabolite 关联的其它 metabolite 或 microbiota。
+
+\hypertarget{ux4ee5-microbiota-ux7b5bux9009}{%
+\subsubsection{以 Microbiota 筛选}\label{ux4ee5-microbiota-ux7b5bux9009}}
+
+无结果。
+
+\hypertarget{ux4ee5-metabolite-ux7b5bux9009}{%
+\subsubsection{以 Metabolite 筛选}\label{ux4ee5-metabolite-ux7b5bux9009}}
+
+结果如下：
+
+Table \ref{tab:Liver-gutMDisorder-Matched-metabolites-and-their-related-microbiota} (下方表格) 为表格Liver gutMDisorder Matched metabolites and their related microbiota概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-gutMDisorder-Matched-metabolites-and-their-related-microbiota.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5行4列，以下预览的表格可能省略部分数据；表格含有1个唯一`Metabolite'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:Liver-gutMDisorder-Matched-metabolites-and-their-related-microbiota}Liver gutMDisorder Matched metabolites and their related microbiota}\tabularnewline
+\toprule
+Metabolite & Substrate & Gut.Microbiota & Classification\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Metabolite & Substrate & Gut.Microbiota & Classification\tabularnewline
+\midrule
+\endhead
+Leucine & & Ruminococcus & genus\tabularnewline
+Leucine & & Dorea & genus\tabularnewline
+Leucine & & Blautia & genus\tabularnewline
+Leucine & & Faecalibacterium & genus\tabularnewline
+Leucine & & Faecalibacterium \ldots{} & species\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5df2ux6709ux7684-ux80c6ux7ed3ux77f3-gallstones-g-ux7684ux5faeux751fux7269ux548cux4ee3ux8c22ux7269ux5173ux8054ux7814ux7a76}{%
+\subsection{已有的 胆结石 (gallstones, G) 的微生物和代谢物关联研究}\label{ux5df2ux6709ux7684-ux80c6ux7ed3ux77f3-gallstones-g-ux7684ux5faeux751fux7269ux548cux4ee3ux8c22ux7269ux5173ux8054ux7814ux7a76}}
+
+\hypertarget{changesandcorchen2021}{%
+\subsubsection{ChangesAndCorChen2021}\label{changesandcorchen2021}}
+
+数据来源于\textsuperscript{\protect\hyperlink{ref-ChangesAndCorChen2021}{1}}
+
+Figure \ref{fig:PUBLISHED-ChangesAndCorChen2021-correlation-heatmap} (下方图) 为图PUBLISHED ChangesAndCorChen2021 correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PUBLISHED-ChangesAndCorChen2021-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PUBLISHED-ChangesAndCorChen2021-correlation-heatmap.pdf}
+\caption{PUBLISHED ChangesAndCorChen2021 correlation heatmap}\label{fig:PUBLISHED-ChangesAndCorChen2021-correlation-heatmap}
+\end{center}
+
+Table \ref{tab:PUBLISHED-ChangesAndCorChen2021-significant-correlation} (下方表格) 为表格PUBLISHED ChangesAndCorChen2021 significant correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PUBLISHED-ChangesAndCorChen2021-significant-correlation.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3104行8列，以下预览的表格可能省略部分数据；表格含有100个唯一`metabolite'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor:  皮尔逊关联系数，正关联或负关联。
+\item pvalue:  显著性 P。
+\item -log2(P.value):  P 的对数转化。
+\item significant:  显著性。
+\item sign:  人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:PUBLISHED-ChangesAndCorChen2021-significant-correlation}PUBLISHED ChangesAndCorChen2021 significant correlation}\tabularnewline
+\toprule
+metabo\ldots{} & microb\ldots{} & cor & pvalue & AdjPvalue & -log2(\ldots{} & signif\ldots{} & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+metabo\ldots{} & microb\ldots{} & cor & pvalue & AdjPvalue & -log2(\ldots{} & signif\ldots{} & sign\tabularnewline
+\midrule
+\endhead
+PE(16:\ldots{} & Prevot\ldots{} & 0.6120\ldots{} & 0.0049\ldots{} & 0.0159\ldots{} & 7.6581\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & Alloba\ldots{} & -0.559\ldots{} & 0.0115\ldots{} & 0.0218\ldots{} & 6.4339\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & {[}Eubac\ldots{} & -0.461\ldots{} & 0.0419\ldots{} & 0.0636\ldots{} & 4.5738\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & A2 & -0.514\ldots{} & 0.0218\ldots{} & 0.0428\ldots{} & 5.5171\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & Trepon\ldots{} & 0.5303\ldots{} & 0.0161\ldots{} & 0.0471\ldots{} & 5.9517\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & Anaero\ldots{} & 0.5185\ldots{} & 0.0191\ldots{} & 0.0383\ldots{} & 5.7051\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & Bifido\ldots{} & -0.670\ldots{} & 0.0016\ldots{} & 0.0160\ldots{} & 9.2801\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & Entero\ldots{} & -0.475\ldots{} & 0.0357\ldots{} & 0.0567\ldots{} & 4.8046\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & Turici\ldots{} & -0.524\ldots{} & 0.0176\ldots{} & 0.0299\ldots{} & 5.8208\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & Tyzzer\ldots{} & -0.568\ldots{} & 0.0100\ldots{} & 0.0197\ldots{} & 6.6310\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & {[}Eubac\ldots{} & -0.478\ldots{} & 0.0345\ldots{} & 0.0931\ldots{} & 4.8570\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & GCA-90\ldots{} & -0.498\ldots{} & 0.0252\ldots{} & 0.0406\ldots{} & 5.3097\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & Rumino\ldots{} & -0.466\ldots{} & 0.0382\ldots{} & 0.0868\ldots{} & 4.7099\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & Tyzzer\ldots{} & 0.6169\ldots{} & 0.0037\ldots{} & 0.0096\ldots{} & 8.0559\ldots{} & \textless{} 0.05 & *\tabularnewline
+PE(16:\ldots{} & {[}Rumin\ldots{} & -0.472\ldots{} & 0.0370\ldots{} & 0.0699\ldots{} & 4.7527\ldots{} & \textless{} 0.05 & *\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux9a8cux8bc1ux7ed3ux679c}{%
+\subsubsection{验证结果}\label{ux9a8cux8bc1ux7ed3ux679c}}
+
+将 Tab. \ref{tab:Liver-gutMDisorder-Matched-metabolites-and-their-related-microbiota} 中的微生物在 Tab. \ref{tab:PUBLISHED-ChangesAndCorChen2021-significant-correlation} 中搜索验证：
+
+Table \ref{tab:Liver-gutMDisorder-microbiota-matched-in-PUBLISHED-ChangesAndCorChen2021} (下方表格) 为表格Liver gutMDisorder microbiota matched in PUBLISHED ChangesAndCorChen2021概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-gutMDisorder-microbiota-matched-in-PUBLISHED-ChangesAndCorChen2021.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有104行8列，以下预览的表格可能省略部分数据；表格含有71个唯一`metabolite'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor:  皮尔逊关联系数，正关联或负关联。
+\item pvalue:  显著性 P。
+\item -log2(P.value):  P 的对数转化。
+\item significant:  显著性。
+\item sign:  人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:Liver-gutMDisorder-microbiota-matched-in-PUBLISHED-ChangesAndCorChen2021}Liver gutMDisorder microbiota matched in PUBLISHED ChangesAndCorChen2021}\tabularnewline
+\toprule
+metabo\ldots{} & microb\ldots{} & cor & pvalue & AdjPvalue & -log2(\ldots{} & signif\ldots{} & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+metabo\ldots{} & microb\ldots{} & cor & pvalue & AdjPvalue & -log2(\ldots{} & signif\ldots{} & sign\tabularnewline
+\midrule
+\endhead
+PE(16:\ldots{} & {[}Rumin\ldots{} & -0.472\ldots{} & 0.0370\ldots{} & 0.0699\ldots{} & 4.7527\ldots{} & \textless{} 0.05 & *\tabularnewline
+PC(18:\ldots{} & {[}Rumin\ldots{} & 0.5699\ldots{} & 0.0098\ldots{} & 0.0333\ldots{} & 6.6643\ldots{} & \textless{} 0.05 & *\tabularnewline
+PC(20:\ldots{} & {[}Rumin\ldots{} & 0.7398\ldots{} & 0.0002\ldots{} & 0.0048\ldots{} & 11.751\ldots{} & \textless{} 0.001 & **\tabularnewline
+Tauroh\ldots{} & {[}Rumin\ldots{} & -0.8 & 2.8326\ldots{} & 0.0010\ldots{} & 15.107\ldots{} & \textless{} 0.001 & **\tabularnewline
+Tauroh\ldots{} & Rumino\ldots{} & 0.4605\ldots{} & 0.0410\ldots{} & 0.1088\ldots{} & 4.6077\ldots{} & \textless{} 0.05 & *\tabularnewline
+trans-\ldots{} & {[}Rumin\ldots{} & 0.7082\ldots{} & 0.0006\ldots{} & 0.0078\ldots{} & 10.522\ldots{} & \textless{} 0.001 & **\tabularnewline
+trans-\ldots{} & Rumino\ldots{} & -0.509\ldots{} & 0.0216\ldots{} & 0.0980\ldots{} & 5.5314\ldots{} & \textless{} 0.05 & *\tabularnewline
+L-Norl\ldots{} & {[}Rumin\ldots{} & 0.5879\ldots{} & 0.0074\ldots{} & 0.0285\ldots{} & 7.0754\ldots{} & \textless{} 0.05 & *\tabularnewline
+L-Norl\ldots{} & Rumino\ldots{} & -0.456\ldots{} & 0.0427\ldots{} & 0.1088\ldots{} & 4.5465\ldots{} & \textless{} 0.05 & *\tabularnewline
+m-Coum\ldots{} & {[}Rumin\ldots{} & 0.6390\ldots{} & 0.0030\ldots{} & 0.0148\ldots{} & 8.3672\ldots{} & \textless{} 0.05 & *\tabularnewline
+m-Coum\ldots{} & Rumino\ldots{} & -0.629\ldots{} & 0.0029\ldots{} & 0.0549\ldots{} & 8.4227\ldots{} & \textless{} 0.05 & *\tabularnewline
+Galact\ldots{} & {[}Rumin\ldots{} & 0.7308\ldots{} & 0.0003\ldots{} & 0.0053\ldots{} & 11.378\ldots{} & \textless{} 0.001 & **\tabularnewline
+Hypoxa\ldots{} & {[}Rumin\ldots{} & -0.538\ldots{} & 0.0157\ldots{} & 0.0406\ldots{} & 5.9924\ldots{} & \textless{} 0.05 & *\tabularnewline
+L-Carn\ldots{} & {[}Rumin\ldots{} & -0.763\ldots{} & 0.0001\ldots{} & 0.0026\ldots{} & 12.864\ldots{} & \textless{} 0.001 & **\tabularnewline
+SM C16:1 & {[}Rumin\ldots{} & -0.562\ldots{} & 0.0110\ldots{} & 0.0335\ldots{} & 6.4991\ldots{} & \textless{} 0.05 & *\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+结果发现 Ruminococcus 这一微生物得到验证，属于 胆结石 (gallstones, G) 的差异微生物。
+
+Ruminococcus 向上对应：
+
+Ruminococcus -\textgreater{} Leucine -\textgreater{} \texttt{chr17\_47247224\_A\_G\_b38} -\textgreater{} ITGB3
+
+\hypertarget{itgb3c9orf152-ux4e0e-steroid-biosynthesis-ux901aux8defux7684ux57faux56e0ux7684ux5173ux8054ux6027}{%
+\subsubsection{ITGB3、C9orf152 与 `Steroid biosynthesis' 通路的基因的关联性}\label{itgb3c9orf152-ux4e0e-steroid-biosynthesis-ux901aux8defux7684ux57faux56e0ux7684ux5173ux8054ux6027}}
+
+(C9orf152 来源于 Tab. \ref{tab:LIVER-filtered-eQTL-data-intersect-with-microbiota-related-DATA})
+
+\hypertarget{ux5bf9ux5e94ux5173ux7cfb-hgnc-symbol-ux548c-mgi-symbol}{%
+\paragraph{对应关系 (hgnc symbol 和 mgi symbol)}\label{ux5bf9ux5e94ux5173ux7cfb-hgnc-symbol-ux548c-mgi-symbol}}
+
+以下为这些基因的对应关系：
+
+Table \ref{tab:Mapping-of-ITGB3-and-other-genes-from-hgncSymbol-to-mgiSymbol} (下方表格) 为表格Mapping of ITGB3 and other genes from hgncSymbol to mgiSymbol概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Mapping-of-ITGB3-and-other-genes-from-hgncSymbol-to-mgiSymbol.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有13行11列，以下预览的表格可能省略部分数据；表格含有13个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Mapping-of-ITGB3-and-other-genes-from-hgncSymbol-to-mgiSymbol}Mapping of ITGB3 and other genes from hgncSymbol to mgiSymbol}\tabularnewline
+\toprule
+hgnc\_s\ldots{} & mgi\_sy\ldots{} & ensemb\ldots{} & entrez\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_s\ldots{} & mgi\_sy\ldots{} & ensemb\ldots{} & entrez\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endhead
+C9orf152 & D63003\ldots{} & ENSMUS\ldots{} & 242484 & RIKEN \ldots{} & 0.8319\ldots{} & 3.6286\ldots{} & 4.4284\ldots{} & 0.0014\ldots{} & 0.0873\ldots{}\tabularnewline
+ITGB3 & Itgb3 & ENSMUS\ldots{} & 16416 & integr\ldots{} & 0.7621\ldots{} & 1.9664\ldots{} & 2.5048\ldots{} & 0.0324\ldots{} & 0.3350\ldots{}\tabularnewline
+HSD17B7 & Hsd17b7 & ENSMUS\ldots{} & 15490 & hydrox\ldots{} & -1.949\ldots{} & 5.7472\ldots{} & -7.173\ldots{} & 4.0766\ldots{} & 0.0170\ldots{}\tabularnewline
+MSMO1 & Msmo1 & ENSMUS\ldots{} & 66234 & methyl\ldots{} & -4.130\ldots{} & 5.8215\ldots{} & -6.801\ldots{} & 6.2586\ldots{} & 0.0210\ldots{}\tabularnewline
+CYP51A1 & Cyp51 & ENSMUS\ldots{} & 13121 & cytoch\ldots{} & -2.839\ldots{} & 5.6728\ldots{} & -5.878\ldots{} & 0.0001\ldots{} & 0.0351\ldots{}\tabularnewline
+LSS & Lss & ENSMUS\ldots{} & 16987 & lanost\ldots{} & -1.865\ldots{} & 2.5679\ldots{} & -5.855\ldots{} & 0.0002\ldots{} & 0.0351\ldots{}\tabularnewline
+DHCR7 & Dhcr7 & ENSMUS\ldots{} & 13360 & 7-dehy\ldots{} & -2.171\ldots{} & 4.9094\ldots{} & -5.653\ldots{} & 0.0002\ldots{} & 0.0398\ldots{}\tabularnewline
+DHCR24 & Dhcr24 & ENSMUS\ldots{} & 74754 & 24-deh\ldots{} & -1.285\ldots{} & 9.3065\ldots{} & -5.407\ldots{} & 0.0003\ldots{} & 0.0465\ldots{}\tabularnewline
+TM7SF2 & Tm7sf2 & ENSMUS\ldots{} & 73166 & transm\ldots{} & -1.187\ldots{} & 6.0181\ldots{} & -5.354\ldots{} & 0.0003\ldots{} & 0.0481\ldots{}\tabularnewline
+EBP & Ebp & ENSMUS\ldots{} & 13595 & phenyl\ldots{} & -0.865\ldots{} & 7.0738\ldots{} & -4.934\ldots{} & 0.0007\ldots{} & 0.0626\ldots{}\tabularnewline
+NSDHL & Nsdhl & ENSMUS\ldots{} & 18194 & NAD(P)\ldots{} & -2.316\ldots{} & 4.5013\ldots{} & -4.573\ldots{} & 0.0011\ldots{} & 0.0805\ldots{}\tabularnewline
+SC5D & Sc5d & ENSMUS\ldots{} & 235293 & sterol\ldots{} & -0.953\ldots{} & 6.8768\ldots{} & -4.064\ldots{} & 0.0025\ldots{} & 0.1117\ldots{}\tabularnewline
+FDFT1 & Fdft1 & ENSMUS\ldots{} & 14137 & farnes\ldots{} & -4.499\ldots{} & 3.0868\ldots{} & -3.658\ldots{} & 0.0048\ldots{} & 0.1480\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5173ux8054ux5206ux6790}{%
+\paragraph{关联分析}\label{ux5173ux8054ux5206ux6790}}
+
+Figure \ref{fig:LIVER-correlation-heatmap} (下方图) 为图LIVER correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LIVER-correlation-heatmap.pdf}
+\caption{LIVER correlation heatmap}\label{fig:LIVER-correlation-heatmap}
+\end{center}
+
+Table \ref{tab:LIVER-significant-correlation} (下方表格) 为表格LIVER significant correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LIVER-significant-correlation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有16行7列，以下预览的表格可能省略部分数据；表格含有2个唯一`Screened.DEGs'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor:  皮尔逊关联系数，正关联或负关联。
+\item pvalue:  显著性 P。
+\item -log2(P.value):  P 的对数转化。
+\item significant:  显著性。
+\item sign:  人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:LIVER-significant-correlation}LIVER significant correlation}\tabularnewline
+\toprule
+Screened.DEGs & Pathway.of\ldots{} & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Screened.DEGs & Pathway.of\ldots{} & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
+\midrule
+\endhead
+Itgb3 & Nsdhl & -0.68 & 0.0441 & 4.50307753\ldots{} & \textless{} 0.05 & *\tabularnewline
+D630039A03Rik & Nsdhl & -0.79 & 0.0107 & 6.54624539\ldots{} & \textless{} 0.05 & *\tabularnewline
+Itgb3 & Cyp51 & -0.71 & 0.0309 & 5.01624935\ldots{} & \textless{} 0.05 & *\tabularnewline
+D630039A03Rik & Cyp51 & -0.81 & 0.0079 & 6.98393163\ldots{} & \textless{} 0.05 & *\tabularnewline
+Itgb3 & Msmo1 & -0.7 & 0.0375 & 4.73696559\ldots{} & \textless{} 0.05 & *\tabularnewline
+D630039A03Rik & Msmo1 & -0.87 & 0.0022 & 8.82828076\ldots{} & \textless{} 0.05 & *\tabularnewline
+Itgb3 & Sc5d & -0.78 & 0.0138 & 6.17918792\ldots{} & \textless{} 0.05 & *\tabularnewline
+Itgb3 & Ebp & -0.71 & 0.0333 & 4.90833401\ldots{} & \textless{} 0.05 & *\tabularnewline
+D630039A03Rik & Ebp & -0.72 & 0.0296 & 5.07825901\ldots{} & \textless{} 0.05 & *\tabularnewline
+Itgb3 & Tm7sf2 & -0.82 & 0.0071 & 7.13796526\ldots{} & \textless{} 0.05 & *\tabularnewline
+D630039A03Rik & Tm7sf2 & -0.67 & 0.0468 & 4.41734765\ldots{} & \textless{} 0.05 & *\tabularnewline
+Itgb3 & Hsd17b7 & -0.7 & 0.0373 & 4.74468055\ldots{} & \textless{} 0.05 & *\tabularnewline
+D630039A03Rik & Hsd17b7 & -0.86 & 0.0027 & 8.53282487\ldots{} & \textless{} 0.05 & *\tabularnewline
+D630039A03Rik & Lss & -0.81 & 0.0083 & 6.91267294\ldots{} & \textless{} 0.05 & *\tabularnewline
+Itgb3 & Dhcr24 & -0.75 & 0.0197 & 5.66566056\ldots{} & \textless{} 0.05 & *\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-ChangesAndCorChen2021}{}%
+1. Chen, Y. \emph{et al.} Changes and correlations of the intestinal flora and liver metabolite profiles in mice with gallstones. \emph{Frontiers in physiology} \textbf{12}, (2021).
+
+\leavevmode\hypertarget{ref-MendelianRandoLiuX2022}{}%
+2. Liu, X. \emph{et al.} Mendelian randomization analyses support causal relationships between blood metabolites and the gut microbiome. \emph{Nature Genetics} \textbf{54}, (2022).
+
+\leavevmode\hypertarget{ref-MappingIdentifDurinc2009}{}%
+3. Durinck, S., Spellman, P. T., Birney, E. \& Huber, W. Mapping identifiers for the integration of genomic datasets with the r/bioconductor package biomaRt. \emph{Nature protocols} \textbf{4}, 1184--1191 (2009).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+4. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheGtexConsorNone2020}{}%
+5. None, N. \emph{et al.} The gtex consortium atlas of genetic regulatory effects across human tissues. \emph{Science} \textbf{369}, 1318--1330 (2020).
+
+\leavevmode\hypertarget{ref-GutmdisorderACheng2019}{}%
+6. Cheng, L., Qi, C., Zhuang, H., Fu, T. \& Zhang, X. GutMDisorder: A comprehensive database for dysbiosis of the gut microbiota in disorders and interventions. \emph{Nucleic Acids Research} \textbf{48}, (2019).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+7. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+8. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+\end{cslreferences}
+
+\end{document}

@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge RNA-seq 探究 rTMS 对
 SCI 和 NP 的影响} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-12-12}}
+\textbf{\textcolor{white}{2023-12-25}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -144,9 +144,11 @@ Mainly used method:
 \item
   ClusterProfiler used for gene enrichment analysis.\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{5}}
 \item
-  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition .
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
 \item
   Limma and edgeR used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{6},\protect\hyperlink{ref-EdgerDifferenChen}{7}}
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis.\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{6},\protect\hyperlink{ref-EdgerDifferenChen}{7}}
 \item
   Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
@@ -206,7 +208,7 @@ Figure \ref{fig:MAIN-fig-2} (下方图) 为图MAIN fig 2概览。
   Parietal cortex, P (tissue, region)
 \end{itemize}
 
-控制变量以差异分析 (Fig. \ref{fig:MAIN-fig-3}) 。可以发现，rTMS 对大脑带来的主要转录变化发生于 Hippocampus，而对 Parietal cortex 几乎不造成转录影响。取 Fig. \ref{fig:MAIN-fig-3} 的合集 (记为 rTMS-DEGs)。
+控制变量以差异分析 (Fig. \ref{fig:MAIN-fig-3}) 。海马是中枢痛觉感知、认知形成的关键核团，NP 可能诱发和促进海马神经元退行性病变，而海马神经元的改变又是 NP 产生的关键病理环节之一\textsuperscript{\protect\hyperlink{ref-EffectOfBrainMagari2011}{8},\protect\hyperlink{ref-CombinationPhaChapar2012}{9}}。因此，随后分析取 Fig. \ref{fig:MAIN-fig-3} 中 Hippocampus 的合集 (记为 rTMS-DEGs)。
 
 Figure \ref{fig:MAIN-fig-3} (下方图) 为图MAIN fig 3概览。
 
@@ -261,7 +263,7 @@ Figure \ref{fig:MAIN-fig-4} (下方图) 为图MAIN fig 4概览。
   GSE226238
 \end{itemize}
 
-根据文献提供的数据整理信息\textsuperscript{\protect\hyperlink{ref-ProfilingImmunMorris2023}{8}}：
+根据文献提供的数据整理信息\textsuperscript{\protect\hyperlink{ref-ProfilingImmunMorris2023}{10}}：
 
 Complete: AIS A-B
 Incomplete: AIS C-D
@@ -1187,14 +1189,14 @@ Figure \ref{fig:rTMS-All-DEGs-of-contrasts} (下方图) 为图rTMS All DEGs of c
 
 \textbf{(对应文件为 \texttt{Figure+Table/rTMS-data-DEGs})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/rTMS-data-DEGs共包含6个文件。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/rTMS-data-DEGs共包含9个文件。
 
 \begin{enumerate}\tightlist
 \item 1\_AU.H.iTBS - AU.H.Sham.csv
 \item 2\_AU.P.iTBS - AU.P.iTBS.csv
+\item 2\_AU.P.iTBS - AU.P.Sham.csv
 \item 3\_AI.H.iTBS - AI.H.Sham.csv
 \item 4\_AI.P.iTBS - AI.P.iTBS.csv
-\item 5\_Y.H.iTBS - Y.H.Sham.csv
 \item ...
 \end{enumerate}\end{tcolorbox}
 \end{center}
@@ -1205,7 +1207,7 @@ Figure \ref{fig:rTMS-All-DEGs-of-contrasts} (下方图) 为图rTMS All DEGs of c
 \hypertarget{mapping}{%
 \subsubsection{rTMS 数据的差异基因与 sig.coDegs 的关联性}\label{mapping}}
 
-这里，首先将 rTMS 的差异基因对应到 SCI、NP 中的基因 (假设 rTMS 对大鼠和对人的基因转录的影响是相同的，改变相同的基因) ：
+这里，首先将 rTMS 的差异基因 (取 Hippocampus 的差异基因) 对应到 SCI、NP 中的基因 (假设 rTMS 对大鼠和对人的基因转录的影响是相同的，改变相同的基因) ：
 
 `Mapping rTMS DEGs to SCI and NP dataset' 数据已全部提供。
 
@@ -1371,8 +1373,14 @@ Figure \ref{fig:RTMS-SCI-NP-correlated-sci-GO-enrichment} (下方图) 为图RTMS
 \leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
 7. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
 
+\leavevmode\hypertarget{ref-EffectOfBrainMagari2011}{}%
+8. Magariños, A. M. \emph{et al.} Effect of brain-derived neurotrophic factor haploinsufficiency on stress-induced remodeling of hippocampal neurons. \emph{Hippocampus} \textbf{21}, 253--264 (2011).
+
+\leavevmode\hypertarget{ref-CombinationPhaChapar2012}{}%
+9. Chaparro, L. E., Wiffen, P. J., Moore, R. A. \& Gilron, I. Combination pharmacotherapy for the treatment of neuropathic pain in adults. \emph{The Cochrane database of systematic reviews} \textbf{2012}, (2012).
+
 \leavevmode\hypertarget{ref-ProfilingImmunMorris2023}{}%
-8. Morrison, D. \emph{et al.} Profiling immunological phenotypes in individuals during the first year after traumatic spinal cord injury: A longitudinal analysis. \emph{Journal of Neurotrauma} \textbf{40}, 2621--2637 (2023).
+10. Morrison, D. \emph{et al.} Profiling immunological phenotypes in individuals during the first year after traumatic spinal cord injury: A longitudinal analysis. \emph{Journal of Neurotrauma} \textbf{40}, 2621--2637 (2023).
 \end{cslreferences}
 
 \end{document}

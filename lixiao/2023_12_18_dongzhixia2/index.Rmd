@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(12), coef = NA)
+info <- items(belong = odate(12), coef = .25)
 
 order_publish()
 idname <- order_packaging()
@@ -31,23 +31,15 @@ set_index()
 
 # 摘要 {#abstract}
 
-Model vs Control
+需求：
 
-Route:
+根据客户提供的RNA-seq，结合肠道菌、代谢物筛选关键差异表达基因，基因不要是FXR及其相关信号通路（CYP7A1等），要与胆固醇代谢、胆固醇摄取、胆固醇合成、胆固醇重吸收和胆汁酸代谢相关；同时结合肠道菌群大数据库，结合菌群代谢产物。注：客户研究的疾病是胆固醇胆结石（cholesterol gallstones），如果没有使用胆结石也可。
 
-DEGs -> eQTL -> SNP -> GWAS -> Metabolites and Microbiota
-
-## Gallstones 16s (and metabolites)
-
-### Mice
-
-Changes and Correlations of the Intestinal Flora and Liver Metabolite Profiles in Mice With Gallstones
-<https://www.ncbi.nlm.nih.gov/bioproject/PRJNA736820/>
-tables
-<https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8416897/>
+结果：见 \@ref(results)。
 
 ```{r}
-dic(di("胆结石"),
+dic(
+  di("胆结石"),
   di("胆固醇"),
   di("蛋白质组学"),
   di(en = "Cholesterol Gallstone Disease")
@@ -61,15 +53,23 @@ dic(di("胆结石"),
 
 # 前言 {#introduction}
 
+客户拥有的数据类型仅为 RNA-seq，反映的是组织 mRNA 水平。当前公共数据缺少同时结合 `r d("g")` 疾病的 RNA-seq、肠道菌、代谢组的分析类型。因此，为了将客户的 RNA-seq 分析结果与肠道菌和代谢物建立联系，设计思路为：
+
+- DEGs -> eQTL -> SNP -> GWAS -> Metabolites and Microbiota
+
+eQTL 分析的本质是以全部的 DNA 变异位点为自变量，轮流以每种 mRNA 表达量为因变量，用大量的个体数据做样本进行线性回归，得到每一个SNP位点和每一个mRNA表达量间的关系 (<https://www.nature.com/scitable/topicpage/quantitative-trait-locus-qtl-analysis-53904/>)。
+
+本次分析，通过寻找 mRNA 和 SNP 之间的关联，让 RNA-seq 筛选的 DEGs 联系到已有的关于代谢物或微生物的 GWAS 大数据研究 (\@ref(method) 这些数据反映了 SNP 与 代谢物或微生物之间的关联性) (即 SNP 作为桥梁) 筛选出关键 DEGs 和对应的肠道微生物和代谢物，最后再联系已有的 `r d("g")` 的肠道菌或代谢物的研究进行验证。
+
 # 材料和方法 {#methods}
 
-## 材料
+## 材料 {#material}
 
 ```{r eval = T, echo = F, results = "asis"}
 auto_material()
 ```
 
-## 方法
+## 方法 {#method}
 
 ```{r eval = T, echo = F, results = "asis"}
 auto_method()
@@ -77,17 +77,37 @@ auto_method()
 
 # 分析结果 {#results}
 
+## Liver: 
+
+- 根据 Model vs Control 初步筛选 DEGs (Tab. \@ref(tab:Liver-raw-DEGs-Model-vs-control))
+- DEGs 从 Mouce 到 Human 映射 (Tab. \@ref(tab:Liver-DEGs-mapping-from-Mice-to-Human)) 
+- 对上述映射后的基因进行 KEGG 的 GSEA 富集，结果发现 'Steroid biosynthesis' 为首要富集结果 (Fig. \@ref(fig:LIVER-KEGG-enrichment-with-enriched-genes)
+- 为了找到 DEGs 可能对应的 SNP，使用 eQTL 数据集，并筛选该数据集 (Fig. \@ref(fig:LIVER-database-of-eQTL-intersect-with-DEGs))  
+- 上述数据建立了：DEGs -> SNP 之间的关联，随后需要建立 SNP -> metablite 或者 microbiota 的关联，因此这里使用了相关的 GWAS 数据，并做了筛选 (Tab. \@ref(tab:LIVER-filtered-eQTL-data-intersect-with-microbiota-related-DATA)、Tab. \@ref(tab:LIVER-filtered-eQTL-data-intersect-with-metabolite-related-DATA)) 。这样，SNP -> metablite 或者 microbiota 的关联就确立了。往上对应到 DEGs (Human)，它们是：ITGB3, C9orf152。
+- 随后，为了发现更多的与上述筛选的 metabolite 或者 microbiota 相关的 metabolite 或者 microbiota，使用了 gutMDisorder 数据库，挖掘到的信息见 Tab. \@ref(tab:Liver-gutMDisorder-Matched-metabolites-and-their-related-microbiota)
+- 为了验证上述的发现，使用了[@ChangesAndCorChen2021]的数据 (这是一批研究 `r d("g")` 的代谢物和肠道微生物的 mice 的数据) (Fig. \@ref(fig:PUBLISHED-ChangesAndCorChen2021-correlation-heatmap)) 。筛选后发现，Ruminococcus 的确在 `r d("g")` 中属于差异微生物。这样，串联上述线索，发现了关系链：
+    - Microbiota:Ruminococcus -> Metabolite:Leucine -> SNP:`chr17_47247224_A_G_b38` -> DEG:ITGB3
+- 这里，进一步将 ITGB3, C9orf152 与 Steroid biosynthesis 通路的其它基因做了关联分析，发现它们主要成显著的负关联 (Fig. \@ref(fig:LIVER-correlation-heatmap))。
+- 这些基因在 human 或者 mice 中的基因名的对应关系见 Tab. \@ref(tab:Mapping-of-ITGB3-and-other-genes-from-hgncSymbol-to-mgiSymbol)
+- 建议以 ITGB3 或上述其它基因 (Steroid biosynthesis 通路) 作为目标基因进一步分析。
+
+
 # 结论 {#dis}
 
-# 附：分析流程 {#workflow}
+# 附：分析流程 (Liver) {#workflow}
 
 ## 差异表达基因
 
 ### Model vs Control
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Liver-raw-DEGs
+#| Liver-raw-DEGs-Model-vs-control
 autor(lm.liver@tables$step2$tops[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-plot-DEGs-Model-vs-control
+autor(lm.liver@plots$step2$p.valcano[[1]])
 ```
 
 ```{r}
@@ -101,9 +121,11 @@ lm.liver@tables$step2$tops[[1]]
 
 ### Biomart mapping
 
+客户的数据为 Mouce 的数据，这里将 Mouce 的基因映射为 Human 的基因 (因为后续的数据来源主要为 Human)。 
+
 ```{r eval = T, echo = F, results = "asis"}
 #| Liver-DEGs-mapping-from-Mice-to-Human
-autor(l.tops)
+autor(tops.liver)
 ```
 
 ```{r}
@@ -112,14 +134,16 @@ lm.liver@tables$step2$tops[[1]]
 bm2.liver <- job_biomart2(lm.liver@tables$step2$tops[[1]]$mgi_symbol, "mmu", "hsa")
 bm2.liver <- step1(bm2.liver)
 bm2.liver <- step2(bm2.liver, lm.liver@tables$step2$tops[[1]])
-l.tops <- bm2.liver@params$tops_mapped
-l.tops <- dplyr::relocate(l.tops, hgnc_symbol, mgi_symbol)
-l.tops
+tops.liver <- bm2.liver@params$tops_mapped
+tops.liver <- dplyr::relocate(tops.liver, hgnc_symbol, mgi_symbol)
+tops.liver
 ```
 
 ## GSEA 富集 (Human)
 
 ### pathways
+
+对映射完毕的 DEGs (Tab. \@ref(tab:Liver-DEGs-mapping-from-Mice-to-Human)) 进行富集分析，首要富集结果为 'Steroid biosynthesis'。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LIVER-KEGG-enrichment-with-enriched-genes
@@ -132,22 +156,24 @@ autor(ge.liver@plots$step2$p.code)
 ```
 
 ```{r}
-ge.liver <- job_gsea(l.tops, use = "hgnc_symbol")
+ge.liver <- job_gsea(tops.liver, use = "hgnc_symbol")
 ge.liver <- step1(ge.liver)
 ge.liver@plots$step1$p.kegg
 ge.liver@tables$step1$table_kegg
-l.path.hi <- c("hsa00100", "hsa00860", "hsa04662")
-ge.liver <- step2(ge.liver, l.path.hi, l.path.hi)
+path.hi.liver <- c("hsa00100", "hsa00860", "hsa04662")
+ge.liver <- step2(ge.liver, path.hi.liver, path.hi.liver)
 wrap(ge.liver@plots$step2$p.highlight, 9, 6)
 ge.liver@plots$step2$p.code
 ```
 
-## edQTL 数据: 寻找基因表达变化 (DEGs) 和突变 (SNP) 的关联 
+## eQTL 数据: 寻找基因表达变化 (DEGs) 和突变 (SNP) 的关联 
 
-### edQTL 数据
+### eQTL 数据
+
+使用的 eQTL 数据集 (经过注释的，来源见 \@ref(method) QTL 说明)：
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Liver-edQTLs
+#| LIVER-all-used-eQTL-data
 autor(eq.liver@params$use.eq)
 ```
 
@@ -155,23 +181,30 @@ autor(eq.liver@params$use.eq)
 eq.liver <- job_edqtl("eqtl")
 eq.liver <- step1(eq.liver, "Liver")
 eq.liver <- step2(eq.liver)
+eq.liver <- step3(eq.liver, tops.liver$hgnc_symbol)
+eq.liver@plots$step3$p.venn
+eq.liver@tables$step3$filtered.eq
 ```
 
 ### Variant (与 DEGs 相关)
 
+根据 DEGs 的基因名过滤 eQTL 数据：
+
 ```{r eval = T, echo = F, results = "asis"}
-#| Liver-DEGs-edQTL
-autor(l.eqMatch)
+#| LIVER-database-of-eQTL-intersect-with-DEGs
+autor(eq.liver@plots$step3$p.venn)
 ```
 
-```{r}
-l.eqMatch <- dplyr::filter(eq.liver@params$use.eq, hgnc_symbol %in% l.tops$hgnc_symbol)
-l.eqMatch
+```{r eval = T, echo = F, results = "asis"}
+#| LIVER-database-of-eQTL-intersect-with-DEGs-DATA
+autor(eq.liver@tables$step3$filtered.eq)
 ```
 
 ## GWAS 数据：寻找与突变类型显著关联的肠道微生物或代谢物
 
-### GWAS 数据 (microbiota)
+### GWAS 数据
+
+以下为使用的 GWAS 数据 (代谢物或微生物与 variant 的显著关系，来源见 \@ref(material))：
 
 ```{r eval = T, echo = F, results = "asis"}
 #| PUBLISHED-MendelianRandoLiuX2022
@@ -180,63 +213,58 @@ autor(pb.mr@object)
 
 ```{r}
 pb.mr <- get_data.mrlx2022()
+pb.liver <- map(eq.liver, pb.mr)
+pb.liver@object$lst.micro$p.venn
 ```
 
-### Microbiota (与 Variant 相关)
+以下，结合 Tab. \@ref(tab:LIVER-database-of-eQTL-intersect-with-DEGs-DATA)，根据 variant\_id 筛选上述数据。
+
+### Microbiota {#f-mic}
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Liver-DEGs-edQTL-variant-correlated-microbiota
-autor(l.pbMicro)
+#| LIVER-filtered-eQTL-data-intersect-with-microbiota-related
+autor(pb.liver@object$lst.micro$p.venn)
 ```
-
-```{r}
-l.pbMicro <- filter(pb.mr@object$snp_microbiota, variant_id %in% unique(l.eqMatch$variant_id))
-l.pbMicro
-```
-
-#### 对应的 DEGs (Liver-DEGs-microbiota)
-
-```{r}
-# this is the `nearby` genes, can not use this: l.pbMicro$Gene
-l.micro2degs <- dplyr::filter(l.eqMatch, variant_id %in% l.pbMicro$variant_id)$hgnc_symbol
-l.micro2degs
-```
-
-### Metabolite (与 Variant 相关)
-
-#### Metabolite
 
 ```{r eval = T, echo = F, results = "asis"}
-autor(l.pbMetab)
+#| LIVER-filtered-eQTL-data-intersect-with-microbiota-related-DATA
+autor(pb.liver@object$lst.micro$data)
 ```
 
-```{r}
-l.pbMetab <- filter(pb.mr@object$snp_metabolite, variant_id %in% unique(l.eqMatch$variant_id))
-l.pbMetab
+### Metabolite {#f-met}
+
+```{r eval = T, echo = F, results = "asis"}
+#| LIVER-filtered-eQTL-data-intersect-with-metabolite-related
+autor(pb.liver@object$lst.metab$p.venn)
 ```
 
-#### 对应的 DEGs (Liver-DEGs-metabolite)
-
-```{r}
-# this is the `nearby` genes, can not use this: l.pbMicro$Gene
-metab2degs <- dplyr::filter(l.eqMatch, variant_id %in% l.pbMetab$variant_id)
-metab2degs <- dplyr::relocate(metab2degs, hgnc_symbol)
-l.metab2degs <- metab2degs$hgnc_symbol
+```{r eval = T, echo = F, results = "asis"}
+#| LIVER-filtered-eQTL-data-intersect-with-metabolite-related-DATA
+autor(pb.liver@object$lst.metab$data)
 ```
 
 ## 肠道菌和代谢物关联数据库筛选
 
-### 以 Metabolite (与 Variant 相关) 筛选 
+在 \@ref(f-mic) 和 \@ref(f-met) 中，分别筛选到了一组 SNP 与 microbiota 或者 SNP 与 metabolite 之间的关联。
+以下，以 gutMDisorder 数据库寻找与该 microbiota 或 metabolite 关联的其它 metabolite 或 microbiota。
+
+### 以 Microbiota 筛选
+
+无结果。
+
+### 以 Metabolite 筛选 
+
+结果如下：
 
 ```{r eval = T, echo = F, results = "asis"}
-#| gutMDisorder-filtered-Metabolite-related-to-Variant
-autor(l.gmMetab)
+#| Liver-gutMDisorder-Matched-metabolites-and-their-related-microbiota
+autor(gm.liver@tables$step1$metab)
 ```
 
 ```{r}
 gm <- job_gutmd()
-l.gmMetab <- dplyr::filter(gm@object, Substrate == l.pbMetab[[1]] | Metabolite == l.pbMetab[[1]])
-l.gmMetab
+gm.liver <- step1(gm, label = "liver", attr(pb.liver@object$lst.micro$data, "pattern"), pb.liver@object$lst.metab$data$Metabolic.traits)
+gm.liver@tables$step1$metab
 ```
 
 ## 已有的 `r d("g")` 的微生物和代谢物关联研究
@@ -251,17 +279,71 @@ autor(pb.ca@params$heatmap)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| PUBLISHED-ChangesAndCorChen2021-correlation-significant
+#| PUBLISHED-ChangesAndCorChen2021-significant-correlation
 autor(pb.ca@object)
 ```
+
+### 验证结果
+
+将 Tab. \@ref(tab:Liver-gutMDisorder-Matched-metabolites-and-their-related-microbiota) 中的微生物在 Tab. \@ref(tab:PUBLISHED-ChangesAndCorChen2021-significant-correlation) 中搜索验证：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-gutMDisorder-microbiota-matched-in-PUBLISHED-ChangesAndCorChen2021
+autor(pb.ca.matched)
+```
+
+结果发现 Ruminococcus 这一微生物得到验证，属于 `r d("g")` 的差异微生物。
+
+Ruminococcus 向上对应：
+
+Ruminococcus -> Leucine -> `chr17_47247224_A_G_b38` -> ITGB3
 
 ```{r}
 pb.ca <- get_data.cacc2021()
 dplyr::filter(pb.ca@object)
 
-pb2 <- lapply(l.gmMetab[[1]],
+pb.ca.matched <- lapply(gm.liver@tables$step1$metab$Gut.Microbiota,
   function(pat) {
     dplyr::filter(pb.ca@object, grpl(microbiota, pat, T))
   })[[1]]
+pb.ca.matched
 ```
 
+### ITGB3、C9orf152 与 'Steroid biosynthesis' 通路的基因的关联性
+
+(C9orf152 来源于 Tab. \@ref(tab:LIVER-filtered-eQTL-data-intersect-with-microbiota-related-DATA))
+
+#### 对应关系 (hgnc symbol 和 mgi symbol)
+
+以下为这些基因的对应关系：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Mapping-of-ITGB3-and-other-genes-from-hgncSymbol-to-mgiSymbol
+autor(rbind(map.itg, map.stero))
+```
+
+#### 关联分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| LIVER-correlation-heatmap
+autor(wrap(cor.lst$hp, 7, 4))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LIVER-significant-correlation
+autor(cor.lst$sig.corp)
+```
+
+```{r}
+map.itg <- dplyr::filter(tops.liver, hgnc_symbol %in% c("ITGB3", "C9orf152"))
+map.stero <- dplyr::filter(tops.liver, hgnc_symbol %in% ge.liver@tables$step1$table_kegg$geneName_list[[3]])
+
+cor.lst <- cal_corp(lm.liver, NULL, map.itg$mgi_symbol, map.stero$mgi_symbol, use = "mgi_symbol",
+  names = c("Screened DEGs", "Pathway of Steroid biosynthesis related"))
+
+wrap(cor.lst$hp, 7, 4.5)
+```
+
+```{r}
+save.image()
+```

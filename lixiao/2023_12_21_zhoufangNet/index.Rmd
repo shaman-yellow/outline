@@ -31,13 +31,12 @@ set_index()
 
 # 摘要 {#abstract}
 
+- 做药方-草药-单体-靶点图，着重显示单体-木兰花碱（magnoflorine）和靶点OPRM1。
+- 木兰花碱与 OPRM1 的分子对接。
 
-做一个analysis[[药方-草药-单体-靶点]]的图，然后着重显示单体-木兰花碱（magnoflorine）和靶点OPRM1。
-另外需要做一个木兰花碱与OPRM1的分子对接图。
+药理学结果见 Fig. \@ref(fig:Herbs-compounds-and-targets-Network)、
 
-`r odk("name")` 绘制药方-草药-主要活性成分-靶点图。
-
-结果见 Fig. \@ref(fig:Herbs-compounds-and-targets-Network)
+分子对接见 (亲和度为正值，对接不成功) Fig. \@ref(fig:magnoflorine-combining-with-OPRM1) 
 
 # 材料和方法 {#methods}
 
@@ -99,14 +98,36 @@ autor(hb@plots$step3$p.pharm)
 
 ## 分子对接
 
+结合效果不佳 (Affinity 应为负值为佳) 
+
 ```{r}
-cid <- dplyr::filter(hb@object$component, Ingredient_name == "magnoflorine")$PubChem_id
+cpd.mag <- dplyr::filter(hb@object$component, Ingredient_name == "magnoflorine")
+cid <- cpd.mag$PubChem_id
 vina <- job_vina(cid, "OPRM1")
 vina <- step1(vina, NULL, pdbs = c("OPRM1" = "6DDE"))
 vina <- step2(vina)
 vina <- step3(vina)
 vina <- step4(vina)
+vina <- step5(vina, cpd.mag, "PubChem_id")
+vina <- step6(vina)
+vina <- step7(vina)
 # 1.264
+autosv(wrap(vina@plots$step5$p.res_vina, 8, 1.5), "Overall-combining-Affinity")
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-combining-Affinity
+autor("./Figure+Table/Overall-combining-Affinity.pdf")
+```
 
+以下为对接结果示意图 (没有成功，因此没有显示化合物 magnoflorine) 
+
+```{r eval = T, echo = F, results = "asis"}
+#| magnoflorine-combining-with-OPRM1
+autor("./figs/73337_into_6dde.png")
+```
+
+```{r}
+save_small(100)
+load("./small.rdata")
+```
