@@ -68,35 +68,24 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
-
-
 ```{r}
 hb <- job_herb("白芍")
 hb <- step1(hb)
-hb@tables$step1$herbs_compounds %>% filter(grpl(Ingredient.name, "glucose$", ignore.case = T))
 hb <- step2(hb)
-
-bs.cpds <- unique(hb@tables$step2$compounds_targets$Ingredient_id)
-allcpds <- dplyr::filter(hb@object$component, !is.na(PubChem_id), Ingredient_id %in% dplyr::all_of(!!bs.cpds))
 ```
 
 ```{r}
-rd.inchi <- query_inchikey(allcpds$PubChem_id, "inchikey", type = "cid", curl_cl = 3)
-rd.class <- query_classification(allcpds$PubChem_id, "classify", rd.inchi)
-
-hb.inchi <- extract_rdata_list(rd.inchi)
-hb.class <- extract_rdata_list(rd.class)
-
-fun <- function() {
-  hb.class <- frbind(hb.class, idcol = T)
-  hb.class <- dplyr::filter(hb.class, grpl(Classification, "gly", T))
-  hb.inchi <- frbind(hb.inchi)
-  hb.inchi <- dplyr::mutate(hb.inchi, inchikey2d = stringr::str_extract(InChIKey, "^[A-Z]+"))
-  hb.inchi <- dplyr::filter(hb.inchi, inchikey2d %in% hb.class$.id)
-  res <- dplyr::filter(allcpds, PubChem_id %in% hb.inchi$CID)
-  res
-}
-fun()
+cf <- asjob_classyfire(hb)
+cf <- step1(cf)
+cf <- step2(cf)
+cf@plots$step2$p.classes_freq
 ```
 
+```{r}
+tt <- get_tcmsp_data()
+```
 
+```{r eval = T, echo = F, results = "asis"}
+#| Classification-hierarchy
+autor(cf@plots$step2$p.classes_freq)
+```
