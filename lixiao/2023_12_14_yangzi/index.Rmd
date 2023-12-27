@@ -82,7 +82,20 @@ cf@plots$step2$p.classes_freq
 ```
 
 ```{r}
-tt <- get_tcmsp_data()
+tp <- job_tcmsp("白芍")
+tp <- step1(tp)
+
+link <- start_drive(browser = "firefox")
+link$open()
+
+    path <- "//div[@id='grid23']//a[@title='Go to the next page']"
+
+path <- paste0("//div//ul//li//a[text()='", "Related Targets", "']")
+    ele <- link$findElement(using = "xpath", value = path)
+    ele$sendKeysToElement(list("Related Targets"))
+
+html <- link$getPageSource()[[1]]
+html <- XML::htmlParse(html, useInternalNodes = F)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
