@@ -69,36 +69,25 @@ auto_method()
 # 附：分析流程 {#workflow}
 
 ```{r}
-hb <- job_herb("白芍")
-hb <- step1(hb)
-hb <- step2(hb)
-```
-
-```{r}
-cf <- asjob_classyfire(hb)
-cf <- step1(cf)
-cf <- step2(cf)
-cf@plots$step2$p.classes_freq
-```
-
-```{r}
 tp <- job_tcmsp("白芍")
 tp <- step1(tp)
+tp <- step2(tp)
+tp@tables$step2$compounds_targets
 
-link <- start_drive(browser = "firefox")
-link$open()
+cf.tp <- asjob_classyfire(tp)
+cf.tp <- step1(cf.tp)
+cf.tp <- step2(cf.tp, "gly")
 
-    path <- "//div[@id='grid23']//a[@title='Go to the next page']"
+cf.tp@plots$step2$p.classes_freq
+cf.tp@plots$step2$p.isClassified
 
-path <- paste0("//div//ul//li//a[text()='", "Related Targets", "']")
-    ele <- link$findElement(using = "xpath", value = path)
-    ele$sendKeysToElement(list("Related Targets"))
+tp.gly <- map(tp, cf.tp)
+tp.gly@tables$step2$compounds_targets
 
-html <- link$getPageSource()[[1]]
-html <- XML::htmlParse(html, useInternalNodes = F)
+"https://rest.uniprot.org/uniprotkb/search?query=Aldose%20reductase+reviewed:true+AND+organism_id:9606&format=tsv"
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Classification-hierarchy
-autor(cf@plots$step2$p.classes_freq)
+autor(cf.tp@plots$step2$p.classes_freq)
 ```

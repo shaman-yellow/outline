@@ -1,0 +1,15 @@
+
+```{r}
+hb <- job_herb("白芍")
+hb <- step1(hb)
+hb <- step2(hb)
+```
+
+```{r}
+cf <- asjob_classyfire(hb)
+cf <- step1(cf)
+cf <- step2(cf)
+cf@plots$step2$p.classes_freq
+```
+
+
