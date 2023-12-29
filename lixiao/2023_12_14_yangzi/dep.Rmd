@@ -12,4 +12,14 @@ cf <- step2(cf)
 cf@plots$step2$p.classes_freq
 ```
 
+```{r}
 
+kb <- job_uniprotkb(tp.gly@tables$step2$compounds_targets[[ "Target name" ]], "../tcmsp/largedata/uniprotkb.rds")
+kb <- step1(kb)
+kb@tables$step1$format_results
+
+
+```
+
+<https://old.tcmsp-e.com/>
+<https://tcmsp-e.com/tcmsp.php>
