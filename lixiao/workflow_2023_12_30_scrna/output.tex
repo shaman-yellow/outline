@@ -1,0 +1,422 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge Step 系列：scRNA-seq
+基本分析} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-01-01}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{step}{%
+\section{Step 系列共性特征}\label{step}}
+
+\hypertarget{ux7406ux5ff5}{%
+\subsection{理念}\label{ux7406ux5ff5}}
+
+生物信息分析工具种类繁多，开发者出于各种原因，导致工具的适用性千差万别。学习和应用这些工具的成本可能是高昂的 (甚至它们可能有一些不为人知的漏洞) ，想要把它们串连在一起分析，更是要付出一些分析之外的代价：像开发者一样调试这些程序。
+
+Step 系列的分析方法为每一个制定好的方法、思路或工具 (一般是领域中的权威、经典或翘楚) 设立统一使用的标准，统一的数据存储，统一的应用流程，大幅度降低了学习成本、使用成本、应用成本。通过避免大量``分析之外''的繁琐工作，达到提高分析效率的目的。
+
+Step 系列分析方法的一些基本特性：
+
+\begin{itemize}
+\item
+  统一的分析平台。Step 背后涵盖的工具可能涉及：R 包、Python 包、Java 包、Linux 命令行工具等。但最终用于分析的始终是 R 语言。Step 系列的方法通过在 R 中调用各种分析工具，实现不同分析平台之间的工具调用和数据对接 (降低了学习和应用成本)。
+\item
+  统一的数据存储单位。Step 系列所有的分析流程 (workflow) 都以一个对象 (Object) 存储。这避免了如果一个流程中涉及纷繁复杂的分析方法，人工存储数据 (中间数据、最终输出的图片、表格) 出错的可能 (提高效率) 。必要时，通过统一的方法提取这些数据 (就像在图书馆的某一层的某一排的书架的某一个柜子取出一本书) 。
+\item
+  统一的方法名称。Step 系列的所有 Workflow 的方法名称都是统一的 (step1、step2、step3\ldots\ldots{} map、vis 等) ，但不会因为一同调用而出错。这是为了减免分析者的负担而设计的 (如果一次完整分析涉及十几种工具，每个工具又有十几种方法名称，那对分析者的记忆量和细心度的考验是惊人的) (提高效率) 。
+\item
+  规范的分析流程。大多数的分析工具本身具备多种方法以适用灵活分析，但也提高了学习、应用成本。Step 系列的各个 Workflow 的流程都是单向的，对分析方法或思路的组合应用大都是建立在官方指南或教程的基础上，又或者是泛用性 (降低了学习成本)。如果有不同思路，可以通过关键参数调整方法，或者视情况搭建一个额外的 Workflow。因此，每个 Workflow 是以分析思路为分门别类的，而不是工具本身。
+\item
+  提供权威、经典、泛用的分析方法。Workflow 创建前，会广泛查阅时下文献，对工具择优而选、择新而用 (比如，更趋向于选择更新的来自于 Nature Biotechnology 的分析方法) 。
+\item
+  提供泛用的组合思路。通过组合各种数据库、分析工具，应对千奇百怪的分析需求。同时，一些适当的组合，会发挥超出单一工具的价值 (Fig. \ref{fig:Overall-features} 的右图提供了现如今存在的许多组合思路；同时，每个 Workflow 内部又存在一些思路组合) 。
+\item
+  不断开发进化。每一个完成的 Workflow 不是固定不变的，在面临新的分析环境、新的分析需求，更多的功能会被加入到 ``step'' 方法中，让每一次的进步都直接应用于今后所有的同类分析。另外，一些大大小小的创新 (比如，更严谨或更酷炫的绘图) 也会不断追加到方法中。
+\item
+  效率至上。所有分析方法以输入命令形式实现，允许批量处理。
+\item
+  附带实用工具。分析流程相对固定，但通过提供一些小工具 (比如用于额外的绘图) ，可以将分析更加灵活。
+\end{itemize}
+
+\hypertarget{ux6cdbux7528ux65b9ux6cd5}{%
+\subsection{泛用方法}\label{ux6cdbux7528ux65b9ux6cd5}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{job\_seurat}\NormalTok{(}\StringTok{"./data"}\NormalTok{)}
+\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step1}\NormalTok{(sr)}
+\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step2}\NormalTok{(sr)}
+\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step3}\NormalTok{(sr)}
+\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step4}\NormalTok{(sr)}
+\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step5}\NormalTok{(sr)}
+\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step6}\NormalTok{(sr)}
+
+\NormalTok{mn }\OtherTok{\textless{}{-}} \FunctionTok{asjob\_monocle}\NormalTok{(sr)}
+\NormalTok{mn }\OtherTok{\textless{}{-}} \FunctionTok{step1}\NormalTok{(mn)}
+\NormalTok{mn }\OtherTok{\textless{}{-}} \FunctionTok{step2}\NormalTok{(mn)}
+\NormalTok{mn }\OtherTok{\textless{}{-}} \FunctionTok{step3}\NormalTok{(mn)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux63d0ux53d6ux65b9ux6cd5}{%
+\subsubsection{提取方法}\label{ux63d0ux53d6ux65b9ux6cd5}}
+
+\hypertarget{ux5b58ux50a8ux65b9ux6cd5}{%
+\subsubsection{存储方法}\label{ux5b58ux50a8ux65b9ux6cd5}}
+
+\hypertarget{ux7a7aux95f4ux7ba1ux7406}{%
+\subsubsection{空间管理}\label{ux7a7aux95f4ux7ba1ux7406}}
+
+\hypertarget{ux67e5ux770b-step-ux65b9ux6cd5ux7684ux9ed8ux8ba4ux53c2ux6570}{%
+\subsubsection{查看 step 方法的默认参数}\label{ux67e5ux770b-step-ux65b9ux6cd5ux7684ux9ed8ux8ba4ux53c2ux6570}}
+
+step 方法的参数力求精简，一般只保留关键的参数用以控制分析。但这些参数可能会在将来被拓展 (添加额外的参数) 以适应新的分析需求。
+
+可以通过类似以下方式查看默认参数：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# 示例：seurat 工作流的 step1 的默认参数}
+\FunctionTok{not}\NormalTok{(}\FunctionTok{.job\_seurat}\NormalTok{())}
+\NormalTok{step1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## job_seurat:
+\end{verbatim}
+
+\begin{verbatim}
+##     x
+\end{verbatim}
+
+\begin{verbatim}
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## -- Methods parameters ---------------------------------------------------------------------------
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# 示例：monocle 工作流 step2 的默认参数}
+\FunctionTok{not}\NormalTok{(}\FunctionTok{.job\_monocle}\NormalTok{())}
+\NormalTok{step1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## job_monocle:
+\end{verbatim}
+
+\begin{verbatim}
+##     x, groups = x@params$group.by, pt.size = 1.5, pre = F, norm_method= "none"
+\end{verbatim}
+
+\begin{verbatim}
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## -- Methods parameters ---------------------------------------------------------------------------
+\end{verbatim}
+
+\hypertarget{ux989dux5916ux7684ux4fe1ux606f}{%
+\subsubsection{额外的信息}\label{ux989dux5916ux7684ux4fe1ux606f}}
+
+工作流创建时参考的信息源
+参考文献信息
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 创建一个空的 Seurat 工作流对象 \textquotesingle{}sr\_1\textquotesingle{}}
+\NormalTok{sr\_1 }\OtherTok{\textless{}{-}} \FunctionTok{.job\_seurat}\NormalTok{()}
+\CommentTok{\# 查看方法说明}
+\NormalTok{sr\_1}\SpecialCharTok{@}\NormalTok{method}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The R package `Seurat` used for scRNA-seq processing; `SCSA` (python) used for cell type annotation"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 查看官方网站或信息源网站}
+\NormalTok{sr\_1}\SpecialCharTok{@}\NormalTok{info}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Tutorial: https://satijalab.org/seurat/articles/pbmc3k_tutorial.html"
+\end{verbatim}
+
+\hypertarget{ux5173ux4e8eux5b89ux88c5ux914dux7f6e}{%
+\subsection{关于安装配置}\label{ux5173ux4e8eux5b89ux88c5ux914dux7f6e}}
+
+所有 Step 系列的方法的安装配置会尽可能详细的罗列，但由于笔者 (开发者) 仅在自身的 Linux (Ubuntu 发行版) 系统做过调试，并不确定在其它的机器上会遇到哪些安装的特殊问题。如有疑问，或安装上的困难，请联系：Huang Lichuang (\href{mailto:huanglichuang@wie-biotech.com}{\nolinkurl{huanglichuang@wie-biotech.com}}) 。
+
+\hypertarget{ux5173ux4e8eux672cux6587ux6863}{%
+\subsection{关于本文档}\label{ux5173ux4e8eux672cux6587ux6863}}
+
+\hypertarget{step-ux7cfbux5217scrna-seq-ux57faux672cux5206ux6790}{%
+\section{Step 系列：scRNA-seq 基本分析}\label{step-ux7cfbux5217scrna-seq-ux57faux672cux5206ux6790}}
+
+\hypertarget{abstract}{%
+\subsection{摘要}\label{abstract}}
+
+\hypertarget{ux76eeux7684}{%
+\subsubsection{目的}\label{ux76eeux7684}}
+
+\hypertarget{ux89e3ux51b3ux7684ux95eeux9898}{%
+\subsubsection{解决的问题}\label{ux89e3ux51b3ux7684ux95eeux9898}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{ux5b89ux88c5-ux9996ux6b21ux4f7fux7528}{%
+\subsection{安装 (首次使用)}\label{ux5b89ux88c5-ux9996ux6b21ux4f7fux7528}}
+
+\hypertarget{ux5b89ux88c5ux4f9dux8d56}{%
+\subsubsection{安装依赖}\label{ux5b89ux88c5ux4f9dux8d56}}
+
+\hypertarget{ux5b89ux88c5-seurat-v5}{%
+\paragraph{安装 Seurat v5}\label{ux5b89ux88c5-seurat-v5}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{))}
+    \FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"remotes"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{))}
+    \FunctionTok{install.packages}\NormalTok{(}\StringTok{"remotes"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"sva"}\NormalTok{))}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}SparseArray\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}fastDummies\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}RcppHNSW\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}RSpectra\textquotesingle{}}\NormalTok{))}
+\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"satijalab/seurat"}\NormalTok{, }\StringTok{"seurat5"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5b89ux88c5-seurat-wrappers}{%
+\paragraph{安装 seurat-wrappers}\label{ux5b89ux88c5-seurat-wrappers}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{\textquotesingle{}satijalab/seurat{-}wrappers\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5b89ux88c5-monocle3}{%
+\paragraph{安装 monocle3}\label{ux5b89ux88c5-monocle3}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}BiocGenerics\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}DelayedArray\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}DelayedMatrixStats\textquotesingle{}}\NormalTok{,}
+    \StringTok{\textquotesingle{}limma\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}lme4\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}S4Vectors\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}SingleCellExperiment\textquotesingle{}}\NormalTok{,}
+    \StringTok{\textquotesingle{}SummarizedExperiment\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}batchelor\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}HDF5Array\textquotesingle{}}\NormalTok{,}
+    \StringTok{\textquotesingle{}terra\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}ggrastr\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}rsample\textquotesingle{}}\NormalTok{))}
+\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{\textquotesingle{}cole{-}trapnell{-}lab/monocle3\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5b89ux88c5-cellchat}{%
+\paragraph{安装 CellChat}\label{ux5b89ux88c5-cellchat}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}NMF\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}circlize\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}ComplexHeatmap\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}BiocNeighbors\textquotesingle{}}\NormalTok{))}
+\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"sqjin/CellChat"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5176ux5b83ux7a0bux5e8f}{%
+\paragraph{其它程序}\label{ux5176ux5b83ux7a0bux5e8f}}
+
+以下可能是其它需要安装的程序：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"reticulate"}\NormalTok{)}
+\NormalTok{reticulate}\SpecialCharTok{::}\FunctionTok{install\_miniconda}\NormalTok{()}
+\NormalTok{reticulate}\SpecialCharTok{::}\FunctionTok{py\_install}\NormalTok{(}\AttributeTok{packages =} \StringTok{\textquotesingle{}umap{-}learn\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5b89ux88c5ux4e3bux4f53}{%
+\subsubsection{安装主体}\label{ux5b89ux88c5ux4e3bux4f53}}
+
+\hypertarget{ux4f7fux7528ux8bf4ux660e}{%
+\subsection{使用说明}\label{ux4f7fux7528ux8bf4ux660e}}
+
+\hypertarget{ux793aux4f8bux5206ux6790}{%
+\subsection{示例分析}\label{ux793aux4f8bux5206ux6790}}
+
+\hypertarget{ux6570ux636eux51c6ux5907}{%
+\subsubsection{数据准备}\label{ux6570ux636eux51c6ux5907}}
+
+\hypertarget{ux5206ux6790ux6d41ux7a0b}{%
+\subsubsection{分析流程}\label{ux5206ux6790ux6d41ux7a0b}}
+
+\hypertarget{job-seurat}{%
+\paragraph{Job-seurat}\label{job-seurat}}
+
+\hypertarget{step1}{%
+\paragraph{Step1}\label{step1}}
+
+参数说明
+运行结果
+参考函数
+
+\hypertarget{step2}{%
+\paragraph{Step2}\label{step2}}
+
+测试
+
+\hypertarget{ux6280ux5de7}{%
+\subsection{技巧}\label{ux6280ux5de7}}
+
+\end{document}
