@@ -1,4 +1,22 @@
 
+
+洁颖的建议已阅。争议在于第一点，这里关键不在于能找到多少个苷类化合物，而在于数据库中能找到多少这些化合物的靶点。即使有更多的化合物，然而找不到它们的靶点，那也是无意义的。洁颖提供的文献中的 15 个化合物，仅 2 个化合物可以在 TCMSP 中找到靶点信息。因此，我之前的做法是，直接对 TCMSP 中所有的化合物分类，只要带有糖苷基团的都算这一类，作为最简单的筛选办法，既找到苷类，又能直接对应到靶点。
+
+但洁颖的也是可行的，如果不局限在 TCMSP 数据库的话。可以通过检索更多的数据库来查找缺失的靶点信息 (但绝不会多太多，之前已经测试过 HERB 网站了，但数量相差无几)。
+
+如果一定要做深的话：
+
+1. 查阅文献，收集苷类化合物报道。
+2. 针对上述结果，检索更多数据库 (不局限于 TCMSP、HERB)，合并这些数据，获取靶点信息 (加上查阅文献，2 天左右，但很难找到更多，因为这些库也合并了其它库)。
+3. 针对上述，还是没有找到靶点信息的，寻找算法预测这些化合物的靶点 (可行，建立工作流，再预测，2-3 天)
+4. 只有 TCMSP 数据库中的化合物才会有 OB (口服利用度)，非 TCMSP 库的化合物是没有的 (所以即使找到更多，也是没有 OB 信息的) 。要补全缺失信息，可以通过使用软件预测 (TCMSP 似乎有说明用什么软件预测，可行，2-3 天) 
+
+上述已与洁颖线下沟通，她的建议是
+
+，需要慧姐考虑上述是否作为额外的业务去完成。
+
+
+
 ```{r}
 hb <- job_herb("白芍")
 hb <- step1(hb)
@@ -23,3 +41,34 @@ kb@tables$step1$format_results
 
 <https://old.tcmsp-e.com/>
 <https://tcmsp-e.com/tcmsp.php>
+
+
+### 白芍的所有成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Classification-hierarchy
+autor(cf.tp@plots$step2$p.classes_freq)
+```
+
+```{r}
+cf.tp <- asjob_classyfire(tp)
+cf.tp <- step1(cf.tp)
+cf.tp <- step2(cf.tp, "gly")
+cf.tp@plots$step2$p.classes_freq
+cf.tp@plots$step2$p.isClassified
+```
+
+## TCMSP 白芍成分获取
+
+```{r}
+tp <- job_tcmsp("白芍")
+tp <- step1(tp)
+tp <- step2(tp)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Baishao-Compounds-and-targets
+autor(tp@tables$step2$compounds_targets)
+```
+
+

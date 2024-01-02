@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  25 DEC 2023 16:47
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  2 JAN 2024 11:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -792,8 +792,29 @@ Grid set 16 x 16 = 38.39343pt x 49.68562pt
 \TP@oy=\dimen322
 \TP@tbargs=\toks39
 TextBlockOrigin set to 0pt x 0pt
+) (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '5.0.2'
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdfcol.sty
+Package: pdfcol 2019/12/29 v1.6 Handle new color stacks for pdfTeX (HO)
+Package pdfcol Info: Interface disabled because of missing PDF mode of pdfTeX.
 )
-\cslhangindent=\skip75
+Package pdfcol Info: pdfTeX's color stacks are not available.
+\tcb@testbox=\box79
+\tcb@totalupperbox=\box80
+\tcb@totallowerbox=\box81
+) (/usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty
+Package: titlesec 2021/07/05 v2.14 Sectioning titles
+\ttl@box=\box82
+\beforetitleunit=\skip75
+\aftertitleunit=\skip76
+\ttl@plus=\dimen323
+\ttl@minus=\dimen324
+\ttl@toksa=\toks40
+\titlewidth=\dimen325
+\titlewidthlast=\dimen326
+\titlewidthfirst=\dimen327
+)
+\cslhangindent=\skip77
 
 Package xeCJK Warning: Fandol is being set as the default font for CJK text.
 (xeCJK)                Please make sure it has been properly installed.
@@ -1273,21 +1294,21 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-))
+) [1
+
+])
 \tf@toc=\write4
 \openout4 = `output.toc'.
 
-(./output.lof [1
-
-])
+(./output.lof)
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
-(./output.lot)
+(./output.lot [2])
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
-[2]
+[3]
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 107.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
@@ -1326,43 +1347,50 @@ Underfull \hbox (badness 10000) in paragraph at lines 197--198
 m/n/10 chr17_47247224_A_G_b38 \TU/lmr/m/n/10 ->
  []
 
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 221.
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--223
+
+ []
+
 [2]
-Overfull \hbox (29.79512pt too wide) in alignment at lines 237--242
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 244.
+
+Overfull \hbox (29.79512pt too wide) in alignment at lines 260--265
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (29.79512pt too wide) in alignment at lines 242--246
+Overfull \hbox (29.79512pt too wide) in alignment at lines 265--269
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (29.79512pt too wide) in alignment at lines 246--264
+Overfull \hbox (29.79512pt too wide) in alignment at lines 269--287
  [] [] [] [] [] [] [] [] [] [] 
  []
 
+[3]
 File: Figure+Table/Liver-plot-DEGs-Model-vs-control.pdf Graphic file (type pdf)
 
 <use Figure+Table/Liver-plot-DEGs-Model-vs-control.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 273.
+(caption)                particular \caption on input line 296.
 See the caption package documentation for explanation.
 
-[3] [4]
-Overfull \hbox (26.56512pt too wide) in alignment at lines 302--307
+[4]
+Overfull \hbox (26.56512pt too wide) in alignment at lines 325--330
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (26.56512pt too wide) in alignment at lines 307--311
+Overfull \hbox (26.56512pt too wide) in alignment at lines 330--334
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (26.56512pt too wide) in alignment at lines 311--329
+Overfull \hbox (26.56512pt too wide) in alignment at lines 334--352
  [] [] [] [] [] [] [] [] [] [] 
  []
 
@@ -1371,7 +1399,7 @@ type pdf)
 <use Figure+Table/LIVER-KEGG-enrichment-with-enriched-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 346.
+(caption)                particular \caption on input line 369.
 See the caption package documentation for explanation.
 
 [5]
@@ -1379,27 +1407,27 @@ File: Figure+Table/LIVER-GSEA-plot-of-the-pathways.pdf Graphic file (type pdf)
 <use Figure+Table/LIVER-GSEA-plot-of-the-pathways.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 356.
+(caption)                particular \caption on input line 379.
 See the caption package documentation for explanation.
 
 [6]
-Overfull \hbox (38.43996pt too wide) in paragraph at lines 377--378
+Overfull \hbox (38.43996pt too wide) in paragraph at lines 400--401
 []\TU/lmr/m/n/10 variant_id: variant ID in the format {chr}_{pos_first_ref_base
 }_{ref_seq}_{alt_seq}_b38 
  []
 
 [7]
-Overfull \hbox (93.46512pt too wide) in alignment at lines 391--396
+Overfull \hbox (93.46512pt too wide) in alignment at lines 414--419
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (93.46512pt too wide) in alignment at lines 396--400
+Overfull \hbox (93.46512pt too wide) in alignment at lines 419--423
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (93.46512pt too wide) in alignment at lines 400--418
+Overfull \hbox (93.46512pt too wide) in alignment at lines 423--441
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
@@ -1409,33 +1437,33 @@ File: Figure+Table/LIVER-database-of-eQTL-intersect-with-DEGs.pdf Graphic file
 <use Figure+Table/LIVER-database-of-eQTL-intersect-with-DEGs.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 432.
+(caption)                particular \caption on input line 455.
 See the caption package documentation for explanation.
 
 
-Underfull \hbox (badness 1092) in paragraph at lines 441--462
+Underfull \hbox (badness 1092) in paragraph at lines 464--485
 \TU/lmr/m/n/10 VSIG10L, LRRC46, AMDHD1, LRRC57, SERPINA12, UFL1, CCL27, FAM136A
 ,
  []
 
 [9]
-Overfull \hbox (38.43996pt too wide) in paragraph at lines 479--480
+Overfull \hbox (38.43996pt too wide) in paragraph at lines 502--503
 []\TU/lmr/m/n/10 variant_id: variant ID in the format {chr}_{pos_first_ref_base
 }_{ref_seq}_{alt_seq}_b38 
  []
 
 
-Overfull \hbox (93.46512pt too wide) in alignment at lines 493--498
+Overfull \hbox (93.46512pt too wide) in alignment at lines 516--521
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (93.46512pt too wide) in alignment at lines 498--502
+Overfull \hbox (93.46512pt too wide) in alignment at lines 521--525
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (93.46512pt too wide) in alignment at lines 502--520
+Overfull \hbox (93.46512pt too wide) in alignment at lines 525--543
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
@@ -1446,25 +1474,25 @@ df Graphic file (type pdf)
 f>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 554.
+(caption)                particular \caption on input line 577.
 See the caption package documentation for explanation.
 
 
-Overfull \hbox (63.26735pt too wide) in paragraph at lines 569--570
+Overfull \hbox (63.26735pt too wide) in paragraph at lines 592--593
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 上 述 信 息 框 内 容 已 保 存 至 \TU/l
 mtt/b/n/10 Figure+Table/LIVER-filtered-eQTL-data-intersect-with-microbiota-rela
 ted-content\TU/lmr/bx/n/10 ) 
  []
 
 
-Overfull \hbox (10.27425pt too wide) in paragraph at lines 573--574
+Overfull \hbox (10.27425pt too wide) in paragraph at lines 596--597
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/LIVER-filtered-eQTL-data-intersect-with-microbiota-related-DATA.csv
 \TU/lmr/bx/n/10 ) 
  []
 
 
-Overfull \hbox (38.43996pt too wide) in paragraph at lines 580--581
+Overfull \hbox (38.43996pt too wide) in paragraph at lines 603--604
 []\TU/lmr/m/n/10 variant_id: variant ID in the format {chr}_{pos_first_ref_base
 }_{ref_seq}_{alt_seq}_b38 
  []
@@ -1476,31 +1504,31 @@ df Graphic file (type pdf)
 f>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 608.
+(caption)                particular \caption on input line 631.
 See the caption package documentation for explanation.
 
 
-Overfull \hbox (63.26735pt too wide) in paragraph at lines 623--624
+Overfull \hbox (63.26735pt too wide) in paragraph at lines 646--647
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 上 述 信 息 框 内 容 已 保 存 至 \TU/l
 mtt/b/n/10 Figure+Table/LIVER-filtered-eQTL-data-intersect-with-metabolite-rela
 ted-content\TU/lmr/bx/n/10 ) 
  []
 
 
-Overfull \hbox (10.27425pt too wide) in paragraph at lines 627--628
+Overfull \hbox (10.27425pt too wide) in paragraph at lines 650--651
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/LIVER-filtered-eQTL-data-intersect-with-metabolite-related-DATA.csv
 \TU/lmr/bx/n/10 ) 
  []
 
 
-Overfull \hbox (38.43996pt too wide) in paragraph at lines 634--635
+Overfull \hbox (38.43996pt too wide) in paragraph at lines 657--658
 []\TU/lmr/m/n/10 variant_id: variant ID in the format {chr}_{pos_first_ref_base
 }_{ref_seq}_{alt_seq}_b38 
  []
 
 [12]
-Overfull \hbox (31.27425pt too wide) in paragraph at lines 670--671
+Overfull \hbox (31.27425pt too wide) in paragraph at lines 693--694
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/Liver-gutMDisorder-Matched-metabolites-and-their-related-microbiota
 .csv\TU/lmr/bx/n/10 ) 
@@ -1511,28 +1539,28 @@ hic file (type pdf)
 <use Figure+Table/PUBLISHED-ChangesAndCorChen2021-correlation-heatmap.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 709.
+(caption)                particular \caption on input line 732.
 See the caption package documentation for explanation.
 
 [13] [14]
-Overfull \hbox (62.77425pt too wide) in paragraph at lines 764--765
+Overfull \hbox (62.77425pt too wide) in paragraph at lines 787--788
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/Liver-gutMDisorder-microbiota-matched-in-PUBLISHED-ChangesAndCorChe
 n2021.xlsx\TU/lmr/bx/n/10 ) 
  []
 
 [15]
-Overfull \hbox (28.09512pt too wide) in alignment at lines 841--846
+Overfull \hbox (28.09512pt too wide) in alignment at lines 864--869
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (28.09512pt too wide) in alignment at lines 846--850
+Overfull \hbox (28.09512pt too wide) in alignment at lines 869--873
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (28.09512pt too wide) in alignment at lines 850--865
+Overfull \hbox (28.09512pt too wide) in alignment at lines 873--888
  [] [] [] [] [] [] [] [] [] [] 
  []
 
@@ -1541,17 +1569,159 @@ File: Figure+Table/LIVER-correlation-heatmap.pdf Graphic file (type pdf)
 <use Figure+Table/LIVER-correlation-heatmap.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 877.
+(caption)                particular \caption on input line 900.
 See the caption package documentation for explanation.
 
-[17] [18] (./output.aux) ) 
+[17]
+Overfull \hbox (33.40512pt too wide) in alignment at lines 975--980
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (33.40512pt too wide) in alignment at lines 980--984
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (33.40512pt too wide) in alignment at lines 984--1002
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[18]
+File: Figure+Table/Ileum-plot-DEGs-Model-vs-control.pdf Graphic file (type pdf)
+
+<use Figure+Table/Ileum-plot-DEGs-Model-vs-control.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1011.
+See the caption package documentation for explanation.
+
+[19]
+Overfull \hbox (42.85513pt too wide) in alignment at lines 1040--1045
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (42.85513pt too wide) in alignment at lines 1045--1049
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (42.85513pt too wide) in alignment at lines 1049--1067
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[20]
+Overfull \hbox (38.43996pt too wide) in paragraph at lines 1097--1098
+[]\TU/lmr/m/n/10 variant_id: variant ID in the format {chr}_{pos_first_ref_base
+}_{ref_seq}_{alt_seq}_b38 
+ []
+
+
+Overfull \hbox (88.56512pt too wide) in alignment at lines 1111--1116
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (88.56512pt too wide) in alignment at lines 1116--1120
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (88.56512pt too wide) in alignment at lines 1120--1138
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[21]
+File: Figure+Table/ILEUM-database-of-eQTL-intersect-with-DEGs.pdf Graphic file 
+(type pdf)
+<use Figure+Table/ILEUM-database-of-eQTL-intersect-with-DEGs.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1152.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 1264) in paragraph at lines 1161--1183
+\TU/lmr/m/n/10 ABCG8, ISG15, ACOT4, PPDPF, WNT3, DCXR, PSMB8, KIAA0753, OLFM4,
+ []
+
+[22]
+Overfull \hbox (38.43996pt too wide) in paragraph at lines 1200--1201
+[]\TU/lmr/m/n/10 variant_id: variant ID in the format {chr}_{pos_first_ref_base
+}_{ref_seq}_{alt_seq}_b38 
+ []
+
+[23]
+Overfull \hbox (93.46512pt too wide) in alignment at lines 1214--1219
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (93.46512pt too wide) in alignment at lines 1219--1223
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (93.46512pt too wide) in alignment at lines 1223--1241
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[24]
+File: Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-microbiota-related.p
+df Graphic file (type pdf)
+<use Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-microbiota-related.pd
+f>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1265.
+See the caption package documentation for explanation.
+
+
+Overfull \hbox (63.26735pt too wide) in paragraph at lines 1280--1281
+[]\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 上 述 信 息 框 内 容 已 保 存 至 \TU/l
+mtt/b/n/10 Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-microbiota-rela
+ted-content\TU/lmr/bx/n/10 ) 
+ []
+
+
+Overfull \hbox (10.27425pt too wide) in paragraph at lines 1284--1285
+[]\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
+igure+Table/ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-DATA.csv
+\TU/lmr/bx/n/10 ) 
+ []
+
+
+Overfull \hbox (38.43996pt too wide) in paragraph at lines 1291--1292
+[]\TU/lmr/m/n/10 variant_id: variant ID in the format {chr}_{pos_first_ref_base
+}_{ref_seq}_{alt_seq}_b38 
+ []
+
+[25]
+File: Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-metabolite-related.p
+df Graphic file (type pdf)
+<use Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-metabolite-related.pd
+f>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1321.
+See the caption package documentation for explanation.
+
+
+Overfull \hbox (63.26735pt too wide) in paragraph at lines 1336--1337
+[]\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 上 述 信 息 框 内 容 已 保 存 至 \TU/l
+mtt/b/n/10 Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-metabolite-rela
+ted-content\TU/lmr/bx/n/10 ) 
+ []
+
+[26] [27] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31663 strings out of 476191
- 650508 string characters out of 5812072
- 1098884 words of memory out of 5000000
- 51871 multiletter control sequences out of 15000+600000
+ 32373 strings out of 476191
+ 666855 string characters out of 5812072
+ 1119377 words of memory out of 5000000
+ 52566 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,12n,121p,1003b,570s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,12n,121p,1261b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (21 pages).
+Output written on output.pdf (31 pages).

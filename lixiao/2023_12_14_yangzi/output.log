@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  29 DEC 2023 18:13
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  2 JAN 2024 15:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -792,8 +792,29 @@ Grid set 16 x 16 = 38.39343pt x 49.68562pt
 \TP@oy=\dimen322
 \TP@tbargs=\toks39
 TextBlockOrigin set to 0pt x 0pt
+) (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '5.0.2'
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdfcol.sty
+Package: pdfcol 2019/12/29 v1.6 Handle new color stacks for pdfTeX (HO)
+Package pdfcol Info: Interface disabled because of missing PDF mode of pdfTeX.
 )
-\cslhangindent=\skip75
+Package pdfcol Info: pdfTeX's color stacks are not available.
+\tcb@testbox=\box79
+\tcb@totalupperbox=\box80
+\tcb@totallowerbox=\box81
+) (/usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty
+Package: titlesec 2021/07/05 v2.14 Sectioning titles
+\ttl@box=\box82
+\beforetitleunit=\skip75
+\aftertitleunit=\skip76
+\ttl@plus=\dimen323
+\ttl@minus=\dimen324
+\ttl@toksa=\toks40
+\titlewidth=\dimen325
+\titlewidthlast=\dimen326
+\titlewidthfirst=\dimen327
+)
+\cslhangindent=\skip77
 
 Package xeCJK Warning: Fandol is being set as the default font for CJK text.
 (xeCJK)                Please make sure it has been properly installed.
@@ -1281,9 +1302,9 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
-(./output.lot [1
+[1
 
-])
+] (./output.lot)
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
@@ -1406,14 +1427,22 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 492.
 See the caption package documentation for explanation.
 
-[8] [9] (./output.aux) ) 
+[8]
+File: ./figs/442534_into_sox18.png Graphic file (type bmp)
+<./figs/442534_into_sox18.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 502.
+See the caption package documentation for explanation.
+
+[9] [10] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31559 strings out of 476191
- 645414 string characters out of 5812072
- 1090338 words of memory out of 5000000
- 51764 multiletter control sequences out of 15000+600000
+ 32175 strings out of 476191
+ 658149 string characters out of 5812072
+ 1106675 words of memory out of 5000000
+ 52368 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,12n,121p,1003b,570s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,12n,121p,1261b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (12 pages).
+Output written on output.pdf (13 pages).

@@ -66,7 +66,7 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newenvironment{cslreferences}%
@@ -82,7 +82,7 @@
 \ThisCenterWallPaper{1.12}{../cover_page.pdf}
 \begin{center} \textbf{\Huge 白芍网络药理学}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-12-29}}
+\textbf{\textcolor{white}{2024-01-02}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -173,7 +173,7 @@
   \begin{itemize}
   \tightlist
   \item
-    没有 SOX18 对应蛋白 (人类) 的 PDB 结构数据，因此难以模拟。
+    见 Fig. \ref{fig:Paeoniflorin-combine-SOX18}
   \end{itemize}
 \end{itemize}
 
@@ -490,6 +490,16 @@ Figure \ref{fig:Paeoniflorin-combine-USP5} (下方图) 为图Paeoniflorin combin
 \begin{center}
 \includegraphics[width = 0.9\linewidth]{./figs/442534_into_2dag.png}
 \caption{Paeoniflorin combine USP5}\label{fig:Paeoniflorin-combine-USP5}
+\end{center}
+
+Figure \ref{fig:Paeoniflorin-combine-SOX18} (下方图) 为图Paeoniflorin combine SOX18概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/442534\_into\_sox18.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./figs/442534_into_sox18.png}
+\caption{Paeoniflorin combine SOX18}\label{fig:Paeoniflorin-combine-SOX18}
 \end{center}
 
 \hypertarget{bibliography}{%

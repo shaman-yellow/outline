@@ -42,13 +42,16 @@ dic(
   di("胆结石"),
   di("胆固醇"),
   di("蛋白质组学"),
-  di(en = "Cholesterol Gallstone Disease")
+  di(en = "Cholesterol Gallstone Disease"),
+  di("回肠")
 )
 
 # G: gallstones 胆结石
 # C: cholesterol 胆固醇
 # P: proteomics 蛋白质组学
 # CGD: Cholesterol Gallstone Disease 胆固醇胆结石疾病
+# I: ileum 回肠
+
 ```
 
 # 前言 {#introduction}
@@ -91,6 +94,18 @@ auto_method()
 - 这些基因在 human 或者 mice 中的基因名的对应关系见 Tab. \@ref(tab:Mapping-of-ITGB3-and-other-genes-from-hgncSymbol-to-mgiSymbol)
 - 建议以 ITGB3 或上述其它基因 (Steroid biosynthesis 通路) 作为目标基因进一步分析。
 
+注：以下，`r d("i")` 的分析与 Liver 思路一致，不同的是，Ileum 分析中，eQTL 用的是 Ileum 对应的数据。
+
+## Ileum: 
+
+- 根据 Model vs Control 初步筛选 DEGs (Tab. \@ref(tab:Ileum-raw-DEGs-Model-vs-control))
+- DEGs 从 Mouce 到 Human 映射 (Tab. \@ref(tab:Ileum-DEGs-mapping-from-Mice-to-Human)) 
+- 对上述映射后的基因进行 KEGG 的 GSEA 富集，无显著富集。
+- 为了找到 DEGs 可能对应的 SNP，使用 eQTL 数据集，并筛选该数据集 (Fig. \@ref(fig:ILEUM-database-of-eQTL-intersect-with-DEGs))  
+- 上述数据建立了：DEGs -> SNP 之间的关联，随后需要建立 SNP -> metablite 或者 microbiota 的关联，因此这里使用了相关的 GWAS 数据，并做了筛选 (Tab. \@ref(tab:ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-DATA)) 。这样，SNP -> microbiota 的关联就确立了。往上对应到 DEGs (Human)，是：CTSW。
+- 随后，为了发现更多的与上述筛选的 metabolite 或者 microbiota 相关的 metabolite 或者 microbiota，使用了 gutMDisorder 数据库。无结果。
+- 为了验证上述的发现，使用了[@ChangesAndCorChen2021]的数据…… (方法同 Liver 部分) 无结果。
+
 
 # 结论 {#dis}
 
@@ -111,7 +126,7 @@ autor(lm.liver@plots$step2$p.valcano[[1]])
 ```
 
 ```{r}
-lm.liver <- readRDS("../2023_11_07_dongzhixia/lm.liver3.rds")
+lm.liver <- readRDS("../2023_11_07_dongzhixia/lm.l3.rds")
 sig(lm.liver) <- "LIVER"
 lm.liver@plots$step2$p.valcano[[1]]
 lm.liver@tables$step2$tops[[1]]
@@ -202,7 +217,7 @@ autor(eq.liver@tables$step3$filtered.eq)
 
 ## GWAS 数据：寻找与突变类型显著关联的肠道微生物或代谢物
 
-### GWAS 数据
+### GWAS 数据 {#gwas}
 
 以下为使用的 GWAS 数据 (代谢物或微生物与 variant 的显著关系，来源见 \@ref(material))：
 
@@ -269,7 +284,7 @@ gm.liver@tables$step1$metab
 
 ## 已有的 `r d("g")` 的微生物和代谢物关联研究
 
-### ChangesAndCorChen2021
+### ChangesAndCorChen2021 {#s1}
 
 数据来源于`r pb.ca@cite`
 
@@ -343,6 +358,164 @@ cor.lst <- cal_corp(lm.liver, NULL, map.itg$mgi_symbol, map.stero$mgi_symbol, us
 
 wrap(cor.lst$hp, 7, 4.5)
 ```
+
+# 附：分析流程 (Ileum) {#workflow2}
+
+## 差异表达基因
+
+### Model vs Control
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-raw-DEGs-Model-vs-control
+autor(lm.ileum@tables$step2$tops[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-plot-DEGs-Model-vs-control
+autor(lm.ileum@plots$step2$p.valcano[[1]])
+```
+
+```{r}
+lm.ileum <- readRDS("../2023_11_07_dongzhixia/lm.t3.rds")
+sig(lm.ileum) <- "ILEUM"
+lm.ileum@plots$step2$p.valcano[[1]]
+lm.ileum@tables$step2$tops[[1]]
+```
+
+## DEGs 从 Mouce 到 Human 映射
+
+### Biomart mapping
+
+客户的数据为 Mouce 的数据，这里将 Mouce 的基因映射为 Human 的基因 (因为后续的数据来源主要为 Human)。 
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-DEGs-mapping-from-Mice-to-Human
+autor(tops.ileum)
+```
+
+```{r}
+lm.ileum@tables$step2$tops[[1]]
+
+bm2.ileum <- job_biomart2(lm.ileum@tables$step2$tops[[1]]$mgi_symbol, "mmu", "hsa")
+bm2.ileum <- step1(bm2.ileum)
+bm2.ileum <- step2(bm2.ileum, lm.ileum@tables$step2$tops[[1]])
+tops.ileum <- bm2.ileum@params$tops_mapped
+tops.ileum <- dplyr::relocate(tops.ileum, hgnc_symbol, mgi_symbol)
+tops.ileum
+```
+
+## GSEA 富集 (Human)
+
+### pathways
+
+对映射完毕的 DEGs (Tab. \@ref(tab:Ileum-DEGs-mapping-from-Mice-to-Human)) 进行富集分析。
+
+无结果。
+
+```{r}
+ge.ileum <- job_gsea(tops.ileum, use = "hgnc_symbol")
+ge.ileum <- step1(ge.ileum)
+ge.ileum
+```
+
+## eQTL 数据: 寻找基因表达变化 (DEGs) 和突变 (SNP) 的关联 
+
+### eQTL 数据
+
+使用的 eQTL 数据集 (经过注释的，来源见 \@ref(method) QTL 说明)：
+
+```{r eval = T, echo = F, results = "asis"}
+#| ILEUM-all-used-eQTL-data
+autor(eq.ileum@params$use.eq)
+```
+
+```{r}
+eq.ileum <- job_edqtl("eqtl")
+eq.ileum <- step1(eq.ileum, "Ileum")
+eq.ileum <- step2(eq.ileum)
+eq.ileum <- step3(eq.ileum, tops.ileum$hgnc_symbol)
+eq.ileum@plots$step3$p.venn
+eq.ileum@tables$step3$filtered.eq
+```
+
+### Variant (与 DEGs 相关)
+
+根据 DEGs 的基因名过滤 eQTL 数据：
+
+```{r eval = T, echo = F, results = "asis"}
+#| ILEUM-database-of-eQTL-intersect-with-DEGs
+autor(eq.ileum@plots$step3$p.venn)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ILEUM-database-of-eQTL-intersect-with-DEGs-DATA
+autor(eq.ileum@tables$step3$filtered.eq)
+```
+
+## GWAS 数据：寻找与突变类型显著关联的肠道微生物或代谢物
+
+### GWAS 数据
+
+以下为使用的 GWAS 数据 (代谢物或微生物与 variant 的显著关系，来源见 \@ref(material))：
+
+(同 \@ref(gwas))
+
+```{r}
+pb.mr <- get_data.mrlx2022()
+pb.ileum <- map(eq.ileum, pb.mr)
+pb.ileum@object$lst.micro$p.venn
+```
+
+以下，结合 Tab. \@ref(tab:ILEUM-database-of-eQTL-intersect-with-DEGs-DATA)，根据 variant\_id 筛选上述数据。
+
+### Microbiota {#f-mic2}
+
+```{r eval = T, echo = F, results = "asis"}
+#| ILEUM-filtered-eQTL-data-intersect-with-microbiota-related
+autor(pb.ileum@object$lst.micro$p.venn)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-DATA
+autor(pb.ileum@object$lst.micro$data)
+```
+
+### Metabolite {#f-met2}
+
+无结果：
+
+```{r eval = T, echo = F, results = "asis"}
+#| ILEUM-filtered-eQTL-data-intersect-with-metabolite-related
+autor(pb.ileum@object$lst.metab$p.venn)
+```
+
+## 肠道菌和代谢物关联数据库筛选
+
+在 \@ref(f-mic2) 中，筛选到了一组 SNP 与 microbiota 之间的关联。
+以下，以 gutMDisorder 数据库寻找与该 microbiota 或 metabolite 关联的其它 metabolite 或 microbiota。
+
+### 以 Microbiota 筛选
+
+无结果。
+
+```{r}
+gm <- job_gutmd()
+gm.ileum <- step1(gm, label = "ileum", attr(pb.ileum@object$lst.micro$data, "pattern"))
+gm.ileum@tables$step1$metab
+```
+
+## 已有的 `r d("g")` 的微生物和代谢物关联研究
+
+### ChangesAndCorChen2021
+
+数据来源于`r pb.ca@cite` (同 \@ref(s1))
+
+### 验证结果
+
+将 Tab. \@ref(tab:ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-DATA) 中的微生物在 Tab. \@ref(tab:PUBLISHED-ChangesAndCorChen2021-significant-correlation) 中搜索验证：
+
+无结果。
+
 
 ```{r}
 save.image()

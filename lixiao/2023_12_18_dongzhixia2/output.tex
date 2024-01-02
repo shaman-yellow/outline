@@ -66,7 +66,7 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newenvironment{cslreferences}%
@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 胆结石RNA-seq结合肠道菌、代谢物筛选关键差异表达基因}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2023-12-25}}
+\textbf{\textcolor{white}{2024-01-02}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -202,6 +202,29 @@ Mainly used method:
   这些基因在 human 或者 mice 中的基因名的对应关系见 Tab. \ref{tab:Mapping-of-ITGB3-and-other-genes-from-hgncSymbol-to-mgiSymbol}
 \item
   建议以 ITGB3 或上述其它基因 (Steroid biosynthesis 通路) 作为目标基因进一步分析。
+\end{itemize}
+
+注：以下，回肠 (ileum, I) 的分析与 Liver 思路一致，不同的是，Ileum 分析中，eQTL 用的是 Ileum 对应的数据。
+
+\hypertarget{ileum}{%
+\subsection{Ileum:}\label{ileum}}
+
+\begin{itemize}
+\tightlist
+\item
+  根据 Model vs Control 初步筛选 DEGs (Tab. \ref{tab:Ileum-raw-DEGs-Model-vs-control})
+\item
+  DEGs 从 Mouce 到 Human 映射 (Tab. \ref{tab:Ileum-DEGs-mapping-from-Mice-to-Human})
+\item
+  对上述映射后的基因进行 KEGG 的 GSEA 富集，无显著富集。
+\item
+  为了找到 DEGs 可能对应的 SNP，使用 eQTL 数据集，并筛选该数据集 (Fig. \ref{fig:ILEUM-database-of-eQTL-intersect-with-DEGs})\\
+\item
+  上述数据建立了：DEGs -\textgreater{} SNP 之间的关联，随后需要建立 SNP -\textgreater{} metablite 或者 microbiota 的关联，因此这里使用了相关的 GWAS 数据，并做了筛选 (Tab. \ref{tab:ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-DATA}) 。这样，SNP -\textgreater{} microbiota 的关联就确立了。往上对应到 DEGs (Human)，是：CTSW。
+\item
+  随后，为了发现更多的与上述筛选的 metabolite 或者 microbiota 相关的 metabolite 或者 microbiota，使用了 gutMDisorder 数据库。无结果。
+\item
+  为了验证上述的发现，使用了\textsuperscript{\protect\hyperlink{ref-ChangesAndCorChen2021}{1}}的数据\ldots\ldots{} (方法同 Liver 部分) 无结果。
 \end{itemize}
 
 \hypertarget{dis}{%
@@ -522,8 +545,8 @@ chr1\_2\ldots{} & ENSG00\ldots{} & -23866 & 19 & 21 & 0.0504808 & 4.0686\ldots{}
 \hypertarget{gwas-ux6570ux636eux5bfbux627eux4e0eux7a81ux53d8ux7c7bux578bux663eux8457ux5173ux8054ux7684ux80a0ux9053ux5faeux751fux7269ux6216ux4ee3ux8c22ux7269}{%
 \subsection{GWAS 数据：寻找与突变类型显著关联的肠道微生物或代谢物}\label{gwas-ux6570ux636eux5bfbux627eux4e0eux7a81ux53d8ux7c7bux578bux663eux8457ux5173ux8054ux7684ux80a0ux9053ux5faeux751fux7269ux6216ux4ee3ux8c22ux7269}}
 
-\hypertarget{gwas-ux6570ux636e}{%
-\subsubsection{GWAS 数据}\label{gwas-ux6570ux636e}}
+\hypertarget{gwas}{%
+\subsubsection{GWAS 数据}\label{gwas}}
 
 以下为使用的 GWAS 数据 (代谢物或微生物与 variant 的显著关系，来源见 \ref{material})：
 
@@ -694,8 +717,8 @@ Leucine & & Faecalibacterium \ldots{} & species\tabularnewline
 \hypertarget{ux5df2ux6709ux7684-ux80c6ux7ed3ux77f3-gallstones-g-ux7684ux5faeux751fux7269ux548cux4ee3ux8c22ux7269ux5173ux8054ux7814ux7a76}{%
 \subsection{已有的 胆结石 (gallstones, G) 的微生物和代谢物关联研究}\label{ux5df2ux6709ux7684-ux80c6ux7ed3ux77f3-gallstones-g-ux7684ux5faeux751fux7269ux548cux4ee3ux8c22ux7269ux5173ux8054ux7814ux7a76}}
 
-\hypertarget{changesandcorchen2021}{%
-\subsubsection{ChangesAndCorChen2021}\label{changesandcorchen2021}}
+\hypertarget{s1}{%
+\subsubsection{ChangesAndCorChen2021}\label{s1}}
 
 数据来源于\textsuperscript{\protect\hyperlink{ref-ChangesAndCorChen2021}{1}}
 
@@ -921,6 +944,422 @@ Itgb3 & Dhcr24 & -0.75 & 0.0197 & 5.66566056\ldots{} & \textless{} 0.05 & *\tabu
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
+
+\hypertarget{workflow2}{%
+\section{附：分析流程 (Ileum)}\label{workflow2}}
+
+\hypertarget{ux5deeux5f02ux8868ux8fbeux57faux56e0-1}{%
+\subsection{差异表达基因}\label{ux5deeux5f02ux8868ux8fbeux57faux56e0-1}}
+
+\hypertarget{model-vs-control-1}{%
+\subsubsection{Model vs Control}\label{model-vs-control-1}}
+
+Table \ref{tab:Ileum-raw-DEGs-Model-vs-control} (下方表格) 为表格Ileum raw DEGs Model vs control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ileum-raw-DEGs-Model-vs-control.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3140行11列，以下预览的表格可能省略部分数据；表格含有3140个唯一`ensembl\_transcript\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Ileum-raw-DEGs-Model-vs-control}Ileum raw DEGs Model vs control}\tabularnewline
+\toprule
+ensemb\ldots{} & mgi\_sy\ldots{} & entrez\ldots{} & hgnc\_s\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ensemb\ldots{} & mgi\_sy\ldots{} & entrez\ldots{} & hgnc\_s\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endhead
+ENSMUS\ldots{} & Hmgcs1 & 208715 & NA & 3-hydr\ldots{} & -1.476\ldots{} & 7.1006\ldots{} & -10.01\ldots{} & 3.4647\ldots{} & 0.0446\ldots{}\tabularnewline
+ENSMUS\ldots{} & Lypd8 & 70163 & & LY6/PL\ldots{} & -1.422\ldots{} & 6.7523\ldots{} & -9.413\ldots{} & 5.7988\ldots{} & 0.0446\ldots{}\tabularnewline
+ENSMUS\ldots{} & Col1a1 & 12842 & NA & collag\ldots{} & 0.9944\ldots{} & 6.5221\ldots{} & 9.2532\ldots{} & 6.6835\ldots{} & 0.0446\ldots{}\tabularnewline
+ENSMUS\ldots{} & Sqle & 20775 & NA & squale\ldots{} & -1.933\ldots{} & 5.8928\ldots{} & -9.198\ldots{} & 7.0178\ldots{} & 0.0446\ldots{}\tabularnewline
+ENSMUS\ldots{} & Defa35 & 100041688 & NA & defens\ldots{} & -1.923\ldots{} & 4.6800\ldots{} & -9.152\ldots{} & 7.3136\ldots{} & 0.0446\ldots{}\tabularnewline
+ENSMUS\ldots{} & Fdft1 & 14137 & NA & farnes\ldots{} & -1.885\ldots{} & 4.1659\ldots{} & -9.280\ldots{} & 6.5253\ldots{} & 0.0446\ldots{}\tabularnewline
+ENSMUS\ldots{} & Defa32 & 100041890 & NA & defens\ldots{} & -1.251\ldots{} & 11.114\ldots{} & -8.525\ldots{} & 1.3064\ldots{} & 0.0511\ldots{}\tabularnewline
+ENSMUS\ldots{} & Ccl6 & 20305 & NA & chemok\ldots{} & -1.331\ldots{} & 7.5855\ldots{} & -8.558\ldots{} & 1.2650\ldots{} & 0.0511\ldots{}\tabularnewline
+ENSMUS\ldots{} & Pigr & 18703 & NA & polyme\ldots{} & -1.150\ldots{} & 10.832\ldots{} & -8.463\ldots{} & 1.3856\ldots{} & 0.0511\ldots{}\tabularnewline
+ENSMUS\ldots{} & Acaa1b & 235674 & NA & acetyl\ldots{} & 3.2729\ldots{} & 4.4478\ldots{} & 9.3290\ldots{} & 6.2488\ldots{} & 0.0446\ldots{}\tabularnewline
+ENSMUS\ldots{} & Lypd8 & 70163 & & LY6/PL\ldots{} & -1.497\ldots{} & 10.709\ldots{} & -8.271\ldots{} & 1.6681\ldots{} & 0.0520\ldots{}\tabularnewline
+ENSMUS\ldots{} & Gzma & 14938 & & granzy\ldots{} & -3.299\ldots{} & 4.3784\ldots{} & -8.447\ldots{} & 1.4064\ldots{} & 0.0511\ldots{}\tabularnewline
+ENSMUS\ldots{} & Tcf23 & 69852 & NA & transc\ldots{} & 1.8100\ldots{} & 3.0507\ldots{} & 9.0283\ldots{} & 8.1816\ldots{} & 0.0446\ldots{}\tabularnewline
+ENSMUS\ldots{} & Ccl5 & 20304 & NA & chemok\ldots{} & -2.603\ldots{} & 3.8087\ldots{} & -8.365\ldots{} & 1.5231\ldots{} & 0.0511\ldots{}\tabularnewline
+ENSMUS\ldots{} & Defa34 & 100041952 & NA & defens\ldots{} & -1.733\ldots{} & 7.3611\ldots{} & -7.767\ldots{} & 2.7596\ldots{} & 0.0753\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:Ileum-plot-DEGs-Model-vs-control} (下方图) 为图Ileum plot DEGs Model vs control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ileum-plot-DEGs-Model-vs-control.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ileum-plot-DEGs-Model-vs-control.pdf}
+\caption{Ileum plot DEGs Model vs control}\label{fig:Ileum-plot-DEGs-Model-vs-control}
+\end{center}
+
+\hypertarget{degs-ux4ece-mouce-ux5230-human-ux6620ux5c04-1}{%
+\subsection{DEGs 从 Mouce 到 Human 映射}\label{degs-ux4ece-mouce-ux5230-human-ux6620ux5c04-1}}
+
+\hypertarget{biomart-mapping-1}{%
+\subsubsection{Biomart mapping}\label{biomart-mapping-1}}
+
+客户的数据为 Mouce 的数据，这里将 Mouce 的基因映射为 Human 的基因 (因为后续的数据来源主要为 Human)。
+
+Table \ref{tab:Ileum-DEGs-mapping-from-Mice-to-Human} (下方表格) 为表格Ileum DEGs mapping from Mice to Human概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ileum-DEGs-mapping-from-Mice-to-Human.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2554行11列，以下预览的表格可能省略部分数据；表格含有2554个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Ileum-DEGs-mapping-from-Mice-to-Human}Ileum DEGs mapping from Mice to Human}\tabularnewline
+\toprule
+hgnc\_s\ldots{} & mgi\_sy\ldots{} & ensemb\ldots{} & entrez\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_s\ldots{} & mgi\_sy\ldots{} & ensemb\ldots{} & entrez\ldots{} & descri\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val\tabularnewline
+\midrule
+\endhead
+HMGCS1 & Hmgcs1 & ENSMUS\ldots{} & 208715 & 3-hydr\ldots{} & -1.476\ldots{} & 7.1006\ldots{} & -10.01\ldots{} & 3.4647\ldots{} & 0.0446\ldots{}\tabularnewline
+LYPD8 & Lypd8 & ENSMUS\ldots{} & 70163 & LY6/PL\ldots{} & -1.422\ldots{} & 6.7523\ldots{} & -9.413\ldots{} & 5.7988\ldots{} & 0.0446\ldots{}\tabularnewline
+ACAA1 & Acaa1b & ENSMUS\ldots{} & 235674 & acetyl\ldots{} & 3.2729\ldots{} & 4.4478\ldots{} & 9.3290\ldots{} & 6.2488\ldots{} & 0.0446\ldots{}\tabularnewline
+FDFT1 & Fdft1 & ENSMUS\ldots{} & 14137 & farnes\ldots{} & -1.885\ldots{} & 4.1659\ldots{} & -9.280\ldots{} & 6.5253\ldots{} & 0.0446\ldots{}\tabularnewline
+COL1A1 & Col1a1 & ENSMUS\ldots{} & 12842 & collag\ldots{} & 0.9944\ldots{} & 6.5221\ldots{} & 9.2532\ldots{} & 6.6835\ldots{} & 0.0446\ldots{}\tabularnewline
+SQLE & Sqle & ENSMUS\ldots{} & 20775 & squale\ldots{} & -1.933\ldots{} & 5.8928\ldots{} & -9.198\ldots{} & 7.0178\ldots{} & 0.0446\ldots{}\tabularnewline
+TCF23 & Tcf23 & ENSMUS\ldots{} & 69852 & transc\ldots{} & 1.8100\ldots{} & 3.0507\ldots{} & 9.0283\ldots{} & 8.1816\ldots{} & 0.0446\ldots{}\tabularnewline
+CCL23 & Ccl6 & ENSMUS\ldots{} & 20305 & chemok\ldots{} & -1.331\ldots{} & 7.5855\ldots{} & -8.558\ldots{} & 1.2650\ldots{} & 0.0511\ldots{}\tabularnewline
+CCL15 & Ccl6 & ENSMUS\ldots{} & 20305 & chemok\ldots{} & -1.331\ldots{} & 7.5855\ldots{} & -8.558\ldots{} & 1.2650\ldots{} & 0.0511\ldots{}\tabularnewline
+CCL15-\ldots{} & Ccl6 & ENSMUS\ldots{} & 20305 & chemok\ldots{} & -1.331\ldots{} & 7.5855\ldots{} & -8.558\ldots{} & 1.2650\ldots{} & 0.0511\ldots{}\tabularnewline
+PIGR & Pigr & ENSMUS\ldots{} & 18703 & polyme\ldots{} & -1.150\ldots{} & 10.832\ldots{} & -8.463\ldots{} & 1.3856\ldots{} & 0.0511\ldots{}\tabularnewline
+GZMA & Gzma & ENSMUS\ldots{} & 14938 & granzy\ldots{} & -3.299\ldots{} & 4.3784\ldots{} & -8.447\ldots{} & 1.4064\ldots{} & 0.0511\ldots{}\tabularnewline
+CEACAM21 & Ceacam10 & ENSMUS\ldots{} & 26366 & CEA ce\ldots{} & -3.021\ldots{} & 2.5056\ldots{} & -7.995\ldots{} & 2.1919\ldots{} & 0.0638\ldots{}\tabularnewline
+MSMO1 & Msmo1 & ENSMUS\ldots{} & 66234 & methyl\ldots{} & -1.455\ldots{} & 5.8017\ldots{} & -7.623\ldots{} & 3.2019\ldots{} & 0.0777\ldots{}\tabularnewline
+INSIG1 & Insig1 & ENSMUS\ldots{} & 231070 & insuli\ldots{} & -1.306\ldots{} & 5.1683\ldots{} & -7.562\ldots{} & 3.4134\ldots{} & 0.0784\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{gsea-ux5bccux96c6-human-1}{%
+\subsection{GSEA 富集 (Human)}\label{gsea-ux5bccux96c6-human-1}}
+
+\hypertarget{pathways-1}{%
+\subsubsection{pathways}\label{pathways-1}}
+
+对映射完毕的 DEGs (Tab. \ref{tab:Ileum-DEGs-mapping-from-Mice-to-Human}) 进行富集分析。
+
+无结果。
+
+\hypertarget{eqtl-ux6570ux636e-ux5bfbux627eux57faux56e0ux8868ux8fbeux53d8ux5316-degs-ux548cux7a81ux53d8-snp-ux7684ux5173ux8054-1}{%
+\subsection{eQTL 数据: 寻找基因表达变化 (DEGs) 和突变 (SNP) 的关联}\label{eqtl-ux6570ux636e-ux5bfbux627eux57faux56e0ux8868ux8fbeux53d8ux5316-degs-ux548cux7a81ux53d8-snp-ux7684ux5173ux8054-1}}
+
+\hypertarget{eqtl-ux6570ux636e-1}{%
+\subsubsection{eQTL 数据}\label{eqtl-ux6570ux636e-1}}
+
+使用的 eQTL 数据集 (经过注释的，来源见 \ref{method} QTL 说明)：
+
+Table \ref{tab:ILEUM-all-used-eQTL-data} (下方表格) 为表格ILEUM all used eQTL data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/ILEUM-all-used-eQTL-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有362950行13列，以下预览的表格可能省略部分数据；表格含有236950个唯一`variant\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item variant\_id:  variant ID in the format \{chr\}\_\{pos\_first\_ref\_base\}\_\{ref\_seq\}\_\{alt\_seq\}\_b38
+\item tss\_distance:  distance between variant and transcription start site (TSS). Positive when variant is downstream of the TSS, negative otherwise
+\item maf:  minor allele frequency observed in the set of donors for a given tissue
+\item pval\_nominal:  nominal p-value associated with the most significant variant for this gene
+\item slope:  regression slope
+\item slope\_se:  standard error of the regression slope
+\item pval\_beta:  beta-approximated permutation p-value
+\item pval\_nominal\_threshold:  nominal p-value threshold for calling a variant-gene pair significant for the gene
+\item ma\_samples:  number of samples carrying the minor allele
+\item ma\_count:  total number of minor alleles across individuals
+\item min\_pval\_nominal:  smallest nominal p-value for the gene
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:ILEUM-all-used-eQTL-data}ILEUM all used eQTL data}\tabularnewline
+\toprule
+varian\ldots{} & gene\_id & tss\_di\ldots{} & ma\_sam\ldots{} & ma\_count & maf & pval\_n\ldots\ldots7 & slope & slope\_se & pval\_n\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+varian\ldots{} & gene\_id & tss\_di\ldots{} & ma\_sam\ldots{} & ma\_count & maf & pval\_n\ldots\ldots7 & slope & slope\_se & pval\_n\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endhead
+chr1\_6\ldots{} & ENSG00\ldots{} & 635545 & 37 & 38 & 0.109195 & 7.7478\ldots{} & 0.714005 & 0.153436 & 0.0001\ldots{} & \ldots{}\tabularnewline
+chr1\_6\ldots{} & ENSG00\ldots{} & 636475 & 30 & 31 & 0.0890805 & 1.5651\ldots{} & 0.799537 & 0.159046 & 0.0001\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -2735 & 30 & 31 & 0.0890805 & 8.5052\ldots{} & -0.732664 & 0.180744 & 0.0001\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -1661 & 30 & 31 & 0.0890805 & 5.0459\ldots{} & -0.863981 & 0.181683 & 0.0001\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -863 & 29 & 30 & 0.0862069 & 5.8928\ldots{} & -0.849341 & 0.179995 & 0.0001\ldots{} & \ldots{}\tabularnewline
+chr1\_5\ldots{} & ENSG00\ldots{} & 366758 & 26 & 28 & 0.0804598 & 2.3127\ldots{} & -0.787625 & 0.179559 & 0.0001\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 832657 & 20 & 25 & 0.0735294 & 2.0648\ldots{} & 0.682666 & 0.154638 & 5.3694\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 832698 & 20 & 25 & 0.0744048 & 1.1681\ldots{} & 0.680393 & 0.149393 & 5.3694\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 832705 & 21 & 26 & 0.0778443 & 2.0142\ldots{} & 0.656911 & 0.148597 & 5.3694\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 849704 & 11 & 12 & 0.0344828 & 1.3883\ldots{} & 0.761038 & 0.168658 & 6.3166\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 857941 & 11 & 12 & 0.0344828 & 1.3883\ldots{} & 0.761038 & 0.168658 & 6.3166\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 858470 & 11 & 12 & 0.0344828 & 1.3883\ldots{} & 0.761038 & 0.168658 & 6.3166\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 499741 & 4 & 4 & 0.0114943 & 4.8015\ldots{} & 1.68832 & 0.319009 & 5.3884\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 500143 & 4 & 4 & 0.0114943 & 4.8015\ldots{} & 1.68832 & 0.319009 & 5.3884\ldots{} & \ldots{}\tabularnewline
+chr1\_7\ldots{} & ENSG00\ldots{} & -48605 & 11 & 13 & 0.0373563 & 1.3381\ldots{} & -0.889314 & 0.196694 & 5.2588\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{variant-ux4e0e-degs-ux76f8ux5173-1}{%
+\subsubsection{Variant (与 DEGs 相关)}\label{variant-ux4e0e-degs-ux76f8ux5173-1}}
+
+根据 DEGs 的基因名过滤 eQTL 数据：
+
+Figure \ref{fig:ILEUM-database-of-eQTL-intersect-with-DEGs} (下方图) 为图ILEUM database of eQTL intersect with DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/ILEUM-database-of-eQTL-intersect-with-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/ILEUM-database-of-eQTL-intersect-with-DEGs.pdf}
+\caption{ILEUM database of eQTL intersect with DEGs}\label{fig:ILEUM-database-of-eQTL-intersect-with-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    IGHV1-3, IGHV1-69, IGHV1-69-2, IGHV1-69D, CD7, VNN1,
+BOK, FLVCR2, PSMB9, ABCG8, ISG15, ACOT4, PPDPF, WNT3, DCXR,
+PSMB8, KIAA0753, OLFM4, ACOT1, SLC51A, PRKD3, CAT,
+SMIM10L1, VMAC, NAGLU, NME6, ITLN1, FEM1A, PGP, CNN1,
+CTAGE15, NOXA1, CTSW, IGKC, IGHV4-31, IGHV4-39, IGHV4-59,
+IGHV4-4, IGHV4-61, UCP2, SV2A, ADH1A, ACAT2, ACTR5, WBP1,
+CRACR2A, A4GNT, COA8, FABP2, TCN2, DENND11, ZKSCAN4, ILRUN,
+RDH16, ISOC2, CD24, AP1M1, IGHV2-70D, IGHV2-70, SHPK,
+IGLC2, IGLC3, PET100, TMEM86B, ADH4, TMED6, LRRC15, NR0B2,
+GNB2, UBA52, TAF9B, PRELID1, NECTIN4, ETHE1, GADD45B,
+SNAP23, F2R, TMEM238L, LILRA4, CEACAM18, TMEM220, NIPAL2,
+PKDREJ, CDH19, MTCP1, IGKV1-9, IGKV1-17, IGKV1-37,
+IGKV1D-37, KRT12, C9orf152, C11orf86, RCN3, ALDH16A1,
+IKBKG, TMEM170B, TTC4, N4BP2L2, CDK11B, EIF1AD, C17orf75,
+AMIGO1, PNLIPRP2, MS4A12, SCGB3A1, PKN3, CDA, SLFN5,
+CCDC127, SLC5A4, ABRACL, HEATR9, DCTN6, TUBGCP5, LTB4R2,
+HSBP1, OCEL1, SECTM1, MYO19, KAT2B, SMDT1, SVIP, HOXA7,
+CA8, GTF2I, IGHV7-4-1, IGHV7-81, FAAP24, ADGRG7, UTP14C,
+NPR1, UNC93A, PGAM1, C19orf53, KCTD21, IFT46, ZNF77,
+CYSLTR1, FXYD7, TXNDC16, SURF1, HLA-DQB2, DIRAS1, FBXO33,
+MRPL54, ALG1L2, JPH2, PPP1R15A, OVOL1, ACAD11, NUP210L,
+B3GLCT, DDX3X, MANBA, GLTP, CITED4
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/ILEUM-database-of-eQTL-intersect-with-DEGs-content})}
+
+Table \ref{tab:ILEUM-database-of-eQTL-intersect-with-DEGs-DATA} (下方表格) 为表格ILEUM database of eQTL intersect with DEGs DATA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/ILEUM-database-of-eQTL-intersect-with-DEGs-DATA.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有16252行13列，以下预览的表格可能省略部分数据；表格含有14650个唯一`variant\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item variant\_id:  variant ID in the format \{chr\}\_\{pos\_first\_ref\_base\}\_\{ref\_seq\}\_\{alt\_seq\}\_b38
+\item tss\_distance:  distance between variant and transcription start site (TSS). Positive when variant is downstream of the TSS, negative otherwise
+\item maf:  minor allele frequency observed in the set of donors for a given tissue
+\item pval\_nominal:  nominal p-value associated with the most significant variant for this gene
+\item slope:  regression slope
+\item slope\_se:  standard error of the regression slope
+\item pval\_beta:  beta-approximated permutation p-value
+\item pval\_nominal\_threshold:  nominal p-value threshold for calling a variant-gene pair significant for the gene
+\item ma\_samples:  number of samples carrying the minor allele
+\item ma\_count:  total number of minor alleles across individuals
+\item min\_pval\_nominal:  smallest nominal p-value for the gene
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:ILEUM-database-of-eQTL-intersect-with-DEGs-DATA}ILEUM database of eQTL intersect with DEGs DATA}\tabularnewline
+\toprule
+varian\ldots{} & gene\_id & tss\_di\ldots{} & ma\_sam\ldots{} & ma\_count & maf & pval\_n\ldots\ldots7 & slope & slope\_se & pval\_n\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+varian\ldots{} & gene\_id & tss\_di\ldots{} & ma\_sam\ldots{} & ma\_count & maf & pval\_n\ldots\ldots7 & slope & slope\_se & pval\_n\ldots\ldots10 & \ldots{}\tabularnewline
+\midrule
+\endhead
+chr1\_9\ldots{} & ENSG00\ldots{} & -15826 & 8 & 9 & 0.0258621 & 8.6744\ldots{} & 0.99981 & 0.216114 & 4.3905\ldots{} & \ldots{}\tabularnewline
+chr1\_9\ldots{} & ENSG00\ldots{} & -7998 & 24 & 26 & 0.0747126 & 4.2107\ldots{} & 0.557187 & 0.131552 & 4.3905\ldots{} & \ldots{}\tabularnewline
+chr1\_9\ldots{} & ENSG00\ldots{} & -5352 & 112 & 138 & 0.396552 & 1.7991\ldots{} & 0.309968 & 0.0696764 & 4.3905\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & 13090 & 112 & 136 & 0.390805 & 2.3745\ldots{} & 0.314566 & 0.0718208 & 4.3905\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -20133 & 67 & 77 & 0.221264 & 7.3369\ldots{} & -0.279263 & 0.0598447 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -19664 & 88 & 113 & 0.324713 & 2.2660\ldots{} & -0.262255 & 0.0530643 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -19327 & 66 & 75 & 0.215517 & 5.7339\ldots{} & -0.290339 & 0.0614452 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -10376 & 88 & 112 & 0.321839 & 4.1671\ldots{} & -0.259466 & 0.05405 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -10186 & 88 & 112 & 0.321839 & 4.1671\ldots{} & -0.259466 & 0.05405 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -9166 & 67 & 78 & 0.224138 & 2.9457\ldots{} & -0.278442 & 0.0570402 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -8235 & 85 & 105 & 0.301724 & 1.1515\ldots{} & -0.249433 & 0.054726 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -7875 & 85 & 105 & 0.301724 & 1.1515\ldots{} & -0.249433 & 0.054726 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -7591 & 81 & 100 & 0.301205 & 4.9675\ldots{} & -0.265072 & 0.0556976 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -7438 & 84 & 103 & 0.304734 & 3.0221\ldots{} & -0.263054 & 0.0539537 & 2.8165\ldots{} & \ldots{}\tabularnewline
+chr1\_1\ldots{} & ENSG00\ldots{} & -7227 & 85 & 105 & 0.301724 & 1.1515\ldots{} & -0.249433 & 0.054726 & 2.8165\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{gwas-ux6570ux636eux5bfbux627eux4e0eux7a81ux53d8ux7c7bux578bux663eux8457ux5173ux8054ux7684ux80a0ux9053ux5faeux751fux7269ux6216ux4ee3ux8c22ux7269-1}{%
+\subsection{GWAS 数据：寻找与突变类型显著关联的肠道微生物或代谢物}\label{gwas-ux6570ux636eux5bfbux627eux4e0eux7a81ux53d8ux7c7bux578bux663eux8457ux5173ux8054ux7684ux80a0ux9053ux5faeux751fux7269ux6216ux4ee3ux8c22ux7269-1}}
+
+\hypertarget{gwas-ux6570ux636e}{%
+\subsubsection{GWAS 数据}\label{gwas-ux6570ux636e}}
+
+以下为使用的 GWAS 数据 (代谢物或微生物与 variant 的显著关系，来源见 \ref{material})：
+
+(同 \ref{gwas})
+
+以下，结合 Tab. \ref{tab:ILEUM-database-of-eQTL-intersect-with-DEGs-DATA}，根据 variant\_id 筛选上述数据。
+
+\hypertarget{f-mic2}{%
+\subsubsection{Microbiota}\label{f-mic2}}
+
+Figure \ref{fig:ILEUM-filtered-eQTL-data-intersect-with-microbiota-related} (下方图) 为图ILEUM filtered eQTL data intersect with microbiota related概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-microbiota-related.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-microbiota-related.pdf}
+\caption{ILEUM filtered eQTL data intersect with microbiota related}\label{fig:ILEUM-filtered-eQTL-data-intersect-with-microbiota-related}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    chr11\_65879789\_A\_G\_b38
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-content})}
+
+Table \ref{tab:ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-DATA} (下方表格) 为表格ILEUM filtered eQTL data intersect with microbiota related DATA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-DATA.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行3列，以下预览的表格可能省略部分数据；表格含有1个唯一`variant\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item variant\_id:  variant ID in the format \{chr\}\_\{pos\_first\_ref\_base\}\_\{ref\_seq\}\_\{alt\_seq\}\_b38
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-DATA}ILEUM filtered eQTL data intersect with microbiota related DATA}\tabularnewline
+\toprule
+variant\_id & Microbiome.features & hgnc\_symbol\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+variant\_id & Microbiome.features & hgnc\_symbol\tabularnewline
+\midrule
+\endhead
+chr11\_65879789\_A\_G\_b38 & s\_Collinsella\_stercoris & CTSW\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{f-met2}{%
+\subsubsection{Metabolite}\label{f-met2}}
+
+无结果：
+
+Figure \ref{fig:ILEUM-filtered-eQTL-data-intersect-with-metabolite-related} (下方图) 为图ILEUM filtered eQTL data intersect with metabolite related概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-metabolite-related.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-metabolite-related.pdf}
+\caption{ILEUM filtered eQTL data intersect with metabolite related}\label{fig:ILEUM-filtered-eQTL-data-intersect-with-metabolite-related}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/ILEUM-filtered-eQTL-data-intersect-with-metabolite-related-content})}
+
+\hypertarget{ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269ux5173ux8054ux6570ux636eux5e93ux7b5bux9009-1}{%
+\subsection{肠道菌和代谢物关联数据库筛选}\label{ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269ux5173ux8054ux6570ux636eux5e93ux7b5bux9009-1}}
+
+在 \ref{f-mic2} 中，筛选到了一组 SNP 与 microbiota 之间的关联。
+以下，以 gutMDisorder 数据库寻找与该 microbiota 或 metabolite 关联的其它 metabolite 或 microbiota。
+
+\hypertarget{ux4ee5-microbiota-ux7b5bux9009-1}{%
+\subsubsection{以 Microbiota 筛选}\label{ux4ee5-microbiota-ux7b5bux9009-1}}
+
+无结果。
+
+\hypertarget{ux5df2ux6709ux7684-ux80c6ux7ed3ux77f3-gallstones-g-ux7684ux5faeux751fux7269ux548cux4ee3ux8c22ux7269ux5173ux8054ux7814ux7a76-1}{%
+\subsection{已有的 胆结石 (gallstones, G) 的微生物和代谢物关联研究}\label{ux5df2ux6709ux7684-ux80c6ux7ed3ux77f3-gallstones-g-ux7684ux5faeux751fux7269ux548cux4ee3ux8c22ux7269ux5173ux8054ux7814ux7a76-1}}
+
+\hypertarget{changesandcorchen2021}{%
+\subsubsection{ChangesAndCorChen2021}\label{changesandcorchen2021}}
+
+数据来源于\textsuperscript{\protect\hyperlink{ref-ChangesAndCorChen2021}{1}} (同 \ref{s1})
+
+\hypertarget{ux9a8cux8bc1ux7ed3ux679c-1}{%
+\subsubsection{验证结果}\label{ux9a8cux8bc1ux7ed3ux679c-1}}
+
+将 Tab. \ref{tab:ILEUM-filtered-eQTL-data-intersect-with-microbiota-related-DATA} 中的微生物在 Tab. \ref{tab:PUBLISHED-ChangesAndCorChen2021-significant-correlation} 中搜索验证：
+
+无结果。
 
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}

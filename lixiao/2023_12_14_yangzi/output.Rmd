@@ -11,6 +11,7 @@ output:
       # "--filter", "pandoc-tablenos"
     # ]
     keep_tex: true
+    keep_md: true
     toc: false
     # toc_depth: 4
     latex_engine: xelatex
@@ -22,7 +23,8 @@ header-includes:
   \renewenvironment{figure}
   {\def\@captype{figure}}
   \makeatother
-  \definecolor{shadecolor}{RGB}{242,242,242}
+  \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \definecolor{shadecolor}{RGB}{230,230,230}
   \usepackage{xeCJK}
   \usepackage{setspace}
   \setstretch{1.3} 
@@ -31,6 +33,15 @@ header-includes:
   \setcounter{tocdepth}{4}
   \usepackage{wallpaper}
   \usepackage[absolute]{textpos}
+  \tcbuselibrary{breakable}
+  \renewenvironment{Shaded}
+  {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
+    arc = 1mm, auto outer arc, title = {Input}]}
+  {\end{tcolorbox}}
+  \usepackage{titlesec}
+  \titleformat{\paragraph}
+  {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
 ---
 
 
@@ -88,7 +99,7 @@ set_index()
 - 第3步中备注SOX18参与哪些部分（功能、通路）
     - 不参与
 - 分子对接模拟芍药苷与SOX18互作
-    - 没有 SOX18 对应蛋白 (人类) 的 PDB 结构数据，因此难以模拟。
+    - 见 Fig. \@ref(fig:Paeoniflorin-combine-SOX18)
 
 ```{r}
 dic(di("白芍总苷", "Total glucosides of paeony", "TGP"),
@@ -131,6 +142,15 @@ auto_method()
 tp <- job_tcmsp("白芍")
 tp <- step1(tp)
 tp <- step2(tp)
+```
+
+```{r}
+cf.rev <- job_classyfire(c(442534, 51346141, 21631105, 21631106,
+    138113866, 14605198, 50163461, 102000323, 494717, 138108175, 124079396,
+    101382399, 102516499, 71452334, 137705343))
+cf.rev <- step1(cf.rev)
+rev.which <- cf.rev@params$db_inchi$InChIKey %in% tp@tables$step2$compounds_targets$InChIKey
+cf.rev@params$db_inchi$CID[ rev.which ]
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -255,12 +275,17 @@ en@tables$step1$res.kegg
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Overall-combining-Affinity
-autor(wrap(vn@plots$step5$p.res_vina, 7.2, 1.5))
+autor(wrap(vn@plots$step5$p.res_vina, 7.2, 2))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Paeoniflorin-combine-USP5
 autor(.file_fig("./figs/442534_into_2dag.png"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Paeoniflorin-combine-SOX18
+autor(.file_fig("./figs/442534_into_sox18.png"))
 ```
 
 ```{r}
@@ -270,10 +295,13 @@ pae.info <- data.frame(Ingredient_name = "Paeoniflorin", PubChem_id = as.integer
 vn <- job_vina(c(Paeoniflorin = pae.cids$CID[[1]]), c("SOX18", "USP5"))
 vn <- step1(vn, NULL)
 vn <- step2(vn)
-vn <- step3(vn)
+file.copy("./order_material/AF-P35713-F1-model_v4.pdb", "./protein_pdb/sox18.pdb")
+vn <- step3(vn, extra_pdb.files = c(sox18 = "./protein_pdb/sox18.pdb"),
+  extra_layouts = nl(pae.cids$CID[[1]], "sox18"))
 vn <- step4(vn)
 vn <- step5(vn)
-wrap(vn@plots$step5$p.res_vina, 7.2, 1.5)
+vn@tables$step5$res_dock
+wrap(vn@plots$step5$p.res_vina, 7.2, 2)
 vn <- step6(vn)
 vn <- step7(vn)
 ```

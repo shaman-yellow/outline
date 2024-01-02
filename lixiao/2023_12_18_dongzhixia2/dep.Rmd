@@ -253,3 +253,42 @@ tables
 <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8416897/>
 
 
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| ILEUM-KEGG-enrichment-with-enriched-genes
+autor(wrap(ge.ileum@plots$step2$p.highlight, 9, 6))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ILEUM-GSEA-plot-of-the-pathways
+autor(ge.ileum@plots$step2$p.code)
+```
+
+```{r}
+ge.ileum@plots$step1$p.kegg
+ge.ileum@tables$step1$table_kegg
+path.hi.ileum <- c("hsa00100", "hsa00860", "hsa04662")
+ge.ileum <- step2(ge.ileum, path.hi.ileum, path.hi.ileum)
+wrap(ge.ileum@plots$step2$p.highlight, 9, 6)
+ge.ileum@plots$step2$p.code
+
+```
+
+### 以 Metabolite 筛选 
+
+结果如下：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-gutMDisorder-Matched-metabolites-and-their-related-microbiota
+autor(gm.ileum@tables$step1$metab)
+```
+
+```{r}
+gm <- job_gutmd()
+gm.ileum <- step1(gm, label = "ileum", attr(pb.ileum@object$lst.micro$data, "pattern"), pb.ileum@object$lst.metab$data$Metabolic.traits)
+gm.ileum@tables$step1$metab
+```
+
+
