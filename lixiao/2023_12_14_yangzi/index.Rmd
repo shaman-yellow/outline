@@ -107,23 +107,69 @@ autor(tp@tables$step2$compounds_targets)
 
 ## 白芍的苷类成分
 
-### 白芍的`r d("g")`成分和靶点
+### 白芍的`r d("tgp")`成分和筛选
 
-```{r}
-cf.rev <- job_classyfire(c(442534, 51346141, 21631105, 21631106,
-    138113866, 14605198, 50163461, 102000323, 494717, 138108175, 124079396,
-    101382399, 102516499, 71452334, 137705343))
-cf.rev <- step1(cf.rev)
-tp.rev <- map(tp, cf.rev, `OB (%)` > 30, DL > .18)
-tp.rev@tables$step2$compounds_targets
-tp@tables$step2$compounds_targets[[3]] %>% unique
-
-```
+根据提供的文献，搜集其中的`r d("tgp")`[@TotalGlucosideJiang2020]。
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Baishao-glycosides-related-compounds
-autor(tp.gly@tables$step3$easyRead)
+#| PubChem-CID-of-TGP
+autor(cpds.rev)
 ```
+
+以 `PubChemR` 获取这些化合物的同义名：
+
+```{r eval = T, echo = F, results = "asis"}
+#| The-Synonyms
+autor(syns)
+```
+
+根据同义名，在 Tab. \@ref(tab:Baishao-Compounds-and-targets) 中搜索这些化合物，得到：
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCMSP-Baishao-the-found-TGP
+autor(tp.rev@tables$step1$ingredients)
+```
+
+根据 OB、DL 筛选：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Filterd-TGP
+autor(tp.rev@params$p.filtered)
+```
+
+```{r}
+cf.rev <- c(442534, 51346141, 21631105, 21631106,
+    138113866, 14605198, 50163461, 102000323, 494717, 138108175, 124079396,
+    101382399, 102516499, 71452334, 137705343)
+cpds.rev <- new_lich(list(TGP = cf.rev))
+
+pr <- job_pubchemr(cf.rev)
+pr <- step1(pr)
+
+finds <- map(pr, tp@tables$step2$compounds_targets$`Molecule Name`, "benzoylpaeoniflorin")
+
+tp.rev <- filter(tp, tolower(`Molecule Name`) %in% rm.no(finds) | `Molecule Name` == "benzoyl paeoniflorin")
+tp.rev@params$p.filtered
+tp.rev@tables$step2$compounds_targets
+tp.rev@tables$step2$ingredients
+
+tp.rev.ob <- filter(tp.rev, `OB (%)` > 30, DL > .18)
+tp.rev.ob@tables$step2$compounds_targets
+tp.rev.ob@tables$step1$ingredients
+```
+
+### 白芍 `r d("tgp")` 成分的靶点预测
+
+通过 `SwissTargetPrediction` 预测靶点。
+
+```{r}
+finds2 <- finds %>% .[ . %in% tolower(tp.rev.ob@tables$step2$compounds_targets[[3]]) | grpl(., "ben") ]
+smiles <- pr@params$smiles %>% .[names(.) %in% names(finds2)]
+sw <- job_swiss(smiles)
+sw <- step1(sw)
+sw@tables$step1$targets
+```
+
 
 ## 白芍`r d("g")` 的网络药理学分析
 
@@ -249,4 +295,13 @@ vn@tables$step5$res_dock
 wrap(vn@plots$step5$p.res_vina, 7.2, 2)
 vn <- step6(vn)
 vn <- step7(vn)
+```
+
+```{r}
+je <- job_esearch("Oral bioavailability")
+vis(je)
+
+je <- job_esearch("drug targets")
+vis(je)
+# https://pubmed.ncbi.nlm.nih.gov/34991690/
 ```
