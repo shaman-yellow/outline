@@ -71,4 +71,35 @@ tp <- step2(tp)
 autor(tp@tables$step2$compounds_targets)
 ```
 
+```{r}
+tp.gly <- map(tp, cf.tp)
+tp.gly <- step3(tp.gly, "allergic rhinitis", 1)
+tp.gly@plots$step3$p.pharm
+tp.gly@tables$step3$easyRead
+tp.gly@tables$step3$disease_targets_annotation
+
+# swiss-target
+```
+
+### 白芍-`r d("g")`-靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| Baishao-Network-pharmacology-visualization
+autor(tp.gly@plots$step3$p.pharm)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Paeoniflorin-Network-pharmacology-visualization
+autor(wrap(tp.glyPae@plots$step3$p.pharm, 7, 1.5))
+```
+
+### `r d("ar")` 相关基因
+
+AR 相关基因通过 geneCards 获取，并通过 Biomart 注释。
+
+```{r eval = T, echo = F, results = "asis"}
+#| AR-related-genes
+autor(tp.gly@tables$step3$disease_targets_annotation)
+```
+
 

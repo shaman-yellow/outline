@@ -4,10 +4,10 @@
 ## All jobs
 
 ```{r}
-all <- get_orders()
-print(all, n = Inf)
+alls <- get_orders()
+print(alls, n = Inf)
 
-filter(all, is.na(coef))
+filter(alls, is.na(coef))
 ```
 
 ## Summary month
@@ -154,5 +154,10 @@ Eval:
 ## 2023-12
 
 ```{r}
-backup_jobs(alls)
+backup_jobs(alls, time = "2023-12-01")
+```
+
+## 2014-01
+
+```{r}
 ```

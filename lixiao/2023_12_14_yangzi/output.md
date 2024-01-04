@@ -53,7 +53,7 @@ header-includes:
 \ThisCenterWallPaper{1.12}{../cover_page.pdf}
 \begin{center} \textbf{\Huge 白芍网络药理学}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-02}}
+\textbf{\textcolor{white}{2024-01-04}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -79,27 +79,15 @@ header-includes:
 
 - 白芍总苷 Total glucosides of paeony 中主要化学成分10-20个（TCMSP筛选下口服利用度等）及各个化学成分对应的作用靶点
   （gene与AR过敏性鼻炎相关），最终形成drug-chemical-target gene靶点图
-    - 由于苷类 (Glycosides, G)  成分过少(Tab. \@ref(tab:Baishao-glycosides-related-compounds),
-      Fig. \@ref(fig:Classification-hierarchy))，没有利用 OB 筛选。
-      由于靶点过少，这里也没有根据 AR 相关过滤后绘制成分靶点图，而是直接绘制，
-      网络药理图见 Fig. \@ref(fig:Baishao-Network-pharmacology-visualization)。
-      其中与 AR 相关的基因见 Fig. \@ref(fig:Baishao-glucosides-targets-intersect-with-AR-related-targets)。
 - 将获得的靶点进行GO, KEGG富集分析，目标靶点为USP5，关联成分为芍药苷Paeoniflorin
-    - 苷类 (Glycosides, G)  没有富集到 USP5 (TCMSP 的苷类 (Glycosides, G) 靶点信息，不包含 USP5 和 SOX18) ，
-      Fig. \@ref(fig:Gly-Interect-genes-KEGG-enrichment) 和 Fig. \@ref(fig:Gly-Interect-genes-GO-enrichment) 为富集分析结果。
 - 将芍药苷pae单独拎出，形成pae-targets-pathway网络，此处形成的target genes的GO、KEGG富集图也需要，
   备注USP5参与哪些部分（功能、通路）
-    - Fig. \@ref(fig:Paeoniflorin-Network-pharmacology-visualization) 为 Paeoniflorin 网络药理图 
-      (由于靶点过少，这里也没有根据 AR 相关过滤后绘制成分靶点图，而是直接绘制) 。
-      Paeoniflorin 与 AR 交集基因为 Fig. \@ref(fig:Paeoniflorin-targets-intersect-with-AR-related-targets)
 - 分子对接模拟芍药苷与USP5互作
-    - 见 Fig. \@ref(fig:Overall-combining-Affinity) 和 Fig. \@ref(fig:Paeoniflorin-combine-USP5)
 - 转至第2步目标靶点为SOX18，关联成分为芍药苷Paeoniflorin
-    - Paeoniflorin 不包含 SOX18
 - 第3步中备注SOX18参与哪些部分（功能、通路）
-    - 不参与
 - 分子对接模拟芍药苷与SOX18互作
-    - 见 Fig. \@ref(fig:Paeoniflorin-combine-SOX18)
+
+注：USP5 和 SOX18 不参与功能、通路。其它分析结果见 \@ref(workflow)
 
 
 
@@ -115,11 +103,14 @@ header-includes:
 
 Mainly used method:
 
-- Database `PubChem` used for querying information (e.g., InChIKey, CID) of chemical compounds; Tools of `Classyfire` used for get systematic classification of chemical compounds [@PubchemSubstanKimS2015; @ClassyfireAutDjoumb2016].
 - R package `ClusterProfiler` used for gene enrichment analysis [@ClusterprofilerWuTi2021].
 - The API of `UniProtKB` (<https://www.uniprot.org/help/api_queries>) used for mapping of names or IDs of proteins .
+- R package `PubChemR` used for querying compounds information .
+- Web tool of `SwissTargetPrediction` used for drug-targets prediction [@SwisstargetpredDaina2019].
 - Website `TCMSP` <https://tcmsp-e.com/tcmsp.php> used for data source [@TcmspADatabaRuJi2014].
 - `AutoDock vina` used for molecular docking [@AutodockVina1Eberha2021].
+- The Human Gene Database `GeneCards` used for disease related genes prediction [@TheGenecardsSStelze2016].
+- R package `biomaRt` used for gene annotation [@MappingIdentifDurinc2009].
 - Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
 # 分析结果 {#results}
@@ -132,154 +123,223 @@ Mainly used method:
 
 
 
-
-
 Table \@ref(tab:Baishao-Compounds-and-targets) (下方表格) 为表格Baishao Compounds and targets概览。
 
 **(对应文件为 `Figure+Table/Baishao-Compounds-and-targets.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1036行17列，以下预览的表格可能省略部分数据；表格含有85个唯一`Mol ID'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有990行3列，以下预览的表格可能省略部分数据；表格含有39个唯一`Mol ID'。
 \end{tcolorbox}
 \end{center}
 
 Table: (\#tab:Baishao-Compounds-and-targets)Baishao Compounds and targets
 
-|Mol ID    |Herb_p... |Molecu......3 |Molecu......4 |MW     |AlogP |Hdon |Hacc |OB (%) |Caco-2 |
+|Mol ID    |Molecule Name    |Target name                    |
+|:---------|:----------------|:------------------------------|
+|MOL001246 |(1R)-()-Nopinone |Gamma-aminobutyric-acid rec... |
+|MOL001246 |(1R)-()-Nopinone |Cytochrome P450-cam            |
+|MOL001246 |(1R)-()-Nopinone |Lysozyme                       |
+|MOL001246 |(1R)-()-Nopinone |Alcohol dehydrogenase 1C       |
+|MOL001246 |(1R)-()-Nopinone |Nicotinate-nucleotide--dime... |
+|MOL001393 |myristic acid    |Prostaglandin G/H synthase 1   |
+|MOL001393 |myristic acid    |Prostaglandin G/H synthase 2   |
+|MOL001393 |myristic acid    |Cholinesterase                 |
+|MOL001393 |myristic acid    |Phospholipase A2               |
+|MOL001393 |myristic acid    |Rhinovirus coat protein        |
+|MOL001393 |myristic acid    |Ig gamma-1 chain C region      |
+|MOL001393 |myristic acid    |Ferrichrome-iron receptor      |
+|MOL001393 |myristic acid    |3-oxoacyl-[acyl-carrier-pro... |
+|MOL001393 |myristic acid    |Nuclear receptor coactivator 2 |
+|MOL001393 |myristic acid    |Nuclear receptor coactivator 1 |
+|...       |...              |...                            |
+
+## 白芍总苷 (Total glucosides of paeony, TGP) 成分
+
+### 白芍总苷 (Total glucosides of paeony, TGP) 成分和筛选
+
+根据提供的文献，搜集其中的白芍总苷 (Total glucosides of paeony, TGP) [@TotalGlucosideJiang2020]。
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+TGP
+:}
+
+\vspace{0.5em}
+
+    442534, 51346141, 21631105, 21631106, 138113866,
+14605198, 50163461, 102000323, 494717, 138108175,
+124079396, 101382399, 102516499, 71452334, 137705343
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+以 `PubChemR` 获取这些化合物的同义名：
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+442534
+:}
+
+\vspace{0.5em}
+
+    Paeoniflorin, 23180-57-6, Peoniflorin, Paeonia moutan,
+NSC 178886, UNII-21AIQ4EV64, 21AIQ4EV64, CCRIS 6494, EINECS
+245-476-2, PAEONIFLORIN (USP-RS), PAEONIFLORIN [USP-RS],
+NSC-178886,
+((2S,2aR,2a1S,3aR,4R,5aR)-4-Hydroxy-2-methyl-2a-(((2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)tetrahydro-2...
+
+\vspace{2em}
+
+
+\textbf{
+51346141
+:}
+
+\vspace{0.5em}
+
+    Albiflorin, 39011-90-0, SCHEMBL24008597, AC-34702
+
+\vspace{2em}
+
+
+\textbf{
+21631105
+:}
+
+\vspace{0.5em}
+
+    Oxypaeoniflorin, Oxypaeoniflora, 39011-91-1,
+UNII-3A7O4NBD5S, 3A7O4NBD5S, OXYPEONIFLORIN, NSC 258310,
+NSC-258310, J17.727J, beta-D-GLUCOPYRANOSIDE,
+(1AR,2S,3AR,5R,5AR,5BS)-TETRAHYDRO-5-HYDROXY-5B-(((4-HYDROXYBENZOYL)OXY)METHYL)-2-METHYL-2,5-METHANO-1H-3,4-DIOXACYCLOBUTA(CD)PENTALEN-1A(2H)-YL,
+bet...
+
+\vspace{2em}
+
+
+\textbf{
+21631106
+:}
+
+\vspace{0.5em}
+
+    Benzoylpaeoniflorin, 38642-49-8, CHEMBL4861111,
+CHEBI:69583, HMS3886L18, MFCD00869479, s9149,
+AKOS037645102, CCG-270143, AC-34005, AS-57134, Q27137925
+
+\vspace{2em}
+
+
+\textbf{
+138113866
+:}
+
+\vspace{0.5em}
+
+    A866179,
+-D-Glucopyranoside,tetrahydro-5-hydroxy-5b-[[(4-hydroxybenzoyl)oxy]methyl]-2-methyl-2,5-methano-1H-3,4-dioxacyclobuta[cd]pentalen-1a(2H)-yl,6-benzoate,[1aR-(1aa,2b,3aa,5a,5aa,5ba)]-
+
+\vspace{2em}
+
+
+\textbf{
+(Others)
+:}
+
+\vspace{0.5em}
+
+    ...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+根据同义名，在 Tab. \@ref(tab:Baishao-Compounds-and-targets) 中搜索这些化合物，得到：
+
+Table \@ref(tab:TCMSP-Baishao-the-found-TGP) (下方表格) 为表格TCMSP Baishao the found TGP概览。
+
+**(对应文件为 `Figure+Table/TCMSP-Baishao-the-found-TGP.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有85行15列，以下预览的表格可能省略部分数据；表格含有1个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:TCMSP-Baishao-the-found-TGP)TCMSP Baishao the found TGP
+
+|Herb_p... |Mol ID    |Molecu......3 |Molecu......4 |MW     |AlogP |Hdon |Hacc |OB (%) |Caco-2 |
 |:---------|:---------|:-------------|:-------------|:------|:-----|:----|:----|:------|:------|
-|MOL000106 |Baishao   |PYG           |https:...     |126.12 |1.03  |3    |3    |22.98  |0.69   |
-|MOL000211 |Baishao   |Mairin        |https:...     |456.78 |6.52  |2    |3    |55.38  |0.73   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
-|MOL000219 |Baishao   |BOX           |https:...     |121.12 |0.76  |0    |2    |31.55  |0.54   |
+|Baishao   |MOL000106 |PYG           |https:...     |126.12 |1.03  |3    |3    |22.98  |0.69   |
+|Baishao   |MOL001218 |Pisol         |https:...     |186.38 |4.62  |1    |1    |18.5   |1.23   |
+|Baishao   |MOL001246 |(1R)-(...     |https:...     |138.23 |1.52  |0    |1    |57.86  |1.23   |
+|Baishao   |MOL001393 |myrist...     |https:...     |228.42 |5.46  |1    |2    |21.18  |1.07   |
+|Baishao   |MOL001396 |PENTAD...     |https:...     |242.45 |5.91  |1    |2    |20.18  |1.08   |
+|Baishao   |MOL001402 |Octaco...     |https:...     |394.86 |13.15 |0    |0    |8.15   |1.91   |
+|Baishao   |MOL001644 |Dodecanal     |https:...     |184.36 |4.59  |0    |1    |21.52  |1.4    |
+|Baishao   |MOL001801 |salicy...     |https:...     |138.13 |1.17  |2    |3    |32.13  |0.63   |
+|Baishao   |MOL001888 |2,2-di...     |https:...     |128.24 |2.09  |1    |1    |82.54  |1.22   |
+|Baishao   |MOL001889 |Methyl...     |https:...     |294.53 |6.64  |0    |2    |41.93  |1.46   |
+|Baishao   |MOL001890 |octade...     |https:...     |252.54 |8.14  |0    |0    |19.5   |1.87   |
+|Baishao   |MOL001891 |9-meth...     |https:...     |178.24 |3.55  |0    |0    |26.87  |1.95   |
+|Baishao   |MOL001892 |Diprop...     |https:...     |250.32 |3.29  |0    |4    |66.3   |0.78   |
+|Baishao   |MOL001893 |BU3           |https:...     |90.14  |-0.14 |2    |2    |34.87  |0.19   |
+|Baishao   |MOL001894 |Bicetyl       |https:...     |450.98 |14.97 |0    |0    |8.03   |1.96   |
 |...       |...       |...           |...           |...    |...   |...  |...  |...    |...    |
 
-## 白芍所有化合物 (TCMSP) 的化学类
+根据 OB、DL 筛选：
 
-### 白芍的所有成分
+Figure \@ref(fig:Filterd-TGP) (下方图) 为图Filterd TGP概览。
 
-Figure \@ref(fig:Classification-hierarchy) (下方图) 为图Classification hierarchy概览。
-
-**(对应文件为 `Figure+Table/Classification-hierarchy.pdf`)**
+**(对应文件为 `Figure+Table/Filterd-TGP.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/Classification-hierarchy.pdf}
-\caption{Classification hierarchy}\label{fig:Classification-hierarchy}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Filterd-TGP.pdf}
+\caption{Filterd TGP}\label{fig:Filterd-TGP}
 \end{center}
 
 
 
-### 白芍的苷类 (Glycosides, G) 成分和靶基因
+### 白芍总苷 (Total glucosides of paeony, TGP)  成分的靶点预测
 
-Table \@ref(tab:Baishao-glycosides-related-compounds) (下方表格) 为表格Baishao glycosides related compounds概览。
+通过 `SwissTargetPrediction` 预测靶点。
 
-**(对应文件为 `Figure+Table/Baishao-glycosides-related-compounds.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有93行20列，以下预览的表格可能省略部分数据；表格含有1个唯一`Herb\_pinyin\_name'。
-\end{tcolorbox}
-\end{center}
+Figure \@ref(fig:SwissTargetPrediction-results) (下方图) 为图SwissTargetPrediction results概览。
 
-Table: (\#tab:Baishao-glycosides-related-compounds)Baishao glycosides related compounds
-
-|Herb_p... |compounds |Target... |Mol ID    |Molecu... |MW     |AlogP |Hdon |Hacc |OB (%) |
-|:---------|:---------|:---------|:---------|:---------|:------|:-----|:----|:----|:------|
-|Baishao   |(Z)-(1... |NA        |MOL001908 |https:... |446.55 |-1.28 |6    |10   |5.74   |
-|Baishao   |albifl... |NA        |MOL001911 |https:... |480.51 |-1.91 |5    |11   |21.29  |
-|Baishao   |albifl... |NA        |MOL001927 |https:... |480.51 |-1.33 |5    |11   |12.09  |
-|Baishao   |galloy... |NA        |MOL001932 |https:... |632.62 |-0.04 |7    |15   |3.03   |
-|Baishao   |oxypae... |NA        |MOL001933 |https:... |496.51 |-1.55 |6    |12   |21.88  |
-|Baishao   |Oxypae... |NA        |MOL005089 |https:... |496.51 |-1.55 |6    |12   |8.38   |
-|Baishao   |sucrose   |Aldose... |MOL000842 |https:... |342.34 |-4.31 |8    |11   |7.17   |
-|Baishao   |sucrose   |Aldose... |MOL000842 |https:... |342.34 |-4.31 |8    |11   |7.17   |
-|Baishao   |sucrose   |Aldose... |MOL000842 |https:... |342.34 |-4.31 |8    |11   |7.17   |
-|Baishao   |sucrose   |Alpha-... |MOL000842 |https:... |342.34 |-4.31 |8    |11   |7.17   |
-|Baishao   |Astrag... |Calmod... |MOL000561 |https:... |448.41 |-0.32 |7    |11   |14.03  |
-|Baishao   |Astrag... |Calmod... |MOL000561 |https:... |448.41 |-0.32 |7    |11   |14.03  |
-|Baishao   |sucrose   |Chitin... |MOL000842 |https:... |342.34 |-4.31 |8    |11   |7.17   |
-|Baishao   |Astrag... |Coagul... |MOL000561 |https:... |448.41 |-0.32 |7    |11   |14.03  |
-|Baishao   |Astrag... |Coagul... |MOL000561 |https:... |448.41 |-0.32 |7    |11   |14.03  |
-|...       |...       |...       |...       |...       |...    |...   |...  |...  |...    |
-
-## 白芍苷类 (Glycosides, G)  的网络药理学分析
-
-### 白芍-苷类 (Glycosides, G) -靶点
-
-Figure \@ref(fig:Baishao-Network-pharmacology-visualization) (下方图) 为图Baishao Network pharmacology visualization概览。
-
-**(对应文件为 `Figure+Table/Baishao-Network-pharmacology-visualization.pdf`)**
+**(对应文件为 `Figure+Table/SwissTargetPrediction-results.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/Baishao-Network-pharmacology-visualization.pdf}
-\caption{Baishao Network pharmacology visualization}\label{fig:Baishao-Network-pharmacology-visualization}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SwissTargetPrediction-results.pdf}
+\caption{SwissTargetPrediction results}\label{fig:SwissTargetPrediction-results}
 \end{center}
 
-Figure \@ref(fig:Paeoniflorin-Network-pharmacology-visualization) (下方图) 为图Paeoniflorin Network pharmacology visualization概览。
 
-**(对应文件为 `Figure+Table/Paeoniflorin-Network-pharmacology-visualization.pdf`)**
+
+
+## 白芍总苷 (Total glucosides of paeony, TGP)  的网络药理学分析
+
+### 白芍总苷 (Total glucosides of paeony, TGP)  成分-靶点
+
+Figure \@ref(fig:Network-pharmacology-visualization) (下方图) 为图Network pharmacology visualization概览。
+
+**(对应文件为 `Figure+Table/Network-pharmacology-visualization.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/Paeoniflorin-Network-pharmacology-visualization.pdf}
-\caption{Paeoniflorin Network pharmacology visualization}\label{fig:Paeoniflorin-Network-pharmacology-visualization}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-visualization.pdf}
+\caption{Network pharmacology visualization}\label{fig:Network-pharmacology-visualization}
 \end{center}
 
-### 过敏性鼻炎 (allergic rhinitis, AR)  相关基因
-
-AR 相关基因通过 geneCards 获取，并通过 Biomart 注释。
-
-Table \@ref(tab:AR-related-genes) (下方表格) 为表格AR related genes概览。
-
-**(对应文件为 `Figure+Table/AR-related-genes.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有178行8列，以下预览的表格可能省略部分数据；表格含有178个唯一`hgnc\_symbol'。
-\end{tcolorbox}
-\end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
-\item hgnc\_symbol:  基因名 (Human)
-\end{enumerate}\end{tcolorbox}
-\end{center}
-
-Table: (\#tab:AR-related-genes)AR related genes
-
-|hgnc_s... |ensemb... |entrez... |refseq... |chromo... |start_... |end_po... |descri... |
-|:---------|:---------|:---------|:---------|:---------|:---------|:---------|:---------|
-|ADRB2     |ENSG00... |154       |NM_000024 |5         |148826611 |148828623 |adreno... |
-|ALOX5AP   |ENSG00... |241       |NM_001629 |13        |30713478  |30764426  |arachi... |
-|BDNF-AS   |ENSG00... |497258    |          |11        |27506830  |27698231  |BDNF a... |
-|BGLAP     |ENSG00... |632       |NM_199173 |1         |156242184 |156243317 |bone g... |
-|BPIFA1    |ENSG00... |51297     |NM_001... |20        |33235995  |33243311  |BPI fo... |
-|BTK       |ENSG00... |695       |          |X         |101349338 |101390796 |Bruton... |
-|C5AR1     |ENSG00... |728       |          |19        |47290023  |47322066  |comple... |
-|CCDC40    |ENSG00... |55036     |NM_001... |HG2118... |59543     |125319    |coiled... |
-|CCL1      |ENSG00... |6346      |NM_002981 |17        |34360328  |34363233  |C-C mo... |
-|CCL18     |ENSG00... |6362      |NM_002988 |HSCHR1... |18377     |26129     |C-C mo... |
-|CCL20     |ENSG00... |6364      |          |2         |227805739 |227817564 |C-C mo... |
-|CCL4      |ENSG00... |6351      |NM_002984 |HSCHR1... |57924     |59718     |C-C mo... |
-|CCNO      |ENSG00... |10309     |          |5         |55231152  |55233608  |cyclin... |
-|CCR5      |ENSG00... |1234      |NM_000579 |3         |46370946  |46376206  |C-C mo... |
-|CCR8      |ENSG00... |1237      |NM_005201 |3         |39329709  |39333680  |C-C mo... |
-|...       |...       |...       |...       |...       |...       |...       |...       |
 
 
+### 白芍总苷 (Total glucosides of paeony, TGP)  和 过敏性鼻炎 (allergic rhinitis, AR)  靶基因的交集
 
-### 苷类 (Glycosides, G)  和 过敏性鼻炎 (allergic rhinitis, AR)  靶基因的交集
+Figure \@ref(fig:Baishao-TGP-targets-intersect-with-AR-related-targets) (下方图) 为图Baishao TGP targets intersect with AR related targets概览。
 
-Figure \@ref(fig:Baishao-glucosides-targets-intersect-with-AR-related-targets) (下方图) 为图Baishao glucosides targets intersect with AR related targets概览。
-
-**(对应文件为 `Figure+Table/Baishao-glucosides-targets-intersect-with-AR-related-targets.pdf`)**
+**(对应文件为 `Figure+Table/Baishao-TGP-targets-intersect-with-AR-related-targets.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/Baishao-glucosides-targets-intersect-with-AR-related-targets.pdf}
-\caption{Baishao glucosides targets intersect with AR related targets}\label{fig:Baishao-glucosides-targets-intersect-with-AR-related-targets}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Baishao-TGP-targets-intersect-with-AR-related-targets.pdf}
+\caption{Baishao TGP targets intersect with AR related targets}\label{fig:Baishao-TGP-targets-intersect-with-AR-related-targets}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
@@ -288,12 +348,23 @@ Intersection
 
 \vspace{0.5em}
 
-    NOS2, PIK3CG, PTGS1, PTGS2
+    LGALS3, EGFR, VEGFA, CYP2D6, SELP, SERPINE1, PIK3CG,
+MMP9, ITK, ADRB2, STAT3, PTGS2
 
 \vspace{2em}
 \end{tcolorbox}
 \end{center}
-**(上述信息框内容已保存至 `Figure+Table/Baishao-glucosides-targets-intersect-with-AR-related-targets-content`)**
+**(上述信息框内容已保存至 `Figure+Table/Baishao-TGP-targets-intersect-with-AR-related-targets-content`)**
+
+Figure \@ref(fig:Targets-of-compounds-and-related-disease) (下方图) 为图Targets of compounds and related disease概览。
+
+**(对应文件为 `Figure+Table/Targets-of-compounds-and-related-disease.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-of-compounds-and-related-disease.pdf}
+\caption{Targets of compounds and related disease}\label{fig:Targets-of-compounds-and-related-disease}
+\end{center}
 
 
 
@@ -315,38 +386,73 @@ Intersection
 
 \vspace{0.5em}
 
-
+    LGALS3, VEGFA, SERPINE1, SELP, ADRB2, CYP2D6, STAT3,
+PTGS2
 
 \vspace{2em}
 \end{tcolorbox}
 \end{center}
 **(上述信息框内容已保存至 `Figure+Table/Paeoniflorin-targets-intersect-with-AR-related-targets-content`)**
 
+Figure \@ref(fig:Network-pharmacology-visualization-of-Paeoniflorin) (下方图) 为图Network pharmacology visualization of Paeoniflorin概览。
+
+**(对应文件为 `Figure+Table/Network-pharmacology-visualization-of-Paeoniflorin.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-visualization-of-Paeoniflorin.pdf}
+\caption{Network pharmacology visualization of Paeoniflorin}\label{fig:Network-pharmacology-visualization-of-Paeoniflorin}
+\end{center}
+
 
 
 
 ## 富集分析
 
-### 白芍苷类 (Glycosides, G) 与 AR 交集基因的富集分析
+### 白芍总苷 (Total glucosides of paeony, TGP) 与 AR 交集基因的富集分析
 
-Figure \@ref(fig:Gly-Interect-genes-KEGG-enrichment) (下方图) 为图Gly Interect genes KEGG enrichment概览。
+Figure \@ref(fig:TGP-Interect-genes-KEGG-enrichment) (下方图) 为图TGP Interect genes KEGG enrichment概览。
 
-**(对应文件为 `Figure+Table/Gly-Interect-genes-KEGG-enrichment.pdf`)**
+**(对应文件为 `Figure+Table/TGP-Interect-genes-KEGG-enrichment.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/Gly-Interect-genes-KEGG-enrichment.pdf}
-\caption{Gly Interect genes KEGG enrichment}\label{fig:Gly-Interect-genes-KEGG-enrichment}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TGP-Interect-genes-KEGG-enrichment.pdf}
+\caption{TGP Interect genes KEGG enrichment}\label{fig:TGP-Interect-genes-KEGG-enrichment}
 \end{center}
 
-Figure \@ref(fig:Gly-Interect-genes-GO-enrichment) (下方图) 为图Gly Interect genes GO enrichment概览。
+Figure \@ref(fig:TGP-Interect-genes-GO-enrichment) (下方图) 为图TGP Interect genes GO enrichment概览。
 
-**(对应文件为 `Figure+Table/Gly-Interect-genes-GO-enrichment.pdf`)**
+**(对应文件为 `Figure+Table/TGP-Interect-genes-GO-enrichment.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/Gly-Interect-genes-GO-enrichment.pdf}
-\caption{Gly Interect genes GO enrichment}\label{fig:Gly-Interect-genes-GO-enrichment}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TGP-Interect-genes-GO-enrichment.pdf}
+\caption{TGP Interect genes GO enrichment}\label{fig:TGP-Interect-genes-GO-enrichment}
+\end{center}
+
+
+
+### 芍药苷 (Paeoniflorin, P) 与 AR 交集基因的富集分析
+
+Figure \@ref(fig:Pae-Interect-genes-KEGG-enrichment) (下方图) 为图Pae Interect genes KEGG enrichment概览。
+
+**(对应文件为 `Figure+Table/Pae-Interect-genes-KEGG-enrichment.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Pae-Interect-genes-KEGG-enrichment.pdf}
+\caption{Pae Interect genes KEGG enrichment}\label{fig:Pae-Interect-genes-KEGG-enrichment}
+\end{center}
+
+Figure \@ref(fig:Pae-Interect-genes-GO-enrichment) (下方图) 为图Pae Interect genes GO enrichment概览。
+
+**(对应文件为 `Figure+Table/Pae-Interect-genes-GO-enrichment.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Pae-Interect-genes-GO-enrichment.pdf}
+\caption{Pae Interect genes GO enrichment}\label{fig:Pae-Interect-genes-GO-enrichment}
 \end{center}
 
 
@@ -386,6 +492,8 @@ Figure \@ref(fig:Paeoniflorin-combine-SOX18) (下方图) 为图Paeoniflorin comb
 \includegraphics[width = 0.9\linewidth]{./figs/442534_into_sox18.png}
 \caption{Paeoniflorin combine SOX18}\label{fig:Paeoniflorin-combine-SOX18}
 \end{center}
+
+
 
 
 

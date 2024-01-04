@@ -35,27 +35,15 @@ set_index()
 
 - 白芍总苷 Total glucosides of paeony 中主要化学成分10-20个（TCMSP筛选下口服利用度等）及各个化学成分对应的作用靶点
   （gene与AR过敏性鼻炎相关），最终形成drug-chemical-target gene靶点图
-    - 由于`r d("g")` 成分过少(Tab. \@ref(tab:Baishao-glycosides-related-compounds),
-      Fig. \@ref(fig:Classification-hierarchy))，没有利用 OB 筛选。
-      由于靶点过少，这里也没有根据 AR 相关过滤后绘制成分靶点图，而是直接绘制，
-      网络药理图见 Fig. \@ref(fig:Baishao-Network-pharmacology-visualization)。
-      其中与 AR 相关的基因见 Fig. \@ref(fig:Baishao-glucosides-targets-intersect-with-AR-related-targets)。
 - 将获得的靶点进行GO, KEGG富集分析，目标靶点为USP5，关联成分为芍药苷Paeoniflorin
-    - `r d("g")` 没有富集到 USP5 (TCMSP 的`r d("g")`靶点信息，不包含 USP5 和 SOX18) ，
-      Fig. \@ref(fig:Gly-Interect-genes-KEGG-enrichment) 和 Fig. \@ref(fig:Gly-Interect-genes-GO-enrichment) 为富集分析结果。
 - 将芍药苷pae单独拎出，形成pae-targets-pathway网络，此处形成的target genes的GO、KEGG富集图也需要，
   备注USP5参与哪些部分（功能、通路）
-    - Fig. \@ref(fig:Paeoniflorin-Network-pharmacology-visualization) 为 Paeoniflorin 网络药理图 
-      (由于靶点过少，这里也没有根据 AR 相关过滤后绘制成分靶点图，而是直接绘制) 。
-      Paeoniflorin 与 AR 交集基因为 Fig. \@ref(fig:Paeoniflorin-targets-intersect-with-AR-related-targets)
 - 分子对接模拟芍药苷与USP5互作
-    - 见 Fig. \@ref(fig:Overall-combining-Affinity) 和 Fig. \@ref(fig:Paeoniflorin-combine-USP5)
 - 转至第2步目标靶点为SOX18，关联成分为芍药苷Paeoniflorin
-    - Paeoniflorin 不包含 SOX18
 - 第3步中备注SOX18参与哪些部分（功能、通路）
-    - 不参与
 - 分子对接模拟芍药苷与SOX18互作
-    - 见 Fig. \@ref(fig:Paeoniflorin-combine-SOX18)
+
+注：USP5 和 SOX18 不参与功能、通路。其它分析结果见 \@ref(workflow)
 
 ```{r}
 dic(di("白芍总苷", "Total glucosides of paeony", "TGP"),
@@ -105,9 +93,9 @@ tp <- step2(tp)
 autor(tp@tables$step2$compounds_targets)
 ```
 
-## 白芍的苷类成分
+## `r d("tgp")`成分
 
-### 白芍的`r d("tgp")`成分和筛选
+### `r d("tgp")`成分和筛选
 
 根据提供的文献，搜集其中的`r d("tgp")`[@TotalGlucosideJiang2020]。
 
@@ -120,7 +108,7 @@ autor(cpds.rev)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| The-Synonyms
-autor(syns)
+autor(new_lich(pr$synonyms))
 ```
 
 根据同义名，在 Tab. \@ref(tab:Baishao-Compounds-and-targets) 中搜索这些化合物，得到：
@@ -146,74 +134,63 @@ cpds.rev <- new_lich(list(TGP = cf.rev))
 pr <- job_pubchemr(cf.rev)
 pr <- step1(pr)
 
-finds <- map(pr, tp@tables$step2$compounds_targets$`Molecule Name`, "benzoylpaeoniflorin")
-
-tp.rev <- filter(tp, tolower(`Molecule Name`) %in% rm.no(finds) | `Molecule Name` == "benzoyl paeoniflorin")
-tp.rev@params$p.filtered
-tp.rev@tables$step2$compounds_targets
-tp.rev@tables$step2$ingredients
-
+tp.rev <- map(tp, pr, c("benzoyl paeoniflorin" = "benzoylpaeoniflorin"))
 tp.rev.ob <- filter(tp.rev, `OB (%)` > 30, DL > .18)
 tp.rev.ob@tables$step2$compounds_targets
-tp.rev.ob@tables$step1$ingredients
+tp.rev.ob@tables$step2$ingredients
 ```
 
-### 白芍 `r d("tgp")` 成分的靶点预测
+### `r d("tgp")` 成分的靶点预测
 
 通过 `SwissTargetPrediction` 预测靶点。
 
+```{r eval = T, echo = F, results = "asis"}
+#| SwissTargetPrediction-results
+autor(tp.rev.ob@params$p.swissTargets)
+```
+
 ```{r}
-finds2 <- finds %>% .[ . %in% tolower(tp.rev.ob@tables$step2$compounds_targets[[3]]) | grpl(., "ben") ]
-smiles <- pr@params$smiles %>% .[names(.) %in% names(finds2)]
-sw <- job_swiss(smiles)
+sw <- asjob_swiss(tp.rev.ob)
 sw <- step1(sw)
 sw@tables$step1$targets
+
+tp.rev.ob <- map(tp.rev.ob, sw)
+tp.rev.ob@params$p.swissTargets
 ```
 
 
-## 白芍`r d("g")` 的网络药理学分析
+## `r d("tgp")` 的网络药理学分析
 
-### 白芍-`r d("g")`-靶点
-
-```{r eval = T, echo = F, results = "asis"}
-#| Baishao-Network-pharmacology-visualization
-autor(tp.gly@plots$step3$p.pharm)
-```
+### `r d("tgp")` 成分-靶点
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Paeoniflorin-Network-pharmacology-visualization
-autor(wrap(tp.glyPae@plots$step3$p.pharm, 7, 1.5))
-```
-
-### `r d("ar")` 相关基因
-
-AR 相关基因通过 geneCards 获取，并通过 Biomart 注释。
-
-```{r eval = T, echo = F, results = "asis"}
-#| AR-related-genes
-autor(tp.gly@tables$step3$disease_targets_annotation)
+#| Network-pharmacology-visualization
+autor(tp.rev.ob@plots$step3$p.pharm)
 ```
 
 ```{r}
-tp.gly <- map(tp, cf.tp)
-tp.gly <- step3(tp.gly, "allergic rhinitis", 1)
-tp.gly@plots$step3$p.pharm
-tp.gly@tables$step3$easyRead
-tp.gly@tables$step3$disease_targets_annotation
-
-# swiss-target
+tp.rev.ob@tables$step2$compounds_targets
+tp.rev.ob <- step3(tp.rev.ob, "allergic rhinitis", 1)
+tp.rev.ob@plots$step3$p.pharm
+tp.rev.ob@tables$step3$disease_targets_annotation
+p.ctd <- vis(tp.rev.ob)
 ```
 
-### `r d("g")` 和 `r d("ar")` 靶基因的交集
+### `r d("tgp")` 和 `r d("ar")` 靶基因的交集
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Baishao-glucosides-targets-intersect-with-AR-related-targets
+#| Baishao-TGP-targets-intersect-with-AR-related-targets
 autor(p.venn)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| Targets-of-compounds-and-related-disease
+autor(p.ctd)
+```
+
 ```{r}
-p.venn <- new_venn(lst = list(Targets = tp.gly@tables$step3$easyRead$symbols,
-  AR_related = tp.gly@tables$step3$disease_targets_annotation$hgnc_symbol))
+p.venn <- new_venn(lst = list(Targets = tp.rev.ob@tables$step3$easyRead$symbols,
+  AR_related = tp.rev.ob@tables$step3$disease_targets_annotation$hgnc_symbol))
 ```
 
 ### `r d("p")` 和 `r d("ar")` 靶基因的交集
@@ -223,11 +200,15 @@ p.venn <- new_venn(lst = list(Targets = tp.gly@tables$step3$easyRead$symbols,
 autor(p.vennPae)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-visualization-of-Paeoniflorin
+autor(wrap(tp.glyPae@plots$step3$p.pharm, 7, 1.5))
+```
+
 ```{r}
 keys <- c("USP5", "SOX18")
-tp.glyPae <- map(tp, cf.tp)
-tp.glyPae <- filter(tp.glyPae, grpl(`Molecule Name`, "^Paeoniflorin$", T))
-tp.glyPae@tables$step2$compounds_targets
+tp.glyPae <- filter(tp.rev.ob, grpl(`Molecule Name`, "^Paeoniflorin$", T))
+tp.glyPae@step <- 2L
 tp.glyPae <- step3(tp.glyPae, "allergic rhinitis", 1)
 wrap(tp.glyPae@plots$step3$p.pharm, 7, 1.5)
 
@@ -238,24 +219,44 @@ p.vennPae <- new_venn(lst = list(Pae_Targets = tp.glyPae@tables$step3$easyRead$s
 
 ## 富集分析
 
-### 白芍`r d("g")`与 AR 交集基因的富集分析
+### `r d("tgp")`与 AR 交集基因的富集分析
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Gly-Interect-genes-KEGG-enrichment
-autor(en@plots$step1$p.kegg$ids)
+#| TGP-Interect-genes-KEGG-enrichment
+autor(en.tgp@plots$step1$p.kegg$ids)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Gly-Interect-genes-GO-enrichment
-autor(wrap(en@plots$step1$p.go$ids, 14))
+#| TGP-Interect-genes-GO-enrichment
+autor(wrap(en.tgp@plots$step1$p.go$ids, 14))
 ```
 
 ```{r}
-en <- job_enrich(p.venn$ins)
-en <- step1(en)
-en@plots$step1$p.kegg$ids
-wrap(en@plots$step1$p.go$ids, 14)
-en@tables$step1$res.kegg
+en.tgp <- job_enrich(p.venn$ins)
+en.tgp <- step1(en.tgp)
+en.tgp@plots$step1$p.kegg$ids
+wrap(en.tgp@plots$step1$p.go$ids, 14)
+en.tgp@tables$step1$res.kegg
+```
+
+### `r d("p")`与 AR 交集基因的富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| Pae-Interect-genes-KEGG-enrichment
+autor(en.p@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Pae-Interect-genes-GO-enrichment
+autor(wrap(en.p@plots$step1$p.go$ids, 14))
+```
+
+```{r}
+en.p <- job_enrich(p.vennPae$ins)
+en.p <- step1(en.p)
+en.p@plots$step1$p.kegg$ids
+wrap(en.p@plots$step1$p.go$ids, 14)
+en.p@tables$step1$res.kegg
 ```
 
 ## 分子对接
