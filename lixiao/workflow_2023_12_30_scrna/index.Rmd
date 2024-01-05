@@ -130,6 +130,8 @@ sr_1@info
 ### 目的
 ### 解决的问题
 
+## 适配平台
+
 ## 方法
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -206,6 +208,7 @@ reticulate::py_install(packages = 'umap-learn')
 
 测试
 
+### 完整示例代码
 
 ## 技巧
 

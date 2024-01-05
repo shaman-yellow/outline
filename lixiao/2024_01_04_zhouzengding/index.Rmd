@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(12), coef = NA)
+info <- items(belong = odate(1), coef = NA)
 
 order_publish()
 idname <- order_packaging()
@@ -33,13 +33,24 @@ set_index()
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
-  di("肺血管病理性重塑"))
+  di("肺血管重塑"),
+  di(en = "Vascular Remodeling"),
+  di("脓毒症"),
+  di("肺损伤"),
+  di("败血性肺损伤"),
+  di("糖酵解")
+)
 
 # DEGs: Differential Expressed Genes 差异表达基因
-# PROPV: Pathological remodeling of pulmonary vessels 肺血管病理性重塑
+# PVR: Pulmonary vascular remodeling 肺血管重塑
+# VR: Vascular Remodeling 血管重塑
+# S: sepsis 脓毒症
+# LD: lung damage 肺损伤
+# SLI: septic lung injury 败血性肺损伤
+# G: Glycolysis 糖酵解
 ```
 
-脓毒症肺损伤+血管重塑+基因+糖酵解 (DisGeNet, genecards, NCBI, PharmGKB)
+脓毒症肺损伤+血管重塑+基因+糖酵解
 
 - 糖酵解与肺血管病理性重塑（如果比较少，放宽到血管重塑remodeling）相关的基因集
 - 对基因集做功能通路富集分析
@@ -71,28 +82,53 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
-```{r}
+## Disease (database: PharmGKB, DisGeNet, GeneCards)
 
+### `r d("vr")`
+
+```{r eval = T, echo = F, results = "asis"}
+#| VR-Overall-targets-number-of-datasets
+autor(gm.vr@plots$step2$p.cols)
 ```
 
 ```{r}
-# DisGeNet
-x <- ftibble("~/outline/lixiao/database/DisGeNet_disease_associations.tsv.gz")
-
-y <- RCurl::getURL('https://www.disgenet.org/browser/0/1/0/C0000768/0/2000/source__ALL/_b./#')
-tt <- as_tibble(get_table.html(y)[[1]])
-
-fun_format <- function(x) {
-  x <- dplyr::select(x, type = 1, value = 2)
-  x <- dplyr::mutate(x, type = gs(type, "^(.+?):.*", "\\1"),
-    type = ifelse(grpl(type, "^[A-Z]"), type, "UniProt"),
-    type = make.names(type))
-  rows <- nrow(x) / 3
-  x <- split_lapply_rbind(x, rep(1:rows, each = 3),
-    function(x) {
-      tidyr::spread(x, type, value)
-    })
-  x
-}
-fun_format(tt)
+gm.vr <- job_gmix("Vascular Remodeling", "vascular")
+gm.vr <- step1(gm.vr)
+gm.vr <- step2(gm.vr, 5, 130, 5)
+gm.vr@plots$step2$p.cols
 ```
+
+### `r d("sli")`
+
+```{r eval = T, echo = F, results = "asis"}
+#| SLI-Overall-targets-number-of-datasets
+autor(gm.sli@plots$step2$p.cols)
+```
+
+```{r}
+gm.sli <- job_gmix("Septic lung injury", "lung injury")
+gm.sli <- step1(gm.sli)
+gm.sli <- step2(gm.sli, NULL, 3, 5)
+gm.sli@plots$step2$p.cols
+```
+
+## `r d("g")`
+
+```{r eval = T, echo = F, results = "asis"}
+#| Glycolysis-Genes-annotation
+autor(bm$anno)
+```
+
+从 MSigDB 筛选`r d("g")` 相关基因。
+
+```{r}
+db_c2 <- get_c2_data("Glycolysis")
+
+bm <- job_biomart("hsa")
+bm <- step1(bm, unlist(db_c2, use.names = F), "entrezgene_id")
+bm$anno
+```
+
+## 基因集
+
+

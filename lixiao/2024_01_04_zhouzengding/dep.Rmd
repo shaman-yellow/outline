@@ -1,0 +1,68 @@
+
+## NCBI GEO
+
+### Sepsis lung injury
+
+```{r}
+ge <- job_geo("GSE165226")
+ge <- step1(ge)
+ge@params$guess
+
+metadata <- dplyr::mutate(ge@params$guess,
+  group = ifelse(grpl(title, "control"), "Control", "Model"),
+  sample = rownames
+)
+
+lm <- asjob_limma(ge, metadata)
+```
+
+```{r}
+# PharmGKB
+x <- ftibble("~/outline/lixiao/database/PharmGKB_genes.tsv.gz")
+y <- ftibble("~/outline/lixiao/database/PharmGKB_phenotypes.tsv.gz")
+
+z <- ftibble("~/outline/lixiao/database/PharmGKB_relationships.tsv.gz")
+z <- dplyr::filter(z, (Entity1_type == "Gene" & Entity2_type == "Disease") |
+  (Entity2_type == "Gene" & Entity1_type == "Disease"))
+
+fun_format <- function(x) {
+  n <- 0L
+  split_lapply_rbind(x, ~ Entity1_type,
+    function(x) {
+      n <<- n + 1L
+      if (n == 2L) {
+        colnames(x) <- colnames(x)[c(4:6, 1:3, 7:ncol(x))]
+      }
+      return(x)
+    })
+}
+x <- fun_format(z)
+
+```
+
+
+```{r}
+# DisGeNet
+x <- ftibble("~/outline/lixiao/database/DisGeNet_disease_associations.tsv.gz")
+
+y <- RCurl::getURL('https://www.disgenet.org/browser/0/1/0/C0000768/0/2000/source__ALL/_b./#')
+tt <- as_tibble(get_table.html(y)[[1]])
+tt <- as_tibble(get_table.html(y)[[2]])
+
+fun_format <- function(x) {
+  x <- dplyr::select(x, type = 1, value = 2)
+  x <- dplyr::mutate(x, type = gs(type, "^(.+?):.*", "\\1"),
+    type = ifelse(grpl(type, "^[A-Z]"), type, "UniProt"),
+    type = make.names(type))
+  rows <- nrow(x) / 3
+  x <- split_lapply_rbind(x, rep(1:rows, each = 3),
+    function(x) {
+      tidyr::spread(x, type, value)
+    })
+  x
+}
+
+fun_format(tt)
+
+apply(tt, 1, function(x) any(grpl(x, "score", T)))
+```
