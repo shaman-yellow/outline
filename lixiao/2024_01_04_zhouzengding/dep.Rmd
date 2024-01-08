@@ -66,3 +66,36 @@ fun_format(tt)
 
 apply(tt, 1, function(x) any(grpl(x, "score", T)))
 ```
+
+
+### `r d("sli")`
+
+```{r eval = T, echo = F, results = "asis"}
+#| SLI-Overall-targets-number-of-datasets
+autor(gm.sli@plots$step2$p.cols)
+```
+
+```{r}
+gm.sli <- job_gmix("Septic lung injury", "lung injury")
+gm.sli <- step1(gm.sli)
+gm.sli <- step2(gm.sli, NULL, 3, 5)
+gm.sli@plots$step2$p.cols
+gm.sli$lst.genes
+```
+
+```{r}
+db_c2 <- get_c2_data("Glycolysis", mode = "mmu")
+
+bm <- job_biomart("hsa")
+bm <- step1(bm, unlist(db_c2, use.names = F), "entrezgene_id")
+bm$anno
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Glycolysis-Genes-annotation
+autor(bm$anno)
+```
+
+从 MSigDB 筛选`r d("g")` 相关基因。
+
+

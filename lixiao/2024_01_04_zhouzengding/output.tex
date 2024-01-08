@@ -1,0 +1,770 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge 网络药理学分析}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-01-08}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+脓毒症肺损伤+血管重塑+基因+糖酵解
+
+\begin{itemize}
+\tightlist
+\item
+  糖酵解与肺血管病理性重塑（如果比较少，放宽到血管重塑remodeling）相关的基因集
+
+  \begin{itemize}
+  \tightlist
+  \item
+    血管重塑基因 (\ref{vr}) 和脓毒症肺损伤基因 (\ref{sli}) 以及糖酵解相关基因 (\ref{gly}) 取全交集 (Fig. \ref{fig:Filtered-DEGs-intersection})
+  \end{itemize}
+\item
+  对基因集做功能通路富集分析
+
+  \begin{itemize}
+  \tightlist
+  \item
+    分别对败血性肺损伤 (septic lung injury, SLI) 数据集 (Fig. \ref{fig:KEGG-enrichment-with-enriched-genes}) 和上述交集后的基因集 (Fig. \ref{fig:FDEGS-ids-KEGG-enrichment} 和 Fig. \ref{fig:FDEGS-ids-GO-enrichment}) 做了富集分析
+  \end{itemize}
+\item
+  在这些基因集中找到kif2c（如果包含可能名次比较靠后了），及kif2c相关的基因，做PPI网络图
+
+  \begin{itemize}
+  \tightlist
+  \item
+    找不到 KIF2F 基因。交集基因 PPI 图见 Fig. \ref{fig:PPI-of-Filtered-DEGs}
+  \end{itemize}
+\item
+  目标靶基因是MYC，用分子对接模拟KIF2C与MYC蛋白互作
+
+  \begin{itemize}
+  \tightlist
+  \item
+    KIF2C 与 MYC 蛋白互作模拟结果见 \ref{docking}
+  \end{itemize}
+\item
+  其他，看有能满足思路的花里胡哨的图都可以放上来
+\end{itemize}
+
+客户需求：希望把生信的可视化结果弄得漂亮一点，目前PPI图虽然可以看出kif2c和myc的关系，但是过于单调。有没有可能再加分子对接或者两者在糖酵解代谢途径中的富集等等（不知道kegg和go分析能否用上）。辛苦增加部分生信分析的图片和结果（就是想视觉上再丰富一点，图做得好看一点多一点）
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+All used GEO expression data and their design:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GSE165226}: we divided 6-8 weeks mice into two groups - control and septic model and 6 mice per group.
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{biomaRt} used for gene annotation\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{1}}.
+\item
+  The \texttt{biomart} was used for mapping genes between organism (e.g., mgi\_symbol to hgnc\_symbol)\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{1}}.
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
+\item
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{3}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{5}}.
+\item
+  R package \texttt{ClusterProfiler} used for GSEA enrichment\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{6},\protect\hyperlink{ref-EdgerDifferenChen}{7}}.
+\item
+  \texttt{LZerD} webserver used for protein--protein docking\textsuperscript{\protect\hyperlink{ref-LzerdWebserverChrist2021}{8}}.
+\item
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{9},\protect\hyperlink{ref-CytohubbaIdenChin2014}{10}}.
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{disease-database-pharmgkb-disgenet-genecards}{%
+\subsection{Disease (database: PharmGKB, DisGeNet, GeneCards)}\label{disease-database-pharmgkb-disgenet-genecards}}
+
+\hypertarget{vr}{%
+\subsubsection{血管重塑 (Vascular Remodeling, VR)}\label{vr}}
+
+Figure \ref{fig:VR-Overall-targets-number-of-datasets} (下方图) 为图VR Overall targets number of datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/VR-Overall-targets-number-of-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/VR-Overall-targets-number-of-datasets.pdf}
+\caption{VR Overall targets number of datasets}\label{fig:VR-Overall-targets-number-of-datasets}
+\end{center}
+
+`VR targets of datasets' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/VR-targets-of-datasets})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/VR-targets-of-datasets共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_t.pharm.csv
+\item 2\_t.dis.csv
+\item 3\_t.genecard.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{sli}{%
+\subsubsection{败血性肺损伤 (septic lung injury, SLI) GEO}\label{sli}}
+
+\hypertarget{degs-mice}{%
+\paragraph{DEGs-mice}\label{degs-mice}}
+
+Figure \ref{fig:SLI-Model-vs-Control-DEGs} (下方图) 为图SLI Model vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SLI-Model-vs-Control-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SLI-Model-vs-Control-DEGs.pdf}
+\caption{SLI Model vs Control DEGs}\label{fig:SLI-Model-vs-Control-DEGs}
+\end{center}
+
+Table \ref{tab:SLI-data-Model-vs-Control-DEGs} (下方表格) 为表格SLI data Model vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SLI-data-Model-vs-Control-DEGs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3242行7列，以下预览的表格可能省略部分数据；表格含有3242个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:SLI-data-Model-vs-Control-DEGs}SLI data Model vs Control DEGs}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.08\columnwidth}\raggedright
+rownames\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+logFC\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+AveExpr\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+t\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+P.Value\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+adj.P.Val\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+B\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.08\columnwidth}\raggedright
+rownames\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+logFC\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+AveExpr\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+t\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+P.Value\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+adj.P.Val\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+B\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Clec3b\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-1.9848536\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.33363889\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-17.498042\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.86788380\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.40662829\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+12.2053789\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Akr1c14\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.81261598\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.11883664\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+15.3675634\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.45102470\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.90133653\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+11.0637187\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Postn\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-1.7034833\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.91717469\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-15.228085\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.82634026\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.90133653\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+10.9810734\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Gm13749\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.2052006\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.83326873\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-14.209839\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.35339935\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.48966386\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+10.3444807\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Saa3\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.85486850\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+10.8792202\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+14.1195879\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.97355804\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.48966386\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+10.2850970\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Ifitm6\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.80701587\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.89669026\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+13.8796505\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.08773578\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.54527703\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+10.1247543\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Il1r2\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.40115929\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.69398107\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+13.5044213\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.47848787\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.01193210\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.86660629\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Gpr153\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-1.6801679\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.62129465\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-13.430255\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.57236356\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.01193210\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.81448518\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Col16a1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-1.4026272\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.91707219\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-13.287008\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.77240443\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.02381186\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.71276692\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Fgfr4\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.6504553\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.15492443\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-13.121581\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.03819307\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.03742187\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.59355318\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Fcgr4\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.77105360\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.56146562\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+13.0473547\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.17116649\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.03742187\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.53944390\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Itgam\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.15398369\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+10.0245737\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+12.6817126\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.97807344\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.59110922\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.26717907\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Ces2e\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.6636707\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.86681445\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-12.575583\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.26902738\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.69176996\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.18633199\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Scube2\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.6771258\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.83822578\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-12.405540\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.80107102\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.30479717\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.05504426\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+Tgfbi\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.55482395\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+10.2352866\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+12.1160976\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.93388623\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00010061\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.82648927\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{degs-human}{%
+\paragraph{DEGs-human}\label{degs-human}}
+
+使用 Biomart 将 mice 基因 (mgi symbol) 映射为 human 基因名 (hgnc symbol)
+
+Table \ref{tab:SLI-Genes-mapping} (下方表格) 为表格SLI Genes mapping概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SLI-Genes-mapping.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2471行8列，以下预览的表格可能省略部分数据；表格含有2362个唯一`mgi\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:SLI-Genes-mapping}SLI Genes mapping}\tabularnewline
+\toprule
+mgi\_sy\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val & B & hgnc\_s\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+mgi\_sy\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val & B & hgnc\_s\ldots{}\tabularnewline
+\midrule
+\endhead
+Clec3b & -1.984\ldots{} & 7.3336\ldots{} & -17.49\ldots{} & 7.8678\ldots{} & 2.4066\ldots{} & 12.205\ldots{} & CLEC3B\tabularnewline
+Postn & -1.703\ldots{} & 9.9171\ldots{} & -15.22\ldots{} & 3.8263\ldots{} & 3.9013\ldots{} & 10.981\ldots{} & POSTN\tabularnewline
+Ifitm6 & 4.8070\ldots{} & 9.8966\ldots{} & 13.879\ldots{} & 1.0877\ldots{} & 5.5452\ldots{} & 10.124\ldots{} & IFITM1\tabularnewline
+Ifitm6 & 4.8070\ldots{} & 9.8966\ldots{} & 13.879\ldots{} & 1.0877\ldots{} & 5.5452\ldots{} & 10.124\ldots{} & IFITM3\tabularnewline
+Ifitm6 & 4.8070\ldots{} & 9.8966\ldots{} & 13.879\ldots{} & 1.0877\ldots{} & 5.5452\ldots{} & 10.124\ldots{} & IFITM2\tabularnewline
+Gpr153 & -1.680\ldots{} & 8.6212\ldots{} & -13.43\ldots{} & 1.5723\ldots{} & 6.0119\ldots{} & 9.8144\ldots{} & GPR153\tabularnewline
+Il1r2 & 4.4011\ldots{} & 7.6939\ldots{} & 13.504\ldots{} & 1.4784\ldots{} & 6.0119\ldots{} & 9.8666\ldots{} & IL1R2\tabularnewline
+Col16a1 & -1.402\ldots{} & 7.9170\ldots{} & -13.28\ldots{} & 1.7724\ldots{} & 6.0238\ldots{} & 9.7127\ldots{} & COL16A1\tabularnewline
+Fcgr4 & 2.7710\ldots{} & 8.5614\ldots{} & 13.047\ldots{} & 2.1711\ldots{} & 6.0374\ldots{} & 9.5394\ldots{} & FCGR3B\tabularnewline
+Fcgr4 & 2.7710\ldots{} & 8.5614\ldots{} & 13.047\ldots{} & 2.1711\ldots{} & 6.0374\ldots{} & 9.5394\ldots{} & FCGR3A\tabularnewline
+Fgfr4 & -2.650\ldots{} & 6.1549\ldots{} & -13.12\ldots{} & 2.0381\ldots{} & 6.0374\ldots{} & 9.5935\ldots{} & FGFR4\tabularnewline
+Itgam & 3.1539\ldots{} & 10.024\ldots{} & 12.681\ldots{} & 2.9780\ldots{} & 7.5911\ldots{} & 9.2671\ldots{} & ITGAM\tabularnewline
+Ces2e & -2.663\ldots{} & 2.8668\ldots{} & -12.57\ldots{} & 3.2690\ldots{} & 7.6917\ldots{} & 9.1863\ldots{} & CES2\tabularnewline
+Scube2 & -2.677\ldots{} & 6.8382\ldots{} & -12.40\ldots{} & 3.8010\ldots{} & 8.3047\ldots{} & 9.0550\ldots{} & SCUBE2\tabularnewline
+Tgfbi & 1.5548\ldots{} & 10.235\ldots{} & 12.116\ldots{} & 4.9338\ldots{} & 0.0001\ldots{} & 8.8264\ldots{} & TGFBI\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{gly}{%
+\subsection{糖酵解 (Glycolysis, G)}\label{gly}}
+
+Table \ref{tab:Glycolysis-related-genes-from-genecards} (下方表格) 为表格Glycolysis related genes from genecards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Glycolysis-related-genes-from-genecards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1362行7列，以下预览的表格可能省略部分数据；表格含有1362个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Glycolysis-related-genes-from-genecards}Glycolysis related genes from genecards}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+TIGAR & TP53 Induc\ldots{} & Protein Co\ldots{} & Q9NQ88 & 42 & GC12P033681 & 22.41\tabularnewline
+PKM & Pyruvate K\ldots{} & Protein Co\ldots{} & P14618 & 53 & GC15M072199 & 19.66\tabularnewline
+HK2 & Hexokinase 2 & Protein Co\ldots{} & P52789 & 50 & GC02P074833 & 19.44\tabularnewline
+GAPDH & Glyceralde\ldots{} & Protein Co\ldots{} & P04406 & 54 & GC12P033726 & 17.19\tabularnewline
+LDHA & Lactate De\ldots{} & Protein Co\ldots{} & P00338 & 54 & GC11P018394 & 15.83\tabularnewline
+RRAD & RRAD, Ras \ldots{} & Protein Co\ldots{} & P55042 & 42 & GC16M067144 & 15.10\tabularnewline
+HIF1A & Hypoxia In\ldots{} & Protein Co\ldots{} & Q16665 & 52 & GC14P061695 & 14.96\tabularnewline
+HK1 & Hexokinase 1 & Protein Co\ldots{} & P19367 & 53 & GC10P069269 & 14.28\tabularnewline
+ENO3 & Enolase 3 & Protein Co\ldots{} & P13929 & 51 & GC17P004948 & 13.56\tabularnewline
+TPI1 & Triosephos\ldots{} & Protein Co\ldots{} & P60174 & 51 & GC12P006867 & 13.21\tabularnewline
+ENO1 & Enolase 1 & Protein Co\ldots{} & P06733 & 51 & GC01M008861 & 13.07\tabularnewline
+GLTC1 & Glycolysis\ldots{} & RNA Gene & & 2 & GC11U909607 & 12.97\tabularnewline
+PFKP & Phosphofru\ldots{} & Protein Co\ldots{} & Q01813 & 49 & GC10P003066 & 12.85\tabularnewline
+PGK1 & Phosphogly\ldots{} & Protein Co\ldots{} & P00558 & 53 & GC0XP078104 & 12.76\tabularnewline
+GCK & Glucokinase & Protein Co\ldots{} & P35557 & 53 & GC07M044978 & 12.38\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux57faux56e0ux96c6-filtered-degs}{%
+\subsection{基因集 (Filtered-DEGs)}\label{ux57faux56e0ux96c6-filtered-degs}}
+
+Figure \ref{fig:Filtered-DEGs-intersection} (下方图) 为图Filtered DEGs intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Filtered-DEGs-intersection.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Filtered-DEGs-intersection.pdf}
+\caption{Filtered DEGs intersection}\label{fig:Filtered-DEGs-intersection}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    SPHK1, COL4A5, HSPA4, PARP1, RUVBL2, TNFAIP3, PPBP,
+MYH10, RAB4B-EGLN2, ANGPTL4, INSR, HMGA2, KDR, TNFSF10,
+WWTR1, PARK7, HIF1AN, TKT, CA9, TRAF6, CASP1, AHR, NR4A1,
+CHUK, MUC1, ROCK1, CDK2, TSC1, IRS1, PRKACA, MDM2
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Filtered-DEGs-intersection-content})}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+\hypertarget{sli-degs}{%
+\subsubsection{SLI-DEGs}\label{sli-degs}}
+
+Figure \ref{fig:KEGG-enrichment-with-enriched-genes} (下方图) 为图KEGG enrichment with enriched genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment-with-enriched-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-enrichment-with-enriched-genes.pdf}
+\caption{KEGG enrichment with enriched genes}\label{fig:KEGG-enrichment-with-enriched-genes}
+\end{center}
+
+\hypertarget{filtered-degs-fdegs}{%
+\subsubsection{Filtered-DEGs (FDEGs)}\label{filtered-degs-fdegs}}
+
+Figure \ref{fig:FDEGS-ids-KEGG-enrichment} (下方图) 为图FDEGS ids KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FDEGS-ids-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FDEGS-ids-KEGG-enrichment.pdf}
+\caption{FDEGS ids KEGG enrichment}\label{fig:FDEGS-ids-KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:FDEGS-ids-GO-enrichment} (下方图) 为图FDEGS ids GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FDEGS-ids-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FDEGS-ids-GO-enrichment.pdf}
+\caption{FDEGS ids GO enrichment}\label{fig:FDEGS-ids-GO-enrichment}
+\end{center}
+
+\hypertarget{ppi}{%
+\subsection{PPI}\label{ppi}}
+
+Figure \ref{fig:PPI-of-Filtered-DEGs} (下方图) 为图PPI of Filtered DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-of-Filtered-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPI-of-Filtered-DEGs.pdf}
+\caption{PPI of Filtered DEGs}\label{fig:PPI-of-Filtered-DEGs}
+\end{center}
+
+\hypertarget{docking}{%
+\subsection{蛋白互作模拟}\label{docking}}
+
+\url{https://lzerd.kiharalab.org/upload/upload/}
+
+\begin{itemize}
+\tightlist
+\item
+  Results:
+  \url{https://lzerd.kiharalab.org/view/b6748c34192e445686eec93fd455ce7a}
+\end{itemize}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-MappingIdentifDurinc2009}{}%
+1. Durinck, S., Spellman, P. T., Birney, E. \& Huber, W. Mapping identifiers for the integration of genomic datasets with the r/bioconductor package biomaRt. \emph{Nature protocols} \textbf{4}, 1184--1191 (2009).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+2. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheDisgenetKnPinero2019}{}%
+3. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+4. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-PharmgkbAWorBarbar2018}{}%
+5. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+6. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+7. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-LzerdWebserverChrist2021}{}%
+8. Christoffer, C. \emph{et al.} LZerD webserver for pairwise and multiple protein-protein docking. \emph{Nucleic acids research} \textbf{49}, W359--W365 (2021).
+
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+9. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+10. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+\end{cslreferences}
+
+\end{document}
