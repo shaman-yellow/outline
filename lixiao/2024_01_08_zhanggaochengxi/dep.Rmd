@@ -1,0 +1,7 @@
+```{r}
+
+x <- ftibble("~/Downloads/NPASSv2.0_download_naturalProducts_speciesInfo.txt")
+dplyr::filter(x, grpl(org_name, "taxus.*mairei", T))
+
+
+```

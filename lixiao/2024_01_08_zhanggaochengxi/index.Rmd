@@ -64,11 +64,15 @@ auto_method()
 
 ```{r}
 mixs <- c("北沙参", "麦冬", "百合", "石斛", "白花蛇舌草", "南方红豆杉", "陈皮", "党参")
-hb.mix <- job_herb(mixs)
-dplyr::filter(hb.mix@object$herb, grpl(Herb_latin_name, "Taxus"))$Herb_cn_name
+hb.mix <- job_herb(mixs, herbs)
+hb.mix@params$herbs_info %<>% dplyr::slice(1:7)
+hb.mix@params$herbs_info
 
-html <- RCurl::getURL("https://plantaedb.com/taxa/phylum/gymnosperms/order/cupressales/family/taxaceae/genus/taxus/species/taxus-mairei")
-tables <- get_table.html(html)
-tables <- lapply(tables, as_tibble)
-tables
+url <- "https://plantaedb.com/taxa/phylum/gymnosperms/order/cupressales/family/taxaceae/genus/taxus/species/taxus-mairei"
+pl <- job_plantdb(url)
+pl <- step1(pl)
+pl@tables$step1
+
+
+get_bindingdb_data()
 ```

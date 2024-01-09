@@ -31,6 +31,8 @@ set_index()
 
 # 摘要 {#abstract}
 
+分子对接见 Fig. \@ref(fig:Overall-combining-Affinity)
+
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 ```
@@ -57,11 +59,30 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
-```{r}
-fp <- job_fastp("./material/rawData/")
-fp <- step1(fp, c("R1", "R2"), ".raw.fastq.gz")
-fp <- step2(fp)
+## 分子对接
 
-metadata <- dplyr::mutate(fp$metadata, SampleName = get_realname(`forward-absolute-filepath`))
-qi <- asjob_qiime(fp)
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-combining-Affinity
+autor(wrap(vn@plots$step5$p.res_vina, 7.2, 1.5))
 ```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Mandenol-combine-PIEZO1
+autor(.file_fig("./figs/5282184_into_piezo1.png"))
+```
+
+```{r}
+vn <- job_vina(c(Mandenol = 5282184), "PIEZO1")
+vn <- step1(vn, NULL)
+# https://alphafold.ebi.ac.uk/entry/H7C2J5
+vn <- step2(vn)
+file.copy("./order_material/piezo1.pdb", "./protein_pdb/piezo1.pdb")
+vn <- step3(vn, extra_pdb.files = c(piezo1 = "./protein_pdb/piezo1.pdb"), extra_layouts = nl(5282184, "piezo1"))
+vn <- step4(vn)
+vn <- step5(vn)
+wrap(vn@plots$step5$p.res_vina, 7.2, 1.5)
+vn <- step6(vn)
+vn <- step7(vn)
+```
+
+
