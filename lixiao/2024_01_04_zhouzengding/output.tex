@@ -80,9 +80,10 @@
 
 \begin{titlepage} \newgeometry{top=7.5cm}
 \ThisCenterWallPaper{1.12}{../cover_page.pdf}
-\begin{center} \textbf{\Huge 网络药理学分析}
-\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-08}}
+\begin{center} \textbf{\Huge
+网络药理学分析+蛋白对接模拟} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-01-10}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -145,8 +146,6 @@
   其他，看有能满足思路的花里胡哨的图都可以放上来
 \end{itemize}
 
-客户需求：希望把生信的可视化结果弄得漂亮一点，目前PPI图虽然可以看出kif2c和myc的关系，但是过于单调。有没有可能再加分子对接或者两者在糖酵解代谢途径中的富集等等（不知道kegg和go分析能否用上）。辛苦增加部分生信分析的图片和结果（就是想视觉上再丰富一点，图做得好看一点多一点）
-
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
 
@@ -186,9 +185,9 @@ Mainly used method:
 \item
   R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{6},\protect\hyperlink{ref-EdgerDifferenChen}{7}}.
 \item
-  \texttt{LZerD} webserver used for protein--protein docking\textsuperscript{\protect\hyperlink{ref-LzerdWebserverChrist2021}{8}}.
+  \texttt{LZerD} and \texttt{HawkDock} webservers used for protein--protein docking\textsuperscript{\protect\hyperlink{ref-LzerdWebserverChrist2021}{8},\protect\hyperlink{ref-HawkdockAWebWeng2019}{9}}.
 \item
-  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{9},\protect\hyperlink{ref-CytohubbaIdenChin2014}{10}}.
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{10},\protect\hyperlink{ref-CytohubbaIdenChin2014}{11}}.
 \item
   Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
@@ -207,6 +206,8 @@ Mainly used method:
 
 \hypertarget{vr}{%
 \subsubsection{血管重塑 (Vascular Remodeling, VR)}\label{vr}}
+
+从三个数据库获取相关基因：
 
 Figure \ref{fig:VR-Overall-targets-number-of-datasets} (下方图) 为图VR Overall targets number of datasets概览。
 
@@ -721,14 +722,54 @@ Figure \ref{fig:PPI-of-Filtered-DEGs} (下方图) 为图PPI of Filtered DEGs概�
 \hypertarget{docking}{%
 \subsection{蛋白互作模拟}\label{docking}}
 
-\url{https://lzerd.kiharalab.org/upload/upload/}
+使用了两种方法模拟对接 (LZerD 的服务器目前还没有出结果 (运行太久了)；HawkDock 的结果已出，已整理)
 
 \begin{itemize}
 \tightlist
 \item
-  Results:
-  \url{https://lzerd.kiharalab.org/view/b6748c34192e445686eec93fd455ce7a}
+  Results (可以到如下网址查看结果):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    LZerD: \url{https://lzerd.kiharalab.org/view/b6748c34192e445686eec93fd455ce7a}
+  \item
+    HawkDock: \url{http://cadd.zju.edu.cn/hawkdock/result/liwenhua-1704765524163}
+  \end{itemize}
 \end{itemize}
+
+\hypertarget{hawkdock-results}{%
+\subsubsection{HawkDock results}\label{hawkdock-results}}
+
+Figure \ref{fig:HawkDock-ranking-of-all-top-10-docking} (下方图) 为图HawkDock ranking of all top 10 docking概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HawkDock-ranking-of-all-top-10-docking.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HawkDock-ranking-of-all-top-10-docking.pdf}
+\caption{HawkDock ranking of all top 10 docking}\label{fig:HawkDock-ranking-of-all-top-10-docking}
+\end{center}
+
+Figure \ref{fig:HawkDock-docking-top-1} (下方图) 为图HawkDock docking top 1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MYC..7T1Y\_with\_KIF2C..2HEH\_top1.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top1.png}
+\caption{HawkDock docking top 1}\label{fig:HawkDock-docking-top-1}
+\end{center}
+
+Figure \ref{fig:HawkDock-docking-top-4} (下方图) 为图HawkDock docking top 4概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MYC..7T1Y\_with\_KIF2C..2HEH\_top4.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top4.png}
+\caption{HawkDock docking top 4}\label{fig:HawkDock-docking-top-4}
+\end{center}
 
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
@@ -760,11 +801,14 @@ Figure \ref{fig:PPI-of-Filtered-DEGs} (下方图) 为图PPI of Filtered DEGs概�
 \leavevmode\hypertarget{ref-LzerdWebserverChrist2021}{}%
 8. Christoffer, C. \emph{et al.} LZerD webserver for pairwise and multiple protein-protein docking. \emph{Nucleic acids research} \textbf{49}, W359--W365 (2021).
 
+\leavevmode\hypertarget{ref-HawkdockAWebWeng2019}{}%
+9. Weng, G. \emph{et al.} HawkDock: A web server to predict and analyze the protein-protein complex based on computational docking and mm/gbsa. \emph{Nucleic acids research} \textbf{47}, W322--W330 (2019).
+
 \leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
-9. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+10. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
 
 \leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
-10. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+11. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
 \end{cslreferences}
 
 \end{document}

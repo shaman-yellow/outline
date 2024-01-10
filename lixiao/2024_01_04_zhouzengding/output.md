@@ -51,9 +51,10 @@ header-includes:
 
 \begin{titlepage} \newgeometry{top=7.5cm}
 \ThisCenterWallPaper{1.12}{../cover_page.pdf}
-\begin{center} \textbf{\Huge 网络药理学分析}
-\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-08}}
+\begin{center} \textbf{\Huge
+网络药理学分析+蛋白对接模拟} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-01-10}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -89,8 +90,6 @@ header-includes:
     - KIF2C 与 MYC 蛋白互作模拟结果见 \@ref(docking)
 - 其他，看有能满足思路的花里胡哨的图都可以放上来
 
-客户需求：希望把生信的可视化结果弄得漂亮一点，目前PPI图虽然可以看出kif2c和myc的关系，但是过于单调。有没有可能再加分子对接或者两者在糖酵解代谢途径中的富集等等（不知道kegg和go分析能否用上）。辛苦增加部分生信分析的图片和结果（就是想视觉上再丰富一点，图做得好看一点多一点）
-
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -112,7 +111,7 @@ Mainly used method:
 - Databses of `DisGeNet`, `GeneCards`, `PharmGKB` used for collating disease related targets[@TheDisgenetKnPinero2019; @TheGenecardsSStelze2016; @PharmgkbAWorBarbar2018].
 - R package `ClusterProfiler` used for GSEA enrichment[@ClusterprofilerWuTi2021].
 - R package `Limma` and `edgeR` used for differential expression analysis[@LimmaPowersDiRitchi2015; @EdgerDifferenChen].
-- `LZerD` webserver used for protein–protein docking[@LzerdWebserverChrist2021].
+- `LZerD` and `HawkDock` webservers used for protein–protein docking[@LzerdWebserverChrist2021; @HawkdockAWebWeng2019].
 - R package `STEINGdb` used for PPI network construction[@TheStringDataSzklar2021; @CytohubbaIdenChin2014].
 - Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
@@ -125,6 +124,8 @@ Mainly used method:
 ## Disease (database: PharmGKB, DisGeNet, GeneCards)
 
 ### 血管重塑 (Vascular Remodeling, VR)  {#vr}
+
+从三个数据库获取相关基因：
 
 Figure \@ref(fig:VR-Overall-targets-number-of-datasets) (下方图) 为图VR Overall targets number of datasets概览。
 
@@ -365,12 +366,45 @@ Figure \@ref(fig:PPI-of-Filtered-DEGs) (下方图) 为图PPI of Filtered DEGs概
 
 ## 蛋白互作模拟 {#docking}
 
-<https://lzerd.kiharalab.org/upload/upload/>
+使用了两种方法模拟对接 (LZerD 的服务器目前还没有出结果 (运行太久了)；HawkDock 的结果已出，已整理) 
 
-- Results:
-  <https://lzerd.kiharalab.org/view/b6748c34192e445686eec93fd455ce7a>
+- Results (可以到如下网址查看结果):
+    - LZerD: <https://lzerd.kiharalab.org/view/b6748c34192e445686eec93fd455ce7a>
+    - HawkDock: <http://cadd.zju.edu.cn/hawkdock/result/liwenhua-1704765524163>
 
 
+
+### HawkDock results
+
+Figure \@ref(fig:HawkDock-ranking-of-all-top-10-docking) (下方图) 为图HawkDock ranking of all top 10 docking概览。
+
+**(对应文件为 `Figure+Table/HawkDock-ranking-of-all-top-10-docking.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HawkDock-ranking-of-all-top-10-docking.pdf}
+\caption{HawkDock ranking of all top 10 docking}\label{fig:HawkDock-ranking-of-all-top-10-docking}
+\end{center}
+
+Figure \@ref(fig:HawkDock-docking-top-1) (下方图) 为图HawkDock docking top 1概览。
+
+**(对应文件为 `Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top1.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top1.png}
+\caption{HawkDock docking top 1}\label{fig:HawkDock-docking-top-1}
+\end{center}
+
+Figure \@ref(fig:HawkDock-docking-top-4) (下方图) 为图HawkDock docking top 4概览。
+
+**(对应文件为 `Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top4.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top4.png}
+\caption{HawkDock docking top 4}\label{fig:HawkDock-docking-top-4}
+\end{center}
 
 
 

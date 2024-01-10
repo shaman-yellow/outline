@@ -106,8 +106,6 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
     - KIF2C 与 MYC 蛋白互作模拟结果见 \@ref(docking)
 - 其他，看有能满足思路的花里胡哨的图都可以放上来
 
-客户需求：希望把生信的可视化结果弄得漂亮一点，目前PPI图虽然可以看出kif2c和myc的关系，但是过于单调。有没有可能再加分子对接或者两者在糖酵解代谢途径中的富集等等（不知道kegg和go分析能否用上）。辛苦增加部分生信分析的图片和结果（就是想视觉上再丰富一点，图做得好看一点多一点）
-
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -133,6 +131,8 @@ auto_method()
 ## Disease (database: PharmGKB, DisGeNet, GeneCards)
 
 ### `r d("vr")` {#vr}
+
+从三个数据库获取相关基因：
 
 ```{r eval = T, echo = F, results = "asis"}
 #| VR-Overall-targets-number-of-datasets
@@ -285,16 +285,38 @@ st@plots$step1$p.mcc
 
 ## 蛋白互作模拟 {#docking}
 
-<https://lzerd.kiharalab.org/upload/upload/>
+使用了两种方法模拟对接 (LZerD 的服务器目前还没有出结果 (运行太久了)；HawkDock 的结果已出，已整理) 
 
-- Results:
-  <https://lzerd.kiharalab.org/view/b6748c34192e445686eec93fd455ce7a>
+- Results (可以到如下网址查看结果):
+    - LZerD: <https://lzerd.kiharalab.org/view/b6748c34192e445686eec93fd455ce7a>
+    - HawkDock: <http://cadd.zju.edu.cn/hawkdock/result/liwenhua-1704765524163>
 
 ```{r}
 prots <- c("KIF2C", "MYC")
 lz <- job_lzerd(prots)
 lz <- step1(lz)
 lz$pdb_files
+lz$anno
+lz$pdb_from
+
+lz <- map(lz, "h", "liwenhua-1704765524163", F, c(1, 4))
+```
+
+### HawkDock results
+
+```{r eval = T, echo = F, results = "asis"}
+#| HawkDock-ranking-of-all-top-10-docking
+autor(lz$mapped$h$p.score)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HawkDock-docking-top-1
+autor(lz$mapped$h$p.tops$top1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HawkDock-docking-top-4
+autor(lz$mapped$h$p.tops$top4)
 ```
 
 ```{r}

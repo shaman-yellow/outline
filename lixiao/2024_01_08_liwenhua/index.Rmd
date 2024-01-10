@@ -62,6 +62,27 @@ fp <- job_fastp("./material/rawData/")
 fp <- step1(fp, c("R1", "R2"), ".raw.fastq.gz")
 fp <- step2(fp)
 
-metadata <- dplyr::mutate(fp$metadata, SampleName = get_realname(`forward-absolute-filepath`))
-qi <- asjob_qiime(fp)
+metadata <- dplyr::mutate(fp$metadata, SampleName = get_realname(`forward-absolute-filepath`),
+  group = substr(SampleName, 1, 1))
+metadata <- dplyr::mutate(metadata, dplyr::across(dplyr::ends_with("filepath"), normalizePath))
+metadata <- dplyr::filter(metadata, group != "C")
+
+qi <- asjob_qiime(fp, metadata)
+qi <- step1(qi)
+qi@plots$step1$demux
+qi <- step2(qi, 290, 240)
+qi <- step3(qi)
+qi@plots$step3$table
+qi <- step4(qi, 11390)
+qi <- step5(qi, 17358)
+qi <- step6(qi)
+
+qi@params$meta_file
+mp <- asjob_mp(qi)
+mp <- step1(mp)
+mp <- step2(mp)
+mp@plots$step3$p.pcoa
+mp@plots$step3$p.hier
+mp <- step3(mp)
+mp <- step4(mp)
 ```
