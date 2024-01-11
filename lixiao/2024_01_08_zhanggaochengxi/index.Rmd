@@ -73,6 +73,5 @@ pl <- job_plantdb(url)
 pl <- step1(pl)
 pl@tables$step1
 
-
 get_bindingdb_data()
 ```

@@ -31,7 +31,11 @@ set_index()
 
 # 摘要 {#abstract}
 
-分子对接见 Fig. \@ref(fig:Overall-combining-Affinity)
+- 三七总皂苷 panax notoginseng saponins 中有效成分
+- 结合疾病骨折愈合（软骨内骨化，血管生成）做网络药理学分析
+- 候选基因的功能通路富集分析
+- 分子对接，与piezo1 (如果Mandenol与piezo1)
+    - 分子对接见 Fig. \@ref(fig:Overall-combining-Affinity)
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
