@@ -38,7 +38,16 @@ set_index()
     - 分子对接见 Fig. \@ref(fig:Overall-combining-Affinity)
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di(ch = "三七总皂苷", "panax notoginseng saponins"),
+  di("软骨内骨化"),
+  di("血管生成"),
+  di("骨折愈合")
+)
+
+# PNS: panax notoginseng saponins 三七总皂苷
+# EO: endochondral ossification 软骨内骨化
+# A: Angiogenesis 血管生成
+# FH: fracture healing 骨折愈合
 ```
 
 # 前言 {#introduction}
@@ -62,6 +71,25 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+## 网络药理学
+
+### `r d("pns")` 成分
+
+```{r}
+url <- "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6017639/table/molecules-23-00940-t003/?report=objectonly"
+compounds <- get_table.html(RCurl::getURL(url))[[1]]
+
+info <- PubChemR::get_cids(compounds$Name)
+info <- dplyr::distinct(info, Identifier, .keep_all = T)
+
+pr <- job_pubchemr(nl(info$Identifier, info$CID, F))
+pr <- step1(pr)
+
+sw <- asjob_swiss(pr)
+sw <- step1(sw, port = 6666)
+
+```
 
 ## 分子对接
 

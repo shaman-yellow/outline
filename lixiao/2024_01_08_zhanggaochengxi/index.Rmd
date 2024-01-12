@@ -65,6 +65,7 @@ auto_method()
 ```{r}
 mixs <- c("北沙参", "麦冬", "百合", "石斛", "白花蛇舌草", "南方红豆杉", "陈皮", "党参")
 hb.mix <- job_herb(mixs, herbs)
+
 hb.mix@params$herbs_info %<>% dplyr::slice(1:7)
 hb.mix@params$herbs_info
 

@@ -1,0 +1,436 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge
+菌群+对应代谢产物介导+机制研究} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-01-12}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+生信分析（8个con）+（8个A）+（8个B）(盲筛，不提供具体分组信息)。
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{Fastp} used for Fastq data preprocessing\textsuperscript{\protect\hyperlink{ref-UltrafastOnePChen2023}{1}}.
+\item
+  R package \texttt{MicrobiotaProcess} used for microbiome data visualization\textsuperscript{\protect\hyperlink{ref-MicrobiotaproceXuSh2023}{2}}.
+\item
+  \texttt{Qiime2} used for gut microbiome 16s rRNA analysis\textsuperscript{\protect\hyperlink{ref-ReproducibleIBolyen2019}{3}--\protect\hyperlink{ref-MicrobialCommuHamday2009}{7}}.
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\begin{itemize}
+\tightlist
+\item
+  A、B 组 Alpha 和 Beta 多样性无显著差异 (见 \ref{alpha} 和 \ref{beta})。
+\item
+  A、B 组差异分析，未找到差异菌。
+\end{itemize}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{microbiota-16s-rna}{%
+\subsection{Microbiota 16s RNA}\label{microbiota-16s-rna}}
+
+\hypertarget{fastp-qc}{%
+\subsubsection{Fastp QC}\label{fastp-qc}}
+
+原始数据质控：
+
+`Fastp QC' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./fastp\_report/})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./fastp\_report/共包含17个文件。
+
+\begin{enumerate}\tightlist
+\item A1.338F\_806R..html
+\item A2.338F\_806R..html
+\item A3.338F\_806R..html
+\item A4.338F\_806R..html
+\item A5.338F\_806R..html
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux5143ux6570ux636e}{%
+\subsubsection{元数据}\label{ux5143ux6570ux636e}}
+
+Table \ref{tab:microbiota-metadata} (下方表格) 为表格microbiota metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/microbiota-metadata.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有16行7列，以下预览的表格可能省略部分数据；表格含有16个唯一`SampleName'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item group:  分组名称
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1358}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0741}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1728}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1728}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0988}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1728}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1728}}@{}}
+\caption{\label{tab:microbiota-metadata}Microbiota metadata}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+SampleName
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dirs
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+reports
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Run
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+forward-ab\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+reverse-ab\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+SampleName
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dirs
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+reports
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Run
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+forward-ab\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+reverse-ab\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A1 & A & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+A2 & A & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+A3 & A & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+A4 & A & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+A5 & A & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+A6 & A & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+A7 & A & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+A8 & A & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+B1 & B & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+B2 & B & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+B3 & B & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+B4 & B & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+B5 & B & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+B6 & B & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+B7 & B & ./material\ldots{} & ./material\ldots{} & rawData & /home/echo\ldots{} & /home/echo\ldots{} \\
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} \\
+\end{longtable}
+
+\hypertarget{qiime2-ux5206ux6790}{%
+\subsubsection{Qiime2 分析}\label{qiime2-ux5206ux6790}}
+
+Microbiota 数据经 Qiime2 分析后，由 \texttt{MicrobiotaProcess} 下游分析和可视化。
+
+\hypertarget{microbiotaprocess-ux5206ux6790}{%
+\subsubsection{MicrobiotaProcess 分析}\label{microbiotaprocess-ux5206ux6790}}
+
+\hypertarget{ux6837ux672cux805aux7c7b}{%
+\paragraph{样本聚类}\label{ux6837ux672cux805aux7c7b}}
+
+在预分析中，根据 PCoA 去除离群样本：
+
+Figure \ref{fig:All-samples-PCoA} (下方图) 为图All samples PCoA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-samples-PCoA.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/All-samples-PCoA.pdf}
+\caption{All samples PCoA}\label{fig:All-samples-PCoA}
+\end{center}
+
+以下为除去样本后的 PCoA:
+
+Figure \ref{fig:Filtered-PCoA} (下方图) 为图Filtered PCoA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Filtered-PCoA.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Filtered-PCoA.pdf}
+\caption{Filtered PCoA}\label{fig:Filtered-PCoA}
+\end{center}
+
+随后的分析以去除离群样本后进行。
+
+\hypertarget{alpha}{%
+\paragraph{Alpha 多样性}\label{alpha}}
+
+A、B 组 alpha 多样性没有显著差异。
+
+Figure \ref{fig:Alpha-diversity} (下方图) 为图Alpha diversity概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Alpha-diversity.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Alpha-diversity.pdf}
+\caption{Alpha diversity}\label{fig:Alpha-diversity}
+\end{center}
+
+`Taxonomy abundance' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Taxonomy-abundance})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Taxonomy-abundance共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Phylum.pdf
+\item 2\_Class.pdf
+\item 3\_Order.pdf
+\item 4\_Family.pdf
+\item 5\_Genus.pdf
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{alpha-ux7a00ux758fux66f2ux7ebf}{%
+\paragraph{Alpha 稀疏曲线}\label{alpha-ux7a00ux758fux66f2ux7ebf}}
+
+Figure \ref{fig:Alpha-rarefaction} (下方图) 为图Alpha rarefaction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Alpha-rarefaction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Alpha-rarefaction.pdf}
+\caption{Alpha rarefaction}\label{fig:Alpha-rarefaction}
+\end{center}
+
+\hypertarget{beta}{%
+\paragraph{Beta 多样性}\label{beta}}
+
+A、B 组 Beta 多样性无显著差异。
+
+Figure \ref{fig:Beta-diversity-group-test} (下方图) 为图Beta diversity group test概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Beta-diversity-group-test.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Beta-diversity-group-test.pdf}
+\caption{Beta diversity group test}\label{fig:Beta-diversity-group-test}
+\end{center}
+
+`Taxonomy hierarchy' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Taxonomy-hierarchy})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Taxonomy-hierarchy共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Phylum.pdf
+\item 2\_Class.pdf
+\item 3\_Order.pdf
+\item 4\_Family.pdf
+\item 5\_Genus.pdf
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\paragraph{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+注：MicrobiotaProcess 的差异分析和 Qiime2 差异分析结果相同，未发现差异肠道菌。
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{0}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-UltrafastOnePChen2023}{}}%
+\CSLLeftMargin{1. }%
+\CSLRightInline{Chen, S. \href{https://doi.org/10.1002/imt2.107}{Ultrafast one-pass FASTQ data preprocessing, quality control, and deduplication using fastp}. \emph{iMeta} \textbf{2}, (2023).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-MicrobiotaproceXuSh2023}{}}%
+\CSLLeftMargin{2. }%
+\CSLRightInline{Xu, S. \emph{et al.} \href{https://doi.org/10.1016/j.xinn.2023.100388}{MicrobiotaProcess: A comprehensive r package for deep mining microbiome}. \emph{The Innovation} \textbf{4}, 100388 (2023).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-ReproducibleIBolyen2019}{}}%
+\CSLLeftMargin{3. }%
+\CSLRightInline{Bolyen, E. \emph{et al.} \href{https://doi.org/10.1038/s41587-019-0209-9}{Reproducible, interactive, scalable and extensible microbiome data science using QIIME 2}. \emph{Nature Biotechnology} \textbf{37}, 852--857 (2019).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-TheBiologicalMcdona2012}{}}%
+\CSLLeftMargin{4. }%
+\CSLRightInline{McDonald, D. \emph{et al.} \href{https://doi.org/10.1186/2047-217X-1-7}{The biological observation matrix (BIOM) format or: How i learned to stop worrying and love the ome-ome}. \emph{GigaScience} \textbf{1}, 7 (2012).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Dada2HighResCallah2016}{}}%
+\CSLLeftMargin{5. }%
+\CSLRightInline{Callahan, B. J. \emph{et al.} \href{https://doi.org/10.1038/nmeth.3869}{DADA2: High-resolution sample inference from illumina amplicon data}. \emph{Nature methods} \textbf{13}, 581 (2016).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-ErrorCorrectinHamday2008}{}}%
+\CSLLeftMargin{6. }%
+\CSLRightInline{Hamday, M., Walker J., J., Harris, J. K., Gold J., N. \& Knight, R. \href{https://doi.org/10.1038/nmeth.1184}{Error-correcting barcoded primers allow hundreds of samples to be pyrosequenced in multiplex}. \emph{Nature Methods} \textbf{5}, 235--237 (2008).}
+
+\leavevmode\vadjust pre{\hypertarget{ref-MicrobialCommuHamday2009}{}}%
+\CSLLeftMargin{7. }%
+\CSLRightInline{Hamday, M. \& Knight, R. \href{https://doi.org/10.1101/gr.085464.108}{Microbial community profiling for human microbiome projects: Tools, techniques, and challenges}. \emph{Genome Research} \textbf{19}, 1141--1152 (2009).}
+
+\end{CSLReferences}
+
+\end{document}

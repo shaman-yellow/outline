@@ -31,10 +31,6 @@ set_index()
 
 # 摘要 {#abstract}
 
-- 质谱对复方内的五味药萆薢、土茯苓、泽泻、川牛膝和生米仁进行预测，得到复方药物的具体的有效药物成分XX1、XX2、XX3
-- 分子对接检测XX1、XX2、XX3与FOXO信号的对接能量
-- 通过GO功能富集分析和KEGG通路富集分析，对FOXO信号通路的下游靶点进行预测，进而得到所需的关于抑制炎症的下游靶点YY
-
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 ```
@@ -60,3 +56,12 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+```{r}
+data1 <- fxlsx("./order_material/file_1.xlsx")
+colnames(data1) <- c("name", "inst")
+
+res <- search.scopus(data1)
+
+
+```
