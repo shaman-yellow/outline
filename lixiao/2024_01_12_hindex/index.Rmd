@@ -61,7 +61,10 @@ auto_method()
 data1 <- fxlsx("./order_material/file_1.xlsx")
 colnames(data1) <- c("name", "inst")
 
-res <- search.scopus(data1)
-
+res <- 0L
+while (identical(res, 0L) || inherits(res, "try-error")) {
+  res <- try(search.scopus(data1), T)
+  Sys.sleep(10)
+}
 
 ```

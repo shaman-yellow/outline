@@ -63,7 +63,7 @@ auto_material()
 ## 方法
 
 ```{r eval = T, echo = F, results = "asis"}
-auto_method()
+auto_method("job_herb")
 ```
 
 # 分析结果 {#results}
@@ -76,9 +76,17 @@ auto_method()
 
 ### `r d("pns")` 成分
 
+来源于文献 (PMID: 29673237)[@PanaxNotoginseXieW2018] 以及附件文档中表格的化合物。
+
+```{r eval = T, echo = F, results = "asis"}
+#| PNS-compounds
+autor(as_tibble(compounds))
+```
+
 ```{r}
 url <- "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6017639/table/molecules-23-00940-t003/?report=objectonly"
 compounds <- get_table.html(RCurl::getURL(url))[[1]]
+compounds <- dplyr::add_row(compounds, Name = c("Mandenol", "DFV", "Diop", "beta-sitosterol", "Stigmasterol", "quercetin"))
 
 info <- PubChemR::get_cids(compounds$Name)
 info <- dplyr::distinct(info, Identifier, .keep_all = T)
@@ -86,8 +94,100 @@ info <- dplyr::distinct(info, Identifier, .keep_all = T)
 pr <- job_pubchemr(nl(info$Identifier, info$CID, F))
 pr <- step1(pr)
 
-sw <- asjob_swiss(pr)
-sw <- step1(sw, port = 6666)
+sp <- asjob_superpred(pr)
+sp <- step1(sp)
+sp@tables$step1$targets
+
+hb <- do_herb(pr, sp)
+hb@plots$step3$p.targets
+hb@plots$step3$p.pharm
+
+```
+
+### 成分靶点
+
+使用 Super-Pred 预测化合物靶点。
+
+```{r eval = T, echo = F, results = "asis"}
+#| SuperPred-results
+autor(wrap(hb@plots$step3$p.targets, 14, 10))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-visualization
+autor(hb@plots$step3$p.pharm)
+```
+
+### Disease
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-diseases-Overall-targets-number-of-datasets
+autor(gms$p.cols)
+```
+
+```{r}
+gms <- merge(gm.fh, gm.eo, gm.angi)
+```
+
+```{r}
+gm.fh <- job_gmix("fracture healing", "fracture")
+gm.fh <- step1(gm.fh)
+gm.fh@params$lst_dis
+gm.fh <- step2(gm.fh, 1, 1, 1)
+gm.fh@plots$step2$p.cols
+
+```
+
+```{r}
+gm.eo <- job_gmix("endochondral ossification", "endochondral|ossification")
+gm.eo <- step1(gm.eo)
+gm.eo@params$lst_dis
+gm.eo <- step2(gm.eo, NULL, NULL, 1)
+```
+
+```{r}
+gm.angi <- job_gmix("Angiogenesis", "Angiogenesis")
+gm.angi <- step1(gm.angi)
+gm.angi <- step2(gm.angi, NULL, NULL, 1)
+gm.angi@plots$step2$p.cols
+```
+
+### 成分-靶点-疾病
+
+```{r eval = T, echo = F, results = "asis"}
+#| Targets-intersect-with-targets-of-diseases
+autor(hb@params$p.venn2dis)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-with-disease
+autor(hb@params$p.pharm2dis)
+```
+
+```{r}
+hb <- map(hb, gms$lst)
+hb@params$p.pharm2dis
+
+grpf(hb@params$p.venn2dis$ins, "piezo1", T)
+```
+
+## 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ids-KEGG-enrichment
+autor(en@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ids-GO-enrichment
+autor(en@plots$step1$p.go$ids)
+```
+
+```{r}
+en <- job_enrich(hb@params$p.venn2dis$ins)
+en <- step1(en)
+en@plots$step1$p.kegg
+en@plots$step1$p.go
 
 ```
 

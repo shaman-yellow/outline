@@ -1,0 +1,25 @@
+
+```{r}
+sw <- asjob_swiss(pr)
+sw <- step1(sw, port = 6666)
+```
+
+### `r d("eo")`
+
+```{r}
+gm.eo <- job_gmix("endochondral ossification", "endochondral|ossification")
+gm.eo <- step1(gm.eo)
+gm.eo@params$lst_dis
+gm.eo <- step2(gm.eo, NULL, NULL, 1)
+```
+
+### `r d("a")`
+
+```{r}
+gm.angi <- job_gmix("Angiogenesis", "Angiogenesis")
+gm.angi <- step1(gm.angi)
+gm.angi <- step2(gm.angi, NULL, NULL, 1)
+gm.angi@plots$step2$p.cols
+```
+
+

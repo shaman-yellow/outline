@@ -54,7 +54,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 网络药理学分析+蛋白对接模拟} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-10}}
+\textbf{\textcolor{white}{2024-01-15}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -78,6 +78,8 @@ header-includes:
 
 
 
+## 第一次分析
+
 脓毒症肺损伤+血管重塑+基因+糖酵解
 
 - 糖酵解与肺血管病理性重塑（如果比较少，放宽到血管重塑remodeling）相关的基因集
@@ -90,6 +92,12 @@ header-includes:
     - KIF2C 与 MYC 蛋白互作模拟结果见 \@ref(docking)
 - 其他，看有能满足思路的花里胡哨的图都可以放上来
 
+
+## 第二次分析
+
+- 已放宽条件，使结果包含 KIF2C 与 MYC (见 \@ref(revise))
+- KIF2C 与 MYC 蛋白互作放大细节，可到 <http://cadd.zju.edu.cn/hawkdock/result/liwenhua-1704765524163> 网站查看交互式结果。
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -99,6 +107,8 @@ header-includes:
 All used GEO expression data and their design:
 
 - **GSE165226**: we divided  6-8 weeks mice into  two groups - control and septic model and 6 mice per group.
+
+- **GSE236713**: Patients  were recruited from four UK hospitals (Royal Glamorgan Hospital, Prince Charles Hospital, Bristol Royal Infirmary and University Hospitals Birmingham) between 2013 and 2015. Healthy volun...
 
 ## 方法
 
@@ -392,7 +402,7 @@ Figure \@ref(fig:HawkDock-docking-top-1) (下方图) 为图HawkDock docking top 
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top1.png}
+\includegraphics[width = 0.9\linewidth]{figs/MYC..7T1Y_with_KIF2C..2HEH_top1.png}
 \caption{HawkDock docking top 1}\label{fig:HawkDock-docking-top-1}
 \end{center}
 
@@ -402,8 +412,200 @@ Figure \@ref(fig:HawkDock-docking-top-4) (下方图) 为图HawkDock docking top 
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top4.png}
+\includegraphics[width = 0.9\linewidth]{figs/MYC..7T1Y_with_KIF2C..2HEH_top4.png}
 \caption{HawkDock docking top 4}\label{fig:HawkDock-docking-top-4}
+\end{center}
+
+
+
+# 附：修改分析 {#revise}
+
+## Sepsis
+
+使用 GSE236713。
+
+Figure \@ref(fig:SEPSIS-Sepsis-vs-Control-DEGs) (下方图) 为图SEPSIS Sepsis vs Control DEGs概览。
+
+**(对应文件为 `Figure+Table/SEPSIS-Sepsis-vs-Control-DEGs.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SEPSIS-Sepsis-vs-Control-DEGs.pdf}
+\caption{SEPSIS Sepsis vs Control DEGs}\label{fig:SEPSIS-Sepsis-vs-Control-DEGs}
+\end{center}
+
+Table \@ref(tab:SEPSIS-data-Sepsis-vs-Control-DEGs) (下方表格) 为表格SEPSIS data Sepsis vs Control DEGs概览。
+
+**(对应文件为 `Figure+Table/SEPSIS-data-Sepsis-vs-Control-DEGs.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有40559行8列，以下预览的表格可能省略部分数据；表格含有27040个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:SEPSIS-data-Sepsis-vs-Control-DEGs)SEPSIS data Sepsis vs Control DEGs
+
+|rownames  |logFC     |AveExpr   |t         |P.Value   |adj.P.Val |B         |hgnc_s... |
+|:---------|:---------|:---------|:---------|:---------|:---------|:---------|:---------|
+|A_23_P... |4.4138... |-0.408... |15.554... |5.4751... |2.7780... |75.512... |GRB10     |
+|A_23_P... |3.9264... |-0.641... |15.406... |1.7125... |4.3445... |74.392... |PPARG     |
+|A_33_P... |3.0600... |-0.447... |15.097... |1.8367... |3.1064... |72.060... |SYN2      |
+|A_32_P... |4.9582... |-1.145... |14.709... |3.6446... |4.6231... |69.122... |FAM20A    |
+|A_23_P... |3.2638... |-0.519... |14.601... |8.3719... |8.4956... |68.305... |ADM       |
+|A_33_P... |5.8744... |-0.928... |14.345... |5.9868... |5.0627... |66.370... |ARG1      |
+|A_23_P... |1.5869... |-0.260... |14.166... |2.3797... |1.7249... |65.013... |VDR       |
+|A_23_P... |-2.156... |0.1492... |-14.14... |2.8133... |1.7843... |64.848... |FAIM3     |
+|A_24_P... |-1.676... |0.1891... |-14.12... |3.1890... |1.7978... |64.725... |STMN3     |
+|A_33_P... |2.1379... |-0.230... |13.976... |1.0246... |5.1989... |63.577... |PDLIM7    |
+|A_24_P... |1.9611... |-0.231... |13.889... |1.9828... |9.1462... |62.928... |FGD4      |
+|A_23_P... |4.2098... |-0.526... |13.857... |2.5493... |1.0779... |62.681... |GALNT14   |
+|A_24_P... |-1.893... |0.2011... |-13.84... |2.8803... |1.1241... |62.561... |BCL9L     |
+|A_24_P... |3.5706... |-0.437... |13.794... |4.1290... |1.4964... |62.206... |GRB10     |
+|A_23_P... |1.9126... |-0.255... |13.728... |6.8477... |2.3163... |61.709... |SLC22A15  |
+|...       |...       |...       |...       |...       |...       |...       |...       |
+
+
+
+## Vascular Remodeling
+
+相比于 \@ref(vr) 重设了阈值 (GeneCards Score &gt; 1) ，获取更多结果。
+
+Figure \@ref(fig:VR-Overall-targets-number-of-datasets-2) (下方图) 为图VR Overall targets number of datasets 2概览。
+
+**(对应文件为 `Figure+Table/VR-Overall-targets-number-of-datasets-2.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/VR-Overall-targets-number-of-datasets-2.pdf}
+\caption{VR Overall targets number of datasets 2}\label{fig:VR-Overall-targets-number-of-datasets-2}
+\end{center}
+
+ 
+`VR targets of datasets 2' 数据已全部提供。
+
+**(对应文件为 `Figure+Table/VR-targets-of-datasets-2`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/VR-targets-of-datasets-2共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_t.pharm.csv
+\item 2\_t.dis.csv
+\item 3\_t.genecard.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+
+
+
+
+## Glycolysis
+
+相比于 \@ref(gly) 重设了阈值 (GeneCards Score &gt; 0) ，获取更多结果。
+
+Table \@ref(tab:Glycolysis-related-genes-from-genecards-2) (下方表格) 为表格Glycolysis related genes from genecards 2概览。
+
+**(对应文件为 `Figure+Table/Glycolysis-related-genes-from-genecards-2.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3986行7列，以下预览的表格可能省略部分数据；表格含有3986个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Glycolysis-related-genes-from-genecards-2)Glycolysis related genes from genecards 2
+
+|Symbol |Description   |Category      |UniProt_ID |GIFtS |GC_id       |Score |
+|:------|:-------------|:-------------|:----------|:-----|:-----------|:-----|
+|TIGAR  |TP53 Induc... |Protein Co... |Q9NQ88     |42    |GC12P033681 |22.41 |
+|PKM    |Pyruvate K... |Protein Co... |P14618     |53    |GC15M072199 |19.66 |
+|HK2    |Hexokinase 2  |Protein Co... |P52789     |50    |GC02P074833 |19.44 |
+|GAPDH  |Glyceralde... |Protein Co... |P04406     |54    |GC12P033726 |17.19 |
+|LDHA   |Lactate De... |Protein Co... |P00338     |54    |GC11P018394 |15.83 |
+|RRAD   |RRAD, Ras ... |Protein Co... |P55042     |42    |GC16M067144 |15.10 |
+|HIF1A  |Hypoxia In... |Protein Co... |Q16665     |52    |GC14P061695 |14.96 |
+|HK1    |Hexokinase 1  |Protein Co... |P19367     |53    |GC10P069269 |14.28 |
+|ENO3   |Enolase 3     |Protein Co... |P13929     |51    |GC17P004948 |13.56 |
+|TPI1   |Triosephos... |Protein Co... |P60174     |51    |GC12P006867 |13.21 |
+|ENO1   |Enolase 1     |Protein Co... |P06733     |51    |GC01M008861 |13.07 |
+|GLTC1  |Glycolysis... |RNA Gene      |           |2     |GC11U909607 |12.97 |
+|PFKP   |Phosphofru... |Protein Co... |Q01813     |49    |GC10P003066 |12.85 |
+|PGK1   |Phosphogly... |Protein Co... |P00558     |53    |GC0XP078104 |12.76 |
+|GCK    |Glucokinase   |Protein Co... |P35557     |53    |GC07M044978 |12.38 |
+|...    |...           |...           |...        |...   |...         |...   |
+
+
+
+## 基因集 (Filtered-DEGs2)
+
+Figure \@ref(fig:Filtered-DEGs-intersection-2) (下方图) 为图Filtered DEGs intersection 2概览。
+
+**(对应文件为 `Figure+Table/Filtered-DEGs-intersection-2.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Filtered-DEGs-intersection-2.pdf}
+\caption{Filtered DEGs intersection 2}\label{fig:Filtered-DEGs-intersection-2}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    PPARG, ADM, ARG1, PDLIM7, SLPI, UBE2C, MMP9, SLC8A1,
+S100A8, SLC16A3, IL10, SLC2A14, ADAM10, CBS, TLR2, GSN,
+LDHB, AMPD3, GLA, SLC1A3, TRPM2, TET2, ATP6V0A1, SRSF7,
+PYGL, INHBA, WASF1, FOXP1, HP, HMGB3, LMNB1, RUNX3, PRPS1,
+DYSF, RETN, SMARCD3, SIRT7, NDRG2, DNAJA3, ASPH, RPL13A,
+TLR4, ATM, EPAS1...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+**(上述信息框内容已保存至 `Figure+Table/Filtered-DEGs-intersection-2-content`)**
+
+
+
+## 富集分析
+
+### Filtered-DEGs2 (FDEGs2)
+
+Figure \@ref(fig:FDEGS2-ids-KEGG-enrichment) (下方图) 为图FDEGS2 ids KEGG enrichment概览。
+
+**(对应文件为 `Figure+Table/FDEGS2-ids-KEGG-enrichment.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FDEGS2-ids-KEGG-enrichment.pdf}
+\caption{FDEGS2 ids KEGG enrichment}\label{fig:FDEGS2-ids-KEGG-enrichment}
+\end{center}
+
+Figure \@ref(fig:FDEGS2-ids-GO-enrichment) (下方图) 为图FDEGS2 ids GO enrichment概览。
+
+**(对应文件为 `Figure+Table/FDEGS2-ids-GO-enrichment.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FDEGS2-ids-GO-enrichment.pdf}
+\caption{FDEGS2 ids GO enrichment}\label{fig:FDEGS2-ids-GO-enrichment}
+\end{center}
+
+
+
+## PPI
+
+Figure \@ref(fig:PPI-of-Filtered-DEGs2) (下方图) 为图PPI of Filtered DEGs2概览。
+
+**(对应文件为 `Figure+Table/PPI-of-Filtered-DEGs2.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPI-of-Filtered-DEGs2.pdf}
+\caption{PPI of Filtered DEGs2}\label{fig:PPI-of-Filtered-DEGs2}
 \end{center}
 
 

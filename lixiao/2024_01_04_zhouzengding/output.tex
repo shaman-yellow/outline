@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 网络药理学分析+蛋白对接模拟} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-10}}
+\textbf{\textcolor{white}{2024-01-15}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -105,6 +105,9 @@
 
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
+
+\hypertarget{ux7b2cux4e00ux6b21ux5206ux6790}{%
+\subsection{第一次分析}\label{ux7b2cux4e00ux6b21ux5206ux6790}}
 
 脓毒症肺损伤+血管重塑+基因+糖酵解
 
@@ -146,6 +149,17 @@
   其他，看有能满足思路的花里胡哨的图都可以放上来
 \end{itemize}
 
+\hypertarget{ux7b2cux4e8cux6b21ux5206ux6790}{%
+\subsection{第二次分析}\label{ux7b2cux4e8cux6b21ux5206ux6790}}
+
+\begin{itemize}
+\tightlist
+\item
+  已放宽条件，使结果包含 KIF2C 与 MYC (见 \ref{revise})
+\item
+  KIF2C 与 MYC 蛋白互作放大细节，可到 \url{http://cadd.zju.edu.cn/hawkdock/result/liwenhua-1704765524163} 网站查看交互式结果。
+\end{itemize}
+
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
 
@@ -158,9 +172,10 @@
 All used GEO expression data and their design:
 
 \begin{itemize}
-\tightlist
 \item
   \textbf{GSE165226}: we divided 6-8 weeks mice into two groups - control and septic model and 6 mice per group.
+\item
+  \textbf{GSE236713}: Patients were recruited from four UK hospitals (Royal Glamorgan Hospital, Prince Charles Hospital, Bristol Royal Infirmary and University Hospitals Birmingham) between 2013 and 2015. Healthy volun\ldots{}
 \end{itemize}
 
 \hypertarget{ux65b9ux6cd5}{%
@@ -757,7 +772,7 @@ Figure \ref{fig:HawkDock-docking-top-1} (下方图) 为图HawkDock docking top 1
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top1.png}
+\includegraphics[width = 0.9\linewidth]{figs/MYC..7T1Y_with_KIF2C..2HEH_top1.png}
 \caption{HawkDock docking top 1}\label{fig:HawkDock-docking-top-1}
 \end{center}
 
@@ -767,8 +782,213 @@ Figure \ref{fig:HawkDock-docking-top-4} (下方图) 为图HawkDock docking top 4
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top4.png}
+\includegraphics[width = 0.9\linewidth]{figs/MYC..7T1Y_with_KIF2C..2HEH_top4.png}
 \caption{HawkDock docking top 4}\label{fig:HawkDock-docking-top-4}
+\end{center}
+
+\hypertarget{revise}{%
+\section{附：修改分析}\label{revise}}
+
+\hypertarget{sepsis}{%
+\subsection{Sepsis}\label{sepsis}}
+
+使用 GSE236713。
+
+Figure \ref{fig:SEPSIS-Sepsis-vs-Control-DEGs} (下方图) 为图SEPSIS Sepsis vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SEPSIS-Sepsis-vs-Control-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SEPSIS-Sepsis-vs-Control-DEGs.pdf}
+\caption{SEPSIS Sepsis vs Control DEGs}\label{fig:SEPSIS-Sepsis-vs-Control-DEGs}
+\end{center}
+
+Table \ref{tab:SEPSIS-data-Sepsis-vs-Control-DEGs} (下方表格) 为表格SEPSIS data Sepsis vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SEPSIS-data-Sepsis-vs-Control-DEGs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有40559行8列，以下预览的表格可能省略部分数据；表格含有27040个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:SEPSIS-data-Sepsis-vs-Control-DEGs}SEPSIS data Sepsis vs Control DEGs}\tabularnewline
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P.Val & B & hgnc\_s\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P.Val & B & hgnc\_s\ldots{}\tabularnewline
+\midrule
+\endhead
+A\_23\_P\ldots{} & 4.4138\ldots{} & -0.408\ldots{} & 15.554\ldots{} & 5.4751\ldots{} & 2.7780\ldots{} & 75.512\ldots{} & GRB10\tabularnewline
+A\_23\_P\ldots{} & 3.9264\ldots{} & -0.641\ldots{} & 15.406\ldots{} & 1.7125\ldots{} & 4.3445\ldots{} & 74.392\ldots{} & PPARG\tabularnewline
+A\_33\_P\ldots{} & 3.0600\ldots{} & -0.447\ldots{} & 15.097\ldots{} & 1.8367\ldots{} & 3.1064\ldots{} & 72.060\ldots{} & SYN2\tabularnewline
+A\_32\_P\ldots{} & 4.9582\ldots{} & -1.145\ldots{} & 14.709\ldots{} & 3.6446\ldots{} & 4.6231\ldots{} & 69.122\ldots{} & FAM20A\tabularnewline
+A\_23\_P\ldots{} & 3.2638\ldots{} & -0.519\ldots{} & 14.601\ldots{} & 8.3719\ldots{} & 8.4956\ldots{} & 68.305\ldots{} & ADM\tabularnewline
+A\_33\_P\ldots{} & 5.8744\ldots{} & -0.928\ldots{} & 14.345\ldots{} & 5.9868\ldots{} & 5.0627\ldots{} & 66.370\ldots{} & ARG1\tabularnewline
+A\_23\_P\ldots{} & 1.5869\ldots{} & -0.260\ldots{} & 14.166\ldots{} & 2.3797\ldots{} & 1.7249\ldots{} & 65.013\ldots{} & VDR\tabularnewline
+A\_23\_P\ldots{} & -2.156\ldots{} & 0.1492\ldots{} & -14.14\ldots{} & 2.8133\ldots{} & 1.7843\ldots{} & 64.848\ldots{} & FAIM3\tabularnewline
+A\_24\_P\ldots{} & -1.676\ldots{} & 0.1891\ldots{} & -14.12\ldots{} & 3.1890\ldots{} & 1.7978\ldots{} & 64.725\ldots{} & STMN3\tabularnewline
+A\_33\_P\ldots{} & 2.1379\ldots{} & -0.230\ldots{} & 13.976\ldots{} & 1.0246\ldots{} & 5.1989\ldots{} & 63.577\ldots{} & PDLIM7\tabularnewline
+A\_24\_P\ldots{} & 1.9611\ldots{} & -0.231\ldots{} & 13.889\ldots{} & 1.9828\ldots{} & 9.1462\ldots{} & 62.928\ldots{} & FGD4\tabularnewline
+A\_23\_P\ldots{} & 4.2098\ldots{} & -0.526\ldots{} & 13.857\ldots{} & 2.5493\ldots{} & 1.0779\ldots{} & 62.681\ldots{} & GALNT14\tabularnewline
+A\_24\_P\ldots{} & -1.893\ldots{} & 0.2011\ldots{} & -13.84\ldots{} & 2.8803\ldots{} & 1.1241\ldots{} & 62.561\ldots{} & BCL9L\tabularnewline
+A\_24\_P\ldots{} & 3.5706\ldots{} & -0.437\ldots{} & 13.794\ldots{} & 4.1290\ldots{} & 1.4964\ldots{} & 62.206\ldots{} & GRB10\tabularnewline
+A\_23\_P\ldots{} & 1.9126\ldots{} & -0.255\ldots{} & 13.728\ldots{} & 6.8477\ldots{} & 2.3163\ldots{} & 61.709\ldots{} & SLC22A15\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{vascular-remodeling}{%
+\subsection{Vascular Remodeling}\label{vascular-remodeling}}
+
+相比于 \ref{vr} 重设了阈值 (GeneCards Score \textgreater{} 1) ，获取更多结果。
+
+Figure \ref{fig:VR-Overall-targets-number-of-datasets-2} (下方图) 为图VR Overall targets number of datasets 2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/VR-Overall-targets-number-of-datasets-2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/VR-Overall-targets-number-of-datasets-2.pdf}
+\caption{VR Overall targets number of datasets 2}\label{fig:VR-Overall-targets-number-of-datasets-2}
+\end{center}
+
+`VR targets of datasets 2' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/VR-targets-of-datasets-2})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/VR-targets-of-datasets-2共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_t.pharm.csv
+\item 2\_t.dis.csv
+\item 3\_t.genecard.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{glycolysis}{%
+\subsection{Glycolysis}\label{glycolysis}}
+
+相比于 \ref{gly} 重设了阈值 (GeneCards Score \textgreater{} 0) ，获取更多结果。
+
+Table \ref{tab:Glycolysis-related-genes-from-genecards-2} (下方表格) 为表格Glycolysis related genes from genecards 2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Glycolysis-related-genes-from-genecards-2.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3986行7列，以下预览的表格可能省略部分数据；表格含有3986个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Glycolysis-related-genes-from-genecards-2}Glycolysis related genes from genecards 2}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+TIGAR & TP53 Induc\ldots{} & Protein Co\ldots{} & Q9NQ88 & 42 & GC12P033681 & 22.41\tabularnewline
+PKM & Pyruvate K\ldots{} & Protein Co\ldots{} & P14618 & 53 & GC15M072199 & 19.66\tabularnewline
+HK2 & Hexokinase 2 & Protein Co\ldots{} & P52789 & 50 & GC02P074833 & 19.44\tabularnewline
+GAPDH & Glyceralde\ldots{} & Protein Co\ldots{} & P04406 & 54 & GC12P033726 & 17.19\tabularnewline
+LDHA & Lactate De\ldots{} & Protein Co\ldots{} & P00338 & 54 & GC11P018394 & 15.83\tabularnewline
+RRAD & RRAD, Ras \ldots{} & Protein Co\ldots{} & P55042 & 42 & GC16M067144 & 15.10\tabularnewline
+HIF1A & Hypoxia In\ldots{} & Protein Co\ldots{} & Q16665 & 52 & GC14P061695 & 14.96\tabularnewline
+HK1 & Hexokinase 1 & Protein Co\ldots{} & P19367 & 53 & GC10P069269 & 14.28\tabularnewline
+ENO3 & Enolase 3 & Protein Co\ldots{} & P13929 & 51 & GC17P004948 & 13.56\tabularnewline
+TPI1 & Triosephos\ldots{} & Protein Co\ldots{} & P60174 & 51 & GC12P006867 & 13.21\tabularnewline
+ENO1 & Enolase 1 & Protein Co\ldots{} & P06733 & 51 & GC01M008861 & 13.07\tabularnewline
+GLTC1 & Glycolysis\ldots{} & RNA Gene & & 2 & GC11U909607 & 12.97\tabularnewline
+PFKP & Phosphofru\ldots{} & Protein Co\ldots{} & Q01813 & 49 & GC10P003066 & 12.85\tabularnewline
+PGK1 & Phosphogly\ldots{} & Protein Co\ldots{} & P00558 & 53 & GC0XP078104 & 12.76\tabularnewline
+GCK & Glucokinase & Protein Co\ldots{} & P35557 & 53 & GC07M044978 & 12.38\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux57faux56e0ux96c6-filtered-degs2}{%
+\subsection{基因集 (Filtered-DEGs2)}\label{ux57faux56e0ux96c6-filtered-degs2}}
+
+Figure \ref{fig:Filtered-DEGs-intersection-2} (下方图) 为图Filtered DEGs intersection 2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Filtered-DEGs-intersection-2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Filtered-DEGs-intersection-2.pdf}
+\caption{Filtered DEGs intersection 2}\label{fig:Filtered-DEGs-intersection-2}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    PPARG, ADM, ARG1, PDLIM7, SLPI, UBE2C, MMP9, SLC8A1,
+S100A8, SLC16A3, IL10, SLC2A14, ADAM10, CBS, TLR2, GSN,
+LDHB, AMPD3, GLA, SLC1A3, TRPM2, TET2, ATP6V0A1, SRSF7,
+PYGL, INHBA, WASF1, FOXP1, HP, HMGB3, LMNB1, RUNX3, PRPS1,
+DYSF, RETN, SMARCD3, SIRT7, NDRG2, DNAJA3, ASPH, RPL13A,
+TLR4, ATM, EPAS1...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Filtered-DEGs-intersection-2-content})}
+
+\hypertarget{ux5bccux96c6ux5206ux6790-1}{%
+\subsection{富集分析}\label{ux5bccux96c6ux5206ux6790-1}}
+
+\hypertarget{filtered-degs2-fdegs2}{%
+\subsubsection{Filtered-DEGs2 (FDEGs2)}\label{filtered-degs2-fdegs2}}
+
+Figure \ref{fig:FDEGS2-ids-KEGG-enrichment} (下方图) 为图FDEGS2 ids KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FDEGS2-ids-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FDEGS2-ids-KEGG-enrichment.pdf}
+\caption{FDEGS2 ids KEGG enrichment}\label{fig:FDEGS2-ids-KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:FDEGS2-ids-GO-enrichment} (下方图) 为图FDEGS2 ids GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FDEGS2-ids-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FDEGS2-ids-GO-enrichment.pdf}
+\caption{FDEGS2 ids GO enrichment}\label{fig:FDEGS2-ids-GO-enrichment}
+\end{center}
+
+\hypertarget{ppi-1}{%
+\subsection{PPI}\label{ppi-1}}
+
+Figure \ref{fig:PPI-of-Filtered-DEGs2} (下方图) 为图PPI of Filtered DEGs2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-of-Filtered-DEGs2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPI-of-Filtered-DEGs2.pdf}
+\caption{PPI of Filtered DEGs2}\label{fig:PPI-of-Filtered-DEGs2}
 \end{center}
 
 \hypertarget{bibliography}{%

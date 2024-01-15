@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  10 JAN 2024 15:49
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  15 JAN 2024 12:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1261,35 +1261,35 @@ Overfull \hbox (2.28838pt too wide) has occurred while \output is active
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 9.70718pt on input line 1.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 4.
+(Font)              scaled to size 10.0pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 4.
+(Font)              scaled to size 7.0pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 4.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 4
+(Font)              scaled to size 5.0pt on input line 2.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
 .
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 4.
+(Font)              scaled to size 10.00092pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 4.
+(Font)              scaled to size 7.00064pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 4.
+(Font)              scaled to size 5.00046pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 4.
+(Font)              scaled to size 9.99893pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 4.
+(Font)              scaled to size 6.99925pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 4.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
+(Font)              scaled to size 4.99947pt on input line 2.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
@@ -1298,13 +1298,13 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@toc=\write4
 \openout4 = `output.toc'.
 
-(./output.lof)
+(./output.lof [1
+
+])
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
-(./output.lot [1
-
-])
+(./output.lot)
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
@@ -1312,7 +1312,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 107.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 156.
+(Font)              scaled to size 11.64862pt on input line 110.
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
@@ -1338,34 +1338,35 @@ guage=dflt;"
 
 [1]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 214.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 229.
 File: Figure+Table/VR-Overall-targets-number-of-datasets.pdf Graphic file (type
  pdf)
 <use Figure+Table/VR-Overall-targets-number-of-datasets.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 219.
+(caption)                particular \caption on input line 234.
 See the caption package documentation for explanation.
 
+[2]
 File: Figure+Table/SLI-Model-vs-Control-DEGs.pdf Graphic file (type pdf)
 <use Figure+Table/SLI-Model-vs-Control-DEGs.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 248.
+(caption)                particular \caption on input line 263.
 See the caption package documentation for explanation.
 
-[2]
-Overfull \hbox (5.54875pt too wide) in paragraph at lines 271--272
+
+Overfull \hbox (5.54875pt too wide) in paragraph at lines 286--287
 []\TU/lmr/m/n/10 rownames|  
  []
 
 
-Overfull \hbox (5.54875pt too wide) in paragraph at lines 289--290
+Overfull \hbox (5.54875pt too wide) in paragraph at lines 304--305
 []\TU/lmr/m/n/10 rownames|  
  []
 
 
-Overfull \hbox (3.59875pt too wide) in paragraph at lines 351--352
+Overfull \hbox (3.59875pt too wide) in paragraph at lines 366--367
 []\TU/lmr/m/n/10 Gm13749|  
  []
 
@@ -1374,7 +1375,7 @@ File: Figure+Table/Filtered-DEGs-intersection.pdf Graphic file (type pdf)
 <use Figure+Table/Filtered-DEGs-intersection.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 650.
+(caption)                particular \caption on input line 665.
 See the caption package documentation for explanation.
 
 [6]
@@ -1383,14 +1384,14 @@ df)
 <use Figure+Table/KEGG-enrichment-with-enriched-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 683.
+(caption)                particular \caption on input line 698.
 See the caption package documentation for explanation.
 
 File: Figure+Table/FDEGS-ids-KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/FDEGS-ids-KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 696.
+(caption)                particular \caption on input line 711.
 See the caption package documentation for explanation.
 
 [7]
@@ -1398,49 +1399,98 @@ File: Figure+Table/FDEGS-ids-GO-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/FDEGS-ids-GO-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 706.
+(caption)                particular \caption on input line 721.
 See the caption package documentation for explanation.
 
+[8]
 File: Figure+Table/PPI-of-Filtered-DEGs.pdf Graphic file (type pdf)
 <use Figure+Table/PPI-of-Filtered-DEGs.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 719.
+(caption)                particular \caption on input line 734.
 See the caption package documentation for explanation.
 
-[8]
 File: Figure+Table/HawkDock-ranking-of-all-top-10-docking.pdf Graphic file (typ
 e pdf)
 <use Figure+Table/HawkDock-ranking-of-all-top-10-docking.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 751.
+(caption)                particular \caption on input line 766.
 See the caption package documentation for explanation.
 
 [9]
-File: Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top1.png Graphic file (type bmp)
-<Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top1.png>
+File: figs/MYC..7T1Y_with_KIF2C..2HEH_top1.png Graphic file (type bmp)
+<figs/MYC..7T1Y_with_KIF2C..2HEH_top1.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 761.
+(caption)                particular \caption on input line 776.
 See the caption package documentation for explanation.
 
 [10]
-File: Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top4.png Graphic file (type bmp)
-<Figure+Table/MYC..7T1Y_with_KIF2C..2HEH_top4.png>
+File: figs/MYC..7T1Y_with_KIF2C..2HEH_top4.png Graphic file (type bmp)
+<figs/MYC..7T1Y_with_KIF2C..2HEH_top4.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 771.
+(caption)                particular \caption on input line 786.
 See the caption package documentation for explanation.
 
-[11] [12] [13] (./output.aux) ) 
+[11]
+File: Figure+Table/SEPSIS-Sepsis-vs-Control-DEGs.pdf Graphic file (type pdf)
+<use Figure+Table/SEPSIS-Sepsis-vs-Control-DEGs.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 804.
+See the caption package documentation for explanation.
+
+[12] [13]
+File: Figure+Table/VR-Overall-targets-number-of-datasets-2.pdf Graphic file (ty
+pe pdf)
+<use Figure+Table/VR-Overall-targets-number-of-datasets-2.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 865.
+See the caption package documentation for explanation.
+
+[14]
+File: Figure+Table/Filtered-DEGs-intersection-2.pdf Graphic file (type pdf)
+<use Figure+Table/Filtered-DEGs-intersection-2.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 933.
+See the caption package documentation for explanation.
+
+[15]
+File: Figure+Table/FDEGS2-ids-KEGG-enrichment.pdf Graphic file (type pdf)
+<use Figure+Table/FDEGS2-ids-KEGG-enrichment.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 968.
+See the caption package documentation for explanation.
+
+[16]
+File: Figure+Table/FDEGS2-ids-GO-enrichment.pdf Graphic file (type pdf)
+<use Figure+Table/FDEGS2-ids-GO-enrichment.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 978.
+See the caption package documentation for explanation.
+
+[17]
+File: Figure+Table/PPI-of-Filtered-DEGs2.pdf Graphic file (type pdf)
+<use Figure+Table/PPI-of-Filtered-DEGs2.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 991.
+See the caption package documentation for explanation.
+
+[18] [19] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 32189 strings out of 476191
- 657815 string characters out of 5812072
- 1119300 words of memory out of 5000000
- 52383 multiletter control sequences out of 15000+600000
+ 32273 strings out of 476191
+ 660731 string characters out of 5812072
+ 1125334 words of memory out of 5000000
+ 52460 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1261b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (16 pages).
+Output written on output.pdf (22 pages).

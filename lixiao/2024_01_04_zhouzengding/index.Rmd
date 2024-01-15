@@ -50,6 +50,8 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
 # G: Glycolysis 糖酵解
 ```
 
+## 第一次分析
+
 脓毒症肺损伤+血管重塑+基因+糖酵解
 
 - 糖酵解与肺血管病理性重塑（如果比较少，放宽到血管重塑remodeling）相关的基因集
@@ -61,6 +63,12 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
 - 目标靶基因是MYC，用分子对接模拟KIF2C与MYC蛋白互作
     - KIF2C 与 MYC 蛋白互作模拟结果见 \@ref(docking)
 - 其他，看有能满足思路的花里胡哨的图都可以放上来
+
+
+## 第二次分析
+
+- 已放宽条件，使结果包含 KIF2C 与 MYC (见 \@ref(revise))
+- KIF2C 与 MYC 蛋白互作放大细节，可到 <http://cadd.zju.edu.cn/hawkdock/result/liwenhua-1704765524163> 网站查看交互式结果。
 
 # 前言 {#introduction}
 
@@ -106,7 +114,6 @@ gm.vr <- step1(gm.vr)
 gm.vr <- step2(gm.vr, 5, 130, 5)
 gm.vr@tables$step2
 gm.vr@plots$step2$p.cols
-
 ```
 
 ### `r d("sli")` GEO {#sli}
@@ -278,6 +285,135 @@ autor(lz$mapped$h$p.tops$top4)
 ```{r}
 je <- job_esearch("Protein-Protein docking")
 vis(je)
+```
+
+# 附：修改分析 {#revise}
+
+## Sepsis
+
+使用 GSE236713。
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-Sepsis-vs-Control-DEGs
+autor(lm.sepsis@plots$step2[[1]][[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-data-Sepsis-vs-Control-DEGs
+autor(lm.sepsis@tables$step2[[1]][[1]], key = "hgnc_symbol")
+```
+
+```{r}
+ge.sepsis <- job_geo("GSE236713")
+ge.sepsis <- step1(ge.sepsis)
+ge.sepsis@params$test
+ge.sepsis@params$guess
+ge.sepsis@params$prods
+
+metadata <- dplyr::filter(ge.sepsis@params$guess,
+  disease.ch1 %in% c("Sepsis", "Control"),
+  disease.2.ch1 %in% c("Pulmonary", "Healthy")
+)
+metadata <- dplyr::mutate(metadata, sample = rownames, group = disease.ch1)
+
+lm.sepsis <- asjob_limma(ge.sepsis, metadata, use.col = "GENE_SYMBOL", normed = T)
+lm.sepsis <- step1(lm.sepsis)
+lm.sepsis <- step2(lm.sepsis, Sepsis - Control)
+lm.sepsis@plots$step2
+lm.sepsis@tables$step2[[1]][[1]]
+```
+
+## Vascular Remodeling
+
+相比于 \@ref(vr) 重设了阈值 (GeneCards Score &gt; 1) ，获取更多结果。
+
+```{r eval = T, echo = F, results = "asis"}
+#| VR-Overall-targets-number-of-datasets-2
+autor(gm.vr2@plots$step2$p.cols)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| VR-targets-of-datasets-2
+autor(gm.vr2@tables$step2)
+```
+
+```{r}
+gm.vr2 <- job_gmix("Vascular Remodeling", "vascular")
+gm.vr2 <- step1(gm.vr2)
+gm.vr2 <- step2(gm.vr2, 5, 130, 1)
+gm.vr2@tables$step2
+gm.vr2@plots$step2$p.cols
+```
+
+```{r}
+grpf(unlist(gm.vr2$lst.genes, use.names = F), "kif2c|MYC", T)
+```
+
+## Glycolysis
+
+相比于 \@ref(gly) 重设了阈值 (GeneCards Score &gt; 0) ，获取更多结果。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Glycolysis-related-genes-from-genecards-2
+autor(db_gc.gly2)
+```
+
+```{r}
+db_gc.gly2 <- get_from_genecards("Glycolysis", score = 0)
+db_gc.gly2
+```
+
+## 基因集 (Filtered-DEGs2)
+
+```{r eval = T, echo = F, results = "asis"}
+#| Filtered-DEGs-intersection-2
+autor(wrap(lst.sli2vr2, 10, 4))
+```
+
+```{r}
+lst.sli2vr2 <- new_upset(
+  SLI = lm.sepsis@tables$step2[[1]][[1]]$hgnc_symbol,
+  VR = unlist(gm.vr2$lst.genes, use.names = F),
+  Glycolysis = db_gc.gly2$Symbol
+)
+lst.sli2vr2$ins
+
+wrap(lst.sli2vr2, 10, 4)
+```
+
+## 富集分析
+
+### Filtered-DEGs2 (FDEGs2)
+
+```{r eval = T, echo = F, results = "asis"}
+#| FDEGS2-ids-KEGG-enrichment
+autor(en.fdegs2@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| FDEGS2-ids-GO-enrichment
+autor(en.fdegs2@plots$step1$p.go$ids)
+```
+
+```{r}
+en.fdegs2 <- job_enrich(lst.sli2vr2$ins)
+en.fdegs2 <- step1(en.fdegs2)
+en.fdegs2@plots$step1$p.kegg$ids
+en.fdegs2@plots$step1$p.go$ids
+```
+
+## PPI
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPI-of-Filtered-DEGs2
+autor(wrap(st2@plots$step1$p.ppi, 10))
+```
+
+```{r}
+st2 <- asjob_stringdb(lst.sli2vr2$ins)
+st2 <- step1(st2, 30)
+st2@plots$step1$p.ppi
+st2@plots$step1$p.mcc
 ```
 
 
