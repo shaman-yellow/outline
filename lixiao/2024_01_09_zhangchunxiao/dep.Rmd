@@ -22,4 +22,18 @@ gm.angi <- step2(gm.angi, NULL, NULL, 1)
 gm.angi@plots$step2$p.cols
 ```
 
+```{r}
 
+x <- ftibble("~/Downloads/9780_tfbs.tsv")
+y <- fxlsx("~/Downloads/humanTFMotifEntrezMappings.xlsx")
+y <- dplyr::filter(y, Motif.Name %in% x$Motif)
+y$Gene %in% hb@params$p.venn2dis$ins
+
+x <- RCurl::getURL("https://tfbsdb.systemsbiology.net/searchgene?searchterm=PIEZO1")
+
+m <- lapply(get_table.html(x),
+  function(x) {
+    if (is(x, "df"))
+      as_tibble(x)
+  })
+```

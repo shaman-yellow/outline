@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  9 JAN 2024 17:50
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  16 JAN 2024 14:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1308,11 +1308,11 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 [1
 
-]
+] [2]
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 107.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 118.
+(Font)              scaled to size 11.64862pt on input line 156.
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
@@ -1336,30 +1336,120 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 guage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
+[1]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 147.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 200.
+File: Figure+Table/SuperPred-results.pdf Graphic file (type pdf)
+<use Figure+Table/SuperPred-results.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 247.
+See the caption package documentation for explanation.
+
+[2]
+File: Figure+Table/Network-pharmacology-visualization.pdf Graphic file (type pd
+f)
+<use Figure+Table/Network-pharmacology-visualization.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 257.
+See the caption package documentation for explanation.
+
+[3]
+File: Figure+Table/All-diseases-Overall-targets-number-of-datasets.pdf Graphic 
+file (type pdf)
+<use Figure+Table/All-diseases-Overall-targets-number-of-datasets.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 270.
+See the caption package documentation for explanation.
+
+[4]
+File: Figure+Table/Targets-intersect-with-targets-of-diseases.pdf Graphic file 
+(type pdf)
+<use Figure+Table/Targets-intersect-with-targets-of-diseases.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 283.
+See the caption package documentation for explanation.
+
+File: Figure+Table/Network-pharmacology-with-disease.pdf Graphic file (type pdf
+)
+<use Figure+Table/Network-pharmacology-with-disease.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 312.
+See the caption package documentation for explanation.
+
+[5]
+Overfull \hbox (67.88513pt too wide) in alignment at lines 332--337
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (67.88513pt too wide) in alignment at lines 337--341
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (67.88513pt too wide) in alignment at lines 341--359
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[6]
+File: Figure+Table/Intersection-of-TFs-with-queried-Candidates.pdf Graphic file
+ (type pdf)
+<use Figure+Table/Intersection-of-TFs-with-queried-Candidates.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 368.
+See the caption package documentation for explanation.
+
+File: Figure+Table/The-genes-and-related-TFs.pdf Graphic file (type pdf)
+<use Figure+Table/The-genes-and-related-TFs.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 392.
+See the caption package documentation for explanation.
+
+[7]
+File: Figure+Table/Ids-KEGG-enrichment.pdf Graphic file (type pdf)
+<use Figure+Table/Ids-KEGG-enrichment.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 405.
+See the caption package documentation for explanation.
+
+[8]
+File: Figure+Table/Ids-GO-enrichment.pdf Graphic file (type pdf)
+<use Figure+Table/Ids-GO-enrichment.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 415.
+See the caption package documentation for explanation.
+
 File: Figure+Table/Overall-combining-Affinity.pdf Graphic file (type pdf)
 <use Figure+Table/Overall-combining-Affinity.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 152.
+(caption)                particular \caption on input line 428.
 See the caption package documentation for explanation.
 
 File: ./figs/5282184_into_piezo1.png Graphic file (type bmp)
 <./figs/5282184_into_piezo1.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 162.
+(caption)                particular \caption on input line 438.
 See the caption package documentation for explanation.
 
-[1] [2] (./output.aux) ) 
+[9] [10] [11] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 31941 strings out of 476191
- 646180 string characters out of 5812072
- 1086787 words of memory out of 5000000
- 52142 multiletter control sequences out of 15000+600000
+ 32149 strings out of 476191
+ 655860 string characters out of 5812072
+ 1100917 words of memory out of 5000000
+ 52341 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,12n,121p,1261b,563s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,12n,121p,1261b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (4 pages).
+Output written on output.pdf (14 pages).

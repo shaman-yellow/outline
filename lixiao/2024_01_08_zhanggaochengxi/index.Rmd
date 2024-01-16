@@ -64,15 +64,15 @@ auto_method()
 
 ```{r}
 mixs <- c("北沙参", "麦冬", "百合", "石斛", "白花蛇舌草", "南方红豆杉", "陈皮", "党参")
-hb.mix <- job_herb(mixs, herbs)
+hb.mix <- job_herb(mixs)
+hb.mix <- slice(hb.mix, 1:7)
 
-hb.mix@params$herbs_info %<>% dplyr::slice(1:7)
-hb.mix@params$herbs_info
-
-url <- "https://plantaedb.com/taxa/phylum/gymnosperms/order/cupressales/family/taxaceae/genus/taxus/species/taxus-mairei"
-pl <- job_plantdb(url)
+pl <- job_plantdb("taxus mairei")
 pl <- step1(pl)
-pl@tables$step1
+pl <- slice(pl, 1)
+pl <- step2(pl)
+pl@tables$step2$t.data
+pl <- step3(pl)
+pl <- step4(pl)
 
-get_bindingdb_data()
 ```

@@ -155,6 +155,8 @@ Eval:
 
 ```{r}
 backup_jobs(alls, time = "2023-12-01")
+move_rds_all(alls, "2023-12-01")
+move_raw_all(alls, "2023-12-01")
 ```
 
 ## 2014-01

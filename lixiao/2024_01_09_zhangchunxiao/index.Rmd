@@ -32,8 +32,13 @@ set_index()
 # 摘要 {#abstract}
 
 - 三七总皂苷 panax notoginseng saponins 中有效成分
+    - 使用来源于文献 (PMID: 29673237)[@PanaxNotoginseXieW2018] 以及附件文档中表格的化合物 (Tab. \@ref(tab:PNS-compounds)) 
 - 结合疾病骨折愈合（软骨内骨化，血管生成）做网络药理学分析
+    - 成分的靶点由 Super-Pred 预测 (Fig. \@ref(fig:SuperPred-results)) (SwissTarget 限制太多，速度慢，大分子无法预测，今后将以 Super-pred 替代) 。
+    - 先单独分析成分靶点 (Fig. \@ref(fig:Network-pharmacology-visualization)) ，后再与疾病交集过滤 (Fig. \@ref(fig:Targets-intersect-with-targets-of-diseases))。
+    - 疾病相关基因来源见 (Fig. \@ref(fig:All-diseases-Overall-targets-number-of-datasets))
 - 候选基因的功能通路富集分析
+    - 结果见 \@ref(enrich)
 - 分子对接，与piezo1 (如果Mandenol与piezo1)
     - 分子对接见 Fig. \@ref(fig:Overall-combining-Affinity)
 
@@ -88,10 +93,10 @@ url <- "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6017639/table/molecules-23-
 compounds <- get_table.html(RCurl::getURL(url))[[1]]
 compounds <- dplyr::add_row(compounds, Name = c("Mandenol", "DFV", "Diop", "beta-sitosterol", "Stigmasterol", "quercetin"))
 
-info <- PubChemR::get_cids(compounds$Name)
-info <- dplyr::distinct(info, Identifier, .keep_all = T)
+cpd.info <- PubChemR::get_cids(compounds$Name)
+cpd.info <- dplyr::distinct(cpd.info, Identifier, .keep_all = T)
 
-pr <- job_pubchemr(nl(info$Identifier, info$CID, F))
+pr <- job_pubchemr(nl(cpd.info$Identifier, cpd.info$CID, F))
 pr <- step1(pr)
 
 sp <- asjob_superpred(pr)
@@ -171,7 +176,35 @@ hb@params$p.pharm2dis
 grpf(hb@params$p.venn2dis$ins, "piezo1", T)
 ```
 
-## 富集分析
+### PIEZO1 的转录因子分析
+
+`r tf@method`
+
+```{r eval = T, echo = F, results = "asis"}
+#| Transcription-Factor-binding-sites
+autor(tf@tables$step1$res)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-TFs-with-queried-Candidates
+autor(tf@params$mapped$p.venn)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| The-genes-and-related-TFs
+autor(tf@params$mapped$p.allu)
+```
+
+```{r}
+tf <- job_tfbs("PIEZO1")
+tf <- step1(tf)
+tf@tables$step1$res
+
+tf <- map(tf, hb@params$p.venn2dis$ins)
+tf@params$mapped$p.allu
+```
+
+## 富集分析 {#enrich}
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Ids-KEGG-enrichment
@@ -188,6 +221,8 @@ en <- job_enrich(hb@params$p.venn2dis$ins)
 en <- step1(en)
 en@plots$step1$p.kegg
 en@plots$step1$p.go
+en@tables$step1$res.kegg
+en@tables$step1$res.go
 
 ```
 

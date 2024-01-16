@@ -81,9 +81,9 @@
 \begin{titlepage} \newgeometry{top=7.5cm}
 \ThisCenterWallPaper{1.12}{../cover_page.pdf}
 \begin{center} \textbf{\Huge
-Mandenol与piezo1分子对接} \vspace{4em}
+网络药理学+Mandenol与piezo1分子对接} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-09}}
+\textbf{\textcolor{white}{2024-01-16}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -106,7 +106,45 @@ Mandenol与piezo1分子对接} \vspace{4em}
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
 
-分子对接见 Fig. \ref{fig:Overall-combining-Affinity}
+\begin{itemize}
+\tightlist
+\item
+  三七总皂苷 panax notoginseng saponins 中有效成分
+
+  \begin{itemize}
+  \tightlist
+  \item
+    使用来源于文献 (PMID: 29673237)\textsuperscript{\protect\hyperlink{ref-PanaxNotoginseXieW2018}{1}} 以及附件文档中表格的化合物 (Tab. \ref{tab:PNS-compounds})
+  \end{itemize}
+\item
+  结合疾病骨折愈合（软骨内骨化，血管生成）做网络药理学分析
+
+  \begin{itemize}
+  \tightlist
+  \item
+    成分的靶点由 Super-Pred 预测 (Fig. \ref{fig:SuperPred-results}) (SwissTarget 限制太多，速度慢，大分子无法预测，今后将以 Super-pred 替代) 。
+  \item
+    先单独分析成分靶点 (Fig. \ref{fig:Network-pharmacology-visualization}) ，后再与疾病交集过滤 (Fig. \ref{fig:Targets-intersect-with-targets-of-diseases})。
+  \item
+    疾病相关基因来源见 (Fig. \ref{fig:All-diseases-Overall-targets-number-of-datasets})
+  \end{itemize}
+\item
+  候选基因的功能通路富集分析
+
+  \begin{itemize}
+  \tightlist
+  \item
+    结果见 \ref{enrich}
+  \end{itemize}
+\item
+  分子对接，与piezo1 (如果Mandenol与piezo1)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    分子对接见 Fig. \ref{fig:Overall-combining-Affinity}
+  \end{itemize}
+\end{itemize}
 
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
@@ -125,7 +163,17 @@ Mainly used method:
 \begin{itemize}
 \tightlist
 \item
-  \texttt{AutoDock\ vina} used for molecular docking\textsuperscript{\protect\hyperlink{ref-AutodockVina1Eberha2021}{1}}.
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+\item
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{3}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{5}}.
+\item
+  R package \texttt{PubChemR} used for querying compounds information.
+\item
+  Web tool of \texttt{Super-PRED} used for drug-targets prediction\textsuperscript{\protect\hyperlink{ref-SuperpredUpdaNickel2014}{6}}.
+\item
+  The \texttt{Transcription\ Factor\ Target\ Gene\ Database} (\url{https://tfbsdb.systemsbiology.net/}) was used for discovering relationship between transcription factors and genes..\textsuperscript{\protect\hyperlink{ref-CausalMechanisPlaisi2016}{7}}
+\item
+  \texttt{AutoDock\ vina} used for molecular docking\textsuperscript{\protect\hyperlink{ref-AutodockVina1Eberha2021}{8}}.
 \item
   Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
@@ -138,6 +186,234 @@ Mainly used method:
 
 \hypertarget{workflow}{%
 \section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux7f51ux7edcux836fux7406ux5b66}{%
+\subsection{网络药理学}\label{ux7f51ux7edcux836fux7406ux5b66}}
+
+\hypertarget{ux4e09ux4e03ux603bux7682ux82f7-panax-notoginseng-saponins-pns-ux6210ux5206}{%
+\subsubsection{三七总皂苷 (panax notoginseng saponins, PNS) 成分}\label{ux4e09ux4e03ux603bux7682ux82f7-panax-notoginseng-saponins-pns-ux6210ux5206}}
+
+来源于文献 (PMID: 29673237)\textsuperscript{\protect\hyperlink{ref-PanaxNotoginseXieW2018}{1}} 以及附件文档中表格的化合物。
+
+Table \ref{tab:PNS-compounds} (下方表格) 为表格PNS compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PNS-compounds.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有18行3列，以下预览的表格可能省略部分数据；表格含有13个唯一`No.'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:PNS-compounds}PNS compounds}\tabularnewline
+\toprule
+No. & Name & Structure\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+No. & Name & Structure\tabularnewline
+\midrule
+\endhead
+PNS-1 & Ginsenoside Rg1 &\tabularnewline
+PNS-2 & Ginsenoside Rg3 &\tabularnewline
+PNS-3 & Ginsenoside Rg5 &\tabularnewline
+PNS-4 & Ginsenoside Rb1 &\tabularnewline
+PNS-5 & Ginsenoside Rb3 &\tabularnewline
+PNS-6 & Ginsenoside Re &\tabularnewline
+PNS-7 & Ginsenoside Rh1 &\tabularnewline
+PNS-8 & Ginsenoside Rh2 &\tabularnewline
+PNS-9 & Pseudoginsenoside-F11 &\tabularnewline
+PNS-10 & Ginsenoside Ro &\tabularnewline
+PNS-11 & Ginsenoside K &\tabularnewline
+PNS-12 & Notoginsenoside R1 &\tabularnewline
+NA & Mandenol & NA\tabularnewline
+NA & DFV & NA\tabularnewline
+NA & Diop & NA\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6210ux5206ux9776ux70b9}{%
+\subsubsection{成分靶点}\label{ux6210ux5206ux9776ux70b9}}
+
+使用 Super-Pred 预测化合物靶点。
+
+Figure \ref{fig:SuperPred-results} (下方图) 为图SuperPred results概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SuperPred-results.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SuperPred-results.pdf}
+\caption{SuperPred results}\label{fig:SuperPred-results}
+\end{center}
+
+Figure \ref{fig:Network-pharmacology-visualization} (下方图) 为图Network pharmacology visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-visualization.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-visualization.pdf}
+\caption{Network pharmacology visualization}\label{fig:Network-pharmacology-visualization}
+\end{center}
+
+\hypertarget{disease}{%
+\subsubsection{Disease}\label{disease}}
+
+Figure \ref{fig:All-diseases-Overall-targets-number-of-datasets} (下方图) 为图All diseases Overall targets number of datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-diseases-Overall-targets-number-of-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/All-diseases-Overall-targets-number-of-datasets.pdf}
+\caption{All diseases Overall targets number of datasets}\label{fig:All-diseases-Overall-targets-number-of-datasets}
+\end{center}
+
+\hypertarget{ux6210ux5206-ux9776ux70b9-ux75beux75c5}{%
+\subsubsection{成分-靶点-疾病}\label{ux6210ux5206-ux9776ux70b9-ux75beux75c5}}
+
+Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Targets intersect with targets of diseases概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf}
+\caption{Targets intersect with targets of diseases}\label{fig:Targets-intersect-with-targets-of-diseases}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    ABCB1, FLT3, MAP4K4, VDR, STAT3, ESR1, TGFBR2, F13A1,
+NTRK1, MMP2, SERPINE1, TLR4, MMP1, HIF1A, CTSK, GBA1,
+ENPP1, CXCR4, ITGB1, SCN9A, IDH1, PDGFRB, TTR, PTGS2, NOS2,
+PIK3CA, NOS3, NFKB1, ESR2, PTPN11, MMP7, TERT, P2RX7, MMP8,
+TGM2, PDGFRA, CREBBP, HDAC4, KDR, ALOX5, AR, MTOR, STAT1,
+F2R, PIK3CG...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases-content})}
+
+Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pharmacology with disease概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-with-disease.pdf}
+\caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
+\end{center}
+
+\hypertarget{piezo1-ux7684ux8f6cux5f55ux56e0ux5b50ux5206ux6790}{%
+\subsubsection{PIEZO1 的转录因子分析}\label{piezo1-ux7684ux8f6cux5f55ux56e0ux5b50ux5206ux6790}}
+
+The \texttt{Transcription\ Factor\ Target\ Gene\ Database} (\url{https://tfbsdb.systemsbiology.net/}) was used for discovering relationship between transcription factors and genes.
+
+Table \ref{tab:Transcription-Factor-binding-sites} (下方表格) 为表格Transcription Factor binding sites概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Transcription-Factor-binding-sites.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有238行10列，以下预览的表格可能省略部分数据；表格含有1个唯一`target'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item Start:  起始点
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Transcription-Factor-binding-sites}Transcription Factor binding sites}\tabularnewline
+\toprule
+target & TF\_symbol & Motif & Source & Strand & Start & Stop & PValue & MatchS\ldots{} & Overla\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+target & TF\_symbol & Motif & Source & Strand & Start & Stop & PValue & MatchS\ldots{} & Overla\ldots{}\tabularnewline
+\midrule
+\endhead
+PIEZO1 & HOXD12 & HOXD12\ldots{} & SELEX & + & 88856337 & 88856345 & 6.0E-06 & GTGATAAAA & 9\tabularnewline
+PIEZO1 & HSF2 & HSF2\_H\ldots{} & SELEX & - & 88856344 & 88856356 & 2.0E-06 & TTCCAG\ldots{} & 13\tabularnewline
+PIEZO1 & SOX21 & SOX21\_\ldots{} & SELEX & + & 88856312 & 88856326 & 2.0E-06 & AACAGT\ldots{} & 15\tabularnewline
+PIEZO1 & FOXA2 & Foxa2\_\ldots{} & JASPAR & - & 88847053 & 88847064 & 9.0E-06 & TGTTTA\ldots{} & 12\tabularnewline
+PIEZO1 & NF-KAPPAB & NF-kap\ldots{} & JASPAR & + & 88851187 & 88851196 & 1.0E-06 & GGGAAT\ldots{} & 10\tabularnewline
+PIEZO1 & TBX1 & TBX1\_T\ldots{} & SELEX & + & 88848269 & 88848288 & 6.0E-06 & GTGACA\ldots{} & 20\tabularnewline
+PIEZO1 & SOX4 & SOX4\_H\ldots{} & SELEX & + & 88856311 & 88856326 & 2.0E-06 & TAACAG\ldots{} & 16\tabularnewline
+PIEZO1 & RXRB & Rxrb\_n\ldots{} & SELEX & + & 88846744 & 88846757 & 1.0E-06 & GAGCTC\ldots{} & 14\tabularnewline
+PIEZO1 & ESRRA & ESRRA\_\ldots{} & SELEX & + & 88846750 & 88846768 & 8.0E-06 & AAAGGT\ldots{} & 19\tabularnewline
+PIEZO1 & CREB3L2 & Creb3l\ldots{} & SELEX & + & 88848344 & 88848355 & 7.0E-06 & TGCCAC\ldots{} & 12\tabularnewline
+PIEZO1 & IRF7 & IRF7\_I\ldots{} & SELEX & + & 88850912 & 88850925 & 3.0E-06 & CCGAAA\ldots{} & 14\tabularnewline
+PIEZO1 & IRF7 & IRF7\_I\ldots{} & SELEX & - & 88851996 & 88852009 & 3.0E-06 & AGCAAA\ldots{} & 14\tabularnewline
+PIEZO1 & IRF7 & IRF7\_I\ldots{} & SELEX & - & 88856323 & 88856336 & 1.0E-05 & CCCAAA\ldots{} & 14\tabularnewline
+PIEZO1 & target & SRY\_HM\ldots{} & SELEX & - & 88856312 & 88856326 & 7.0E-06 & AACTCT\ldots{} & 15\tabularnewline
+PIEZO1 & SOX2 & SOX2\_H\ldots{} & SELEX & + & 88847416 & 88847432 & 9.0E-06 & GAAGAC\ldots{} & 17\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:Intersection-of-TFs-with-queried-Candidates} (下方图) 为图Intersection of TFs with queried Candidates概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-TFs-with-queried-Candidates.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-TFs-with-queried-Candidates.pdf}
+\caption{Intersection of TFs with queried Candidates}\label{fig:Intersection-of-TFs-with-queried-Candidates}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    NFKB1, RXRA, NFE2L2, PPARA
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-TFs-with-queried-Candidates-content})}
+
+Figure \ref{fig:The-genes-and-related-TFs} (下方图) 为图The genes and related TFs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/The-genes-and-related-TFs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/The-genes-and-related-TFs.pdf}
+\caption{The genes and related TFs}\label{fig:The-genes-and-related-TFs}
+\end{center}
+
+\hypertarget{enrich}{%
+\subsection{富集分析}\label{enrich}}
+
+Figure \ref{fig:Ids-KEGG-enrichment} (下方图) 为图Ids KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ids-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ids-KEGG-enrichment.pdf}
+\caption{Ids KEGG enrichment}\label{fig:Ids-KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:Ids-GO-enrichment} (下方图) 为图Ids GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ids-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ids-GO-enrichment.pdf}
+\caption{Ids GO enrichment}\label{fig:Ids-GO-enrichment}
+\end{center}
 
 \hypertarget{ux5206ux5b50ux5bf9ux63a5}{%
 \subsection{分子对接}\label{ux5206ux5b50ux5bf9ux63a5}}
@@ -168,8 +444,29 @@ Figure \ref{fig:Mandenol-combine-PIEZO1} (下方图) 为图Mandenol combine PIEZ
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-PanaxNotoginseXieW2018}{}%
+1. Xie, W. \emph{et al.} Panax notoginseng saponins: A review of its mechanisms of antidepressant or anxiolytic effects and network analysis on phytochemistry and pharmacology. \emph{Molecules (Basel, Switzerland)} \textbf{23}, (2018).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+2. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheDisgenetKnPinero2019}{}%
+3. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+4. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-PharmgkbAWorBarbar2018}{}%
+5. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
+
+\leavevmode\hypertarget{ref-SuperpredUpdaNickel2014}{}%
+6. Nickel, J. \emph{et al.} SuperPred: Update on drug classification and target prediction. \emph{Nucleic acids research} \textbf{42}, W26--W31 (2014).
+
+\leavevmode\hypertarget{ref-CausalMechanisPlaisi2016}{}%
+7. Plaisier, C. L. \emph{et al.} Causal mechanistic regulatory network for glioblastoma deciphered using systems genetics network analysis. \emph{Cell systems} \textbf{3}, 172--186 (2016).
+
 \leavevmode\hypertarget{ref-AutodockVina1Eberha2021}{}%
-1. Eberhardt, J., Santos-Martins, D., Tillack, A. F. \& Forli, S. AutoDock vina 1.2.0: New docking methods, expanded force field, and python bindings. \emph{Journal of Chemical Information and Modeling} \textbf{61}, 3891--3898 (2021).
+8. Eberhardt, J., Santos-Martins, D., Tillack, A. F. \& Forli, S. AutoDock vina 1.2.0: New docking methods, expanded force field, and python bindings. \emph{Journal of Chemical Information and Modeling} \textbf{61}, 3891--3898 (2021).
 \end{cslreferences}
 
 \end{document}
