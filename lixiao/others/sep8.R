@@ -3,6 +3,15 @@
 files <- list.files("./sep8", "gene_counts.tsv", full.names = T, recursive = T)
 names(files) <- get_realname(files)
 
+l0 <- list(l1 = list(l2 = list(l3 = list(l4 = list(l5 = list(l6 = list(l7 = list(l8 = 8))))))))
+
+test <- .job_limma()
+tt <- get_herb_data()
+tt$target$Tax_id
+
+
+
+
 n <- 0
 counts <- pbapply::pblapply(files,
   function(file) {
