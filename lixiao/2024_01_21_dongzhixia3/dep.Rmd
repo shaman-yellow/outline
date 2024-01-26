@@ -1,0 +1,45 @@
+- 质控
+    - fastp
+- 去宿主序列
+    - bowtie2 <https://github.com/BenLangmead/bowtie2>
+- 组装 assembly
+    - megahit <https://github.com/voutcn/megahit>
+- 分箱 binning
+- 功能基因预测
+
+组装分析：发现新物种和其基因组
+免组装群落分析：以参考数据库注释群落，发现差异菌
+
+```{r}
+
+rem_list.files("/data/hlc/dongzhixia3/", ".", recursive = T)
+
+bw <- asjob_bowtie2(fp, 20)
+bw <- step1(bw)
+bw <- step2(bw)
+
+
+```
+
+
+
+```{r}
+# https://zhuanlan.zhihu.com/p/105602400
+
+# biob
+# https://zhuanlan.zhihu.com/p/496984933
+
+# https://www.jianshu.com/p/c981cdd8fce8
+
+# 关于组装
+# https://www.zhihu.com/question/459266316/answer/1884583110
+```
+
+
+- 质控
+    - fastp
+- 群落分析
+   - MetaPhlAn
+   - MP <https://bioconductor.org/packages/release/bioc/vignettes/MicrobiotaProcess/inst/doc/MicrobiotaProcess.html#bridges-other-tools>
+
+

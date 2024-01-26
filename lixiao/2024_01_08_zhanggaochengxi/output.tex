@@ -1,0 +1,1495 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge
+红豆杉和养阴解毒汤的共同活性成分和作用靶点（m6A、铁死亡相关)}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-01-22}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+注：关于南方红豆杉的成分数据，使用的是 Taxus mairei (\url{https://plantaedb.com/taxa/phylum/gymnosperms/order/cupressales/family/taxaceae/genus/taxus/species/taxus-mairei}) 记录。更多关于红豆杉的记录可见 \url{https://plantaedb.com/search?src=Taxus}。
+
+\hypertarget{ux9700ux6c42}{%
+\subsection{需求}\label{ux9700ux6c42}}
+
+co-targets \textgreater{} ATF3 \textgreater{} pathway (m6A) \textgreater{} ferroptosis
+根据研究基础，养阴解毒汤能够促进IGFIBP2表达，抑制METTL3表达，如果红豆杉和养阴解毒汤都靶向 m6A 甲基化修饰相关的作用靶点XXX。推测：红豆杉和养阴解毒汤通过XXX/YYY途径调控基因m6A甲基化修饰，促进肺癌细胞铁死亡，从而抑制肺癌的发展。（机制尽可能的结合ATF3）
+
+\hypertarget{ux7ed3ux679c}{%
+\subsection{结果}\label{ux7ed3ux679c}}
+
+注：红豆杉的靶点未发现 ATF3，因此红豆杉和养阴解毒的共同靶点未包括 ATF3。
+
+\begin{itemize}
+\tightlist
+\item
+  分别分析了 养阴解毒汤 (YYJD) 和 红豆杉 (HDS) 的成分和靶点。
+
+  \begin{itemize}
+  \tightlist
+  \item
+    YYDS：由于 YYDS 的南方红豆杉成分，多数中药数据库 (HERB、TCMSP 等) 没有该条目，这里使用了 PlantaeDb 中的成分记录 (Tab. \ref{tab:Taxus-mairei-compounds-from-plantaeDb}) 。
+  \item
+    YYDS：由于 PlantaeDb 中的成分没有靶点信息，因此这里用 Super-Pred 预测了这些化合物的靶点 (先以 HOB 预测20\%口服利药度，过滤了一部分成分) (Tab. \ref{tab:Taxus-mairei-compounds-targets-predicted-by-Super-Pred}) 。
+  \item
+    YYDS：最终的成分靶点数据整合了来自于 HERB 的其它中药的成分靶点数据 (这里，也用 Super-Pred 补充了它们的靶点)，和来自于 PlantaeDb 的南方红豆杉的成分靶点。最终图和表见 Fig. \ref{fig:MERGE-network-pharmacology-visualization}, Tab. \ref{tab:MERGE-Herbs-compounds-and-targets}
+  \item
+    HDS：分析思路同 YYDS，结合了 HERB 数据库的记录和 Super-Pred 的预测。Fig. \ref{fig:HDS-network-pharmacology-visualization}, Tab. \ref{tab:HDS-Herbs-compounds-and-targets}
+  \end{itemize}
+\item
+  YYDS 和 HDS 的共同靶点见 Fig. \ref{fig:Intersected-targets-of-YYJD-and-HDS}
+\item
+  铁死亡相关的基因集来自于 \texttt{FerrDb\ V2}。Tab. \ref{tab:Ferroptosis-regulators}
+\item
+  肺癌和 m6A 相关的基因集都来自于 GeneCards (Tab. \ref{tab:Lung-cancer-GeneCards-used-data}, Tab. \ref{tab:M6A-GeneCards-used-data})。
+\item
+  最终结果采取交集方式：共同靶点 + 驱动铁死亡的调控基因 + 肺癌靶点 + m6A 相关，见 Fig. \ref{fig:m6A-related-of-alls} 和 Fig. \ref{fig:All-intersection}。筛选出的基因为：PRKAA1
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{1}}.
+\item
+  Website \texttt{HERB} \url{http://herb.ac.cn/} used for data source\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{2}}.
+\item
+  Python tool of \texttt{HOB} was used for prediction of human oral bioavailability\textsuperscript{\protect\hyperlink{ref-HobpreAccuratWeiM2022}{3}}.
+\item
+  The API of \texttt{m6A-Atlas} used for obtaining m6A related data from the website\textsuperscript{\protect\hyperlink{ref-M6aAtlasV20Liang2024}{4}}.
+\item
+  The Database \texttt{PlantaeDB} \url{https://plantaedb.com/} used for collating data of herbal ingredients.
+\item
+  Web tool of \texttt{Super-PRED} used for drug-targets prediction\textsuperscript{\protect\hyperlink{ref-SuperpredUpdaNickel2014}{5}}.
+\item
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{6},\protect\hyperlink{ref-CytohubbaIdenChin2014}{7}}.
+\item
+  The Human Gene Database \texttt{GeneCards} used for disease related genes prediction\textsuperscript{\protect\hyperlink{ref-TheGenecardsSStelze2016}{8}}.
+\item
+  R package \texttt{UniProt.ws} used for querying Gene or Protein information.
+\item
+  Database of \texttt{FerrDb\ V2} used for obtaining ferroptosis regulators\textsuperscript{\protect\hyperlink{ref-FerrdbV2UpdaZhou2023}{9}}.
+\item
+  Database of \texttt{MSigDB} (c2, curated gene sets) was used for signiture screening.
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\url{https://plantaedb.com/}
+\url{https://bidd.group/NPASS/index.php}
+\url{https://plantaedb.com/}
+
+\hypertarget{ux7f51ux7edcux836fux7406ux5b66ux5206ux6790}{%
+\subsection{网络药理学分析}\label{ux7f51ux7edcux836fux7406ux5b66ux5206ux6790}}
+
+\hypertarget{ux517bux9634ux89e3ux6bd2ux6c64}{%
+\subsubsection{养阴解毒汤}\label{ux517bux9634ux89e3ux6bd2ux6c64}}
+
+\hypertarget{ux5357ux65b9ux7ea2ux8c46ux6749-taxus-mairei}{%
+\paragraph{南方红豆杉 Taxus-mairei}\label{ux5357ux65b9ux7ea2ux8c46ux6749-taxus-mairei}}
+
+Table \ref{tab:Taxus-mairei-compounds-from-plantaeDb} (下方表格) 为表格Taxus mairei compounds from plantaeDb概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Taxus-mairei-compounds-from-plantaeDb.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有302行8列，以下预览的表格可能省略部分数据；表格含有1个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:Taxus-mairei-compounds-from-plantaeDb}Taxus mairei compounds from plantaeDb}\tabularnewline
+\toprule
+.id & classes & Name & PubChe\ldots{} & Canoni\ldots{} & MW & Found in & Proof\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+.id & classes & Name & PubChe\ldots{} & Canoni\ldots{} & MW & Found in & Proof\tabularnewline
+\midrule
+\endhead
+Taxus \ldots{} & \textgreater{} Alka\ldots{} & CID 30956 & 30956 & CC1CC=\ldots{} & 507.60 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Alka\ldots{} & cytoch\ldots{} & 5458428 & CC1CC=\ldots{} & 507.60 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & 3,4-Di\ldots{} & 72 & C1=CC(\ldots{} & 154.12 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & (3S)-8\ldots{} & 486250 & CC1CC2\ldots{} & 222.19 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & 8-Hydr\ldots{} & 5242129 & CC1CC2\ldots{} & 222.19 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & Methyl\ldots{} & 7456 & COC(=O\ldots{} & 152.15 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & Honokiol & 72303 & C=CCC1\ldots{} & 266.30 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & 3-(4-H\ldots{} & 82452 & C1=CC(\ldots{} & 152.19 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & 2-Prop\ldots{} & 9984 & COC1=C\ldots{} & 178.18 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & 4-{[}{[}(5\ldots{} & 163079914 & CC1(OC\ldots{} & 402.50 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & 4-{[}{[}6-\ldots{} & 141864758 & CC1(OC\ldots{} & 402.50 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & 4-Hydr\ldots{} & 5280536 & COC1=C\ldots{} & 178.18 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & Dihydr\ldots{} & 16822 & COC1=C\ldots{} & 182.22 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Benz\ldots{} & Isovan\ldots{} & 12127 & COC1=C\ldots{} & 152.15 & unknown & https:\ldots{}\tabularnewline
+Taxus \ldots{} & \textgreater{} Lign\ldots{} & 4-{[}(5a\ldots{} & 137796452 & CC1(OC\ldots{} & 386.40 & unknown & https:\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:Taxus-mairei-compounds-HOB-20-prediction} (下方图) 为图Taxus mairei compounds HOB 20 prediction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Taxus-mairei-compounds-HOB-20-prediction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Taxus-mairei-compounds-HOB-20-prediction.pdf}
+\caption{Taxus mairei compounds HOB 20 prediction}\label{fig:Taxus-mairei-compounds-HOB-20-prediction}
+\end{center}
+
+Table \ref{tab:Taxus-mairei-compounds-targets-predicted-by-Super-Pred} (下方表格) 为表格Taxus mairei compounds targets predicted by Super Pred概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Taxus-mairei-compounds-targets-predicted-by-Super-Pred.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有13879行9列，以下预览的表格可能省略部分数据；表格含有126个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:Taxus-mairei-compounds-targets-predicted-by-Super-Pred}Taxus mairei compounds targets predicted by Super Pred}\tabularnewline
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endhead
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Nuclea\ldots{} & CHEMBL\ldots{} & P19838 & 1SVC & Not Av\ldots{} & 97.23\% & 96.09\% & NFKB1\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Cathep\ldots{} & CHEMBL\ldots{} & P07339 & 4OD9 & T67102 & 96.37\% & 98.95\% & CTSD\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Adenos\ldots{} & CHEMBL226 & P30542 & 5N2S & T92072 & 94.33\% & 95.93\% & ADORA1\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Cannab\ldots{} & CHEMBL253 & P34972 & 6KPF & Not Av\ldots{} & 93.89\% & 97.25\% & CNR2\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Dual s\ldots{} & CHEMBL\ldots{} & Q9HAZ1 & 6FYV & Not Av\ldots{} & 92.7\% & 94.45\% & CLK4\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Cycloo\ldots{} & CHEMBL221 & P23219 & 6Y3C & Not Av\ldots{} & 91.59\% & 90.17\% & PTGS1\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Minera\ldots{} & CHEMBL\ldots{} & P08235 & 4PF3 & Not Av\ldots{} & 90.65\% & 100\% & NR3C2\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Glutam\ldots{} & CHEMBL\ldots{} & Q05586 & 5EWM & Not Av\ldots{} & 90.47\% & 95.89\% & GRIN1\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & G-prot\ldots{} & CHEMBL\ldots{} & Q9Y2T6 & Not Av\ldots{} & T87670 & 90.05\% & 78.15\% & GPR55\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Formyl\ldots{} & CHEMBL\ldots{} & P21462 & Not Av\ldots{} & T87831 & 89.44\% & 93.56\% & FPR1\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Glycin\ldots{} & CHEMBL\ldots{} & P23415 & 4X5T & T50269 & 89.42\% & 90.71\% & GLRA1\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & LSD1/C\ldots{} & CHEMBL\ldots{} & O60341 & 5L3D & Not Av\ldots{} & 88.56\% & 97.09\% & KDM1A\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & DNA-(a\ldots{} & CHEMBL\ldots{} & P27695 & 6BOW & T13348 & 87.72\% & 91.11\% & APEX1\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & NT-3 g\ldots{} & CHEMBL\ldots{} & Q16288 & 6KZD & Not Av\ldots{} & 83.36\% & 95.89\% & NTRK3\tabularnewline
+CC{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Androg\ldots{} & CHEMBL\ldots{} & P10275 & 3V49 & T11211 & 83.21\% & 96.43\% & AR\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5176ux5b83ux4e2dux836f-mix}{%
+\paragraph{其它中药 MIX}\label{ux5176ux5b83ux4e2dux836f-mix}}
+
+以下靶点数据来源于 HERB 数据库：
+
+Table \ref{tab:MIX-Herbs-compounds-and-targets-from-HERB} (下方表格) 为表格MIX Herbs compounds and targets from HERB概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MIX-Herbs-compounds-and-targets-from-HERB.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有20801行9列，以下预览的表格可能省略部分数据；表格含有835个唯一`Ingredient.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:MIX-Herbs-compounds-and-targets-from-HERB}MIX Herbs compounds and targets from HERB}\tabularnewline
+\toprule
+Ingred\ldots\ldots1 & Herb\_p\ldots{} & Ingred\ldots\ldots3 & Ingred\ldots\ldots4 & Target.id & Target\ldots{} & Databa\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Ingred\ldots\ldots1 & Herb\_p\ldots{} & Ingred\ldots\ldots3 & Ingred\ldots\ldots4 & Target.id & Target\ldots{} & Databa\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endhead
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & ATIC & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & FPGS & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & GART & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTHFD1 & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTHFD2 & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & ALDH1L1 & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTHFD1L & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTFMT & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & ALDH1L2 & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTHFD2L & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10β,13\ldots{} & NA & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & BEI SH\ldots{} & 10-epi\ldots{} & NA & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & DANG SHEN & 11alph\ldots{} & 11α-me\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & DANG SHEN & 11-Hyd\ldots{} & Spiro(\ldots{} & HBTAR0\ldots{} & CDK2 & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & DANG SHEN & 11-Hyd\ldots{} & Spiro(\ldots{} & HBTAR0\ldots{} & ESR1 & NA & NA & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:MIX-HOB-20-prediction} (下方图) 为图MIX HOB 20 prediction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MIX-HOB-20-prediction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MIX-HOB-20-prediction.pdf}
+\caption{MIX HOB 20 prediction}\label{fig:MIX-HOB-20-prediction}
+\end{center}
+
+补充了预测的靶点数据：
+
+Table \ref{tab:MIX-compounds-targets-predicted-by-Super-Pred} (下方表格) 为表格MIX compounds targets predicted by Super Pred概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MIX-compounds-targets-predicted-by-Super-Pred.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有42305行9列，以下预览的表格可能省略部分数据；表格含有387个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:MIX-compounds-targets-predicted-by-Super-Pred}MIX compounds targets predicted by Super Pred}\tabularnewline
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endhead
+C1=CC(\ldots{} & Transc\ldots{} & CHEMBL\ldots{} & O15164 & 4YBM & Not Av\ldots{} & 94.7\% & 95.56\% & TRIM24\tabularnewline
+C1=CC(\ldots{} & Endopl\ldots{} & CHEMBL\ldots{} & Q99714 & 2O23 & Not Av\ldots{} & 93.9\% & 70.16\% & HSD17B10\tabularnewline
+C1=CC(\ldots{} & Monoam\ldots{} & CHEMBL\ldots{} & P21397 & 2Z5Y & Not Av\ldots{} & 90.07\% & 91.49\% & MAOA\tabularnewline
+C1=CC(\ldots{} & Transt\ldots{} & CHEMBL\ldots{} & P02766 & 6SUG & T86462 & 88.39\% & 90.71\% & TTR\tabularnewline
+C1=CC(\ldots{} & DNA-(a\ldots{} & CHEMBL\ldots{} & P27695 & 6BOW & T13348 & 87.23\% & 91.11\% & APEX1\tabularnewline
+C1=CC(\ldots{} & Serine\ldots{} & CHEMBL\ldots{} & O75460 & 6W39 & Not Av\ldots{} & 81.09\% & 98.11\% & ERN1\tabularnewline
+C1=CC(\ldots{} & Dual s\ldots{} & CHEMBL\ldots{} & Q9HAZ1 & 6FYV & Not Av\ldots{} & 80.64\% & 94.45\% & CLK4\tabularnewline
+C1=CC(\ldots{} & Pregna\ldots{} & CHEMBL\ldots{} & O75469 & 6TFI & T82702 & 79.78\% & 94.73\% & NR1I2\tabularnewline
+C1=CC(\ldots{} & Estrog\ldots{} & CHEMBL242 & Q92731 & 1QKM & T80896 & 79.45\% & 98.35\% & ESR2\tabularnewline
+C1=CC(\ldots{} & Kruppe\ldots{} & CHEMBL\ldots{} & Q13887 & Not Av\ldots{} & Not Av\ldots{} & 79.32\% & 86.33\% & KLF5\tabularnewline
+C1=CC(\ldots{} & Protea\ldots{} & CHEMBL\ldots{} & P20618 & 6KWY & Not Av\ldots{} & 77.67\% & 90\% & PSMB1\tabularnewline
+C1=CC(\ldots{} & Cytoch\ldots{} & CHEMBL\ldots{} & P11509 & 2FDV & T06455 & 76.23\% & 71.78\% & CYP2A6\tabularnewline
+C1=CC(\ldots{} & C-X-C \ldots{} & CHEMBL\ldots{} & P61073 & 3ODU & T96079 & 76.12\% & 93.1\% & CXCR4\tabularnewline
+C1=CC(\ldots{} & Tyrosy\ldots{} & CHEMBL\ldots{} & Q9NUW8 & 6N0D & Not Av\ldots{} & 75.1\% & 71.22\% & TDP1\tabularnewline
+C1=CC(\ldots{} & Cathep\ldots{} & CHEMBL\ldots{} & P07339 & 4OD9 & T67102 & 75.01\% & 98.95\% & CTSD\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5408ux5e76-merge}{%
+\paragraph{合并 MERGE}\label{ux5408ux5e76-merge}}
+
+Figure \ref{fig:MERGE-Intersection-of-herbs-all-targets} (下方图) 为图MERGE Intersection of herbs all targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MERGE-Intersection-of-herbs-all-targets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MERGE-Intersection-of-herbs-all-targets.pdf}
+\caption{MERGE Intersection of herbs all targets}\label{fig:MERGE-Intersection-of-herbs-all-targets}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    ACHE, GRIA2, PRSS1, PTGS2, NOS2, DPP4, GABRA1, CHRM2,
+CNR2, CTSD, NFKB1, APEX1, TDP1, TRIM24, FPR1, BLM, GRIN1,
+KDM1A, NR3C2, NR1I2, ADAM10, DPP8, NTRK3, FCGRT, KLF5,
+TOP2A, S1PR5, CYP3A4, PIK3R1, DRD1, SLC6A5, CSNK2B, CDK5,
+FPR2, CACNA1B, HSD17B10, GPR55, PLA2G2A, GPBAR1, DPP9,
+TLR4, ACACA, CHRM...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/MERGE-Intersection-of-herbs-all-targets-content})}
+
+Figure \ref{fig:MERGE-Intersection-of-herbs-compounds} (下方图) 为图MERGE Intersection of herbs compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MERGE-Intersection-of-herbs-compounds.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MERGE-Intersection-of-herbs-compounds.pdf}
+\caption{MERGE Intersection of herbs compounds}\label{fig:MERGE-Intersection-of-herbs-compounds}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/MERGE-Intersection-of-herbs-compounds-content})}
+
+Figure \ref{fig:MERGE-network-pharmacology-visualization} (下方图) 为图MERGE network pharmacology visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MERGE-network-pharmacology-visualization.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MERGE-network-pharmacology-visualization.pdf}
+\caption{MERGE network pharmacology visualization}\label{fig:MERGE-network-pharmacology-visualization}
+\end{center}
+
+药方所有的成分、靶点数据：
+
+Table \ref{tab:MERGE-Herbs-compounds-and-targets} (下方表格) 为表格MERGE Herbs compounds and targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MERGE-Herbs-compounds-and-targets.tsv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有70759行10列，以下预览的表格可能省略部分数据；表格含有961个唯一`Ingredient.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:MERGE-Herbs-compounds-and-targets}MERGE Herbs compounds and targets}\tabularnewline
+\toprule
+Ingred\ldots\ldots1 & Herb\_p\ldots{} & Ingred\ldots\ldots3 & Ingred\ldots\ldots4 & Target.id & Target\ldots\ldots6 & Databa\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Ingred\ldots\ldots1 & Herb\_p\ldots{} & Ingred\ldots\ldots3 & Ingred\ldots\ldots4 & Target.id & Target\ldots\ldots6 & Databa\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endhead
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & APEX1 & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & NFKB1 & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & KDM1A & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & HTR2C & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & HIF1A & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & TRIM24 & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & BLM & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & SLC6A5 & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & GPR55 & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & CTSD & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & KLF5 & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & PRCP & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & C5AR1 & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & THRA & NA & NA & \ldots{}\tabularnewline
+10022393 & Taxus \ldots{} & (7R)-7\ldots{} & NA & NA & PSMB1 & NA & NA & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux7ea2ux8c46ux6749}{%
+\subsubsection{红豆杉}\label{ux7ea2ux8c46ux6749}}
+
+以下是收集自 HERB 数据库的成分、靶点数据：
+
+Table \ref{tab:HDS-Herbs-compounds-and-targets-from-HERB} (下方表格) 为表格HDS Herbs compounds and targets from HERB概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HDS-Herbs-compounds-and-targets-from-HERB.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有128行7列，以下预览的表格可能省略部分数据；表格含有105个唯一`Ingredient.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:HDS-Herbs-compounds-and-targets-from-HERB}HDS Herbs compounds and targets from HERB}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.11\columnwidth}\raggedright
+Ingredient.id\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Herb\_pinyi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Ingredient\ldots\ldots3\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Ingredient\ldots\ldots4\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Target.id\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Target.name\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Database.s\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.11\columnwidth}\raggedright
+Ingredient.id\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Herb\_pinyi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Ingredient\ldots\ldots3\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Ingredient\ldots\ldots4\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Target.id\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Target.name\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Database.s\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN000081\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+10-deacety\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN000084\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+10-deacety\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001104\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1,3,7,8-te\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1,3,7,8-te\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001125\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-acetyl-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001379\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+14β-benzoy\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001380\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+14β-benzoy\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001381\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+14β-benzoy\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001385\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+14β-hydrox\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN002352\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1β,2β,9α-t\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1beta,2bet\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN002387\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1beta-dehy\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1β-dehydro\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN002399\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1β-hydroxy\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN002663\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1-hydroxyt\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN005241\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+2alpha,5al\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN005242\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+2α,5α,10β-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+2alpha,5al\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:HDS-HOB-20-prediction} (下方图) 为图HDS HOB 20 prediction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HDS-HOB-20-prediction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HDS-HOB-20-prediction.pdf}
+\caption{HDS HOB 20 prediction}\label{fig:HDS-HOB-20-prediction}
+\end{center}
+
+以 Super-Pred 预测更多的靶点：
+
+Table \ref{tab:HDS-compounds-targets-predicted-by-Super-Pred} (下方表格) 为表格HDS compounds targets predicted by Super Pred概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HDS-compounds-targets-predicted-by-Super-Pred.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2050行9列，以下预览的表格可能省略部分数据；表格含有18个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:HDS-compounds-targets-predicted-by-Super-Pred}HDS compounds targets predicted by Super Pred}\tabularnewline
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endhead
+CC1=CC\ldots{} & Bloom \ldots{} & CHEMBL\ldots{} & P54132 & 4O3M & Not Av\ldots{} & 98.7\% & 70.06\% & BLM\tabularnewline
+CC1=CC\ldots{} & Tyrosy\ldots{} & CHEMBL\ldots{} & Q9NUW8 & 6N0D & Not Av\ldots{} & 97.89\% & 71.22\% & TDP1\tabularnewline
+CC1=CC\ldots{} & Nuclea\ldots{} & CHEMBL\ldots{} & P19838 & 1SVC & Not Av\ldots{} & 97.37\% & 96.09\% & NFKB1\tabularnewline
+CC1=CC\ldots{} & DNA-(a\ldots{} & CHEMBL\ldots{} & P27695 & 6BOW & T13348 & 93.58\% & 91.11\% & APEX1\tabularnewline
+CC1=CC\ldots{} & Cannab\ldots{} & CHEMBL253 & P34972 & 6KPF & Not Av\ldots{} & 91.48\% & 97.25\% & CNR2\tabularnewline
+CC1=CC\ldots{} & Cathep\ldots{} & CHEMBL\ldots{} & P07339 & 4OD9 & T67102 & 91.07\% & 98.95\% & CTSD\tabularnewline
+CC1=CC\ldots{} & Protei\ldots{} & CHEMBL\ldots{} & Q05655 & 1YRK & T44861 & 88.96\% & 97.79\% & PRKCD\tabularnewline
+CC1=CC\ldots{} & Dual s\ldots{} & CHEMBL\ldots{} & Q9HAZ1 & 6FYV & Not Av\ldots{} & 88.61\% & 94.45\% & CLK4\tabularnewline
+CC1=CC\ldots{} & Kruppe\ldots{} & CHEMBL\ldots{} & Q13887 & Not Av\ldots{} & Not Av\ldots{} & 85.83\% & 86.33\% & KLF5\tabularnewline
+CC1=CC\ldots{} & Glutam\ldots{} & CHEMBL\ldots{} & P42262 & 2WJW & T42392 & 82.94\% & 86.92\% & GRIA2\tabularnewline
+CC1=CC\ldots{} & Transc\ldots{} & CHEMBL\ldots{} & O15164 & 4YBM & Not Av\ldots{} & 82.59\% & 95.56\% & TRIM24\tabularnewline
+CC1=CC\ldots{} & DNA to\ldots{} & CHEMBL\ldots{} & P11388 & 6ZY5 & T17048 & 82.58\% & 89\% & TOP2A\tabularnewline
+CC1=CC\ldots{} & Cytoch\ldots{} & CHEMBL340 & P08684 & 5VCC & T37848 & 82.47\% & 91.19\% & CYP3A4\tabularnewline
+CC1=CC\ldots{} & Minera\ldots{} & CHEMBL\ldots{} & P08235 & 4PF3 & Not Av\ldots{} & 82.02\% & 100\% & NR3C2\tabularnewline
+CC1=CC\ldots{} & Muscar\ldots{} & CHEMBL\ldots{} & P08912 & 6OL9 & T79961 & 81.06\% & 94.62\% & CHRM5\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+合并了预测的靶点后的数据：
+
+Figure \ref{fig:HDS-network-pharmacology-visualization} (下方图) 为图HDS network pharmacology visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HDS-network-pharmacology-visualization.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HDS-network-pharmacology-visualization.pdf}
+\caption{HDS network pharmacology visualization}\label{fig:HDS-network-pharmacology-visualization}
+\end{center}
+
+Table \ref{tab:HDS-Herbs-compounds-and-targets} (下方表格) 为表格HDS Herbs compounds and targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HDS-Herbs-compounds-and-targets.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2139行7列，以下预览的表格可能省略部分数据；表格含有105个唯一`Ingredient.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:HDS-Herbs-compounds-and-targets}HDS Herbs compounds and targets}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.11\columnwidth}\raggedright
+Ingredient.id\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Herb\_pinyi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Ingredient\ldots\ldots3\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Ingredient\ldots\ldots4\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Target.id\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Target.name\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Database.s\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.11\columnwidth}\raggedright
+Ingredient.id\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Herb\_pinyi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Ingredient\ldots\ldots3\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Ingredient\ldots\ldots4\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Target.id\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Target.name\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Database.s\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN000081\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+10-deacety\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN000084\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+10-deacety\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001104\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1,3,7,8-te\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1,3,7,8-te\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001125\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-acetyl-\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NFKB1\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+KLF5\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TDP1\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+RORB\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+PTGS1\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+NPC1\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+CTSD\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+CHRM5\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+MAOA\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TRIM24\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+HBIN001159\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+HONG DOU SHAN\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+13-deaceto\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+APEX1\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux517bux9634ux89e3ux6bd2ux6c64ux548cux7ea2ux8c46ux6749ux5171ux540cux9776ux70b9-cosig}{%
+\subsubsection{养阴解毒汤和红豆杉共同靶点 coSig}\label{ux517bux9634ux89e3ux6bd2ux6c64ux548cux7ea2ux8c46ux6749ux5171ux540cux9776ux70b9-cosig}}
+
+Figure \ref{fig:Intersected-targets-of-YYJD-and-HDS} (下方图) 为图Intersected targets of YYJD and HDS概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersected-targets-of-YYJD-and-HDS.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersected-targets-of-YYJD-and-HDS.pdf}
+\caption{Intersected targets of YYJD and HDS}\label{fig:Intersected-targets-of-YYJD-and-HDS}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    APEX1, NFKB1, KDM1A, HTR2C, HIF1A, TRIM24, BLM, SLC6A5,
+GPR55, CTSD, KLF5, PRCP, C5AR1, THRA, PSMB1, HSD17B10,
+TOP2A, GUSB, NTRK3, NFE2L2, GRIA2, HDAC8, SLC2A1, NR1I2,
+CACNA1B, ALOX12, PRKCZ, CYP3A4, DUSP3, KIF11, CLK4, GRIN1,
+KCNA5, ADAM10, SCD, PDE3A, CCR1, HDAC9, DPP8, TTR, SLC9A1,
+GLS, S1PR5,...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersected-targets-of-YYJD-and-HDS-content})}
+
+\hypertarget{ux94c1ux6b7bux4ea1}{%
+\subsection{铁死亡}\label{ux94c1ux6b7bux4ea1}}
+
+\hypertarget{ferrdb-v2-ux57faux56e0ux96c6}{%
+\subsubsection{\texorpdfstring{\texttt{FerrDb\ V2} 基因集}{FerrDb V2 基因集}}\label{ferrdb-v2-ux57faux56e0ux96c6}}
+
+`Ferroptosis regulators' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ferroptosis-regulators})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Ferroptosis-regulators共包含4个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_marker.csv
+\item 2\_driver.csv
+\item 3\_suppressor.csv
+\item 4\_unclassifier.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ferroptosis-driver-ux4e0e-cosig-ux4ea4ux96c6}{%
+\subsubsection{Ferroptosis Driver 与 coSig 交集}\label{ferroptosis-driver-ux4e0e-cosig-ux4ea4ux96c6}}
+
+Figure \ref{fig:The-common-Targets-related-to-ferroptosis-driver} (下方图) 为图The common Targets related to ferroptosis driver概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/The-common-Targets-related-to-ferroptosis-driver.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/The-common-Targets-related-to-ferroptosis-driver.pdf}
+\caption{The common Targets related to ferroptosis driver}\label{fig:The-common-Targets-related-to-ferroptosis-driver}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    HIF1A, ALOX12, NOX1, MDM4, TLR4, KEAP1, ABCC1, IDO1,
+PRKAA1, MAP3K11, KDM5C, KDM5A, MAPK1, PIK3CA, STING1,
+MAP3K14, TBK1, ALOX5, PPARG, PRKCA, CTSB, DPP4, GSK3B,
+MAPK14, SIRT1, FLT3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/The-common-Targets-related-to-ferroptosis-driver-content})}
+
+\hypertarget{ux80baux764c}{%
+\subsection{肺癌}\label{ux80baux764c}}
+
+\hypertarget{ux80baux764cux76f8ux5173ux57faux56e0ux96c6}{%
+\subsubsection{肺癌相关基因集}\label{ux80baux764cux76f8ux5173ux57faux56e0ux96c6}}
+
+GeneCards Score \textgreater{} 3
+
+Table \ref{tab:Lung-cancer-GeneCards-used-data} (下方表格) 为表格Lung cancer GeneCards used data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Lung-cancer-GeneCards-used-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有945行7列，以下预览的表格可能省略部分数据；表格含有945个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Lung-cancer-GeneCards-used-data}Lung cancer GeneCards used data}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+KRAS & KRAS Proto\ldots{} & Protein Co\ldots{} & P01116 & 61 & GC12M028437 & 74.63\tabularnewline
+BRAF & B-Raf Prot\ldots{} & Protein Co\ldots{} & P15056 & 62 & GC07M140762 & 73.07\tabularnewline
+EGFR-AS1 & EGFR Antis\ldots{} & RNA Gene & & 23 & GC07M055179 & 64.72\tabularnewline
+PIK3CA & Phosphatid\ldots{} & Protein Co\ldots{} & P42336 & 61 & GC03P179148 & 63.70\tabularnewline
+ALK & ALK Recept\ldots{} & Protein Co\ldots{} & Q9UM73 & 59 & GC02M029190 & 61.05\tabularnewline
+ERBB2 & Erb-B2 Rec\ldots{} & Protein Co\ldots{} & P04626 & 63 & GC17P039687 & 61.00\tabularnewline
+CDKN2A & Cyclin Dep\ldots{} & Protein Co\ldots{} & Q8N726 & 60 & GC09M021967 & 58.81\tabularnewline
+CTNNB1 & Catenin Be\ldots{} & Protein Co\ldots{} & P35222 & 62 & GC03P041194 & 58.62\tabularnewline
+MYC & MYC Proto-\ldots{} & Protein Co\ldots{} & P01106 & 61 & GC08P127735 & 52.43\tabularnewline
+LUCAT1 & Lung Cance\ldots{} & RNA Gene & & 23 & GC05M091054 & 52.39\tabularnewline
+AKT1 & AKT Serine\ldots{} & Protein Co\ldots{} & P31749 & 62 & GC14M104769 & 52.22\tabularnewline
+HRAS & HRas Proto\ldots{} & Protein Co\ldots{} & P01112 & 61 & GC11M010201 & 51.36\tabularnewline
+PTEN & Phosphatas\ldots{} & Protein Co\ldots{} & P60484 & 60 & GC10P106636 & 50.58\tabularnewline
+ERCC6 & ERCC Excis\ldots{} & Protein Co\ldots{} & Q03468 & 55 & GC10M049454 & 50.54\tabularnewline
+STK11 & Serine/Thr\ldots{} & Protein Co\ldots{} & Q15831 & 59 & GC19P001177 & 50.19\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{cosig-ferroptosis-ux4e0e-ux80baux764cux4ea4ux96c6}{%
+\subsubsection{coSig-ferroptosis 与 肺癌交集}\label{cosig-ferroptosis-ux4e0e-ux80baux764cux4ea4ux96c6}}
+
+Figure \ref{fig:Intersection-of-coSigFe-genes-with-Lung-cancer-signatures} (下方图) 为图Intersection of coSigFe genes with Lung cancer signatures概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-coSigFe-genes-with-Lung-cancer-signatures.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-coSigFe-genes-with-Lung-cancer-signatures.pdf}
+\caption{Intersection of coSigFe genes with Lung cancer signatures}\label{fig:Intersection-of-coSigFe-genes-with-Lung-cancer-signatures}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    IDO1, PRKAA1, PIK3CA, ALOX5
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-coSigFe-genes-with-Lung-cancer-signatures-content})}
+
+\hypertarget{m6a-ux76f8ux5173}{%
+\subsection{m6A 相关}\label{m6a-ux76f8ux5173}}
+
+\hypertarget{n6-methyladenosine-ux57faux56e0ux96c6}{%
+\subsubsection{N6-Methyladenosine 基因集}\label{n6-methyladenosine-ux57faux56e0ux96c6}}
+
+GeneCards Score \textgreater{} 1
+
+Table \ref{tab:M6A-GeneCards-used-data} (下方表格) 为表格M6A GeneCards used data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/M6A-GeneCards-used-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1460行7列，以下预览的表格可能省略部分数据；表格含有1460个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:M6A-GeneCards-used-data}M6A GeneCards used data}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+YTHDF2 & YTH N6-Met\ldots{} & Protein Co\ldots{} & Q9Y5A9 & 45 & GC01P034802 & 46.37\tabularnewline
+YTHDF1 & YTH N6-Met\ldots{} & Protein Co\ldots{} & Q9BYJ9 & 44 & GC20M063195 & 41.09\tabularnewline
+YTHDF3 & YTH N6-Met\ldots{} & Protein Co\ldots{} & Q7Z739 & 43 & GC08P063168 & 40.02\tabularnewline
+YTHDC1 & YTH N6-Met\ldots{} & Protein Co\ldots{} & Q96MU7 & 46 & GC04M068310 & 37.59\tabularnewline
+YTHDC2 & YTH N6-Met\ldots{} & Protein Co\ldots{} & Q9H6S0 & 44 & GC05P113513 & 37.19\tabularnewline
+METTL3 & Methyltran\ldots{} & Protein Co\ldots{} & Q86U44 & 50 & GC14M021498 & 22.54\tabularnewline
+METTL14 & Methyltran\ldots{} & Protein Co\ldots{} & Q9HCE5 & 46 & GC04P118685 & 13.41\tabularnewline
+VIRMA & Vir Like M\ldots{} & Protein Co\ldots{} & Q69YN4 & 41 & GC08M094496 & 11.79\tabularnewline
+XIST & X Inactive\ldots{} & RNA Gene & & 30 & GC0XM073820 & 11.78\tabularnewline
+METTL16 & Methyltran\ldots{} & Protein Co\ldots{} & Q86W50 & 41 & GC17M002405 & 10.84\tabularnewline
+ZC3H13 & Zinc Finge\ldots{} & Protein Co\ldots{} & Q5T200 & 39 & GC13M045954 & 10.16\tabularnewline
+ALKBH5 & AlkB Homol\ldots{} & Protein Co\ldots{} & Q6P6C2 & 43 & GC17P018183 & 9.99\tabularnewline
+FTO & FTO Alpha-\ldots{} & Protein Co\ldots{} & Q9C0B1 & 55 & GC16P067676 & 9.67\tabularnewline
+IGF2BP2 & Insulin Li\ldots{} & Protein Co\ldots{} & Q9Y6M1 & 53 & GC03M185643 & 9.60\tabularnewline
+WTAP & WT1 Associ\ldots{} & Protein Co\ldots{} & Q15007 & 45 & GC06P159725 & 9.31\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{cosig-ferroptosis-cancer-ux4e0e-m6a-ux76f8ux5173}{%
+\subsubsection{coSig-ferroptosis-cancer 与 m6A 相关}\label{cosig-ferroptosis-cancer-ux4e0e-m6a-ux76f8ux5173}}
+
+Figure \ref{fig:m6A-related-of-alls} (下方图) 为图m6A related of alls概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/m6A-related-of-alls.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/m6A-related-of-alls.pdf}
+\caption{M6A related of alls}\label{fig:m6A-related-of-alls}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    PRKAA1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/m6A-related-of-alls-content})}
+
+\hypertarget{ux6c47ux603b}{%
+\subsection{汇总}\label{ux6c47ux603b}}
+
+Figure \ref{fig:All-intersection} (下方图) 为图All intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-intersection.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/All-intersection.pdf}
+\caption{All intersection}\label{fig:All-intersection}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    PRKAA1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/All-intersection-content})}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+1. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-HerbAHighThFang2021}{}%
+2. Fang, S. \emph{et al.} HERB: A high-throughput experiment- and reference-guided database of traditional chinese medicine. \emph{Nucleic Acids Research} \textbf{49}, D1197--D1206 (2021).
+
+\leavevmode\hypertarget{ref-HobpreAccuratWeiM2022}{}%
+3. Wei, M. \emph{et al.} HobPre: Accurate prediction of human oral bioavailability for small molecules. \emph{Journal of Cheminformatics} \textbf{14}, (2022).
+
+\leavevmode\hypertarget{ref-M6aAtlasV20Liang2024}{}%
+4. Liang, Z. \emph{et al.} M6A-atlas v2.0: Updated resources for unraveling the n6-methyladenosine (m6A) epitranscriptome among multiple species. \emph{Nucleic acids research} \textbf{52}, D194--D202 (2024).
+
+\leavevmode\hypertarget{ref-SuperpredUpdaNickel2014}{}%
+5. Nickel, J. \emph{et al.} SuperPred: Update on drug classification and target prediction. \emph{Nucleic acids research} \textbf{42}, W26--W31 (2014).
+
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+6. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+7. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+8. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-FerrdbV2UpdaZhou2023}{}%
+9. Zhou, N. \emph{et al.} FerrDb v2: Update of the manually curated database of ferroptosis regulators and ferroptosis-disease associations. \emph{Nucleic acids research} \textbf{51}, D571--D582 (2023).
+\end{cslreferences}
+
+\end{document}

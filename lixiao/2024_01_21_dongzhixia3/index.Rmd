@@ -1,0 +1,224 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(1), coef = NA)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("胆结石"))
+
+# G: gallstones 胆结石
+```
+
+董志霞反馈分组情况如下:
+18个小鼠，
+chow（正常组）1,2,3,4,5,6
+LD（结石组）1,2,3,4,5,6
+sev（治疗组）1,2,3,4,5,6
+
+结石组的造模方式？
+致石饲料加治疗药物
+
+治疗组的造模方式？
+盐酸司维拉姆
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 宏基因组群落分析
+
+### 数据质控
+
+```{r eval = T, echo = F, results = "asis"}
+#| Fastp-QC
+autor("./fastp_local/")
+```
+
+```{r}
+cdRun("scp -r ~/disk_sda1/dongzhixia3/rawdata/", " remote:/data/hlc/dongzhixia3")
+
+fp <- job_fastp("/data/hlc/dongzhixia3")
+fp <- set_remote(fp)
+fp <- step1(fp, c(".R1", ".R2"), ".raw.fastq.gz", 12)
+fp <- step2(fp)
+```
+
+### 群落鉴定和丰度定量
+
+从这里开始，仅选择对照组和模型组进行分析。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Merged-abundance-table
+autor(mpa@tables$step3$t.abundance)
+```
+
+```{r}
+mpa <- asjob_mpa(fp, 20)
+mpa <- step1(mpa)
+mpa <- step2(mpa)
+mpa@step <- 2L
+mpa <- step3(mpa, "--Chow|--LD")
+```
+
+### 群落分析
+
+#### 样本质控 PCoA
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCoA
+autor(mp@plots$step3$p.pcoa)
+```
+
+#### Alpha 多样性
+
+```{r eval = T, echo = F, results = "asis"}
+#| Alpha-diversity
+autor(mp@plots$step1$p.alpha_index)
+```
+
+#### Beta 多样性
+
+```{r eval = T, echo = F, results = "asis"}
+#| Sample-distance
+autor(mp@plots$step3$p.sample_dist)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Beta-diversity-group-test
+autor(mp@plots$step3$p.group_test)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-hierarchy-data
+autor(mp@plots$step3$p.hier)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Species-hierarchy
+autor(mp@plots$step3$p.hier$Species)
+```
+
+#### 差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| Statistic-of-all-difference-microbiota
+autor(mp@tables$step4$top_table)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| The-abundance-and-LDA-from-Phylum-to-Class
+autor(wrap(mp@plots$step4$p.box, 10, 10))
+```
+
+```{r}
+mp <- asjob_mp(mpa, c(Control = "--Chow", Model = "--LD"))
+mp@object <- dplyr::mutate(mp@object, Sample = gs(Sample, ".*--([A-Za-z]+[0-9]).*", "\\1"))
+mp <- step1(mp)
+# mp@plots$step1$p.alpha_index
+mp <- step2(mp)
+mp <- step3(mp)
+mp <- step4(mp)
+
+mp@plots$step4$p.box
+mp@plots$step4$p.tree
+mp@tables$step4$top_table
+mp@object
+```
+
+## 肠道菌群关联代谢物分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| MICRO-alluvium-plot-of-Matched-data-in-gutMDisorder
+autor(wrap(gm.micro@params$res_micro$p.allu))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MICRO-Matched-data-in-gutMDisorder
+autor(gm.micro@params$res_micro$db_matched)
+```
+
+```{r}
+gm.micro <- job_gutmd()
+gm.micro <- step1(gm.micro, pattern(mp))
+gm.micro@params$res_micro$p.allu
+pattern(mp)
+```
+
+## 代谢物关联蛋白质分析
+
+<https://github.com/aeisman/protein-metabolite>
+<https://mbenson.shinyapps.io/protein-metabolite/>
+[@ProteinMetabolBenson2023]
+
+```{r}
+files <- list.files("~/outline/lixiao/published_data/ProteinMetabolBenson2023/", ".xlsx$", full.names = T)
+m <- lapply(files, function(x) try(fxlsx(x), T))
+
+dat <- RCurl::getURL("https://mbenson.shinyapps.io/protein-metabolite/")
+
+link <- start_drive()
+link$open()
+link$navigate("https://mbenson.shinyapps.io/protein-metabolite/")
+
+m <- link$getPageSource()
+m <- get_table.html(m[[1]])
+```
+
+
+```{r}
+loads()
+
+saves()
+```
+
+```{r}
+# Human gut metagenome
+je <- job_esearch("gut metagenome")
+vis(je, "Nature")
+```

@@ -1,0 +1,34 @@
+
+
+```{r}
+query <- dplyr::bind_rows(data1, data2)
+query <- dplyr::distinct(query, name, .keep_all = T)
+query <- dplyr::mutate(query, .id = paste0(name, "#", inst))
+
+# file.copy("./scopus.rds", "./scopus.backup.rds")
+db <- readRDS("./scopus.rds")
+db <- dplyr::mutate(db, last.name = gs(.id, "^([^,]+, )(.*)", "\\1"),
+  first.name = gs(gs(.id, "^([^,]+, )(.*)", "\\2"), " ", ""),
+  .id = paste0(last.name, first.name),
+)
+db <- map(db, ".id", query, "name", ".id", col = "re.id")
+db <- dplyr::select(db, -last.name, -first.name, -.id)
+db <- dplyr::relocate(db, .id = re.id)
+
+saveRDS(db, "./scopusV2.rds")
+
+x <- split_lapply_rbind(res, ~.id, head, n = 1)
+fun <- function(x) gs(x, "\\s", "")
+table(fun(data1$name) %in% fun(x$.id))
+dplyr::distinct(data1)$name %>% duplicated %>% table
+
+```
+
+```{r}
+tt <- readRDS("./scopusV2.rds")
+tt0 <- readRDS("./scopus.rds")
+
+tt <- filter(tt, grpl(.id, "#"))
+saveRDS(tt, "./scopusV2.rds")
+```
+

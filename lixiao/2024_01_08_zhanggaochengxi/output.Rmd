@@ -1,0 +1,463 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    keep_md: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \definecolor{shadecolor}{RGB}{230,230,230}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
+  \tcbuselibrary{breakable}
+  \renewenvironment{Shaded}
+  {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
+    arc = 1mm, auto outer arc, title = {Input}]}
+  {\end{tcolorbox}}
+  \usepackage{titlesec}
+  \titleformat{\paragraph}
+  {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
+---
+
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(1), coef = NA)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("肺癌")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# LC: lung cancer 肺癌
+```
+
+注：关于南方红豆杉的成分数据，使用的是 Taxus mairei (<https://plantaedb.com/taxa/phylum/gymnosperms/order/cupressales/family/taxaceae/genus/taxus/species/taxus-mairei>) 记录。更多关于红豆杉的记录可见 <https://plantaedb.com/search?src=Taxus>。
+
+## 需求
+
+co-targets > ATF3 > pathway (m6A) > ferroptosis
+根据研究基础，养阴解毒汤能够促进IGFIBP2表达，抑制METTL3表达，如果红豆杉和养阴解毒汤都靶向 m6A 甲基化修饰相关的作用靶点XXX。推测：红豆杉和养阴解毒汤通过XXX/YYY途径调控基因m6A甲基化修饰，促进肺癌细胞铁死亡，从而抑制肺癌的发展。（机制尽可能的结合ATF3）
+
+## 结果
+
+注：红豆杉的靶点未发现 ATF3，因此红豆杉和养阴解毒的共同靶点未包括 ATF3。
+
+- 分别分析了 养阴解毒汤 (YYJD) 和 红豆杉 (HDS) 的成分和靶点。
+    - YYDS：由于 YYDS 的南方红豆杉成分，多数中药数据库 (HERB、TCMSP 等) 没有该条目，这里使用了 PlantaeDb 中的成分记录 (Tab. \@ref(tab:Taxus-mairei-compounds-from-plantaeDb)) 。
+    - YYDS：由于 PlantaeDb 中的成分没有靶点信息，因此这里用 Super-Pred 预测了这些化合物的靶点 (先以 HOB 预测20%口服利药度，过滤了一部分成分) (Tab. \@ref(tab:Taxus-mairei-compounds-targets-predicted-by-Super-Pred)) 。
+    - YYDS：最终的成分靶点数据整合了来自于 HERB 的其它中药的成分靶点数据 (这里，也用 Super-Pred 补充了它们的靶点)，和来自于 PlantaeDb 的南方红豆杉的成分靶点。最终图和表见 Fig. \@ref(fig:MERGE-network-pharmacology-visualization), Tab. \@ref(tab:MERGE-Herbs-compounds-and-targets)
+    - HDS：分析思路同 YYDS，结合了 HERB 数据库的记录和 Super-Pred 的预测。Fig. \@ref(fig:HDS-network-pharmacology-visualization), Tab. \@ref(tab:HDS-Herbs-compounds-and-targets)
+- YYDS 和 HDS 的共同靶点见 Fig. \@ref(fig:Intersected-targets-of-YYJD-and-HDS)
+- 铁死亡相关的基因集来自于 `FerrDb V2`。Tab. \@ref(tab:Ferroptosis-regulators)
+- 肺癌和 m6A 相关的基因集都来自于 GeneCards (Tab. \@ref(tab:Lung-cancer-GeneCards-used-data), Tab. \@ref(tab:M6A-GeneCards-used-data))。
+- 最终结果采取交集方式：共同靶点 + 驱动铁死亡的调控基因 + 肺癌靶点 + m6A 相关，见 Fig. \@ref(fig:m6A-related-of-alls) 和 Fig. \@ref(fig:All-intersection)。筛选出的基因为：`r p.res$ins`
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+.add_internal_job(.job_hob())
+.add_internal_job(.job_genecard())
+auto_method(c("job_gmix", "job_bindingdb"))
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+<https://plantaedb.com/>
+<https://bidd.group/NPASS/index.php>
+<https://plantaedb.com/>
+
+## 网络药理学分析
+
+### 养阴解毒汤
+
+#### 南方红豆杉 Taxus-mairei
+
+```{r eval = T, echo = F, results = "asis"}
+#| Taxus-mairei-compounds-from-plantaeDb
+autor(pl@tables$step2$t.data)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Taxus-mairei-compounds-HOB-20-prediction
+autor(pl$ho@plots$step1$p.hob)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Taxus-mairei-compounds-targets-predicted-by-Super-Pred
+autor(pl@params$sp@tables$step1$targets)
+```
+
+```{r}
+# plb <- pl # the HOB 20%
+
+pl <- job_plantdb("taxus mairei")
+pl <- step1(pl)
+pl <- slice(pl, 1)
+pl <- step2(pl)
+pl <- step3(pl, T)
+pl <- step4(pl)
+pl <- step5(pl)
+pl@params$hb@tables$step1$herbs_compounds
+pl@params$pr@object
+pl@tables$step2$t.data
+grpf(pl@params$sp@tables$step1$targets$symbols, "atf3", T)
+
+pl@params$pr@object
+```
+
+```{r}
+## bindingdb test
+bd <- job_bindingdb()
+bd.pl <- step1(bd, names(pl@params$ho@object))
+grpf(bd.pl@tables$step1$res$symbol, "ATF3", T)
+```
+
+#### 其它中药 MIX
+
+以下靶点数据来源于 HERB 数据库：
+
+```{r eval = T, echo = F, results = "asis"}
+#| MIX-Herbs-compounds-and-targets-from-HERB
+autor(hb.mix@params$easyRead)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MIX-HOB-20-prediction
+autor(sp.mix@params$ho@plots$step1$p.hob)
+```
+
+补充了预测的靶点数据：
+
+```{r eval = T, echo = F, results = "asis"}
+#| MIX-compounds-targets-predicted-by-Super-Pred
+autor(sp.mix@tables$step1$targets)
+```
+
+```{r}
+mixs <- c("北沙参", "麦冬", "百合", "石斛", "白花蛇舌草", "南方红豆杉", "陈皮", "党参")
+hb.mix <- job_herb(mixs)
+hb.mix <- slice(hb.mix, 1:7)
+hb.mix <- step1(hb.mix)
+hb.mix <- step2(hb.mix)
+
+sp.mix <- asjob_superpred(hb.mix, T)
+sp.mix <- step1(sp.mix)
+sp.mix@tables$step1$targets
+
+hb.mix2 <- map(hb.mix, sp.mix)
+hb.mix2 <- step3(hb.mix2)
+hb.mix2@plots$step3$p.pharm
+
+hb.mix <- step3(hb.mix)
+```
+
+#### 合并 MERGE
+
+```{r eval = T, echo = F, results = "asis"}
+#| MERGE-Intersection-of-herbs-all-targets
+autor(wrap(hb.merge@plots$step3$p.herbs_targets, 20, 7))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MERGE-Intersection-of-herbs-compounds
+autor(hb.merge@plots$step3$p.herbs_compounds)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MERGE-network-pharmacology-visualization
+autor(hb.merge@plots$step3$p.pharm)
+```
+
+药方所有的成分、靶点数据：
+
+```{r eval = T, echo = F, results = "asis"}
+#| MERGE-Herbs-compounds-and-targets
+autor(hb.merge@params$easyRead)
+```
+
+```{r}
+hb.merge <- map(hb.mix2, pl)
+hb.merge <- step3(hb.merge)
+hb.merge@plots$step3$p.pharm
+grpf(unique(hb.merge@params$easyRead$Target.name), "atf3", T)
+```
+
+### 红豆杉
+
+以下是收集自 HERB 数据库的成分、靶点数据：
+
+```{r eval = T, echo = F, results = "asis"}
+#| HDS-Herbs-compounds-and-targets-from-HERB
+autor(hb.hds@params$easyRead)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HDS-HOB-20-prediction
+autor(sp.hds@params$ho@plots$step1$p.hob)
+```
+
+以 Super-Pred 预测更多的靶点：
+
+```{r eval = T, echo = F, results = "asis"}
+#| HDS-compounds-targets-predicted-by-Super-Pred
+autor(sp.hds@tables$step1$targets)
+```
+
+合并了预测的靶点后的数据：
+
+```{r eval = T, echo = F, results = "asis"}
+#| HDS-network-pharmacology-visualization
+autor(hb.hds2@plots$step3$p.pharm)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HDS-Herbs-compounds-and-targets
+autor(hb.hds2@params$easyRead)
+```
+
+```{r}
+hb.hds <- job_herb("红豆杉")
+hb.hds@object$component
+hb.hds <- step1(hb.hds)
+hb.hds@tables$step1$herbs_compounds
+hb.hds <- step2(hb.hds)
+hb.hds@object$component
+hb.hds@tables$step2$compounds_targets
+
+sp.hds <- asjob_superpred(hb.hds, T)
+sp.hds <- step1(sp.hds)
+
+hb.hds2 <- map(hb.hds, sp.hds)
+hb.hds2 <- step3(hb.hds2)
+hb.hds2@params$easyRead
+grpf(unique(hb.hds2@params$easyRead$Target.name), "atf3", T)
+hb.hds2@plots$step3$p.pharm
+
+hb.hds <- step3(hb.hds)
+hb.hds@plots$step3$p.pharm
+```
+
+```{r}
+## bindingdb test
+## bd <- job_bindingdb()
+bd.hds <- step1(bd, names(sp.hds@object))
+grpf(bd.hds@tables$step1$res$symbol, "ATF3", T)
+```
+
+### 养阴解毒汤和红豆杉共同靶点 coSig
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersected-targets-of-YYJD-and-HDS
+autor(ins.co$p.venn)
+```
+
+```{r}
+ins.co <- intersect(hb.merge, hb.hds2, c("YYJD", "HDS"))
+ins.co$p.venn
+grpf(ins.co$p.venn$ins, "atf3", T)
+coSig <- ins.co$p.venn$ins
+```
+
+## 铁死亡
+
+### `FerrDb V2` 基因集
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ferroptosis-regulators
+autor(db_fe)
+```
+
+```{r}
+db_fe <- get_fe_data()
+
+lapply(db_fe,
+  function(x) {
+    grpf(x$symbol, "atf3", T)
+  })
+```
+
+### Ferroptosis Driver 与 coSig 交集
+
+```{r eval = T, echo = F, results = "asis"}
+#| The-common-Targets-related-to-ferroptosis-driver
+autor(coSig_feDriver)
+```
+
+```{r}
+coSig_feDriver <- new_venn(coSig = ins.co$p.venn$ins, Fe_Driver = db_fe$driver$symbol)
+coSig_feDriver$ins
+
+en.coSig_feDriver <- job_enrich(coSig_feDriver$ins)
+en.coSig_feDriver <- step1(en.coSig_feDriver)
+en.coSig_feDriver@plots$step1$p.kegg$ids
+en.coSig_feDriver@tables$step1$res.kegg$ids
+en.coSig_feDriver <- step2(en.coSig_feDriver, "hsa05208")
+en.coSig_feDriver@plots$step2$p.pathviews$hsa05208
+
+```
+
+## 肺癌
+
+### 肺癌相关基因集
+
+GeneCards Score &gt; 3
+
+```{r eval = T, echo = F, results = "asis"}
+#| Lung-cancer-GeneCards-used-data
+autor(gx@tables$step2$t.genecard)
+```
+
+### coSig-ferroptosis 与 肺癌交集
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-coSigFe-genes-with-Lung-cancer-signatures
+autor(coSig_fe.lc)
+```
+
+```{r}
+gx <- job_gmix("lung cancer", "lung.*cancer|cancer.*lung|cancer")
+gx <- step1(gx)
+gx <- step2(gx, NULL, NULL, 3)
+gx@plots$step2$p.cols
+genes.disease <- gx@params$lst.genes$`GeneCards: lung cancer`
+genes.disease
+
+coSig_fe.lc <- new_venn(coSig_ferr. = coSig_feDriver$ins, Lung_cancer = genes.disease)
+coSig_fe.lc
+coSig_fe.lc$ins
+```
+
+```{r}
+en.coSig_fe_lc <- job_enrich(coSig_fe.lc$ins)
+en.coSig_fe_lc <- step1(en.coSig_fe_lc)
+en.coSig_fe_lc <- step2(en.coSig_fe_lc)
+en.coSig_fe_lc@plots$step1$p.kegg$ids
+en.coSig_fe_lc@plots$step1$p.go$ids
+
+```
+
+## m6A 相关
+
+### N6-Methyladenosine 基因集
+
+GeneCards Score &gt; 1
+
+```{r eval = T, echo = F, results = "asis"}
+#| M6A-GeneCards-used-data
+autor(gm.m6a@tables$step2$t.genecard)
+```
+
+### coSig-ferroptosis-cancer 与 m6A 相关
+
+```{r eval = T, echo = F, results = "asis"}
+#| m6A-related-of-alls
+autor(p.res)
+```
+
+```{r}
+gm.m6a <- job_gmix("N6-Methyladenosine", "N6-Methyladenosine")
+gm.m6a <- step1(gm.m6a)
+gm.m6a <- step2(gm.m6a, NULL, NULL, 1)
+gm.m6a@tables$step2$t.genecard
+
+new_venn(gm.m6a@tables$step2$t.genecard$Symbol, coSig)
+new_venn(gm.m6a@tables$step2$t.genecard$Symbol, coSig_feDriver$ins)
+p.res <-  new_venn(m6A = gm.m6a@tables$step2$t.genecard$Symbol, coSig_ferr._cancer = coSig_fe.lc$ins)
+p.res$ins
+```
+
+## 汇总
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-intersection
+autor(p.upset)
+```
+
+```{r}
+alls <- list(
+  Common_targets = coSig,
+  Ferroptosis_driver = db_fe$driver$symbol,
+  Lung_cancer = genes.disease,
+  m6A = gm.m6a@tables$step2$t.genecard$Symbol
+)
+p.upset <- new_upset(lst = alls)
+```
+
+```{r}
+je <- job_esearch("m6A database")
+vis(je)
+```
+
+```{r}
+saves()
+
+loads()
+```
+

@@ -1,0 +1,80 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(1), coef = NA)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("下肢深静脉血栓", "Lower Extremity Deep Vein Thrombosis"))
+
+# LEDVT: Lower Extremity Deep Vein Thrombosis 下肢深静脉血栓
+
+
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+- <https://mimic.mit.edu/>
+    - 需要通过测试和申请才能获取数据
+    - <https://physionet.org/content/mimiciv/2.2/>
+- Truven Health Marketscan <https://marketscan.truvenhealth.com/marketscanportal/Login.aspx>
+- <https://www.cdc.gov/nchs/nhanes/index.htm> (xpt)
+    - 没有具体到疾病的数据
+- <https://www.cpc.unc.edu/projects/china>
+- <https://ghdx.healthdata.org/>
+
+
+https://zhuanlan.zhihu.com/p/642058231/
+
+```{r}
+url <- "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10167078/table/Tab1/?report=objectonly"
+x <- get_table.html(RCurl::getURL(url))
+x <- as_tibble(x[[1]])
+```

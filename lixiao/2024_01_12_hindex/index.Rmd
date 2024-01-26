@@ -63,8 +63,24 @@ colnames(data1) <- c("name", "inst")
 
 res <- 0L
 while (identical(res, 0L) || inherits(res, "try-error")) {
-  res <- try(search.scopus(data1), T)
+  res <- try(search.scopus(data1))
+  Sys.sleep(10)
+}
+openxlsx::write.xlsx(res, "scopus_heartANDlung.xlsx")
+
+```
+
+```{r}
+data2 <- fxlsx("./order_material/file_2.xlsx")
+colnames(data2) <- c("name", "inst")
+
+res <- 0L
+while (identical(res, 0L) || inherits(res, "try-error")) {
+  res <- try(search.scopus(data2))
   Sys.sleep(10)
 }
 
+openxlsx::write.xlsx(res, "scopus_neuro.xlsx")
 ```
+
+

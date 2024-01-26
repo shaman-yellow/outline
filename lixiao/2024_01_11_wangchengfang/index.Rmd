@@ -60,3 +60,21 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+```{r}
+db <- readxl::read_xls("/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/活性成分附表-FT231221067-Y.xls")
+get_orders()
+
+path <- "/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/"
+files <- list.files(path, ".raw$")
+
+msc <- job_msconvert(path, files)
+msc.neg <- step1(msc, "neg")
+msc.pos <- step1(msc, "pos")
+
+xc.neg <- asjob_xcms(msc.neg)
+xc.neg <- step1(xc.neg)
+xc.neg <- step2(xc.neg)
+
+
+```

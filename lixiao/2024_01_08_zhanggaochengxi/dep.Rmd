@@ -3,5 +3,64 @@
 x <- ftibble("~/Downloads/NPASSv2.0_download_naturalProducts_speciesInfo.txt")
 dplyr::filter(x, grpl(org_name, "taxus.*mairei", T))
 
+```
+
+```{r}
 
 ```
+
+```{r}
+pl.hds <- job_plantdb("Taxus chinensis")
+pl.hds <- step1(pl.hds)
+pl.hds@params$herbs_info
+pl.hds <- slice(pl.hds)
+pl.hds <- step2(pl.hds)
+```
+
+
+```{r}
+st <- job_stringdb(db_fe$driver$symbol)
+st <- step1(st, 60, HLs = "ATF3")
+mcc <- vis(st, "ATF3")
+mcc
+
+st@plots$step1$p.mcc
+st@plots$step1$p.ppi
+st@tables$step1$hub_genes
+st@params
+```
+
+## ALL
+
+```{r}
+lst <- list(
+  targets = ins.co$p.venn$ins,
+  disease = gx@tables$step2$t.genecard$Symbol
+  # ferroptosis = unique(unlist(lapply(db_fe, function(x) x$symbol)))
+)
+
+lst$targets %>% .[. %in% mcc$data$node1.hgnc_symbol ]
+lst$disease %>% .[. %in% mcc$data$node1.hgnc_symbol ]
+
+ins <- ins(lst = lst)
+grpf(lst$ferroptosis, "atf3", T)
+```
+
+```{r}
+en.ins <- job_enrich(ins)
+en.ins <- step1(en.ins)
+en.ins@tables$step1$res.kegg
+en.ins@plots$step1$p.kegg$ids
+en.ins <- step2(en.ins, "hsa05208")
+en.ins@plots$step2$p.pathviews$hsa05208
+
+```
+
+```{r}
+ma <- job_m6a("H")
+ma <- step1(ma, coSig_fe.lc$ins)
+ma@tables$step1$t.data
+```
+
+(Taxus wallichiana var. mairei) (Taxus mairei)
+? (Taxus chinensis var. mairei)
