@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(1), coef = NA)
+info <- items(belong = odate(1), coef = .25)
 
 order_publish()
 idname <- order_packaging()
@@ -31,23 +31,23 @@ set_index()
 
 # 摘要 {#abstract}
 
+需求：以客户提供的数据 (RNA-seq + 肠道菌宏基因组数据) ，筛选 DEGs、代谢物、肠道菌群关系链。
+
+结果：
+
+- 肠道菌群群落分析，以 MetaPhlAn 注释和定量肠道菌，MicrobiotaProcess 下游分析：
+    - Alpha 和 Beta 分析均表明，对照组和模型组有显著差异 (\@ref(alpha), \@ref(beta)) 
+    - 所有差异肠道菌见 \@ref(diff)
+- 建立肠道菌和代谢物联系，以 gutMDisorder 数据库：
+    - 将上述差异肠道菌在数据库筛选相关代谢物 (\@ref(meta)) 
+- 
+
 ```{r}
 dic(di("胆结石"))
 
 # G: gallstones 胆结石
 ```
 
-董志霞反馈分组情况如下:
-18个小鼠，
-chow（正常组）1,2,3,4,5,6
-LD（结石组）1,2,3,4,5,6
-sev（治疗组）1,2,3,4,5,6
-
-结石组的造模方式？
-致石饲料加治疗药物
-
-治疗组的造模方式？
-盐酸司维拉姆
 
 # 前言 {#introduction}
 
@@ -89,7 +89,7 @@ fp <- step1(fp, c(".R1", ".R2"), ".raw.fastq.gz", 12)
 fp <- step2(fp)
 ```
 
-### 群落鉴定和丰度定量
+### 群落鉴定和丰度定量 {#quant}
 
 从这里开始，仅选择对照组和模型组进行分析。
 
@@ -108,21 +108,21 @@ mpa <- step3(mpa, "--Chow|--LD")
 
 ### 群落分析
 
-#### 样本质控 PCoA
+#### Alpha 多样性 {#alpha}
 
-```{r eval = T, echo = F, results = "asis"}
-#| PCoA
-autor(mp@plots$step3$p.pcoa)
-```
-
-#### Alpha 多样性
+对照组和模型组有显著差异。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Alpha-diversity
 autor(mp@plots$step1$p.alpha_index)
 ```
 
-#### Beta 多样性
+#### Beta 多样性 {#beta}
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCoA
+autor(mp@plots$step3$p.pcoa)
+```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Sample-distance
@@ -144,7 +144,7 @@ autor(mp@plots$step3$p.hier)
 autor(mp@plots$step3$p.hier$Species)
 ```
 
-#### 差异分析
+#### 差异分析 {#diff}
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Statistic-of-all-difference-microbiota
@@ -171,7 +171,7 @@ mp@tables$step4$top_table
 mp@object
 ```
 
-## 肠道菌群关联代谢物分析
+## 肠道菌群关联代谢物分析 {#meta}
 
 ```{r eval = T, echo = F, results = "asis"}
 #| MICRO-alluvium-plot-of-Matched-data-in-gutMDisorder
@@ -186,68 +186,105 @@ autor(gm.micro@params$res_micro$db_matched)
 ```{r}
 gm.micro <- job_gutmd()
 gm.micro <- step1(gm.micro, pattern(mp))
+gm.micro@params$res_micro$data
 gm.micro@params$res_micro$p.allu
 pattern(mp)
 ```
 
-## 代谢物关联蛋白质分析
+## 代谢物关联蛋白质 (基因) 分析
 
 <https://github.com/aeisman/protein-metabolite>
 <https://mbenson.shinyapps.io/protein-metabolite/>
 [@ProteinMetabolBenson2023]
 
+```{r eval = T, echo = F, results = "asis"}
+#| MICRO-Discover-relationship-between-Microbiota-with-Host-genes-by-matching-metabolites
+autor(gm.micro@params$ProteinMetabolBenson2023$matched)
+```
+
 ```{r}
-fun <- function() {
-  files <- list.files("~/outline/lixiao/published_data/ProteinMetabolBenson2023/", ".xlsx$", full.names = T)
-  names(files) <- gs(files, ".*mmc([0-9]+).*", "\\1")
-  files <- files[ order(as.numeric(names(files))) ]
-  print(files)
-  lapply(files, function(x) try(fxlsx(x), T))
-}
-m <- fun()
+pr.pm <- get_data.pmb2023()
+gm.micro <- map(gm.micro, pr.pm)
+gm.micro@params$ProteinMetabolBenson2023$matched
+```
 
-## use 7
-saveRDS(m0, "~/outline/lixiao/published_data/ProteinMetabolBenson2023_mmc5.rds")
-filter(m0, grpl(Metabolite_Name, "AMP", T), Target_Gene == "AREG")
+## 蛋白质关联到 RNA-seq 的DEG
 
-m1 <- tibble::as_tibble(dplyr::select(m0, Target_Gene, Metabolite_Name, META_Rho, META_Q, META_P))
-m1 <- dplyr::mutate(m1, .id = tolower(Metabolite_Name))
-metas <- dplyr::mutate(metas, .id = tolower(name))
-m1 <- map(m1, ".id", metas, ".id", "cid", col = "pubchem_cid")
-m1 <- dplyr::select(m1, -.id)
-m1 <- dplyr::mutate(m1, pubchem_cid = as.integer(pubchem_cid))
-saveRDS(m1, "~/outline/lixiao/published_data/ProteinMetabolBenson2023_mmc5_small.rds")
+### Liver
 
-m1$pubchem_cid %>% is.na %>% table
-filter(m1, is.na(pubchem_cid))
-metas$.id
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-Intersection-of-Microbiota-associated-Genes-with-DEGs
+autor(res.liver$p.venn)
+```
 
-unique(m1$.id) %>% .[!. %in% metas$.id]
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-Microbiota-associated-Genes-filtered-by-DEGs
+autor(res.liver$data)
+```
 
-m0 <- openxlsx2::read_xlsx("~/outline/lixiao/published_data/ProteinMetabolBenson2023/S4.xlsb")
-m0 <- tibble::as_tibble(m0)
-dat <- RCurl::getURL("https://mbenson.shinyapps.io/protein-metabolite/")
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-Top-1000-relationship-network
+autor(res.liver$p.network)
+```
 
-link <- start_drive()
-link$open()
-link$navigate("https://mbenson.shinyapps.io/protein-metabolite/")
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-Top-1000-relationship-data
+autor(res.liver$data.network)
+```
 
-fun_format <- function() get_table.html(link$getPageSource()[[1]])
+```{r}
+lm.liver <- readRDS("../2023_11_07_dongzhixia/lm.l3.rds")
+lm.liver@sig <- "Liver"
+lm.liver@tables$step2$tops$`Model - Control`
 
-meta1 <- fun_format()
-meta2 <- fun_format()
-meta3 <- fun_format()
-meta4 <- fun_format()
+bm2.liver <- job_biomart2(lm.liver@tables$step2$tops[[1]]$mgi_symbol, "mmu", "hsa")
+bm2.liver <- step1(bm2.liver)
+bm2.liver <- step2(bm2.liver, lm.liver@tables$step2$tops[[1]])
+tops.liver <- bm2.liver@params$tops_mapped
+tops.liver <- dplyr::relocate(tops.liver, hgnc_symbol, mgi_symbol)
+tops.liver
 
-metas <- lapply(list(meta1, meta2, meta3, meta4),
-  function(x) as_tibble(select(x[[1]], name = 3, cid = 4))
-)
-metas <- frbind(metas)
-metas <- dplyr::distinct(metas)
-metas
+res.liver <- map(lm.liver, gm.micro, tops.liver)
+res.liver$p.network
 
-m <- link$getPageSource()
-m <- get_table.html(m[[1]])
+```
+
+### Ileum
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-Intersection-of-Microbiota-associated-Genes-with-DEGs
+autor(res.ileum$p.venn)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-Microbiota-associated-Genes-filtered-by-DEGs
+autor(res.ileum$data)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-Top-1000-relationship-network
+autor(res.ileum$p.network)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-Top-1000-relationship-data
+autor(res.ileum$data.network)
+```
+
+```{r}
+lm.ileum <- readRDS("../2023_11_07_dongzhixia/lm.t3.rds")
+sig(lm.ileum) <- "Ileum"
+
+bm2.ileum <- job_biomart2(lm.ileum@tables$step2$tops[[1]]$mgi_symbol, "mmu", "hsa")
+bm2.ileum <- step1(bm2.ileum)
+bm2.ileum <- step2(bm2.ileum, lm.ileum@tables$step2$tops[[1]])
+tops.ileum <- bm2.ileum@params$tops_mapped
+tops.ileum <- dplyr::relocate(tops.ileum, hgnc_symbol, mgi_symbol)
+tops.ileum
+
+res.ileum <- map(lm.ileum, gm.micro, tops.ileum)
+res.ileum$data
+res.ileum$p.venn
 ```
 
 
