@@ -197,14 +197,54 @@ pattern(mp)
 [@ProteinMetabolBenson2023]
 
 ```{r}
-files <- list.files("~/outline/lixiao/published_data/ProteinMetabolBenson2023/", ".xlsx$", full.names = T)
-m <- lapply(files, function(x) try(fxlsx(x), T))
+fun <- function() {
+  files <- list.files("~/outline/lixiao/published_data/ProteinMetabolBenson2023/", ".xlsx$", full.names = T)
+  names(files) <- gs(files, ".*mmc([0-9]+).*", "\\1")
+  files <- files[ order(as.numeric(names(files))) ]
+  print(files)
+  lapply(files, function(x) try(fxlsx(x), T))
+}
+m <- fun()
 
+## use 7
+saveRDS(m0, "~/outline/lixiao/published_data/ProteinMetabolBenson2023_mmc5.rds")
+filter(m0, grpl(Metabolite_Name, "AMP", T), Target_Gene == "AREG")
+
+m1 <- tibble::as_tibble(dplyr::select(m0, Target_Gene, Metabolite_Name, META_Rho, META_Q, META_P))
+m1 <- dplyr::mutate(m1, .id = tolower(Metabolite_Name))
+metas <- dplyr::mutate(metas, .id = tolower(name))
+m1 <- map(m1, ".id", metas, ".id", "cid", col = "pubchem_cid")
+m1 <- dplyr::select(m1, -.id)
+m1 <- dplyr::mutate(m1, pubchem_cid = as.integer(pubchem_cid))
+saveRDS(m1, "~/outline/lixiao/published_data/ProteinMetabolBenson2023_mmc5_small.rds")
+
+m1$pubchem_cid %>% is.na %>% table
+filter(m1, is.na(pubchem_cid))
+metas$.id
+
+unique(m1$.id) %>% .[!. %in% metas$.id]
+
+m0 <- openxlsx2::read_xlsx("~/outline/lixiao/published_data/ProteinMetabolBenson2023/S4.xlsb")
+m0 <- tibble::as_tibble(m0)
 dat <- RCurl::getURL("https://mbenson.shinyapps.io/protein-metabolite/")
 
 link <- start_drive()
 link$open()
 link$navigate("https://mbenson.shinyapps.io/protein-metabolite/")
+
+fun_format <- function() get_table.html(link$getPageSource()[[1]])
+
+meta1 <- fun_format()
+meta2 <- fun_format()
+meta3 <- fun_format()
+meta4 <- fun_format()
+
+metas <- lapply(list(meta1, meta2, meta3, meta4),
+  function(x) as_tibble(select(x[[1]], name = 3, cid = 4))
+)
+metas <- frbind(metas)
+metas <- dplyr::distinct(metas)
+metas
 
 m <- link$getPageSource()
 m <- get_table.html(m[[1]])
