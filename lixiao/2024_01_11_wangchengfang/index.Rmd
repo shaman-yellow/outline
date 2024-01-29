@@ -72,9 +72,32 @@ msc <- job_msconvert(path, files)
 msc.neg <- step1(msc, "neg")
 msc.pos <- step1(msc, "pos")
 
+```
+
+### Neg
+
+```{r}
 xc.neg <- asjob_xcms(msc.neg)
 xc.neg <- step1(xc.neg)
 xc.neg <- step2(xc.neg)
 
+si.neg <- asjob_sirius(xc.neg)
+si.neg <- set_remote(si.neg, "/data/hlc/wangchengfang_neg")
+si.neg <- step1(si.neg)
+si.neg <- step2(si.neg, NULL, workers = 30)
 
+si.neg <- step3(si.neg)
+ping(si.neg)
+
+```
+
+### Pos
+
+```{r}
+
+```
+
+```{r}
+saves()
+loads()
 ```
