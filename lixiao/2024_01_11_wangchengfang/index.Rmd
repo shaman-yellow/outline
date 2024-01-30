@@ -63,8 +63,61 @@ auto_method()
 
 ```{r}
 db <- readxl::read_xls("/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/活性成分附表-FT231221067-Y.xls")
-get_orders()
 
+fun_format <- function(x) {
+  x <- dplyr::filter(x, !is.na(...3))
+  x <- dplyr::select_if(x, function(x) !all(is.na(x)))
+  x <- dplyr::select(x, name = ...3, rt.min = ...7, formula = ...9, mw = ...12)
+  x <- dplyr::filter(x, name != "Name")
+  pos.na <- which(is.na(x$rt.min))
+  pos.napre <- pos.na - 1
+  str.na <- x$name[ pos.na ]
+  x$name[ pos.napre ] <- paste0(x$name[ pos.napre ], x$name[ pos.na ])
+  x <- dplyr::filter(x, !is.na(rt.min))
+  x <- dplyr::mutate(x, en.name = gs(name, "([^\u4e00-\u9fa5]*).*", "\\1"),
+    cn.name = gs(name, ".*?([\u4e00-\u9fa5].*)$", "\\1"),
+    tail = strx(en.name, " [^ ]+-$"),
+    tail = ifelse(is.na(tail), "", tail),
+    en.name = substr(en.name, 1, nchar(en.name) - nchar(tail)),
+    en.name = gs(en.name, "\\s*$", ""),
+    cn.name = gs(paste0(tail, cn.name), "^\\s*", ""),
+    formula = gs(formula, "\\s", ""),
+    rt.min = round(as.double(rt.min), 2),
+    mw = round(as.double(mw), 4)
+  )
+  x <- dplyr::select(x, -tail, -name)
+  dplyr::relocate(x, en.name, cn.name)
+}
+
+table <- fun_format(db)
+
+file.copy("/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/活性成分附表-FT231221067-Y.xlsx", "./order_material")
+dir.create("./material")
+unzip("./order_material/活性成分附表-FT231221067-Y.xlsx", exdir = "./material")
+
+fun <- function(dir) {
+  files <- list.files(dir, ".png$", full.names = T)
+  scale <- sapply(files, simplify = F,
+    function(x) {
+      try(bitmap_info(x))
+    })
+  scale <- frbind(scale, idcol = "file")
+  scale <- dplyr::filter(scale, width > height * 15)
+  scale <- dplyr::mutate(scale, num = as.integer(gs(file, ".*?([0-9]+).png", "\\1")))
+  scale <- dplyr::arrange(scale, num)
+}
+scales <- fun("./material/xl/media/")
+
+oc <- job_ocr()
+oc <- step1(oc)
+res <- map(oc, head(scales$file, n = 1))
+
+
+```
+
+## LC-MS
+
+```{r}
 path <- "/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/"
 files <- list.files(path, ".raw$")
 
@@ -83,11 +136,14 @@ xc.neg <- step2(xc.neg)
 
 si.neg <- asjob_sirius(xc.neg)
 si.neg <- set_remote(si.neg, "/data/hlc/wangchengfang_neg")
+si.neg@step <- 0L
 si.neg <- step1(si.neg)
 si.neg <- step2(si.neg, NULL, workers = 30)
 
 si.neg <- step3(si.neg)
 ping(si.neg)
+
+
 
 ```
 

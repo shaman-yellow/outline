@@ -227,7 +227,7 @@ autor(tops.liver)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Liver-Intersection-of-Microbiota-associated-Genes-with-DEGs
-autor(res.liver$p.venn)
+autor(z7(res.liver$p.venn, 1.25, 1.2))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -271,7 +271,7 @@ autor(tops.ileum)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Ileum-Intersection-of-Microbiota-associated-Genes-with-DEGs
-autor(res.ileum$p.venn)
+autor(z7(res.ileum$p.venn, 1.25, 1.2))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}

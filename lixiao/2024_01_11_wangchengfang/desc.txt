@@ -1,0 +1,635 @@
+Number of Class Pruner Levels
+Max pixel gap for broken pixed pitch
+Block to do debug on
+Max range test on pitch
+Rows required to outvote a veto
+Show stroke widths
+Use new fast algorithm
+Max advance fake generation
+Max lost before fallback line used
+For smooth factor
+For smooth factor
+coord of test pt
+coord of test pt
+Min blobs before gradient counted
+Min blobs in each spline segment
+Size of window for spline segmentation
+Max number of blobs a big blob can overlap
+Min credible pixel xheight
+Number of linew fits to do
+Show image blobs
+Max allowed bending of chop cells
+Max number of children inside a character outline
+Max layers of nested children inside a character outline
+Importance ratio for chucking outlines
+Max holes allowed in blob
+Min pixels for potential char in box
+Max lensq/area for acceptable child outline
+Debug level for split shiro-rekha process.
+Show partition bounds, waiting if >1
+Debug tab finding
+Turn on output related to bugs in tab finding
+Left edge of debug reporting rectangle
+Top edge of debug reporting rectangle
+Right edge of debug rectangle
+Bottom edge of debug rectangle
+Editor image X Pos
+Editor image Y Pos
+Add to image height for menu bar
+Word bounding box colour
+Blob bounding box colour
+Correct text colour
+Editor debug window X Pos
+Editor debug window Y Pos
+Editor debug window height
+Editor debug window width
+Word window X Pos
+Word window Y Pos
+Word window height
+Word window width
+Display splits
+Debug old poly
+More accurate approx on wide things
+Display Blobs
+Blob pause
+Do fixed pitch chopping
+Force proportional word segmentation on all rows
+Chopper is being tested.
+Chop underlines & put back
+Display separate words
+Display separate words
+Display forced fixed pitch words
+Moan about prop blocks
+Moan about fixed pitch blocks
+Dump stats when moaning
+Do current test
+Scale scores on big words
+All doc is proportial text
+Debug on fixed pitch test
+Turn off dp fixed pitch algorithm
+Do even faster pitch algorithm
+Write full metric stuff
+Draw row-level cuts
+Draw page-level cuts
+Use correct answer for fixed/prop
+Attempt whole doc/block fixed pitch
+Show table regions
+Debug table marking steps in detail
+Show page stats used in table finding
+Enables the table recognizer for table layout and filtering.
+Show tab candidates
+Show tab vectors
+Only run stroke widths
+Use original wiseowl xheight
+Debug old baseline generation
+Debug baseline generation
+Use para default mechanism
+Split stepped splines
+Merge suspect partitions
+Improve correlation of heights
+Fix bug in modes threshold for xheights
+Make baselines for ocropus
+Vigorously remove noise
+Display row accumulation
+Display page correlated rows
+Display rows after expanding
+Display rows after final fitting
+Display blob bounds after pre-ass
+Tests refer to land/port
+Force parallel baselines
+Force straight baselines
+Use old baseline algorithm
+Use old xheight algorithm
+Use spline baseline
+Prevent multiple baselines
+Test xheight algorithms
+Bias skew estimates with line length
+Interpolate across gaps
+Use test xheight mechanism
+Print test blob information
+Say which blocks have tables
+Use large space at start and end of rows
+Ensure gaps not less than 2quanta wide
+Use the new outline complexity module
+turn on debugging for this module
+Remove boxy parents of char-like children
+Draw fixed pitch cell boundaries
+Whether to create a debug image for split shiro-rekha process.
+Show partition bounds
+Show blobs rejected as noise
+Show column bounds
+Show final block bounds
+run table detection
+If true, word delimiter spaces are assumed to have variable width, even though characters have fixed pitch.
+Make debug windows printable
+Save input bi image
+Save special character image
+Save the seed image
+Save the merged image
+Stream a filelist from stdin
+File to send tprintf output to
+Function used for calculation of dot product
+Default font name to be used in training
+Name of debugfile
+Editor image window name
+Editor debug window name
+BL normalized word window
+Title of output document (used for hOCR and PDF output)
+Pico Feature Length
+Norm adjust midpoint ...
+Norm adjust curl ...
+Slope below which lines are called horizontal
+Slope above which lines are called vertical
+Class Pruner Angle Pad Loose
+Class Pruner Angle Pad Medium
+CLass Pruner Angle Pad Tight
+Class Pruner End Pad Loose
+Class Pruner End Pad Medium
+Class Pruner End Pad Tight
+Class Pruner Side Pad Loose
+Class Pruner Side Pad Medium
+Class Pruner Side Pad Tight
+Proto Pruner Angle Pad
+Proto Prune End Pad
+Proto Pruner Side Pad
+Fraction of x to ignore
+Smoothing gap stats
+Smoothing width stats
+Ile of blob widths for space est
+Multiple of xheight
+Max believable third space
+Fraction of xheight
+Fraction of xheight
+Fraction of xheight
+Max initial cluster size
+Min initial cluster spacing
+Fraction of valid gaps needed
+Pitch sync threshold
+Threshold for definite fixed
+Threshold for definite prop
+Fraction of xheight for sameness
+Max initial cluster size
+Min initial cluster spacing
+Fraction of xheight
+Fraction of xheight
+Allowed size variance
+Non-fuzzy spacing region
+Min ratio space/nonspace
+Min ratio space/nonspace
+Pitch IQR/Gap IQR threshold
+Xh fraction noise in pitch
+Min width of decent blobs
+Ding rate for mid-cuts
+Ding rate for unbalanced char cells
+max fraction of mean blob width allowed for vertical gaps in vertical text
+Fraction of box matches required to declare a line vertical
+Dist inside big blob for chopping
+Fraction of cut for free cuts
+Fraction of est allowed in calc
+Max aspect ratio of a dot
+X fraction for new partition
+Fraction of line spacing for quad
+Fraction of line spacing for outlier
+Ile of gradients for page skew
+Lag for skew on row accumulation
+Max iqr/median for linespace
+Max width of blobs to make rows
+Max width before chopping
+Factor to expand rows by in expand_rows
+Fraction of linespace for good overlap
+fraction of linesize for min xheight
+* blob height for initial linesize
+New row made if blob makes row this big
+Fraction of neighbourhood
+Multiple of line_size for underline
+Min blob height/top to include blob top into xheight stats
+Min pile height to make xheight
+Min pile height to make ascheight
+Min pile height to make descheight
+Min cap/xheight
+Max cap/xheight
+Min desc/xheight
+Max desc/xheight
+Accepted variation
+xht multiplier
+Max distance of chop pt from vertex
+Min area fraction of child outline
+Min area fraction of grandchild for box
+Fraction of width occupied
+Debug level for unichar ambiguities
+Classify debug level
+Normalization Method   ...
+Matcher Debug Level
+Matcher Debug Flags
+Learning Debug Level: 
+Min # of permanent classes
+Reliable Config Threshold
+Enable adaption even if the ambiguities have not been seen
+Threshold for good protos during adaptive 0-255
+Threshold for good features during adaptive 0-255
+Class Pruner Threshold 0-255
+Class Pruner Multiplier 0-255:       
+Class Pruner CutoffStrength:         
+Integer Matcher Multiplier  0-255:   
+Set to 1 for general debug info, to 2 for more details, to 3 to see all the debug messages
+Debug level for hyphenated words.
+Size of dict word to be treated as non-dict word
+Stopper debug level
+Max words to keep in list
+Maximum number of different character choices to consider during permutation. This limit is especially useful when user patterns are specified, since overly generic patterns can result in dawg search exploring an overly large number of options.
+Fix blobs that aren't chopped
+Chop debug
+Split Length
+Same distance
+Min Number of Points on Outline
+Max number of seams in seam_pile
+Min Inside Angle Bend
+Min Outline Area
+Width of (smaller) chopped blobs above which we don't care that a chop is not near the center.
+X / Y  length weight
+Debug level for wordrec
+Max number of broken pieces to associate
+SegSearch debug level
+Maximum number of pain points stored in the queue
+Maximum number of pain point classifications per chunk that did not result in finding a better word choice.
+Language model debug level
+Maximum order of the character ngram model
+Maximum number of prunable (those for which PrunablePath() is true) entries in each viterbi list recorded in BLOB_CHOICEs
+Maximum size of viterbi lists recorded in BLOB_CHOICEs
+Minimum length of compound words
+Display Segmentations
+Page seg mode: 0=osd only, 1=auto+osd, 2=auto_only, 3=auto, 4=column, 5=block_vert, 6=block, 7=line, 8=word, 9=word_circle, 10=char,11=sparse_text, 12=sparse_text+osd, 13=raw_line (Values from PageSegMode enum in publictypes.h)
+Which OCR engine(s) to run (Tesseract, LSTM, both). Defaults to loading and running the most accurate available.
+Whether to use the top-line splitting process for Devanagari documents while performing page-segmentation.
+Whether to use the top-line splitting process for Devanagari documents while performing ocr.
+Debug level for BiDi
+Debug level
+Page number to apply boxes from
+Amount of debug output for bigram correction.
+Debug reassignment of small outlines
+Max diacritics to apply to a blob
+Max diacritics to apply to a word
+Reestimate debug
+alphas in a good word
+Adaptation decision algorithm for tess
+Print multilang debug info.
+Print paragraph debug info.
+Only preserve wds longer than this
+For adj length in rating per ch
+How many potential indicators needed
+Don't crunch words with long lower case strings
+Don't crunch words with long lower case strings
+Crunch words with long repetitions
+As it says
+How many non-noise blbs either side?
+What constitues done for spacing
+Contextual fixspace debug
+Max allowed deviation of blob top outside of font data
+Min change in xht before actually trying it
+Debug level for sub & superscript fixer
+Set JPEG quality level
+Specify DPI for input image
+Specify minimum characters to try during OSD
+Suspect marker level
+Don't suspect dict wds longer than this
+Rejection algorithm
+Rej blbs near image edge limit
+Reject any x-ht lt or eq than this
+-1 -> All pages, else specific page to process
+Run in parallel where possible
+Allows to include alternative symbols choices in the hOCR output. Valid input values are 0, 1, 2 and 3. 0 is the default value. With 1 the alternative symbol choices per timestep are included. With 2 the alternative symbol choices are accumulated per character. 
+Debug data
+or should we use mean
+No.samples reqd to reestimate for row
+No.gaps reqd with 1 large gap to treat as a table
+No.gaps reqd with few cert spaces to use certs
+How to avoid being silly
+Pixel size of noise
+Baseline debug level
+Fraction of size for maxima
+Transitions for normal blob
+super norm blobs to save row
+Use ambigs for deciding whether to adapt to a character
+Use divisible blobs chopping
+Prioritize blob division over chopping
+Enable adaptive classifier
+Character Normalized Matching
+Baseline Normalized Matching
+Enable adaptive classifier
+Use pre-adapted classifier templates
+Save adapted templates to a file
+Enable match debugger
+Non-linear stroke-density normalization
+Do not include character fragments in the results of the classifier
+Bring up graphical debugging windows for fragments training
+Use two different windows for debugging the matching: One for the protos and one for the features.
+Assume the input is numbers [0-9].
+Load system word dawg.
+Load frequent word dawg.
+Load unambiguous word dawg.
+Load dawg with punctuation patterns.
+Load dawg with number patterns.
+Load dawg with special word bigrams.
+Use only the first UTF8 step of the given string when computing log probabilities.
+Make AcceptableChoice() always return false. Useful when there is a need to explore all segmentations
+Don't use any alphabetic-specific tricks. Set to true in the traineddata config file for scripts that are cursive or inherently fixed-pitch
+Save Document Words
+Merge the fragments in the ratings matrix and delete them after merging
+Associator Enable
+force associator to run regardless of what enable_assoc is. This is used for CJK where component grouping is necessary.
+Chop enable
+Vertical creep
+Use new seam_pile
+include fixed-pitch heuristics in char segmentation
+Only run OCR for words that had truth recorded in BlamerBundle
+Print blamer debug messages
+Try to set the blame for errors
+Save alternative paths found during chopping and segmentation search
+Turn on/off the use of character ngram model
+Use only the first UTF8 step of the given string when computing log probabilities.
+Words are delimited by space
+Use sigmoidal score for certainty
+Take segmentation and labeling from box file
+Conversion of word/line box file to char box file
+Generate training data from boxed chars
+Generate more boxes from boxed chars
+Break input into lines and remap boxes if present
+Dump intermediate images made during page segmentation
+Try inverting the image in `LSTMRecognizeWord`
+Perform training for ambiguities
+Generate and print debug information for adaption
+Learn both character fragments (as is done in the special low exposure mode) as well as unfragmented characters.
+Each bounding box is assumed to contain ngrams. Only learn the ngrams whose outlines overlap horizontally.
+Draw output words
+Dump char choices
+Print timing stats
+Try to improve fuzzy spaces
+Don't bother with word plausibility
+Crunch double hyphens?
+Add words to the document dictionary
+Output font info per char
+Block and Row stats
+Enable correction based on the word bigram dictionary.
+Enable single word correction based on the dictionary.
+Remove and conditionally reassign small outlines when they confuse layout analysis, determining diacritics vs noise
+Do minimal rejection on pass 1 output
+Test adaption criteria
+Test for point
+Run paragraph detection on the post-text-recognition (more accurate)
+Use ratings matrix/beam search with lstm
+Reduce rejection on good docs
+Reject spaces?
+Only rej partially rejected words in block rejection
+Only rej partially rejected words in row rejection
+Use word segmentation quality metric
+Use word segmentation quality metric
+Apply row rejection to good docs
+Reject all bad quality wds
+Page stats
+Output data to debug file
+unrej potential with no checks
+Mark v.bad words for tilde crunch
+Add font info to hocr output
+Add coordinates for each character to hocr output
+Before word crunch?
+Take out ~^ early?
+As it says
+Don't touch sensible strings
+Use acceptability in okstring
+Don't pot crunch sensible strings
+Fiddle alpha figures
+Reward punctuation joins
+Write block separators in output
+Write repetition char code
+Write .unlv output file
+Write .txt output file
+Write .html hOCR output file
+Write .xml ALTO file
+Write .box file for LSTM training
+Write .tsv output file
+Write WordStr format .box output file
+Write .pdf output file
+Create PDF with only one invisible text layer
+UNLV keep 1Il chars rejected
+Only reject tess failures
+Don't reject ANYTHING
+Make output have exactly one word per WERD
+Don't reject ANYTHING AT ALL
+Adaption debug
+Contextual 0O O0 flips
+Use DOC dawg in 11l conf. detector
+Use dictword test
+Don't double check
+Individual rejection control
+Individual rejection control
+Individual rejection control
+Extend permuter check
+Extend permuter check
+Output text with boxes
+Capture the image from the IPE
+Run interactively?
+According to dict_word
+In multilingual mode use params model of the primary language
+Debug line finding
+Use CJK fixed pitch model
+Allow feature extractors to see the original outline
+Only initialize with the config file. Useful if the instance is not going to be used for OCR but say only for layout analysis.
+Turn on equation detector
+Enable vertical detection
+Force using vertical text page mode
+Preserve multiple interword spaces
+Detect music staff and remove intersecting components
+Script has no xheight, so use a single mode
+Space stats use prechopping?
+Constrain relative values of inter and intra-word gaps for old_to_method.
+Block stats to use fixed pitch rows?
+Force word breaks on punct to break long lines in non-space delimited langs
+Space stats use prechopping?
+Fix suspected bug in old code
+Only stat OBVIOUS spaces
+Only stat OBVIOUS spaces
+Only stat OBVIOUS spaces
+Only stat OBVIOUS spaces
+Use row alone when inadequate cert spaces
+Better guess
+Pass ANY flip to context?
+Don't restrict kn->sp fuzzy limit to tables
+Use within xht gap for wd breaks
+Use within xht gap for wd breaks
+Only use within xht gap for wd breaks
+Don't chng kn to space next to punct
+Default flip
+Default flip
+Enable improvement heuristic
+Don't remove noise blobs
+Display unsorted blobs
+Display unsorted blobs
+Reject noise-like words
+Reject noise-like rows
+Debug row garbage detector
+Class str to debug learning
+A filename of user-provided words.
+A suffix of user-provided words located in tessdata.
+A filename of user-provided patterns.
+A suffix of user-provided patterns located in tessdata.
+Output file for ambiguities found in the dictionary
+Word for which stopper debug information should be printed to stdout
+Blacklist of chars not to recognize
+Whitelist of chars to recognize
+List of chars to override tessedit_char_blacklist
+Write all parameters to the given file.
+Exposure value follows this pattern in the image filename. The name of the image files are expected to be in the form [lang].[fontname].exp[num].tif
+Leading punctuation
+1st Trailing punctuation
+2nd Trailing punctuation
+Non standard number of outlines
+Non standard number of outlines
+Punct. chs expected WITHIN numbers
+Output char for unidentified blobs
+Allow NN to unrej
+Il1 conflict set
+Filename extension
+List of languages to load with this one
+Page separator (default is form feed control character)
+Character Normalization Range ...
+Veto ratio between classifier ratings
+Veto difference between classifier certainties
+Good Match (0-1)
+Great Match (0-1)
+Perfect Match (0-1)
+Bad Match Pad (0-1)
+New template margin (0-1)
+Avg. noise blob length
+Maximum angle delta for prototype clustering
+Penalty to apply when a non-alnum is vertically out of its expected textline position
+Rating scaling factor
+Certainty scaling factor
+Scale factor for features not used
+Prune poor adapted results this much worse than best result
+Threshold at which classify_adapted_pruning_factor starts
+Exclude fragments that do not look like whole characters from training and adaption
+Max large speckle size
+Penalty to add to worst rating for noise
+Score penalty (0.1 = 10%) added if there are subscripts or superscripts in a word, but it is otherwise OK.
+Score penalty (0.1 = 10%) added if an xheight is inconsistent.
+Score multiplier for word matches which have good case and are frequent in the given language (lower is better).
+Score multiplier for word matches that have good case (lower is better).
+Default score multiplier for word matches, which may have case issues (lower is better).
+Score multiplier for glyph fragment segmentations which do not match a dictionary word (lower is better).
+Score multiplier for poorly cased strings that are not in the dictionary and generally look like garbage (lower is better).
+Certainty scaling factor
+Certainty threshold for non-dict words
+Reject certainty offset
+Certainty to add for each dict char above small word size.
+Max certaintly variation allowed in a word (in sigma)
+Worst certainty for using pending dictionary
+Worst certainty for words that can be inserted into the document dictionary
+Good blob limit
+Split length adjustment
+Split overlap adjustment
+Split center adjustment
+Split sharpness adjustment
+Width change adjustment
+OK split limit
+Good split limit
+Maximum character width-to-height ratio
+To avoid overly small denominators use this as the floor of the probability returned by the ngram model.
+Average classifier score of a non-matching unichar.
+Strength of the character ngram model relative to the character classifier 
+Factor to bring log-probs into the same range as ratings when multiplied by outline length 
+Penalty for words not in the frequent word dictionary
+Penalty for non-dictionary words
+Penalty for inconsistent punctuation
+Penalty for inconsistent case
+Penalty for inconsistent script
+Penalty for inconsistent character type
+Penalty for inconsistent font
+Penalty for inconsistent spacing
+Penalty increment
+Hingepoint for base char certainty
+Hingepoint for disjoint certainty
+Threshold for new punc char certainty
+Scaling on certainty diff from Hingepoint
+good_quality_doc lte rejection limit
+good_quality_doc gte good blobs limit
+good_quality_doc lte outline error limit
+good_quality_doc gte good char limit
+xcoord
+ycoord
+%rej allowed before rej whole doc
+%rej allowed before rej whole block
+%rej allowed before rej whole row
+Number of row rejects in whole word rejects which prevents whole row rejection
+rej good doc wd if more than this fraction rejected
+good_quality_doc gte good char limit
+crunch rating lt this
+crunch garbage cert lt this
+crunch garbage rating lt this
+POTENTIAL crunch rating lt this
+POTENTIAL crunch cert lt this
+POTENTIAL crunch rating lt this
+POTENTIAL crunch cert lt this
+Del if word ht lt xht x this
+Del if word ht gt xht x this
+Del if word width lt xht x this
+Del if word gt xht x this above bl
+Del if word gt xht x this below bl
+Small if lt xht x this
+Small if lt xht x this
+How many times worse certainty does a superscript position glyph need to be for us to try classifying it as a char with a different baseline?
+What reduction in badness do we think sufficient to choose a superscript over what we'd thought.  For example, a value of 0.6 means we want to reduce badness of certainty by at least 40%
+A superscript scaled down more than this is unbelievably small.  For example, 0.3 means we expect the font size to be no smaller than 30% of the text line font size.
+Maximum top of a character measured as a multiple of x-height above the baseline for us to reconsider whether it's a subscript.
+Minimum bottom of a character measured as a multiple of x-height above the baseline for us to reconsider whether it's a superscript.
+Don't touch bad rating limit
+Accept good rating limit
+Aspect ratio dot/hyphen test
+Aspect ratio dot/hyphen test
+if >this fract
+Min acceptable orientation margin
+Fraction of textlines deemed vertical to use vertical page mode
+Fraction of height used as a minimum gap for aligned blobs.
+Factor for defining space threshold in terms of space and kern sizes
+how far between kern and space?
+how far between kern and space?
+Fract of xheight for narrow
+narrow if w/h less than this
+Fract of xheight for wide
+wide if w/h less than this
+Fract of xheight for fuzz sp
+Fract of xheight for fuzz sp
+Fract of xheight for fuzz sp
+gap ratio to flip sp->kern
+gap ratio to flip kern->sp
+gap ratio to flip kern->sp
+gap ratio to flip kern->sp
+xht multiplier
+xht multiplier
+rep gap multiplier for space
+Fract of kerns reqd for isolated row stats
+Min difference of kn & sp in table
+Expect spaces bigger than this
+Fuzzy if less than this
+New fuzzy kn alg
+New fuzzy sp alg
+Don't trust spaces less than this time kn
+Thresh guess - mult kn by this
+Thresh guess - mult xht by this
+Multiplier on kn to limit thresh
+Don't autoflip kn to sp when large separation
+Limit use of xht gap with large kns
+Limit use of xht gap with odd small kns
+Don't reduce box if the top left is non blank
+Don't let sp minus kn get too small
+How wide fuzzies need context
+Fraction of bounding box for noise
+Ile of sizes for xheight guess
+Ile of sizes for xheight guess
+Fraction of x for big t count
+Dot to norm ratio for deletion
+xh fract height error for norm blobs
+xh fract width error for norm blobs
+Height fraction to discard outlines as speckle noise
+Dot to norm ratio for deletion
+Max baseline shift
+Min size of baseline shift

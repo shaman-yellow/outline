@@ -1,0 +1,37 @@
+```{r}
+fun <- function() {
+  file <- "/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/test/xl/media//image141.png"
+  obj <- magick::image_read(file)
+  obj %>% 
+    magick::image_trim(fuzz = 10) %>%
+    magick::image_write(file <- "./eval_material/test.png", format = 'png', density = '300x300')
+    tesseract::ocr_data(file, engine = tesseract::tesseract("eng", "../tesseract"))
+}
+fun()
+
+res <- sapply(scales$file, simplify = F,
+  function(x) {
+    tesseract::ocr_data(x,
+      engine = tesseract::tesseract("eng", "../tesseract",
+        options = list(tessedit_char_whitelist = "e.0123456789")
+        ))
+  })
+res <- frbind(res, idcol = "file")
+
+params <- tesseract::tesseract_params()
+writeLines(params$desc, "./desc.txt")
+write_tsv(params, "desc.tsv")
+
+dplyr::filter(params, grpl(desc, "length", T))
+# params <- dplyr::mutate(params, cn = trans.google(desc, to = "zh-CN"))
+
+# it <- magick::image_read(m)
+# it <- magick::image_contrast(it)
+# magick::image_write(it, tmp <- "./eval_material/test.png")
+# .file_fig(tmp)
+
+dir.create("../tesseract")
+tesseract::tesseract_download("eng", "../tesseract")
+
+
+```
