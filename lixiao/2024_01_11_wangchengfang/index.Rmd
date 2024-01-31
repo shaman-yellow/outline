@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(1), coef = NA)
+info <- items(belong = odate(1), coef = cf(900))
 
 order_publish()
 idname <- order_packaging()
@@ -52,7 +52,7 @@ auto_material()
 ## 方法
 
 ```{r eval = T, echo = F, results = "asis"}
-auto_method()
+auto_method("job_herb")
 ```
 
 # 分析结果 {#results}
@@ -61,56 +61,79 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
+## 已被鉴定的成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Identified-compounds-records-in-table-CompoundDiscovery
+autor(lstcd$table)
+```
+
 ```{r}
-db <- readxl::read_xls("/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/活性成分附表-FT231221067-Y.xls")
-
-fun_format <- function(x) {
-  x <- dplyr::filter(x, !is.na(...3))
-  x <- dplyr::select_if(x, function(x) !all(is.na(x)))
-  x <- dplyr::select(x, name = ...3, rt.min = ...7, formula = ...9, mw = ...12)
-  x <- dplyr::filter(x, name != "Name")
-  pos.na <- which(is.na(x$rt.min))
-  pos.napre <- pos.na - 1
-  str.na <- x$name[ pos.na ]
-  x$name[ pos.napre ] <- paste0(x$name[ pos.napre ], x$name[ pos.na ])
-  x <- dplyr::filter(x, !is.na(rt.min))
-  x <- dplyr::mutate(x, en.name = gs(name, "([^\u4e00-\u9fa5]*).*", "\\1"),
-    cn.name = gs(name, ".*?([\u4e00-\u9fa5].*)$", "\\1"),
-    tail = strx(en.name, " [^ ]+-$"),
-    tail = ifelse(is.na(tail), "", tail),
-    en.name = substr(en.name, 1, nchar(en.name) - nchar(tail)),
-    en.name = gs(en.name, "\\s*$", ""),
-    cn.name = gs(paste0(tail, cn.name), "^\\s*", ""),
-    formula = gs(formula, "\\s", ""),
-    rt.min = round(as.double(rt.min), 2),
-    mw = round(as.double(mw), 4)
-  )
-  x <- dplyr::select(x, -tail, -name)
-  dplyr::relocate(x, en.name, cn.name)
-}
-
-table <- fun_format(db)
-
-file.copy("/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/活性成分附表-FT231221067-Y.xlsx", "./order_material")
-dir.create("./material")
-unzip("./order_material/活性成分附表-FT231221067-Y.xlsx", exdir = "./material")
-
-fun <- function(dir) {
-  files <- list.files(dir, ".png$", full.names = T)
-  scale <- sapply(files, simplify = F,
-    function(x) {
-      try(bitmap_info(x))
-    })
-  scale <- frbind(scale, idcol = "file")
-  scale <- dplyr::filter(scale, width > height * 15)
-  scale <- dplyr::mutate(scale, num = as.integer(gs(file, ".*?([0-9]+).png", "\\1")))
-  scale <- dplyr::arrange(scale, num)
-}
-scales <- fun("./material/xl/media/")
+lstcd <- read_from_compoundDiscovery("./order_material/活性成分附表-FT231221067-Y.xlsx")
 
 oc <- job_ocr()
 oc <- step1(oc)
-res <- map(oc, head(scales$file, n = 1))
+res <- map(oc, scales$file)
+
+lstcd <- try_get_area.compoundDiscovery(lstcd, res)
+```
+
+## 化合物信息
+
+```{r}
+table <- lstcd$table
+db <- try_get_cids.name(table$en.name)
+db <- dplyr::mutate(db,
+  CID = dplyr::recode(Identifier,
+    Maltopentaose = 13489094L,
+    "Liguiritigenin-7-O-β-D-apiosyl-4'-O-β-D-glucoside" = 74819332L,
+    "Oroxylin A-7-O-β-D-glucuronide" = 14655552L,
+    "α-Linolenic acid" = 5280934L,
+    "Ononin" = 442813L,
+    "Calycosin-7-O-β-D-glucoside" = 137699082L,
+    .default = CID
+  )
+)
+
+pr <- job_pubchemr(nl(db$Identifier, db$CID, F))
+pr <- step1(pr)
+
+cf <- job_classyfire(pr@object)
+cf <- step1(cf)
+cf <- step2(cf)
+cf@plots$step2$p.classes_freq
+
+sp <- asjob_superpred(pr)
+sp <- step1(sp, port = 7777)
+
+hb <- do_herb(pr, sp, run_step3 = F)
+hb <- step3(hb)
+hb@tables$step2$compounds_targets
+
+tmp <- dplyr::mutate(table, name = en.name, level = log2(peak_area))
+hb <- map(hb, list(), levels = tmp, lab.level = "Log2(Peak area)")
+hb@params$p.pharmMap
+
+gm <- job_gmix("inflammation", "inflammation")
+gm <- step1(gm)
+gm <- step2(gm, 1, 1, 5)
+gm@plots$step2$p.cols
+gm@params$lst.genes
+
+hb <- map(hb, gm@params$lst.genes, levels = tmp, lab.level = "Log2(Peak area)")
+hb@params$p.pharm2dis
+hb@params$p.venn2dis
+
+tf <- job_tfbs(hb@params$p.venn2dis$ins)
+tf <- step1(tf, cl = 5)
+
+## tf (FOXO) >> ins
+
+en <- job_enrich(hb@params$p.venn2dis$ins)
+en <- step1(en)
+en@plots$step1$p.go$ids
+en@plots$step1$p.kegg$ids
+
 
 
 ```

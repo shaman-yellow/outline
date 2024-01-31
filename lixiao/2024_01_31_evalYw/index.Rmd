@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(1), coef = cf(900))
+info <- items(belong = odate(1), coef = cf(50))
 
 order_publish()
 idname <- order_packaging()
@@ -56,31 +56,3 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
-
-```{r}
-data1 <- fxlsx("./order_material/file_1.xlsx")
-colnames(data1) <- c("name", "inst")
-
-res <- 0L
-while (identical(res, 0L) || inherits(res, "try-error")) {
-  res <- try(search.scopus(data1))
-  Sys.sleep(10)
-}
-openxlsx::write.xlsx(res, "scopus_heartANDlung.xlsx")
-
-```
-
-```{r}
-data2 <- fxlsx("./order_material/file_2.xlsx")
-colnames(data2) <- c("name", "inst")
-
-res <- 0L
-while (identical(res, 0L) || inherits(res, "try-error")) {
-  res <- try(search.scopus(data2))
-  Sys.sleep(10)
-}
-
-openxlsx::write.xlsx(res, "scopus_neuro.xlsx")
-```
-
-

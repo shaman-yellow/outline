@@ -1,4 +1,57 @@
+
 ```{r}
+db <- openxlsx::read.xlsx("./order_material/活性成分附表-FT231221067-Y.xlsx", colNames = F)
+
+fun_format <- function(x) {
+  x <- dplyr::filter(x, !is.na(X2))
+  x <- dplyr::select_if(x, function(x) !all(is.na(x)))
+  x <- dplyr::select(x, name = X2, rt.min = X5, formula = X6, mw = X8)
+  x <- dplyr::filter(x, name != "Name")
+  pos.na <- which(is.na(x$rt.min))
+  pos.napre <- pos.na - 1
+  str.na <- x$name[ pos.na ]
+  x$name[ pos.napre ] <- paste0(x$name[ pos.napre ], x$name[ pos.na ])
+  x <- dplyr::filter(x, !is.na(rt.min))
+  x <- dplyr::mutate(x, en.name = gs(name, "([^\u4e00-\u9fa5]*).*", "\\1"),
+    cn.name = gs(name, ".*?([\u4e00-\u9fa5].*)$", "\\1"),
+    tail = strx(en.name, " [^ ]+-$"),
+    tail = ifelse(is.na(tail), "", tail),
+    en.name = substr(en.name, 1, nchar(en.name) - nchar(tail)),
+    en.name = gs(en.name, "\\s*$", ""),
+    cn.name = gs(paste0(tail, cn.name), "^\\s*", ""),
+    formula = gs(formula, "\\s", ""),
+    rt.min = round(as.double(rt.min), 2),
+    mw = round(as.double(mw), 4)
+  )
+  x <- dplyr::select(x, -tail, -name)
+  dplyr::relocate(x, en.name, cn.name)
+}
+
+table <- fun_format(db)
+
+file.copy("/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/活性成分附表-FT231221067-Y.xlsx", "./order_material")
+dir.create("./material")
+unzip("./order_material/活性成分附表-FT231221067-Y.xlsx", exdir = "./material")
+
+fun <- function(dir) {
+  files <- list.files(dir, ".png$", full.names = T)
+  scale <- sapply(files, simplify = F,
+    function(x) {
+      try(bitmap_info(x))
+    })
+  scale <- frbind(scale, idcol = "file")
+  scale <- dplyr::filter(scale, width > height * 15)
+  scale <- dplyr::mutate(scale, num = as.integer(gs(file, ".*?([0-9]+).png", "\\1")))
+  scale <- dplyr::arrange(scale, num)
+}
+scales <- fun("./material/xl/media/")
+
+
+```
+
+```{r}
+db <- readxl::read_xls("/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/活性成分附表-FT231221067-Y.xls")
+
 fun <- function() {
   file <- "/media/echo/6E3CE3153CE2D75D/王陈芳质谱结果/FT231221067-原始数据/test/xl/media//image141.png"
   obj <- magick::image_read(file)
@@ -33,5 +86,15 @@ dplyr::filter(params, grpl(desc, "length", T))
 dir.create("../tesseract")
 tesseract::tesseract_download("eng", "../tesseract")
 
+res2 <- lapply(res,
+  function(x) {
+    obj <- x$pages[[1]]$blocks[[1]]$lines[[1]]$words[[1]]
+    data.frame(value = obj$value, confidence = obj$confidence)
+})
+res2 <- frbind(res2)
+res2 <- dplyr::mutate(res2,
+  format = gs(value, "^([0-9])\\.?", "\\1."),
+  format = gs(format, "B$", "8"),
+  format = as.double(format))
 
 ```
