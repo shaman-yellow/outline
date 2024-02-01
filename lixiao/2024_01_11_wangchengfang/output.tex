@@ -1,0 +1,623 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\begin{center} \textbf{\Huge 质谱+网络药理学分析}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-02-01}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+需求：
+
+\begin{itemize}
+\tightlist
+\item
+  质谱对复方内的五味药萆薢、土茯苓、泽泻、川牛膝和生米仁进行预测，得到复方药物的具体的有效药物成分XX1、XX2、XX3
+\item
+  分子对接检测XX1、XX2、XX3与FOXO信号的对接能量
+\item
+  通过GO功能富集分析和KEGG通路富集分析，对FOXO信号通路的下游靶点进行预测，进而得到所需的关于抑制炎症的下游靶点YY
+\end{itemize}
+
+结果：
+
+\begin{itemize}
+\tightlist
+\item
+  以网络药理学的方式筛选成分：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    获取所有成分的靶点 (Tab. \ref{tab:Targets-predicted-by-Super-Pred})
+  \item
+    获取炎症的靶点 (Fig. \ref{fig:Overall-targets-number-of-datasets})
+  \item
+    炎症和疾病靶点交集 (Fig. \ref{fig:Targets-intersect-with-targets-of-diseases})
+  \item
+    过滤，以转录因子 FOXO 可结合的靶点 (Tab. \ref{tab:Transcription-Factor-binding-sites})
+  \item
+    将上述靶点富集分析，聚焦到 GO 显著结果：通路 \texttt{regulation\ of\ inflammatory\ response} (Fig. \ref{fig:Ids-GO-enrichment})
+  \item
+    获取对应富集到该通路的靶点的基因, 以及靶向这些基因的成分
+  \item
+    对这些成分再次以 HOB 口服利用度过滤 (Fig. \ref{fig:HOB-20-prediction})
+  \item
+    上述步骤之后的网络图见 Fig. \ref{fig:FINAL-Network-pharmacology}
+  \item
+    最后获取含量 (峰面积) 前 5 的成分，见 \ref{cpd}
+  \end{itemize}
+\item
+  分子对接结果见 Fig. \ref{fig:Overall-combining-Affinity}, Tab. \ref{tab:Overall-combining-Affinity-rawData}
+\item
+  富集分析是以 FOXO 转录因子结合靶点的基础上富集的，可能的通路为 \texttt{regulation\ of\ inflammatory\ response}, 对应的靶点见 \ref{en}
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Database \texttt{PubChem} used for querying information (e.g., InChIKey, CID) of chemical compounds; Tools of \texttt{Classyfire} used for get systematic classification of chemical compounds\textsuperscript{\protect\hyperlink{ref-PubchemSubstanKimS2015}{1},\protect\hyperlink{ref-ClassyfireAutDjoumb2016}{2}}.
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{3}}.
+\item
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{4}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{6}}.
+\item
+  Python tool of \texttt{HOB} was used for prediction of human oral bioavailability\textsuperscript{\protect\hyperlink{ref-HobpreAccuratWeiM2022}{7}}.
+\item
+  Python tool \texttt{doctr} \url{https://github.com/mindee/doctr} used for interpreted character from images.
+\item
+  R package \texttt{PubChemR} used for querying compounds information.
+\item
+  Web tool of \texttt{Super-PRED} used for drug-targets relationship prediction\textsuperscript{\protect\hyperlink{ref-SuperpredUpdaNickel2014}{8}}.
+\item
+  The \texttt{Transcription\ Factor\ Target\ Gene\ Database} (\url{https://tfbsdb.systemsbiology.net/}) was used for discovering relationship between transcription factors and genes..\textsuperscript{\protect\hyperlink{ref-CausalMechanisPlaisi2016}{9}}
+\item
+  The CLI tools of \texttt{AutoDock\ vina} and \texttt{ADFR} software used for auto molecular docking\textsuperscript{\protect\hyperlink{ref-AutodockVina1Eberha2021}{10}--\protect\hyperlink{ref-AutodockfrAdvRavind2015}{14}}.
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux5df2ux88abux9274ux5b9aux7684ux6210ux5206}{%
+\subsection{已被鉴定的成分}\label{ux5df2ux88abux9274ux5b9aux7684ux6210ux5206}}
+
+Table \ref{tab:Identified-compounds-records-in-table-CompoundDiscovery} (下方表格) 为表格Identified compounds records in table CompoundDiscovery概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Identified-compounds-records-in-table-CompoundDiscovery.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有129行7列，以下预览的表格可能省略部分数据；表格含有129个唯一`en.name'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item en.name:  化合物英文名
+\item cn.name:  化合物中文名
+\item rt.min:  保留时间 (分钟)
+\item formula:  化合物分子式
+\item mw:  分子质量
+\item peak\_area:  峰面积
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Identified-compounds-records-in-table-CompoundDiscovery}Identified compounds records in table CompoundDiscovery}\tabularnewline
+\toprule
+en.name & cn.name & rt.min & formula & mw & file\_area & peak\_area\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+en.name & cn.name & rt.min & formula & mw & file\_area & peak\_area\tabularnewline
+\midrule
+\endhead
+Betaine & 甜菜碱 & 1.53 & C5H11NO2 & 117.0791 & compound\_d\ldots{} & 5.99e+09\tabularnewline
+Astilbin & 落新妇苷 & 21.96 & C21H22O11 & 450.1163 & compound\_d\ldots{} & 4.53e+09\tabularnewline
+Sucrose & 蔗糖 & 1.58 & C12H22O11 & 342.1162 & compound\_d\ldots{} & 2.3e+09\tabularnewline
+Citric acid & 柠檬酸 & 1.67 & C6H8O7 & 192.027 & compound\_d\ldots{} & 1.13e+09\tabularnewline
+Pseudoprot\ldots{} & 伪原薯蓣皂苷 & 24.66 & C51H82O21 & 1030.5348 & compound\_d\ldots{} & 8.76e+08\tabularnewline
+Raffinose & 棉籽糖 & 1.57 & C18H32O16 & 252.0846 & compound\_d\ldots{} & 7.83e+08\tabularnewline
+Protodioscin & 原薯蓣皂苷 & 24.66 & C51H84O22 & 1048.5452 & compound\_d\ldots{} & 7.11e+08\tabularnewline
+Trigonelli\ldots{} & 盐酸胡芦巴碱 & 1.61 & C7H7NO2 & 137.0479 & compound\_d\ldots{} & 6.38e+08\tabularnewline
+Taxifolin & 二氢槲皮素 & 22 & C15H12O7 & 304.0584 & compound\_d\ldots{} & 6.34e+08\tabularnewline
+Engeletin & 黄杞苷 & 22.9 & C21H22O10 & 434.1214 & compound\_d\ldots{} & 5.57e+08\tabularnewline
+2-Pyrrolid\ldots{} & L-脯氨酸 & 1.58 & C5H9NO2 & 115.0635 & compound\_d\ldots{} & 4.06e+08\tabularnewline
+Stachyose & 水苏糖 & 1.6 & C24H42O21 & 666.2221 & compound\_d\ldots{} & 3.91e+08\tabularnewline
+Cyasterone & 杯苋甾酮 & 22.75 & C29H44O8 & 566.3094 & compound\_d\ldots{} & 3.27e+08\tabularnewline
+5-Hydroxym\ldots{} & 5-羟甲基糠醛 & 1.53 & C6H6O3 & 126.0319 & compound\_d\ldots{} & 2.07e+08\tabularnewline
+Maltopentaose & 麦芽五糖 & 1.61 & C30H52O26 & 828.2749 & compound\_d\ldots{} & 2.07e+08\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5316ux5408ux7269ux4fe1ux606f}{%
+\subsection{化合物信息}\label{ux5316ux5408ux7269ux4fe1ux606f}}
+
+\hypertarget{ux5206ux7c7bux5b66}{%
+\subsubsection{分类学}\label{ux5206ux7c7bux5b66}}
+
+Figure \ref{fig:Classification-hierarchy} (下方图) 为图Classification hierarchy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Classification-hierarchy.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Classification-hierarchy.pdf}
+\caption{Classification hierarchy}\label{fig:Classification-hierarchy}
+\end{center}
+
+Figure \ref{fig:Compounds-classify} (下方图) 为图Compounds classify概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Compounds-classify.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Compounds-classify.pdf}
+\caption{Compounds classify}\label{fig:Compounds-classify}
+\end{center}
+
+\hypertarget{ux5316ux5408ux7269ux9776ux70b9}{%
+\subsubsection{化合物靶点}\label{ux5316ux5408ux7269ux9776ux70b9}}
+
+Table \ref{tab:Targets-predicted-by-Super-Pred} (下方表格) 为表格Targets predicted by Super Pred概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-predicted-by-Super-Pred.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有13670行9列，以下预览的表格可能省略部分数据；表格含有129个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:Targets-predicted-by-Super-Pred}Targets predicted by Super Pred}\tabularnewline
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endhead
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Tyrosy\ldots{} & CHEMBL\ldots{} & Q9NUW8 & 6N0D & Not Av\ldots{} & 99.57\% & 71.22\% & TDP1\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & DNA-(a\ldots{} & CHEMBL\ldots{} & P27695 & 6BOW & T13348 & 97.3\% & 91.11\% & APEX1\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Cathep\ldots{} & CHEMBL\ldots{} & P07339 & 4OD9 & T67102 & 92.9\% & 98.95\% & CTSD\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & LSD1/C\ldots{} & CHEMBL\ldots{} & O60341 & 5L3D & Not Av\ldots{} & 91.71\% & 97.09\% & KDM1A\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Endopl\ldots{} & CHEMBL\ldots{} & Q99714 & 2O23 & Not Av\ldots{} & 89.3\% & 70.16\% & HSD17B10\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Transc\ldots{} & CHEMBL\ldots{} & O15164 & 4YBM & Not Av\ldots{} & 89.13\% & 95.56\% & TRIM24\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & DNA to\ldots{} & CHEMBL\ldots{} & P11388 & 6ZY5 & T17048 & 88.76\% & 89\% & TOP2A\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Glycin\ldots{} & CHEMBL\ldots{} & P23415 & 4X5T & T50269 & 87.03\% & 90.71\% & GLRA1\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Estrog\ldots{} & CHEMBL242 & Q92731 & 1QKM & T80896 & 86.62\% & 98.35\% & ESR2\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Nuclea\ldots{} & CHEMBL\ldots{} & P19838 & 1SVC & Not Av\ldots{} & 85.02\% & 96.09\% & NFKB1\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Riboso\ldots{} & CHEMBL\ldots{} & Q15418 & 2Z7Q & Not Av\ldots{} & 84.42\% & 85.11\% & RPS6KA1\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & IgG re\ldots{} & CHEMBL\ldots{} & P55899 & 6FGB & Not Av\ldots{} & 84.41\% & 90.93\% & FCGRT\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Egl ni\ldots{} & CHEMBL\ldots{} & Q9GZT9 & 4BQY & Not Av\ldots{} & 83.24\% & 93.4\% & EGLN1\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Arachi\ldots{} & CHEMBL\ldots{} & P18054 & 3D3L & Not Av\ldots{} & 81.74\% & 75.57\% & ALOX12\tabularnewline
+C1{[}\href{mailto:C@H}{\nolinkurl{C@H}}\ldots{} & Casein\ldots{} & CHEMBL\ldots{} & P67870 & 6TLS & T51565 & 81.25\% & 99.23\% & CSNK2B\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux7f51ux7edcux836fux7406ux5b66}{%
+\subsection{网络药理学}\label{ux7f51ux7edcux836fux7406ux5b66}}
+
+\hypertarget{ux9776ux70b9ux7f51ux7edc-ux5316ux5408ux7269ux542bux91cf}{%
+\subsubsection{靶点网络 (+化合物含量)}\label{ux9776ux70b9ux7f51ux7edc-ux5316ux5408ux7269ux542bux91cf}}
+
+Figure \ref{fig:Network-pharmacology} (下方图) 为图Network pharmacology概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology.pdf}
+\caption{Network pharmacology}\label{fig:Network-pharmacology}
+\end{center}
+
+\hypertarget{ux708eux75c7}{%
+\subsubsection{炎症}\label{ux708eux75c7}}
+
+Figure \ref{fig:Overall-targets-number-of-datasets} (下方图) 为图Overall targets number of datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-targets-number-of-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-targets-number-of-datasets.pdf}
+\caption{Overall targets number of datasets}\label{fig:Overall-targets-number-of-datasets}
+\end{center}
+
+\hypertarget{ux9776ux70b9ux7f51ux7edc-ux5316ux5408ux7269ux542bux91cf-ux708eux75c7}{%
+\subsubsection{靶点网络 (+化合物含量) + 炎症}\label{ux9776ux70b9ux7f51ux7edc-ux5316ux5408ux7269ux542bux91cf-ux708eux75c7}}
+
+Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pharmacology with disease概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-with-disease.pdf}
+\caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
+\end{center}
+
+Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Targets intersect with targets of diseases概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf}
+\caption{Targets intersect with targets of diseases}\label{fig:Targets-intersect-with-targets-of-diseases}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    ACE, PTGS2, MIF, PPARG, TLR4, MMP9, PARP1, NOS2, MMP2,
+PPARA, F2R, IDO1, STAT3, RORC, CHRNB2, TRPA1, NR1H4, PTPN1,
+ABCB1, KLK1, CDK5, CCR5, TACR1, ALOX5, PDE5A, ADORA1,
+PIK3CG, MTOR, OPRM1, PROC, NFKB1, PLAU, NOS3, SERPINE1,
+CNR2, NFE2L2, MAPK14, APP, CFTR, NR3C2, CD38, C5AR1, TGM2,
+HIF1A, FPR2, ...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases-content})}
+
+\hypertarget{ux76f8ux5173ux9776ux70b9ux4e0eux8f6cux5f55ux56e0ux5b50-foxo-ux76f8ux5173}{%
+\subsubsection{相关靶点与转录因子 FOXO 相关}\label{ux76f8ux5173ux9776ux70b9ux4e0eux8f6cux5f55ux56e0ux5b50-foxo-ux76f8ux5173}}
+
+数据库\texttt{Transcription\ Factor\ Target\ Gene\ Database} 检索：
+
+Table \ref{tab:Transcription-Factor-binding-sites} (下方表格) 为表格Transcription Factor binding sites概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Transcription-Factor-binding-sites.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有30090行10列，以下预览的表格可能省略部分数据；表格含有104个唯一`target'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item Start:  起始点
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Transcription-Factor-binding-sites}Transcription Factor binding sites}\tabularnewline
+\toprule
+target & TF\_symbol & Motif & Source & Strand & Start & Stop & PValue & MatchS\ldots{} & Overla\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+target & TF\_symbol & Motif & Source & Strand & Start & Stop & PValue & MatchS\ldots{} & Overla\ldots{}\tabularnewline
+\midrule
+\endhead
+ACE & CTCF & CTCF\_M\ldots{} & JASPAR & - & 61556433 & 61556451 & 0.0E+00 & GGACCA\ldots{} & 19\tabularnewline
+ACE & FOXJ2 & FOXJ2\_\ldots{} & SELEX & - & 61551959 & 61551971 & 4.0E-06 & GTAAAA\ldots{} & 13\tabularnewline
+ACE & MESP1 & MESP1\_\ldots{} & SELEX & - & 61554628 & 61554637 & 9.0E-06 & AGCACC\ldots{} & 10\tabularnewline
+ACE & FOXJ2 & FOXJ2\_\ldots{} & SELEX & - & 61551854 & 61551861 & 5.0E-06 & ATAAACAA & 8\tabularnewline
+ACE & TBX1 & TBX1\_T\ldots{} & SELEX & - & 61552066 & 61552085 & 1.0E-06 & TTCACA\ldots{} & 20\tabularnewline
+ACE & HOXD9 & Hoxd9\_\ldots{} & SELEX & - & 61551499 & 61551508 & 4.0E-06 & ACAATT\ldots{} & 10\tabularnewline
+ACE & BARX1 & BARX1\_\ldots{} & SELEX & - & 61552008 & 61552024 & 4.0E-06 & TCATTA\ldots{} & 17\tabularnewline
+ACE & target & SRY\_HM\ldots{} & SELEX & + & 61551570 & 61551584 & 5.0E-06 & TTCTAT\ldots{} & 15\tabularnewline
+ACE & KLF16 & KLF16\_\ldots{} & SELEX & - & 61554376 & 61554386 & 7.0E-06 & GACACA\ldots{} & 11\tabularnewline
+ACE & KLF16 & KLF16\_\ldots{} & SELEX & - & 61554725 & 61554735 & 1.0E-05 & GCCCCG\ldots{} & 11\tabularnewline
+ACE & FOXG1 & FOXG1\_\ldots{} & SELEX & + & 61551524 & 61551540 & 6.0E-06 & AAAAAC\ldots{} & 17\tabularnewline
+ACE & FOXG1 & FOXG1\_\ldots{} & SELEX & - & 61551902 & 61551918 & 2.0E-06 & ATAAAT\ldots{} & 17\tabularnewline
+ACE & MEF2D & MEF2D\_\ldots{} & SELEX & + & 61551941 & 61551952 & 1.0E-06 & CCTAAA\ldots{} & 12\tabularnewline
+ACE & FOXC2 & FOXC2\_\ldots{} & SELEX & - & 61551853 & 61551864 & 3.0E-06 & TGTATA\ldots{} & 12\tabularnewline
+ACE & PDX1 & PDX1\_h\ldots{} & SELEX & - & 61551528 & 61551545 & 7.0E-06 & ACAATT\ldots{} & 18\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{en}{%
+\subsubsection{富集分析}\label{en}}
+
+Figure \ref{fig:Ids-KEGG-enrichment} (下方图) 为图Ids KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ids-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ids-KEGG-enrichment.pdf}
+\caption{Ids KEGG enrichment}\label{fig:Ids-KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:Ids-GO-enrichment} (下方图) 为图Ids GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ids-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ids-GO-enrichment.pdf}
+\caption{Ids GO enrichment}\label{fig:Ids-GO-enrichment}
+\end{center}
+
+GO 中，\texttt{regulation\ of\ inflammatory\ response} 通路的基因：
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+GO
+:}
+
+\vspace{0.5em}
+
+    ACE, ADORA1, ALOX5, APP, CCR2, CNR1, CNR2, CYP19A1,
+IDO1, MAPK14, MMP8, MMP9, NFKB1, NR1H3, PIK3CG, PLA2G2A,
+PRKCD, PROC, PTGS2, SERPINE1, TLR4
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux53e3ux670dux5229ux7528ux5ea6ux7b5bux9009}{%
+\subsubsection{口服利用度筛选}\label{ux53e3ux670dux5229ux7528ux5ea6ux7b5bux9009}}
+
+Figure \ref{fig:HOB-20-prediction} (下方图) 为图HOB 20 prediction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HOB-20-prediction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HOB-20-prediction.pdf}
+\caption{HOB 20 prediction}\label{fig:HOB-20-prediction}
+\end{center}
+
+\hypertarget{ux6700ux7ec8ux7b5bux9009ux8fc7ux7684ux7f51ux7edcux836fux7406ux56fe}{%
+\subsubsection{最终筛选过的网络药理图}\label{ux6700ux7ec8ux7b5bux9009ux8fc7ux7684ux7f51ux7edcux836fux7406ux56fe}}
+
+Figure \ref{fig:FINAL-Network-pharmacology} (下方图) 为图FINAL Network pharmacology概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FINAL-Network-pharmacology.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FINAL-Network-pharmacology.pdf}
+\caption{FINAL Network pharmacology}\label{fig:FINAL-Network-pharmacology}
+\end{center}
+
+\hypertarget{ux5206ux5b50ux5bf9ux63a5}{%
+\subsection{分子对接}\label{ux5206ux5b50ux5bf9ux63a5}}
+
+\hypertarget{cpd}{%
+\subsubsection{对接的成分}\label{cpd}}
+
+选择了含量排名前 5 的成分对接 (从 Fig. \ref{fig:Network-pharmacology-with-disease})。
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Compounds
+:}
+
+\vspace{0.5em}
+
+    Trigonelline HCl, 2-Pyrrolidinecarboxylic acid,
+5-Hydroxymethylfurfural, Epiberberine, Nobiletin
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux5bf9ux63a5ux7ed3ux679c}{%
+\subsubsection{对接结果}\label{ux5bf9ux63a5ux7ed3ux679c}}
+
+Figure \ref{fig:Overall-combining-Affinity} (下方图) 为图Overall combining Affinity概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-combining-Affinity.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-combining-Affinity.pdf}
+\caption{Overall combining Affinity}\label{fig:Overall-combining-Affinity}
+\end{center}
+
+Table \ref{tab:Overall-combining-Affinity-rawData} (下方表格) 为表格Overall combining Affinity rawData概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-combining-Affinity-rawData.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有15行8列，以下预览的表格可能省略部分数据；表格含有5个唯一`PubChem\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:Overall-combining-Affinity-rawData}Overall combining Affinity rawData}\tabularnewline
+\toprule
+PubChe\ldots{} & PDB\_ID & Affinity & dir & file & Combn & hgnc\_s\ldots{} & Ingred\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+PubChe\ldots{} & PDB\_ID & Affinity & dir & file & Combn & hgnc\_s\ldots{} & Ingred\ldots{}\tabularnewline
+\midrule
+\endhead
+160876 & 2uzk & -4.9 & vina\_s\ldots{} & vina\_s\ldots{} & 160876\ldots{} & FOXO3 & Epiber\ldots{}\tabularnewline
+145742 & 2uzk & -4.502 & vina\_s\ldots{} & vina\_s\ldots{} & 145742\ldots{} & FOXO3 & 2-Pyrr\ldots{}\tabularnewline
+237332 & 2uzk & -4.177 & vina\_s\ldots{} & vina\_s\ldots{} & 237332\ldots{} & FOXO3 & 5-Hydr\ldots{}\tabularnewline
+72344 & 2uzk & -4.173 & vina\_s\ldots{} & vina\_s\ldots{} & 72344\_\ldots{} & FOXO3 & Nobiletin\tabularnewline
+134606 & 2uzk & -1.563 & vina\_s\ldots{} & vina\_s\ldots{} & 134606\ldots{} & FOXO3 & Trigon\ldots{}\tabularnewline
+145742 & 6qvw & -0.687 & vina\_s\ldots{} & vina\_s\ldots{} & 145742\ldots{} & FOXO1 & 2-Pyrr\ldots{}\tabularnewline
+160876 & 6qvw & -0.508 & vina\_s\ldots{} & vina\_s\ldots{} & 160876\ldots{} & FOXO1 & Epiber\ldots{}\tabularnewline
+134606 & 6qvw & -0.506 & vina\_s\ldots{} & vina\_s\ldots{} & 134606\ldots{} & FOXO1 & Trigon\ldots{}\tabularnewline
+237332 & 6qvw & -0.413 & vina\_s\ldots{} & vina\_s\ldots{} & 237332\ldots{} & FOXO1 & 5-Hydr\ldots{}\tabularnewline
+134606 & 3l2c & -0.203 & vina\_s\ldots{} & vina\_s\ldots{} & 134606\ldots{} & FOXO4 & Trigon\ldots{}\tabularnewline
+145742 & 3l2c & 0.559 & vina\_s\ldots{} & vina\_s\ldots{} & 145742\ldots{} & FOXO4 & 2-Pyrr\ldots{}\tabularnewline
+160876 & 3l2c & 0.691 & vina\_s\ldots{} & vina\_s\ldots{} & 160876\ldots{} & FOXO4 & Epiber\ldots{}\tabularnewline
+72344 & 6qvw & 0.874 & vina\_s\ldots{} & vina\_s\ldots{} & 72344\_\ldots{} & FOXO1 & Nobiletin\tabularnewline
+237332 & 3l2c & 0.889 & vina\_s\ldots{} & vina\_s\ldots{} & 237332\ldots{} & FOXO4 & 5-Hydr\ldots{}\tabularnewline
+72344 & 3l2c & 2.084 & vina\_s\ldots{} & vina\_s\ldots{} & 72344\_\ldots{} & FOXO4 & Nobiletin\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-PubchemSubstanKimS2015}{}%
+1. Kim, S. \emph{et al.} PubChem substance and compound databases. \emph{Nucleic Acids Research} (2015).
+
+\leavevmode\hypertarget{ref-ClassyfireAutDjoumb2016}{}%
+2. Djoumbou Feunang, Y. \emph{et al.} ClassyFire: Automated chemical classification with a comprehensive, computable taxonomy. \emph{Journal of Cheminformatics} \textbf{8}, 61 (2016).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+3. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheDisgenetKnPinero2019}{}%
+4. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+5. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-PharmgkbAWorBarbar2018}{}%
+6. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
+
+\leavevmode\hypertarget{ref-HobpreAccuratWeiM2022}{}%
+7. Wei, M. \emph{et al.} HobPre: Accurate prediction of human oral bioavailability for small molecules. \emph{Journal of Cheminformatics} \textbf{14}, (2022).
+
+\leavevmode\hypertarget{ref-SuperpredUpdaNickel2014}{}%
+8. Nickel, J. \emph{et al.} SuperPred: Update on drug classification and target prediction. \emph{Nucleic acids research} \textbf{42}, W26--W31 (2014).
+
+\leavevmode\hypertarget{ref-CausalMechanisPlaisi2016}{}%
+9. Plaisier, C. L. \emph{et al.} Causal mechanistic regulatory network for glioblastoma deciphered using systems genetics network analysis. \emph{Cell systems} \textbf{3}, 172--186 (2016).
+
+\leavevmode\hypertarget{ref-AutodockVina1Eberha2021}{}%
+10. Eberhardt, J., Santos-Martins, D., Tillack, A. F. \& Forli, S. AutoDock vina 1.2.0: New docking methods, expanded force field, and python bindings. \emph{Journal of Chemical Information and Modeling} \textbf{61}, 3891--3898 (2021).
+
+\leavevmode\hypertarget{ref-AutogridfrImpZhang2019}{}%
+11. Zhang, Y., Forli, S., Omelchenko, A. \& Sanner, M. F. AutoGridFR: Improvements on autodock affinity maps and associated software tools. \emph{Journal of computational chemistry} \textbf{40}, 2882--2886 (2019).
+
+\leavevmode\hypertarget{ref-AutodockCrankpZhang2019}{}%
+12. Zhang, Y. \& Sanner, M. F. AutoDock crankpep: Combining folding and docking to predict protein-peptide complexes. \emph{Bioinformatics (Oxford, England)} \textbf{35}, 5121--5127 (2019).
+
+\leavevmode\hypertarget{ref-AutositeAnAuRavind2016}{}%
+13. Ravindranath, P. A. \& Sanner, M. F. AutoSite: An automated approach for pseudo-ligands prediction-from ligand-binding sites identification to predicting key ligand atoms. \emph{Bioinformatics (Oxford, England)} \textbf{32}, 3142--3149 (2016).
+
+\leavevmode\hypertarget{ref-AutodockfrAdvRavind2015}{}%
+14. Ravindranath, P. A., Forli, S., Goodsell, D. S., Olson, A. J. \& Sanner, M. F. AutoDockFR: Advances in protein-ligand docking with explicitly specified binding site flexibility. \emph{PLoS computational biology} \textbf{11}, (2015).
+\end{cslreferences}
+
+\end{document}

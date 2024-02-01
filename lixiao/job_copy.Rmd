@@ -168,4 +168,19 @@ Eval:
 - 雅威审核
 
 ```{r}
+backup_jobs(alls, time <- "2024-01-01")
+move_rds_all(alls, time)
+move_raw_all(alls, time)
 ```
+
+## 2014-02
+
+```{r}
+revise_items(alls)
+
+tags <- get_tags(alls)
+as_code_list(tags)
+
+unique(.tag_anno())
+```
+

@@ -1,0 +1,375 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    keep_md: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \definecolor{shadecolor}{RGB}{230,230,230}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
+  \tcbuselibrary{breakable}
+  \renewenvironment{Shaded}
+  {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
+    arc = 1mm, auto outer arc, title = {Input}]}
+  {\end{tcolorbox}}
+  \usepackage{titlesec}
+  \titleformat{\paragraph}
+  {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
+---
+
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(1), coef = cf(900))
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+需求：
+
+- 质谱对复方内的五味药萆薢、土茯苓、泽泻、川牛膝和生米仁进行预测，得到复方药物的具体的有效药物成分XX1、XX2、XX3
+- 分子对接检测XX1、XX2、XX3与FOXO信号的对接能量
+- 通过GO功能富集分析和KEGG通路富集分析，对FOXO信号通路的下游靶点进行预测，进而得到所需的关于抑制炎症的下游靶点YY
+
+结果：
+
+- 以网络药理学的方式筛选成分：
+    - 获取所有成分的靶点 (Tab. \@ref(tab:Targets-predicted-by-Super-Pred))
+    - 获取炎症的靶点 (Fig. \@ref(fig:Overall-targets-number-of-datasets))
+    - 炎症和疾病靶点交集 (Fig. \@ref(fig:Targets-intersect-with-targets-of-diseases))
+    - 过滤，以转录因子 FOXO 可结合的靶点 (Tab. \@ref(tab:Transcription-Factor-binding-sites))
+    - 将上述靶点富集分析，聚焦到 GO 显著结果：通路 `regulation of inflammatory response` (Fig. \@ref(fig:Ids-GO-enrichment))
+    - 获取对应富集到该通路的靶点的基因, 以及靶向这些基因的成分
+    - 对这些成分再次以 HOB 口服利用度过滤 (Fig. \@ref(fig:HOB-20-prediction))
+    - 上述步骤之后的网络图见 Fig. \@ref(fig:FINAL-Network-pharmacology)
+    - 最后获取含量 (峰面积) 前 5 的成分，见 \@ref(cpd)
+- 分子对接结果见 Fig. \@ref(fig:Overall-combining-Affinity), Tab. \@ref(tab:Overall-combining-Affinity-rawData)
+- 富集分析是以 FOXO 转录因子结合靶点的基础上富集的，可能的通路为 `regulation of inflammatory response`, 对应的靶点见 \@ref(en)
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method(c("job_herb", "job_sirius", "job_xcms", "job_msconvert"))
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 已被鉴定的成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Identified-compounds-records-in-table-CompoundDiscovery
+autor(lstcd$table)
+```
+
+```{r}
+lstcd <- read_from_compoundDiscovery("./order_material/活性成分附表-FT231221067-Y.xlsx")
+
+oc <- job_ocr()
+oc <- step1(oc)
+res <- map(oc, scales$file)
+
+lstcd <- try_get_area.compoundDiscovery(lstcd, res)
+```
+
+## 化合物信息
+
+```{r}
+table <- lstcd$table
+db <- try_get_cids.name(table$en.name)
+db <- dplyr::mutate(db,
+  CID = dplyr::recode(Identifier,
+    Maltopentaose = 13489094L,
+    "Liguiritigenin-7-O-β-D-apiosyl-4'-O-β-D-glucoside" = 74819332L,
+    "Oroxylin A-7-O-β-D-glucuronide" = 14655552L,
+    "α-Linolenic acid" = 5280934L,
+    "Ononin" = 442813L,
+    "Calycosin-7-O-β-D-glucoside" = 137699082L,
+    .default = CID
+  )
+)
+
+pr <- job_pubchemr(nl(db$Identifier, db$CID, F))
+pr <- step1(pr)
+```
+
+### 分类学
+
+```{r eval = T, echo = F, results = "asis"}
+#| Classification-hierarchy
+autor(cfy@plots$step2$p.classes_freq)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Compounds-classify
+autor(cfy@plots$step2$p.isClassified)
+```
+
+```{r}
+cfy <- job_classyfire(pr@object)
+cfy <- step1(cfy)
+cfy <- step2(cfy)
+cfy@plots$step2$p.classes_freq
+```
+
+### 化合物靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| Targets-predicted-by-Super-Pred
+autor(sp@tables$step1$targets)
+```
+
+```{r}
+sp <- asjob_superpred(pr)
+sp <- step1(sp, port = 7777)
+sp@tables$step1$targets
+```
+
+## 网络药理学
+
+### 靶点网络 (+化合物含量) 
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology
+autor(hb@params$p.pharmMap)
+```
+
+```{r}
+hb <- do_herb(pr, sp, run_step3 = F)
+hb <- step3(hb)
+hb@tables$step2$compounds_targets
+
+tmp <- dplyr::mutate(table, name = en.name, level = log2(peak_area))
+hb <- map(hb, list(), levels = tmp, lab.level = "Log2(Peak area)")
+hb@params$p.pharmMap
+```
+
+### 炎症
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-targets-number-of-datasets
+autor(gm@plots$step2$p.cols)
+```
+
+```{r}
+gm <- job_gmix("inflammation", "inflammation")
+gm <- step1(gm)
+gm <- step2(gm, 1, 1, 5)
+gm@plots$step2$p.cols
+gm@params$lst.genes
+```
+
+### 靶点网络 (+化合物含量) + 炎症
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-with-disease
+autor(hb@params$p.pharm2dis)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Targets-intersect-with-targets-of-diseases
+autor(hb@params$p.venn2dis)
+```
+
+```{r}
+hb <- map(hb, gm@params$lst.genes, levels = tmp, lab.level = "Log2(Peak area)")
+hb@params$p.pharm2dis
+hb@params$p.venn2dis
+```
+
+### 相关靶点与转录因子 FOXO 相关
+
+数据库`Transcription Factor Target Gene Database` 检索：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Transcription-Factor-binding-sites
+autor(tf@tables$step1$res)
+```
+
+```{r}
+tf <- job_tfbs(hb@params$p.venn2dis$ins)
+tf <- step1(tf, cl = 5)
+tf@tables$step1$res
+it <- dplyr::filter(tf@tables$step1$res, grpl(TF_symbol, "^FOXO[0-9]$"))
+
+```
+
+### 富集分析 {#en}
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ids-KEGG-enrichment
+autor(en@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ids-GO-enrichment
+autor(en@plots$step1$p.go$ids)
+```
+
+GO 中，`regulation of inflammatory response` 通路的基因：
+
+```{r eval = T, echo = F, results = "asis"}
+#| GO-inflammatory-response
+autor(res_lich)
+```
+
+```{r}
+en <- job_enrich(unique(it$target))
+en <- step1(en)
+en@plots$step1$p.kegg$ids
+en@tables$step1$res.kegg$ids
+en@plots$step1$p.go$ids
+en@tables$step1$res.go$ids
+
+res <- dplyr::filter(en@tables$step1$res.go$ids, ID == "GO:0050727")$geneName_list
+res_lich <- new_lich(nl("GO", res))
+
+hb <- map(hb, res, levels = tmp, lab.level = "Log2(Peak area)", name = "go")
+hb@params$p.pharm2go
+hb@params$p.venn2go
+
+```
+
+### 口服利用度筛选
+
+```{r eval = T, echo = F, results = "asis"}
+#| HOB-20-prediction
+autor(ho@plots$step1$p.hob)
+```
+
+```{r}
+ho <- asjob_hob(pr)
+ho <- step1(ho)
+ho@plots$step1$p.hob
+ho@tables$step1$t.hob
+```
+
+### 最终筛选过的网络药理图
+
+```{r eval = T, echo = F, results = "asis"}
+#| FINAL-Network-pharmacology
+autor(hb@params$p.pharm2go2hob)
+```
+
+```{r}
+## tf (FOXO) >> ins
+hb <- map(hb, res, levels = tmp, lab.level = "Log2(Peak area)", name = "go2hob",
+  compounds = names(map(pr, ho)), edge_width = 1, less.label = F)
+hb@params$p.pharm2go2hob
+```
+
+## 分子对接
+
+### 对接的成分 {#cpd}
+
+选择了含量排名前 5 的成分对接 (从 Fig. \@ref(fig:Network-pharmacology-with-disease))。
+
+```{r eval = T, echo = F, results = "asis"}
+#| top5-compounds
+autor(cpd_lich)
+```
+
+```{r}
+cpd_lich <- new_lich(list(Compounds = names(cpd)))
+cpd_lich
+```
+
+### 对接结果
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-combining-Affinity
+autor(vn@plots$step5$p.res_vina)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-combining-Affinity-rawData
+autor(vn@tables$step5$res_dock)
+```
+
+```{r}
+hb@params$p.pharm2go2hob$spiral_order
+
+cpd <- head(hb@params$p.pharm2go2hob$spiral_order, n = 5)
+cpd <- pr@object[ names(pr@object) %in% cpd ]
+
+vn <- job_vina(cpd, unique(it$TF_symbol))
+vn <- step1(vn)
+vn <- step2(vn)
+vn$res.ligand
+vn <- step3(vn)
+vn@params$res.receptor
+vn@params$targets_annotation
+vn@params$dock_layout
+vn <- step4(vn)
+vn <- step5(vn)
+vn@plots$step5$p.res_vina
+vn@tables$step5$res_dock
+```
+
