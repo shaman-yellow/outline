@@ -1,0 +1,30 @@
+
+```{r}
+
+en <- job_enrich(head(lm@tables$step2$tops$`model - control`$mgi_symbol, 1000), bm$anno, "mgi_symbol")
+en <- step1(en, "mmu", "org.Mm.eg.db::org.Mm.eg.db")
+
+bm2 <- job_biomart2(lm@tables$step2$tops$`model - control`$mgi_symbol, "mmu", "hsa")
+bm2 <- step1(bm2)
+bm2@params$mapped
+
+tops <- lm@tables$step2$tops$`model - control`
+tops <- dplyr::relocate(tops, mgi_symbol)
+tops <- map(tops, "mgi_symbol", bm2@params$mapped, "mgi_symbol", "hgnc_symbol", col = "hgnc_symbol")
+tops <- dplyr::distinct(tops, hgnc_symbol, mgi_symbol, .keep_all = T)
+tops <- dplyr::relocate(tops, hgnc_symbol, mgi_symbol, logFC, P.Value)
+tops
+
+bm <- job_biomart("hsa")
+bm <- step1(bm, tops$hgnc_symbol, "hgnc")
+bm$anno
+```
+
+```{r}
+gsea <- job_gsea(tops, bm$anno)
+gsea <- step1(gsea)
+gsea <- step2(gsea)
+
+```
+
+

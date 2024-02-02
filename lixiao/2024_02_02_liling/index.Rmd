@@ -1,0 +1,251 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(1), coef = NA, tags = "")
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("主动脉-下腔静脉瘘", abs = "ACF"),
+  di(en = "endothelial-to-mesenchymal transition")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# ACF: Aorta-inferior vena cava fistula 主动脉-下腔静脉瘘
+# ET: endothelial-to-mesenchymal transition 内皮-间质转化
+```
+
+需求：
+
+生物信息学分析筛选对照组动物和ACF动物之间有差异表达的XXX mRNA（若缺少动物数据库，可以筛选血液透析患者的血管差异基因）。GO和KEGG分析与内皮-间质转化相关的显著富集的通路YYY。
+
+结果：
+
+- 筛选的差异表达基因见 Fig. \@ref(fig:Intersection-of-ET-with-DEGs)
+- 富集结果见 Fig. \@ref(fig:Ids-KEGG-enrichment) 和 Fig. \@ref(fig:Ids-GO-enrichment)
+    - GO:0048771 'tissue remodeling' 为显著富集并与 ET 相关的通路。
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method(c("job_gmix", "job_gsea"))
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 数据来源 GSE232594
+
+由于该数据集 (以及相似的其它数据集) 的原作者没有导出 Count 数据 (适应于差异分析)，因此这里下载了 SRA (PRJNA972912) 原始数据从头开始分析该 RNA-seq 数据集。
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE-metadata
+autor(ge@params$guess)
+```
+
+### SRA
+
+```{r eval = T, echo = F, results = "asis"}
+#| SRA-metadata
+autor(sra$info)
+```
+
+## RNA-seq 前处理
+
+### QC
+
+```{r eval = T, echo = F, results = "asis"}
+#| QC-report
+autor("./fastp_report/")
+```
+
+### 定量
+
+cDNA 参考基因注释 (使用的是 mus musculus 的参考基因) 。
+<https://ftp.ensembl.org/pub/release-110/fasta/mus_musculus/>
+
+```{r eval = T, echo = F, results = "asis"}
+#| Quantification
+autor(kal@tables$step3$counts)
+```
+
+## 差异分析
+
+### QC
+
+```{r eval = T, echo = F, results = "asis"}
+#| Filtered
+autor(lm@plots$step1$p.filter)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Normalization
+autor(lm@plots$step1$p.norm)
+```
+
+### 结果
+
+```{r eval = T, echo = F, results = "asis"}
+#| Model-vs-control-DEGs
+autor(lm@plots$step2$p.valcano[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Data-model-vs-control-DEGs
+autor(lm@tables$step2$tops$`model - control`, key = "mgi_symbol")
+```
+
+### 基因名映射到人类的基因
+
+```{r eval = T, echo = F, results = "asis"}
+#| Mapped-Data-model-vs-control-DEGs
+autor(Tops)
+```
+
+## `r d("et")`
+
+### ET 来源
+
+从 GeneCards 获取相关的基因集。
+
+```{r eval = T, echo = F, results = "asis"}
+#| ET-related-targets-from-GeneCards
+autor(gn@tables$step1$t.genecards)
+```
+
+### 与 DEG 交集
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-ET-with-DEGs
+autor(p.venn)
+```
+
+## 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ids-KEGG-enrichment
+autor(en@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ids-GO-enrichment
+autor(en@plots$step1$p.go$ids)
+```
+
+
+```{r}
+ge <- job_geo("GSE232594")
+ge <- step1(ge)
+ge@params$guess
+ge <- step2(ge)
+
+sra <- job_sra("PRJNA972912", "~/disk_sdb1/PRJNA972912")
+sra <- step1(sra)
+sra <- step2(sra)
+sra <- step3(sra, 6)
+sra$info
+
+fp <- job_fastp(sra$wd)
+fp <- step1(fp, c("_1", "_2"))
+fp <- step2(fp)
+
+kal <- asjob_kall(fp)
+kal <- step1(kal, "../mus39_mrna.idx", "../Mus_musculus.GRCm39.cdna.all.fa.gz")
+kal <- step2(kal, 10)
+kal <- step3(kal)
+
+metadata <- kal@tables$step3$metadata
+metadata <- dplyr::mutate(metadata, sample1 = gs(sample, "1$", ""))
+metadata <- map(metadata, "sample1", sra$info, "Run", "SampleName", col = "gsm")
+metadata <- map(metadata, "gsm", ge$guess, "rownames", "treatment.ch1", col = "group")
+metadata <- relocate(metadata, sample, group)
+metadata <- dplyr::mutate(metadata, group = ifelse(grpl(group, "vol"), "model", "control"))
+metadata
+
+bm <- job_biomart("mmu")
+bm <- step1(bm, kal@tables$step3$counts$target_id, "ensembl_trans")
+bm$anno
+
+lm <- job_limma(new_dge(metadata, kal@tables$step3$counts, bm$anno))
+lm <- step1(lm, norm_vis = T)
+lm@plots$step1$p.filter
+lm@plots$step1$p.norm
+lm <- step2(lm, model - control, label = "mgi_symbol", use = "P")
+lm@plots$step2$p.valcano[[1]]
+lm <- step3(lm, use.gene = "mgi_symbol")
+lm@tables$step2$tops$`model - control`
+
+bm2 <- job_biomart2(lm@tables$step2$tops$`model - control`$mgi_symbol, "mmu", "hsa")
+bm2 <- step1(bm2)
+bm2@params$mapped
+
+tops <- lm@tables$step2$tops$`model - control`
+tops <- dplyr::relocate(tops, mgi_symbol)
+tops <- map(tops, "mgi_symbol", bm2@params$mapped, "mgi_symbol", "hgnc_symbol", col = "hgnc_symbol")
+tops <- dplyr::distinct(tops, hgnc_symbol, mgi_symbol, .keep_all = T)
+tops <- dplyr::relocate(tops, hgnc_symbol, mgi_symbol, logFC, P.Value)
+tops
+Tops <- tops
+
+gn <- job_genecard("endothelial-to-mesenchymal transition")
+gn <- step1(gn, NULL)
+gn@tables$step1$t.genecards
+
+p.venn <- new_venn(lst = list(GeneCards = gn@tables$step1$t.genecards$Symbol, DEGs = tops$hgnc_symbol))
+p.venn
+
+bm.hsa <- job_biomart("hsa")
+bm.hsa <- step1(bm.hsa, tops$hgnc_symbol, "hgnc")
+bm.hsa$anno
+
+en <- job_enrich(p.venn$ins, bm.hsa$anno)
+en <- step1(en)
+en@plots$step1$p.kegg$ids
+en@plots$step1$p.go$ids
+en@tables$step1$res.go$ids
+```
+
+```{r}
+saves()
+```
+

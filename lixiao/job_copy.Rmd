@@ -177,10 +177,7 @@ move_raw_all(alls, time)
 
 ```{r}
 revise_items(alls)
-
-tags <- get_tags(alls)
-as_code_list(tags)
-
-unique(.tag_anno())
+update_tagsTable()
 ```
+
 

@@ -1,0 +1,99 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(1), coef = NA)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+需求：
+
+Hydroxysafflor Yellow A（ InChIKey：IAVUBSCVWHLRGE-UXEKTNMQSA-N）与Piezo1对接
+
+结果：
+
+见 Fig. \@ref(fig:Overall-combining-Affinity)
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 分子对接
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-combining-Affinity
+autor(wrap(vn@plots$step5$p.res_vina, 7.2, 1.5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HYA-binding-PIEZO1
+autor(.file_fig("./figs/6443665_into_piezo1.png"))
+```
+
+```{r}
+file.copy("../2024_01_09_zhangchunxiao/order_material/piezo1.pdb", "./order_material/piezo1.pdb")
+# https://alphafold.ebi.ac.uk/entry/H7C2J5
+
+vn <- job_vina(c(`Hydroxysafflor Yellow A` = 6443665), "PIEZO1")
+vn <- step1(vn)
+vn <- step2(vn)
+vn <- step3(vn, extra_pdb.files = c(piezo1 = "./order_material/piezo1.pdb"))
+vn@params$dock_layout
+vn <- step4(vn, 36000)
+vn@step <- 4L
+vn <- step5(vn)
+vn@tables$step5$res_dock
+wrap(vn@plots$step5$p.res_vina, 7.2, 1.5)
+vn <- step6(vn)
+vn <- step7(vn)
+
+saves()
+```
