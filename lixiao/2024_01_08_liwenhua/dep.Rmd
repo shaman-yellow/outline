@@ -1,0 +1,6 @@
+```{r}
+if (nrow(mp@object@colData) == 16) {
+  p.raw <- mp@plots$step3$p.pcoa
+  saveRDS(p.raw, "praw.rds")
+}
+```

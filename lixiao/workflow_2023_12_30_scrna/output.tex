@@ -4,10 +4,10 @@
 %
 \documentclass[
 ]{article}
-\usepackage{amsmath,amssymb}
 \usepackage{lmodern}
-\usepackage{iftex}
-\ifPDFTeX
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
@@ -33,6 +33,12 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -74,8 +80,7 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{longtable,booktabs,array}
-\usepackage{calc} % for calculating minipage widths
+\usepackage{longtable,booktabs}
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
 \makeatletter
@@ -101,16 +106,12 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
-\hypersetup{
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
 
 \author{}
 \date{\vspace{-2.5em}}
@@ -118,11 +119,11 @@
 \begin{document}
 
 \begin{titlepage} \newgeometry{top=7.5cm}
-\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
 \begin{center} \textbf{\Huge Step 系列：scRNA-seq
 基本分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-01}}
+\textbf{\textcolor{white}{2024-02-04}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -144,6 +145,12 @@
 
 \hypertarget{step}{%
 \section{Step 系列共性特征}\label{step}}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/outline/lixiao//workflow_2023_12_30_scrna/Figure+Table/frame.pdf}
+\caption{Workflow frame}\label{fig:workflow-frame}
+\end{center}
 
 \hypertarget{ux7406ux5ff5}{%
 \subsection{理念}\label{ux7406ux5ff5}}
@@ -175,23 +182,32 @@ Step 系列分析方法的一些基本特性：
   附带实用工具。分析流程相对固定，但通过提供一些小工具 (比如用于额外的绘图) ，可以将分析更加灵活。
 \end{itemize}
 
+\hypertarget{ux5c40ux9650ux6027}{%
+\subsection{局限性}\label{ux5c40ux9650ux6027}}
+
+\begin{itemize}
+\tightlist
+\item
+  适配性。由于多数生信工具都基于 Linux，此外 Step 系列在编写时，也只在 Linux 上调试过；所以，这些工具将只适用于 Linux 系统。
+\end{itemize}
+
 \hypertarget{ux6cdbux7528ux65b9ux6cd5}{%
 \subsection{泛用方法}\label{ux6cdbux7528ux65b9ux6cd5}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{job\_seurat}\NormalTok{(}\StringTok{"./data"}\NormalTok{)}
-\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step1}\NormalTok{(sr)}
-\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step2}\NormalTok{(sr)}
-\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step3}\NormalTok{(sr)}
-\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step4}\NormalTok{(sr)}
-\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step5}\NormalTok{(sr)}
-\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{step6}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{job\_seurat}\NormalTok{(}\StringTok{"./data"}\NormalTok{)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step4}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step5}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step6}\NormalTok{(sr)}
 
-\NormalTok{mn }\OtherTok{\textless{}{-}} \FunctionTok{asjob\_monocle}\NormalTok{(sr)}
-\NormalTok{mn }\OtherTok{\textless{}{-}} \FunctionTok{step1}\NormalTok{(mn)}
-\NormalTok{mn }\OtherTok{\textless{}{-}} \FunctionTok{step2}\NormalTok{(mn)}
-\NormalTok{mn }\OtherTok{\textless{}{-}} \FunctionTok{step3}\NormalTok{(mn)}
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{asjob\_monocle}\NormalTok{(sr)}
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(mn)}
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(mn)}
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(mn)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -201,8 +217,22 @@ Step 系列分析方法的一些基本特性：
 \hypertarget{ux5b58ux50a8ux65b9ux6cd5}{%
 \subsubsection{存储方法}\label{ux5b58ux50a8ux65b9ux6cd5}}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{autosv}\NormalTok{(sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{ux7a7aux95f4ux7ba1ux7406}{%
 \subsubsection{空间管理}\label{ux7a7aux95f4ux7ba1ux7406}}
+
+某些 R 包生成的数据或加载的数据可能极其占用运行内存 (RAM)。可以用 \texttt{space()} 函数查看当前内存占用：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{space}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{ux67e5ux770b-step-ux65b9ux6cd5ux7684ux9ed8ux8ba4ux53c2ux6570}{%
 \subsubsection{查看 step 方法的默认参数}\label{ux67e5ux770b-step-ux65b9ux6cd5ux7684ux9ed8ux8ba4ux53c2ux6570}}
@@ -213,8 +243,8 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\DocumentationTok{\#\# 示例：seurat 工作流的 step1 的默认参数}
-\FunctionTok{not}\NormalTok{(}\FunctionTok{.job\_seurat}\NormalTok{())}
+\CommentTok{\#\# 示例：seurat 工作流的 step1 的默认参数}
+\KeywordTok{not}\NormalTok{(}\KeywordTok{.job\_seurat}\NormalTok{())}
 \NormalTok{step1}
 \end{Highlighting}
 \end{Shaded}
@@ -232,14 +262,14 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 \end{verbatim}
 
 \begin{verbatim}
-## -- Methods parameters ---------------------------------------------------------------------------
+## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\DocumentationTok{\#\# 示例：monocle 工作流 step2 的默认参数}
-\FunctionTok{not}\NormalTok{(}\FunctionTok{.job\_monocle}\NormalTok{())}
-\NormalTok{step1}
+\CommentTok{\#\# 示例：monocle 工作流 step2 的默认参数}
+\KeywordTok{not}\NormalTok{(}\KeywordTok{.job\_monocle}\NormalTok{())}
+\NormalTok{step2}
 \end{Highlighting}
 \end{Shaded}
 
@@ -248,7 +278,7 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 \end{verbatim}
 
 \begin{verbatim}
-##     x, groups = x@params$group.by, pt.size = 1.5, pre = F, norm_method= "none"
+##     x, roots
 \end{verbatim}
 
 \begin{verbatim}
@@ -256,7 +286,7 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 \end{verbatim}
 
 \begin{verbatim}
-## -- Methods parameters ---------------------------------------------------------------------------
+## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
 \end{verbatim}
 
 \hypertarget{ux989dux5916ux7684ux4fe1ux606f}{%
@@ -268,9 +298,9 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# 创建一个空的 Seurat 工作流对象 \textquotesingle{}sr\_1\textquotesingle{}}
-\NormalTok{sr\_1 }\OtherTok{\textless{}{-}} \FunctionTok{.job\_seurat}\NormalTok{()}
+\NormalTok{sr\_}\DecValTok{1}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{.job\_seurat}\NormalTok{()}
 \CommentTok{\# 查看方法说明}
-\NormalTok{sr\_1}\SpecialCharTok{@}\NormalTok{method}
+\NormalTok{sr\_}\DecValTok{1}\OperatorTok{@}\NormalTok{method}
 \end{Highlighting}
 \end{Shaded}
 
@@ -281,7 +311,7 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# 查看官方网站或信息源网站}
-\NormalTok{sr\_1}\SpecialCharTok{@}\NormalTok{info}
+\NormalTok{sr\_}\DecValTok{1}\OperatorTok{@}\NormalTok{info}
 \end{Highlighting}
 \end{Shaded}
 
@@ -309,6 +339,9 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 \hypertarget{ux89e3ux51b3ux7684ux95eeux9898}{%
 \subsubsection{解决的问题}\label{ux89e3ux51b3ux7684ux95eeux9898}}
 
+\hypertarget{ux9002ux914dux5e73ux53f0}{%
+\subsection{适配平台}\label{ux9002ux914dux5e73ux53f0}}
+
 \hypertarget{ux65b9ux6cd5}{%
 \subsection{方法}\label{ux65b9ux6cd5}}
 
@@ -316,6 +349,10 @@ Mainly used method:
 
 \begin{itemize}
 \tightlist
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
+\item
+  The R package \texttt{Seurat} used for scRNA-seq processing; \texttt{SCSA} (python) used for cell type annotation\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{1}--\protect\hyperlink{ref-ScsaACellTyCaoY2020}{3}}.
 \item
   Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
@@ -331,13 +368,13 @@ Mainly used method:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{))}
-    \FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
-\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"remotes"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{))}
-    \FunctionTok{install.packages}\NormalTok{(}\StringTok{"remotes"}\NormalTok{)}
-\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"sva"}\NormalTok{))}
-\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}SparseArray\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}fastDummies\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}RcppHNSW\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}RSpectra\textquotesingle{}}\NormalTok{))}
-\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"satijalab/seurat"}\NormalTok{, }\StringTok{"seurat5"}\NormalTok{)}
+\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{requireNamespace}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\DataTypeTok{quietly =} \OtherTok{TRUE}\NormalTok{))}
+    \KeywordTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{requireNamespace}\NormalTok{(}\StringTok{"remotes"}\NormalTok{, }\DataTypeTok{quietly =} \OtherTok{TRUE}\NormalTok{))}
+    \KeywordTok{install.packages}\NormalTok{(}\StringTok{"remotes"}\NormalTok{)}
+\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"sva"}\NormalTok{))}
+\NormalTok{BiocManager}\OperatorTok{::}\KeywordTok{install}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{\textquotesingle{}SparseArray\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}fastDummies\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}RcppHNSW\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}RSpectra\textquotesingle{}}\NormalTok{))}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install\_github}\NormalTok{(}\StringTok{"satijalab/seurat"}\NormalTok{, }\StringTok{"seurat5"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -346,7 +383,7 @@ Mainly used method:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{\textquotesingle{}satijalab/seurat{-}wrappers\textquotesingle{}}\NormalTok{)}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install\_github}\NormalTok{(}\StringTok{\textquotesingle{}satijalab/seurat{-}wrappers\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -355,11 +392,11 @@ Mainly used method:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}BiocGenerics\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}DelayedArray\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}DelayedMatrixStats\textquotesingle{}}\NormalTok{,}
+\NormalTok{BiocManager}\OperatorTok{::}\KeywordTok{install}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{\textquotesingle{}BiocGenerics\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}DelayedArray\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}DelayedMatrixStats\textquotesingle{}}\NormalTok{,}
     \StringTok{\textquotesingle{}limma\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}lme4\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}S4Vectors\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}SingleCellExperiment\textquotesingle{}}\NormalTok{,}
     \StringTok{\textquotesingle{}SummarizedExperiment\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}batchelor\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}HDF5Array\textquotesingle{}}\NormalTok{,}
     \StringTok{\textquotesingle{}terra\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}ggrastr\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}rsample\textquotesingle{}}\NormalTok{))}
-\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{\textquotesingle{}cole{-}trapnell{-}lab/monocle3\textquotesingle{}}\NormalTok{)}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install\_github}\NormalTok{(}\StringTok{\textquotesingle{}cole{-}trapnell{-}lab/monocle3\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -368,21 +405,41 @@ Mainly used method:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}NMF\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}circlize\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}ComplexHeatmap\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}BiocNeighbors\textquotesingle{}}\NormalTok{))}
-\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"sqjin/CellChat"}\NormalTok{)}
+\NormalTok{BiocManager}\OperatorTok{::}\KeywordTok{install}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{\textquotesingle{}NMF\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}circlize\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}ComplexHeatmap\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}BiocNeighbors\textquotesingle{}}\NormalTok{))}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install\_github}\NormalTok{(}\StringTok{"sqjin/CellChat"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{ux5176ux5b83ux7a0bux5e8f}{%
-\paragraph{其它程序}\label{ux5176ux5b83ux7a0bux5e8f}}
+\hypertarget{ux5b89ux88c5-scsa}{%
+\paragraph{安装 SCSA}\label{ux5b89ux88c5-scsa}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ clone https://github.com/bioinfo{-}ibms{-}pumc/SCSA.git \textasciitilde{}/SCSA}
+\ExtensionTok{pip3}\NormalTok{ install numpy scipy openpyxl}
+\ExtensionTok{pip3}\NormalTok{ install pandas==1.5.3}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{installOthers}{%
+\paragraph{其它程序}\label{installOthers}}
 
 以下可能是其它需要安装的程序：
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"reticulate"}\NormalTok{)}
-\NormalTok{reticulate}\SpecialCharTok{::}\FunctionTok{install\_miniconda}\NormalTok{()}
-\NormalTok{reticulate}\SpecialCharTok{::}\FunctionTok{py\_install}\NormalTok{(}\AttributeTok{packages =} \StringTok{\textquotesingle{}umap{-}learn\textquotesingle{}}\NormalTok{)}
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"reticulate"}\NormalTok{)}
+\NormalTok{reticulate}\OperatorTok{::}\KeywordTok{install\_miniconda}\NormalTok{()}
+\NormalTok{reticulate}\OperatorTok{::}\KeywordTok{py\_install}\NormalTok{(}\DataTypeTok{packages =} \StringTok{\textquotesingle{}umap{-}learn\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+你可能还想要安装：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{BiocManager}\OperatorTok{::}\KeywordTok{install}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SingleR"}\NormalTok{))}
+\NormalTok{BiocManager}\OperatorTok{::}\KeywordTok{install}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"celldex"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -395,8 +452,101 @@ Mainly used method:
 \hypertarget{ux793aux4f8bux5206ux6790}{%
 \subsection{示例分析}\label{ux793aux4f8bux5206ux6790}}
 
-\hypertarget{ux6570ux636eux51c6ux5907}{%
-\subsubsection{数据准备}\label{ux6570ux636eux51c6ux5907}}
+\hypertarget{ux6570ux636eux51c6ux5907-ux4ece-geo-ux7684ux5355ux7ec6ux80deux6570ux636eux5e93ux5f00ux59cbux5206ux6790}{%
+\subsubsection{数据准备 (从 GEO 的单细胞数据库开始分析)}\label{ux6570ux636eux51c6ux5907-ux4ece-geo-ux7684ux5355ux7ec6ux80deux6570ux636eux5e93ux5f00ux59cbux5206ux6790}}
+
+10X Genomics (其他格式也行，但我遇到过的几乎都是 10X 的，所以其他格式的没机会调试) 的文件。
+
+这里为了方便起见，我从 GEO 下载一批数据实时以代码示例。
+
+\hypertarget{obtain}{%
+\paragraph{快速获取示例数据}\label{obtain}}
+
+运行以下代码获取数据：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{geo \textless{}{-}}\StringTok{ }\KeywordTok{job\_geo}\NormalTok{(}\StringTok{"GSE171306"}\NormalTok{)}
+\NormalTok{geo \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(geo)}
+\NormalTok{geo \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(geo)}
+\KeywordTok{untar}\NormalTok{(}\StringTok{"./GSE171306/GSE171306\_RAW.tar"}\NormalTok{, }\DataTypeTok{exdir =} \StringTok{"./GSE171306"}\NormalTok{)}
+\KeywordTok{prepare\_10x}\NormalTok{(}\StringTok{"./GSE171306/"}\NormalTok{, }\StringTok{"ccRCC1"}\NormalTok{, }\DataTypeTok{single =}\NormalTok{ F)}
+\CommentTok{\# 创建 job\_seurat 对象：}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{job\_seurat}\NormalTok{(}\StringTok{"./GSE171306/GSM5222644\_ccRCC1\_barcodes"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux4e00ux4e9bux8865ux5145ux8bf4ux660e-ux4e0aux8ff0ux5febux901fux83b7ux53d6ux6570ux636eux65b9ux5f0fux7684ux5b9eux7528ux4ef7ux503c}{%
+\paragraph{一些补充说明 (上述快速获取数据方式的实用价值)}\label{ux4e00ux4e9bux8865ux5145ux8bf4ux660e-ux4e0aux8ff0ux5febux901fux83b7ux53d6ux6570ux636eux65b9ux5f0fux7684ux5b9eux7528ux4ef7ux503c}}
+
+\texttt{job\_geo} 是另外一个可以用于高效获取、整理 GEO 数据集的 step 系列工作流 (以后介绍) ，简而言之，
+它的作用在于帮我们极速整理好数据还有元数据 (整合大量数据集的时候很有用！)。
+例如，我们可以通过以下方式查看这批 GEO 数据的样品信息和数据前处理：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{geo}\OperatorTok{$}\NormalTok{guess}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 3
+##   rownames   title                                                    tissue.ch1                                      
+##   <chr>      <chr>                                                    <chr>                                           
+## 1 GSM5222644 ccRCC1, Right clear cell renal cell carcinoma Homogenate Right clear cell renal cell carcinoma Homogenate
+## 2 GSM5222645 ccRCC2, Left clear cell renal cell carcinoma Homogenate  Left clear cell renal cell carcinoma Homogenate
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{geo}\OperatorTok{$}\NormalTok{prods}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     Preliminary sequencing results (bcl files) were converted
+##     to FASTQ files with Cell Ranger V3.1
+## 
+##     R1 end, at the beginning of 16bp is CellBarcode sequence,
+##     then 10bp is UMI sequence, R2 end, we can truncate 151bp to
+##     98bp
+## 
+##     The CellRanger (10X Genomics) secondary analysis pipeline
+##     was used to generate a digital gene expression matrix
+## 
+##     Normalization and additional analysis by Seurat R package
+## 
+##     Genome_build: GRCh38 for human data
+## 
+##     Supplementary_files_format_and_content: CellRanger output
+##     files (the barcode, gene, expression matrix file of each
+##     sample)
+\end{verbatim}
+
+确认解压得到了些什么文件：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{list.files}\NormalTok{(}\StringTok{"./GSE171306/"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "GSE171306_RAW.tar"                 "GSM5222644_ccRCC1_barcodes"        "GSM5222645_ccRCC2_barcodes.tsv.gz"
+## [4] "GSM5222645_ccRCC2_features.tsv.gz" "GSM5222645_ccRCC2_matrix.mtx.gz"
+\end{verbatim}
+
+GEO 中的单细胞数据 (Supplementary file) 的存储形式不统一 (很随意) ，一一整理起来用于输入很繁琐。
+\texttt{prepare\_10x} 是我写的一个将同一样本的三个文件 (barcodes.tsv, matrix.mtx, features.tsv) 存放于一个目录中的高效办法。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 如果有三个文件：}
+\KeywordTok{prepare\_10x}\NormalTok{(}\StringTok{"./GSE171306/"}\NormalTok{, }\StringTok{"ccRCC1"}\NormalTok{, }\DataTypeTok{single =}\NormalTok{ F)}
+\CommentTok{\# 如果只有一个 Matrix 文件：}
+\KeywordTok{prepare\_10x}\NormalTok{(}\StringTok{"./GSE171306/"}\NormalTok{, }\StringTok{"ccRCC1"}\NormalTok{, }\DataTypeTok{single =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{ux5206ux6790ux6d41ux7a0b}{%
 \subsubsection{分析流程}\label{ux5206ux6790ux6d41ux7a0b}}
@@ -404,19 +554,343 @@ Mainly used method:
 \hypertarget{job-seurat}{%
 \paragraph{Job-seurat}\label{job-seurat}}
 
-\hypertarget{step1}{%
-\paragraph{Step1}\label{step1}}
+在 \ref{obtain} 中，已经运行过：
 
-参数说明
-运行结果
-参考函数
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{job\_seurat}\NormalTok{(}\StringTok{"./GSE171306/GSM5222644\_ccRCC1\_barcodes"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-\hypertarget{step2}{%
-\paragraph{Step2}\label{step2}}
+如你不想用 Step 系列的风格来分析，更想用 Seurat 的原生代码，那么你可以：
 
-测试
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{seurat \textless{}{-}}\StringTok{ }\KeywordTok{object}\NormalTok{(sr)}
+\CommentTok{\# 这样，\textasciigrave{}seurat\textasciigrave{} 就是你需要的数据对象。}
+\CommentTok{\# 你可以参考：\textless{}https://satijalab.org/seurat/articles/pbmc3k\_tutorial.html\textgreater{}}
+\CommentTok{\# 不借助 Step 的默认设定，而开展自主分析。}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step1-ux6570ux636eux8d28ux63a7}{%
+\paragraph{Step1 数据质控}\label{step1-ux6570ux636eux8d28ux63a7}}
+
+只需要运行：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 这一步不需要输入参数}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(sr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 获取运行的结果}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.qc}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Quality-Control.pdf}
+\caption{Quality Control}\label{fig:Quality-Control}
+\end{center}
+
+Fig. \ref{fig:Quality-Control}, 你可能会觉得 x 轴坐标太长了，如果在此前
+(创建对象的时候) 输入类似 \texttt{job\_seurat("./GSE171306/",\ project\ =\ "Demo\ data")}, 就可以避免。
+
+\hypertarget{step2-ux6839ux636eux4e0aux4e00ux6b65-qc-ux4f5cux56feux8fc7ux6ee4ux6570ux636eux5e76ux6807ux51c6ux5316}{%
+\paragraph{Step2 根据上一步 QC 作图过滤数据并标准化}\label{step2-ux6839ux636eux4e0aux4e00ux6b65-qc-ux4f5cux56feux8fc7ux6ee4ux6570ux636eux5e76ux6807ux51c6ux5316}}
+
+这里的参数相当重要。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(sr, }\DecValTok{0}\NormalTok{, }\DecValTok{7500}\NormalTok{, }\DecValTok{35}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+可以确认默认的参数：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{not}\NormalTok{(sr)}
+\NormalTok{step2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## job_seurat:
+\end{verbatim}
+
+\begin{verbatim}
+##     x, min.features, max.features, max.percent.mt = 5, nfeatures = 2000, use = "nFeature_RNA"
+\end{verbatim}
+
+\begin{verbatim}
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
+\end{verbatim}
+
+输入的三个参数对应以下：
+
+\begin{itemize}
+\tightlist
+\item
+  min.features
+\item
+  max.features
+\item
+  max.percent.mt
+\end{itemize}
+
+官网对 \texttt{percent.mt} 做了一些解释：
+
+\begin{itemize}
+\tightlist
+\item
+  The number of unique genes detected in each cell.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Low-quality cells or empty droplets will often have very few genes
+  \item
+    Cell doublets or multiplets may exhibit an aberrantly high gene count
+  \end{itemize}
+\item
+  Similarly, the total number of molecules detected within a cell (correlates
+  strongly with unique genes)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The percentage of reads that map to the mitochondrial genome
+  \item
+    Low-quality / dying cells often exhibit extensive mitochondrial contamination
+  \end{itemize}
+\item
+  We calculate mitochondrial QC metrics with the PercentageFeatureSet()
+  function, which calculates the percentage of counts originating from a set of
+  features
+
+  \begin{itemize}
+  \tightlist
+  \item
+    We use the set of all genes starting with MT- as a set of mitochondrial genes
+  \end{itemize}
+\end{itemize}
+
+总而言之，这一步需要根据 Fig. \ref{fig:Quality-Control} 中的小提琴图选择合适的参数。
+
+最后，这一步可以得到 4 个 Figure：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pca\_pcComponents}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pca\_1v2}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pca\_heatmap}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pca\_rank}
+\end{Highlighting}
+\end{Shaded}
+
+这里不展开。其中，下一步的主要依据的是 \texttt{sr@plots\$step2\$p.pca\_rank}，即 Fig. \ref{fig:Ranking-of-principle-components}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ranking-of-principle-components.pdf}
+\caption{Ranking of principle components}\label{fig:Ranking-of-principle-components}
+\end{center}
+
+\hypertarget{step3-ux5b8cux6210ux964dux56f4ux805aux7c7bux548c-marker-ux7b5bux9009}{%
+\paragraph{Step3 完成降围、聚类和 Marker 筛选}\label{step3-ux5b8cux6210ux964dux56f4ux805aux7c7bux548c-marker-ux7b5bux9009}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(sr, }\DecValTok{1}\OperatorTok{:}\DecValTok{15}\NormalTok{, }\FloatTok{1.2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+可以确认默认的参数：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{step3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## job_seurat:
+\end{verbatim}
+
+\begin{verbatim}
+##     x, dims, resolution, force = F
+\end{verbatim}
+
+\begin{verbatim}
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
+\end{verbatim}
+
+参数 \texttt{dim} 需要根据 Fig. \ref{Ranking-of-principle-components} 判定。
+\texttt{resolution} 需要根据细胞数判定。这两个参数会传递到：
+
+\begin{itemize}
+\tightlist
+\item
+  Seurat::FindNeighbors
+\item
+  Seurat::FindClusters
+\end{itemize}
+
+官方有一段解释：
+
+The FindClusters() function implements this procedure, and contains a
+resolution parameter that sets the `granularity' of the downstream clustering,
+with increased values leading to a greater number of clusters. We find that
+setting this parameter between 0.4-1.2 typically returns good results for
+single-cell datasets of around 3K cells. Optimal resolution often increases for
+larger datasets.
+
+运行后将可以得到：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{p.umap}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/UMAP-Clustering.pdf}
+\caption{UMAP Clustering}\label{fig:UMAP-Clustering}
+\end{center}
+
+\hypertarget{step4-ux4f7fux7528-singler-ux6ce8ux91caux7ec6ux80deux7c7b}{%
+\paragraph{Step4 使用 SingleR 注释细胞类}\label{step4-ux4f7fux7528-singler-ux6ce8ux91caux7ec6ux80deux7c7b}}
+
+(我现在都不用 SingleR 注释了，因为我发现它时常把其他组织的细胞注释到目标组织上，比如，注释肾组织注释得到肝脏细胞;
+默认使用的参考数据是：celldex::HumanPrimaryCellAtlasData，同样的，可以输入 \texttt{step4} 查看默认参数。)
+
+如果要运行这一步 (挺耗时的，并需要确保你安装了 SingleR 和 celldex，详情见 \ref{installOthers})：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step4}\NormalTok{(sr, }\StringTok{"SingleR"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+跳过这一步：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step4}\NormalTok{(sr, }\StringTok{""}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+如果你运行了这一步，你可以得到 (我没有运行，所以不展示了)：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step4}\OperatorTok{$}\NormalTok{p.score\_SingleR}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step4}\OperatorTok{$}\NormalTok{p.map\_SingleR}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step4}\OperatorTok{$}\NormalTok{anno\_SingleR}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step5-ux8ba1ux7b97ux5404ux7ec6ux80deux7c7bux7684-marker-ux57faux56e0-ux5deeux5f02ux5206ux6790}{%
+\paragraph{Step5 计算各细胞类的 Marker 基因 (差异分析)}\label{step5-ux8ba1ux7b97ux5404ux7ec6ux80deux7c7bux7684-marker-ux57faux56e0-ux5deeux5f02ux5206ux6790}}
+
+唯一需要输入的参数是线程数 (不知道是否是 Seurat 程序有问题，我好像基本都是单线程的，即使设置了这个参数) ：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# 设置成 NULL，单线程}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step5}\NormalTok{(sr, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+这样，你就能得到：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step5}\OperatorTok{$}\NormalTok{all\_markers}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step5}\OperatorTok{$}\NormalTok{all\_markers\_no\_filter}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:All-Markers}All Markers}\tabularnewline
+\toprule
+rownames & p\_val & avg\_lo\ldots{} & pct.1 & pct.2 & p\_val\_adj & cluster & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & p\_val & avg\_lo\ldots{} & pct.1 & pct.2 & p\_val\_adj & cluster & gene\tabularnewline
+\midrule
+\endhead
+GZMK & 0 & 4.2402\ldots{} & 0.982 & 0.112 & 0 & 0 & GZMK\tabularnewline
+CD27 & 0 & 3.2768\ldots{} & 0.747 & 0.094 & 0 & 0 & CD27\tabularnewline
+CD8B & 0 & 3.1693\ldots{} & 0.747 & 0.099 & 0 & 0 & CD8B\tabularnewline
+DUSP4 & 0 & 3.0453\ldots{} & 0.774 & 0.144 & 0 & 0 & DUSP4\tabularnewline
+CD8A & 0 & 2.7603\ldots{} & 0.816 & 0.158 & 0 & 0 & CD8A\tabularnewline
+GZMA & 1.1171\ldots{} & 2.2365\ldots{} & 0.989 & 0.344 & 2.1412\ldots{} & 0 & GZMA\tabularnewline
+CCL5 & 6.7488\ldots{} & 2.2809\ldots{} & 0.996 & 0.393 & 1.2935\ldots{} & 0 & CCL5\tabularnewline
+CD3D & 1.8166\ldots{} & 1.9909\ldots{} & 0.96 & 0.3 & 3.4820\ldots{} & 0 & CD3D\tabularnewline
+TRAC & 4.5242\ldots{} & 2.0246\ldots{} & 0.918 & 0.258 & 8.6716\ldots{} & 0 & TRAC\tabularnewline
+APOBEC3G & 7.8727\ldots{} & 2.3392\ldots{} & 0.904 & 0.345 & 1.5089\ldots{} & 0 & APOBEC3G\tabularnewline
+TRBC2 & 1.3387\ldots{} & 2.1611\ldots{} & 0.886 & 0.305 & 2.5659\ldots{} & 0 & TRBC2\tabularnewline
+ITM2A & 6.6648\ldots{} & 2.3921\ldots{} & 0.844 & 0.307 & 1.2774\ldots{} & 0 & ITM2A\tabularnewline
+RPL28 & 4.5358\ldots{} & 1.0709\ldots{} & 1 & 1 & 8.6938\ldots{} & 0 & RPL28\tabularnewline
+CST7 & 9.2732\ldots{} & 1.6915\ldots{} & 0.965 & 0.343 & 1.7773\ldots{} & 0 & CST7\tabularnewline
+CD3E & 3.8141\ldots{} & 1.8107\ldots{} & 0.914 & 0.294 & 7.3104\ldots{} & 0 & CD3E\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{step6-ux4f7fux7528-scsa-ux6ce8ux91caux7ec6ux80deux7c7b}{%
+\paragraph{Step6 使用 SCSA 注释细胞类}\label{step6-ux4f7fux7528-scsa-ux6ce8ux91caux7ec6ux80deux7c7b}}
+
+\texttt{SCSA} 是 Python 编写的命令行工具。\texttt{step6} 已经调用以及数据的转换集成了，
+只需要运行如下，就能简便地得到结果：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 这个样本的组织来源是 Kidney}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step6}\NormalTok{(sr, }\StringTok{"Kidney"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+(如果你没有按照默认的方式安装 SCSA，那么你可能需要额外输入 \texttt{cmd} 和 \texttt{db} 参数)
+
+\hypertarget{ux5b8cux6574ux793aux4f8bux4ee3ux7801}{%
+\subsubsection{完整示例代码}\label{ux5b8cux6574ux793aux4f8bux4ee3ux7801}}
 
 \hypertarget{ux6280ux5de7}{%
 \subsection{技巧}\label{ux6280ux5de7}}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+1. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
+2. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+3. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+\end{cslreferences}
 
 \end{document}

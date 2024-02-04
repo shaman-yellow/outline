@@ -167,9 +167,11 @@ qi <- step5(qi, 10454)
 qi <- step6(qi)
 qi@plots$step6$`taxa-bar-plots`
 qi <- step7(qi)
-qi@plots$step7$ancom_test_group_level_5
+qi@plots$step7$qzv_raw$ancom_test_group_level_6
+qi@plots$step7$p.export$ancom_test_group_level_4
+qi@tables$step7$t.ancom$ancom_test_group_level_6
+# d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Beijerinckiaceae;g__Methylobacterium-Methylorubrum
 
-qi@params$meta_file
 mp <- asjob_mp(qi)
 mp <- step1(mp)
 mp@plots$step1$p.rarefaction
@@ -178,11 +180,6 @@ mp <- step2(mp)
 mp@plots$step2$p.rel_abundance
 mp <- step3(mp)
 mp@plots$step3$p.pcoa
-
-if (nrow(mp@object@colData) == 16) {
-  p.raw <- mp@plots$step3$p.pcoa
-  saveRDS(p.raw, "praw.rds")
-}
 
 mp@plots$step3$p.hier
 mp@plots$step3$p.group_test
@@ -198,4 +195,5 @@ save.image()
 load("~/disk_sdb1/2024_01_08_liwenhua/.RData")
 
 saves()
+loads()
 ```
