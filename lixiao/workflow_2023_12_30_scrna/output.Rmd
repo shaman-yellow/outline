@@ -36,7 +36,7 @@ header-includes:
   \tcbuselibrary{breakable}
   \renewenvironment{Shaded}
   {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
-    arc = 1mm, auto outer arc, title = {Input}]}
+    arc = 1mm, auto outer arc, title = {R input}]}
   {\end{tcolorbox}}
   \usepackage{titlesec}
   \titleformat{\paragraph}
@@ -242,10 +242,12 @@ remotes::install_github("sqjin/CellChat")
 
 #### 安装 SCSA
 
-```{bash}
-git clone https://github.com/bioinfo-ibms-pumc/SCSA.git ~/SCSA
-pip3 install numpy scipy openpyxl
-pip3 install pandas==1.5.3
+```{r eval = T, echo = F, results = "asis"}
+code("
+  git clone https://github.com/bioinfo-ibms-pumc/SCSA.git ~/SCSA
+  pip3 install numpy scipy openpyxl
+  pip3 install pandas==1.5.3
+  ")
 ```
 
 #### 其它程序 {#installOthers}

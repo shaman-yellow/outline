@@ -198,10 +198,13 @@ remotes::install_github("sqjin/CellChat")
 
 #### 安装 SCSA
 
-```{bash}
-git clone https://github.com/bioinfo-ibms-pumc/SCSA.git ~/SCSA
-pip3 install numpy scipy openpyxl
-pip3 install pandas==1.5.3
+```{r eval = T, echo = F, results = "asis"}
+code("
+  git clone https://github.com/bioinfo-ibms-pumc/SCSA.git ~/SCSA
+  pip3 install numpy scipy openpyxl
+  # pandas 版本太高会报错
+  pip3 install pandas==1.5.3
+  ")
 ```
 
 #### 其它程序 {#installOthers}
@@ -477,7 +480,16 @@ autor(sr@tables$step5$all_markers, key = "cluster")
 sr <- step6(sr, "Kidney")
 ```
 
- (如果你没有按照默认的方式安装 SCSA，那么你可能需要额外输入 `cmd` 和 `db` 参数) 
+注：如果你的 SCSA 存放在其它位置，那么你可能需要额外输入 `cmd` 和 `db` 参数 ，例如：
+
+
+```{r}
+# 以下只是示例，不需要运行
+sr <- step6(sr, "Kidney", cmd = "python3 /<your_path>/SCSA/SCSA.py", db = "/<your_path>/SCSA/whole_v2.db")
+```
+
+
+
 
 ### 完整示例代码
 

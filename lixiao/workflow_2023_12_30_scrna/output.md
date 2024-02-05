@@ -36,7 +36,7 @@ header-includes:
   \tcbuselibrary{breakable}
   \renewenvironment{Shaded}
   {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
-    arc = 1mm, auto outer arc, title = {Input}]}
+    arc = 1mm, auto outer arc, title = {R input}]}
   {\end{tcolorbox}}
   \usepackage{titlesec}
   \titleformat{\paragraph}
@@ -52,7 +52,7 @@ header-includes:
 \begin{center} \textbf{\Huge Step 系列：scRNA-seq
 基本分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-04}}
+\textbf{\textcolor{white}{2024-02-05}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -299,12 +299,15 @@ remotes::install_github("sqjin/CellChat")
 
 #### 安装 SCSA
 
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {bash input}]
+\begin{verbatim}
 
-```bash
 git clone https://github.com/bioinfo-ibms-pumc/SCSA.git ~/SCSA
 pip3 install numpy scipy openpyxl
 pip3 install pandas==1.5.3
-```
+
+\end{verbatim}
+\end{tcolorbox}
 
 #### 其它程序 {#installOthers}
 

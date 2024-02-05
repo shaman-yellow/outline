@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  4 FEB 2024 18:19
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  5 FEB 2024 17:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1396,62 +1396,61 @@ g; []SCSA[] (python) used for cell type annotation"[]
  []
 
 [4] [5] [6]
-Overfull \hbox (165.49498pt too wide) in paragraph at lines 496--496
+Overfull \hbox (165.49498pt too wide) in paragraph at lines 498--498
 []\TU/lmtt/m/n/10 ## 1 GSM5222644 ccRCC1, Right clear cell renal cell carcinoma
  Homogenate Right clear cell renal cell carcinoma Homogenate[] 
  []
 
 
-Overfull \hbox (160.24498pt too wide) in paragraph at lines 497--497
+Overfull \hbox (160.24498pt too wide) in paragraph at lines 499--499
 []\TU/lmtt/m/n/10 ## 2 GSM5222645 ccRCC2, Left clear cell renal cell carcinoma 
 Homogenate  Left clear cell renal cell carcinoma Homogenate[] 
  []
 
-
-Overfull \hbox (128.74498pt too wide) in paragraph at lines 535--535
+[7]
+Overfull \hbox (128.74498pt too wide) in paragraph at lines 537--537
 []\TU/lmtt/m/n/10 ## [1] "GSE171306_RAW.tar"                 "GSM5222644_ccRCC1
 _barcodes"        "GSM5222645_ccRCC2_barcodes.tsv.gz"[] 
  []
 
-[7]
+[8]
 File: Figure+Table/Quality-Control.pdf Graphic file (type pdf)
 <use Figure+Table/Quality-Control.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 598.
+(caption)                particular \caption on input line 600.
 See the caption package documentation for explanation.
 
-[8]
-Overfull \hbox (7.28679pt too wide) in paragraph at lines 601--603
+
+Overfull \hbox (7.28679pt too wide) in paragraph at lines 603--605
 []\TU/lmr/m/n/10 Fig. []2[], \TU/FandolSong-Regular(0)/m/n/10 你 可 能 会 觉 得 \TU/l
 mr/m/n/10 x \TU/FandolSong-Regular(0)/m/n/10 轴 坐 标 太 长 了，|  如 果 在 此 前 \TU/lmr/m
 /n/10 (\TU/FandolSong-Regular(0)/m/n/10 创 建 对 象 的 时 候\TU/lmr/m/n/10 ) \TU/Fando
 lSong-Regular(0)/m/n/10 输 入 类 似 \TU/lmtt/m/n/10 job_seurat("./GSE171306/",
  []
 
-
-Overfull \hbox (34.24498pt too wide) in paragraph at lines 629--629
+[9]
+Overfull \hbox (34.24498pt too wide) in paragraph at lines 631--631
 []\TU/lmtt/m/n/10 ##     x, min.features, max.features, max.percent.mt = 5, nfe
 atures = 2000, use = "nFeature_RNA"[] 
  []
 
 
-Overfull \hbox (259.99498pt too wide) in paragraph at lines 637--637
+Overfull \hbox (259.99498pt too wide) in paragraph at lines 639--639
 []\TU/lmtt/m/n/10 ## -- Methods parameters ------------------------------------
 ------------------------------------------------------------------------------[
 ] 
  []
 
-[9]
 File: Figure+Table/Ranking-of-principle-components.pdf Graphic file (type pdf)
 <use Figure+Table/Ranking-of-principle-components.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 707.
+(caption)                particular \caption on input line 709.
 See the caption package documentation for explanation.
 
 [10]
-Overfull \hbox (259.99498pt too wide) in paragraph at lines 740--740
+Overfull \hbox (259.99498pt too wide) in paragraph at lines 742--742
 []\TU/lmtt/m/n/10 ## -- Methods parameters ------------------------------------
 ------------------------------------------------------------------------------[
 ] 
@@ -1459,14 +1458,14 @@ Overfull \hbox (259.99498pt too wide) in paragraph at lines 740--740
 
 
 LaTeX Warning: Reference `Ranking-of-principle-components' on page 11 undefined
- on input line 743.
+ on input line 745.
 
 [11]
 File: Figure+Table/UMAP-Clustering.pdf Graphic file (type pdf)
 <use Figure+Table/UMAP-Clustering.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 774.
+(caption)                particular \caption on input line 776.
 See the caption package documentation for explanation.
 
 [12] [13] [14] (./output.aux)
@@ -1478,12 +1477,12 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 32741 strings out of 476191
- 667337 string characters out of 5812072
- 1114506 words of memory out of 5000000
- 52929 multiletter control sequences out of 15000+600000
+ 32742 strings out of 476191
+ 667356 string characters out of 5812072
+ 1114508 words of memory out of 5000000
+ 52930 multiletter control sequences out of 15000+600000
  473506 words of font info for 81 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,12n,121p,1263b,870s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,12n,121p,1265b,903s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on output.pdf (17 pages).

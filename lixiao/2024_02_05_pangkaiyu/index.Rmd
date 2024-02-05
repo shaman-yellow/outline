@@ -1,0 +1,91 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(1), coef = NA, tags = "dock:pep")
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+
+```
+
+分子对接 Celogenamide A（环状肽）蛋白 SSTR2
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+```{r}
+je <- job_esearch("docking peptides")
+vis(je)
+```
+
+```{r}
+ad <- job_adcp(c("Celogenamide A" = 11263281), c("SSTR2"))
+ad <- step1(ad, NULL, 5)
+ad$dock_layout
+ad <- step2(ad)
+ad <- step3(ad)
+ad@params$dock_layout
+# [1] "7Y27" "7Y26" "7Y24" "7XAV" "7XAU"
+ad <- step4(ad)
+```
+
+```{r}
+vn <- job_vina(c("Celogenamide A" = 11263281), c("SSTR2"))
+vn <- step1(vn)
+vn <- step2(vn)
+vn <- step3(vn)
+vn <- step4(vn)
+vn <- step5(vn)
+vn <- step6(vn)
+```
+
+```{r}
+saves()
+```
