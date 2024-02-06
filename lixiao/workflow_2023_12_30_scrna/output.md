@@ -52,7 +52,7 @@ header-includes:
 \begin{center} \textbf{\Huge Step 系列：scRNA-seq
 基本分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-05}}
+\textbf{\textcolor{white}{2024-02-06}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -78,11 +78,13 @@ header-includes:
 
 
 
+(ref:style) Workflow frame overview. 左图展示的是 Step 系列所有对象的框架结构和运行路线。右图展示的是，每一个圆球都代表一个方法或数据库或分析平台形成的数据对象，也就是左图中的 'job'，而它们之间的线，代表所有对象之间的转化或映射关系 (仅目前；还在不断拓展)；具体而言，我们可以简单的通过 'map' 或 'asjob' 这类的方法，将一个数据对象转化或映射到另一个对象，实现跨越多种方法或体系的联并分析。
+
 
 \def\@captype{figure}
 \begin{center}
 \includegraphics[width = 0.9\linewidth]{~/outline/lixiao//workflow_2023_12_30_scrna/Figure+Table/frame.pdf}
-\caption{Workflow frame}\label{fig:workflow-frame}
+\caption{(ref:style)}\label{fig:(ref:style)}
 \end{center}
 
 ## 理念
@@ -242,21 +244,52 @@ sr_1@info
 ## 摘要 {#abstract}
 
 ### 目的
+
+一般化 scRNA-seq 的分析流程，从基本的数据处理，到细胞注释，再到拟时分析、通讯分析等。
+数据处理的中心在于 'Seurat'，以它为衔接点，从各个分析工具中将数据转换来去，延续彼此的分析。
+
 ### 解决的问题
 
-## 适配平台
+不同的 R 包或其他工具之间的数据衔接。
+
+## 适配性
+
+大多数涉及的程序都是 R；但是，我设计的 SCSA 的程序接口可能得在 Linux 下才能成功运行。
 
 ## 方法
 
+以下是我在这个工作流中涉及的方法和程序：
+
 Mainly used method:
 
+- R package `CellChat` used for cell communication analysis[@InferenceAndAJinS2021].
 - GEO <https://www.ncbi.nlm.nih.gov/geo/> used for expression dataset aquisition.
+- R package `Monocle3` used for cell pseudotime analysis[@ReversedGraphQiuX2017; @TheDynamicsAnTrapne2014].
 - The R package `Seurat` used for scRNA-seq processing; `SCSA` (python) used for cell type annotation[@IntegratedAnalHaoY2021; @ComprehensiveIStuart2019; @ScsaACellTyCaoY2020].
 - Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
 ## 安装 (首次使用)
 
 ### 安装依赖
+
+#### 一些额外可能需要的系统依赖工具
+
+如果你是 Ubuntu 发行版，据我的经验，安装 `devtools`, `BiocManager` 等工具之前，
+估计需要先安装以下：
+
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
+\begin{verbatim}
+
+## Libraries for installing 'usethis' and 'devtools'.
+sudo apt install -y libssl-dev libcurl4-openssl-dev libblas-dev
+sudo apt install -y liblapack-dev libgfortran-11-dev gfortran libharfbuzz-dev libfribidi-dev
+## Libraries for installing 'BiocManager' and its some packages.
+sudo apt install -y libnetcdf-dev libopenbabel-dev libeigen3-dev
+## Libraries For installing other graphic packages.
+sudo apt install -y libfontconfig1-dev librsvg2-dev libmagick++-dev
+
+\end{verbatim}
+\end{tcolorbox}
 
 #### 安装 Seurat v5
 
@@ -299,11 +332,14 @@ remotes::install_github("sqjin/CellChat")
 
 #### 安装 SCSA
 
-\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {bash input}]
+以下代码是在 `bash` 中运行的。确保你的 `git` 和 `pip3` 可用。
+
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
 \begin{verbatim}
 
 git clone https://github.com/bioinfo-ibms-pumc/SCSA.git ~/SCSA
 pip3 install numpy scipy openpyxl
+# pandas 版本太高会报错
 pip3 install pandas==1.5.3
 
 \end{verbatim}
@@ -329,6 +365,32 @@ BiocManager::install(c("celldex"))
 ```
 
 ### 安装主体
+
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
+\begin{verbatim}
+
+git clone https://github.com/shaman-yellow/utils.tool.git ~/utils.tool
+
+\end{verbatim}
+\end{tcolorbox}
+
+`utils.tool` 是标准的 R 包结构形式，这意味着，即使你不用 `git` 获取它，
+单纯用：
+
+- `remotes::install_github("shaman-yellow/utils.tool")`
+
+也能成功获取并 直接安装完成。但是，这包里面大多数的方法都没有导出 (export) 到用户层次
+(这是因为，这个包的改动情形太多了，我一直在创建新的方法或者调整旧的方法) ，
+你即使 `library(utils.tool)` 加载了它，也会出现使用不了许多方法的情况。
+万无一失的做法是：
+
+
+```r
+if (!requireNamespace("devtools", quietly = TRUE))
+  install.packages("devtools")
+# 前提当然是，你已经 git 获取了这个包了
+devtools::load_all("~/utils.tool")
+```
 
 ## 使用说明
 
@@ -424,7 +486,7 @@ prepare_10x("./GSE171306/", "ccRCC1", single = T)
 
 ### 分析流程
 
-#### Job-seurat
+#### Job-seurat 从 Seurat 开始单细胞数据分析
 
 在 \@ref(obtain) 中，已经运行过：
 
@@ -681,7 +743,481 @@ Table: (\#tab:All-Markers)All Markers
 sr <- step6(sr, "Kidney")
 ```
 
- (如果你没有按照默认的方式安装 SCSA，那么你可能需要额外输入 `cmd` 和 `db` 参数) 
+注：如果你的 SCSA 存放在其它位置，那么你可能需要额外输入 `cmd` 和 `db` 参数 ，例如：
+
+
+
+```r
+# 以下只是示例，不需要运行
+sr <- step6(sr, "Kidney", cmd = "python3 /<your_path>/SCSA/SCSA.py", db = "/<your_path>/SCSA/whole_v2.db")
+```
+
+现在你可以获取经 SCSA 注释过的 UMAP 图了。
+
+
+```r
+sr@plots$step6$p.map_scsa
+```
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCSA-Cell-type-annotation.pdf}
+\caption{SCSA Cell type annotation}\label{fig:SCSA-Cell-type-annotation}
+\end{center}
+
+你还可以查看 SCSA 的注释表格。
+
+
+```r
+sr@tables$step6$scsa_res
+```
+
+这里，你也可以选择使用 `vis` ，根据其它注释来绘制 UMAP 图。
+
+
+```r
+# 绘制 SCSA 注释结果，同 `sr@plots$step6$p.map_scsa` 的图
+vis(sr, "scsa_cell")
+# 同 `sr@plots$step3$p.umap`
+vis(sr, "seurat_clusters")
+```
+
+#### 从以下开始拟时分析的示例
+
+#### As-job-monocle 对选定的细胞进行拟时分析
+
+将 seurat 对象转化为 monocle (version 3) 对象，并继承聚类的结果 (而不是重新开始分析，毕竟 monocle 有自己的分析体系) 。
+
+这里提供了两种选择 (第二种是第一种的封装，形式更固定，但也更简洁, 所以更推荐) 
+
+
+```r
+# getsub 会将参数传递到： SeuratObject:::subset.Seurat
+# 这里匹配了两类细胞：B 细胞和近端小管细胞
+sr.sub <- getsub(sr, cells = grep("B cell|Proximal", sr@object@meta.data[[ "scsa_cell" ]]))
+# 将 step 设置成 2，这样就能重新进行 step3 计算了
+sr.sub@step <- 2L
+# 重新进行 step3 是因为，我们选择了一个小类的细胞群体，为了拟时分析能够
+# 更加细致的划分这个群体的
+sr_sub <- step3(x, dims = 1:15, resolution = 1.2)
+# 转化到 monocle 时，以重新聚类
+mn_sub <- asjob_monocle(sr_sub, "seurat_clusters")
+# `asjob_monocle` 不像表面看起来那么简单，我参考了：
+# <http://htmlpreview.github.io/?https://github.com/satijalab/seurat-wrappers/blob/master/docs/monocle3.html>
+# <https://github.com/cole-trapnell-lab/monocle3/issues/438>
+# 中的介绍和一些后续分析的 Bug 的解决办法。
+# 你可以通过输入 `selectMethod("asjob_monocle", "job_seurat")` 查看细节
+```
+
+选择想要研究的细胞群，重新聚类成更小的群体 (可能是亚型，或者细胞不同阶段) ，然后传递到 Monocle 中
+拟时分析，这是一种实用且能泛用的策略，因此我将它封装成了更加简洁的形式，以便随时调用：
+
+
+```r
+# 这和上面的代码块的效果是一样的
+mn_sub <- do_monocle(sr, "B cell|Proximal")
+```
+
+你可以直接输入 `do_monocle` 来查看它的默认参数。
+
+
+```r
+do_monocle
+```
+
+```
+## job_seurat, character:
+```
+
+```
+##     x, ref, dims = 1:15, resolution = 1.2, group.by = x@params$group.by
+```
+
+```
+## job_seurat, job_kat:
+```
+
+```
+##     x, ref, dims = 1:15, resolution = 1.2
+```
+
+```
+## 
+```
+
+```
+## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
+```
+
+如果你对 '面向对象编程' 和 '参数化多态' 不熟悉，你可能会感到惊讶，因为它列出了两个参数列表。
+这是因为 Step 系列大部分用的都是方法 (Method) ，
+面向对象设计的。这里，第一个参数列表是我们实际使用的；而第二个，只有当我们输入的参数 `ref` 
+ (也就是第二个参数) 是 `job_kat` 对象时，它才会被触发，并且在随后会调用一个截然不同的
+函数来后续处理。如果你感兴趣，可以：
+
+
+```r
+# 这会展示我们这里实际调用的函数
+selectMethod("do_monocle", c("job_seurat", "character"))
+# 这会调用截然不同不同的函数
+selectMethod("do_monocle", c("job_seurat", "job_kat"))
+```
+
+`job_kat` 是 copyKAT R 包的 step 封装，是用来专门鉴定 癌细胞的。
+上面第二种设计是，对鉴定完毕的癌细胞进行拟时分析，也相当实用。我们之后介绍。
+
+言归正状，`mn_sub` 是我们取得的 monocle 对象的 Step 形式的封装。如果你对 monocle 的代码体系更加熟悉，
+那么你可以直接提取 `mn_sub` 中存储的 monocle 对象：
+
+
+```r
+object(mn_sub)
+```
+
+#### Step1 构建拟时轨迹
+
+
+```r
+mn_sub <- step1(mn_sub)
+```
+
+现在，你可以得到：
+
+
+```r
+mn_sub@plots$step1$p.traj$seurat_clusters
+mn_sub@plots$step1$p.prin
+```
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Trajectories.pdf}
+\caption{Trajectories}\label{fig:Trajectories}
+\end{center}
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Principal-points.pdf}
+\caption{Principal points}\label{fig:Principal-points}
+\end{center}
+
+Fig. \@ref(fig:Principal-points) 更有实用价值，因为它可以帮助我们选择拟时起点。
+
+#### Step2 选择拟时起点
+
+在 Fig. \@ref(fig:Principal-points) 的帮助下，我们为每一个聚类团选择一个起点。
+为了便于演示，这里的起点是随意选择的：
+
+
+```r
+mn_sub <- step2(mn_sub, c("Y_12", "Y_50", "Y_72", "Y_36", "Y_78"))
+```
+
+实际分析中，可以根据细胞种类来选择起点，例如，在癌细胞数据集的分析中，选择非癌细胞作为拟时起点。
+在 Fig. \@ref(fig:Principal-points) 中没有显示细胞类型，这里，我们可以借助转化成 monocle 之前的
+seurat 对象的 job 来检视：
+
+
+```r
+# 如果你是用 `do_monocle` 转化的，那么就能这样提取到它：
+mn_sub$sr_sub
+# 上述写法等同于：`mn_sub@params$sr_sub`
+# 可以用 `vis` 来可视化它
+p.sr_sub <- vis(mn_sub$sr_sub, "scsa_cell")
+p.sr_sub
+```
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Deomo-subset-of-cells-visualization.pdf}
+\caption{Deomo subset of cells visualization}\label{fig:Deomo-subset-of-cells-visualization}
+\end{center}
+
+在更复杂的分析中，或许得借助更多的因素来判定拟时起点。例如样本的来源，细胞位置 (空间转录组) ，
+或者 Marker 表达量的高低。这里不再赘述。
+
+言归正状，运行完 `step2` 后，将得到：
+
+
+```r
+mn_sub@plots$step2$p.pseu
+```
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SUB-pseudotime.pdf}
+\caption{SUB pseudotime}\label{fig:SUB-pseudotime}
+\end{center}
+
+#### Step3 拟时分析基础上的差异分析和基因表达模块
+
+
+```r
+mn_sub <- step3(mn_sub)
+```
+
+这会得到：
+
+
+```r
+mn_sub@plots$step3$gene_module_heatdata$graph_test.sig
+mn_sub@tables$step3$graph_test
+mn_sub@tables$step3$gene_module$graph_test.sig
+```
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SUB-gene-module-heatmap.pdf}
+\caption{SUB gene module heatmap}\label{fig:SUB-gene-module-heatmap}
+\end{center}
+
+
+Table: (\#tab:SUB-graph-test-results)SUB graph test results
+
+|rownames   |status |p_value       |morans_tes... |morans_I      |q_value       |
+|:----------|:------|:-------------|:-------------|:-------------|:-------------|
+|AL627309.1 |OK     |0.71713641... |-0.5743556... |-0.0028796... |0.74052249... |
+|AL627309.3 |OK     |0.56865824... |-0.1729591... |-0.0007942... |0.64807206... |
+|AL669831.2 |OK     |0.56600105... |-0.1662021... |-0.0009540... |0.64710506... |
+|AL669831.5 |OK     |0.00012749... |3.65720355... |0.01709405... |0.00022429... |
+|FAM87B     |OK     |0.66025318... |-0.4131542... |-0.0021470... |0.69573809... |
+|LINC00115  |OK     |0.84067430... |-0.9972330... |-0.0050549... |0.84805084... |
+|FAM41C     |OK     |0.26836391... |0.61776869... |0.00261844... |0.34797022... |
+|AL645608.1 |OK     |0.55654189... |-0.1422073... |-0.0008524... |0.64609095... |
+|SAMD11     |OK     |2.26008037... |4.58590871... |0.02126656... |4.33505225... |
+|NOC2L      |OK     |0.01774149... |2.10280310... |0.00974723... |0.02671787... |
+|KLHL17     |OK     |0.02881144... |1.89855590... |0.00866824... |0.04248129... |
+|PLEKHN1    |OK     |0.00017895... |3.56931611... |0.01662486... |0.00031221... |
+|PERM1      |OK     |0.00020134... |3.53831261... |0.01622553... |0.00035024... |
+|AL645608.8 |OK     |0             |42.5620756... |0.20314781... |0             |
+|HES4       |OK     |0             |114.647755... |0.54828135... |0             |
+|...        |...    |...           |...           |...           |...           |
+
+#### (进阶) 根据拟时分析结果重新划分细胞群体
+
+方法 `asjob_seurat` 较为复杂，这里试着解释：
+
+- 首先，它无疑会将数据对象 `job_monocle` 转换回 `job_seurat`。
+- 在转换过程中，会根据拟时分析结果以及你的参数，重新划归细胞聚类。
+- 重新聚类主要取决于 `mn@plots$step3$gene_module_heatdata$graph_test.sig`
+  (即，Fig. \@ref(fig:SUB-gene-module-heatmap)) 热图上方聚类树。
+
+例如，下述代码，我根据 Fig. \@ref(fig:SUB-gene-module-heatmap), 将细胞重分为 4 个聚类：
+
+
+```r
+sr_sub_regroup <- asjob_seurat(mn_sub, 4, rename = "Test")
+p.sr_sub_regroup <- vis(sr_sub_regroup, "regroup.hclust")
+```
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Sub-the-regroup-by-hclust.pdf}
+\caption{Sub the regroup by hclust}\label{fig:Sub-the-regroup-by-hclust}
+\end{center}
+
+这种分析方式在肿瘤细胞或其它细胞的亚型分析上有一定参考价值，且可以泛用。
+
+更进一步的是，我们可以将重新聚类完的 `sr_sub_regroup` 映射回到最初的 `job_seurat` 对象中，
+也就是 `sr` 对象：
+
+
+```r
+# 这行代码会将 `sr` 对象中的 ‘scsa_cell` 注释，根据 `sr_sub_regroup`
+# 中的 'regroup.hclust' 注释重新改写，然后命名为 'cell_mapped'
+# 你也能通过额外加入参数 `name = 'cell_mapped'`，如此，改成其它名称。
+sr <- map(sr, sr_sub_regroup, "scsa_cell", "regroup.hclust")
+```
+
+可以确认我们得到了什么：
+
+
+```r
+# 其实，`vis` 方法可以通过加入参数 `palette` 自定义颜色。
+# 它将参数传递到 `Seurat::DimPlot` 中。
+p.sr_mapped <- vis(sr, "cell_mapped")
+p.sr_mapped
+```
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/The-cell-mapped-from-monocle.pdf}
+\caption{The cell mapped from monocle}\label{fig:The-cell-mapped-from-monocle}
+\end{center}
+
+#### 以下开始细胞通讯的示例分析
+
+#### As-job-cellchat 对选定的细胞进行细胞通讯分析
+
+为了展示整个分析的延续性，我们继续从 `sr` (`job_seurat` 对象) 往下分析，
+也就是 Fig. \@ref(fig:The-cell-mapped-from-monocle) 所示的细胞的来源数据。
+注意，细胞通讯也是相对耗时的，太多的细胞数会非常占用内存。
+这里，我们取一部分的子集来演示 (实际分析，我们也可以取子集，
+因为我们其实可能并不需要对所有的细胞都通讯分析) ：
+
+
+```r
+sr_cc_sub <- getsub(sr,
+  cells = grep("Macro|Test", sr@object@meta.data[[ "cell_mapped" ]])
+)
+```
+
+现在，我们可以把它转化为 `job_cellchat` 对象了。
+
+
+```r
+cc <- asjob_cellchat(sr_cc_sub, "cell_mapped")
+```
+
+同样的，你也可以通过提取 `cc@object` 或者 `object(cc)` 以 `CellChat` 原来的代码开始分析。
+
+#### Step1 构建通讯网络以及可视化
+
+
+```r
+# 这可能需要运行较长时间
+cc <- step1(cc)
+```
+
+请注意，细胞通讯计算需要选定合适的参考数据集，我这里的方法设计默认是人类的，
+所以不需要指定任何参数。如果你是小鼠的数据集 (CellChat 好像只支持人类和小鼠的) ，
+那么需要再输入 `db` 和 `ppi` 参数。例如：
+
+
+```r
+# 以下示例不需要运行
+cc <- step1(cc, db = CellChat::CellChatDB.mouse, ppi = CellChat::PPI.mouse)
+```
+
+另外需要注意的是，`CellChat` 的 UMAP 聚类是以 Python 的包实现的。
+`CellChat` 内部调用 Python 包的形式并不太高明，可能会和你的设定发生冲突。
+因为我出现过这样的情况，所以我默认指定的是 `python = "/usr/bin/python3"`。
+你可以指定成你的 Python 所在路径，或者设置成 `NULL`。
+一旦指定，以下会被执行：
+
+- `base::Sys.setenv(RETICULATE_PYTHON = python)`
+- `reticulate::py_config()`
+
+请确保你安装了 `reticulate` (见 \@ref(installOthers))。
+
+运行完成后，你将可以得到 (Figure)：
+
+
+
+```r
+# 这是 CellChat 所用参考数据集的展示
+cc@plots$step1$p.showdb
+# 通讯的 'Count' 统计
+cc@plots$step1$p.aggre_count
+# 通讯的 'Weight' 统计
+cc@plots$step1$p.aggre_weight
+cc@plots$step1$p.commSep
+```
+
+这里只展示了 'Count' 统计
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-communication-count.pdf}
+\caption{Overall communication count}\label{fig:Overall-communication-count}
+\end{center}
+
+其实，比起 Fig. \@ref(fig:Overall-communication-count) ，下一步的
+热图更适合展示整体通讯，因为包含更多的信息。
+
+你还能得到 Tables:
+
+
+```r
+# 以下两个表格其实是通讯分析的主要内容
+cc@tables$step1$lp_net
+cc@tables$step1$pathway_net
+```
+
+
+Table: (\#tab:lp-net)Lp net
+
+|source    |target    |ligand |receptor  |prob      |pval |intera......7 |intera......8 |pathwa... |annota... |
+|:---------|:---------|:------|:---------|:---------|:----|:-------------|:-------------|:---------|:---------|
+|Macrop... |Macrop... |TGFB1  |TGFbR1_R2 |0.0048... |0    |TGFB1_...     |TGFB1 ...     |TGFb      |Secret... |
+|Test_1    |Macrop... |TGFB1  |TGFbR1_R2 |0.0048... |0    |TGFB1_...     |TGFB1 ...     |TGFb      |Secret... |
+|Test_2    |Macrop... |TGFB1  |TGFbR1_R2 |0.0061... |0    |TGFB1_...     |TGFB1 ...     |TGFb      |Secret... |
+|Test_4    |Macrop... |TGFB1  |TGFbR1_R2 |0.0012... |0    |TGFB1_...     |TGFB1 ...     |TGFb      |Secret... |
+|Macrop... |Test_2    |TGFB1  |TGFbR1_R2 |0.0048... |0    |TGFB1_...     |TGFB1 ...     |TGFb      |Secret... |
+|Test_1    |Test_2    |TGFB1  |TGFbR1_R2 |0.0048... |0    |TGFB1_...     |TGFB1 ...     |TGFb      |Secret... |
+|Test_2    |Test_2    |TGFB1  |TGFbR1_R2 |0.0061... |0    |TGFB1_...     |TGFB1 ...     |TGFb      |Secret... |
+|Test_4    |Test_2    |TGFB1  |TGFbR1_R2 |0.0012... |0    |TGFB1_...     |TGFB1 ...     |TGFb      |Secret... |
+|Test_3    |Macrop... |GDF15  |TGFBR2    |0.0053... |0    |GDF15_...     |GDF15 ...     |GDF       |Secret... |
+|Test_3    |Test_2    |GDF15  |TGFBR2    |0.0053... |0    |GDF15_...     |GDF15 ...     |GDF       |Secret... |
+|Test_3    |Test_4    |GDF15  |TGFBR2    |0.0053... |0    |GDF15_...     |GDF15 ...     |GDF       |Secret... |
+|Test_3    |Test_3    |TGFA   |EGFR      |0.0040... |0    |TGFA_EGFR     |TGFA -...     |EGF       |Secret... |
+|Test_1    |Test_3    |AREG   |EGFR      |0.0063... |0    |AREG_EGFR     |AREG -...     |EGF       |Secret... |
+|Test_2    |Test_3    |AREG   |EGFR      |0.0040... |0    |AREG_EGFR     |AREG -...     |EGF       |Secret... |
+|Macrop... |Test_3    |HBEGF  |EGFR      |0.0159... |0    |HBEGF_...     |HBEGF ...     |EGF       |Secret... |
+|...       |...       |...    |...       |...       |...  |...           |...           |...       |...       |
+
+
+Table: (\#tab:pathway-net)Pathway net
+
+|source     |target     |pathway_name |prob                |pval |
+|:----------|:----------|:------------|:-------------------|:----|
+|Macrophage |Macrophage |ANNEXIN      |0.0142752959860733  |0    |
+|Macrophage |Macrophage |CADM         |0.00134474271905693 |0    |
+|Macrophage |Macrophage |CCL          |0.197165266984973   |0    |
+|Macrophage |Macrophage |CD45         |0.0511750497900894  |0    |
+|Macrophage |Macrophage |CD99         |0.00134474271905693 |0    |
+|Macrophage |Macrophage |COMPLEMENT   |0.179867247416985   |0    |
+|Macrophage |Macrophage |CXCL         |0.0315784487714539  |0    |
+|Macrophage |Macrophage |GALECTIN     |0.0510613013929917  |0    |
+|Macrophage |Macrophage |GAS          |0.0371625768894343  |0    |
+|Macrophage |Macrophage |ICAM         |0.133417588216607   |0    |
+|Macrophage |Macrophage |ITGB2        |0.115608598396661   |0    |
+|Macrophage |Macrophage |MHC-I        |0.00134474271905693 |0    |
+|Macrophage |Macrophage |MHC-II       |1.12708370370619    |0    |
+|Macrophage |Macrophage |PECAM1       |0.0119738702725686  |0    |
+|Macrophage |Macrophage |SEMA4        |0.00734078826527416 |0    |
+|...        |...        |...          |...                 |...  |
+
+#### Step2 进一步分析通路通讯、受体配体通讯和可视化
+
+
+```r
+# 默认的，如果你不指定 'pathway' 参数，它会绘制所有的 'pathway' 通讯
+# 如果通路很多，会比较耗时且占用内存 (全部存储在 `cc` 中)
+# 更建议根据 'cc@tables$step1$lp_net' 或 'cc@tables$step1$pathway_net'
+# 筛选后再运行
+# 这里数据集不算大，直接运行了
+cc <- step2(cc)
+```
+
+
+```r
+# `cc@plots$step2$cell_comm_heatmap` 是一个 'list'
+# 存储了大量其它的 figure, 以下示例提取 'ALL'
+cc@plots$step2$cell_comm_heatmap$ALL
+cc@plots$step2$lr_comm_bubble
+# `cc@plots$step2` 还有更多的 figure，不一一展示了
+```
+
+
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/communication-bubble.pdf}
+\caption{Communication bubble}\label{fig:communication-bubble}
+\end{center}
+
+####  (进阶) 
 
 ### 完整示例代码
 

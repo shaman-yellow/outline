@@ -123,7 +123,7 @@
 \begin{center} \textbf{\Huge Step 系列：scRNA-seq
 基本分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-05}}
+\textbf{\textcolor{white}{2024-02-06}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -146,10 +146,12 @@
 \hypertarget{step}{%
 \section{Step 系列共性特征}\label{step}}
 
+
+
 \def\@captype{figure}
 \begin{center}
 \includegraphics[width = 0.9\linewidth]{~/outline/lixiao//workflow_2023_12_30_scrna/Figure+Table/frame.pdf}
-\caption{Workflow frame}\label{fig:workflow-frame}
+\caption{Workflow frame overview. 左图展示的是 Step 系列所有对象的框架结构和运行路线。右图展示的是，每一个圆球都代表一个方法或数据库或分析平台形成的数据对象，也就是左图中的 `job'，而它们之间的线，代表所有对象之间的转化或映射关系 (仅目前；还在不断拓展)；具体而言，我们可以简单的通过 `map' 或 `asjob' 这类的方法，将一个数据对象转化或映射到另一个对象，实现跨越多种方法或体系的联并分析。}\label{fig:Workflow frame overview. 左图展示的是 Step 系列所有对象的框架结构和运行路线。右图展示的是，每一个圆球都代表一个方法或数据库或分析平台形成的数据对象，也就是左图中的 `job'，而它们之间的线，代表所有对象之间的转化或映射关系 (仅目前；还在不断拓展)；具体而言，我们可以简单的通过 `map' 或 `asjob' 这类的方法，将一个数据对象转化或映射到另一个对象，实现跨越多种方法或体系的联并分析。}
 \end{center}
 
 \hypertarget{ux7406ux5ff5}{%
@@ -336,23 +338,36 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 \hypertarget{ux76eeux7684}{%
 \subsubsection{目的}\label{ux76eeux7684}}
 
+一般化 scRNA-seq 的分析流程，从基本的数据处理，到细胞注释，再到拟时分析、通讯分析等。
+数据处理的中心在于 `Seurat'，以它为衔接点，从各个分析工具中将数据转换来去，延续彼此的分析。
+
 \hypertarget{ux89e3ux51b3ux7684ux95eeux9898}{%
 \subsubsection{解决的问题}\label{ux89e3ux51b3ux7684ux95eeux9898}}
 
-\hypertarget{ux9002ux914dux5e73ux53f0}{%
-\subsection{适配平台}\label{ux9002ux914dux5e73ux53f0}}
+不同的 R 包或其他工具之间的数据衔接。
+
+\hypertarget{ux9002ux914dux6027}{%
+\subsection{适配性}\label{ux9002ux914dux6027}}
+
+大多数涉及的程序都是 R；但是，我设计的 SCSA 的程序接口可能得在 Linux 下才能成功运行。
 
 \hypertarget{ux65b9ux6cd5}{%
 \subsection{方法}\label{ux65b9ux6cd5}}
+
+以下是我在这个工作流中涉及的方法和程序：
 
 Mainly used method:
 
 \begin{itemize}
 \tightlist
 \item
+  R package \texttt{CellChat} used for cell communication analysis\textsuperscript{\protect\hyperlink{ref-InferenceAndAJinS2021}{1}}.
+\item
   GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
 \item
-  The R package \texttt{Seurat} used for scRNA-seq processing; \texttt{SCSA} (python) used for cell type annotation\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{1}--\protect\hyperlink{ref-ScsaACellTyCaoY2020}{3}}.
+  R package \texttt{Monocle3} used for cell pseudotime analysis\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{2},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{3}}.
+\item
+  The R package \texttt{Seurat} used for scRNA-seq processing; \texttt{SCSA} (python) used for cell type annotation\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{4}--\protect\hyperlink{ref-ScsaACellTyCaoY2020}{6}}.
 \item
   Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
@@ -362,6 +377,26 @@ Mainly used method:
 
 \hypertarget{ux5b89ux88c5ux4f9dux8d56}{%
 \subsubsection{安装依赖}\label{ux5b89ux88c5ux4f9dux8d56}}
+
+\hypertarget{ux4e00ux4e9bux989dux5916ux53efux80fdux9700ux8981ux7684ux7cfbux7edfux4f9dux8d56ux5de5ux5177}{%
+\paragraph{一些额外可能需要的系统依赖工具}\label{ux4e00ux4e9bux989dux5916ux53efux80fdux9700ux8981ux7684ux7cfbux7edfux4f9dux8d56ux5de5ux5177}}
+
+如果你是 Ubuntu 发行版，据我的经验，安装 \texttt{devtools}, \texttt{BiocManager} 等工具之前，
+估计需要先安装以下：
+
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
+\begin{verbatim}
+
+## Libraries for installing 'usethis' and 'devtools'.
+sudo apt install -y libssl-dev libcurl4-openssl-dev libblas-dev
+sudo apt install -y liblapack-dev libgfortran-11-dev gfortran libharfbuzz-dev libfribidi-dev
+## Libraries for installing 'BiocManager' and its some packages.
+sudo apt install -y libnetcdf-dev libopenbabel-dev libeigen3-dev
+## Libraries For installing other graphic packages.
+sudo apt install -y libfontconfig1-dev librsvg2-dev libmagick++-dev
+
+\end{verbatim}
+\end{tcolorbox}
 
 \hypertarget{ux5b89ux88c5-seurat-v5}{%
 \paragraph{安装 Seurat v5}\label{ux5b89ux88c5-seurat-v5}}
@@ -413,11 +448,14 @@ Mainly used method:
 \hypertarget{ux5b89ux88c5-scsa}{%
 \paragraph{安装 SCSA}\label{ux5b89ux88c5-scsa}}
 
-\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {bash input}]
+以下代码是在 \texttt{bash} 中运行的。确保你的 \texttt{git} 和 \texttt{pip3} 可用。
+
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
 \begin{verbatim}
 
 git clone https://github.com/bioinfo-ibms-pumc/SCSA.git ~/SCSA
 pip3 install numpy scipy openpyxl
+# pandas 版本太高会报错
 pip3 install pandas==1.5.3
 
 \end{verbatim}
@@ -447,6 +485,37 @@ pip3 install pandas==1.5.3
 
 \hypertarget{ux5b89ux88c5ux4e3bux4f53}{%
 \subsubsection{安装主体}\label{ux5b89ux88c5ux4e3bux4f53}}
+
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
+\begin{verbatim}
+
+git clone https://github.com/shaman-yellow/utils.tool.git ~/utils.tool
+
+\end{verbatim}
+\end{tcolorbox}
+
+\texttt{utils.tool} 是标准的 R 包结构形式，这意味着，即使你不用 \texttt{git} 获取它，
+单纯用：
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{remotes::install\_github("shaman-yellow/utils.tool")}
+\end{itemize}
+
+也能成功获取并 直接安装完成。但是，这包里面大多数的方法都没有导出 (export) 到用户层次
+(这是因为，这个包的改动情形太多了，我一直在创建新的方法或者调整旧的方法) ，
+你即使 \texttt{library(utils.tool)} 加载了它，也会出现使用不了许多方法的情况。
+万无一失的做法是：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{requireNamespace}\NormalTok{(}\StringTok{"devtools"}\NormalTok{, }\DataTypeTok{quietly =} \OtherTok{TRUE}\NormalTok{))}
+  \KeywordTok{install.packages}\NormalTok{(}\StringTok{"devtools"}\NormalTok{)}
+\CommentTok{\# 前提当然是，你已经 git 获取了这个包了}
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{load\_all}\NormalTok{(}\StringTok{"\textasciitilde{}/utils.tool"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{ux4f7fux7528ux8bf4ux660e}{%
 \subsection{使用说明}\label{ux4f7fux7528ux8bf4ux660e}}
@@ -553,8 +622,8 @@ GEO 中的单细胞数据 (Supplementary file) 的存储形式不统一 (很随�
 \hypertarget{ux5206ux6790ux6d41ux7a0b}{%
 \subsubsection{分析流程}\label{ux5206ux6790ux6d41ux7a0b}}
 
-\hypertarget{job-seurat}{%
-\paragraph{Job-seurat}\label{job-seurat}}
+\hypertarget{job-seurat-ux4ece-seurat-ux5f00ux59cbux5355ux7ec6ux80deux6570ux636eux5206ux6790}{%
+\paragraph{Job-seurat 从 Seurat 开始单细胞数据分析}\label{job-seurat-ux4ece-seurat-ux5f00ux59cbux5355ux7ec6ux80deux6570ux636eux5206ux6790}}
 
 在 \ref{obtain} 中，已经运行过：
 
@@ -871,7 +940,537 @@ CD3E & 3.8141\ldots{} & 1.8107\ldots{} & 0.914 & 0.294 & 7.3104\ldots{} & 0 & CD
 \end{Highlighting}
 \end{Shaded}
 
-(如果你没有按照默认的方式安装 SCSA，那么你可能需要额外输入 \texttt{cmd} 和 \texttt{db} 参数)
+注：如果你的 SCSA 存放在其它位置，那么你可能需要额外输入 \texttt{cmd} 和 \texttt{db} 参数 ，例如：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 以下只是示例，不需要运行}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step6}\NormalTok{(sr, }\StringTok{"Kidney"}\NormalTok{, }\DataTypeTok{cmd =} \StringTok{"python3 /\textless{}your\_path\textgreater{}/SCSA/SCSA.py"}\NormalTok{, }\DataTypeTok{db =} \StringTok{"/\textless{}your\_path\textgreater{}/SCSA/whole\_v2.db"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+现在你可以获取经 SCSA 注释过的 UMAP 图了。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{p.map\_scsa}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCSA-Cell-type-annotation.pdf}
+\caption{SCSA Cell type annotation}\label{fig:SCSA-Cell-type-annotation}
+\end{center}
+
+你还可以查看 SCSA 的注释表格。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{scsa\_res}
+\end{Highlighting}
+\end{Shaded}
+
+这里，你也可以选择使用 \texttt{vis} ，根据其它注释来绘制 UMAP 图。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 绘制 SCSA 注释结果，同 \textasciigrave{}sr@plots$step6$p.map\_scsa\textasciigrave{} 的图}
+\KeywordTok{vis}\NormalTok{(sr, }\StringTok{"scsa\_cell"}\NormalTok{)}
+\CommentTok{\# 同 \textasciigrave{}sr@plots$step3$p.umap\textasciigrave{}}
+\KeywordTok{vis}\NormalTok{(sr, }\StringTok{"seurat\_clusters"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux4eceux4ee5ux4e0bux5f00ux59cbux62dfux65f6ux5206ux6790ux7684ux793aux4f8b}{%
+\paragraph{从以下开始拟时分析的示例}\label{ux4eceux4ee5ux4e0bux5f00ux59cbux62dfux65f6ux5206ux6790ux7684ux793aux4f8b}}
+
+\hypertarget{as-job-monocle-ux5bf9ux9009ux5b9aux7684ux7ec6ux80deux8fdbux884cux62dfux65f6ux5206ux6790}{%
+\paragraph{As-job-monocle 对选定的细胞进行拟时分析}\label{as-job-monocle-ux5bf9ux9009ux5b9aux7684ux7ec6ux80deux8fdbux884cux62dfux65f6ux5206ux6790}}
+
+将 seurat 对象转化为 monocle (version 3) 对象，并继承聚类的结果 (而不是重新开始分析，毕竟 monocle 有自己的分析体系) 。
+
+这里提供了两种选择 (第二种是第一种的封装，形式更固定，但也更简洁, 所以更推荐)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# getsub 会将参数传递到： SeuratObject:::subset.Seurat}
+\CommentTok{\# 这里匹配了两类细胞：B 细胞和近端小管细胞}
+\NormalTok{sr.sub \textless{}{-}}\StringTok{ }\KeywordTok{getsub}\NormalTok{(sr, }\DataTypeTok{cells =} \KeywordTok{grep}\NormalTok{(}\StringTok{"B cell|Proximal"}\NormalTok{, sr}\OperatorTok{@}\NormalTok{object}\OperatorTok{@}\NormalTok{meta.data[[ }\StringTok{"scsa\_cell"}\NormalTok{ ]]))}
+\CommentTok{\# 将 step 设置成 2，这样就能重新进行 step3 计算了}
+\NormalTok{sr.sub}\OperatorTok{@}\NormalTok{step \textless{}{-}}\StringTok{ }\NormalTok{2L}
+\CommentTok{\# 重新进行 step3 是因为，我们选择了一个小类的细胞群体，为了拟时分析能够}
+\CommentTok{\# 更加细致的划分这个群体的}
+\NormalTok{sr\_sub \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(x, }\DataTypeTok{dims =} \DecValTok{1}\OperatorTok{:}\DecValTok{15}\NormalTok{, }\DataTypeTok{resolution =} \FloatTok{1.2}\NormalTok{)}
+\CommentTok{\# 转化到 monocle 时，以重新聚类}
+\NormalTok{mn\_sub \textless{}{-}}\StringTok{ }\KeywordTok{asjob\_monocle}\NormalTok{(sr\_sub, }\StringTok{"seurat\_clusters"}\NormalTok{)}
+\CommentTok{\# \textasciigrave{}asjob\_monocle\textasciigrave{} 不像表面看起来那么简单，我参考了：}
+\CommentTok{\# \textless{}http://htmlpreview.github.io/?https://github.com/satijalab/seurat{-}wrappers/blob/master/docs/monocle3.html\textgreater{}}
+\CommentTok{\# \textless{}https://github.com/cole{-}trapnell{-}lab/monocle3/issues/438\textgreater{}}
+\CommentTok{\# 中的介绍和一些后续分析的 Bug 的解决办法。}
+\CommentTok{\# 你可以通过输入 \textasciigrave{}selectMethod("asjob\_monocle", "job\_seurat")\textasciigrave{} 查看细节}
+\end{Highlighting}
+\end{Shaded}
+
+选择想要研究的细胞群，重新聚类成更小的群体 (可能是亚型，或者细胞不同阶段) ，然后传递到 Monocle 中
+拟时分析，这是一种实用且能泛用的策略，因此我将它封装成了更加简洁的形式，以便随时调用：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 这和上面的代码块的效果是一样的}
+\NormalTok{mn\_sub \textless{}{-}}\StringTok{ }\KeywordTok{do\_monocle}\NormalTok{(sr, }\StringTok{"B cell|Proximal"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+你可以直接输入 \texttt{do\_monocle} 来查看它的默认参数。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{do\_monocle}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## job_seurat, character:
+\end{verbatim}
+
+\begin{verbatim}
+##     x, ref, dims = 1:15, resolution = 1.2, group.by = x@params$group.by
+\end{verbatim}
+
+\begin{verbatim}
+## job_seurat, job_kat:
+\end{verbatim}
+
+\begin{verbatim}
+##     x, ref, dims = 1:15, resolution = 1.2
+\end{verbatim}
+
+\begin{verbatim}
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
+\end{verbatim}
+
+如果你对 `面向对象编程' 和 `参数化多态' 不熟悉，你可能会感到惊讶，因为它列出了两个参数列表。
+这是因为 Step 系列大部分用的都是方法 (Method) ，
+面向对象设计的。这里，第一个参数列表是我们实际使用的；而第二个，只有当我们输入的参数 \texttt{ref}
+(也就是第二个参数) 是 \texttt{job\_kat} 对象时，它才会被触发，并且在随后会调用一个截然不同的
+函数来后续处理。如果你感兴趣，可以：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 这会展示我们这里实际调用的函数}
+\KeywordTok{selectMethod}\NormalTok{(}\StringTok{"do\_monocle"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"job\_seurat"}\NormalTok{, }\StringTok{"character"}\NormalTok{))}
+\CommentTok{\# 这会调用截然不同不同的函数}
+\KeywordTok{selectMethod}\NormalTok{(}\StringTok{"do\_monocle"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"job\_seurat"}\NormalTok{, }\StringTok{"job\_kat"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{job\_kat} 是 copyKAT R 包的 step 封装，是用来专门鉴定 癌细胞的。
+上面第二种设计是，对鉴定完毕的癌细胞进行拟时分析，也相当实用。我们之后介绍。
+
+言归正状，\texttt{mn\_sub} 是我们取得的 monocle 对象的 Step 形式的封装。如果你对 monocle 的代码体系更加熟悉，
+那么你可以直接提取 \texttt{mn\_sub} 中存储的 monocle 对象：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{object}\NormalTok{(mn\_sub)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step1-ux6784ux5efaux62dfux65f6ux8f68ux8ff9}{%
+\paragraph{Step1 构建拟时轨迹}\label{step1-ux6784ux5efaux62dfux65f6ux8f68ux8ff9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn\_sub \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(mn\_sub)}
+\end{Highlighting}
+\end{Shaded}
+
+现在，你可以得到：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn\_sub}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.traj}\OperatorTok{$}\NormalTok{seurat\_clusters}
+\NormalTok{mn\_sub}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.prin}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Trajectories.pdf}
+\caption{Trajectories}\label{fig:Trajectories}
+\end{center}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Principal-points.pdf}
+\caption{Principal points}\label{fig:Principal-points}
+\end{center}
+
+Fig. \ref{fig:Principal-points} 更有实用价值，因为它可以帮助我们选择拟时起点。
+
+\hypertarget{step2-ux9009ux62e9ux62dfux65f6ux8d77ux70b9}{%
+\paragraph{Step2 选择拟时起点}\label{step2-ux9009ux62e9ux62dfux65f6ux8d77ux70b9}}
+
+在 Fig. \ref{fig:Principal-points} 的帮助下，我们为每一个聚类团选择一个起点。
+为了便于演示，这里的起点是随意选择的：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn\_sub \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(mn\_sub, }\KeywordTok{c}\NormalTok{(}\StringTok{"Y\_12"}\NormalTok{, }\StringTok{"Y\_50"}\NormalTok{, }\StringTok{"Y\_72"}\NormalTok{, }\StringTok{"Y\_36"}\NormalTok{, }\StringTok{"Y\_78"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+实际分析中，可以根据细胞种类来选择起点，例如，在癌细胞数据集的分析中，选择非癌细胞作为拟时起点。
+在 Fig. \ref{fig:Principal-points} 中没有显示细胞类型，这里，我们可以借助转化成 monocle 之前的
+seurat 对象的 job 来检视：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 如果你是用 \textasciigrave{}do\_monocle\textasciigrave{} 转化的，那么就能这样提取到它：}
+\NormalTok{mn\_sub}\OperatorTok{$}\NormalTok{sr\_sub}
+\CommentTok{\# 上述写法等同于：\textasciigrave{}mn\_sub@params$sr\_sub\textasciigrave{}}
+\CommentTok{\# 可以用 \textasciigrave{}vis\textasciigrave{} 来可视化它}
+\NormalTok{p.sr\_sub \textless{}{-}}\StringTok{ }\KeywordTok{vis}\NormalTok{(mn\_sub}\OperatorTok{$}\NormalTok{sr\_sub, }\StringTok{"scsa\_cell"}\NormalTok{)}
+\NormalTok{p.sr\_sub}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Deomo-subset-of-cells-visualization.pdf}
+\caption{Deomo subset of cells visualization}\label{fig:Deomo-subset-of-cells-visualization}
+\end{center}
+
+在更复杂的分析中，或许得借助更多的因素来判定拟时起点。例如样本的来源，细胞位置 (空间转录组) ，
+或者 Marker 表达量的高低。这里不再赘述。
+
+言归正状，运行完 \texttt{step2} 后，将得到：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn\_sub}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pseu}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SUB-pseudotime.pdf}
+\caption{SUB pseudotime}\label{fig:SUB-pseudotime}
+\end{center}
+
+\hypertarget{step3-ux62dfux65f6ux5206ux6790ux57faux7840ux4e0aux7684ux5deeux5f02ux5206ux6790ux548cux57faux56e0ux8868ux8fbeux6a21ux5757}{%
+\paragraph{Step3 拟时分析基础上的差异分析和基因表达模块}\label{step3-ux62dfux65f6ux5206ux6790ux57faux7840ux4e0aux7684ux5deeux5f02ux5206ux6790ux548cux57faux56e0ux8868ux8fbeux6a21ux5757}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn\_sub \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(mn\_sub)}
+\end{Highlighting}
+\end{Shaded}
+
+这会得到：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn\_sub}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{gene\_module\_heatdata}\OperatorTok{$}\NormalTok{graph\_test.sig}
+\NormalTok{mn\_sub}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{graph\_test}
+\NormalTok{mn\_sub}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{gene\_module}\OperatorTok{$}\NormalTok{graph\_test.sig}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SUB-gene-module-heatmap.pdf}
+\caption{SUB gene module heatmap}\label{fig:SUB-gene-module-heatmap}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:SUB-graph-test-results}SUB graph test results}\tabularnewline
+\toprule
+rownames & status & p\_value & morans\_tes\ldots{} & morans\_I & q\_value\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & status & p\_value & morans\_tes\ldots{} & morans\_I & q\_value\tabularnewline
+\midrule
+\endhead
+AL627309.1 & OK & 0.71713641\ldots{} & -0.5743556\ldots{} & -0.0028796\ldots{} & 0.74052249\ldots{}\tabularnewline
+AL627309.3 & OK & 0.56865824\ldots{} & -0.1729591\ldots{} & -0.0007942\ldots{} & 0.64807206\ldots{}\tabularnewline
+AL669831.2 & OK & 0.56600105\ldots{} & -0.1662021\ldots{} & -0.0009540\ldots{} & 0.64710506\ldots{}\tabularnewline
+AL669831.5 & OK & 0.00012749\ldots{} & 3.65720355\ldots{} & 0.01709405\ldots{} & 0.00022429\ldots{}\tabularnewline
+FAM87B & OK & 0.66025318\ldots{} & -0.4131542\ldots{} & -0.0021470\ldots{} & 0.69573809\ldots{}\tabularnewline
+LINC00115 & OK & 0.84067430\ldots{} & -0.9972330\ldots{} & -0.0050549\ldots{} & 0.84805084\ldots{}\tabularnewline
+FAM41C & OK & 0.26836391\ldots{} & 0.61776869\ldots{} & 0.00261844\ldots{} & 0.34797022\ldots{}\tabularnewline
+AL645608.1 & OK & 0.55654189\ldots{} & -0.1422073\ldots{} & -0.0008524\ldots{} & 0.64609095\ldots{}\tabularnewline
+SAMD11 & OK & 2.26008037\ldots{} & 4.58590871\ldots{} & 0.02126656\ldots{} & 4.33505225\ldots{}\tabularnewline
+NOC2L & OK & 0.01774149\ldots{} & 2.10280310\ldots{} & 0.00974723\ldots{} & 0.02671787\ldots{}\tabularnewline
+KLHL17 & OK & 0.02881144\ldots{} & 1.89855590\ldots{} & 0.00866824\ldots{} & 0.04248129\ldots{}\tabularnewline
+PLEKHN1 & OK & 0.00017895\ldots{} & 3.56931611\ldots{} & 0.01662486\ldots{} & 0.00031221\ldots{}\tabularnewline
+PERM1 & OK & 0.00020134\ldots{} & 3.53831261\ldots{} & 0.01622553\ldots{} & 0.00035024\ldots{}\tabularnewline
+AL645608.8 & OK & 0 & 42.5620756\ldots{} & 0.20314781\ldots{} & 0\tabularnewline
+HES4 & OK & 0 & 114.647755\ldots{} & 0.54828135\ldots{} & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux8fdbux9636-ux6839ux636eux62dfux65f6ux5206ux6790ux7ed3ux679cux91cdux65b0ux5212ux5206ux7ec6ux80deux7fa4ux4f53}{%
+\paragraph{(进阶) 根据拟时分析结果重新划分细胞群体}\label{ux8fdbux9636-ux6839ux636eux62dfux65f6ux5206ux6790ux7ed3ux679cux91cdux65b0ux5212ux5206ux7ec6ux80deux7fa4ux4f53}}
+
+方法 \texttt{asjob\_seurat} 较为复杂，这里试着解释：
+
+\begin{itemize}
+\tightlist
+\item
+  首先，它无疑会将数据对象 \texttt{job\_monocle} 转换回 \texttt{job\_seurat}。
+\item
+  在转换过程中，会根据拟时分析结果以及你的参数，重新划归细胞聚类。
+\item
+  重新聚类主要取决于 \texttt{mn@plots\$step3\$gene\_module\_heatdata\$graph\_test.sig}
+  (即，Fig. \ref{fig:SUB-gene-module-heatmap}) 热图上方聚类树。
+\end{itemize}
+
+例如，下述代码，我根据 Fig. \ref{fig:SUB-gene-module-heatmap}, 将细胞重分为 4 个聚类：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr\_sub\_regroup \textless{}{-}}\StringTok{ }\KeywordTok{asjob\_seurat}\NormalTok{(mn\_sub, }\DecValTok{4}\NormalTok{, }\DataTypeTok{rename =} \StringTok{"Test"}\NormalTok{)}
+\NormalTok{p.sr\_sub\_regroup \textless{}{-}}\StringTok{ }\KeywordTok{vis}\NormalTok{(sr\_sub\_regroup, }\StringTok{"regroup.hclust"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Sub-the-regroup-by-hclust.pdf}
+\caption{Sub the regroup by hclust}\label{fig:Sub-the-regroup-by-hclust}
+\end{center}
+
+这种分析方式在肿瘤细胞或其它细胞的亚型分析上有一定参考价值，且可以泛用。
+
+更进一步的是，我们可以将重新聚类完的 \texttt{sr\_sub\_regroup} 映射回到最初的 \texttt{job\_seurat} 对象中，
+也就是 \texttt{sr} 对象：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 这行代码会将 \textasciigrave{}sr\textasciigrave{} 对象中的 ‘scsa\_cell\textasciigrave{} 注释，根据 \textasciigrave{}sr\_sub\_regroup\textasciigrave{}}
+\CommentTok{\# 中的 \textquotesingle{}regroup.hclust\textquotesingle{} 注释重新改写，然后命名为 \textquotesingle{}cell\_mapped\textquotesingle{}}
+\CommentTok{\# 你也能通过额外加入参数 \textasciigrave{}name = \textquotesingle{}cell\_mapped\textquotesingle{}\textasciigrave{}，如此，改成其它名称。}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{map}\NormalTok{(sr, sr\_sub\_regroup, }\StringTok{"scsa\_cell"}\NormalTok{, }\StringTok{"regroup.hclust"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+可以确认我们得到了什么：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 其实，\textasciigrave{}vis\textasciigrave{} 方法可以通过加入参数 \textasciigrave{}palette\textasciigrave{} 自定义颜色。}
+\CommentTok{\# 它将参数传递到 \textasciigrave{}Seurat::DimPlot\textasciigrave{} 中。}
+\NormalTok{p.sr\_mapped \textless{}{-}}\StringTok{ }\KeywordTok{vis}\NormalTok{(sr, }\StringTok{"cell\_mapped"}\NormalTok{)}
+\NormalTok{p.sr\_mapped}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/The-cell-mapped-from-monocle.pdf}
+\caption{The cell mapped from monocle}\label{fig:The-cell-mapped-from-monocle}
+\end{center}
+
+\hypertarget{ux4ee5ux4e0bux5f00ux59cbux7ec6ux80deux901aux8bafux7684ux793aux4f8bux5206ux6790}{%
+\paragraph{以下开始细胞通讯的示例分析}\label{ux4ee5ux4e0bux5f00ux59cbux7ec6ux80deux901aux8bafux7684ux793aux4f8bux5206ux6790}}
+
+\hypertarget{as-job-cellchat-ux5bf9ux9009ux5b9aux7684ux7ec6ux80deux8fdbux884cux7ec6ux80deux901aux8bafux5206ux6790}{%
+\paragraph{As-job-cellchat 对选定的细胞进行细胞通讯分析}\label{as-job-cellchat-ux5bf9ux9009ux5b9aux7684ux7ec6ux80deux8fdbux884cux7ec6ux80deux901aux8bafux5206ux6790}}
+
+为了展示整个分析的延续性，我们继续从 \texttt{sr} (\texttt{job\_seurat} 对象) 往下分析，
+也就是 Fig. \ref{fig:The-cell-mapped-from-monocle} 所示的细胞的来源数据。
+注意，细胞通讯也是相对耗时的，太多的细胞数会非常占用内存。
+这里，我们取一部分的子集来演示 (实际分析，我们也可以取子集，
+因为我们其实可能并不需要对所有的细胞都通讯分析) ：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr\_cc\_sub \textless{}{-}}\StringTok{ }\KeywordTok{getsub}\NormalTok{(sr,}
+  \DataTypeTok{cells =} \KeywordTok{grep}\NormalTok{(}\StringTok{"Macro|Test"}\NormalTok{, sr}\OperatorTok{@}\NormalTok{object}\OperatorTok{@}\NormalTok{meta.data[[ }\StringTok{"cell\_mapped"}\NormalTok{ ]])}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+现在，我们可以把它转化为 \texttt{job\_cellchat} 对象了。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cc \textless{}{-}}\StringTok{ }\KeywordTok{asjob\_cellchat}\NormalTok{(sr\_cc\_sub, }\StringTok{"cell\_mapped"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+同样的，你也可以通过提取 \texttt{cc@object} 或者 \texttt{object(cc)} 以 \texttt{CellChat} 原来的代码开始分析。
+
+\hypertarget{step1-ux6784ux5efaux901aux8bafux7f51ux7edcux4ee5ux53caux53efux89c6ux5316}{%
+\paragraph{Step1 构建通讯网络以及可视化}\label{step1-ux6784ux5efaux901aux8bafux7f51ux7edcux4ee5ux53caux53efux89c6ux5316}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 这可能需要运行较长时间}
+\NormalTok{cc \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(cc)}
+\end{Highlighting}
+\end{Shaded}
+
+请注意，细胞通讯计算需要选定合适的参考数据集，我这里的方法设计默认是人类的，
+所以不需要指定任何参数。如果你是小鼠的数据集 (CellChat 好像只支持人类和小鼠的) ，
+那么需要再输入 \texttt{db} 和 \texttt{ppi} 参数。例如：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 以下示例不需要运行}
+\NormalTok{cc \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(cc, }\DataTypeTok{db =}\NormalTok{ CellChat}\OperatorTok{::}\NormalTok{CellChatDB.mouse, }\DataTypeTok{ppi =}\NormalTok{ CellChat}\OperatorTok{::}\NormalTok{PPI.mouse)}
+\end{Highlighting}
+\end{Shaded}
+
+另外需要注意的是，\texttt{CellChat} 的 UMAP 聚类是以 Python 的包实现的。
+\texttt{CellChat} 内部调用 Python 包的形式并不太高明，可能会和你的设定发生冲突。
+因为我出现过这样的情况，所以我默认指定的是 \texttt{python\ =\ "/usr/bin/python3"}。
+你可以指定成你的 Python 所在路径，或者设置成 \texttt{NULL}。
+一旦指定，以下会被执行：
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{base::Sys.setenv(RETICULATE\_PYTHON\ =\ python)}
+\item
+  \texttt{reticulate::py\_config()}
+\end{itemize}
+
+请确保你安装了 \texttt{reticulate} (见 \ref{installOthers})。
+
+运行完成后，你将可以得到 (Figure)：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 这是 CellChat 所用参考数据集的展示}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.showdb}
+\CommentTok{\# 通讯的 \textquotesingle{}Count\textquotesingle{} 统计}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.aggre\_count}
+\CommentTok{\# 通讯的 \textquotesingle{}Weight\textquotesingle{} 统计}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.aggre\_weight}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.commSep}
+\end{Highlighting}
+\end{Shaded}
+
+这里只展示了 `Count' 统计
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-communication-count.pdf}
+\caption{Overall communication count}\label{fig:Overall-communication-count}
+\end{center}
+
+其实，比起 Fig. \ref{fig:Overall-communication-count} ，下一步的
+热图更适合展示整体通讯，因为包含更多的信息。
+
+你还能得到 Tables:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 以下两个表格其实是通讯分析的主要内容}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{lp\_net}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{pathway\_net}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:lp-net}Lp net}\tabularnewline
+\toprule
+source & target & ligand & receptor & prob & pval & intera\ldots\ldots7 & intera\ldots\ldots8 & pathwa\ldots{} & annota\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+source & target & ligand & receptor & prob & pval & intera\ldots\ldots7 & intera\ldots\ldots8 & pathwa\ldots{} & annota\ldots{}\tabularnewline
+\midrule
+\endhead
+Macrop\ldots{} & Macrop\ldots{} & TGFB1 & TGFbR1\_R2 & 0.0048\ldots{} & 0 & TGFB1\_\ldots{} & TGFB1 \ldots{} & TGFb & Secret\ldots{}\tabularnewline
+Test\_1 & Macrop\ldots{} & TGFB1 & TGFbR1\_R2 & 0.0048\ldots{} & 0 & TGFB1\_\ldots{} & TGFB1 \ldots{} & TGFb & Secret\ldots{}\tabularnewline
+Test\_2 & Macrop\ldots{} & TGFB1 & TGFbR1\_R2 & 0.0061\ldots{} & 0 & TGFB1\_\ldots{} & TGFB1 \ldots{} & TGFb & Secret\ldots{}\tabularnewline
+Test\_4 & Macrop\ldots{} & TGFB1 & TGFbR1\_R2 & 0.0012\ldots{} & 0 & TGFB1\_\ldots{} & TGFB1 \ldots{} & TGFb & Secret\ldots{}\tabularnewline
+Macrop\ldots{} & Test\_2 & TGFB1 & TGFbR1\_R2 & 0.0048\ldots{} & 0 & TGFB1\_\ldots{} & TGFB1 \ldots{} & TGFb & Secret\ldots{}\tabularnewline
+Test\_1 & Test\_2 & TGFB1 & TGFbR1\_R2 & 0.0048\ldots{} & 0 & TGFB1\_\ldots{} & TGFB1 \ldots{} & TGFb & Secret\ldots{}\tabularnewline
+Test\_2 & Test\_2 & TGFB1 & TGFbR1\_R2 & 0.0061\ldots{} & 0 & TGFB1\_\ldots{} & TGFB1 \ldots{} & TGFb & Secret\ldots{}\tabularnewline
+Test\_4 & Test\_2 & TGFB1 & TGFbR1\_R2 & 0.0012\ldots{} & 0 & TGFB1\_\ldots{} & TGFB1 \ldots{} & TGFb & Secret\ldots{}\tabularnewline
+Test\_3 & Macrop\ldots{} & GDF15 & TGFBR2 & 0.0053\ldots{} & 0 & GDF15\_\ldots{} & GDF15 \ldots{} & GDF & Secret\ldots{}\tabularnewline
+Test\_3 & Test\_2 & GDF15 & TGFBR2 & 0.0053\ldots{} & 0 & GDF15\_\ldots{} & GDF15 \ldots{} & GDF & Secret\ldots{}\tabularnewline
+Test\_3 & Test\_4 & GDF15 & TGFBR2 & 0.0053\ldots{} & 0 & GDF15\_\ldots{} & GDF15 \ldots{} & GDF & Secret\ldots{}\tabularnewline
+Test\_3 & Test\_3 & TGFA & EGFR & 0.0040\ldots{} & 0 & TGFA\_EGFR & TGFA -\ldots{} & EGF & Secret\ldots{}\tabularnewline
+Test\_1 & Test\_3 & AREG & EGFR & 0.0063\ldots{} & 0 & AREG\_EGFR & AREG -\ldots{} & EGF & Secret\ldots{}\tabularnewline
+Test\_2 & Test\_3 & AREG & EGFR & 0.0040\ldots{} & 0 & AREG\_EGFR & AREG -\ldots{} & EGF & Secret\ldots{}\tabularnewline
+Macrop\ldots{} & Test\_3 & HBEGF & EGFR & 0.0159\ldots{} & 0 & HBEGF\_\ldots{} & HBEGF \ldots{} & EGF & Secret\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:pathway-net}Pathway net}\tabularnewline
+\toprule
+source & target & pathway\_name & prob & pval\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+source & target & pathway\_name & prob & pval\tabularnewline
+\midrule
+\endhead
+Macrophage & Macrophage & ANNEXIN & 0.0142752959860733 & 0\tabularnewline
+Macrophage & Macrophage & CADM & 0.00134474271905693 & 0\tabularnewline
+Macrophage & Macrophage & CCL & 0.197165266984973 & 0\tabularnewline
+Macrophage & Macrophage & CD45 & 0.0511750497900894 & 0\tabularnewline
+Macrophage & Macrophage & CD99 & 0.00134474271905693 & 0\tabularnewline
+Macrophage & Macrophage & COMPLEMENT & 0.179867247416985 & 0\tabularnewline
+Macrophage & Macrophage & CXCL & 0.0315784487714539 & 0\tabularnewline
+Macrophage & Macrophage & GALECTIN & 0.0510613013929917 & 0\tabularnewline
+Macrophage & Macrophage & GAS & 0.0371625768894343 & 0\tabularnewline
+Macrophage & Macrophage & ICAM & 0.133417588216607 & 0\tabularnewline
+Macrophage & Macrophage & ITGB2 & 0.115608598396661 & 0\tabularnewline
+Macrophage & Macrophage & MHC-I & 0.00134474271905693 & 0\tabularnewline
+Macrophage & Macrophage & MHC-II & 1.12708370370619 & 0\tabularnewline
+Macrophage & Macrophage & PECAM1 & 0.0119738702725686 & 0\tabularnewline
+Macrophage & Macrophage & SEMA4 & 0.00734078826527416 & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{step2-ux8fdbux4e00ux6b65ux5206ux6790ux901aux8defux901aux8bafux53d7ux4f53ux914dux4f53ux901aux8bafux548cux53efux89c6ux5316}{%
+\paragraph{Step2 进一步分析通路通讯、受体配体通讯和可视化}\label{step2-ux8fdbux4e00ux6b65ux5206ux6790ux901aux8defux901aux8bafux53d7ux4f53ux914dux4f53ux901aux8bafux548cux53efux89c6ux5316}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 默认的，如果你不指定 \textquotesingle{}pathway\textquotesingle{} 参数，它会绘制所有的 \textquotesingle{}pathway\textquotesingle{} 通讯}
+\CommentTok{\# 如果通路很多，会比较耗时且占用内存 (全部存储在 \textasciigrave{}cc\textasciigrave{} 中)}
+\CommentTok{\# 更建议根据 \textquotesingle{}cc@tables$step1$lp\_net\textquotesingle{} 或 \textquotesingle{}cc@tables$step1$pathway\_net\textquotesingle{}}
+\CommentTok{\# 筛选后再运行}
+\CommentTok{\# 这里数据集不算大，直接运行了}
+\NormalTok{cc \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(cc)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# \textasciigrave{}cc@plots$step2$cell\_comm\_heatmap\textasciigrave{} 是一个 \textquotesingle{}list\textquotesingle{}}
+\CommentTok{\# 存储了大量其它的 figure, 以下示例提取 \textquotesingle{}ALL\textquotesingle{}}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{cell\_comm\_heatmap}\OperatorTok{$}\NormalTok{ALL}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{lr\_comm\_bubble}
+\CommentTok{\# \textasciigrave{}cc@plots$step2\textasciigrave{} 还有更多的 figure，不一一展示了}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/communication-bubble.pdf}
+\caption{Communication bubble}\label{fig:communication-bubble}
+\end{center}
+
+\hypertarget{ux8fdbux9636}{%
+\paragraph{(进阶)}\label{ux8fdbux9636}}
 
 \hypertarget{ux5b8cux6574ux793aux4f8bux4ee3ux7801}{%
 \subsubsection{完整示例代码}\label{ux5b8cux6574ux793aux4f8bux4ee3ux7801}}
@@ -885,14 +1484,23 @@ CD3E & 3.8141\ldots{} & 1.8107\ldots{} & 0.914 & 0.294 & 7.3104\ldots{} & 0 & CD
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-InferenceAndAJinS2021}{}%
+1. Jin, S. \emph{et al.} Inference and analysis of cell-cell communication using cellchat. \emph{Nature Communications} \textbf{12}, (2021).
+
+\leavevmode\hypertarget{ref-ReversedGraphQiuX2017}{}%
+2. Qiu, X. \emph{et al.} Reversed graph embedding resolves complex single-cell trajectories. \emph{Nature Methods} \textbf{14}, (2017).
+
+\leavevmode\hypertarget{ref-TheDynamicsAnTrapne2014}{}%
+3. Trapnell, C. \emph{et al.} The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. \emph{Nature Biotechnology} \textbf{32}, (2014).
+
 \leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
-1. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+4. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
 
 \leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
-2. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+5. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
 
 \leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
-3. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+6. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
 \end{cslreferences}
 
 \end{document}
