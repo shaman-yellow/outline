@@ -4,3 +4,21 @@ if (nrow(mp@object@colData) == 16) {
   saveRDS(p.raw, "praw.rds")
 }
 ```
+
+在预分析中，根据 PCoA 去除离群样本：
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-samples-PCoA
+autor(p.raw)
+```
+
+以下为除去样本后的 PCoA:
+
+```{r eval = T, echo = F, results = "asis"}
+#| Filtered-PCoA
+autor(mp@plots$step3$p.pcoa)
+```
+
+随后的分析以去除离群样本后进行。
+
+

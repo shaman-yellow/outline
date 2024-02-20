@@ -1,0 +1,592 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge Step 系列：Prologue
+and Get-start} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-02-20}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{step}{%
+\section{Step 系列共性特征}\label{step}}
+
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/outline/lixiao//workflow_2023_12_30_scrna/Figure+Table/frame.pdf}
+\caption{Workflow frame overview. 左图展示的是 Step 系列所有对象的框架结构和运行路线。右图展示的是，每一个圆球都代表一个方法或数据库或分析平台形成的数据对象，也就是左图中的 `job'，而它们之间的线，代表所有对象之间的转化或映射关系 (仅目前；还在不断拓展)；具体而言，我们可以简单的通过 `map' 或 `asjob' 这类的方法，将一个数据对象转化或映射到另一个对象，实现跨越多种方法或体系的联并分析。}\label{fig:Workflow frame overview. 左图展示的是 Step 系列所有对象的框架结构和运行路线。右图展示的是，每一个圆球都代表一个方法或数据库或分析平台形成的数据对象，也就是左图中的 `job'，而它们之间的线，代表所有对象之间的转化或映射关系 (仅目前；还在不断拓展)；具体而言，我们可以简单的通过 `map' 或 `asjob' 这类的方法，将一个数据对象转化或映射到另一个对象，实现跨越多种方法或体系的联并分析。}
+\end{center}
+
+\hypertarget{ux7406ux5ff5}{%
+\subsection{理念}\label{ux7406ux5ff5}}
+
+生物信息分析工具种类繁多，开发者出于各种原因，导致工具的适用性千差万别。学习和应用这些工具的成本可能是高昂的 (甚至它们可能有一些不为人知的漏洞) ，想要把它们串连在一起分析，更是要付出一些分析之外的代价：像开发者一样调试这些程序。
+
+Step 系列的分析方法为每一个制定好的方法、思路或工具 (一般是领域中的权威、经典或翘楚) 设立统一使用的标准，统一的数据存储，统一的应用流程，大幅度降低了学习成本、使用成本、应用成本。通过避免大量``分析之外''的繁琐工作，达到提高分析效率的目的。
+
+Step 系列分析方法的一些基本特性：
+
+\begin{itemize}
+\item
+  统一的分析平台。Step 背后涵盖的工具可能涉及：R 包、Python 包、Java 包、Linux 命令行工具等。但最终用于分析的始终是 R 语言。Step 系列的方法通过在 R 中调用各种分析工具，实现不同分析平台之间的工具调用和数据对接 (降低了学习和应用成本)。
+\item
+  统一的数据存储单位。Step 系列所有的分析流程 (workflow) 都以一个对象 (Object) 存储。这避免了如果一个流程中涉及纷繁复杂的分析方法，人工存储数据 (中间数据、最终输出的图片、表格) 出错的可能 (提高效率) 。必要时，通过统一的方法提取这些数据 (就像在图书馆的某一层的某一排的书架的某一个柜子取出一本书) 。
+\item
+  统一的方法名称。Step 系列的所有 Workflow 的方法名称都是统一的 (step1、step2、step3\ldots\ldots{} map、vis 等) ，但不会因为一同调用而出错。这是为了减免分析者的负担而设计的 (如果一次完整分析涉及十几种工具，每个工具又有十几种方法名称，那对分析者的记忆量和细心度的考验是惊人的) (提高效率) 。
+\item
+  规范的分析流程。大多数的分析工具本身具备多种方法以适用灵活分析，但也提高了学习、应用成本。Step 系列的各个 Workflow 的流程都是单向的，对分析方法或思路的组合应用大都是建立在官方指南或教程的基础上，又或者是泛用性 (降低了学习成本)。如果有不同思路，可以通过关键参数调整方法，或者视情况搭建一个额外的 Workflow。因此，每个 Workflow 是以分析思路为分门别类的，而不是工具本身。
+\item
+  提供权威、经典、泛用的分析方法。Workflow 创建前，会广泛查阅时下文献，对工具择优而选、择新而用 (比如，更趋向于选择更新的来自于 Nature Biotechnology 的分析方法) 。
+\item
+  提供泛用的组合思路。通过组合各种数据库、分析工具，应对千奇百怪的分析需求。同时，一些适当的组合，会发挥超出单一工具的价值 (Fig. 1 的右图提供了现如今存在的许多组合思路；同时，每个 Workflow 内部又存在一些思路组合) 。
+\item
+  不断开发进化。每一个完成的 Workflow 不是固定不变的，在面临新的分析环境、新的分析需求，更多的功能会被加入到 ``step'' 方法中，让每一次的进步都直接应用于今后所有的同类分析。另外，一些大大小小的创新 (比如，更严谨或更酷炫的绘图) 也会不断追加到方法中。
+\item
+  效率至上。所有分析方法以输入命令形式实现，允许批量处理。
+\item
+  附带实用工具。分析流程相对固定，但通过提供一些小工具 (比如用于额外的绘图) ，可以将分析更加灵活。
+\end{itemize}
+
+\hypertarget{ux5c40ux9650ux6027}{%
+\subsection{局限性}\label{ux5c40ux9650ux6027}}
+
+\begin{itemize}
+\tightlist
+\item
+  适配性。由于多数生信工具都基于 Linux，此外 Step 系列在编写时，也只在 Linux 上调试过；所以，这些工具将只适用于 Linux 系统。
+\item
+  灵活性。Step 系列的所有的方法都是封装过后的，这虽然简化了代码，降低了学习和使用成本，但是也很大程度上降低了灵活性。如果使用者
+  打算开展一种与我所构想的分析框架截然不同的分析思路，那么这一系列的方法将不再适用。当然，对于另有奇思妙想，
+  但缺乏某一标准分析的基本了解的使用者，这一系列的方法或函数，仍然具有参考价值，尤其是对于不同分析方法之间的数据格式转换。
+  任何人都可以直接查看 (也能直接本地修改)
+  `utils.tool' 这个 R 包中每一个方法或函数。
+\item
+  片面性。受限于工作经验和认知的局限性，或许有更好的分析思路、更好的参数或者分支选择，或者有更好的分析方法的选择；在未来，可能会
+  发现过去所封装的方法有所缺陷，甚至包含错误，这都在所难免。如果有建议或新的思路，可以直接向我提供，以更快的过时的内容或纠正其中的错误。
+\end{itemize}
+
+\hypertarget{demo}{%
+\subsection{写在实际代码的前面}\label{demo}}
+
+如果你熟知并且能使用 R 代码，但是对 R 的 S4 OOP (面向对象编程) 以及 `参数化多态' 并不了解 (可能多数的 R 的使用者都不知道)，
+那么这个系列的所有内容都会让你感到困惑。
+
+我可以例举一些应用了 OOP 的经典 R 包：\texttt{Seurat}, \texttt{limma}, \texttt{dplyr} \ldots\ldots{}
+
+你可能很熟悉 \texttt{dplyr}，但从没有听说过它是所谓 \texttt{OOP}，然而，它其实应用了 S3 形式的 OOP; 而单细胞分析经典工具 \texttt{Seurat}, 它的设计正是 S4 OOP。
+
+S3 OOP 相对简单，S4 OOP 更加复杂。分析组学数据的 R 包往往都会应用 OOP 搭建分析框架，这是因为组学数据繁杂的数据
+体系和复杂的处理过程，正需要 OOP 来设计好各个数据的存储方式以及如何提取、转化，这样才能最大程度减轻学习、应用的负担；
+还因为有很多中间数据不是面向用户层面的，但是对于下一步的程序运行又是必须的，以 OOP 的 `类' 来自动化存储和利用显然是一种名智的选择。
+
+在 Step 系列中，S4 OOP 和 `参数化多态' 被应用到了极致 (夸张的地步) 。
+
+以下，我举例说明 S4 OOP 的创建以及应用，以便于对此陌生的使用者理解：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{.demo1 \textless{}{-}}\StringTok{ }\KeywordTok{setClass}\NormalTok{(}\StringTok{"obj\_1"}\NormalTok{, }\DataTypeTok{contains =} \StringTok{"numeric"}\NormalTok{)}
+\NormalTok{.demo2 \textless{}{-}}\StringTok{ }\KeywordTok{setClass}\NormalTok{(}\StringTok{"obj\_2"}\NormalTok{, }\DataTypeTok{contains =} \StringTok{"character"}\NormalTok{)}
+\NormalTok{.demo3 \textless{}{-}}\StringTok{ }\KeywordTok{setClass}\NormalTok{(}\StringTok{"obj\_3"}\NormalTok{, }\KeywordTok{representation}\NormalTok{(}\DataTypeTok{slot1 =} \StringTok{"list"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+以上，我构造了 3 个类，并且让前两个类分别继承了 `numeric' 和 `character'。
+
+下面，我创建了它们的示例：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test1 \textless{}{-}}\StringTok{ }\KeywordTok{.demo1}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{test2 \textless{}{-}}\StringTok{ }\KeywordTok{.demo2}\NormalTok{(}\StringTok{"This is a object of class \textquotesingle{}obj\_2\textquotesingle{}"}\NormalTok{)}
+\NormalTok{test3 \textless{}{-}}\StringTok{ }\KeywordTok{.demo3}\NormalTok{(}\DataTypeTok{slot1 =} \KeywordTok{list}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, test1))}
+\end{Highlighting}
+\end{Shaded}
+
+之后，我打算专门为它们设计属于它们的方法，让这个方法可以运用到它们任何一个实例上；
+但是，另一方面，我又打算让这个方法采取不同的处理策略应对它们。
+
+或许，一种广为孰知的解决方法是：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_fun \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{ (}\KeywordTok{is}\NormalTok{(x, }\StringTok{"obj\_1"}\NormalTok{)) \{}
+    \KeywordTok{message}\NormalTok{(}\StringTok{"Herein for obj\_1"}\NormalTok{)}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (}\KeywordTok{is}\NormalTok{(x, }\StringTok{"obj\_2"}\NormalTok{)) \{}
+    \KeywordTok{message}\NormalTok{(}\StringTok{"Herein for obj\_2"}\NormalTok{)}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (}\KeywordTok{is}\NormalTok{(x, }\StringTok{"obj\_3"}\NormalTok{)) \{}
+    \KeywordTok{message}\NormalTok{(}\StringTok{"Herein for obj\_3"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+将各自处理的代码放在它们的 `if' 模块下。这当然可以，问题是，如果有成百上千个这样的类呢？\ldots\ldots{}
+
+下面演示的是一种将它们拆分开来的设计：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 这是整体设计框架，可以称之为 \textquotesingle{}接口\textquotesingle{}}
+\KeywordTok{setGeneric}\NormalTok{(}\StringTok{"my\_method"}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x, ...) }\KeywordTok{standardGeneric}\NormalTok{(}\StringTok{"my\_method"}\NormalTok{))}
+
+\KeywordTok{setMethod}\NormalTok{(}\StringTok{"my\_method"}\NormalTok{, }\DataTypeTok{signature =} \KeywordTok{c}\NormalTok{(}\DataTypeTok{x =} \StringTok{"obj\_1"}\NormalTok{),}
+  \ControlFlowTok{function}\NormalTok{(x)\{}
+    \KeywordTok{message}\NormalTok{(}\StringTok{"Herein for obj\_1"}\NormalTok{)}
+\NormalTok{  \})}
+
+\KeywordTok{setMethod}\NormalTok{(}\StringTok{"my\_method"}\NormalTok{, }\DataTypeTok{signature =} \KeywordTok{c}\NormalTok{(}\DataTypeTok{x =} \StringTok{"obj\_2"}\NormalTok{),}
+  \ControlFlowTok{function}\NormalTok{(x)\{}
+    \KeywordTok{message}\NormalTok{(}\StringTok{"Herein for obj\_2"}\NormalTok{)}
+\NormalTok{  \})}
+
+\KeywordTok{setMethod}\NormalTok{(}\StringTok{"my\_method"}\NormalTok{, }\DataTypeTok{signature =} \KeywordTok{c}\NormalTok{(}\DataTypeTok{x =} \StringTok{"obj\_3"}\NormalTok{),}
+  \ControlFlowTok{function}\NormalTok{(x)\{}
+    \KeywordTok{message}\NormalTok{(}\StringTok{"Herein for obj\_3"}\NormalTok{)}
+\NormalTok{  \})}
+\end{Highlighting}
+\end{Shaded}
+
+你能看明白吗？
+
+那么，以下三行代码各自会发生什么？
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{my\_method}\NormalTok{(test1)}
+\KeywordTok{my\_method}\NormalTok{(test2)}
+\KeywordTok{my\_method}\NormalTok{(test3)}
+\end{Highlighting}
+\end{Shaded}
+
+还可以设计一种更复杂、更灵活的：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{setGeneric}\NormalTok{(}\StringTok{"my\_method2"}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x, y, ...) }\KeywordTok{standardGeneric}\NormalTok{(}\StringTok{"my\_method2"}\NormalTok{))}
+
+\KeywordTok{setMethod}\NormalTok{(}\StringTok{"my\_method2"}\NormalTok{, }\DataTypeTok{signature =} \KeywordTok{c}\NormalTok{(}\DataTypeTok{x =} \StringTok{"obj\_1"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"obj\_2"}\NormalTok{),}
+  \ControlFlowTok{function}\NormalTok{(x, y, }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)\{}
+    \KeywordTok{message}\NormalTok{(x, sep, y)}
+\NormalTok{  \})}
+\end{Highlighting}
+\end{Shaded}
+
+可以试试看它的效果：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{my\_method2}\NormalTok{(test1, test2)}
+\end{Highlighting}
+\end{Shaded}
+
+如果像这样输入：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{my\_method2}\NormalTok{(test1, test3)}
+\end{Highlighting}
+\end{Shaded}
+
+那么它一定会报错，因为我没有定义属于它们两个组合的方法。
+
+如果你明白了上述的所有示例，那么，也就等于理解了 Step 系列的全部设计。
+
+\hypertarget{ux83b7ux53d6ux4e86-r-ux5305ux4e4bux540eux624dux80fdux5f00ux59cbux4efbux4f55ux6f14ux793a}{%
+\subsection{获取了 R 包之后，才能开始任何演示}\label{ux83b7ux53d6ux4e86-r-ux5305ux4e4bux540eux624dux80fdux5f00ux59cbux4efbux4f55ux6f14ux793a}}
+
+\hypertarget{ux4e00ux4e9bux989dux5916ux53efux80fdux9700ux8981ux7684ux7cfbux7edfux4f9dux8d56ux5de5ux5177}{%
+\subsubsection{一些额外可能需要的系统依赖工具}\label{ux4e00ux4e9bux989dux5916ux53efux80fdux9700ux8981ux7684ux7cfbux7edfux4f9dux8d56ux5de5ux5177}}
+
+如果你是 Ubuntu 发行版，据我的经验，安装 \texttt{devtools}, \texttt{BiocManager} 等工具之前，
+估计需要先安装以下：
+
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
+\begin{verbatim}
+
+## Libraries for installing 'usethis' and 'devtools'.
+sudo apt install -y libssl-dev libcurl4-openssl-dev libblas-dev
+sudo apt install -y liblapack-dev libgfortran-11-dev gfortran libharfbuzz-dev libfribidi-dev
+## Libraries for installing 'BiocManager' and its some packages.
+sudo apt install -y libnetcdf-dev libopenbabel-dev libeigen3-dev
+## Libraries For installing other graphic packages.
+sudo apt install -y libfontconfig1-dev librsvg2-dev libmagick++-dev
+
+\end{verbatim}
+\end{tcolorbox}
+
+\hypertarget{ux4e3bux4f53utils.tool}{%
+\subsubsection{\texorpdfstring{主体：\texttt{utils.tool}}{主体：utils.tool}}\label{ux4e3bux4f53utils.tool}}
+
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
+\begin{verbatim}
+
+git clone https://github.com/shaman-yellow/utils.tool.git ~/utils.tool
+
+\end{verbatim}
+\end{tcolorbox}
+
+\texttt{utils.tool} 是标准的 R 包结构形式，这意味着，即使你不用 \texttt{git} 获取它，
+单纯用：
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{remotes::install\_github("shaman-yellow/utils.tool")}
+\end{itemize}
+
+也能成功获取并直接安装完成。但是，这包里面大多数的方法都没有导出 (export) 到用户层次
+(这是因为，这个包的改动情形太多了，我一直在创建新的方法或者调整旧的方法) ，
+你即使 \texttt{library(utils.tool)} 加载了它，也会出现使用不了许多方法的情况。
+万无一失的做法是：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{requireNamespace}\NormalTok{(}\StringTok{"devtools"}\NormalTok{, }\DataTypeTok{quietly =} \OtherTok{TRUE}\NormalTok{))}
+  \KeywordTok{install.packages}\NormalTok{(}\StringTok{"devtools"}\NormalTok{)}
+
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{load\_all}\NormalTok{(}\StringTok{"\textasciitilde{}/utils.tool"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux6cdbux7528ux65b9ux6cd5}{%
+\subsection{泛用方法}\label{ux6cdbux7528ux65b9ux6cd5}}
+
+像我在 \ref{demo} 中展示的，Step 系列中有许多 `参数化多态' 的方法设计，你可能会经常见到类似下方的代码：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{job\_seurat}\NormalTok{(}\StringTok{"./data"}\NormalTok{)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step4}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step5}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step6}\NormalTok{(sr)}
+
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{asjob\_monocle}\NormalTok{(sr)}
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(mn)}
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(mn)}
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(mn)}
+\end{Highlighting}
+\end{Shaded}
+
+那么，当我运行 \texttt{step1}，到底会发生什么？
+这取决于你传入 \texttt{step1} 的参数属于哪一个类 (这里主要是第一个参数) 。
+
+我为 \texttt{step1} 和其它方法定义了近百种 (今后还在不断增加) 不同的形态，大多数时候，连我自己都忘记运行它们会发生什么。
+因此，快速了解对应的 \texttt{step1} 或其他方法的特定形态，是极其必要的。
+
+你可以通过下面形式查看某种特定形态的 \texttt{step1} 的默认参数 (在 \ref{params} 中对此做了演示)：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 查看 \textquotesingle{}job\_seurat\textquotesingle{} 对应形态的 step1}
+\KeywordTok{not}\NormalTok{(}\KeywordTok{.job\_seurat}\NormalTok{())}
+\NormalTok{step1}
+\end{Highlighting}
+\end{Shaded}
+
+注意，如果不输入 \texttt{not(.job\_seurat())} 限制，你会直接看见所有 step1 的形态。
+
+你可能会问，这只显示了它的传入参数，那如何查看它的具体的函数体呢？
+
+像这样：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{selectMethod}\NormalTok{(step1, }\StringTok{"job\_seurat"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux83b7ux53d6ux7ed3ux679c}{%
+\subsubsection{获取结果}\label{ux83b7ux53d6ux7ed3ux679c}}
+
+所有的方法，像 \texttt{step1}, \texttt{step2}, \texttt{step3} 这些，都会处理传入的数据对象，并形成新的数据存储于原数据对象中。
+例如：
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{sr\ \textless{}-\ step1(sr)}
+\end{itemize}
+
+新的数据会被存储在 \texttt{sr} 的数据槽中。
+
+统一的，一般来说，Figure 主要被存储于 `plots' 中，而 Table (data.frame) 被存储在 `tables' 中;
+然而也有例外，一些中间数据或不太重要的数据，被设计存储于 `params' 中。
+
+下面具体说明。
+
+\hypertarget{get}{%
+\paragraph{提取数据}\label{get}}
+
+示例提取 \texttt{step1}、\texttt{step2}、\texttt{step3} 等的结果：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 不要运行，仅用于说明}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.qc}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pca\_rank}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{p.umap}
+
+\NormalTok{sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step4}\OperatorTok{$}\NormalTok{anno\_SingleR}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{scsa\_res}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5b58ux50a8ux6570ux636e}{%
+\paragraph{存储数据}\label{ux5b58ux50a8ux6570ux636e}}
+
+那么，\ref{get} 中示例的数据提取得到后，又如何存储下来呢？
+保存为数据表格，.csv, .tsv, .xlsx 等，或者 .pdf，对于经验丰富的 R 使用者应该是个简单的问题。
+这里，我主要提供了一种更快捷的方式来把它们保存下来 (同统一的函数保存它们)：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 通过 option 设置它们的存储文件夹 (否则，会被存储在额外创建的 figs, tabs 文件夹中)}
+\KeywordTok{options}\NormalTok{(}\DataTypeTok{savedir =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{figs =} \StringTok{"Figure+Table"}\NormalTok{, }\DataTypeTok{tabs =} \StringTok{"Figure+Table"}\NormalTok{))}
+
+\CommentTok{\# 然后就能保存它们了 }
+\KeywordTok{autosv}\NormalTok{(sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.qc, }\StringTok{"this{-}is{-}figure{-}1"}\NormalTok{)}
+\KeywordTok{autosv}\NormalTok{(sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pca\_rank, }\StringTok{"this{-}is{-}figure{-}2"}\NormalTok{)}
+\KeywordTok{autosv}\NormalTok{(sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{p.umap, }\StringTok{"this{-}is{-}figure{-}3"}\NormalTok{)}
+
+\KeywordTok{autosv}\NormalTok{(sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step4}\OperatorTok{$}\NormalTok{anno\_SingleR, }\StringTok{"this{-}is{-}table{-}1"}\NormalTok{)}
+\KeywordTok{autosv}\NormalTok{(sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{scsa\_res, }\StringTok{"this{-}is{-}table{-}2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux7a7aux95f4ux7ba1ux7406}{%
+\subsubsection{空间管理}\label{ux7a7aux95f4ux7ba1ux7406}}
+
+某些 R 包生成的数据或加载的数据可能极其占用运行内存 (RAM)。便捷地，可以用 \texttt{space()} 函数查看当前内存占用：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{space}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{params}{%
+\subsubsection{查看 step 方法的默认参数}\label{params}}
+
+step 方法的参数力求精简，一般只保留关键的参数用以控制分析。但这些参数可能会在将来被拓展 (添加额外的参数) 以适应新的分析需求。
+
+可以通过类似以下方式查看默认参数：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# 示例：seurat 工作流的 step1 的默认参数}
+\KeywordTok{not}\NormalTok{(}\KeywordTok{.job\_seurat}\NormalTok{())}
+\NormalTok{step1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## job_seurat:
+\end{verbatim}
+
+\begin{verbatim}
+##     x
+\end{verbatim}
+
+\begin{verbatim}
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## -- Methods parameters --------------------------------------------------------------------------------------------------------------
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# 示例：monocle 工作流 step2 的默认参数}
+\KeywordTok{not}\NormalTok{(}\KeywordTok{.job\_monocle}\NormalTok{())}
+\NormalTok{step2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## job_monocle:
+\end{verbatim}
+
+\begin{verbatim}
+##     x, roots
+\end{verbatim}
+
+\begin{verbatim}
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## -- Methods parameters --------------------------------------------------------------------------------------------------------------
+\end{verbatim}
+
+\hypertarget{ux989dux5916ux7684ux4fe1ux606f}{%
+\subsubsection{额外的信息}\label{ux989dux5916ux7684ux4fe1ux606f}}
+
+工作流创建时参考的信息源
+参考文献信息
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 创建一个空的 Seurat 工作流对象 \textquotesingle{}sr\_1\textquotesingle{}}
+\NormalTok{sr\_}\DecValTok{1}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{.job\_seurat}\NormalTok{()}
+\CommentTok{\# 查看方法说明}
+\NormalTok{sr\_}\DecValTok{1}\OperatorTok{@}\NormalTok{method}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The R package `Seurat` used for scRNA-seq processing; `SCSA` (python) used for cell type annotation"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 查看官方网站或信息源网站}
+\NormalTok{sr\_}\DecValTok{1}\OperatorTok{@}\NormalTok{info}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Tutorial: https://satijalab.org/seurat/articles/pbmc3k_tutorial.html"
+\end{verbatim}
+
+\hypertarget{ux5173ux4e8eux5b89ux88c5ux914dux7f6e}{%
+\subsection{关于安装配置}\label{ux5173ux4e8eux5b89ux88c5ux914dux7f6e}}
+
+所有 Step 系列的方法的安装配置会尽可能详细的罗列，但由于笔者 (开发者) 仅在自身的 Linux (Ubuntu 发行版) 系统做过调试，并不确定在其它的机器上会遇到哪些安装的特殊问题。如有疑问，或安装上的困难，请联系：Huang Lichuang (\href{mailto:huanglichuang@wie-biotech.com}{\nolinkurl{huanglichuang@wie-biotech.com}}) 。
+
+\end{document}

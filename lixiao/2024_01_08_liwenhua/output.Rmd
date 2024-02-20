@@ -23,7 +23,9 @@ header-includes:
   \renewenvironment{figure}
   {\def\@captype{figure}}
   \makeatother
-  \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
   \definecolor{shadecolor}{RGB}{230,230,230}
   \usepackage{xeCJK}
   \usepackage{setspace}
@@ -36,7 +38,7 @@ header-includes:
   \tcbuselibrary{breakable}
   \renewenvironment{Shaded}
   {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
-    arc = 1mm, auto outer arc, title = {Input}]}
+    arc = 1mm, auto outer arc, title = {R input}]}
   {\end{tcolorbox}}
   \usepackage{titlesec}
   \titleformat{\paragraph}
@@ -47,7 +49,7 @@ header-includes:
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(1), coef = NA)
+info <- items(belong = odate(2), coef = NA)
 
 order_publish()
 idname <- order_packaging()
@@ -75,10 +77,22 @@ set_index()
 
 # 摘要 {#abstract}
 
-生信分析（8个con）+（8个A）+（8个B）(盲筛，不提供具体分组信息)。
+- con: Control
+- A: colitis
+- B: colon precancerous lesions
+
+想要做肠道菌群测序结果+生信分析，然后找菌群+对应代谢产物介导+机制研究+再闭环回到临床。在沟通时客户提到想要做
+溃疡性结肠炎和结肠癌的肠道菌群之间的区别和关联，进而研究其对应的机制，研究结肠炎向结肠癌发展的关键机制，为临床早期筛查提供理论支持
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("结肠炎"),
+  di("结肠癌前病变")
+)
+
+# # DEGs: Differential Expressed Genes 差异表达基因
+# # C: colitis 结肠炎
+# # CPL: colon precancerous lesions 结肠癌前病变
 ```
 
 # 前言 {#introduction}
@@ -132,25 +146,14 @@ Microbiota 数据经 Qiime2 分析后，由 `MicrobiotaProcess` 下游分析和�
 
 #### 样本聚类
 
-在预分析中，根据 PCoA 去除离群样本：
-
 ```{r eval = T, echo = F, results = "asis"}
-#| All-samples-PCoA
-autor(p.raw)
-```
-
-以下为除去样本后的 PCoA:
-
-```{r eval = T, echo = F, results = "asis"}
-#| Filtered-PCoA
+#| PCoA
 autor(mp@plots$step3$p.pcoa)
 ```
 
-随后的分析以去除离群样本后进行。
-
 #### Alpha 多样性 {#alpha}
 
-A、B 组 alpha 多样性没有显著差异。
+三组 alpha 多样性没有显著差异。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Alpha-diversity
@@ -171,7 +174,7 @@ autor(mp@plots$step1$p.rarefaction)
 
 #### Beta 多样性 {#beta}
 
-A、B 组 Beta 多样性无显著差异。
+Beta 多样性无显著差异。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Beta-diversity-group-test
@@ -185,7 +188,32 @@ autor(mp@plots$step3$p.hier)
 
 #### 差异分析
 
-注：MicrobiotaProcess 的差异分析和 Qiime2 差异分析结果相同，未发现差异肠道菌。
+MicrobiotaProcess 的差异分析 (`MicrobiotaProcess::mp_diff_analysis`) 未发现差异菌，因此这里主要用的
+`Qiime2` 的差异分析结果 (`accom test`)。
+
+注：关于 `ancom test` 的结果的解释，可以参考：
+
+- https://forum.qiime2.org/t/how-to-interpret-ancom-results/1958
+- https://forum.qiime2.org/t/specify-w-cutoff-for-anacom/1844
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ancom-test-group-level-6-volcano
+autor(qi@plots$step7$p.export$ancom_test_group_level_6)
+```
+
+'level 6' 对应 Ontology 中的 Species。
+
+其余结果的可视化见：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ancom-test-visualization
+autor(qi@plots$step7$p.export)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ancom-test-results
+autor(qi@tables$step7$t.ancom)
+```
 
 
 
@@ -198,23 +226,28 @@ metadata <- dplyr::mutate(fp$metadata, SampleName = get_realname(`forward-absolu
   group = substr(SampleName, 1, 1))
 metadata <- dplyr::mutate(metadata, dplyr::across(dplyr::ends_with("filepath"), normalizePath))
 metadata <- dplyr::filter(metadata, group != "C")
+metadata
 
 qi <- asjob_qiime(fp, metadata)
 qi <- step1(qi)
 qi@plots$step1$demux
-qi <- step2(qi, 290, 240)
+qi <- step2(qi, 280, 200)
 qi <- step3(qi)
 qi@plots$step3$table
-qi <- step4(qi, 11390)
-qi <- step5(qi, 17358)
+qi <- step4(qi, 1796)
+qi <- step5(qi, 10454)
 qi <- step6(qi)
-qi@plots$step6$taxa-bar-plots
+qi@plots$step6$`taxa-bar-plots`
 qi <- step7(qi)
-qi@plots$step7$ancom_test_group_level_5
+qi@plots$step7$qzv_raw$ancom_test_group_level_4
+qi@plots$step7$p.export$ancom_test_group_level_6
+qi@plots$step7$p.export$ancom_test_group_level_5
+qi@plots$step7$p.export$ancom_test_group_level_4
 
-qi@params$meta_file
+qi@tables$step7$t.ancom$ancom_test_group_level_6
+# d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Beijerinckiaceae;g__Methylobacterium-Methylorubrum
+
 mp <- asjob_mp(qi)
-mp@object <- dplyr::filter(mp@object, !Sample %in% c("B2", "B4", "A6"))
 mp <- step1(mp)
 mp@plots$step1$p.rarefaction
 mp@plots$step1$p.alpha_index
@@ -222,11 +255,6 @@ mp <- step2(mp)
 mp@plots$step2$p.rel_abundance
 mp <- step3(mp)
 mp@plots$step3$p.pcoa
-
-if (nrow(mp@object@colData) == 16) {
-  p.raw <- mp@plots$step3$p.pcoa
-  saveRDS(p.raw, "praw.rds")
-}
 
 mp@plots$step3$p.hier
 mp@plots$step3$p.group_test
@@ -239,5 +267,10 @@ mp@plots$step4$p.tree
 ```{r}
 p.raw <- readRDS("./praw.rds")
 save.image()
+load("~/disk_sdb1/2024_01_08_liwenhua/.RData")
+
+saves()
+loads()
 ```
+
 

@@ -23,6 +23,8 @@ header-includes:
   \renewenvironment{figure}
   {\def\@captype{figure}}
   \makeatother
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
   \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
   \definecolor{shadecolor}{RGB}{230,230,230}
   \usepackage{xeCJK}
@@ -52,7 +54,7 @@ header-includes:
 \begin{center} \textbf{\Huge Step 系列：scRNA-seq
 基本分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-06}}
+\textbf{\textcolor{white}{2024-02-20}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -74,189 +76,22 @@ header-includes:
 
 
 
-# Step 系列共性特征 {#step}
+# 摘要 {#abstract}
 
-
-
-(ref:style) Workflow frame overview. 左图展示的是 Step 系列所有对象的框架结构和运行路线。右图展示的是，每一个圆球都代表一个方法或数据库或分析平台形成的数据对象，也就是左图中的 'job'，而它们之间的线，代表所有对象之间的转化或映射关系 (仅目前；还在不断拓展)；具体而言，我们可以简单的通过 'map' 或 'asjob' 这类的方法，将一个数据对象转化或映射到另一个对象，实现跨越多种方法或体系的联并分析。
-
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{~/outline/lixiao//workflow_2023_12_30_scrna/Figure+Table/frame.pdf}
-\caption{(ref:style)}\label{fig:(ref:style)}
-\end{center}
-
-## 理念
-
-
-
-
-生物信息分析工具种类繁多，开发者出于各种原因，导致工具的适用性千差万别。学习和应用这些工具的成本可能是高昂的 (甚至它们可能有一些不为人知的漏洞) ，想要把它们串连在一起分析，更是要付出一些分析之外的代价：像开发者一样调试这些程序。
-
-Step 系列的分析方法为每一个制定好的方法、思路或工具 (一般是领域中的权威、经典或翘楚) 设立统一使用的标准，统一的数据存储，统一的应用流程，大幅度降低了学习成本、使用成本、应用成本。通过避免大量“分析之外”的繁琐工作，达到提高分析效率的目的。
-
-Step 系列分析方法的一些基本特性：
-
-- 统一的分析平台。Step 背后涵盖的工具可能涉及：R 包、Python 包、Java 包、Linux 命令行工具等。但最终用于分析的始终是 R 语言。Step 系列的方法通过在 R 中调用各种分析工具，实现不同分析平台之间的工具调用和数据对接 (降低了学习和应用成本)。 
-
-- 统一的数据存储单位。Step 系列所有的分析流程 (workflow) 都以一个对象 (Object) 存储。这避免了如果一个流程中涉及纷繁复杂的分析方法，人工存储数据 (中间数据、最终输出的图片、表格) 出错的可能 (提高效率) 。必要时，通过统一的方法提取这些数据 (就像在图书馆的某一层的某一排的书架的某一个柜子取出一本书) 。
-
-- 统一的方法名称。Step 系列的所有 Workflow 的方法名称都是统一的 (step1、step2、step3…… map、vis 等) ，但不会因为一同调用而出错。这是为了减免分析者的负担而设计的 (如果一次完整分析涉及十几种工具，每个工具又有十几种方法名称，那对分析者的记忆量和细心度的考验是惊人的) (提高效率) 。
-
-- 规范的分析流程。大多数的分析工具本身具备多种方法以适用灵活分析，但也提高了学习、应用成本。Step 系列的各个 Workflow 的流程都是单向的，对分析方法或思路的组合应用大都是建立在官方指南或教程的基础上，又或者是泛用性 (降低了学习成本)。如果有不同思路，可以通过关键参数调整方法，或者视情况搭建一个额外的 Workflow。因此，每个 Workflow 是以分析思路为分门别类的，而不是工具本身。
-
-- 提供权威、经典、泛用的分析方法。Workflow 创建前，会广泛查阅时下文献，对工具择优而选、择新而用 (比如，更趋向于选择更新的来自于 Nature Biotechnology 的分析方法) 。
-
-- 提供泛用的组合思路。通过组合各种数据库、分析工具，应对千奇百怪的分析需求。同时，一些适当的组合，会发挥超出单一工具的价值 (Fig. \@ref(fig:Overall-features) 的右图提供了现如今存在的许多组合思路；同时，每个 Workflow 内部又存在一些思路组合) 。
-
-- 不断开发进化。每一个完成的 Workflow 不是固定不变的，在面临新的分析环境、新的分析需求，更多的功能会被加入到 “step” 方法中，让每一次的进步都直接应用于今后所有的同类分析。另外，一些大大小小的创新 (比如，更严谨或更酷炫的绘图) 也会不断追加到方法中。
-
-- 效率至上。所有分析方法以输入命令形式实现，允许批量处理。
-
-- 附带实用工具。分析流程相对固定，但通过提供一些小工具 (比如用于额外的绘图) ，可以将分析更加灵活。
-
-## 局限性
-
-- 适配性。由于多数生信工具都基于 Linux，此外 Step 系列在编写时，也只在 Linux 上调试过；所以，这些工具将只适用于 Linux 系统。
-
-## 泛用方法
-
-
-```r
-sr <- job_seurat("./data")
-sr <- step1(sr)
-sr <- step2(sr)
-sr <- step3(sr)
-sr <- step4(sr)
-sr <- step5(sr)
-sr <- step6(sr)
-
-mn <- asjob_monocle(sr)
-mn <- step1(mn)
-mn <- step2(mn)
-mn <- step3(mn)
-```
-
-### 提取方法
-
-### 存储方法
-
-
-```r
-autosv(sr@plots$step1)
-```
-
-### 空间管理
-
-某些 R 包生成的数据或加载的数据可能极其占用运行内存 (RAM)。可以用 `space()` 函数查看当前内存占用：
-
-
-```r
-space()
-```
-
-### 查看 step 方法的默认参数
-
-step 方法的参数力求精简，一般只保留关键的参数用以控制分析。但这些参数可能会在将来被拓展 (添加额外的参数) 以适应新的分析需求。 
-
-可以通过类似以下方式查看默认参数：
-
-
-```r
-## 示例：seurat 工作流的 step1 的默认参数
-not(.job_seurat())
-step1
-```
-
-```
-## job_seurat:
-```
-
-```
-##     x
-```
-
-```
-## 
-```
-
-```
-## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
-```
-
-```r
-## 示例：monocle 工作流 step2 的默认参数
-not(.job_monocle())
-step2
-```
-
-```
-## job_monocle:
-```
-
-```
-##     x, roots
-```
-
-```
-## 
-```
-
-```
-## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
-```
-
-### 额外的信息
-
-工作流创建时参考的信息源
-参考文献信息
-
-
-```r
-# 创建一个空的 Seurat 工作流对象 'sr_1'
-sr_1 <- .job_seurat()
-# 查看方法说明
-sr_1@method
-```
-
-```
-## [1] "The R package `Seurat` used for scRNA-seq processing; `SCSA` (python) used for cell type annotation"
-```
-
-```r
-# 查看官方网站或信息源网站
-sr_1@info
-```
-
-```
-## [1] "Tutorial: https://satijalab.org/seurat/articles/pbmc3k_tutorial.html"
-```
-
-## 关于安装配置
-
-所有 Step 系列的方法的安装配置会尽可能详细的罗列，但由于笔者 (开发者) 仅在自身的 Linux (Ubuntu 发行版) 系统做过调试，并不确定在其它的机器上会遇到哪些安装的特殊问题。如有疑问，或安装上的困难，请联系：Huang Lichuang (<huanglichuang@wie-biotech.com>) 。
-
-## 关于本文档
-
-# Step 系列：scRNA-seq 基本分析
-
-## 摘要 {#abstract}
-
-### 目的
+## 目的
 
 一般化 scRNA-seq 的分析流程，从基本的数据处理，到细胞注释，再到拟时分析、通讯分析等。
 数据处理的中心在于 'Seurat'，以它为衔接点，从各个分析工具中将数据转换来去，延续彼此的分析。
 
-### 解决的问题
+## 解决的问题 (技术性的) 
 
-不同的 R 包或其他工具之间的数据衔接。
+不同的 R 包或其他工具之间的数据转换和衔接。
 
-## 适配性
+# 适配性
 
-大多数涉及的程序都是 R；但是，我设计的 SCSA 的程序接口可能得在 Linux 下才能成功运行。
+大多数涉及的程序都是 R；但是，其中的 SCSA 的程序接口可能得在 Linux 下才能成功运行。
 
-## 方法
+# 方法
 
 以下是我在这个工作流中涉及的方法和程序：
 
@@ -268,11 +103,11 @@ Mainly used method:
 - The R package `Seurat` used for scRNA-seq processing; `SCSA` (python) used for cell type annotation[@IntegratedAnalHaoY2021; @ComprehensiveIStuart2019; @ScsaACellTyCaoY2020].
 - Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
-## 安装 (首次使用)
+# 安装 (首次使用)
 
-### 安装依赖
+## 安装依赖
 
-#### 一些额外可能需要的系统依赖工具
+### 一些额外可能需要的系统依赖工具
 
 如果你是 Ubuntu 发行版，据我的经验，安装 `devtools`, `BiocManager` 等工具之前，
 估计需要先安装以下：
@@ -291,7 +126,7 @@ sudo apt install -y libfontconfig1-dev librsvg2-dev libmagick++-dev
 \end{verbatim}
 \end{tcolorbox}
 
-#### 安装 Seurat v5
+### 安装 Seurat v5
 
 
 ```r
@@ -304,14 +139,14 @@ BiocManager::install(c('SparseArray', 'fastDummies', 'RcppHNSW', 'RSpectra'))
 remotes::install_github("satijalab/seurat", "seurat5")
 ```
 
-#### 安装 seurat-wrappers
+### 安装 seurat-wrappers
 
 
 ```r
 remotes::install_github('satijalab/seurat-wrappers')
 ```
 
-#### 安装 monocle3
+### 安装 monocle3
 
 
 ```r
@@ -322,7 +157,7 @@ BiocManager::install(c('BiocGenerics', 'DelayedArray', 'DelayedMatrixStats',
 remotes::install_github('cole-trapnell-lab/monocle3')
 ```
 
-#### 安装 CellChat
+### 安装 CellChat
 
 
 ```r
@@ -330,7 +165,7 @@ BiocManager::install(c('NMF', 'circlize', 'ComplexHeatmap', 'BiocNeighbors'))
 remotes::install_github("sqjin/CellChat")
 ```
 
-#### 安装 SCSA
+### 安装 SCSA
 
 以下代码是在 `bash` 中运行的。确保你的 `git` 和 `pip3` 可用。
 
@@ -345,7 +180,7 @@ pip3 install pandas==1.5.3
 \end{verbatim}
 \end{tcolorbox}
 
-#### 其它程序 {#installOthers}
+### 其它程序 {#installOthers}
 
 以下可能是其它需要安装的程序：
 
@@ -364,7 +199,7 @@ BiocManager::install(c("SingleR"))
 BiocManager::install(c("celldex"))
 ```
 
-### 安装主体
+## 安装主体
 
 \begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
 \begin{verbatim}
@@ -392,17 +227,15 @@ if (!requireNamespace("devtools", quietly = TRUE))
 devtools::load_all("~/utils.tool")
 ```
 
-## 使用说明
+# 示例分析
 
-## 示例分析
-
-### 数据准备 (从 GEO 的单细胞数据库开始分析) 
+## 数据准备 (从 GEO 的单细胞数据库开始分析) 
 
 10X Genomics (其他格式也行，但我遇到过的几乎都是 10X 的，所以其他格式的没机会调试) 的文件。
 
 这里为了方便起见，我从 GEO 下载一批数据实时以代码示例。
 
-#### 快速获取示例数据 {#obtain}
+### 快速获取示例数据 {#obtain}
 
 运行以下代码获取数据：
 
@@ -417,7 +250,7 @@ prepare_10x("./GSE171306/", "ccRCC1", single = F)
 sr <- job_seurat("./GSE171306/GSM5222644_ccRCC1_barcodes")
 ```
 
-#### 一些补充说明 (上述快速获取数据方式的实用价值)
+### 一些补充说明 (上述快速获取数据方式的实用价值)
 
 `job_geo` 是另外一个可以用于高效获取、整理 GEO 数据集的 step 系列工作流 (以后介绍) ，简而言之，
 它的作用在于帮我们极速整理好数据还有元数据 (整合大量数据集的时候很有用！)。
@@ -484,9 +317,11 @@ prepare_10x("./GSE171306/", "ccRCC1", single = F)
 prepare_10x("./GSE171306/", "ccRCC1", single = T)
 ```
 
-### 分析流程
+## 分析流程
 
-#### Job-seurat 从 Seurat 开始单细胞数据分析
+### 单细胞数据的质控、聚类、Marker 鉴定、细胞注释等
+
+#### Job-seurat 从 Seurat 开始
 
 在 \@ref(obtain) 中，已经运行过：
 
@@ -529,7 +364,11 @@ sr@plots$step1$p.qc
 \end{center}
 
 Fig. \@ref(fig:Quality-Control), 你可能会觉得 x 轴坐标太长了，如果在此前
-(创建对象的时候) 输入类似 `job_seurat("./GSE171306/", project = "Demo data")`, 就可以避免。
+(创建对象的时候) 输入类似：
+
+- `job_seurat("./GSE171306/", project = "Demo data")`
+
+就可以避免。
 
 #### Step2 根据上一步 QC 作图过滤数据并标准化
 
@@ -561,7 +400,7 @@ step2
 ```
 
 ```
-## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
+## -- Methods parameters -------------------------------------------------------------------------------------------------------------
 ```
 
 输入的三个参数对应以下：
@@ -632,7 +471,7 @@ step3
 ```
 
 ```
-## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
+## -- Methods parameters -------------------------------------------------------------------------------------------------------------
 ```
 
 参数 `dim` 需要根据 Fig. \@ref(Ranking-of-principle-components) 判定。
@@ -783,7 +622,7 @@ vis(sr, "scsa_cell")
 vis(sr, "seurat_clusters")
 ```
 
-#### 从以下开始拟时分析的示例
+### 拟时分析
 
 #### As-job-monocle 对选定的细胞进行拟时分析
 
@@ -847,7 +686,7 @@ do_monocle
 ```
 
 ```
-## -- Methods parameters ------------------------------------------------------------------------------------------------------------------
+## -- Methods parameters -------------------------------------------------------------------------------------------------------------
 ```
 
 如果你对 '面向对象编程' 和 '参数化多态' 不熟悉，你可能会感到惊讶，因为它列出了两个参数列表。
@@ -1053,7 +892,7 @@ p.sr_mapped
 \caption{The cell mapped from monocle}\label{fig:The-cell-mapped-from-monocle}
 \end{center}
 
-#### 以下开始细胞通讯的示例分析
+### 细胞通讯
 
 #### As-job-cellchat 对选定的细胞进行细胞通讯分析
 
@@ -1189,23 +1028,26 @@ Table: (\#tab:pathway-net)Pathway net
 
 #### Step2 进一步分析通路通讯、受体配体通讯和可视化
 
+默认的，如果你不指定 `pathway` 参数，`step2` 会绘制所有的 `pathway` 通讯
+如果通路很多，会比较耗时且占用内存 (全部存储在 `cc` 中)
+更建议根据 `cc@tables$step1$lp_net` 或 `cc@tables$step1$pathway_net`
+筛选后再运行这里数据集不算大，直接运行以示例：
+
 
 ```r
-# 默认的，如果你不指定 'pathway' 参数，它会绘制所有的 'pathway' 通讯
-# 如果通路很多，会比较耗时且占用内存 (全部存储在 `cc` 中)
-# 更建议根据 'cc@tables$step1$lp_net' 或 'cc@tables$step1$pathway_net'
-# 筛选后再运行
-# 这里数据集不算大，直接运行了
 cc <- step2(cc)
+# 你可以通过输入 'object(cc)@netP$pathways' 中的一个或多个 'pathway' 来运行
+# 例如:
+# cc <- step2(cc, head(object(cc)@netP$pathways, 6))
 ```
 
+`cc@plots$step2$cell_comm_heatmap` 是一个 'list'
+存储了大量其它的 figure, 以下示例提取 'ALL'
+
 
 ```r
-# `cc@plots$step2$cell_comm_heatmap` 是一个 'list'
-# 存储了大量其它的 figure, 以下示例提取 'ALL'
 cc@plots$step2$cell_comm_heatmap$ALL
 cc@plots$step2$lr_comm_bubble
-# `cc@plots$step2` 还有更多的 figure，不一一展示了
 ```
 
 
@@ -1217,10 +1059,115 @@ cc@plots$step2$lr_comm_bubble
 \caption{Communication bubble}\label{fig:communication-bubble}
 \end{center}
 
-####  (进阶) 
+`cc@plots$step2` 中还有更多的 figure，不一一展示了。
 
-### 完整示例代码
+####  (进阶) 获取特定细胞的通讯数据
 
-## 技巧
+这里提供了一个快速获取数据的途径：通过正则匹配，在 `cc@tables$step1$pathway_net`
+或者 `cc@tables$step1$lp_net` 中获取特定细胞的数据。
+
+
+
+```r
+cc_macro <- select_pathway(cc, "Macro")
+# 或者
+# cc_macro <- select_pathway(cc, "Macrophage", get = "lps")
+```
+
+
+Table: (\#tab:Macrophage-data)Macrophage data
+
+|source     |target     |pathway_name |prob                |pval |
+|:----------|:----------|:------------|:-------------------|:----|
+|Macrophage |Macrophage |ANNEXIN      |0.0142752959860733  |0    |
+|Macrophage |Macrophage |CADM         |0.00134474271905693 |0    |
+|Macrophage |Macrophage |CCL          |0.197165266984973   |0    |
+|Macrophage |Macrophage |CD45         |0.0511750497900894  |0    |
+|Macrophage |Macrophage |CD99         |0.00134474271905693 |0    |
+|Macrophage |Macrophage |COMPLEMENT   |0.179867247416985   |0    |
+|Macrophage |Macrophage |CXCL         |0.0315784487714539  |0    |
+|Macrophage |Macrophage |GALECTIN     |0.0510613013929917  |0    |
+|Macrophage |Macrophage |GAS          |0.0371625768894343  |0    |
+|Macrophage |Macrophage |ICAM         |0.133417588216607   |0    |
+|Macrophage |Macrophage |ITGB2        |0.115608598396661   |0    |
+|Macrophage |Macrophage |MHC-I        |0.00134474271905693 |0    |
+|Macrophage |Macrophage |MHC-II       |1.12708370370619    |0    |
+|Macrophage |Macrophage |PECAM1       |0.0119738702725686  |0    |
+|Macrophage |Macrophage |SEMA4        |0.00734078826527416 |0    |
+|...        |...        |...          |...                 |...  |
+
+还有一种更便捷的方式，用以获取两种细胞之间的通讯数据 (lps，受体、配体通讯) ，并予以可视化：
+
+
+```r
+# 这会返回一个 'list'
+lst.macro2test <- map(cc, "Macro", "Test_1")
+lst.macro2test$p
+lst.macro2test$data
+```
+
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ligand-receptor-of-Macro-communicate-with-Test-1.pdf}
+\caption{Ligand receptor of Macro communicate with Test 1}\label{fig:Ligand-receptor-of-Macro-communicate-with-Test-1}
+\end{center}
+
+
+Table: (\#tab:Ligand-receptor-data-of-Macro-communicate-with-Test-1)Ligand receptor data of Macro communicate with Test 1
+
+|source    |target    |ligand |receptor  |prob      |pval |intera......7 |intera......8 |pathwa... |annota... |
+|:---------|:---------|:------|:---------|:---------|:----|:-------------|:-------------|:---------|:---------|
+|Test_1    |Macrop... |TGFB1  |TGFbR1_R2 |0.0048... |0    |TGFB1_...     |TGFB1 ...     |TGFb      |Secret... |
+|Test_1    |Macrop... |CCL5   |CCR1      |0.0678... |0    |CCL5_CCR1     |CCL5 -...     |CCL       |Secret... |
+|Macrop... |Test_1    |CXCL12 |CXCR4     |0.0771... |0    |CXCL12...     |CXCL12...     |CXCL      |Secret... |
+|Macrop... |Test_1    |CXCL16 |CXCR6     |0.0082... |0    |CXCL16...     |CXCL16...     |CXCL      |Secret... |
+|Test_1    |Macrop... |IL16   |CD4       |0.0082... |0    |IL16_CD4      |IL16 -...     |IL16      |Secret... |
+|Macrop... |Test_1    |TNF    |TNFRSF1B  |0.0121... |0    |TNF_TN...     |TNF - ...     |TNF       |Secret... |
+|Test_1    |Macrop... |ANXA1  |FPR1      |0.0305... |0    |ANXA1_...     |ANXA1 ...     |ANNEXIN   |Secret... |
+|Macrop... |Test_1    |LGALS9 |PTPRC     |0.0449... |0    |LGALS9...     |LGALS9...     |GALECTIN  |Secret... |
+|Macrop... |Test_1    |LGALS9 |CD44      |0.0297... |0    |LGALS9...     |LGALS9...     |GALECTIN  |Secret... |
+|Macrop... |Test_1    |ALCAM  |CD6       |0.0006... |0    |ALCAM_CD6     |ALCAM ...     |ALCAM     |Cell-C... |
+|Test_1    |Macrop... |PTPRC  |MRC1      |0.0923... |0    |PTPRC_...     |PTPRC ...     |CD45      |Cell-C... |
+|Test_1    |Macrop... |CD6    |ALCAM     |0.0006... |0    |CD6_ALCAM     |CD6 - ...     |CD6       |Cell-C... |
+|Test_1    |Macrop... |CD99   |PILRA     |0.0108... |0    |CD99_P...     |CD99 -...     |CD99      |Cell-C... |
+|Macrop... |Test_1    |ICAM1  |ITGAL_... |0.0435... |0    |ICAM1_...     |ICAM1 ...     |ICAM      |Cell-C... |
+|Macrop... |Test_1    |ICAM1  |ITGAL     |0.0175... |0    |ICAM1_...     |ICAM1 ...     |ICAM      |Cell-C... |
+|...       |...       |...    |...       |...       |...  |...           |...           |...       |...       |
+
+
+## 完整示例代码
+
+以下代码块不包括上述说明内容中的 '进阶' 以及分支、还有提取和展示数据部分代码：
+
+
+```r
+# 获取数据
+geo <- job_geo("GSE171306")
+geo <- step1(geo)
+geo <- step2(geo)
+untar("./GSE171306/GSE171306_RAW.tar", exdir = "./GSE171306")
+prepare_10x("./GSE171306/", "ccRCC1", single = F)
+sr <- job_seurat("./GSE171306/GSM5222644_ccRCC1_barcodes")
+
+sr <- step1(sr)
+sr <- step2(sr, 0, 7500, 35)
+sr <- step3(sr, 1:15, 1.2)
+sr <- step4(sr, "")
+sr <- step5(sr, 5)
+sr <- step6(sr, "Kidney")
+
+mn_sub <- do_monocle(sr, "B cell|Proximal")
+mn_sub <- step1(mn_sub)
+mn_sub <- step2(mn_sub, c("Y_12", "Y_50", "Y_72", "Y_36", "Y_78"))
+mn_sub <- step3(mn_sub)
+
+sr_cc_sub <- getsub(sr,
+  cells = grep("Macro|Test", sr@object@meta.data[[ "cell_mapped" ]])
+)
+cc <- asjob_cellchat(sr_cc_sub, "cell_mapped")
+cc <- step1(cc)
+cc <- step2(cc)
+```
 
 
