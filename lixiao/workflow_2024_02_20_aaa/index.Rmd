@@ -40,6 +40,10 @@ autosv(p.works$p.fr1, "frame")
 autor(.prefix("workflow_2023_12_30_scrna/Figure+Table/frame.pdf"), asis = F)
 ```
 
+## 宗旨
+
+让分析变得更简单、更有效率。
+
 ## 理念
 
 
@@ -214,7 +218,7 @@ code("
   ")
 ```
 
-### 主体：`utils.tool`
+### 主体：`utils.tool` {#git}
 
 ```{r eval = T, echo = F, results = "asis"}
 code("
@@ -310,9 +314,27 @@ sr@plots$step3$p.umap
 
 sr@tables$step4$anno_SingleR
 sr@tables$step6$scsa_res
+
+sr@params$group.by
+# 以上也可以直接这么写：
+sr$group.by
 ```
 
-#### 存储数据
+总而言之，在 `x@tables`, `x@plots`, `x@params` 中，基本能找到所有的运行结果。
+
+还有一种情况需要说明：例如单细胞分析中，在中途，你打算用 '原生' 的 `Seurat` 的代码自主分析了，而不是
+用封装后不太灵活的 `Step` 系列风格的代码。
+
+这时候，只要这个流程封装的是其它 R 包的代码，那么基本能直接通过以下方式取得：
+
+```{r}
+# 还是以 `sr` 为示例
+seurat_object <- object(sr)
+# 或者这样：
+seurat_object <- sr@object
+```
+
+#### 存储 (输出) 数据
 
 那么，\@ref(get) 中示例的数据提取得到后，又如何存储下来呢？
 保存为数据表格，.csv, .tsv, .xlsx 等，或者 .pdf，对于经验丰富的 R 使用者应该是个简单的问题。
@@ -331,13 +353,134 @@ autosv(sr@tables$step4$anno_SingleR, "this-is-table-1")
 autosv(sr@tables$step6$scsa_res, "this-is-table-2")
 ```
 
-### 空间管理
+#### 调整图片长宽比例，然后输出
 
-某些 R 包生成的数据或加载的数据可能极其占用运行内存 (RAM)。便捷地，可以用 `space()` 函数查看当前内存占用：
+你可能会对默认的图片输出的长宽比例不满意 (虽然很多时候，我已经周到的调整过它们的比例了) ，
+想要再做调整。
+
+你可以这样做：
 
 ```{r}
+p_my_plot <- sr@plots$step1$p.qc
+p_my_plot <- wrap(p_my_plot, 20, 20)
+
+# 或者按照相对比例
+p_my_plot <- zoom(p_my_plot, 1.5, 1.5)
+
+# 然后再输出图片
+autosv(p_my_plot, "my-plot")
+```
+
+### 存储 Session (以便下次从当前状态继续分析) 
+
+R 语言自带封装好的函数 `save.image()` 可以快速存储当前会话。
+
+你可以使用它，但也可以选择使用我专门为 Step 系列提供的函数 `saves()`。
+`saves()` 与 `save.image()` 仅有些许不同 (但在将来可能会有更多不同) ，那就是
+额外存储一个 `getOption("internal_job")` 获取的对象，
+可以用于 `auto_method()` 快速展示当前使用的 `job` 类对象
+(`getOption("internal_job")` 获取的，还包含一部分在 `step` 系列函数内部调用的 `job`)。
+
+总之，使用 `saves` 是推荐的做法：
+
+```{r}
+# 不指定文件名，保存为 'workflow.rds'
+saves()
+```
+
+下次重新加载，仅需：
+
+```{r}
+loads()
+```
+
+### 存储单个 `job` 对象
+
+可以直接用 R 自带的 `saveRDS()` 存储。
+例如：
+
+```{r}
+# 假设我有以下一个数据对象：
+sr <- .job_seurat()
+# 然后存储它 (当然，它基本是空的) 
+saveRDS(sr, "sr.rds")
+```
+
+更复杂的情况 (我会这么做) ，例如，我想要把 `sr` 这个对象存储下来，并且清空 `sr` 中
+我不再使用并且极其占用内存的部分——只保留必要的 Figure、Table 结果用于展示——这种情形，
+我在单细胞数据集分析常常遇到。你可以尝试使用：
+
+```{r}
+sr <- clear(sr)
+```
+
+完整的 `sr` 会被存储下来，而返回的 `sr` 对象将仅保留绘图或表格结果。之后，再使用
+`saves()` 函数保存会话和以后加载会话，会变得轻便许多。
+
+
+### 空间管理
+
+某些 R 包生成的数据或加载的数据可能极其占用运行内存 (RAM)。便捷地，可以用 `space()` 函数查看当前内存占用。
+
+例如，我当前的 R session 下，运行 `space()`：
+
+```{r eval = T, echo = T}
 space()
 ```
+
+如果你的机器的 RAM 有 32 GB 或以上，那么多数情况下一般都不需要太担心内存过载；但也有特殊情形，
+比如，你用 `Seurat` 加载了十多批单细胞数据集，打算将它们集成分析 (单细胞数据集一般都比较占用内存) 
+
+### 版本更新
+
+#### 更新主体 R 包
+
+在 \@ref(git) 部分，你已经知道如何获取 `utils.tool` 这个 R 包了。
+
+需要提醒的是，这个 R 包在频繁地被我更新，有时候是新的工具，有时候是对旧的工具的重写或改写 (一般不会太彻底) 。
+这时候，可能需要你在本地加载最新的版本 (如果你不需要新的工具，那么也没必要一定更新) 。
+
+例如：
+
+```{r eval = T, echo = F, results = "asis"}
+code("
+  cd ~/utils.tool
+  git pull orgin master
+  ")
+```
+
+这样，你运行：
+
+```{r}
+devtools::load_all("~/utils.tool")
+```
+
+使用的就是最新的 `utils.tool` 了。
+
+#### 更新已存储的 `job` 对象
+
+可能会出现一种极端情况：
+
+你已经用 Step 系列完成了某一次的分析，并且将 `job` 对象本地存储下来；
+然而由于新的需求，或者发现过去分析中的错误，你打算对某个部分进行修改；
+可能整个计算耗时较长，让你不想从头开始；
+而这时候，我 (`utils.tool` 的编写者) 修改了这个 `job` 对应的代码部分，
+而你也早已跟新到了较新的版本。
+
+这样，你会遇见一种麻烦：代码无法顺利运行了。
+
+这是可能是因为我修改了 `job` 的数据槽 (增加或减少) ，而 S4 的数据检查是
+严格的，会判定你旧的 `job` 不满足条件，因此抛出错误。
+
+如果遭遇这种情形，请尝试：
+
+```{r}
+# 例如，以下是你的旧的 `job` 对象
+sr <- .job_seurat()
+# 尝试更新它
+sr <- upd(sr)
+```
+
 
 ### 查看 step 方法的默认参数 {#params}
 
@@ -367,6 +510,67 @@ sr_1@method
 # 查看官方网站或信息源网站
 sr_1@info
 ```
+
+### 试试一些交叉工具： `map`, `asjob_*` ……
+
+`map`、`asjob_*` (可能还有 `do_*`)  这些方法，可能是 `Step` 系列带来的最大便捷，或者说惊喜。
+因为它们提供了便捷的接口，实现两种或多种分析或数据之间的快速转换。
+
+基本上，我把我所遇到的需要转换的数据形式都以 `map` 或 `asjob_*` 的形式写下来了。
+
+具体的内容，这里不便展开 (因为琐碎) ，会在对应的 Step 系列文档中示例说明。
+
+但是你可以试着探索有哪些可用，例如，直接输入：
+
+```{r}
+map
+```
+
+查看函数体：
+
+```{r}
+selectMethod(map, c("job_seurat", "job_seurat"))
+selectMethod(map, c("job_seurat", "job_kat"))
+```
+
+### 完成整套分析之后
+
+如果你已经用 `Step` 系列完成了一整套分析，但是还是不太明白整个过程发生了什么，
+例如，想知道整个过程到底使用了哪些方法，借鉴了哪些思路，可以参考哪些文献，
+那么你可以用如下方式查看：
+
+```{r}
+auto_method()
+```
+
+你可能会注意到类似：`[@InferenceAndAJinS2021]` 这样的字符，
+其实，这是参考文献来源的标记，以 `pandoc`、`Latex` 等工具自动注释。
+简而言之，通过它，可以在 .bib 文件中找到对应的参考文献。
+
+这一 .bib 文件：
+
+- <https://github.com/shaman-yellow/utils.tool/blob/master/inst/extdata/library.bib>
+
+没错，其实它就存在于 `utils.tool` 这个 R 包中，当你获取使用它的时候，也就拥有这个 .bib 文件了
+(它也会很频繁的更新)。
+
+ 
+## 加入我，和我一起编写新的 Step 系列！
+
+一个编写好的 Step 工作流可以省下许多琐碎的事带来的精力耗费，例如，不需要在各个分析平台切换，而只用
+R 语言一路写下代码 (如果你和我一样使用 Rmarkdown，就更能体会它带来的便利了) 。
+
+如果你对此感兴趣，想尝试创建自己的 Step 系列方法，
+那么你可以在 `github` 上获取 `utils.tool` 的源代码，并尝试理解它的框架。
+
+例如，`job_seurat` 系列方法的源代码：
+
+- <https://github.com/shaman-yellow/utils.tool/blob/master/R/workflow_01_seurat.R>
+
+整体框架设计 (大多数的接口) ：
+
+- <https://github.com/shaman-yellow/utils.tool/blob/master/R/workflow_00.R>
+
 
 ## 关于安装配置
 

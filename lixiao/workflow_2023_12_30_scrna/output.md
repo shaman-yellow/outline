@@ -54,7 +54,7 @@ header-includes:
 \begin{center} \textbf{\Huge Step 系列：scRNA-seq
 基本分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-20}}
+\textbf{\textcolor{white}{2024-02-21}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -87,6 +87,12 @@ header-includes:
 
 不同的 R 包或其他工具之间的数据转换和衔接。
 
+# 前情资料
+
+如果你还不知道 Step 系列的基本特性以及一些泛用的提取和存储方法，请先阅读：
+
+- 《Step 系列：Prologue and Get-start》
+
 # 适配性
 
 大多数涉及的程序都是 R；但是，其中的 SCSA 的程序接口可能得在 Linux 下才能成功运行。
@@ -109,8 +115,8 @@ Mainly used method:
 
 ### 一些额外可能需要的系统依赖工具
 
-如果你是 Ubuntu 发行版，据我的经验，安装 `devtools`, `BiocManager` 等工具之前，
-估计需要先安装以下：
+如果你使用的是 Ubuntu 发行版，据我的经验，安装 `devtools`, `BiocManager` 等工具之前，
+需要先安装以下：
 
 \begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
 \begin{verbatim}
@@ -174,11 +180,14 @@ remotes::install_github("sqjin/CellChat")
 
 git clone https://github.com/bioinfo-ibms-pumc/SCSA.git ~/SCSA
 pip3 install numpy scipy openpyxl
-# pandas 版本太高会报错
+# pandas 版本太高会报错 (SCSA 的问题)
 pip3 install pandas==1.5.3
 
 \end{verbatim}
 \end{tcolorbox}
+
+以上代码，我默认将 `SCSA` 存放在了 `~/SCSA` 的位置。你当然可以将它存放到其他位置，
+但是需要注意，这意味着你要在运行它的时候，指定你所存放的位置。细节请参考 \@ref(run-scsa)。
 
 ### 其它程序 {#installOthers}
 
@@ -400,7 +409,7 @@ step2
 ```
 
 ```
-## -- Methods parameters -------------------------------------------------------------------------------------------------------------
+## -- Methods parameters --------------------------------------------------------------------------------------------------------------
 ```
 
 输入的三个参数对应以下：
@@ -471,7 +480,7 @@ step3
 ```
 
 ```
-## -- Methods parameters -------------------------------------------------------------------------------------------------------------
+## -- Methods parameters --------------------------------------------------------------------------------------------------------------
 ```
 
 参数 `dim` 需要根据 Fig. \@ref(Ranking-of-principle-components) 判定。
@@ -571,7 +580,7 @@ Table: (\#tab:All-Markers)All Markers
 |CD3E     |3.8141... |1.8107... |0.914 |0.294 |7.3104... |0       |CD3E     |
 |...      |...       |...       |...   |...   |...       |...     |...      |
 
-#### Step6 使用 SCSA 注释细胞类
+#### Step6 使用 SCSA 注释细胞类 {#run-scsa}
 
 `SCSA` 是 Python 编写的命令行工具。`step6` 已经调用以及数据的转换集成了，
 只需要运行如下，就能简便地得到结果：
@@ -621,6 +630,22 @@ vis(sr, "scsa_cell")
 # 同 `sr@plots$step3$p.umap`
 vis(sr, "seurat_clusters")
 ```
+
+#### (可选) 保存
+
+适时保存可能是个好习惯，但也需要确认硬盘的空间是否足够。
+
+
+```r
+# 这会在当前目录下保存为 'sr.6.rds'
+clear(sr)
+# 或者
+saveRDS(sr, "sr.rds")
+```
+
+你可以在任何阶段保存。只要遇见运行时间较长的情形下，保存就是明智的选择。
+
+之后不再赘述。
 
 ### 拟时分析
 
@@ -686,7 +711,7 @@ do_monocle
 ```
 
 ```
-## -- Methods parameters -------------------------------------------------------------------------------------------------------------
+## -- Methods parameters --------------------------------------------------------------------------------------------------------------
 ```
 
 如果你对 '面向对象编程' 和 '参数化多态' 不熟悉，你可能会感到惊讶，因为它列出了两个参数列表。

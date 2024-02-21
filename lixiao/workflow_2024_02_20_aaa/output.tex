@@ -118,7 +118,7 @@
 \begin{center} \textbf{\Huge Step 系列：Prologue
 and Get-start} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-20}}
+\textbf{\textcolor{white}{2024-02-21}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -146,6 +146,11 @@ and Get-start} \vspace{4em}
 \includegraphics[width = 0.9\linewidth]{~/outline/lixiao//workflow_2023_12_30_scrna/Figure+Table/frame.pdf}
 \caption{Workflow frame overview. 左图展示的是 Step 系列所有对象的框架结构和运行路线。右图展示的是，每一个圆球都代表一个方法或数据库或分析平台形成的数据对象，也就是左图中的 `job'，而它们之间的线，代表所有对象之间的转化或映射关系 (仅目前；还在不断拓展)；具体而言，我们可以简单的通过 `map' 或 `asjob' 这类的方法，将一个数据对象转化或映射到另一个对象，实现跨越多种方法或体系的联并分析。}\label{fig:Workflow frame overview. 左图展示的是 Step 系列所有对象的框架结构和运行路线。右图展示的是，每一个圆球都代表一个方法或数据库或分析平台形成的数据对象，也就是左图中的 `job'，而它们之间的线，代表所有对象之间的转化或映射关系 (仅目前；还在不断拓展)；具体而言，我们可以简单的通过 `map' 或 `asjob' 这类的方法，将一个数据对象转化或映射到另一个对象，实现跨越多种方法或体系的联并分析。}
 \end{center}
+
+\hypertarget{ux5b97ux65e8}{%
+\subsection{宗旨}\label{ux5b97ux65e8}}
+
+让分析变得更简单、更有效率。
 
 \hypertarget{ux7406ux5ff5}{%
 \subsection{理念}\label{ux7406ux5ff5}}
@@ -346,8 +351,8 @@ sudo apt install -y libfontconfig1-dev librsvg2-dev libmagick++-dev
 \end{verbatim}
 \end{tcolorbox}
 
-\hypertarget{ux4e3bux4f53utils.tool}{%
-\subsubsection{\texorpdfstring{主体：\texttt{utils.tool}}{主体：utils.tool}}\label{ux4e3bux4f53utils.tool}}
+\hypertarget{git}{%
+\subsubsection{\texorpdfstring{主体：\texttt{utils.tool}}{主体：utils.tool}}\label{git}}
 
 \begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
 \begin{verbatim}
@@ -463,6 +468,26 @@ git clone https://github.com/shaman-yellow/utils.tool.git ~/utils.tool
 
 \NormalTok{sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step4}\OperatorTok{$}\NormalTok{anno\_SingleR}
 \NormalTok{sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{scsa\_res}
+
+\NormalTok{sr}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{group.by}
+\CommentTok{\# 以上也可以直接这么写：}
+\NormalTok{sr}\OperatorTok{$}\NormalTok{group.by}
+\end{Highlighting}
+\end{Shaded}
+
+总而言之，在 \texttt{x@tables}, \texttt{x@plots}, \texttt{x@params} 中，基本能找到所有的运行结果。
+
+还有一种情况需要说明：例如单细胞分析中，在中途，你打算用 `原生' 的 \texttt{Seurat} 的代码自主分析了，而不是
+用封装后不太灵活的 \texttt{Step} 系列风格的代码。
+
+这时候，只要这个流程封装的是其它 R 包的代码，那么基本能直接通过以下方式取得：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 还是以 \textasciigrave{}sr\textasciigrave{} 为示例}
+\NormalTok{seurat\_object \textless{}{-}}\StringTok{ }\KeywordTok{object}\NormalTok{(sr)}
+\CommentTok{\# 或者这样：}
+\NormalTok{seurat\_object \textless{}{-}}\StringTok{ }\NormalTok{sr}\OperatorTok{@}\NormalTok{object}
 \end{Highlighting}
 \end{Shaded}
 
@@ -488,14 +513,157 @@ git clone https://github.com/shaman-yellow/utils.tool.git ~/utils.tool
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{ux5b58ux50a8-session-ux4ee5ux4fbfux4e0bux6b21ux4eceux5f53ux524dux72b6ux6001ux7ee7ux7eedux5206ux6790}{%
+\subsubsection{存储 Session (以便下次从当前状态继续分析)}\label{ux5b58ux50a8-session-ux4ee5ux4fbfux4e0bux6b21ux4eceux5f53ux524dux72b6ux6001ux7ee7ux7eedux5206ux6790}}
+
+R 语言自带封装好的函数 \texttt{save.image()} 可以快速存储当前会话。
+
+你可以使用它，但也可以选择使用我专门为 Step 系列提供的函数 \texttt{saves()}。
+\texttt{saves()} 与 \texttt{save.image()} 仅有些许不同 (但在将来可能会有更多不同) ，那就是
+额外存储一个 \texttt{getOption("internal\_job")} 获取的对象，
+可以用于 \texttt{auto\_method()} 快速展示当前使用的 \texttt{job} 类对象
+(\texttt{getOption("internal\_job")} 获取的，还包含一部分在 \texttt{step} 系列函数内部调用的 \texttt{job})。
+
+总之，使用 \texttt{saves} 是推荐的做法：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 不指定文件名，保存为 \textquotesingle{}workflow.rds\textquotesingle{}}
+\KeywordTok{saves}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+下次重新加载，仅需：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{loads}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5b58ux50a8ux5355ux4e2a-job-ux5bf9ux8c61}{%
+\subsubsection{\texorpdfstring{存储单个 \texttt{job} 对象}{存储单个 job 对象}}\label{ux5b58ux50a8ux5355ux4e2a-job-ux5bf9ux8c61}}
+
+可以直接用 R 自带的 \texttt{saveRDS()} 存储。
+例如：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 假设我有以下一个数据对象：}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{.job\_seurat}\NormalTok{()}
+\CommentTok{\# 然后存储它 (当然，它基本是空的) }
+\KeywordTok{saveRDS}\NormalTok{(sr, }\StringTok{"sr.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+更复杂的情况 (我会这么做) ，例如，我想要把 \texttt{sr} 这个对象存储下来，并且清空 \texttt{sr} 中
+我不再使用并且极其占用内存的部分------只保留必要的 Figure、Table 结果用于展示------这种情形，
+我在单细胞数据集分析常常遇到。你可以尝试使用：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{clear}\NormalTok{(sr)}
+\end{Highlighting}
+\end{Shaded}
+
+完整的 \texttt{sr} 会被存储下来，而返回的 \texttt{sr} 对象将仅保留绘图或表格结果。之后，再使用
+\texttt{saves()} 函数保存会话和以后加载会话，会变得轻便许多。
+
 \hypertarget{ux7a7aux95f4ux7ba1ux7406}{%
 \subsubsection{空间管理}\label{ux7a7aux95f4ux7ba1ux7406}}
 
-某些 R 包生成的数据或加载的数据可能极其占用运行内存 (RAM)。便捷地，可以用 \texttt{space()} 函数查看当前内存占用：
+某些 R 包生成的数据或加载的数据可能极其占用运行内存 (RAM)。便捷地，可以用 \texttt{space()} 函数查看当前内存占用。
+
+例如，我当前的 R session 下，运行 \texttt{space()}：
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{space}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 17 x 3
+##    name                        size  value
+##    <chr>                       <chr> <dbl>
+##  1 .__C__obj_1                 0 Mb      0
+##  2 .__C__obj_2                 0 Mb      0
+##  3 .__C__obj_3                 0 Mb      0
+##  4 .__T__my_method:.GlobalEnv  0 Mb      0
+##  5 .__T__my_method2:.GlobalEnv 0 Mb      0
+##  6 .demo1                      0 Mb      0
+##  7 .demo2                      0 Mb      0
+##  8 .demo3                      0 Mb      0
+##  9 .Random.seed                0 Mb      0
+## 10 .requireCachedGenerics      0 Mb      0
+## 11 autoRegisters               0 Mb      0
+## 12 my_method                   0 Mb      0
+## 13 my_method2                  0 Mb      0
+## 14 pkgs                        0 Mb      0
+## 15 test1                       0 Mb      0
+## 16 test2                       0 Mb      0
+## 17 test3                       0 Mb      0
+\end{verbatim}
+
+如果你的机器的 RAM 有 32 GB 或以上，那么多数情况下一般都不需要太担心内存过载；但也有特殊情形，
+比如，你用 \texttt{Seurat} 加载了十多批单细胞数据集，打算将它们集成分析 (单细胞数据集一般都比较占用内存)
+
+\hypertarget{ux7248ux672cux66f4ux65b0}{%
+\subsubsection{版本更新}\label{ux7248ux672cux66f4ux65b0}}
+
+\hypertarget{ux66f4ux65b0ux4e3bux4f53-r-ux5305}{%
+\paragraph{更新主体 R 包}\label{ux66f4ux65b0ux4e3bux4f53-r-ux5305}}
+
+在 \ref{git} 部分，你已经知道如何获取 \texttt{utils.tool} 这个 R 包了。
+
+需要提醒的是，这个 R 包在频繁地被我更新，有时候是新的工具，有时候是对旧的工具的重写或改写 (一般不会太彻底) 。
+这时候，可能需要你在本地加载最新的版本 (如果你不需要新的工具，那么也没必要一定更新) 。
+
+例如：
+
+\begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
+\begin{verbatim}
+
+cd ~/utils.tool
+git pull orgin master
+
+\end{verbatim}
+\end{tcolorbox}
+
+这样，你运行：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{load\_all}\NormalTok{(}\StringTok{"\textasciitilde{}/utils.tool"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+使用的就是最新的 \texttt{utils.tool} 了。
+
+\hypertarget{ux66f4ux65b0ux5df2ux5b58ux50a8ux7684-job-ux5bf9ux8c61}{%
+\paragraph{\texorpdfstring{更新已存储的 \texttt{job} 对象}{更新已存储的 job 对象}}\label{ux66f4ux65b0ux5df2ux5b58ux50a8ux7684-job-ux5bf9ux8c61}}
+
+可能会出现一种极端情况：
+
+你已经用 Step 系列完成了某一次的分析，并且将 \texttt{job} 对象本地存储下来；
+然而由于新的需求，或者发现过去分析中的错误，你打算对某个部分进行修改；
+可能整个计算耗时较长，让你不想从头开始；
+而这时候，我 (\texttt{utils.tool} 的编写者) 修改了这个 \texttt{job} 对应的代码部分，
+而你也早已跟新到了较新的版本。
+
+这样，你会遇见一种麻烦：代码无法顺利运行了。
+
+这是可能是因为我修改了 \texttt{job} 的数据槽 (增加或减少) ，而 S4 的数据检查是
+严格的，会判定你旧的 \texttt{job} 不满足条件，因此抛出错误。
+
+如果遭遇这种情形，请尝试：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 例如，以下是你的旧的 \textasciigrave{}job\textasciigrave{} 对象}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{.job\_seurat}\NormalTok{()}
+\CommentTok{\# 尝试更新它}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{upd}\NormalTok{(sr)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -583,6 +751,58 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 \begin{verbatim}
 ## [1] "Tutorial: https://satijalab.org/seurat/articles/pbmc3k_tutorial.html"
 \end{verbatim}
+
+\hypertarget{ux8bd5ux8bd5ux4e00ux4e9bux4ea4ux53c9ux5de5ux5177-map-asjob_}{%
+\subsubsection{\texorpdfstring{试试一些交叉工具： \texttt{map}, \texttt{asjob\_*} \ldots\ldots{}}{试试一些交叉工具： map, asjob\_* \ldots\ldots{}}}\label{ux8bd5ux8bd5ux4e00ux4e9bux4ea4ux53c9ux5de5ux5177-map-asjob_}}
+
+\texttt{map}、\texttt{asjob\_*} (可能还有 \texttt{do\_*}) 这些方法，可能是 \texttt{Step} 系列带来的最大便捷，或者说惊喜。
+因为它们提供了便捷的接口，实现两种或多种分析或数据之间的快速转换。
+
+基本上，我把我所遇到的需要转换的数据形式都以 \texttt{map} 或 \texttt{asjob\_*} 的形式写下来了。
+
+具体的内容，这里不便展开 (因为琐碎) ，会在对应的 Step 系列文档中示例说明。
+
+但是你可以试着探索有哪些可用，例如，直接输入：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{map}
+\end{Highlighting}
+\end{Shaded}
+
+查看函数体：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{selectMethod}\NormalTok{(map, }\KeywordTok{c}\NormalTok{(}\StringTok{"job\_seurat"}\NormalTok{, }\StringTok{"job\_seurat"}\NormalTok{))}
+\KeywordTok{selectMethod}\NormalTok{(map, }\KeywordTok{c}\NormalTok{(}\StringTok{"job\_seurat"}\NormalTok{, }\StringTok{"job\_kat"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux52a0ux5165ux6211ux548cux6211ux4e00ux8d77ux7f16ux5199ux65b0ux7684-step-ux7cfbux5217}{%
+\subsection{加入我，和我一起编写新的 Step 系列！}\label{ux52a0ux5165ux6211ux548cux6211ux4e00ux8d77ux7f16ux5199ux65b0ux7684-step-ux7cfbux5217}}
+
+一个编写好的 Step 工作流可以省下许多琐碎的事带来的精力耗费，例如，不需要在各个分析平台切换，而只用
+R 语言一路写下代码 (如果你和我一样使用 Rmarkdown，就更能体会它带来的便利了) 。
+
+如果你对此感兴趣，想尝试创建自己的 Step 系列方法，
+那么你可以在 \texttt{github} 上获取 \texttt{utils.tool} 的源代码，并尝试理解它的框架。
+
+例如，\texttt{job\_seurat} 系列方法的源代码：
+
+\begin{itemize}
+\tightlist
+\item
+  \url{https://github.com/shaman-yellow/utils.tool/blob/master/R/workflow_01_seurat.R}
+\end{itemize}
+
+整体框架设计 (大多数的接口) ：
+
+\begin{itemize}
+\tightlist
+\item
+  \url{https://github.com/shaman-yellow/utils.tool/blob/master/R/workflow_00.R}
+\end{itemize}
 
 \hypertarget{ux5173ux4e8eux5b89ux88c5ux914dux7f6e}{%
 \subsection{关于安装配置}\label{ux5173ux4e8eux5b89ux88c5ux914dux7f6e}}

@@ -1,0 +1,556 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge Step 系列：scRNA-seq
+癌细胞鉴定} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-02-21}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux76eeux7684}{%
+\subsection{目的}\label{ux76eeux7684}}
+
+解决癌组织单细胞数据集中，癌细胞鉴定的难题，并延续一般性的单细胞数据分析流程。
+
+\hypertarget{ux89e3ux51b3ux7684ux95eeux9898-ux6280ux672fux6027ux7684}{%
+\subsection{解决的问题 (技术性的)}\label{ux89e3ux51b3ux7684ux95eeux9898-ux6280ux672fux6027ux7684}}
+
+不同的 R 包或其他工具之间的数据转换和衔接。
+
+\hypertarget{ux524dux60c5ux8d44ux6599}{%
+\section{前情资料}\label{ux524dux60c5ux8d44ux6599}}
+
+这份文档是以下的补充资料 (以下的配置和使用是前提条件) ：
+
+\begin{itemize}
+\tightlist
+\item
+  《Step 系列：scRNA-seq 基本分析》
+\end{itemize}
+
+如果你还不知道 Step 系列的基本特性以及一些泛用的提取和存储方法，请先阅读：
+
+\begin{itemize}
+\tightlist
+\item
+  《Step 系列：Prologue and Get-start》
+\end{itemize}
+
+\hypertarget{ux9002ux914dux6027}{%
+\section{适配性}\label{ux9002ux914dux6027}}
+
+同《Step 系列：scRNA-seq 基本分析》。
+
+\hypertarget{ux65b9ux6cd5}{%
+\section{方法}\label{ux65b9ux6cd5}}
+
+以下是我在这个工作流中涉及的方法和程序：
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{copyKAT} used for aneuploid cell or cancer cell prediction\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{1}}.
+\item
+  R package \texttt{Monocle3} used for cell pseudotime analysis\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{2},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{3}}.
+\item
+  The R package \texttt{Seurat} used for scRNA-seq processing; \texttt{SCSA} (python) used for cell type annotation\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{4}--\protect\hyperlink{ref-ScsaACellTyCaoY2020}{6}}.
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{ux5b89ux88c5-ux9996ux6b21ux4f7fux7528}{%
+\section{安装 (首次使用)}\label{ux5b89ux88c5-ux9996ux6b21ux4f7fux7528}}
+
+\hypertarget{ux5b89ux88c5ux4f9dux8d56}{%
+\subsection{安装依赖}\label{ux5b89ux88c5ux4f9dux8d56}}
+
+《Step 系列：scRNA-seq 基本分析》已经例举了大部分程序的安装方法，
+以下，仅展示 R 包 \texttt{copykat} 的安装。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install\_github}\NormalTok{(}\StringTok{"navinlabcode/copykat"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux793aux4f8bux5206ux6790}{%
+\section{示例分析}\label{ux793aux4f8bux5206ux6790}}
+
+在《Step 系列：scRNA-seq 基本分析》中，我以 GSE171306 做了 scRNA-seq 一般性的示例。
+但其实 GSE171306 是一批癌组织数据集，理应鉴定癌细胞，而 SCSA 和多数其他自动注释工具，
+都无法鉴定出癌细胞。这样，就有必要专门鉴定癌细胞了。
+
+以下针对癌细胞鉴定的问题展开示例分析，并依然使用 GSE171306 这批数据。
+
+注：只要是 《Step 系列：scRNA-seq 基本分析》 中提及的，以下就不再赘述；只细述
+新的内容。
+
+\hypertarget{ux6570ux636eux51c6ux5907}{%
+\subsection{数据准备}\label{ux6570ux636eux51c6ux5907}}
+
+\hypertarget{obtain}{%
+\subsubsection{快速获取示例数据}\label{obtain}}
+
+运行以下代码获取数据 (和《Step 系列：scRNA-seq 基本分析》中的是一样的)：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{geo \textless{}{-}}\StringTok{ }\KeywordTok{job\_geo}\NormalTok{(}\StringTok{"GSE171306"}\NormalTok{)}
+\NormalTok{geo \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(geo)}
+\NormalTok{geo \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(geo)}
+\KeywordTok{untar}\NormalTok{(}\StringTok{"./GSE171306/GSE171306\_RAW.tar"}\NormalTok{, }\DataTypeTok{exdir =} \StringTok{"./GSE171306"}\NormalTok{)}
+\KeywordTok{prepare\_10x}\NormalTok{(}\StringTok{"./GSE171306/"}\NormalTok{, }\StringTok{"ccRCC1"}\NormalTok{, }\DataTypeTok{single =}\NormalTok{ F)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{job\_seurat}\NormalTok{(}\StringTok{"./GSE171306/GSM5222644\_ccRCC1\_barcodes"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5206ux6790ux6d41ux7a0b}{%
+\subsection{分析流程}\label{ux5206ux6790ux6d41ux7a0b}}
+
+\hypertarget{ux5355ux7ec6ux80deux6570ux636eux7684ux8d28ux63a7ux805aux7c7bmarker-ux9274ux5b9aux7ec6ux80deux6ce8ux91caux7b49}{%
+\subsubsection{单细胞数据的质控、聚类、Marker 鉴定、细胞注释等}\label{ux5355ux7ec6ux80deux6570ux636eux7684ux8d28ux63a7ux805aux7c7bmarker-ux9274ux5b9aux7ec6ux80deux6ce8ux91caux7b49}}
+
+以下直接给出代码 (和《Step 系列：scRNA-seq 基本分析》相同)：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(sr)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(sr, }\DecValTok{0}\NormalTok{, }\DecValTok{7500}\NormalTok{, }\DecValTok{35}\NormalTok{)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(sr, }\DecValTok{1}\OperatorTok{:}\DecValTok{15}\NormalTok{, }\FloatTok{1.2}\NormalTok{)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step4}\NormalTok{(sr, }\StringTok{""}\NormalTok{)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step5}\NormalTok{(sr, }\DecValTok{5}\NormalTok{)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step6}\NormalTok{(sr, }\StringTok{"Kidney"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux764cux7ec6ux80deux9274ux5b9a}{%
+\subsubsection{癌细胞鉴定}\label{ux764cux7ec6ux80deux9274ux5b9a}}
+
+\hypertarget{as-job-kat-ux5c06ux524dux5904ux7406ux5b8cux6bd5ux7684-job_seurat-ux6570ux636eux5bf9ux8c61ux8f6cux5316}{%
+\paragraph{\texorpdfstring{As-job-kat 将前处理完毕的 \texttt{job\_seurat} 数据对象转化}{As-job-kat 将前处理完毕的 job\_seurat 数据对象转化}}\label{as-job-kat-ux5c06ux524dux5904ux7406ux5b8cux6bd5ux7684-job_seurat-ux6570ux636eux5bf9ux8c61ux8f6cux5316}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kat \textless{}{-}}\StringTok{ }\KeywordTok{asjob\_kat}\NormalTok{(sr)}
+\end{Highlighting}
+\end{Shaded}
+
+注意，这一步默认将 \texttt{sr@object} (也就是 \texttt{seurat} 数据对象) 中的 \texttt{assays} 数据槽中的第一个数据集
+用于鉴定癌细胞。转化完成后，你会在 \texttt{kat@object} 看到这个矩阵数据集。
+一般情况下，使用的都是第一个数据集。
+
+你可以手动指定数据集，例如：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 不要运行}
+\NormalTok{kat \textless{}{-}}\StringTok{ }\KeywordTok{asjob\_kat}\NormalTok{(sr, }\DataTypeTok{use =} \KeywordTok{names}\NormalTok{(x}\OperatorTok{@}\NormalTok{object}\OperatorTok{@}\NormalTok{assays)[[}\DecValTok{1}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step1-ux6839ux636eux53d8ux5f02ux62f7ux8d1dux6570ux9274ux5b9aux764cux7ec6ux80de}{%
+\paragraph{Step1 根据变异拷贝数鉴定癌细胞}\label{step1-ux6839ux636eux53d8ux5f02ux62f7ux8d1dux6570ux9274ux5b9aux764cux7ec6ux80de}}
+
+\texttt{copykat} 有一个优点 (相对于 \texttt{inferCNV}) ，不需要手动指定参考细胞，程序会自主在数据集中选择参考细胞。
+所以，将所有的细胞表达数据输入就可以了。
+
+(这一步会比较耗时，1-5 小时)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 后一个参数指定线程数}
+\NormalTok{kat \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(kat, }\DecValTok{8}\NormalTok{)}
+\CommentTok{\# 你还可以通过添加 \textasciigrave{}path\textasciigrave{} 参数，指定其他文件夹用以存放中间数据}
+\end{Highlighting}
+\end{Shaded}
+
+这里，我有必要做一些说明。
+\texttt{copykat} 内置一些参考数据集，用以参考和计算。对于人类，它内置的是 `hg20' 参考集。
+目前遇到更多的可能是 `hg38'。
+\texttt{copykat} 内部并不会对基因符号 (symbol) 后缀的版本信息进行替换和匹配，因此，如果输入的基因即使是
+同一种，然而因为版本不同，也会无法匹配上 (例如，你输入的是 `AHR.5'，内置的参考集包含的是 `AHR.1') 。
+
+因此，我在 \texttt{job\_kat} 的 \texttt{step1} 中补充了这一部分工作，能够让这一步能够顺利进行下去。
+但我无法预料是否还会有其他特殊情况，所以以上事项需知悉。
+
+如果你同样对以上事项保持警惕，可以用以下确认我做了哪些补充工作：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{selectMethod}\NormalTok{(step1, }\StringTok{"job\_kat"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+我还需要备注的是，由于我只做到过人类的癌细胞鉴定，所以小鼠的数据集目前还不支持。
+
+\hypertarget{step2-ux53efux89c6ux5316ux9274ux5b9aux7ed3ux679c}{%
+\paragraph{Step2 可视化鉴定结果}\label{step2-ux53efux89c6ux5316ux9274ux5b9aux7ed3ux679c}}
+
+\texttt{copykat} 自带可视化的函数；然而，由于其中的图例绘制的太糟糕，因此，这里
+我去除了 \texttt{copykat} 绘制的热图的图例，重新添加了一个新的图例。
+
+这一步也会比较耗时 (热图很大) 。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kat \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(kat)}
+\end{Highlighting}
+\end{Shaded}
+
+该热图可以直接提取查看；但最好不要这么做，因为加载这个热图太耗时：
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{kat@plots\$step2\$p.copykat}
+\end{itemize}
+
+推荐的做法是 (见 \ref{clear} )，运行下一部分 (\texttt{clear}) 之后，再将输出的 png 图片查看。
+
+这里，我们也可以直接获取鉴定结果表格：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kat}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{res\_copykat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:copyKAT-results}CopyKAT results}\tabularnewline
+\toprule
+cell.names & copykat.pred & copykat\_cell\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+cell.names & copykat.pred & copykat\_cell\tabularnewline
+\midrule
+\endhead
+AAACCCAAGCTGTGCC-1 & diploid & Normal cell\tabularnewline
+AAACCCACAGCCGGTT-1 & diploid & Normal cell\tabularnewline
+AAACCCATCATGAGGG-1 & diploid & Normal cell\tabularnewline
+AAACGAAAGTCACAGG-1 & diploid & Normal cell\tabularnewline
+AAACGAACACACAGAG-1 & diploid & Normal cell\tabularnewline
+AAACGAACACCTCTAC-1 & diploid & Normal cell\tabularnewline
+AAACGAATCAACACGT-1 & diploid & Normal cell\tabularnewline
+AAACGAATCACTACTT-1 & diploid & Normal cell\tabularnewline
+AAACGAATCGGCATAT-1 & aneuploid & Cancer cell\tabularnewline
+AAACGCTAGACAGTCG-1 & diploid & Normal cell\tabularnewline
+AAACGCTAGTCCCAAT-1 & aneuploid & Cancer cell\tabularnewline
+AAACGCTCATCAGTCA-1 & diploid & Normal cell\tabularnewline
+AAACGCTCATGACTCA-1 & diploid & Normal cell\tabularnewline
+AAACGCTGTAGGACCA-1 & diploid & Normal cell\tabularnewline
+AAACGCTGTGAGCAGT-1 & diploid & Normal cell\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{clear}{%
+\paragraph{\texorpdfstring{(额外的) 保存 \texttt{job\_kat} 并输出结果}{(额外的) 保存 job\_kat 并输出结果}}\label{clear}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kat \textless{}{-}}\StringTok{ }\KeywordTok{clear}\NormalTok{(kat)}
+\end{Highlighting}
+\end{Shaded}
+
+这样，就能取得想要的结果了：
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{figs/copykat2024-02-21_15_28_39.png}
+\caption{Copykat prediction}\label{fig:copykat-prediction}
+\end{center}
+
+Fig. \ref{fig:copykat-prediction}，图中的 `aneuploidy' 即为癌细胞。
+
+\hypertarget{map}{%
+\paragraph{Map 将结果映射回 Seurat}\label{map}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{map}\NormalTok{(sr, kat)}
+\NormalTok{p.sr\_vis \textless{}{-}}\StringTok{ }\KeywordTok{vis}\NormalTok{(sr, }\StringTok{"scsa\_copykat"}\NormalTok{)}
+\NormalTok{p.sr\_vis}
+\end{Highlighting}
+\end{Shaded}
+
+这样我们就能在 Fig. \ref{fig:The-scsa-copykat} 中看到，被注释为 `Cancer cell' 的细胞群体。
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/The-scsa-copykat.pdf}
+\caption{The scsa copykat}\label{fig:The-scsa-copykat}
+\end{center}
+
+我们不妨对比一下 SCSA 的注释结果 (Fig. \ref{fig:SCSA-Cell-type-annotation})，看看 `Cancer cell' 可能的来源细胞。
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCSA-Cell-type-annotation.pdf}
+\caption{SCSA Cell type annotation}\label{fig:SCSA-Cell-type-annotation}
+\end{center}
+
+现在可以推断，`Cancer cell' 主要来源于 `Proximal tubular cell'。
+
+\hypertarget{ux62dfux65f6ux5206ux6790}{%
+\subsubsection{拟时分析}\label{ux62dfux65f6ux5206ux6790}}
+
+其实到 \ref{map} 为止，本文档的主要内容，即鉴定癌细胞，已经结束了。
+
+然而如果我们进一步思考，如果将 \texttt{copykat} 依据变异拷贝数鉴定癌细胞的原理推进，结合拟时分析，
+也许就能分析出，癌细胞或正常细胞是如何沿着 `拟时轨迹'，转变成癌细胞了。
+
+这会是一种可以泛用于肿瘤组织单细胞数据的分析方法。
+
+\hypertarget{do-monocle-ux5bf9ux764cux7ec6ux80deux8fdbux884cux62dfux65f6ux5206ux6790}{%
+\paragraph{do-monocle 对癌细胞进行拟时分析}\label{do-monocle-ux5bf9ux764cux7ec6ux80deux8fdbux884cux62dfux65f6ux5206ux6790}}
+
+按照上述思路，这里需要将癌细胞单独取出，用以拟时分析。
+
+我提供了一个便捷的方法，以快速达成这一目的：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{do\_monocle}\NormalTok{(sr, kat)}
+\end{Highlighting}
+\end{Shaded}
+
+在整个 Step 系列方法中，\texttt{do\_*} 形式的目前还很少；这是一种根据传入的前两个参数的类来决定调用的函数
+的系列方法。而 \texttt{asjob\_*} 形式的，只根据第一种参数来决定。
+
+其实，\texttt{do\_monocle} 内部重新对传入的 \texttt{sr} 数据运行了 \texttt{step3}，即对分离的癌细胞重新聚类，区分出更多的群体 (可能会是亚型)
+
+\hypertarget{step1-ux6784ux5efaux62dfux65f6ux8f68ux8ff9}{%
+\paragraph{Step1 构建拟时轨迹}\label{step1-ux6784ux5efaux62dfux65f6ux8f68ux8ff9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(mn)}
+\end{Highlighting}
+\end{Shaded}
+
+Fig. \ref{fig:Cancer-cell-prin} 是用来确认选择拟时起点的。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 以 wrap 调整了长宽比例}
+\KeywordTok{wrap}\NormalTok{(mn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.prin, }\DecValTok{6}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Cancer-cell-prin.pdf}
+\caption{Cancer cell prin}\label{fig:Cancer-cell-prin}
+\end{center}
+
+\hypertarget{step2-ux9009ux62e9ux62dfux65f6ux8d77ux70b9}{%
+\paragraph{Step2 选择拟时起点}\label{step2-ux9009ux62e9ux62dfux65f6ux8d77ux70b9}}
+
+选择合适的拟时起点依然会是一个难题。这里提供了一种可借鉴的，用以选择癌细胞拟时起点的思路。
+见 Fig. \ref{fig:copykat-prediction}, 对于 `aneuploid'，即癌细胞，`gain'、`loss' 水平更接近
+`diploid' 的细胞，或许更适合作为拟时起点。
+具体而言，根据 Fig. \ref{fig:copykat-prediction} 的侧边聚类树，我们或许可以试着将肿瘤细胞切分为多个小群体，然后根据它们相较于
+正常细胞的近似程度，选择拟时起点。那么切分之后，哪一群体更加接近正常细胞呢？
+
+见 Fig. \ref{fig:copykat-prediction}，如果切分为两个群体，下方高度 (Height) 更低的群体更近似正常细胞。
+这样，我们就能大致决定：Height 更低的群体作为拟时起点。
+
+我们可以把 \texttt{copyKAT} 的聚类结果隐射到 UMAP 聚类上：
+\texttt{mn} 来自于 \texttt{do\_monocle(sr,\ kat)}，相较于《Step 系列：scRNA-seq 基本分析》中所述的，有一点特殊之处，即，
+额外生成了图片，也就是我们需要的映射图，只不过，它一共做了 1-30 种切分
+(注意，该切分是针对 Fig. \ref{fig:copykat-prediction} 中的所有细胞进行的切分，而不是单单癌细胞) 。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.cancer\_position}
+\end{Highlighting}
+\end{Shaded}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Cut-tree.pdf}
+\caption{Cut tree}\label{fig:Cut-tree}
+\end{center}
+
+见 Fig. \ref{fig:Cut-tree}，图中的数值越小，代表 Height 越低。
+如果我们观察最后一副子图，会发现 `9' 代表的群体，主要集中在 UMAP 的上半部分。
+因此，这里我们试着将更上半部分的细胞作为拟时起点。
+那么，也就是 Fig. \ref{fig:Cancer-cell-prin} 中的 `Y\_14'。
+
+\hypertarget{step3-ux62dfux65f6ux5206ux6790ux57faux7840ux4e0aux7684ux5deeux5f02ux5206ux6790ux548cux57faux56e0ux8868ux8fbeux6a21ux5757}{%
+\paragraph{Step3 拟时分析基础上的差异分析和基因表达模块}\label{step3-ux62dfux65f6ux5206ux6790ux57faux7840ux4e0aux7684ux5deeux5f02ux5206ux6790ux548cux57faux56e0ux8868ux8fbeux6a21ux5757}}
+
+\hypertarget{ux8fdbux9636-ux6839ux636eux62dfux65f6ux5206ux6790ux7ed3ux679cux91cdux65b0ux5212ux5206ux7ec6ux80deux7fa4ux4f53}{%
+\paragraph{(进阶) 根据拟时分析结果重新划分细胞群体}\label{ux8fdbux9636-ux6839ux636eux62dfux65f6ux5206ux6790ux7ed3ux679cux91cdux65b0ux5212ux5206ux7ec6ux80deux7fa4ux4f53}}
+
+\hypertarget{ux5b8cux6574ux793aux4f8bux4ee3ux7801}{%
+\subsection{完整示例代码}\label{ux5b8cux6574ux793aux4f8bux4ee3ux7801}}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-DelineatingCopGaoR2021}{}%
+1. Gao, R. \emph{et al.} Delineating copy number and clonal substructure in human tumors from single-cell transcriptomes. \emph{Nature Biotechnology} \textbf{39}, 599--608 (2021).
+
+\leavevmode\hypertarget{ref-ReversedGraphQiuX2017}{}%
+2. Qiu, X. \emph{et al.} Reversed graph embedding resolves complex single-cell trajectories. \emph{Nature Methods} \textbf{14}, (2017).
+
+\leavevmode\hypertarget{ref-TheDynamicsAnTrapne2014}{}%
+3. Trapnell, C. \emph{et al.} The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. \emph{Nature Biotechnology} \textbf{32}, (2014).
+
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+4. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
+5. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+6. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+\end{cslreferences}
+
+\end{document}

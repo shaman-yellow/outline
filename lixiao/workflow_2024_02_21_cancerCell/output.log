@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  21 FEB 2024 10:47
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  21 FEB 2024 18:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -829,6 +829,7 @@ Package: titlesec 2021/07/05 v2.14 Sectioning titles
 \titlewidthlast=\dimen330
 \titlewidthfirst=\dimen331
 )
+\cslhangindent=\skip78
 
 Package xeCJK Warning: Fandol is being set as the default font for CJK text.
 (xeCJK)                Please make sure it has been properly installed.
@@ -874,40 +875,40 @@ guage=dflt;"
 (./output.aux)
 \openout1 = `output.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 114.
+(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 114.
+(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 114.
+(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 114.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 114.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 114.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 114.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 119.
 
 Package fontspec Info: latinmodern-math scale = 0.9999964596882403.
 
@@ -936,7 +937,7 @@ pt=math;language=dflt;"
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 114.
+(Font)              scaled to size 10.0pt on input line 119.
 
 Package fontspec Info: latinmodern-math scale = 0.9999964596882403.
 
@@ -975,18 +976,18 @@ pt=math;language=dflt;"
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 114.
+(Font)              scaled to size 10.0pt on input line 119.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 114.
+(Font)              `operators' in the math version `normal' on input line 119.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 114.
+ line 119.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 114.
+(Font)              `operators' in the math version `bold' on input line 119.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 114.
+t line 119.
 
 Package fontspec Info: latinmodern-math scale = 0.9999964596882403.
 
@@ -1073,15 +1074,15 @@ t=math;language=dflt;"
 (fontspec)             \fontdimen 21\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 114.
+(Font)              `symbols' in the math version `normal' on input line 119.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 114.
+t line 119.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 114.
+(Font)              `symbols' in the math version `bold' on input line 119.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 114.
+t line 119.
 
 Package fontspec Info: latinmodern-math scale = 0.9999964596882403.
 
@@ -1151,22 +1152,22 @@ pt=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 1
-14.
+19.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 114.
+t line 119.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 114
+(Font)              `largesymbols' in the math version `bold' on input line 119
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 114.
-LaTeX Info: Redefining \microtypecontext on input line 114.
-Package microtype Info: Applying patch `item' on input line 114.
-Package microtype Info: Applying patch `toc' on input line 114.
-Package microtype Info: Applying patch `eqnum' on input line 114.
+t line 119.
+LaTeX Info: Redefining \microtypecontext on input line 119.
+Package microtype Info: Applying patch `item' on input line 119.
+Package microtype Info: Applying patch `toc' on input line 119.
+Package microtype Info: Applying patch `eqnum' on input line 119.
 
-Package microtype Warning: Unable to apply patch `footnote' on input line 114.
+Package microtype Warning: Unable to apply patch `footnote' on input line 119.
 
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
@@ -1177,7 +1178,7 @@ Package microtype Info: No adjustment of kerning.
 File: mt-LatinModernRoman.cfg 2021/02/21 v1.1 microtype config. file: Latin Mod
 ern Roman (RS)
 )
-Package hyperref Info: Link coloring OFF on input line 114.
+Package hyperref Info: Link coloring OFF on input line 119.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
@@ -1187,9 +1188,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count352
 )
-LaTeX Info: Redefining \ref on input line 114.
-LaTeX Info: Redefining \pageref on input line 114.
-LaTeX Info: Redefining \nameref on input line 114.
+LaTeX Info: Redefining \ref on input line 119.
+LaTeX Info: Redefining \pageref on input line 119.
+LaTeX Info: Redefining \nameref on input line 119.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1259,9 +1260,9 @@ Package caption Info: End \AtBeginDocument code.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 24.15147pt on input line 119.
+(Font)              scaled to size 24.15147pt on input line 124.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
-(Font)              scaled to size 14.4pt on input line 125.
+(Font)              scaled to size 14.4pt on input line 130.
 File: ~/outline/lixiao//cover_page.pdf Graphic file (type pdf)
 <use ~/outline/lixiao//cover_page.pdf>
 
@@ -1337,73 +1338,83 @@ guage=dflt;"
 \tf@toc=\write5
 \openout5 = `output.toc'.
 
+(./output.lof)
+\tf@lof=\write6
+\openout6 = `output.lof'.
+
 (./output.lot)
-\tf@lot=\write6
-\openout6 = `output.lot'.
+\tf@lot=\write7
+\openout7 = `output.lot'.
 
 [1
 
-]
+] [2]
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 13.97833pt on input line 140.
-File: ~/outline/lixiao//workflow_2023_12_30_scrna/Figure+Table/frame.pdf Graphi
-c file (type pdf)
-<use ~/outline/lixiao//workflow_2023_12_30_scrna/Figure+Table/frame.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 147.
-See the caption package documentation for explanation.
-
-LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 147.
+(Font)              scaled to size 13.97833pt on input line 147.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 151.
-[1] [2]
+(Font)              scaled to size 11.64862pt on input line 150.
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 223.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 213.
+[1] [2]
 
 LaTeX Font Warning: Font shape `TU/FandolFang-Regular(0)/m/it' undefined
 (Font)              using `TU/FandolFang-Regular(0)/m/n' instead on input line 
-266.
+287.
 
 LaTeX Font Info:    Font shape `TU/FandolFang-Regular(0)/m/n' will be
-(Font)              scaled to size 9.4104pt on input line 266.
-[3] [4]
-Overfull \hbox (59.05386pt too wide) in paragraph at lines 345--345
-[]\TU/lmtt/m/n/10 sudo apt install -y liblapack-dev libgfortran-11-dev gfortran
- libharfbuzz-dev libfribidi-dev[] 
- []
+(Font)              scaled to size 9.4104pt on input line 287.
+[3]
+File: figs/copykat2024-02-21_15_28_39.png Graphic file (type bmp)
+<figs/copykat2024-02-21_15_28_39.png>
 
-[5] [6] [7] [8] [9] [10]
-Overfull \hbox (238.99498pt too wide) in paragraph at lines 698--698
-[]\TU/lmtt/m/n/10 ## -- Methods parameters ------------------------------------
---------------------------------------------------------------------------[] 
- []
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 402.
+See the caption package documentation for explanation.
 
+[4]
+File: Figure+Table/The-scsa-copykat.pdf Graphic file (type pdf)
+<use Figure+Table/The-scsa-copykat.pdf>
 
-Overfull \hbox (238.99498pt too wide) in paragraph at lines 722--722
-[]\TU/lmtt/m/n/10 ## -- Methods parameters ------------------------------------
---------------------------------------------------------------------------[] 
- []
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 423.
+See the caption package documentation for explanation.
 
-[11]
-Overfull \hbox (97.24498pt too wide) in paragraph at lines 741--741
-[]\TU/lmtt/m/n/10 ## [1] "The R package []Seurat[] used for scRNA-seq processin
-g; []SCSA[] (python) used for cell type annotation"[] 
- []
+[5]
+File: Figure+Table/SCSA-Cell-type-annotation.pdf Graphic file (type pdf)
+<use Figure+Table/SCSA-Cell-type-annotation.pdf>
 
-[12] [13] (./output.aux)
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 431.
+See the caption package documentation for explanation.
+
+[6]
+File: Figure+Table/Cancer-cell-prin.pdf Graphic file (type pdf)
+<use Figure+Table/Cancer-cell-prin.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 485.
+See the caption package documentation for explanation.
+
+[7]
+File: Figure+Table/Cut-tree.pdf Graphic file (type pdf)
+<use Figure+Table/Cut-tree.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 514.
+See the caption package documentation for explanation.
+
+[8] [9] [10] (./output.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 32679 strings out of 476191
- 667566 string characters out of 5812072
- 1128669 words of memory out of 5000000
- 52880 multiletter control sequences out of 15000+600000
- 473498 words of font info for 80 fonts, out of 8000000 for 9000
+ 32681 strings out of 476191
+ 665294 string characters out of 5812072
+ 1113839 words of memory out of 5000000
+ 52867 multiletter control sequences out of 15000+600000
+ 473506 words of font info for 81 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,12n,129p,1365b,901s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,12n,129p,1365b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (15 pages).
+Output written on output.pdf (13 pages).

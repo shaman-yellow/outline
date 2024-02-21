@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  20 FEB 2024 17:53
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  21 FEB 2024 14:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1353,36 +1353,36 @@ guage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/FandolFang-Regular(0)/m/n' will be
-(Font)              scaled to size 9.4104pt on input line 199.
+(Font)              scaled to size 9.4104pt on input line 210.
 
-Overfull \hbox (59.05386pt too wide) in paragraph at lines 203--203
+Overfull \hbox (59.05386pt too wide) in paragraph at lines 214--214
 []\TU/lmtt/m/n/10 sudo apt install -y liblapack-dev libgfortran-11-dev gfortran
  libharfbuzz-dev libfribidi-dev[] 
  []
 
 [1]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 217.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 228.
 [2] [3]
 
 LaTeX Font Warning: Font shape `TU/FandolFang-Regular(0)/m/it' undefined
 (Font)              using `TU/FandolFang-Regular(0)/m/n' instead on input line 
-326.
+340.
 
-
-Overfull \hbox (165.49498pt too wide) in paragraph at lines 375--375
+[4]
+Overfull \hbox (165.49498pt too wide) in paragraph at lines 389--389
 []\TU/lmtt/m/n/10 ## 1 GSM5222644 ccRCC1, Right clear cell renal cell carcinoma
  Homogenate Right clear cell renal cell carcinoma Homogenate[] 
  []
 
-[4]
-Overfull \hbox (160.24498pt too wide) in paragraph at lines 376--376
+
+Overfull \hbox (160.24498pt too wide) in paragraph at lines 390--390
 []\TU/lmtt/m/n/10 ## 2 GSM5222645 ccRCC2, Left clear cell renal cell carcinoma 
 Homogenate  Left clear cell renal cell carcinoma Homogenate[] 
  []
 
 
-Overfull \hbox (128.74498pt too wide) in paragraph at lines 414--414
+Overfull \hbox (128.74498pt too wide) in paragraph at lines 428--428
 []\TU/lmtt/m/n/10 ## [1] "GSE171306_RAW.tar"                 "GSM5222644_ccRCC1
 _barcodes"        "GSM5222645_ccRCC2_barcodes.tsv.gz"[] 
  []
@@ -1392,44 +1392,44 @@ File: Figure+Table/Quality-Control.pdf Graphic file (type pdf)
 <use Figure+Table/Quality-Control.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 480.
+(caption)                particular \caption on input line 494.
 See the caption package documentation for explanation.
 
 [6]
-Overfull \hbox (34.24498pt too wide) in paragraph at lines 519--519
+Overfull \hbox (34.24498pt too wide) in paragraph at lines 533--533
 []\TU/lmtt/m/n/10 ##     x, min.features, max.features, max.percent.mt = 5, nfe
 atures = 2000, use = "nFeature_RNA"[] 
  []
 
 [7]
-Overfull \hbox (233.74498pt too wide) in paragraph at lines 527--527
+Overfull \hbox (238.99498pt too wide) in paragraph at lines 541--541
 []\TU/lmtt/m/n/10 ## -- Methods parameters ------------------------------------
--------------------------------------------------------------------------[] 
+--------------------------------------------------------------------------[] 
  []
 
 File: Figure+Table/Ranking-of-principle-components.pdf Graphic file (type pdf)
 <use Figure+Table/Ranking-of-principle-components.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 597.
+(caption)                particular \caption on input line 611.
 See the caption package documentation for explanation.
 
 [8]
-Overfull \hbox (233.74498pt too wide) in paragraph at lines 630--630
+Overfull \hbox (238.99498pt too wide) in paragraph at lines 644--644
 []\TU/lmtt/m/n/10 ## -- Methods parameters ------------------------------------
--------------------------------------------------------------------------[] 
+--------------------------------------------------------------------------[] 
  []
 
 
 LaTeX Warning: Reference `Ranking-of-principle-components' on page 9 undefined 
-on input line 633.
+on input line 647.
 
 [9]
 File: Figure+Table/UMAP-Clustering.pdf Graphic file (type pdf)
 <use Figure+Table/UMAP-Clustering.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 664.
+(caption)                particular \caption on input line 678.
 See the caption package documentation for explanation.
 
 [10] [11]
@@ -1437,21 +1437,20 @@ File: Figure+Table/SCSA-Cell-type-annotation.pdf Graphic file (type pdf)
 <use Figure+Table/SCSA-Cell-type-annotation.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 782.
+(caption)                particular \caption on input line 796.
 See the caption package documentation for explanation.
 
-[12] [13]
-Overfull \hbox (233.74498pt too wide) in paragraph at lines 873--873
+[12] [13] [14]
+Overfull \hbox (238.99498pt too wide) in paragraph at lines 905--905
 []\TU/lmtt/m/n/10 ## -- Methods parameters ------------------------------------
--------------------------------------------------------------------------[] 
+--------------------------------------------------------------------------[] 
  []
 
-[14]
 File: Figure+Table/Trajectories.pdf Graphic file (type pdf)
 <use Figure+Table/Trajectories.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 924.
+(caption)                particular \caption on input line 956.
 See the caption package documentation for explanation.
 
 [15]
@@ -1459,7 +1458,7 @@ File: Figure+Table/Principal-points.pdf Graphic file (type pdf)
 <use Figure+Table/Principal-points.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 930.
+(caption)                particular \caption on input line 962.
 See the caption package documentation for explanation.
 
 [16]
@@ -1468,7 +1467,7 @@ df)
 <use Figure+Table/Deomo-subset-of-cells-visualization.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 965.
+(caption)                particular \caption on input line 997.
 See the caption package documentation for explanation.
 
 [17]
@@ -1476,7 +1475,7 @@ File: Figure+Table/SUB-pseudotime.pdf Graphic file (type pdf)
 <use Figure+Table/SUB-pseudotime.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 982.
+(caption)                particular \caption on input line 1014.
 See the caption package documentation for explanation.
 
 [18]
@@ -1484,7 +1483,7 @@ File: Figure+Table/SUB-gene-module-heatmap.pdf Graphic file (type pdf)
 <use Figure+Table/SUB-gene-module-heatmap.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1007.
+(caption)                particular \caption on input line 1039.
 See the caption package documentation for explanation.
 
 [19] [20]
@@ -1492,7 +1491,7 @@ File: Figure+Table/Sub-the-regroup-by-hclust.pdf Graphic file (type pdf)
 <use Figure+Table/Sub-the-regroup-by-hclust.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1067.
+(caption)                particular \caption on input line 1099.
 See the caption package documentation for explanation.
 
 [21]
@@ -1500,7 +1499,7 @@ File: Figure+Table/The-cell-mapped-from-monocle.pdf Graphic file (type pdf)
 <use Figure+Table/The-cell-mapped-from-monocle.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1098.
+(caption)                particular \caption on input line 1130.
 See the caption package documentation for explanation.
 
 [22] [23]
@@ -1508,21 +1507,21 @@ File: Figure+Table/Overall-communication-count.pdf Graphic file (type pdf)
 <use Figure+Table/Overall-communication-count.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1187.
+(caption)                particular \caption on input line 1219.
 See the caption package documentation for explanation.
 
 [24]
-Overfull \hbox (51.68512pt too wide) in alignment at lines 1203--1208
+Overfull \hbox (51.68512pt too wide) in alignment at lines 1235--1240
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (51.68512pt too wide) in alignment at lines 1208--1212
+Overfull \hbox (51.68512pt too wide) in alignment at lines 1240--1244
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (51.68512pt too wide) in alignment at lines 1212--1230
+Overfull \hbox (51.68512pt too wide) in alignment at lines 1244--1262
  [] [] [] [] [] [] [] [] [] [] 
  []
 
@@ -1531,7 +1530,7 @@ File: Figure+Table/communication-bubble.pdf Graphic file (type pdf)
 <use Figure+Table/communication-bubble.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1291.
+(caption)                particular \caption on input line 1323.
 See the caption package documentation for explanation.
 
 [26] [27]
@@ -1540,21 +1539,21 @@ File: Figure+Table/Ligand-receptor-of-Macro-communicate-with-Test-1.pdf Graphic
 <use Figure+Table/Ligand-receptor-of-Macro-communicate-with-Test-1.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1353.
+(caption)                particular \caption on input line 1385.
 See the caption package documentation for explanation.
 
 
-Overfull \hbox (71.21512pt too wide) in alignment at lines 1356--1361
+Overfull \hbox (71.21512pt too wide) in alignment at lines 1388--1393
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (71.21512pt too wide) in alignment at lines 1361--1365
+Overfull \hbox (71.21512pt too wide) in alignment at lines 1393--1397
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (71.21512pt too wide) in alignment at lines 1365--1383
+Overfull \hbox (71.21512pt too wide) in alignment at lines 1397--1415
  [] [] [] [] [] [] [] [] [] [] 
  []
 
@@ -1567,12 +1566,12 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 32853 strings out of 476191
- 671531 string characters out of 5812072
- 1123928 words of memory out of 5000000
- 53032 multiletter control sequences out of 15000+600000
+ 32880 strings out of 476191
+ 673161 string characters out of 5812072
+ 1124000 words of memory out of 5000000
+ 53059 multiletter control sequences out of 15000+600000
  473506 words of font info for 81 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,12n,121p,1365b,881s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,12n,121p,1365b,872s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on output.pdf (34 pages).
