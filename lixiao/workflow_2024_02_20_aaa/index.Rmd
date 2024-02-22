@@ -203,7 +203,7 @@ my_method2(test1, test3)
 
 ### 一些额外可能需要的系统依赖工具
 
-如果你是 Ubuntu 发行版，据我的经验，安装 `devtools`, `BiocManager` 等工具之前，
+如果你使用的是 Ubuntu 发行版，据我的经验，安装 `devtools`, `BiocManager` 等工具之前，
 估计需要先安装以下：
 
 ```{r eval = T, echo = F, results = "asis"}

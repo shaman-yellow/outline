@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  21 FEB 2024 14:08
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  22 FEB 2024 16:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1420,10 +1420,6 @@ Overfull \hbox (238.99498pt too wide) in paragraph at lines 644--644
 --------------------------------------------------------------------------[] 
  []
 
-
-LaTeX Warning: Reference `Ranking-of-principle-components' on page 9 undefined 
-on input line 647.
-
 [9]
 File: Figure+Table/UMAP-Clustering.pdf Graphic file (type pdf)
 <use Figure+Table/UMAP-Clustering.pdf>
@@ -1557,21 +1553,228 @@ Overfull \hbox (71.21512pt too wide) in alignment at lines 1397--1415
  [] [] [] [] [] [] [] [] [] [] 
  []
 
-[28] [29] [30] [31] (./output.aux)
+[28] [29] [30]
+Overfull \hbox (112.99498pt too wide) in paragraph at lines 1472--1472
+[]\TU/lmtt/m/n/10 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8[] 
+ []
+
+
+Overfull \hbox (44.74498pt too wide) in paragraph at lines 1473--1473
+[]\TU/lmtt/m/n/10 ##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ LC_PAPER=en_US.UTF-8       LC_NAME=C[] 
+ []
+
+
+Overfull \hbox (97.24498pt too wide) in paragraph at lines 1474--1474
+[]\TU/lmtt/m/n/10 ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+ LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C[] 
+ []
+
+
+Overfull \hbox (139.24498pt too wide) in paragraph at lines 1483--1483
+[]\TU/lmtt/m/n/10 ## [1] MCnebula2_0.0.9000    ggplot2_3.4.2         Biobase_2.
+60.0        BiocGenerics_0.46.0   utils.tool_0.0.0.9000[] 
+ []
+
+
+Overfull \hbox (102.49498pt too wide) in paragraph at lines 1487--1487
+[]\TU/lmtt/m/n/10 ##   [1] ggplotify_0.1.2       tibble_3.2.1          polyclip
+_1.10-4       ggnetwork_0.5.12      rpart_4.1.23[] 
+ []
+
+
+Overfull \hbox (118.24498pt too wide) in paragraph at lines 1488--1488
+[]\TU/lmtt/m/n/10 ##   [6] XML_3.99-0.14         lifecycle_1.0.3       rstatix_
+0.7.2         doParallel_1.0.17     rprojroot_2.0.3[] 
+ []
+
+
+Overfull \hbox (112.99498pt too wide) in paragraph at lines 1489--1489
+[]\TU/lmtt/m/n/10 ##  [11] globals_0.16.2        lattice_0.22-5        MASS_7.3
+-60           backports_1.4.1       magrittr_2.0.3[] 
+ []
+
+
+Overfull \hbox (81.49498pt too wide) in paragraph at lines 1490--1490
+[]\TU/lmtt/m/n/10 ##  [16] Hmisc_5.1-0           rmarkdown_2.23        yaml_2.3
+.7            grImport2_0.2-0       NMF_0.26[] 
+ []
+
+
+Overfull \hbox (107.74498pt too wide) in paragraph at lines 1491--1491
+[]\TU/lmtt/m/n/10 ##  [21] zip_2.3.0             askpass_1.1           reticula
+te_1.31       cowplot_1.1.1         pbapply_1.7-2[] 
+ []
+
+
+Overfull \hbox (118.24498pt too wide) in paragraph at lines 1492--1492
+[]\TU/lmtt/m/n/10 ##  [26] ggimage_0.3.3         RColorBrewer_1.1-3    abind_1.
+4-5           pkgload_1.3.2.1       zlibbioc_1.46.0[] 
+ []
+
+
+Overfull \hbox (102.49498pt too wide) in paragraph at lines 1493--1493
+[]\TU/lmtt/m/n/10 ##  [31] purrr_1.0.2           ggraph_2.1.0          nnet_7.3
+-19           yulab.utils_0.0.7     tweenr_2.0.2[] 
+ []
+
+
+Overfull \hbox (107.74498pt too wide) in paragraph at lines 1494--1494
+[]\TU/lmtt/m/n/10 ##  [36] circlize_0.4.15       IRanges_2.34.1        S4Vector
+s_0.38.1      ggrepel_0.9.3         irlba_2.3.5.1[] 
+ []
+
+
+Overfull \hbox (128.74498pt too wide) in paragraph at lines 1495--1495
+[]\TU/lmtt/m/n/10 ##  [41] listenv_0.9.0         tidytree_0.4.5        BiocStyl
+e_2.28.0      RSpectra_0.16-1       parallelly_1.36.0[] 
+ []
+
+
+Overfull \hbox (107.74498pt too wide) in paragraph at lines 1496--1496
+[]\TU/lmtt/m/n/10 ##  [46] svglite_2.1.1         codetools_0.2-19      ggtext_0
+.1.2          xml2_1.3.5            ggforce_0.4.1[] 
+ []
+
+
+Overfull \hbox (107.74498pt too wide) in paragraph at lines 1497--1497
+[]\TU/lmtt/m/n/10 ##  [51] tidyselect_1.2.0      shape_1.4.6           aplot_0.
+2.0           farver_2.1.1          viridis_0.6.4[] 
+ []
+
+
+Overfull \hbox (123.49498pt too wide) in paragraph at lines 1498--1498
+[]\TU/lmtt/m/n/10 ##  [56] base64enc_0.1-3       matrixStats_1.0.0     stats4_4
+.3.2          jsonlite_1.8.7        GetoptLong_1.0.5[] 
+ []
+
+
+Overfull \hbox (123.49498pt too wide) in paragraph at lines 1499--1499
+[]\TU/lmtt/m/n/10 ##  [61] BiocNeighbors_1.18.0  Formula_1.2-5         tidygrap
+h_1.2.3       ggalluvial_0.12.5     iterators_1.0.14[] 
+ []
+
+
+Overfull \hbox (91.99498pt too wide) in paragraph at lines 1500--1500
+[]\TU/lmtt/m/n/10 ##  [66] systemfonts_1.0.4     foreach_1.5.2         tools_4.
+3.2           treeio_1.24.3         ragg_1.2.5[] 
+ []
+
+
+Overfull \hbox (107.74498pt too wide) in paragraph at lines 1501--1501
+[]\TU/lmtt/m/n/10 ##  [71] sna_2.7-1             Rcpp_1.0.11           glue_1.6
+.2            CellChat_1.6.1        gridExtra_2.3[] 
+ []
+
+
+Overfull \hbox (107.74498pt too wide) in paragraph at lines 1502--1502
+[]\TU/lmtt/m/n/10 ##  [76] xfun_0.40             dplyr_1.1.2           withr_2.
+5.0           BiocManager_1.30.22   fastmap_1.1.1[] 
+ []
+
+
+Overfull \hbox (133.99498pt too wide) in paragraph at lines 1503--1503
+[]\TU/lmtt/m/n/10 ##  [81] fansi_1.0.4           openssl_2.1.0         digest_0
+.6.33         R6_2.5.1              gridGraphics_0.5-1[] 
+ []
+
+
+Overfull \hbox (91.99498pt too wide) in paragraph at lines 1504--1504
+[]\TU/lmtt/m/n/10 ##  [86] textshaping_0.3.6     colorspace_2.1-0      rsvg_2.4
+.0            jpeg_0.1-10           utf8_1.2.3[] 
+ []
+
+
+Overfull \hbox (97.24498pt too wide) in paragraph at lines 1505--1505
+[]\TU/lmtt/m/n/10 ##  [91] tidyr_1.3.0           generics_0.1.3        ggsci_3.
+0.0           data.table_1.14.8     FNN_1.1.3.2[] 
+ []
+
+
+Overfull \hbox (102.49498pt too wide) in paragraph at lines 1506--1506
+[]\TU/lmtt/m/n/10 ##  [96] htmlwidgets_1.6.2     graphlayouts_1.0.0    Chemmine
+OB_1.38.0     pkgconfig_2.0.3       gtable_0.3.3[] 
+ []
+
+
+Overfull \hbox (107.74498pt too wide) in paragraph at lines 1507--1507
+[]\TU/lmtt/m/n/10 ## [101] registry_0.5-1        ComplexHeatmap_2.16.0 htmltool
+s_0.5.6       carData_3.0-5         bookdown_0.35[] 
+ []
+
+
+Overfull \hbox (128.74498pt too wide) in paragraph at lines 1508--1508
+[]\TU/lmtt/m/n/10 ## [106] clue_0.3-64           scales_1.2.1          png_0.1-
+8             ggfun_0.1.2           rstudioapi_0.15.0[] 
+ []
+
+
+Overfull \hbox (118.24498pt too wide) in paragraph at lines 1509--1509
+[]\TU/lmtt/m/n/10 ## [111] knitr_1.43            reshape2_1.4.4        rjson_0.
+2.21          uuid_1.1-0            checkmate_2.2.0[] 
+ []
+
+
+Overfull \hbox (139.24498pt too wide) in paragraph at lines 1510--1510
+[]\TU/lmtt/m/n/10 ## [116] coda_0.19-4           statnet.common_4.9.0  nlme_3.1
+-163          cachem_1.0.8          GlobalOptions_0.1.2[] 
+ []
+
+
+Overfull \hbox (102.49498pt too wide) in paragraph at lines 1511--1511
+[]\TU/lmtt/m/n/10 ## [121] stringr_1.5.0         parallel_4.3.2        foreign_
+0.8-86        desc_1.4.2            pillar_1.9.0[] 
+ []
+
+
+Overfull \hbox (118.24498pt too wide) in paragraph at lines 1512--1512
+[]\TU/lmtt/m/n/10 ## [126] vctrs_0.6.3           ggpubr_0.6.0          car_3.1-
+2             cluster_2.1.6         htmlTable_2.4.1[] 
+ []
+
+[31]
+Overfull \hbox (97.24498pt too wide) in paragraph at lines 1513--1513
+[]\TU/lmtt/m/n/10 ## [131] evaluate_0.21         magick_2.7.5          cli_3.6.
+1             compiler_4.3.2        rlang_1.1.1[] 
+ []
+
+
+Overfull \hbox (91.99498pt too wide) in paragraph at lines 1514--1514
+[]\TU/lmtt/m/n/10 ## [136] crayon_1.5.2          rngtools_1.5.2        future.a
+pply_1.11.0   ggsignif_0.6.4        plyr_1.8.8[] 
+ []
+
+
+Overfull \hbox (139.24498pt too wide) in paragraph at lines 1515--1515
+[]\TU/lmtt/m/n/10 ## [141] stringi_1.7.12        viridisLite_0.4.2     network_
+1.18.1        gridBase_0.4-7        BiocParallel_1.34.2[] 
+ []
+
+
+Overfull \hbox (107.74498pt too wide) in paragraph at lines 1516--1516
+[]\TU/lmtt/m/n/10 ## [146] munsell_0.5.0         lazyeval_0.2.2        Matrix_1
+.6-1          patchwork_1.1.2       future_1.33.0[] 
+ []
+
+
+Overfull \hbox (102.49498pt too wide) in paragraph at lines 1517--1517
+[]\TU/lmtt/m/n/10 ## [151] gridtext_0.1.5        igraph_1.5.1          broom_1.
+0.5           memoise_2.0.1         ggtree_3.8.2[] 
+ []
+
+[32] (./output.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were undefined references.
-
  ) 
 Here is how much of TeX's memory you used:
- 32880 strings out of 476191
- 673161 string characters out of 5812072
- 1124000 words of memory out of 5000000
- 53059 multiletter control sequences out of 15000+600000
+ 32882 strings out of 476191
+ 673164 string characters out of 5812072
+ 1124043 words of memory out of 5000000
+ 53061 multiletter control sequences out of 15000+600000
  473506 words of font info for 81 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,12n,121p,1365b,872s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,12n,121p,1365b,973s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (34 pages).
+Output written on output.pdf (35 pages).

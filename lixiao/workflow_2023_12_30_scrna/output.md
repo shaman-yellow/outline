@@ -54,7 +54,7 @@ header-includes:
 \begin{center} \textbf{\Huge Step 系列：scRNA-seq
 基本分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-21}}
+\textbf{\textcolor{white}{2024-02-22}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -483,7 +483,7 @@ step3
 ## -- Methods parameters --------------------------------------------------------------------------------------------------------------
 ```
 
-参数 `dim` 需要根据 Fig. \@ref(Ranking-of-principle-components) 判定。
+参数 `dim` 需要根据 Fig. \@ref(fig:Ranking-of-principle-components) 判定。
 `resolution` 需要根据细胞数判定。这两个参数会传递到：
 
 - Seurat::FindNeighbors 
@@ -1195,4 +1195,69 @@ cc <- step1(cc)
 cc <- step2(cc)
 ```
 
+## Session Info
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 4.3.2 (2023-10-31)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Pop!_OS 22.04 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## time zone: Asia/Shanghai
+## tzcode source: system (glibc)
+## 
+## attached base packages:
+## [1] grid      stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] MCnebula2_0.0.9000    ggplot2_3.4.2         Biobase_2.60.0        BiocGenerics_0.46.0   utils.tool_0.0.0.9000
+## [6] nvimcom_0.9-146      
+## 
+## loaded via a namespace (and not attached):
+##   [1] ggplotify_0.1.2       tibble_3.2.1          polyclip_1.10-4       ggnetwork_0.5.12      rpart_4.1.23         
+##   [6] XML_3.99-0.14         lifecycle_1.0.3       rstatix_0.7.2         doParallel_1.0.17     rprojroot_2.0.3      
+##  [11] globals_0.16.2        lattice_0.22-5        MASS_7.3-60           backports_1.4.1       magrittr_2.0.3       
+##  [16] Hmisc_5.1-0           rmarkdown_2.23        yaml_2.3.7            grImport2_0.2-0       NMF_0.26             
+##  [21] zip_2.3.0             askpass_1.1           reticulate_1.31       cowplot_1.1.1         pbapply_1.7-2        
+##  [26] ggimage_0.3.3         RColorBrewer_1.1-3    abind_1.4-5           pkgload_1.3.2.1       zlibbioc_1.46.0      
+##  [31] purrr_1.0.2           ggraph_2.1.0          nnet_7.3-19           yulab.utils_0.0.7     tweenr_2.0.2         
+##  [36] circlize_0.4.15       IRanges_2.34.1        S4Vectors_0.38.1      ggrepel_0.9.3         irlba_2.3.5.1        
+##  [41] listenv_0.9.0         tidytree_0.4.5        BiocStyle_2.28.0      RSpectra_0.16-1       parallelly_1.36.0    
+##  [46] svglite_2.1.1         codetools_0.2-19      ggtext_0.1.2          xml2_1.3.5            ggforce_0.4.1        
+##  [51] tidyselect_1.2.0      shape_1.4.6           aplot_0.2.0           farver_2.1.1          viridis_0.6.4        
+##  [56] base64enc_0.1-3       matrixStats_1.0.0     stats4_4.3.2          jsonlite_1.8.7        GetoptLong_1.0.5     
+##  [61] BiocNeighbors_1.18.0  Formula_1.2-5         tidygraph_1.2.3       ggalluvial_0.12.5     iterators_1.0.14     
+##  [66] systemfonts_1.0.4     foreach_1.5.2         tools_4.3.2           treeio_1.24.3         ragg_1.2.5           
+##  [71] sna_2.7-1             Rcpp_1.0.11           glue_1.6.2            CellChat_1.6.1        gridExtra_2.3        
+##  [76] xfun_0.40             dplyr_1.1.2           withr_2.5.0           BiocManager_1.30.22   fastmap_1.1.1        
+##  [81] fansi_1.0.4           openssl_2.1.0         digest_0.6.33         R6_2.5.1              gridGraphics_0.5-1   
+##  [86] textshaping_0.3.6     colorspace_2.1-0      rsvg_2.4.0            jpeg_0.1-10           utf8_1.2.3           
+##  [91] tidyr_1.3.0           generics_0.1.3        ggsci_3.0.0           data.table_1.14.8     FNN_1.1.3.2          
+##  [96] htmlwidgets_1.6.2     graphlayouts_1.0.0    ChemmineOB_1.38.0     pkgconfig_2.0.3       gtable_0.3.3         
+## [101] registry_0.5-1        ComplexHeatmap_2.16.0 htmltools_0.5.6       carData_3.0-5         bookdown_0.35        
+## [106] clue_0.3-64           scales_1.2.1          png_0.1-8             ggfun_0.1.2           rstudioapi_0.15.0    
+## [111] knitr_1.43            reshape2_1.4.4        rjson_0.2.21          uuid_1.1-0            checkmate_2.2.0      
+## [116] coda_0.19-4           statnet.common_4.9.0  nlme_3.1-163          cachem_1.0.8          GlobalOptions_0.1.2  
+## [121] stringr_1.5.0         parallel_4.3.2        foreign_0.8-86        desc_1.4.2            pillar_1.9.0         
+## [126] vctrs_0.6.3           ggpubr_0.6.0          car_3.1-2             cluster_2.1.6         htmlTable_2.4.1      
+## [131] evaluate_0.21         magick_2.7.5          cli_3.6.1             compiler_4.3.2        rlang_1.1.1          
+## [136] crayon_1.5.2          rngtools_1.5.2        future.apply_1.11.0   ggsignif_0.6.4        plyr_1.8.8           
+## [141] stringi_1.7.12        viridisLite_0.4.2     network_1.18.1        gridBase_0.4-7        BiocParallel_1.34.2  
+## [146] munsell_0.5.0         lazyeval_0.2.2        Matrix_1.6-1          patchwork_1.1.2       future_1.33.0        
+## [151] gridtext_0.1.5        igraph_1.5.1          broom_1.0.5           memoise_2.0.1         ggtree_3.8.2         
+## [156] officer_0.6.2         ape_5.7-1
+```
 

@@ -118,7 +118,7 @@
 \begin{center} \textbf{\Huge Step 系列：Prologue
 and Get-start} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-21}}
+\textbf{\textcolor{white}{2024-02-22}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -334,7 +334,7 @@ S3 OOP 相对简单，S4 OOP 更加复杂。分析组学数据的 R 包往往都
 \hypertarget{ux4e00ux4e9bux989dux5916ux53efux80fdux9700ux8981ux7684ux7cfbux7edfux4f9dux8d56ux5de5ux5177}{%
 \subsubsection{一些额外可能需要的系统依赖工具}\label{ux4e00ux4e9bux989dux5916ux53efux80fdux9700ux8981ux7684ux7cfbux7edfux4f9dux8d56ux5de5ux5177}}
 
-如果你是 Ubuntu 发行版，据我的经验，安装 \texttt{devtools}, \texttt{BiocManager} 等工具之前，
+如果你使用的是 Ubuntu 发行版，据我的经验，安装 \texttt{devtools}, \texttt{BiocManager} 等工具之前，
 估计需要先安装以下：
 
 \begin{tcolorbox}[colback = gray!10, colframe = red!50, width = 16cm, arc = 1mm, auto outer arc, title = {Bash input}]
@@ -491,8 +491,8 @@ git clone https://github.com/shaman-yellow/utils.tool.git ~/utils.tool
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{ux5b58ux50a8ux6570ux636e}{%
-\paragraph{存储数据}\label{ux5b58ux50a8ux6570ux636e}}
+\hypertarget{ux5b58ux50a8-ux8f93ux51fa-ux6570ux636e}{%
+\paragraph{存储 (输出) 数据}\label{ux5b58ux50a8-ux8f93ux51fa-ux6570ux636e}}
 
 那么，\ref{get} 中示例的数据提取得到后，又如何存储下来呢？
 保存为数据表格，.csv, .tsv, .xlsx 等，或者 .pdf，对于经验丰富的 R 使用者应该是个简单的问题。
@@ -510,6 +510,27 @@ git clone https://github.com/shaman-yellow/utils.tool.git ~/utils.tool
 
 \KeywordTok{autosv}\NormalTok{(sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step4}\OperatorTok{$}\NormalTok{anno\_SingleR, }\StringTok{"this{-}is{-}table{-}1"}\NormalTok{)}
 \KeywordTok{autosv}\NormalTok{(sr}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{scsa\_res, }\StringTok{"this{-}is{-}table{-}2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux8c03ux6574ux56feux7247ux957fux5bbdux6bd4ux4f8bux7136ux540eux8f93ux51fa}{%
+\paragraph{调整图片长宽比例，然后输出}\label{ux8c03ux6574ux56feux7247ux957fux5bbdux6bd4ux4f8bux7136ux540eux8f93ux51fa}}
+
+你可能会对默认的图片输出的长宽比例不满意 (虽然很多时候，我已经周到的调整过它们的比例了) ，
+想要再做调整。
+
+你可以这样做：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p\_my\_plot \textless{}{-}}\StringTok{ }\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.qc}
+\NormalTok{p\_my\_plot \textless{}{-}}\StringTok{ }\KeywordTok{wrap}\NormalTok{(p\_my\_plot, }\DecValTok{20}\NormalTok{, }\DecValTok{20}\NormalTok{)}
+
+\CommentTok{\# 或者按照相对比例}
+\NormalTok{p\_my\_plot \textless{}{-}}\StringTok{ }\KeywordTok{zoom}\NormalTok{(p\_my\_plot, }\FloatTok{1.5}\NormalTok{, }\FloatTok{1.5}\NormalTok{)}
+
+\CommentTok{\# 然后再输出图片}
+\KeywordTok{autosv}\NormalTok{(p\_my\_plot, }\StringTok{"my{-}plot"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -778,6 +799,34 @@ step 方法的参数力求精简，一般只保留关键的参数用以控制分
 \KeywordTok{selectMethod}\NormalTok{(map, }\KeywordTok{c}\NormalTok{(}\StringTok{"job\_seurat"}\NormalTok{, }\StringTok{"job\_kat"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
+
+\hypertarget{ux5b8cux6210ux6574ux5957ux5206ux6790ux4e4bux540e}{%
+\subsubsection{完成整套分析之后}\label{ux5b8cux6210ux6574ux5957ux5206ux6790ux4e4bux540e}}
+
+如果你已经用 \texttt{Step} 系列完成了一整套分析，但是还是不太明白整个过程发生了什么，
+例如，想知道整个过程到底使用了哪些方法，借鉴了哪些思路，可以参考哪些文献，
+那么你可以用如下方式查看：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{auto\_method}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+你可能会注意到类似：\texttt{{[}@InferenceAndAJinS2021{]}} 这样的字符，
+其实，这是参考文献来源的标记，以 \texttt{pandoc}、\texttt{Latex} 等工具自动注释。
+简而言之，通过它，可以在 .bib 文件中找到对应的参考文献。
+
+这一 .bib 文件：
+
+\begin{itemize}
+\tightlist
+\item
+  \url{https://github.com/shaman-yellow/utils.tool/blob/master/inst/extdata/library.bib}
+\end{itemize}
+
+没错，其实它就存在于 \texttt{utils.tool} 这个 R 包中，当你获取使用它的时候，也就拥有这个 .bib 文件了
+(它也会很频繁的更新)。
 
 \hypertarget{ux52a0ux5165ux6211ux548cux6211ux4e00ux8d77ux7f16ux5199ux65b0ux7684-step-ux7cfbux5217}{%
 \subsection{加入我，和我一起编写新的 Step 系列！}\label{ux52a0ux5165ux6211ux548cux6211ux4e00ux8d77ux7f16ux5199ux65b0ux7684-step-ux7cfbux5217}}

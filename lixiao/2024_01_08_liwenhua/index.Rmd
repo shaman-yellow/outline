@@ -35,8 +35,8 @@ set_index()
 - A: colitis
 - B: colon precancerous lesions
 
-想要做肠道菌群测序结果+生信分析，然后找菌群+对应代谢产物介导+机制研究+再闭环回到临床。在沟通时客户提到想要做
-溃疡性结肠炎和结肠癌的肠道菌群之间的区别和关联，进而研究其对应的机制，研究结肠炎向结肠癌发展的关键机制，为临床早期筛查提供理论支持
+想要做肠道菌群测序结果+生信分析，然后找菌群+对应代谢产物介导+机制研究+再闭环回到临床。
+在沟通时客户提到想要做溃疡性结肠炎和结肠癌的肠道菌群之间的区别和关联，进而研究其对应的机制，研究结肠炎向结肠癌发展的关键机制，为临床早期筛查提供理论支持
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
@@ -85,6 +85,12 @@ auto_method()
 autor("./fastp_report/")
 ```
 
+```{r}
+fp <- job_fastp("./material/rawData/")
+fp <- step1(fp, c("R1", "R2"), ".raw.fastq.gz")
+fp <- step2(fp)
+```
+
 ### 元数据
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -95,6 +101,32 @@ autor(relocate(metadata, SampleName, group))
 ### Qiime2 分析
 
 Microbiota 数据经 Qiime2 分析后，由 `MicrobiotaProcess` 下游分析和可视化。
+
+```{r}
+metadata <- dplyr::mutate(fp$metadata, SampleName = get_realname(`forward-absolute-filepath`),
+  group = substr(SampleName, 1, 1))
+metadata <- dplyr::mutate(metadata, dplyr::across(dplyr::ends_with("filepath"), normalizePath))
+metadata <- dplyr::filter(metadata, group != "C")
+metadata
+
+qi <- asjob_qiime(fp, metadata)
+qi <- step1(qi)
+qi@plots$step1$demux
+qi <- step2(qi, 280, 200)
+qi <- step3(qi)
+qi@plots$step3$table
+qi <- step4(qi, 1796)
+qi <- step5(qi, 10454)
+qi <- step6(qi)
+qi@plots$step6$`taxa-bar-plots`
+qi <- step7(qi)
+qi@plots$step7$qzv_raw$ancom_test_group_level_4
+qi@plots$step7$p.export$ancom_test_group_level_6
+qi@plots$step7$p.export$ancom_test_group_level_5
+qi@plots$step7$p.export$ancom_test_group_level_4
+qi@tables$step7$t.ancom$ancom_test_group_level_6
+# d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Beijerinckiaceae;g__Methylobacterium-Methylorubrum
+```
 
 ### MicrobiotaProcess 分析
 
@@ -169,38 +201,7 @@ autor(qi@plots$step7$p.export)
 autor(qi@tables$step7$t.ancom)
 ```
 
-
-
 ```{r}
-fp <- job_fastp("./material/rawData/")
-fp <- step1(fp, c("R1", "R2"), ".raw.fastq.gz")
-fp <- step2(fp)
-
-metadata <- dplyr::mutate(fp$metadata, SampleName = get_realname(`forward-absolute-filepath`),
-  group = substr(SampleName, 1, 1))
-metadata <- dplyr::mutate(metadata, dplyr::across(dplyr::ends_with("filepath"), normalizePath))
-metadata <- dplyr::filter(metadata, group != "C")
-metadata
-
-qi <- asjob_qiime(fp, metadata)
-qi <- step1(qi)
-qi@plots$step1$demux
-qi <- step2(qi, 280, 200)
-qi <- step3(qi)
-qi@plots$step3$table
-qi <- step4(qi, 1796)
-qi <- step5(qi, 10454)
-qi <- step6(qi)
-qi@plots$step6$`taxa-bar-plots`
-qi <- step7(qi)
-qi@plots$step7$qzv_raw$ancom_test_group_level_4
-qi@plots$step7$p.export$ancom_test_group_level_6
-qi@plots$step7$p.export$ancom_test_group_level_5
-qi@plots$step7$p.export$ancom_test_group_level_4
-
-qi@tables$step7$t.ancom$ancom_test_group_level_6
-# d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Beijerinckiaceae;g__Methylobacterium-Methylorubrum
-
 mp <- asjob_mp(qi)
 mp <- step1(mp)
 mp@plots$step1$p.rarefaction
@@ -217,6 +218,89 @@ mp <- step4(mp)
 mp@plots$step4$p.box
 mp@plots$step4$p.tree
 ```
+
+### 差异菌关联到代谢物
+
+#### 从 gutMDisorder 数据库检索关联代谢物
+
+使用的数据库如下：
+
+```{r eval = T, echo = F, results = "asis"}
+#| GutMDisorder-database
+autor(gm@object)
+```
+
+使用差异肠道菌匹配：
+
+```{r eval = T, echo = F, results = "asis"}
+autor(new_lich(pattern(qi)))
+```
+
+未找到相关代谢物。
+
+```{r}
+diff_mic <- dplyr::filter(qi@tables$step7$t.ancom$ancom_test_group_level_6, significant)
+pattern(qi)
+
+gm <- job_gutmd()
+gm <- step1(gm, pattern(qi))
+```
+
+#### 尝试从已发表研究 (孟德尔随机化相关) 中寻找关联代谢物
+
+请参考 `r pb.mrlx@cite`
+
+匹配到 Phylum 水平的菌群关联的代谢物:
+
+```{r eval = T, echo = F, results = "asis"}
+#| MendelianRandoLiuX2022-matched-data
+autor(match.mr)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+autor(new_lich(match.mr$X2))
+```
+
+```{r}
+pb.mrlx <- get_data.mrlx2022()
+match.mr <- dplyr::filter(pb.mrlx@object$two_sample_mr, grpl(X1, paste0(pattern(qi), collapse = "|")))
+# dplyr::filter(pb.mrlx@object$observational_correlation, grpl(Microbome.Feature, paste0(pattern(qi), collapse = "|")))
+```
+
+### 代谢物的富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| compounds-ID
+autor(mt@tables$step1$mapped)
+```
+
+```{r}
+mt <- job_metabo()
+mt <- step1(mt, dplyr::recode(match.mr$X2, 'Cystine' = 'L-cystine', .default = match.mr$X2))
+mt@tables$step1$mapped
+mt@plots$step1$metabolites_ORA_dot_kegg_pathway
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Enrichment-with-algorithm-PageRank
+autor(fe@plots$step1$p.enrich$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Data-of-enrichment-with-algorithm-PageRank
+autor(fe@tables$step1$t.enrich$ids)
+```
+
+```{r}
+fe <- asjob_fella(mt)
+fe <- step1(fe)
+fe@plots$step1$p.enrich$ids
+fe@params$graph.lst$ids
+```
+
+### 从结肠炎或结肠癌已发表的代谢物研究中验证
+
+
 
 ```{r}
 p.raw <- readRDS("./praw.rds")

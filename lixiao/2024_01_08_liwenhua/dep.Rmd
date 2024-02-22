@@ -1,3 +1,26 @@
+
+Depression and anxiety in patients with active ulcerative colitis: crosstalk of gut microbiota, metabolomics and proteomics [@DepressionAndYuan2021]
+
+
+```{r}
+file.copy("~/Downloads/KGMI_A_1987779_SM8304.zip", "./material")
+unzip("./material/KGMI_A_1987779_SM8304.zip", exdir = "./material/DepressionAndYuan2021")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DepressionAndYuan2021-published-data-significant-microbiota
+autor(pb.dep)
+```
+
+```{r}
+pb.dep <- fxlsx("./material/DepressionAndYuan2021/Supplementary information/Supplementary table.xlsx", sheet = 3, startRow = 2)
+filter(pb.dep, grpl(Taxonomy, paste0(pattern(qi), collapse = "|"), T))
+
+```
+
+
+
+
 ```{r}
 if (nrow(mp@object@colData) == 16) {
   p.raw <- mp@plots$step3$p.pcoa

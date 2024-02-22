@@ -386,7 +386,7 @@ sr <- step3(sr, 1:15, 1.2)
 step3
 ```
 
-参数 `dim` 需要根据 Fig. \@ref(Ranking-of-principle-components) 判定。
+参数 `dim` 需要根据 Fig. \@ref(fig:Ranking-of-principle-components) 判定。
 `resolution` 需要根据细胞数判定。这两个参数会传递到：
 
 - Seurat::FindNeighbors 
@@ -919,4 +919,9 @@ cc <- step2(cc)
 
 ```
 
+## Session Info
+
+```{r eval = T, echo = T}
+sessionInfo()
+```
 

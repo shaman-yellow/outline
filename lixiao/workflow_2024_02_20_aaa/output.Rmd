@@ -249,7 +249,7 @@ my_method2(test1, test3)
 
 ### 一些额外可能需要的系统依赖工具
 
-如果你是 Ubuntu 发行版，据我的经验，安装 `devtools`, `BiocManager` 等工具之前，
+如果你使用的是 Ubuntu 发行版，据我的经验，安装 `devtools`, `BiocManager` 等工具之前，
 估计需要先安装以下：
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -380,7 +380,7 @@ seurat_object <- object(sr)
 seurat_object <- sr@object
 ```
 
-#### 存储数据
+#### 存储 (输出) 数据
 
 那么，\@ref(get) 中示例的数据提取得到后，又如何存储下来呢？
 保存为数据表格，.csv, .tsv, .xlsx 等，或者 .pdf，对于经验丰富的 R 使用者应该是个简单的问题。
@@ -397,6 +397,24 @@ autosv(sr@plots$step3$p.umap, "this-is-figure-3")
 
 autosv(sr@tables$step4$anno_SingleR, "this-is-table-1")
 autosv(sr@tables$step6$scsa_res, "this-is-table-2")
+```
+
+#### 调整图片长宽比例，然后输出
+
+你可能会对默认的图片输出的长宽比例不满意 (虽然很多时候，我已经周到的调整过它们的比例了) ，
+想要再做调整。
+
+你可以这样做：
+
+```{r}
+p_my_plot <- sr@plots$step1$p.qc
+p_my_plot <- wrap(p_my_plot, 20, 20)
+
+# 或者按照相对比例
+p_my_plot <- zoom(p_my_plot, 1.5, 1.5)
+
+# 然后再输出图片
+autosv(p_my_plot, "my-plot")
 ```
 
 ### 存储 Session (以便下次从当前状态继续分析) 
@@ -561,6 +579,28 @@ selectMethod(map, c("job_seurat", "job_seurat"))
 selectMethod(map, c("job_seurat", "job_kat"))
 ```
 
+### 完成整套分析之后
+
+如果你已经用 `Step` 系列完成了一整套分析，但是还是不太明白整个过程发生了什么，
+例如，想知道整个过程到底使用了哪些方法，借鉴了哪些思路，可以参考哪些文献，
+那么你可以用如下方式查看：
+
+```{r}
+auto_method()
+```
+
+你可能会注意到类似：`[@InferenceAndAJinS2021]` 这样的字符，
+其实，这是参考文献来源的标记，以 `pandoc`、`Latex` 等工具自动注释。
+简而言之，通过它，可以在 .bib 文件中找到对应的参考文献。
+
+这一 .bib 文件：
+
+- <https://github.com/shaman-yellow/utils.tool/blob/master/inst/extdata/library.bib>
+
+没错，其实它就存在于 `utils.tool` 这个 R 包中，当你获取使用它的时候，也就拥有这个 .bib 文件了
+(它也会很频繁的更新)。
+
+ 
 ## 加入我，和我一起编写新的 Step 系列！
 
 一个编写好的 Step 工作流可以省下许多琐碎的事带来的精力耗费，例如，不需要在各个分析平台切换，而只用

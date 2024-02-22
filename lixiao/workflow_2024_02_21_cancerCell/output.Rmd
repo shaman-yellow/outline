@@ -320,7 +320,7 @@ autor(wrap(mn@plots$step1$p.prin, 6, 4))
 
 #### Step2 选择拟时起点
 
-选择合适的拟时起点依然会是一个难题。这里提供了一种可借鉴的，用以选择癌细胞拟时起点的思路。
+选择合适的拟时起点依然会是一个难题。这里提供了一种可借鉴的，用以选择癌细胞拟时起点的思路 (仅供参考) 。
 见 Fig. \@ref(fig:copykat-prediction), 对于 'aneuploid'，即癌细胞，'gain'、'loss' 水平更接近
 'diploid' 的细胞，或许更适合作为拟时起点。
 具体而言，根据 Fig. \@ref(fig:copykat-prediction) 的侧边聚类树，我们或许可以试着将肿瘤细胞切分为多个小群体，然后根据它们相较于
@@ -349,9 +349,77 @@ autor(mn@plots$step1$p.cancer_position)
 那么，也就是 Fig. \@ref(fig:Cancer-cell-prin) 中的 'Y\_14'。
 
 
+```{r}
+mn <- step2(mn, "Y_14")
+```
+
+这样，我们就能得到：
+
+```{r}
+mn@plots$step2$p.pseu
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Pseudotime
+autor(mn@plots$step2$p.pseu)
+```
 
 #### Step3 拟时分析基础上的差异分析和基因表达模块
-#### (进阶) 根据拟时分析结果重新划分细胞群体
+
+```{r}
+mn <- step3(mn)
+```
+
+这样可以得到：
+
+```{r}
+# 以下未展示
+mn@plots$step3$gene_module_heatdata$graph_test.sig
+mn@tables$step3$graph_test
+```
+
+注意到了吗，从这里开始，分析已经回到了《Step 系列：scRNA-seq 基本分析》中的拟时分析后的思路上了；
+如果你想要根据拟时细胞，尝试划分癌细胞的亚型，那么请参考其中的： "(进阶) 根据拟时分析结果重新划分细胞群体"
+
+之后，还可以根据使用者的需求，开展细胞通讯分析或其他分析。
+
 
 ## 完整示例代码
+
+```{r}
+# 获取示例数据
+geo <- job_geo("GSE171306")
+geo <- step1(geo)
+geo <- step2(geo)
+untar("./GSE171306/GSE171306_RAW.tar", exdir = "./GSE171306")
+prepare_10x("./GSE171306/", "ccRCC1", single = F)
+
+sr <- job_seurat("./GSE171306/GSM5222644_ccRCC1_barcodes")
+sr <- step1(sr)
+sr <- step2(sr, 0, 7500, 35)
+sr <- step3(sr, 1:15, 1.2)
+sr <- step4(sr, "")
+sr <- step5(sr, 5)
+sr <- step6(sr, "Kidney")
+
+kat <- asjob_kat(sr)
+kat <- step1(kat, 8)
+kat <- step2(kat)
+kat <- clear(kat)
+
+# 将癌细胞鉴定结果映射回 `job_seurat`
+sr <- map(sr, kat)
+
+mn <- do_monocle(sr, kat)
+mn <- step1(mn)
+# 拟时起点需要根据实际情况选择
+mn <- step2(mn, "Y_14")
+mn <- step3(mn)
+```
+
+## Session Info
+
+```{r eval = T, echo = T}
+sessionInfo()
+```
 
