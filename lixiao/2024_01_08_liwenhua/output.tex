@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 菌群+对应代谢产物介导+机制研究} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-20}}
+\textbf{\textcolor{white}{2024-02-23}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -106,6 +106,11 @@
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
 
+\hypertarget{ux9700ux6c42ux6982ux8981}{%
+\subsection{需求概要}\label{ux9700ux6c42ux6982ux8981}}
+
+数据分组：
+
 \begin{itemize}
 \tightlist
 \item
@@ -116,8 +121,75 @@
   B: colon precancerous lesions
 \end{itemize}
 
-想要做肠道菌群测序结果+生信分析，然后找菌群+对应代谢产物介导+机制研究+再闭环回到临床。在沟通时客户提到想要做
+肠道菌群测序结果+生信分析，得出：菌群+对应代谢产物介导+机制研究+再闭环回到临床。
+
+具体：
+
 溃疡性结肠炎和结肠癌的肠道菌群之间的区别和关联，进而研究其对应的机制，研究结肠炎向结肠癌发展的关键机制，为临床早期筛查提供理论支持
+
+\hypertarget{ux5206ux6790ux7ed3ux679c}{%
+\subsection{分析结果}\label{ux5206ux6790ux7ed3ux679c}}
+
+\begin{itemize}
+\tightlist
+\item
+  基本分析：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    alpha、beta 多样性，A、B、C 组均无显著性差异 (\ref{alpha}, \ref{beta})。
+  \item
+    差异菌筛选 (level 6, Species) ，筛得差异菌 (Fig. \ref{fig:Ancom-test-group-level-6-volcano})：d\_\_Bacteria;p\_\_Proteobacteria;c\_\_Alphaproteobacteria;o\_\_Rhizobiales;f\_\_Beijerinckiaceae;g\_\_Methylobacterium-Methylorubrum
+    该差异菌主要存在于 A、B 组，不存在 (或少量于) 于 C (对照) 组。
+    含量见 Fig. \ref{fig:Ancom-test-group-level-6-Percentile-abundance}
+  \item
+    \ldots{}
+  \item
+    差异菌 (level 2, Phylum) (Fig. \ref{fig:Ancom-test-group-level-2-volcano}), 同样的有：d\_\_Bacteria;p\_\_Proteobacteria
+    该差异菌主要存在于 A、B 组，不存在 (或少量于) 于 C (对照) 组。
+    含量见 Fig. \ref{fig:Ancom-test-group-level-2-Percentile-abundance}
+  \end{itemize}
+\item
+  从肠道菌到相关代谢物：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    使用 gutMDisorder 未发现相关代谢物。
+  \item
+    从一孟德尔随机化相关研究中\textsuperscript{\protect\hyperlink{ref-MendelianRandoLiuX2022}{1}}，发现了与差异菌相关的代谢物，见
+    Tab. \ref{tab:MendelianRandoLiuX2022-matched-data}。
+    这些代谢物为 (详细信息见 Tab. \ref{tab:compounds-ID})：
+    5-methyltetrahydrofolic acid, selenium, L-cystine, Glutamic acid
+  \item
+    用 MetaboAnalystR 对相关代谢物进行富集分析，富集到两条通路 (见 Fig. \ref{fig:MetaboAnalyst-kegg-enrichment})
+  \item
+    用 FELLA 对相关代谢物富集分析, 可以发现相关联的更多通路或反应模块
+    (结果见 Fig. \ref{fig:Enrichment-with-algorithm-PageRank},
+    Tab. \ref{tab:Data-of-enrichment-with-algorithm-PageRank})
+  \end{itemize}
+\item
+  尝试从已有的关于结肠炎或结肠癌的研究中验证上述发现：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    从结肠癌相关研究中匹配到\textsuperscript{\protect\hyperlink{ref-LossOfSymbiotSadegh2024}{2}} (Tab.
+    \ref{tab:LossOfSymbiotSadegh2024-matched-Phylum-microbiota})：d\_\_Bacteria;p\_\_Proteobacteria
+    (注：在 Phylum 水平上得到验证)
+  \item
+    未从其它文献中匹配到代谢物或差异肠道菌 (见 \ref{valids}。
+  \end{itemize}
+\item
+  结肠炎向结肠癌之间的转化：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A 为结肠炎，B 为结肠癌前病变； A 与 B 组间无显著差异菌，因此无法从这一批数据探究可能的发展机制 (A -\textgreater{} B)。
+  \end{itemize}
+\end{itemize}
 
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
@@ -128,6 +200,14 @@
 \hypertarget{ux6750ux6599}{%
 \subsection{材料}\label{ux6750ux6599}}
 
+Other data obtained from published article (e.g., supplementary tables):
+
+\begin{itemize}
+\tightlist
+\item
+  Supplementary file from article refer to\textsuperscript{\protect\hyperlink{ref-MendelianRandoLiuX2022}{1}}.
+\end{itemize}
+
 \hypertarget{ux65b9ux6cd5}{%
 \subsection{方法}\label{ux65b9ux6cd5}}
 
@@ -136,25 +216,23 @@ Mainly used method:
 \begin{itemize}
 \tightlist
 \item
-  \texttt{Fastp} used for Fastq data preprocessing\textsuperscript{\protect\hyperlink{ref-UltrafastOnePChen2023}{1}}.
+  R package \texttt{FELLA} used for metabolite enrichment analysis\textsuperscript{\protect\hyperlink{ref-FellaAnRPacPicart2018}{3}}.
 \item
-  R package \texttt{MicrobiotaProcess} used for microbiome data visualization\textsuperscript{\protect\hyperlink{ref-MicrobiotaproceXuSh2023}{2}}.
+  \texttt{Fastp} used for Fastq data preprocessing\textsuperscript{\protect\hyperlink{ref-UltrafastOnePChen2023}{4}}.
 \item
-  \texttt{Qiime2} used for gut microbiome 16s rRNA analysis\textsuperscript{\protect\hyperlink{ref-ReproducibleIBolyen2019}{3}--\protect\hyperlink{ref-MicrobialCommuHamday2009}{7}}.
+  Database \texttt{gutMDisorder} used for finding associations between gut microbiota and metabolites\textsuperscript{\protect\hyperlink{ref-GutmdisorderACheng2019}{5}}.
+\item
+  R package \texttt{MicrobiotaProcess} used for microbiome data visualization\textsuperscript{\protect\hyperlink{ref-MicrobiotaproceXuSh2023}{6}}.
+\item
+  \texttt{MetaboAnalyst} used for metabolomic data analysis\textsuperscript{\protect\hyperlink{ref-Metaboanalyst4Chong2018}{7}}.
+\item
+  \texttt{Qiime2} used for gut microbiome 16s rRNA analysis\textsuperscript{\protect\hyperlink{ref-ReproducibleIBolyen2019}{8}--\protect\hyperlink{ref-MicrobialCommuHamday2009}{12}}.
 \item
   Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
 
 \hypertarget{results}{%
 \section{分析结果}\label{results}}
-
-\begin{itemize}
-\tightlist
-\item
-  A、B 组 Alpha 和 Beta 多样性无显著差异 (见 \ref{alpha} 和 \ref{beta})。
-\item
-  A、B 组差异分析，未找到差异菌。
-\end{itemize}
 
 \hypertarget{dis}{%
 \section{结论}\label{dis}}
@@ -334,13 +412,34 @@ MicrobiotaProcess 的差异分析 (\texttt{MicrobiotaProcess::mp\_diff\_analysis
 
 注：关于 \texttt{ancom\ test} 的结果的解释，可以参考：
 
-\begin{itemize}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
   \url{https://forum.qiime2.org/t/how-to-interpret-ancom-results/1958}
 \item
   \url{https://forum.qiime2.org/t/specify-w-cutoff-for-anacom/1844}
-\end{itemize}
+\end{enumerate}
+
+Figure \ref{fig:Ancom-test-group-level-2-volcano} (下方图) 为图Ancom test group level 2 volcano概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ancom-test-group-level-2-volcano.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ancom-test-group-level-2-volcano.pdf}
+\caption{Ancom test group level 2 volcano}\label{fig:Ancom-test-group-level-2-volcano}
+\end{center}
+
+Figure \ref{fig:Ancom-test-group-level-2-Percentile-abundance} (下方图) 为图Ancom test group level 2 Percentile abundance概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ancom-test-group-level-2-Percentile-abundance.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ancom-test-group-level-2-Percentile-abundance.pdf}
+\caption{Ancom test group level 2 Percentile abundance}\label{fig:Ancom-test-group-level-2-Percentile-abundance}
+\end{center}
 
 Figure \ref{fig:Ancom-test-group-level-6-volcano} (下方图) 为图Ancom test group level 6 volcano概览。
 
@@ -352,6 +451,17 @@ Figure \ref{fig:Ancom-test-group-level-6-volcano} (下方图) 为图Ancom test g
 \caption{Ancom test group level 6 volcano}\label{fig:Ancom-test-group-level-6-volcano}
 \end{center}
 
+Figure \ref{fig:Ancom-test-group-level-6-Percentile-abundance} (下方图) 为图Ancom test group level 6 Percentile abundance概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ancom-test-group-level-6-Percentile-abundance.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Ancom-test-group-level-6-Percentile-abundance.pdf}
+\caption{Ancom test group level 6 Percentile abundance}\label{fig:Ancom-test-group-level-6-Percentile-abundance}
+\end{center}
+
+`level 2' 对应 Ontology 中的 Phylum。
 `level 6' 对应 Ontology 中的 Species。
 
 其余结果的可视化见：
@@ -369,6 +479,21 @@ Figure \ref{fig:Ancom-test-group-level-6-volcano} (下方图) 为图Ancom test g
 \end{enumerate}\end{tcolorbox}
 \end{center}
 
+`Ancom test Percentile abundance' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ancom-test-Percentile-abundance})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Ancom-test-Percentile-abundance共包含5个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_ancom\_test\_group\_level\_2.pdf
+\item 2\_ancom\_test\_group\_level\_3.pdf
+\item 3\_ancom\_test\_group\_level\_4.pdf
+\item 4\_ancom\_test\_group\_level\_5.pdf
+\item 5\_ancom\_test\_group\_level\_6.pdf
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
 `Ancom test results' 数据已全部提供。
 
 \textbf{(对应文件为 \texttt{Figure+Table/Ancom-test-results})}
@@ -382,32 +507,775 @@ Figure \ref{fig:Ancom-test-group-level-6-volcano} (下方图) 为图Ancom test g
 \end{enumerate}\end{tcolorbox}
 \end{center}
 
+\hypertarget{ux5deeux5f02ux83ccux5173ux8054ux5230ux4ee3ux8c22ux7269}{%
+\subsubsection{差异菌关联到代谢物}\label{ux5deeux5f02ux83ccux5173ux8054ux5230ux4ee3ux8c22ux7269}}
+
+\hypertarget{ux4ece-gutmdisorder-ux6570ux636eux5e93ux68c0ux7d22ux5173ux8054ux4ee3ux8c22ux7269}{%
+\paragraph{从 gutMDisorder 数据库检索关联代谢物}\label{ux4ece-gutmdisorder-ux6570ux636eux5e93ux68c0ux7d22ux5173ux8054ux4ee3ux8c22ux7269}}
+
+使用的数据库如下：
+
+Table \ref{tab:GutMDisorder-database} (下方表格) 为表格GutMDisorder database概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GutMDisorder-database.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有724行12列，以下预览的表格可能省略部分数据；表格含有289个唯一`Gut.Microbiota'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:GutMDisorder-database}GutMDisorder database}\tabularnewline
+\toprule
+Gut.Mi\ldots\ldots1 & Gut.Mi\ldots\ldots2 & Gut.Mi\ldots\ldots3 & Classi\ldots{} & Substrate & Substr\ldots\ldots6 & Substr\ldots\ldots7 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Gut.Mi\ldots\ldots1 & Gut.Mi\ldots\ldots2 & Gut.Mi\ldots\ldots3 & Classi\ldots{} & Substrate & Substr\ldots\ldots6 & Substr\ldots\ldots7 & \ldots{}\tabularnewline
+\midrule
+\endhead
+Christ\ldots{} & NA & gm0883 & strain & D-Glucose & 5793 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & Salicin & 439503 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & D-Xylose & 135191 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & L-Arab\ldots{} & 439195 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & L-Rham\ldots{} & 25310 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & D-Mannose & 18950 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & D-Glucose & 5793 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & Salicin & 439503 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & D-Xylose & 135191 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & L-Arab\ldots{} & 439195 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & L-Rham\ldots{} & 25310 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Christ\ldots{} & NA & gm0883 & strain & D-Mannose & 18950 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Entero\ldots{} & 1343173 & gm0884 & species & Orientin & 5281675 & HMDB00\ldots{} & \ldots{}\tabularnewline
+Clostr\ldots{} & 29347 & gm0885 & strain & Bile acid & 439520 & & \ldots{}\tabularnewline
+Clostr\ldots{} & 29347 & gm0885 & strain & Cholic\ldots{} & 221493 & HMDB00\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+使用差异肠道菌匹配：
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Content
+:}
+
+\vspace{0.5em}
+
+    Proteobacteria, Alphaproteobacteria, Rhizobiales,
+Beijerinckiaceae, Methylobacterium-Methylorubrum
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+未找到相关代谢物。
+
+\hypertarget{mr-match}{%
+\paragraph{尝试从已发表研究 (孟德尔随机化相关) 中寻找关联代谢物}\label{mr-match}}
+
+请参考\textsuperscript{\protect\hyperlink{ref-MendelianRandoLiuX2022}{1}}
+
+匹配到 Phylum 水平的菌群关联的代谢物:
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Content
+:}
+
+\vspace{0.5em}
+
+    5-methyltetrahydrofolic acid, selenium, Cystine,
+Glutamic acid
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:MendelianRandoLiuX2022-matched-data} (下方表格) 为表格MendelianRandoLiuX2022 matched data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MendelianRandoLiuX2022-matched-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4行25列，以下预览的表格可能省略部分数据；表格含有1个唯一`X1'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:MendelianRandoLiuX2022-matched-data}MendelianRandoLiuX2022 matched data}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.07\columnwidth}\raggedright
+X1\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+X2\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+beta\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+se\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+p\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+beta.1\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+se.1\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+p.1\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+p\_MRPR\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+beta.2\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.07\columnwidth}\raggedright
+X1\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+X2\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+beta\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+se\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+p\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+beta.1\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+se.1\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+p.1\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+p\_MRPR\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+beta.2\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+p\_Prot\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+5-meth\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.15312\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0313679\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.0532\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.097\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0417018\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0188806\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.1756\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.166\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+p\_Prot\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+selenium\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.122431\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0289698\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.3772\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.032\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0412256\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.431953\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.189\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.192\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+p\_Prot\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Cystine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.097\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0221977\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.0141\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.045\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0323047\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.16131\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.4752\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.101\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+p\_Prot\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Glutam\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.175275\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0392992\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+8.1952\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0363522\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0368746\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.324216\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.0082\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.1929\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux4ee3ux8c22ux7269ux7684ux5bccux96c6ux5206ux6790}{%
+\subsubsection{代谢物的富集分析}\label{ux4ee3ux8c22ux7269ux7684ux5bccux96c6ux5206ux6790}}
+
+将匹配到的代谢物 (\ref{mr-match}) 进行代谢物富集分析。
+
+以下是代谢物的数据库匹配：
+
+Table \ref{tab:compounds-ID} (下方表格) 为表格compounds ID概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/compounds-ID.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4行7列，以下预览的表格可能省略部分数据；表格含有4个唯一`Query'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:compounds-ID}Compounds ID}\tabularnewline
+\toprule
+Query & Match & HMDB & PubChem & KEGG & SMILES & Comment\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Query & Match & HMDB & PubChem & KEGG & SMILES & Comment\tabularnewline
+\midrule
+\endhead
+5-methylte\ldots{} & 5-Methylte\ldots{} & HMDB0001396 & 439234 & C00440 & CN1C(CNC2=\ldots{} & 1\tabularnewline
+selenium & Selenium & HMDB0001349 & NA & C01529 & {[}Se++{]} & 1\tabularnewline
+L-cystine & L-Cystine & HMDB0000192 & 67678 & C00491 & N{[}\href{mailto:C@@H}{\nolinkurl{C@@H}}{]}(CS\ldots{} & 1\tabularnewline
+Glutamic acid & Glutamic acid & HMDB0000148 & 33032 & C00302 & N{[}\href{mailto:C@@H}{\nolinkurl{C@@H}}{]}(CC\ldots{} & 1\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:MetaboAnalyst-kegg-enrichment} (下方图) 为图MetaboAnalyst kegg enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metabolites\_ORA\_dot\_kegg\_pathway\_dpi72.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{figs/metabolites_ORA_dot_kegg_pathway_dpi72.pdf}
+\caption{MetaboAnalyst kegg enrichment}\label{fig:MetaboAnalyst-kegg-enrichment}
+\end{center}
+
+Figure \ref{fig:Enrichment-with-algorithm-PageRank} (下方图) 为图Enrichment with algorithm PageRank概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Enrichment-with-algorithm-PageRank.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Enrichment-with-algorithm-PageRank.pdf}
+\caption{Enrichment with algorithm PageRank}\label{fig:Enrichment-with-algorithm-PageRank}
+\end{center}
+
+Table \ref{tab:Data-of-enrichment-with-algorithm-PageRank} (下方表格) 为表格Data of enrichment with algorithm PageRank概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Data-of-enrichment-with-algorithm-PageRank.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有39行7列，以下预览的表格可能省略部分数据；表格含有39个唯一`name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Data-of-enrichment-with-algorithm-PageRank}Data of enrichment with algorithm PageRank}\tabularnewline
+\toprule
+name & com & NAME & label & input & abbrev.name & type\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+name & com & NAME & label & input & abbrev.name & type\tabularnewline
+\midrule
+\endhead
+hsa00220 & 1 & Arginine b\ldots{} & Arginine b\ldots{} & Others & Arginine b\ldots{} & Pathway\tabularnewline
+hsa00250 & 1 & Alanine, a\ldots{} & Alanine, a\ldots{} & Others & Alanine, a\ldots{} & Pathway\tabularnewline
+hsa00270 & 1 & Cysteine a\ldots{} & Cysteine a\ldots{} & Others & Cysteine a\ldots{} & Pathway\tabularnewline
+hsa00380 & 1 & Tryptophan\ldots{} & Tryptophan\ldots{} & Others & Tryptophan\ldots{} & Pathway\tabularnewline
+hsa00450 & 1 & Selenocomp\ldots{} & Selenocomp\ldots{} & Others & Selenocomp\ldots{} & Pathway\tabularnewline
+hsa00670 & 1 & One carbon\ldots{} & One carbon\ldots{} & Others & One carbon\ldots{} & Pathway\tabularnewline
+hsa01200 & 1 & Carbon met\ldots{} & Carbon met\ldots{} & Others & Carbon met\ldots{} & Pathway\tabularnewline
+hsa01523 & 1 & Antifolate\ldots{} & Antifolate\ldots{} & Others & Antifolate\ldots{} & Pathway\tabularnewline
+hsa02010 & 1 & ABC transp\ldots{} & ABC transp\ldots{} & Others & ABC transp\ldots{} & Pathway\tabularnewline
+hsa04216 & 1 & Ferroptosi\ldots{} & Ferroptosi\ldots{} & Others & Ferroptosi\ldots{} & Pathway\tabularnewline
+hsa04974 & 1 & Protein di\ldots{} & Protein di\ldots{} & Others & Protein di\ldots{} & Pathway\tabularnewline
+hsa04975 & 1 & Fat digest\ldots{} & Fat digest\ldots{} & Others & Fat digest\ldots{} & Pathway\tabularnewline
+M00017 & 2 & Methionine\ldots{} & Methionine\ldots{} & Others & Methionine\ldots{} & Module\tabularnewline
+M00170 & 2 & C4-dicarbo\ldots{} & C4-dicarbo\ldots{} & Others & C4-dicarbo\ldots{} & Module\tabularnewline
+M00171 & 2 & C4-dicarbo\ldots{} & C4-dicarbo\ldots{} & Others & C4-dicarbo\ldots{} & Module\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{valids}{%
+\subsubsection{从结肠炎或结肠癌已发表的代谢物研究中验证}\label{valids}}
+
+\hypertarget{depressionandyuan2021-ux7ed3ux80a0ux708e-ux80a0ux9053ux83cc}{%
+\paragraph{DepressionAndYuan2021 结肠炎 (肠道菌)}\label{depressionandyuan2021-ux7ed3ux80a0ux708e-ux80a0ux9053ux83cc}}
+
+Depression and anxiety in patients with active ulcerative colitis: crosstalk of gut microbiota, metabolomics and proteomics\textsuperscript{\protect\hyperlink{ref-DepressionAndYuan2021}{13}}
+
+以下是整理自该文献的差异肠道菌汇总：
+
+Table \ref{tab:DepressionAndYuan2021-published-data-significant-microbiota} (下方表格) 为表格DepressionAndYuan2021 published data significant microbiota概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DepressionAndYuan2021-published-data-significant-microbiota.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有91行4列，以下预览的表格可能省略部分数据；表格含有91个唯一`Taxonomy'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:DepressionAndYuan2021-published-data-significant-microbiota}DepressionAndYuan2021 published data significant microbiota}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.22\columnwidth}\raggedright
+Taxonomy\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+p.value\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+MRA.in.UC\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+MRA.in.HC\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.22\columnwidth}\raggedright
+Taxonomy\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+p.value\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+MRA.in.UC\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+MRA.in.HC\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_Gemmatimonadetes\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00049553252446827\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00171119907683608\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.000160190585722501\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_Actinobacteria\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00834784591709094\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0617033057472256\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0389112516772091\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_Firmicutes\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00478686441960355\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.589610871565727\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.499806265231797\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_Bacteroidetes\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+9.60337999115942e-05\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.250752809840626\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.403687121772228\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_unidentified\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+1.40986578996555e-07\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.000640301130981834\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.05372545798078e-06\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Actinobacteria\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00353055167754535\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.046725454341533\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0237116295626934\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Longimicrobia\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+7.16632518063251e-07\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00145496100157866\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Bacteroidia\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+6.38198131772293e-05\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.24518920382048\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.403287329883075\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Deinococci\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+3.17450175630301e-06\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00131123215732429\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Bacilli\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00330587139663399\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0649165901033199\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0154563377967633\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Cytophagia\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.10636789003367e-05\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0016664310495747\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+4.24436594649361e-05\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_unidentified\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.64154914758447e-08\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0016652538833675\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+8.83101946931736e-05\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Flavobacteriia\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+5.26714172360768e-05\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00167703418517471\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+5.95580382814426e-05\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+o\_\_Oceanospirillales\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00495867783478051\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.000461817587592187\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.05372545798077e-06\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+o\_\_Bifidobacteriales\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00354779153342515\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0443044462799416\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0224465346805772\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+未从 Fig. \ref{tab:DepressionAndYuan2021-published-data-significant-microbiota} 中匹配到
+客户数据筛选出的肠道菌。
+
+\hypertarget{alterationsinscovil2018-ux7ed3ux80a0ux708e-ux4ee3ux8c22ux7269}{%
+\paragraph{AlterationsInScovil2018 结肠炎 (代谢物)}\label{alterationsinscovil2018-ux7ed3ux80a0ux708e-ux4ee3ux8c22ux7269}}
+
+Alterations in Lipid, Amino Acid, and Energy Metabolism Distinguish Crohn's Disease from Ulcerative Colitis and Control Subjects by Serum Metabolomic Profiling.\textsuperscript{\protect\hyperlink{ref-AlterationsInScovil2018}{14}}
+
+以下是整理自该文献的代谢物汇总：
+
+Table \ref{tab:AlterationsInScovil2018-published-data-metabolites} (下方表格) 为表格AlterationsInScovil2018 published data metabolites概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/AlterationsInScovil2018-published-data-metabolites.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有565行22列，以下预览的表格可能省略部分数据；表格含有565个唯一`Metabolite'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:AlterationsInScovil2018-published-data-metabolites}AlterationsInScovil2018 published data metabolites}\tabularnewline
+\toprule
+Metabo\ldots{} & Pathway & Sub-Pa\ldots{} & Platform & RI & Mass & MSI Id\ldots{} & PUBCHEM & KEGG & HMDB\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Metabo\ldots{} & Pathway & Sub-Pa\ldots{} & Platform & RI & Mass & MSI Id\ldots{} & PUBCHEM & KEGG & HMDB\tabularnewline
+\midrule
+\endhead
+alanine & Amino \ldots{} & Alanin\ldots{} & LC/MS \ldots{} & 2780.3 & 88.0404 & 1 & 5950 & C00041 & HMDB00161\tabularnewline
+aspara\ldots{} & Amino \ldots{} & Alanin\ldots{} & LC/MS \ldots{} & 2951.1 & 131.0462 & 1 & 6267 & C00152 & HMDB00168\tabularnewline
+aspartate & Amino \ldots{} & Alanin\ldots{} & LC/MS Neg & 640 & 132.0302 & 1 & 5960 & C00049 & HMDB00191\tabularnewline
+N-acet\ldots{} & Amino \ldots{} & Alanin\ldots{} & LC/MS \ldots{} & 1564.8 & 130.051 & 1 & 88064 & C02847 & HMDB00766\tabularnewline
+N-acet\ldots{} & Amino \ldots{} & Alanin\ldots{} & LC/MS \ldots{} & 785 & 175.0713 & 1 & 99715 & NA & HMDB06028\tabularnewline
+N-acet\ldots{} & Amino \ldots{} & Alanin\ldots{} & LC/MS \ldots{} & 3143 & 174.0408 & 1 & 65065 & C01042 & HMDB00812\tabularnewline
+creatine & Amino \ldots{} & Creati\ldots{} & LC/MS \ldots{} & 2920 & 130.0622 & 1 & 586 & C00300 & HMDB00064\tabularnewline
+creati\ldots{} & Amino \ldots{} & Creati\ldots{} & LC/MS \ldots{} & 2055 & 114.0662 & 1 & 588 & C00791 & HMDB00562\tabularnewline
+guanid\ldots{} & Amino \ldots{} & Creati\ldots{} & LC/MS \ldots{} & 2884 & 116.0466 & 1 & 763 & C00581 & HMDB00128\tabularnewline
+glutamate & Amino \ldots{} & Glutam\ldots{} & LC/MS \ldots{} & 1500 & 148.0604 & 1 & 611 & C00025 & HMDB00148\tabularnewline
+glutamine & Amino \ldots{} & Glutam\ldots{} & LC/MS \ldots{} & 1291 & 147.0764 & 1 & 5961 & C00064 & HMDB00641\tabularnewline
+N-acet\ldots{} & Amino \ldots{} & Glutam\ldots{} & LC/MS \ldots{} & 1035 & 305.098 & 1 & 5255 & C12270 & HMDB01067\tabularnewline
+N-acet\ldots{} & Amino \ldots{} & Glutam\ldots{} & LC/MS \ldots{} & 3106 & 188.0564 & 1 & 70914 & C00624 & HMDB01138\tabularnewline
+N-acet\ldots{} & Amino \ldots{} & Glutam\ldots{} & LC/MS Neg & 771 & 187.0724 & 1 & 182230 & C02716 & HMDB06029\tabularnewline
+pyrogl\ldots{} & Amino \ldots{} & Glutam\ldots{} & LC/MS \ldots{} & 1900 & 129.0659 & 2 & 134508 & NA & NA\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+未从 Tab. \ref{tab:AlterationsInScovil2018-published-data-metabolites} 中匹配到
+\ref{mr-match} 中的关联代谢物。
+
+\hypertarget{valid}{%
+\paragraph{LossOfSymbiotSadegh2024 结肠癌 (肠道菌)}\label{valid}}
+
+Loss of symbiotic and increase of virulent bacteria through microbial networks
+in Lynch syndrome colon carcinogenesis\textsuperscript{\protect\hyperlink{ref-LossOfSymbiotSadegh2024}{2}}
+
+以下是整理自该文献的关联肠道菌汇总：
+
+Table \ref{tab:LossOfSymbiotSadegh2024-published-data-microbiota} (下方表格) 为表格LossOfSymbiotSadegh2024 published data microbiota概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LossOfSymbiotSadegh2024-published-data-microbiota.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有34行6列，以下预览的表格可能省略部分数据；表格含有34个唯一`taxon'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:LossOfSymbiotSadegh2024-published-data-microbiota}LossOfSymbiotSadegh2024 published data microbiota}\tabularnewline
+\toprule
+taxon & proportion\ldots{} & position.i\ldots{} & mean.auc\ldots.. & sd.auc..test. & Value.with\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+taxon & proportion\ldots{} & position.i\ldots{} & mean.auc\ldots.. & sd.auc..test. & Value.with\ldots{}\tabularnewline
+\midrule
+\endhead
+k\_Bacteria\ldots{} & 0.992 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 0.998 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 0.956 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 0.982 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 0.996 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & numerator & 1 & 0 & stool\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+匹配到的肠道菌 (Phylum 水平)：
+
+Table \ref{tab:LossOfSymbiotSadegh2024-matched-Phylum-microbiota} (下方表格) 为表格LossOfSymbiotSadegh2024 matched Phylum microbiota概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LossOfSymbiotSadegh2024-matched-Phylum-microbiota.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3行6列，以下预览的表格可能省略部分数据；表格含有3个唯一`taxon'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:LossOfSymbiotSadegh2024-matched-Phylum-microbiota}LossOfSymbiotSadegh2024 matched Phylum microbiota}\tabularnewline
+\toprule
+taxon & proportion\ldots{} & position.i\ldots{} & mean.auc\ldots.. & sd.auc..test. & Value.with\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+taxon & proportion\ldots{} & position.i\ldots{} & mean.auc\ldots.. & sd.auc..test. & Value.with\ldots{}\tabularnewline
+\midrule
+\endhead
+k\_Bacteria\ldots{} & 1 & denominator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & denominator & 1 & 0 & stool\tabularnewline
+k\_Bacteria\ldots{} & 1 & denominator & 1 & 0 & stool\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{integratedanalchen2022-ux7ed3ux80a0ux764c-ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269}{%
+\paragraph{IntegratedAnalChen2022 结肠癌 (肠道菌和代谢物)}\label{integratedanalchen2022-ux7ed3ux80a0ux764c-ux80a0ux9053ux83ccux548cux4ee3ux8c22ux7269}}
+
+Integrated analysis of the faecal metagenome and serum metabolome reveals the
+role of gut microbiome-associated metabolites in the detection of colorectal
+cancer and adenoma\textsuperscript{\protect\hyperlink{ref-IntegratedAnalChen2022}{15}}
+
+以下是整理自该文献的肠道菌和代谢物数据 (PDF 识别结果)：
+
+Table \ref{tab:IntegratedAnalChen2022-published-data-microbiota} (下方表格) 为表格IntegratedAnalChen2022 published data microbiota概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IntegratedAnalChen2022-published-data-microbiota.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有782行4列，以下预览的表格可能省略部分数据；表格含有3个唯一`Type'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:IntegratedAnalChen2022-published-data-microbiota}IntegratedAnalChen2022 published data microbiota}\tabularnewline
+\toprule
+Type & Species & Metabolites & pvalue\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Type & Species & Metabolites & pvalue\tabularnewline
+\midrule
+\endhead
+Tumor\_promoting\_b\ldots{} & Alistipes\_finegoldii & X23.4\_476.011mz\_pos & 3.87e-07\tabularnewline
+Tumor\_promoting\_b\ldots{} & Alistipes\_finegoldii & X21.4\_494.68mz\_pos & 0.000232816\tabularnewline
+Tumor\_promoting\_b\ldots{} & Alistipes\_finegoldii & X24.5\_504.692mz\_pos & 0.000162744\tabularnewline
+Tumor\_promoting\_b\ldots{} & Alistipes\_finegoldii & X26.1\_509.03mz\_pos & 0.000793675\tabularnewline
+Tumor\_promoting\_b\ldots{} & Alistipes\_finegoldii & X26.3\_514.705mz\_pos & 0.000881926\tabularnewline
+Tumor\_promoting\_b\ldots{} & Bilophila\_wadswor\ldots{} & X23.4\_476.011mz\_pos & 4.45e-05\tabularnewline
+Tumor\_promoting\_b\ldots{} & Fusobacterium\_nuc\ldots{} & X21.2\_512.336mz\_neg & 0.000581862\tabularnewline
+Tumor\_promoting\_b\ldots{} & Fusobacterium\_nuc\ldots{} & X19.2\_536.299mz\_neg & 0.000431165\tabularnewline
+Tumor\_promoting\_b\ldots{} & Fusobacterium\_sp\ldots. & X21.2\_512.336mz\_neg & 0.000850936\tabularnewline
+Tumor\_promoting\_b\ldots{} & Fusobacterium\_sp\ldots. & X19.2\_536.299mz\_neg & 9.61e-05\tabularnewline
+Tumor\_promoting\_b\ldots{} & Odoribacter\_splan\ldots{} & X23.4\_476.011mz\_pos & 1.93e-06\tabularnewline
+Tumor\_promoting\_b\ldots{} & Odoribacter\_splan\ldots{} & X21.4\_494.68mz\_pos & 3.38e-05\tabularnewline
+Tumor\_promoting\_b\ldots{} & Odoribacter\_splan\ldots{} & X24.8\_495.024mz\_pos & 0.000618015\tabularnewline
+Tumor\_promoting\_b\ldots{} & Odoribacter\_splan\ldots{} & X22.9\_499.686mz\_pos & 0.000395014\tabularnewline
+Tumor\_promoting\_b\ldots{} & Odoribacter\_splan\ldots{} & X24.5\_504.692mz\_pos & 0.000898428\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:IntegratedAnalChen2022-published-data-metabolites} (下方表格) 为表格IntegratedAnalChen2022 published data metabolites概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IntegratedAnalChen2022-published-data-metabolites.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有969行19列，以下预览的表格可能省略部分数据；表格含有905个唯一`V1'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:IntegratedAnalChen2022-published-data-metabolites}IntegratedAnalChen2022 published data metabolites}\tabularnewline
+\toprule
+V1 & V2 & V3 & V4 & V5 & V6 & V7 & V8 & V9 & V10\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+V1 & V2 & V3 & V4 & V5 & V6 & V7 & V8 & V9 & V10\tabularnewline
+\midrule
+\endhead
+Supple\ldots{} & material & placed & on & this & supple\ldots{} & material & which & has & been\tabularnewline
+Table & S2. & List & of & colore\ldots{} & abnormal & associ\ldots{} & metabo\ldots{} & &\tabularnewline
+Metabo\ldots{} & feature & Metabo\ldots{} & annota\ldots{} & approach & F\_meanN & F\_meanC & F\_meanA & anova\_\ldots{} & anova\_\ldots{}\tabularnewline
+X10.3\_\ldots{} & (-)-Fo\ldots{} & exact & mass & match & 7748.8\ldots{} & 5053.5\ldots{} & 5527.3\ldots{} & 0.0000\ldots{} & 7.36E-08\tabularnewline
+X12.4\_\ldots{} & (-)-Or\ldots{} & exact & mass & match & 45226\ldots. & 31316\ldots. & 27721\ldots. & 0.0000\ldots{} & 0.0000327\tabularnewline
+X10.9\_\ldots{} & (-)-tr\ldots{} & glucos\ldots{} & mass & match & 364.39\ldots{} & 8542.0151 & 9965.7\ldots{} & 0.0026\ldots{} & 0.0009\ldots{}\tabularnewline
+X15\_26\ldots{} & (+)-2,\ldots{} & Goniot\ldots{} & mass & match & 32595\ldots. & 22986\ldots. & 25975\ldots. & 0.0012\ldots{} & 0.0013\ldots{}\tabularnewline
+X20.8\_\ldots{} & (+/-)-\ldots{} & mass & match & 6812.3\ldots{} & 10133\ldots. & 3573.2\ldots{} & 0.0042\ldots{} & 0.0002535 & 0.1164\ldots{}\tabularnewline
+X12.5\_\ldots{} & (±)15-\ldots{} & exact & mass & match & 11931\ldots. & 8063.3\ldots{} & 8309.9\ldots{} & 3.99E-10 & 3.99E-10\tabularnewline
+X14.9\_\ldots{} & (±)-Go\ldots{} & exact & mass & match & 24851\ldots. & 16540\ldots. & 15696\ldots. & 0.0022\ldots{} & 0.0001\ldots{}\tabularnewline
+X15.1\_\ldots{} & (±)-Pa\ldots{} & exact & mass & match & 78154\ldots. & 37693\ldots. & 61456\ldots. & 0.0000\ldots{} & 0.0004\ldots{}\tabularnewline
+X24\_35\ldots{} & (1S)-1\ldots{} & mass & match & 2067.0\ldots{} & 6783.2\ldots{} & 10613\ldots. & 0.0000\ldots{} & 0.0001\ldots{} & 0.5843\ldots{}\tabularnewline
+X20.7\_\ldots{} & (20R)-\ldots{} & Rh2 & exact & mass & match & 19519\ldots. & 12756\ldots. & 12327\ldots. & 4.39E-10\tabularnewline
+X11\_42\ldots{} & (22E)-\ldots{} & & & & & & & &\tabularnewline
+exact & mass & match & 97120\ldots. & & & & & &\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+未从上述数据中匹配到客户数据的差异肠道菌或其关联的代谢物。
+
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
 \addcontentsline{toc}{section}{Reference}
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-MendelianRandoLiuX2022}{}%
+1. Liu, X. \emph{et al.} Mendelian randomization analyses support causal relationships between blood metabolites and the gut microbiome. \emph{Nature Genetics} \textbf{54}, (2022).
+
+\leavevmode\hypertarget{ref-LossOfSymbiotSadegh2024}{}%
+2. Sadeghi, M. \emph{et al.} Loss of symbiotic and increase of virulent bacteria through microbial networks in lynch syndrome colon carcinogenesis. \emph{Frontiers in oncology} \textbf{13}, (2024).
+
+\leavevmode\hypertarget{ref-FellaAnRPacPicart2018}{}%
+3. Picart-Armada, S., Fernandez-Albert, F., Vinaixa, M., Yanes, O. \& Perera-Lluna, A. FELLA: An r package to enrich metabolomics data. \emph{BMC Bioinformatics} \textbf{19}, 538 (2018).
+
 \leavevmode\hypertarget{ref-UltrafastOnePChen2023}{}%
-1. Chen, S. Ultrafast one-pass fastq data preprocessing, quality control, and deduplication using fastp. \emph{iMeta} \textbf{2}, (2023).
+4. Chen, S. Ultrafast one-pass fastq data preprocessing, quality control, and deduplication using fastp. \emph{iMeta} \textbf{2}, (2023).
+
+\leavevmode\hypertarget{ref-GutmdisorderACheng2019}{}%
+5. Cheng, L., Qi, C., Zhuang, H., Fu, T. \& Zhang, X. GutMDisorder: A comprehensive database for dysbiosis of the gut microbiota in disorders and interventions. \emph{Nucleic Acids Research} \textbf{48}, (2019).
 
 \leavevmode\hypertarget{ref-MicrobiotaproceXuSh2023}{}%
-2. Xu, S. \emph{et al.} MicrobiotaProcess: A comprehensive r package for deep mining microbiome. \emph{The Innovation} \textbf{4}, 100388 (2023).
+6. Xu, S. \emph{et al.} MicrobiotaProcess: A comprehensive r package for deep mining microbiome. \emph{The Innovation} \textbf{4}, 100388 (2023).
+
+\leavevmode\hypertarget{ref-Metaboanalyst4Chong2018}{}%
+7. Chong, J. \emph{et al.} MetaboAnalyst 4.0: Towards more transparent and integrative metabolomics analysis. \emph{Nucleic Acids Research} \textbf{46}, W486--W494 (2018).
 
 \leavevmode\hypertarget{ref-ReproducibleIBolyen2019}{}%
-3. Bolyen, E. \emph{et al.} Reproducible, interactive, scalable and extensible microbiome data science using qiime 2. \emph{Nature Biotechnology} \textbf{37}, 852--857 (2019).
+8. Bolyen, E. \emph{et al.} Reproducible, interactive, scalable and extensible microbiome data science using qiime 2. \emph{Nature Biotechnology} \textbf{37}, 852--857 (2019).
 
 \leavevmode\hypertarget{ref-TheBiologicalMcdona2012}{}%
-4. McDonald, D. \emph{et al.} The biological observation matrix (biom) format or: How i learned to stop worrying and love the ome-ome. \emph{GigaScience} \textbf{1}, 7 (2012).
+9. McDonald, D. \emph{et al.} The biological observation matrix (biom) format or: How i learned to stop worrying and love the ome-ome. \emph{GigaScience} \textbf{1}, 7 (2012).
 
 \leavevmode\hypertarget{ref-Dada2HighResCallah2016}{}%
-5. Callahan, B. J. \emph{et al.} DADA2: High-resolution sample inference from illumina amplicon data. \emph{Nature methods} \textbf{13}, 581 (2016).
+10. Callahan, B. J. \emph{et al.} DADA2: High-resolution sample inference from illumina amplicon data. \emph{Nature methods} \textbf{13}, 581 (2016).
 
 \leavevmode\hypertarget{ref-ErrorCorrectinHamday2008}{}%
-6. Hamday, M., Walker J., J., Harris, J. K., Gold J., N. \& Knight, R. Error-correcting barcoded primers allow hundreds of samples to be pyrosequenced in multiplex. \emph{Nature Methods} \textbf{5}, 235--237 (2008).
+11. Hamday, M., Walker J., J., Harris, J. K., Gold J., N. \& Knight, R. Error-correcting barcoded primers allow hundreds of samples to be pyrosequenced in multiplex. \emph{Nature Methods} \textbf{5}, 235--237 (2008).
 
 \leavevmode\hypertarget{ref-MicrobialCommuHamday2009}{}%
-7. Hamday, M. \& Knight, R. Microbial community profiling for human microbiome projects: Tools, techniques, and challenges. \emph{Genome Research} \textbf{19}, 1141--1152 (2009).
+12. Hamday, M. \& Knight, R. Microbial community profiling for human microbiome projects: Tools, techniques, and challenges. \emph{Genome Research} \textbf{19}, 1141--1152 (2009).
+
+\leavevmode\hypertarget{ref-DepressionAndYuan2021}{}%
+13. Yuan, X. \emph{et al.} Depression and anxiety in patients with active ulcerative colitis: Crosstalk of gut microbiota, metabolomics and proteomics. \emph{Gut microbes} \textbf{13}, (2021).
+
+\leavevmode\hypertarget{ref-AlterationsInScovil2018}{}%
+14. Scoville, E. A. \emph{et al.} Alterations in lipid, amino acid, and energy metabolism distinguish crohn's disease from ulcerative colitis and control subjects by serum metabolomic profiling. \emph{Metabolomics : Official journal of the Metabolomic Society} \textbf{14}, (2018).
+
+\leavevmode\hypertarget{ref-IntegratedAnalChen2022}{}%
+15. Chen, F. \emph{et al.} Integrated analysis of the faecal metagenome and serum metabolome reveals the role of gut microbiome-associated metabolites in the detection of colorectal cancer and adenoma. \emph{Gut} \textbf{71}, 1315--1325 (2022).
 \end{cslreferences}
 
 \end{document}

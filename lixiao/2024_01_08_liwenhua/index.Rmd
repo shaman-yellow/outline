@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(2), coef = NA)
+info <- items(belong = c(odate(1), odate(2)), coef = c(.083, NA))
 
 order_publish()
 idname <- order_packaging()
@@ -31,12 +31,50 @@ set_index()
 
 # 摘要 {#abstract}
 
+## 需求概要
+
+数据分组：
+
 - con: Control
 - A: colitis
 - B: colon precancerous lesions
 
-想要做肠道菌群测序结果+生信分析，然后找菌群+对应代谢产物介导+机制研究+再闭环回到临床。
-在沟通时客户提到想要做溃疡性结肠炎和结肠癌的肠道菌群之间的区别和关联，进而研究其对应的机制，研究结肠炎向结肠癌发展的关键机制，为临床早期筛查提供理论支持
+肠道菌群测序结果+生信分析，得出：菌群+对应代谢产物介导+机制研究+再闭环回到临床。
+
+具体：
+
+溃疡性结肠炎和结肠癌的肠道菌群之间的区别和关联，进而研究其对应的机制，研究结肠炎向结肠癌发展的关键机制，为临床早期筛查提供理论支持
+
+## 分析结果
+
+- 基本分析：
+    - alpha、beta 多样性，A、B、C 组均无显著性差异 (\@ref(alpha), \@ref(beta))。
+    - 差异菌筛选 (level 6, Species) ，筛得差异菌 (Fig. \@ref(fig:Ancom-test-group-level-6-volcano))：`r res(qi)` 
+      该差异菌主要存在于 A、B 组，不存在 (或少量于) 于 C (对照) 组。
+      含量见 Fig. \@ref(fig:Ancom-test-group-level-6-Percentile-abundance)
+    - ...
+    - 差异菌 (level 2, Phylum) (Fig. \@ref(fig:Ancom-test-group-level-2-volcano)), 同样的有：`r res(qi, "2")`
+      该差异菌主要存在于 A、B 组，不存在 (或少量于) 于 C (对照) 组。
+      含量见 Fig. \@ref(fig:Ancom-test-group-level-2-Percentile-abundance)
+- 从肠道菌到相关代谢物：
+    - 使用 gutMDisorder 未发现相关代谢物。
+    - 从一孟德尔随机化相关研究中[@MendelianRandoLiuX2022]，发现了与差异菌相关的代谢物，见
+      Tab. \@ref(tab:MendelianRandoLiuX2022-matched-data)。
+      这些代谢物为 (详细信息见 Tab. \@ref(tab:compounds-ID))：
+      `r paste0(mt@tables$step1$mapped$Query, collapse = ", ")`
+    - 用 MetaboAnalystR 对相关代谢物进行富集分析，富集到两条通路 (见 Fig. \@ref(fig:MetaboAnalyst-kegg-enrichment))
+    - 用 FELLA 对相关代谢物富集分析, 可以发现相关联的更多通路或反应模块
+      (结果见 Fig. \@ref(fig:Enrichment-with-algorithm-PageRank),
+      Tab. \@ref(tab:Data-of-enrichment-with-algorithm-PageRank))
+- 尝试从已有的关于结肠炎或结肠癌的研究中验证上述发现：
+    - 从结肠癌相关研究中匹配到 [@LossOfSymbiotSadegh2024] (Tab.
+      \@ref(tab:LossOfSymbiotSadegh2024-matched-Phylum-microbiota))：`r res(qi, "2")`
+      (注：在 Phylum 水平上得到验证)
+    - 未从其它文献中匹配到代谢物或差异肠道菌 (见 \@ref(valids)。
+- 结肠炎向结肠癌之间的转化：
+    - A 为结肠炎，B 为结肠癌前病变； A 与 B 组间无显著差异菌，因此无法从这一批数据探究可能的发展机制 (A -> B)。
+
+      
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
@@ -66,9 +104,6 @@ auto_method()
 ```
 
 # 分析结果 {#results}
-
-- A、B 组 Alpha 和 Beta 多样性无显著差异 (见 \@ref(alpha) 和 \@ref(beta))。
-- A、B 组差异分析，未找到差异菌。
 
 # 结论 {#dis}
 
@@ -119,13 +154,13 @@ qi <- step4(qi, 1796)
 qi <- step5(qi, 10454)
 qi <- step6(qi)
 qi@plots$step6$`taxa-bar-plots`
+qi@step <- 6L
 qi <- step7(qi)
-qi@plots$step7$qzv_raw$ancom_test_group_level_4
-qi@plots$step7$p.export$ancom_test_group_level_6
-qi@plots$step7$p.export$ancom_test_group_level_5
-qi@plots$step7$p.export$ancom_test_group_level_4
-qi@tables$step7$t.ancom$ancom_test_group_level_6
+qi@plots$step7$p.quant$ancom_test_group_level_2
+qi@plots$step7$p.quant$ancom_test_group_level_6
+qi@tables$step7$t.ancom
 # d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Beijerinckiaceae;g__Methylobacterium-Methylorubrum
+
 ```
 
 ### MicrobiotaProcess 分析
@@ -183,10 +218,26 @@ MicrobiotaProcess 的差异分析 (`MicrobiotaProcess::mp_diff_analysis`) 未发
 2. <https://forum.qiime2.org/t/specify-w-cutoff-for-anacom/1844>
 
 ```{r eval = T, echo = F, results = "asis"}
+#| Ancom-test-group-level-2-volcano
+autor(qi@plots$step7$p.export$ancom_test_group_level_2)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ancom-test-group-level-2-Percentile-abundance
+autor(wrap(qi@plots$step7$p.quant$ancom_test_group_level_2, 16, 12))
+```
+
+```{r eval = T, echo = F, results = "asis"}
 #| Ancom-test-group-level-6-volcano
 autor(qi@plots$step7$p.export$ancom_test_group_level_6)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| Ancom-test-group-level-6-Percentile-abundance
+autor(qi@plots$step7$p.quant$ancom_test_group_level_6)
+```
+
+'level 2' 对应 Ontology 中的 Phylum。
 'level 6' 对应 Ontology 中的 Species。
 
 其余结果的可视化见：
@@ -194,6 +245,11 @@ autor(qi@plots$step7$p.export$ancom_test_group_level_6)
 ```{r eval = T, echo = F, results = "asis"}
 #| Ancom-test-visualization
 autor(qi@plots$step7$p.export)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ancom-test-Percentile-abundance
+autor(qi@plots$step7$p.quant)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -246,19 +302,19 @@ gm <- job_gutmd()
 gm <- step1(gm, pattern(qi))
 ```
 
-#### 尝试从已发表研究 (孟德尔随机化相关) 中寻找关联代谢物
+#### 尝试从已发表研究 (孟德尔随机化相关) 中寻找关联代谢物 {#mr-match}
 
 请参考 `r pb.mrlx@cite`
 
 匹配到 Phylum 水平的菌群关联的代谢物:
 
 ```{r eval = T, echo = F, results = "asis"}
-#| MendelianRandoLiuX2022-matched-data
-autor(match.mr)
+autor(new_lich(match.mr$X2))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-autor(new_lich(match.mr$X2))
+#| MendelianRandoLiuX2022-matched-data
+autor(match.mr)
 ```
 
 ```{r}
@@ -268,6 +324,10 @@ match.mr <- dplyr::filter(pb.mrlx@object$two_sample_mr, grpl(X1, paste0(pattern(
 ```
 
 ### 代谢物的富集分析
+
+将匹配到的代谢物 (\@ref(mr-match)) 进行代谢物富集分析。
+
+以下是代谢物的数据库匹配：
 
 ```{r eval = T, echo = F, results = "asis"}
 #| compounds-ID
@@ -279,6 +339,11 @@ mt <- job_metabo()
 mt <- step1(mt, dplyr::recode(match.mr$X2, 'Cystine' = 'L-cystine', .default = match.mr$X2))
 mt@tables$step1$mapped
 mt@plots$step1$metabolites_ORA_dot_kegg_pathway
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MetaboAnalyst-kegg-enrichment
+autor(mt@plots$step1$metabolites_ORA_dot_kegg_pathway)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -298,8 +363,155 @@ fe@plots$step1$p.enrich$ids
 fe@params$graph.lst$ids
 ```
 
-### 从结肠炎或结肠癌已发表的代谢物研究中验证
+### 从结肠炎或结肠癌已发表的代谢物研究中验证 {#valids}
 
+#### DepressionAndYuan2021 结肠炎 (肠道菌)
+
+Depression and anxiety in patients with active ulcerative colitis: crosstalk of gut microbiota, metabolomics and proteomics [@DepressionAndYuan2021]
+
+以下是整理自该文献的差异肠道菌汇总：
+
+```{r eval = T, echo = F, results = "asis"}
+#| DepressionAndYuan2021-published-data-significant-microbiota
+autor(pb.dep)
+```
+
+未从 Fig. \@ref(tab:DepressionAndYuan2021-published-data-significant-microbiota) 中匹配到
+客户数据筛选出的肠道菌。
+
+```{r}
+file.copy("~/Downloads/KGMI_A_1987779_SM8304.zip", "./material")
+unzip("./material/KGMI_A_1987779_SM8304.zip", exdir = "./material/DepressionAndYuan2021")
+```
+
+```{r}
+pb.dep <- fxlsx("./material/DepressionAndYuan2021/Supplementary information/Supplementary table.xlsx", sheet = 3, startRow = 2)
+filter(pb.dep, grpl(Taxonomy, paste0(pattern(qi), collapse = "|")))
+```
+
+#### AlterationsInScovil2018 结肠炎 (代谢物)
+
+Alterations in Lipid, Amino Acid, and Energy Metabolism Distinguish Crohn’s Disease from Ulcerative Colitis and Control Subjects by Serum Metabolomic Profiling [@AlterationsInScovil2018].
+
+以下是整理自该文献的代谢物汇总：
+
+```{r eval = T, echo = F, results = "asis"}
+#| AlterationsInScovil2018-published-data-metabolites
+autor(pb.alter)
+```
+
+未从 Tab. \@ref(tab:AlterationsInScovil2018-published-data-metabolites) 中匹配到
+\@ref(mr-match) 中的关联代谢物。
+
+```{r}
+file.copy("~/Downloads/NIHMS958523-supplement-2.xls", "./material/AlterationsInScovil2018_s2.xls")
+pb.alter <- readxl::read_xls("./material/AlterationsInScovil2018_s2.xls", skip = 1)
+
+colnames(pb.alter)[11:ncol(pb.alter)] %<>%
+  gs("\\.\\.\\..*$", "_") %>% 
+  paste0(., rep(c("IBD vs. Control", "CD vs. Control", "UC vs. Control", "CD vs. UC"), each = 3))
+
+dplyr::filter(pb.alter, KEGG %in% mt@tables$step1$mapped$KEGG) %>%
+  dplyr::select(dplyr::contains("UC")) %>% 
+  dplyr::filter(`p value_UC vs. Control` < .05)
+
+```
+
+#### LossOfSymbiotSadegh2024 结肠癌 (肠道菌) {#valid}
+
+Loss of symbiotic and increase of virulent bacteria through microbial networks
+in Lynch syndrome colon carcinogenesis [@LossOfSymbiotSadegh2024]
+
+以下是整理自该文献的关联肠道菌汇总：
+
+```{r eval = T, echo = F, results = "asis"}
+#| LossOfSymbiotSadegh2024-published-data-microbiota
+autor(pb.loss)
+```
+
+匹配到的肠道菌 (Phylum 水平)：
+
+```{r eval = T, echo = F, results = "asis"}
+#| LossOfSymbiotSadegh2024-matched-Phylum-microbiota
+autor(pb.loss.match)
+```
+
+```{r}
+# colorectal cancer
+unzip("~/Downloads/cancers-14-05207-s001.zip", exdir = "./material/LossOfSymbiotSadegh2024")
+pb.loss <- fxlsx("./material/LossOfSymbiotSadegh2024/Supplementary tables.xlsx", startRow = 2)
+
+pb.loss.match <- filter(pb.loss, grpl(taxon, paste0(pattern(qi), collapse = "|")))
+```
+
+#### IntegratedAnalChen2022 结肠癌 (肠道菌和代谢物)
+
+Integrated analysis of the faecal metagenome and serum metabolome reveals the
+role of gut microbiome-associated metabolites in the detection of colorectal
+cancer and adenoma [@IntegratedAnalChen2022]
+
+以下是整理自该文献的肠道菌和代谢物数据 (PDF 识别结果)：
+
+```{r eval = T, echo = F, results = "asis"}
+#| IntegratedAnalChen2022-published-data-microbiota
+autor(pb.inte)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IntegratedAnalChen2022-published-data-metabolites
+autor(pb.inte0)
+```
+
+未从上述数据中匹配到客户数据的差异肠道菌或其关联的代谢物。
+
+```{r}
+dir.create("./material/IntegratedAnalChen2022")
+file.copy("~/Downloads/gutjnl-2020-323476supp006.pdf", "./material/IntegratedAnalChen2022/metabolites.pdf")
+file.copy("~/Downloads/gutjnl-2020-323476supp008.pdf", "./material/IntegratedAnalChen2022/microbiota.pdf")
+```
+
+```{r}
+# microbiota
+pb.inte <- pdftools::pdf_text("./material/IntegratedAnalChen2022/microbiota.pdf")
+pb.inte <- gs(pb.inte, "Tumor promoting bacteria", "Tumor_promoting_bacteria")
+pb.inte <- gs(pb.inte, "Anti-tumor bacteria", "Anti-tumor_bacteria")
+pb.inte <- lapply(pb.inte,
+  function(x) {
+    x <- try(ftibble(x), T)
+    if (is(x, "data.frame")) {
+      if (ncol(x) > 4) {
+        V1 <- paste(x[[1]], x[[2]], x[[3]])
+        x <- x[, -(1:3)]
+        x$V1 <- V1
+        x <- dplyr::relocate(x, V1)
+        colnames(x) <- paste0("V", 1:4)
+      }
+    }
+    colnames(x) <- c("Type", "Species", "Metabolites", "pvalue")
+    return(x)
+  })
+pb.inte <- frbind(pb.inte)
+# pb.inte <- dplyr::filter(pb.inte, Type != "others")
+filter(pb.inte, grpl(Species, paste0(pattern(qi), collapse = "|")))
+```
+
+```{r}
+# metabolites
+pb.inte0 <- pdftools::pdf_text("./material/IntegratedAnalChen2022/metabolites.pdf")
+pb.inte0 <- lapply(pb.inte0,
+  function(x) {
+    x <- try(ftibble(x, header = T, fill = T), T)
+    colnames(x) <- paste0("V", 1:nrow(x))
+    x <- dplyr::filter(x, V1 != "")
+  })
+pb.inte0 <- frbind(pb.inte0, fill = T)
+pattern.meta <- paste0(mt@tables$step1$mapped$Match, collapse = "|")
+
+any(apply(pb.inte0, 1,
+  function(x) {
+    grpl(paste0(x, collapse = " "), pattern.meta)
+  }))
+```
 
 
 ```{r}

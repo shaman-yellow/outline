@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  20 FEB 2024 11:57
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  23 FEB 2024 17:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1261,35 +1261,35 @@ Overfull \hbox (2.28838pt too wide) has occurred while \output is active
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 9.70718pt on input line 1.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 4.
+(Font)              scaled to size 10.0pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 4.
+(Font)              scaled to size 7.0pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 4.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 4
+(Font)              scaled to size 5.0pt on input line 2.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
 .
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 4.
+(Font)              scaled to size 10.00092pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 4.
+(Font)              scaled to size 7.00064pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 4.
+(Font)              scaled to size 5.00046pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 4.
+(Font)              scaled to size 9.99893pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 4.
+(Font)              scaled to size 6.99925pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 4.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
+(Font)              scaled to size 4.99947pt on input line 2.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
@@ -1298,7 +1298,9 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@toc=\write4
 \openout4 = `output.toc'.
 
-(./output.lof)
+(./output.lof [1
+
+])
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
@@ -1306,13 +1308,20 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
-[1
-
-]
+[2]
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 107.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 129.
+(Font)              scaled to size 11.64862pt on input line 110.
+
+Overfull \hbox (322.00696pt too wide) in paragraph at lines 143--147
+[]\TU/FandolSong-Regular(0)/m/n/10 差 异 菌 筛 选 \TU/lmr/m/n/10 (level 6, Species) 
+\TU/FandolSong-Regular(0)/m/n/10 ，|  筛 得 差 异 菌 \TU/lmr/m/n/10 (Fig. []7[])\TU/F
+andolSong-Regular(0)/m/n/10 ：| \TU/lmr/m/n/10 d__Bacteria;p__Proteobacteria;c__
+Alphaproteobacteria;o__Rhizobiales;f__Beijerinckiaceae;g__Methylobacterium-
+ []
+
+[1]
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
@@ -1337,55 +1346,267 @@ guage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 175.
-[1] [2]
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 253.
+[2]
 File: Figure+Table/PCoA.pdf Graphic file (type pdf)
 <use Figure+Table/PCoA.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 251.
+(caption)                particular \caption on input line 329.
 See the caption package documentation for explanation.
 
+[3]
 File: Figure+Table/Alpha-diversity.pdf Graphic file (type pdf)
 <use Figure+Table/Alpha-diversity.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 266.
+(caption)                particular \caption on input line 344.
 See the caption package documentation for explanation.
 
-[3]
+[4]
 File: Figure+Table/Alpha-rarefaction.pdf Graphic file (type pdf)
 <use Figure+Table/Alpha-rarefaction.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 295.
+(caption)                particular \caption on input line 373.
 See the caption package documentation for explanation.
 
-[4]
 File: Figure+Table/Beta-diversity-group-test.pdf Graphic file (type pdf)
 <use Figure+Table/Beta-diversity-group-test.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 310.
+(caption)                particular \caption on input line 388.
 See the caption package documentation for explanation.
 
-[5]
+[5] [6]
+File: Figure+Table/Ancom-test-group-level-2-volcano.pdf Graphic file (type pdf)
+
+<use Figure+Table/Ancom-test-group-level-2-volcano.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 431.
+See the caption package documentation for explanation.
+
+[7]
+File: Figure+Table/Ancom-test-group-level-2-Percentile-abundance.pdf Graphic fi
+le (type pdf)
+<use Figure+Table/Ancom-test-group-level-2-Percentile-abundance.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 441.
+See the caption package documentation for explanation.
+
 File: Figure+Table/Ancom-test-group-level-6-volcano.pdf Graphic file (type pdf)
 
 <use Figure+Table/Ancom-test-group-level-6-volcano.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 352.
+(caption)                particular \caption on input line 451.
 See the caption package documentation for explanation.
 
-[6] [7] [8] (./output.aux) ) 
+[8]
+File: Figure+Table/Ancom-test-group-level-6-Percentile-abundance.pdf Graphic fi
+le (type pdf)
+<use Figure+Table/Ancom-test-group-level-6-Percentile-abundance.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 461.
+See the caption package documentation for explanation.
+
+[9] [10] [11]
+Overfull \hbox (17.5737pt too wide) in paragraph at lines 622--623
+[]\TU/lmr/m/n/10 p_MRPR…|  
+ []
+
+
+Overfull \hbox (17.5737pt too wide) in paragraph at lines 646--647
+[]\TU/lmr/m/n/10 p_MRPR…|  
+ []
+
+
+Overfull \hbox (6.4937pt too wide) in paragraph at lines 653--654
+[]\TU/lmr/m/n/10 p_Prot…|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 659--660
+[]\TU/lmr/m/n/10 0.0313679|  
+ []
+
+
+Overfull \hbox (1.0937pt too wide) in paragraph at lines 661--662
+[]\TU/lmr/m/n/10 1.0532…|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 665--666
+[]\TU/lmr/m/n/10 0.0417018|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 667--668
+[]\TU/lmr/m/n/10 0.0188806|  
+ []
+
+
+Overfull \hbox (6.4937pt too wide) in paragraph at lines 674--675
+[]\TU/lmr/m/n/10 p_Prot…|  
+ []
+
+
+Overfull \hbox (4.94371pt too wide) in paragraph at lines 676--677
+[]\TU/lmr/m/n/10 selenium|  
+ []
+
+
+Overfull \hbox (4.8937pt too wide) in paragraph at lines 678--679
+\TU/lmr/m/n/10 0.122431|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 680--681
+[]\TU/lmr/m/n/10 0.0289698|  
+ []
+
+
+Overfull \hbox (1.3437pt too wide) in paragraph at lines 682--683
+[]\TU/lmr/m/n/10 2.3772…|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 686--687
+[]\TU/lmr/m/n/10 0.0412256|  
+ []
+
+
+Overfull \hbox (4.8937pt too wide) in paragraph at lines 688--689
+[]\TU/lmr/m/n/10 0.431953|  
+ []
+
+
+Overfull \hbox (6.4937pt too wide) in paragraph at lines 695--696
+[]\TU/lmr/m/n/10 p_Prot…|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 701--702
+[]\TU/lmr/m/n/10 0.0221977|  
+ []
+
+
+Overfull \hbox (1.0937pt too wide) in paragraph at lines 703--704
+[]\TU/lmr/m/n/10 1.0141…|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 707--708
+[]\TU/lmr/m/n/10 0.0323047|  
+ []
+
+
+Overfull \hbox (6.4937pt too wide) in paragraph at lines 716--717
+[]\TU/lmr/m/n/10 p_Prot…|  
+ []
+
+
+Overfull \hbox (7.22371pt too wide) in paragraph at lines 718--719
+[]\TU/lmr/m/n/10 Glutam…|  
+ []
+
+
+Overfull \hbox (4.8937pt too wide) in paragraph at lines 720--721
+[]\TU/lmr/m/n/10 0.175275|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 722--723
+[]\TU/lmr/m/n/10 0.0392992|  
+ []
+
+
+Overfull \hbox (1.5937pt too wide) in paragraph at lines 724--725
+[]\TU/lmr/m/n/10 8.1952…|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 726--727
+[]\TU/lmr/m/n/10 0.0363522|  
+ []
+
+
+Overfull \hbox (9.8937pt too wide) in paragraph at lines 728--729
+[]\TU/lmr/m/n/10 0.0368746|  
+ []
+
+
+Overfull \hbox (4.8937pt too wide) in paragraph at lines 730--731
+[]\TU/lmr/m/n/10 0.324216|  
+ []
+
+
+Overfull \hbox (1.5937pt too wide) in paragraph at lines 734--735
+[]\TU/lmr/m/n/10 0.1929…|  
+ []
+
+[12]
+File: figs/metabolites_ORA_dot_kegg_pathway_dpi72.pdf Graphic file (type pdf)
+<use figs/metabolites_ORA_dot_kegg_pathway_dpi72.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 778.
+See the caption package documentation for explanation.
+
+File: Figure+Table/Enrichment-with-algorithm-PageRank.pdf Graphic file (type pd
+f)
+<use Figure+Table/Enrichment-with-algorithm-PageRank.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 788.
+See the caption package documentation for explanation.
+
+[13] [14]
+Overfull \hbox (3.99333pt too wide) in paragraph at lines 873--874
+[]\TU/lmr/m/n/10 p__Gemmatimonadetes|  
+ []
+
+[15]
+Overfull \hbox (58.71512pt too wide) in alignment at lines 1037--1042
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (58.71512pt too wide) in alignment at lines 1042--1046
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (58.71512pt too wide) in alignment at lines 1046--1064
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[16] [17]
+Overfull \hbox (54.75511pt too wide) in alignment at lines 1198--1203
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (54.75511pt too wide) in alignment at lines 1203--1207
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (54.75511pt too wide) in alignment at lines 1207--1225
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[18] [19] [20] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 32092 strings out of 476191
- 652152 string characters out of 5812072
- 1102467 words of memory out of 5000000
- 52291 multiletter control sequences out of 15000+600000
+ 32201 strings out of 476191
+ 656188 string characters out of 5812072
+ 1114068 words of memory out of 5000000
+ 52394 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1365b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (10 pages).
+Output written on output.pdf (23 pages).
