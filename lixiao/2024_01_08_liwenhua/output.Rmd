@@ -49,7 +49,7 @@ header-includes:
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(2), coef = NA)
+info <- items(belong = c(odate(1), odate(2)), coef = c(.083, NA))
 
 order_publish()
 idname <- order_packaging()
