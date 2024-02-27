@@ -1,0 +1,14 @@
+
+```{r}
+writeLines(get_filename(list.files("../", "Step.*.pdf", full.names = F, recursive = T)))
+```
+
+- Step 系列：Prologue and Get-start.pdf
+- Step 系列：scRNA-seq 基本分析.pdf
+
+上面这两份文件可以一起评估，记作：高难度 (期望 0.4)
+
+- Step 系列：scRNA-seq 癌细胞鉴定.pdf
+
+高等级丰富 (期望 0.2)
+

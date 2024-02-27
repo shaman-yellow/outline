@@ -394,7 +394,7 @@ autor(mt@plots$step1$metabolites_ORA_dot_kegg_pathway)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Enrichment-with-algorithm-PageRank
-autor(fe@plots$step1$p.enrich$ids)
+autor(wrap(fe@plots$step1$p.enrich$ids, 12, 9))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
