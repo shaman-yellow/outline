@@ -1,0 +1,19 @@
+```{r}
+
+print(tt, n = 200)
+dplyr::filter(tt, abs(log2FC) > 2, Pvalue < .0001)
+
+authDegs <- c("DSC2", "IL33", "CEL", "ABCC9", "CHAC1", "HOOK1", "GJA5")
+bm <- new_biomart()
+dat <- filter_biomart(bm, general_attrs(), "hgnc_symbol", authDegs)
+
+dplyr::filter(tt, AccID %in% dat$ensembl_gene_id)
+
+```
+
+
+
+```{r}
+je <- job_esearch("ubiquitination")
+vis(je, "Nature")
+```

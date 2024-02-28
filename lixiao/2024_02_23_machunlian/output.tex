@@ -1,0 +1,840 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+乙肝病毒HBx利用泛素化系统降解XXX上调YYY诱导肝癌线粒体自噬}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-02-27}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux9700ux6c42}{%
+\subsection{需求}\label{ux9700ux6c42}}
+
+乙肝病毒HBx利用泛素化系统降解XXX上调YYY诱导肝癌线粒体自噬
+
+筛选建议：
+
+1、筛选乙肝病毒HBx (乙型肝炎病毒的外壳蛋白) 处理诱导肝癌细胞差异表达基因集A；
+
+2、基因集A与线粒体自噬相关基因B的相关性（PPI）；
+
+3、筛选最佳相关性组合XXX和YYY。
+
+\hypertarget{ux7ed3ux679c}{%
+\subsection{结果}\label{ux7ed3ux679c}}
+
+注：与上述建议有不同之处，考虑了与泛素化相关基因的关联。
+
+\begin{itemize}
+\tightlist
+\item
+  以 GSE186862 数据集差异分析获得基因集 DEGs (Fig. \ref{fig:L02-Model-vs-Control-DEGs}，
+  Tab. \ref{tab:L02-data-Model-vs-Control-DEGs})
+\item
+  获取自噬相关基因集 Mitophagy (Tab. \ref{tab:MIT-related-targets-from-GeneCards})
+\item
+  分析 DEGs 中的上调、下调组与 Mitophagy 的交集 (Fig. \ref{fig:UpSet-Intersection-DEGs-with-Mitophagy-related})。
+\item
+  DEGs 构建 PPI 网络 (Fig. \ref{fig:Raw-PPI-network})：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    预计泛素化会导致基因的表达量下降\textsuperscript{\protect\hyperlink{ref-UbiquitinationPopovi2014}{1}}，因此这里推断，受泛素化的 XXX 基因主要存在于 DEGs-down;
+    随后，挖掘 DEGs-up-with-Mitophagy (DEGs-up 与 Mitophagy 交集) 与 DEGs-down 的关联
+    (Fig. \ref{fig:Filtered-and-formated-PPI-network})。
+  \item
+    根据 DEGs-down 的 MCC score 筛选 Top 10 (Fig. \ref{fig:Top-MCC-score}) 。
+  \end{itemize}
+\item
+  获取泛素化相关基因集 (Tab. \ref{tab:UBI-related-targets-from-GeneCards})
+\item
+  泛素化相关的筛选：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    将 Tab. \ref{tab:UBI-related-targets-from-GeneCards} 和 Fig. \ref{fig:Top-MCC-score} 中的 Top 10 DEGs-down 关联分析 (GSE186862 数据集)，获得关联热图 (Fig. \ref{fig:L02-correlation-heatmap}) 。
+  \item
+    以 P-value \textless{} 0.001 筛选 Fig. \ref{fig:L02-correlation-heatmap}，得到 Fig. \ref{fig:Correlation-filtered}。
+  \end{itemize}
+\item
+  整合上述过程的数据：泛素化 -\textgreater{} DEGs-down -\textgreater{} DEGs-up-Mitophagy，Fig. \ref{fig:integrated-relationship}
+\item
+  将整合后的所有基因富集分析，Fig. \ref{fig:INTE-KEGG-enrichment}，Fig. \ref{fig:INTE-GO-enrichment}：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    主要关注两条通路 (分别与泛素化和自噬相关) ：Fig. \ref{fig:INTE-hsa04120-visualization}，Fig. \ref{fig:INTE-hsa04137-visualization}
+  \item
+    两条通路有交错的基因 (\ref{path-intersect}): HUWE1, RPS27A
+  \item
+    根据交错基因重新整理 Fig. \ref{fig:integrated-relationship}，
+    得到 Fig. \ref{fig:co-Exists-in-integrated-relationship}，Tab. \ref{tab:co-Exists-in-integrated-relationship-data}
+  \end{itemize}
+\item
+  最终筛选：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    建议：结合通路 Mitophagy (Fig. \ref{fig:INTE-hsa04137-visualization})，
+    和 Fig. \ref{fig:co-Exists-in-integrated-relationship}，
+    可发现： HUWE1 -\textgreater{} RPS27A (UB) -\textgreater{} ULK1 之间存在关联。
+  \item
+    额外：可根据 Tab. \ref{tab:co-Exists-in-integrated-relationship} 筛选其他可能。
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+All used GEO expression data and their design:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GSE186862}: mRNA profiles of L02-vector and L02-HBx cells
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+\item
+  The Human Gene Database \texttt{GeneCards} used for disease related genes prediction\textsuperscript{\protect\hyperlink{ref-TheGenecardsSStelze2016}{3}}.
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
+\item
+  R package \texttt{ClusterProfiler} used for GSEA enrichment\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{4},\protect\hyperlink{ref-EdgerDifferenChen}{5}}.
+\item
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{6},\protect\hyperlink{ref-CytohubbaIdenChin2014}{7}}.
+\item
+  The MCC score was calculated referring to algorithm of \texttt{CytoHubba}\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{7}}.
+\item
+  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux4e59ux809dux75c5ux6bd2-hbx-ux5904ux7406-degs}{%
+\subsection{乙肝病毒 HBx 处理 DEGs}\label{ux4e59ux809dux75c5ux6bd2-hbx-ux5904ux7406-degs}}
+
+\hypertarget{ux6570ux636eux6765ux6e90}{%
+\subsubsection{数据来源}\label{ux6570ux636eux6765ux6e90}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE186862
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Illumina Casava1.7 software used for basecalling.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    Sequenced reads were trimmed for adaptor sequence, and
+masked for low-complexity or low-quality sequence, then
+mapped to mm8 whole genome using bowtie v0.12.2 with
+parameters -q -p 4 -e 100 -y -a -m 10 --best --strata
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    Reads Per Kilobase of exon per Megabase of library size
+(RPKM) were calculated using a protocol from Chepelev et
+al., Nucleic Acids Research, 2009. In short, exons from all
+isoforms of a gene were merged to create one
+meta-transcript. The number of reads falling in the exons
+of this meta-transcri...
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Genome\_build: HG19
+
+\vspace{2em}
+
+
+\textbf{
+(Others)
+:}
+
+\vspace{0.5em}
+
+    ...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:L02-metadata} (下方表格) 为表格L02 metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/L02-metadata.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有6行9列，以下预览的表格可能省略部分数据；表格含有6个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample:  样品名称
+\item group:  分组名称
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:L02-metadata}L02 metadata}\tabularnewline
+\toprule
+rownames & sample & group & lib.size & norm.f\ldots{} & title & cell.l\ldots{} & cell.t\ldots{} & genoty\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & sample & group & lib.size & norm.f\ldots{} & title & cell.l\ldots{} & cell.t\ldots{} & genoty\ldots{}\tabularnewline
+\midrule
+\endhead
+A & A & Control & 16890967 & 1 & L02-ve\ldots{} & L02 & liver \ldots{} & control\tabularnewline
+C & C & Control & 13575225 & 1 & L02-ve\ldots{} & L02 & liver \ldots{} & control\tabularnewline
+E & E & Control & 14827232 & 1 & L02-ve\ldots{} & L02 & liver \ldots{} & control\tabularnewline
+B & B & Model & 21985666 & 1 & L02-HBx1 & L02 & liver \ldots{} & HBx ex\ldots{}\tabularnewline
+D & D & Model & 16595110 & 1 & L02-HBx2 & L02 & liver \ldots{} & HBx ex\ldots{}\tabularnewline
+F & F & Model & 19786946 & 1 & L02-HBx3 & L02 & liver \ldots{} & HBx ex\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+注：该 GSE 数据集的补充材料没有注明样品分组 (即，A、B、C\ldots\ldots 等样品是属于哪个组别) ，
+元数据表格中的分组信息，是我根据原文 Figure 和 LogFC 数值推断的\textsuperscript{\protect\hyperlink{ref-HbxIncreasesCZheng2022}{8}}。
+
+\hypertarget{degs}{%
+\subsubsection{DEGs}\label{degs}}
+
+Figure \ref{fig:L02-Model-vs-Control-DEGs} (下方图) 为图L02 Model vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/L02-Model-vs-Control-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/L02-Model-vs-Control-DEGs.pdf}
+\caption{L02 Model vs Control DEGs}\label{fig:L02-Model-vs-Control-DEGs}
+\end{center}
+
+Table \ref{tab:L02-data-Model-vs-Control-DEGs} (下方表格) 为表格L02 data Model vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/L02-data-Model-vs-Control-DEGs.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2352行12列，以下预览的表格可能省略部分数据；表格含有2205个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:L02-data-Model-vs-Control-DEGs}L02 data Model vs Control DEGs}\tabularnewline
+\toprule
+rownames & AccID & AccID.1 & Symbol & Strand & KeggID & logFC & AveExpr & t & P.Value\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & AccID & AccID.1 & Symbol & Strand & KeggID & logFC & AveExpr & t & P.Value\tabularnewline
+\midrule
+\endhead
+38934 & ENSG00\ldots{} & NM\_019\ldots{} & UGT1A7 & hsa:54577 & UDP gl\ldots{} & -3.200\ldots{} & 5.1819\ldots{} & -24.69\ldots{} & 2.2577\ldots{}\tabularnewline
+12949 & ENSG00\ldots{} & NM\_153\ldots{} & HSPA8 & hsa:3312 & heat s\ldots{} & -2.694\ldots{} & 10.198\ldots{} & -23.85\ldots{} & 3.1834\ldots{}\tabularnewline
+15559 & ENSG00\ldots{} & NM\_006472 & TXNIP & hsa:10628 & thiore\ldots{} & 3.6547\ldots{} & 5.2722\ldots{} & 24.094\ldots{} & 2.8880\ldots{}\tabularnewline
+22453 & ENSG00\ldots{} & NM\_003\ldots{} & STC2 & hsa:8614 & stanni\ldots{} & 2.6030\ldots{} & 7.9409\ldots{} & 22.909\ldots{} & 4.7679\ldots{}\tabularnewline
+56468 & ENSG00\ldots{} & NM\_052\ldots{} & FAM129A & hsa:11\ldots{} & family\ldots{} & 2.2312\ldots{} & 7.2870\ldots{} & 18.291\ldots{} & 4.4197\ldots{}\tabularnewline
+52927 & ENSG00\ldots{} & NM\_144\ldots{} & IL20RB & hsa:53833 & interl\ldots{} & 2.3520\ldots{} & 4.4217\ldots{} & 16.820\ldots{} & 1.0066\ldots{}\tabularnewline
+22482 & ENSG00\ldots{} & NM\_004\ldots{} & ATF3 & hsa:467 & activa\ldots{} & 2.9807\ldots{} & 4.1438\ldots{} & 16.708\ldots{} & 1.0745\ldots{}\tabularnewline
+15033 & ENSG00\ldots{} & NM\_005\ldots{} & SGK1 & hsa:6446 & serum/\ldots{} & -1.942\ldots{} & 6.7155\ldots{} & -16.43\ldots{} & 1.2627\ldots{}\tabularnewline
+49697 & ENSG00\ldots{} & NM\_001\ldots{} & GADD45A & hsa:1647 & growth\ldots{} & 2.1993\ldots{} & 5.0430\ldots{} & 16.435\ldots{} & 1.2622\ldots{}\tabularnewline
+23878 & ENSG00\ldots{} & NR\_120\ldots{} & LINC01468 & hsa:10\ldots{} & long i\ldots{} & -2.572\ldots{} & 3.8734\ldots{} & -16.50\ldots{} & 1.2116\ldots{}\tabularnewline
+39631 & ENSG00\ldots{} & NM\_014\ldots{} & PPP1R15A & hsa:23645 & protei\ldots{} & 1.8632\ldots{} & 6.8100\ldots{} & 15.752\ldots{} & 1.9102\ldots{}\tabularnewline
+5042 & ENSG00\ldots{} & NM\_004\ldots{} & F2RL2 & hsa:2151 & coagul\ldots{} & 2.3576\ldots{} & 3.9660\ldots{} & 15.718\ldots{} & 1.9511\ldots{}\tabularnewline
+7150 & ENSG00\ldots{} & NM\_002\ldots{} & PTX3 & hsa:5806 & pentra\ldots{} & 3.0542\ldots{} & 3.7001\ldots{} & 15.552\ldots{} & 2.1645\ldots{}\tabularnewline
+3587 & ENSG00\ldots{} & NM\_002\ldots{} & CXCL2 & hsa:2920 & chemok\ldots{} & 2.0506\ldots{} & 4.7692\ldots{} & 15.311\ldots{} & 2.5193\ldots{}\tabularnewline
+58151 & ENSG00\ldots{} & NM\_005\ldots{} & HSPA1A & hsa:3303 & heat s\ldots{} & -2.338\ldots{} & 6.8642\ldots{} & -15.26\ldots{} & 2.5935\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5bccux96c6ux5206ux6790-ux5c1dux8bd5}{%
+\subsubsection{富集分析 (尝试)}\label{ux5bccux96c6ux5206ux6790-ux5c1dux8bd5}}
+
+Figure \ref{fig:L02-KEGG-enrichment-with-enriched-genes} (下方图) 为图L02 KEGG enrichment with enriched genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/L02-KEGG-enrichment-with-enriched-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/L02-KEGG-enrichment-with-enriched-genes.pdf}
+\caption{L02 KEGG enrichment with enriched genes}\label{fig:L02-KEGG-enrichment-with-enriched-genes}
+\end{center}
+
+Figure \ref{fig:L02-GSEA-plot-of-the-pathways} (下方图) 为图L02 GSEA plot of the pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/L02-GSEA-plot-of-the-pathways.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/L02-GSEA-plot-of-the-pathways.pdf}
+\caption{L02 GSEA plot of the pathways}\label{fig:L02-GSEA-plot-of-the-pathways}
+\end{center}
+
+\hypertarget{ux7ebfux7c92ux4f53ux81eaux566c}{%
+\subsection{线粒体自噬}\label{ux7ebfux7c92ux4f53ux81eaux566c}}
+
+\hypertarget{genecards}{%
+\subsubsection{GeneCards}\label{genecards}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by filtering:
+:}
+
+\vspace{0.5em}
+
+    Score > 1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:MIT-related-targets-from-GeneCards} (下方表格) 为表格MIT related targets from GeneCards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MIT-related-targets-from-GeneCards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1686行7列，以下预览的表格可能省略部分数据；表格含有1686个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:MIT-related-targets-from-GeneCards}MIT related targets from GeneCards}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+PRKN & Parkin RBR\ldots{} & Protein Co\ldots{} & O60260 & 57 & GC06M161348 & 19.14\tabularnewline
+PINK1 & PTEN Induc\ldots{} & Protein Co\ldots{} & Q9BXM7 & 55 & GC01P020634 & 18.01\tabularnewline
+MAP1LC3B & Microtubul\ldots{} & Protein Co\ldots{} & Q9GZQ8 & 50 & GC16P087413 & 11.07\tabularnewline
+VDAC1 & Voltage De\ldots{} & Protein Co\ldots{} & P21796 & 54 & GC05M133975 & 10.11\tabularnewline
+FUNDC1 & FUN14 Doma\ldots{} & Protein Co\ldots{} & Q8IVP5 & 37 & GC0XM044523 & 9.21\tabularnewline
+MFN2 & Mitofusin 2 & Protein Co\ldots{} & O95140 & 57 & GC01P011980 & 9.05\tabularnewline
+SQSTM1 & Sequestoso\ldots{} & Protein Co\ldots{} & Q13501 & 58 & GC05P179806 & 8.40\tabularnewline
+MAP1LC3A & Microtubul\ldots{} & Protein Co\ldots{} & Q9H492 & 48 & GC20P034546 & 7.92\tabularnewline
+ULK1 & Unc-51 Lik\ldots{} & Protein Co\ldots{} & O75385 & 54 & GC12P131894 & 7.22\tabularnewline
+UBC & Ubiquitin C & Protein Co\ldots{} & P0CG48 & 51 & GC12M124911 & 6.81\tabularnewline
+PHB2 & Prohibitin 2 & Protein Co\ldots{} & Q99623 & 49 & GC12M006965 & 6.75\tabularnewline
+ATG13 & Autophagy \ldots{} & Protein Co\ldots{} & O75143 & 49 & GC11P047383 & 6.54\tabularnewline
+SOD2-OT1 & SOD2 Overl\ldots{} & RNA Gene & & 18 & GC06M159772 & 6.47\tabularnewline
+TOMM20 & Translocas\ldots{} & Protein Co\ldots{} & Q15388 & 48 & GC01M235109 & 6.45\tabularnewline
+AMBRA1 & Autophagy \ldots{} & Protein Co\ldots{} & Q9C0C7 & 46 & GC11M120823 & 6.26\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{degs-ux4e0eux7ebfux7c92ux4f53ux81eaux566c}{%
+\subsection{DEGs 与线粒体自噬}\label{degs-ux4e0eux7ebfux7c92ux4f53ux81eaux566c}}
+
+\hypertarget{ux4ea4ux96c6-inter-degs-mito}{%
+\subsubsection{交集 (Inter-DEGs-Mito)}\label{ux4ea4ux96c6-inter-degs-mito}}
+
+Figure \ref{fig:Venn-Intersection-DEGs-with-Mitophagy-related} (下方图) 为图Venn Intersection DEGs with Mitophagy related概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Venn-Intersection-DEGs-with-Mitophagy-related.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Venn-Intersection-DEGs-with-Mitophagy-related.pdf}
+\caption{Venn Intersection DEGs with Mitophagy related}\label{fig:Venn-Intersection-DEGs-with-Mitophagy-related}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    HSPA8, HSPA1A, SESN2, HMGCS1, RNF41, PSAT1, NDRG1,
+DNAJA1, PCK2, ZC3HAV1, SLFN11, RCAN1, KPNA2, BNIP3, UGP2,
+SHMT2, LDHA, VDAC1, PLOD2, ANLN, BNIP3L, NSDHL, PCYOX1,
+PHGDH, TRIM25, PDP1, SQSTM1, HSPH1, PLSCR1, SLC3A2,
+GABARAPL1, HK2, HSP90AA1, APAF1, LMO7, ARHGEF2, GPCPD1,
+NFKB1, CUL3, SMAD3, NFKB...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Venn-Intersection-DEGs-with-Mitophagy-related-content})}
+
+Figure \ref{fig:UpSet-Intersection-DEGs-with-Mitophagy-related} (下方图) 为图UpSet Intersection DEGs with Mitophagy related概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/UpSet-Intersection-DEGs-with-Mitophagy-related.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/UpSet-Intersection-DEGs-with-Mitophagy-related.pdf}
+\caption{UpSet Intersection DEGs with Mitophagy related}\label{fig:UpSet-Intersection-DEGs-with-Mitophagy-related}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/UpSet-Intersection-DEGs-with-Mitophagy-related-content})}
+
+\hypertarget{ppi}{%
+\subsubsection{PPI}\label{ppi}}
+
+构建 DEGs 的 PPI 网络。
+
+Figure \ref{fig:Raw-PPI-network} (下方图) 为图Raw PPI network概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Raw-PPI-network.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Raw-PPI-network.pdf}
+\caption{Raw PPI network}\label{fig:Raw-PPI-network}
+\end{center}
+
+预计泛素化会导致基因的表达量下降\textsuperscript{\protect\hyperlink{ref-UbiquitinationPopovi2014}{1}}，因此这里可以推断，受泛素化的 XXX 基因主要存在于 DEGs-down。
+
+挖掘 DEGs-up-with-Mitophagy (DEGs-up 与 Mitophagy 交集) 与 DEGs-down 的关联。
+
+Figure \ref{fig:Filtered-and-formated-PPI-network} (下方图) 为图Filtered and formated PPI network概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Filtered-and-formated-PPI-network.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Filtered-and-formated-PPI-network.pdf}
+\caption{Filtered and formated PPI network}\label{fig:Filtered-and-formated-PPI-network}
+\end{center}
+
+根据 DEGs-down 的 MCC score 筛选 Top 10。
+
+Figure \ref{fig:Top-MCC-score} (下方图) 为图Top MCC score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Top-MCC-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Top-MCC-score.pdf}
+\caption{Top MCC score}\label{fig:Top-MCC-score}
+\end{center}
+
+\hypertarget{ux6cdbux7d20ux5316}{%
+\subsection{泛素化}\label{ux6cdbux7d20ux5316}}
+
+\hypertarget{genecards-1}{%
+\subsubsection{GeneCards}\label{genecards-1}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by filtering:
+:}
+
+\vspace{0.5em}
+
+    Score > 15
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:UBI-related-targets-from-GeneCards} (下方表格) 为表格UBI related targets from GeneCards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/UBI-related-targets-from-GeneCards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有161行7列，以下预览的表格可能省略部分数据；表格含有161个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:UBI-related-targets-from-GeneCards}UBI related targets from GeneCards}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+RPS27A & Ribosomal \ldots{} & Protein Co\ldots{} & P62979 & 51 & GC02P055231 & 41.57\tabularnewline
+PRKN & Parkin RBR\ldots{} & Protein Co\ldots{} & O60260 & 57 & GC06M161348 & 40.64\tabularnewline
+UBC & Ubiquitin C & Protein Co\ldots{} & P0CG48 & 51 & GC12M124911 & 37.54\tabularnewline
+UBE2D1 & Ubiquitin \ldots{} & Protein Co\ldots{} & P51668 & 52 & GC10P058334 & 37.22\tabularnewline
+UBE2D3 & Ubiquitin \ldots{} & Protein Co\ldots{} & P61077 & 52 & GC04M102794 & 35.79\tabularnewline
+UBE2D2 & Ubiquitin \ldots{} & Protein Co\ldots{} & P62837 & 51 & GC05P139526 & 35.33\tabularnewline
+UBE2L3 & Ubiquitin \ldots{} & Protein Co\ldots{} & P68036 & 54 & GC22P021549 & 33.3\tabularnewline
+UBE2N & Ubiquitin \ldots{} & Protein Co\ldots{} & P61088 & 55 & GC12M093406 & 32.84\tabularnewline
+RBX1 & Ring-Box 1 & Protein Co\ldots{} & P62877 & 51 & GC22P040951 & 30.81\tabularnewline
+USP7 & Ubiquitin \ldots{} & Protein Co\ldots{} & Q93009 & 57 & GC16M008892 & 30.55\tabularnewline
+VCP & Valosin Co\ldots{} & Protein Co\ldots{} & P55072 & 58 & GC09M035056 & 30.55\tabularnewline
+UBE3A & Ubiquitin \ldots{} & Protein Co\ldots{} & Q05086 & 56 & GC15M025333 & 30.26\tabularnewline
+MDM2 & MDM2 Proto\ldots{} & Protein Co\ldots{} & Q00987 & 62 & GC12P068808 & 30.23\tabularnewline
+STUB1 & STIP1 Homo\ldots{} & Protein Co\ldots{} & Q9UNE7 & 54 & GC16P064961 & 30.01\tabularnewline
+UBE4B & Ubiquitina\ldots{} & Protein Co\ldots{} & O95155 & 49 & GC01P010032 & 29.68\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6cdbux7d20ux5316ux57faux56e0ux96c6ux4e0eux7b5bux9009ux57faux56e0ux96c6-degs-down-ux7684ux76f8ux5173ux6027}{%
+\subsection{泛素化基因集与筛选基因集 (DEGs-down) 的相关性}\label{ux6cdbux7d20ux5316ux57faux56e0ux96c6ux4e0eux7b5bux9009ux57faux56e0ux96c6-degs-down-ux7684ux76f8ux5173ux6027}}
+
+\hypertarget{ux5173ux8054ux70edux56fe}{%
+\subsubsection{关联热图}\label{ux5173ux8054ux70edux56fe}}
+
+将 Tab. \ref{tab:UBI-related-targets-from-GeneCards} 和 Fig. \ref{fig:Top-MCC-score} 中的 Top 10 DEGs-down
+关联分析 (GSE186862 数据集)。
+
+Figure \ref{fig:L02-correlation-heatmap} (下方图) 为图L02 correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/L02-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/L02-correlation-heatmap.pdf}
+\caption{L02 correlation heatmap}\label{fig:L02-correlation-heatmap}
+\end{center}
+
+\hypertarget{ux6784ux5efaux7f51ux7edc}{%
+\subsubsection{构建网络}\label{ux6784ux5efaux7f51ux7edc}}
+
+以 P-value \textless{} 0.001 筛选 Fig. \ref{fig:L02-correlation-heatmap}。
+
+Figure \ref{fig:Correlation-filtered} (下方图) 为图Correlation filtered概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Correlation-filtered.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Correlation-filtered.pdf}
+\caption{Correlation filtered}\label{fig:Correlation-filtered}
+\end{center}
+
+\hypertarget{ux6574ux5408ux6cdbux7d20ux5316---degs-down---degs-up-mitophagy}{%
+\subsection{整合：泛素化 -\textgreater{} DEGs-down -\textgreater{} DEGs-up-Mitophagy}\label{ux6574ux5408ux6cdbux7d20ux5316---degs-down---degs-up-mitophagy}}
+
+Figure \ref{fig:integrated-relationship} (下方图) 为图integrated relationship概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/integrated-relationship.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/integrated-relationship.pdf}
+\caption{Integrated relationship}\label{fig:integrated-relationship}
+\end{center}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+\hypertarget{kegg}{%
+\subsubsection{KEGG}\label{kegg}}
+
+Figure \ref{fig:INTE-KEGG-enrichment} (下方图) 为图INTE KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTE-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTE-KEGG-enrichment.pdf}
+\caption{INTE KEGG enrichment}\label{fig:INTE-KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:INTE-GO-enrichment} (下方图) 为图INTE GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTE-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTE-GO-enrichment.pdf}
+\caption{INTE GO enrichment}\label{fig:INTE-GO-enrichment}
+\end{center}
+
+\hypertarget{pathway-visualization}{%
+\subsubsection{pathway visualization}\label{pathway-visualization}}
+
+Figure \ref{fig:INTE-hsa04120-visualization} (下方图) 为图INTE hsa04120 visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04120.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-02-27_14_52_06.625626/hsa04120.pathview.png}
+\caption{INTE hsa04120 visualization}\label{fig:INTE-hsa04120-visualization}
+\end{center}
+
+Figure \ref{fig:INTE-hsa04137-visualization} (下方图) 为图INTE hsa04137 visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04137.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-02-27_14_52_06.625626/hsa04137.pathview.png}
+\caption{INTE hsa04137 visualization}\label{fig:INTE-hsa04137-visualization}
+\end{center}
+
+\hypertarget{path-intersect}{%
+\subsubsection{富集于 hsa04120 (Ubiquitination) 与 hsa04137 (Mitophagy) 的基因}\label{path-intersect}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Content
+:}
+
+\vspace{0.5em}
+
+    HUWE1, RPS27A
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Figure \ref{fig:co-Exists-in-integrated-relationship} (下方图) 为图co Exists in integrated relationship概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/co-Exists-in-integrated-relationship.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/co-Exists-in-integrated-relationship.pdf}
+\caption{Co Exists in integrated relationship}\label{fig:co-Exists-in-integrated-relationship}
+\end{center}
+
+Table \ref{tab:co-Exists-in-integrated-relationship-data} (下方表格) 为表格co Exists in integrated relationship data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/co-Exists-in-integrated-relationship-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有32行3列，以下预览的表格可能省略部分数据；表格含有2个唯一`Ubiquitination\_related'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:co-Exists-in-integrated-relationship-data}Co Exists in integrated relationship data}\tabularnewline
+\toprule
+Ubiquitination\_related & DEGs\_down & DEGs\_up\_Mitophagy\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Ubiquitination\_related & DEGs\_down & DEGs\_up\_Mitophagy\tabularnewline
+\midrule
+\endhead
+RPS27A & RPS27A & AIMP2\tabularnewline
+RPS27A & RPS27A & NFKB1\tabularnewline
+RPS27A & RPS27A & DUSP1\tabularnewline
+RPS27A & RPS27A & NR1D1\tabularnewline
+RPS27A & RPS27A & DDB2\tabularnewline
+RPS27A & RPS27A & EP300\tabularnewline
+RPS27A & RPS27A & BAX\tabularnewline
+RPS27A & RPS27A & TRIM25\tabularnewline
+RPS27A & RPS27A & ULK1\tabularnewline
+RPS27A & RPS27A & SMAD3\tabularnewline
+RPS27A & RPS27A & RNF41\tabularnewline
+RPS27A & RPS27A & UBE2Z\tabularnewline
+RPS27A & RPS27A & NFKB2\tabularnewline
+RPS27A & RPS27A & SRC\tabularnewline
+RPS27A & RPS27A & SQSTM1\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-UbiquitinationPopovi2014}{}%
+1. Popovic, D., Vucic, D. \& Dikic, I. Ubiquitination in disease pathogenesis and treatment. \emph{Nature Medicine} \textbf{20}, (2014).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+2. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+3. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+4. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+5. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+6. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+7. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+
+\leavevmode\hypertarget{ref-HbxIncreasesCZheng2022}{}%
+8. Zheng, C., Liu, M., Ge, Y., Qian, Y. \& Fan, H. HBx increases chromatin accessibility and etv4 expression to regulate dishevelled-2 and promote hcc progression. \emph{Cell death \textbackslash\& disease} \textbf{13}, (2022).
+\end{cslreferences}
+
+\end{document}

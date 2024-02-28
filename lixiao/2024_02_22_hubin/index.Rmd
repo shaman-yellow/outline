@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(2), coef = NA)
+info <- items(belong = odate(2), eval = ic(1, 0, 0, 0, 1))
 
 order_publish()
 idname <- order_packaging()
@@ -35,8 +35,14 @@ set_index()
 
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("化脓"),
+  di("坏疽")
+)
 
+# DEGs: Differential Expressed Genes 差异表达基因
+# S: suppuration 化脓
+# G: gangrene 坏疽
 ```
 
 # 前言 {#introduction}
@@ -64,5 +70,76 @@ auto_method()
 ```{r}
 file.copy("~/Downloads/20231012-01 胡斌.rar", "./material")
 ```
+
+## 预处理表格
+
+```{r}
+use <- c("病理结果", "阑尾管径", "管腔内积液", "阑尾周围炎性渗出", "临近肠道")
+
+raw <- readxl::read_xls("./material/原始数据/客户的原始数据.xls")
+raw <- dplyr::select(raw, dplyr::matches(paste0(use, collapse = "|")))
+colnames(raw) %<>% gs("mm$|有/无$", "")
+
+raw <- dplyr::mutate(raw,
+  dplyr::across(is.character,
+    function(x){
+      x <- dplyr::recode(x, '有' = "1", '无' = "0", .default = x)
+      if (any(is.na(y <- as.integer(x)))) x
+      else y
+    })
+)
+
+raw
+```
+
+## 急性单纯性阑尾炎组与急性化脓性阑尾炎组
+
+```{r}
+dat.supp <- dplyr::filter(raw, grpl(`病理结果`, "急性单纯性阑尾炎|急性化脓性阑尾炎"))
+fun_format <- function(x) {
+  dplyr::mutate(x, `病理结果` = ifelse(grpl(`病理结果`, "单纯"), 0L, 1L))
+}
+dat.supp <- fun_format(dat.supp)
+dat.supp
+```
+
+### 阑尾管径 cutoff
+
+```{r eval = T, echo = F, results = "asis"}
+#| Supp-ROC
+autor(rocSupp$p.roc)
+```
+
+```{r}
+rocSupp <- new_roc(dat.supp$`病理结果`, dat.supp$`阑尾管径`, plot.thres = "best")
+rocSupp$p.roc
+```
+
+### 数据预处理
+
+```{r}
+fun_format2 <- function(x, roc) {
+  dplyr::mutate(x, `阑尾管径` = ifelse(`阑尾管径` > roc$thres[[ "threshold" ]], 1L, 0L))
+}
+dat2.supp <- fun_format2(dat.supp, rocSupp)
+
+dat2.supp
+```
+
+### Logistic
+
+```{r}
+dat2.supp
+fit <- new_lrm(dat2.supp, `病理结果` ~ `阑尾管径` + `管腔内积液` + `阑尾周围炎性渗出` + `临近肠道反应`)
+rms::nomogram(fit$fit, fun.at = c(.01, .05, seq(.1, .9, by = .1), .95, .99))
+
+eg <- dplyr::mutate(eg, y = rnorm(10, 5), z = rnorm(10, 5))
+x <- new_lrm(eg, x ~ y + z)
+x$fit
+
+rms::nomogram(x$fit, fun = plogis, fun.at = c(.001,.01,.05,seq(.1,.9,by = .1),.95,.99,.999), lp = T)
+```
+
+## 急性单纯性阑尾炎组与急性坏疽性阑尾炎伴穿孔组
 
 

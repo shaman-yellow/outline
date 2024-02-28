@@ -13,7 +13,7 @@ filter(alls, is.na(coef))
 ## Summary month
 
 ```{r}
-summary_month(rm = T)
+summary_month()
 update_registers()
 
 # summary_month(Sys.Date() - 30, rm = T)
@@ -181,6 +181,19 @@ alls <- get_orders()
 
 revise_items(alls)
 update_tagsTable()
+```
+
+```{r}
+file.copy("~/Documents/WeChat Files/24年2月生信需评估绩效表.xlsx", "./summary_2024-2/")
+fxlsx("./summary_2024-2/24年2月生信需评估绩效表.xlsx")
+
+alls <- get_orders()
+dplyr::filter(alls, icEval)$.dir
+dplyr::slice(alls, 42:50) %>% dplyr::filter(is.na(icEval)) %>% dplyr::select(.dir)
+```
+
+```{r}
+summary_month()
 ```
 
 

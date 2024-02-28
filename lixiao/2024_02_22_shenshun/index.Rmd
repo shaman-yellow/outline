@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(1), coef = NA)
+info <- items(belong = odate(2), coef = NA)
 
 order_publish()
 idname <- order_packaging()
@@ -30,6 +30,21 @@ set_index()
 ```
 
 # 摘要 {#abstract}
+
+   研究对象：乳腺癌或结直肠癌；耐药：5-氟尿嘧啶或顺铂
+
+
+需求：
+1、寻找差异致癌膜蛋白及对应配体蛋白；
+2、耐药差异膜蛋白及对应抗体蛋白或互作抑制其表达蛋白。
+
+
+需求原文
+“沈顺需要生信分析，设计的方案为“工程细菌通过膜蛋白XX调节肿瘤耐药性的机制研究”（具体见附件word）。客户需求癌症为乳腺癌或结直肠癌，耐药性没有要求，为方便后续实验建议的耐药性为紫杉醇或5-氟尿嘧啶或顺铂。
+
+现需要利用数据库分析正常组与疾病组间的差异表达膜蛋白AA（在癌中高表达的）和对应靶向癌细胞特异性高表达的膜蛋白AA的配体蛋白AA’，
+以及非耐药组与耐药组间的差异表达膜蛋白XX（在耐药组中高表达的）和对应XX的抗体蛋白或相互作用能抑制其表达的蛋白XX’。”
+
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))

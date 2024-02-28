@@ -1,0 +1,457 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    keep_md: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \definecolor{shadecolor}{RGB}{230,230,230}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
+  \tcbuselibrary{breakable}
+  \renewenvironment{Shaded}
+  {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
+    arc = 1mm, auto outer arc, title = {R input}]}
+  {\end{tcolorbox}}
+  \usepackage{titlesec}
+  \titleformat{\paragraph}
+  {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
+---
+
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(2), coef = NA)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+## 需求
+
+乙肝病毒HBx利用泛素化系统降解XXX上调YYY诱导肝癌线粒体自噬
+
+筛选建议：
+
+1、筛选乙肝病毒HBx (乙型肝炎病毒的外壳蛋白) 处理诱导肝癌细胞差异表达基因集A；
+
+2、基因集A与线粒体自噬相关基因B的相关性（PPI）；
+
+3、筛选最佳相关性组合XXX和YYY。
+
+## 结果
+
+注：与上述建议有不同之处，考虑了与泛素化相关基因的关联。
+
+- 以 GSE186862 数据集差异分析获得基因集 DEGs (Fig. \@ref(fig:L02-Model-vs-Control-DEGs)，
+  Tab. \@ref(tab:L02-data-Model-vs-Control-DEGs)) 
+- 获取自噬相关基因集 Mitophagy (Tab. \@ref(tab:MIT-related-targets-from-GeneCards))
+- 分析 DEGs 中的上调、下调组与 Mitophagy 的交集 (Fig. \@ref(fig:UpSet-Intersection-DEGs-with-Mitophagy-related))。
+- DEGs 构建 PPI 网络 (Fig. \@ref(fig:Raw-PPI-network))：
+    - 预计泛素化会导致基因的表达量下降[@UbiquitinationPopovi2014]，因此这里推断，受泛素化的 XXX 基因主要存在于 DEGs-down;
+      随后，挖掘 DEGs-up-with-Mitophagy (DEGs-up 与 Mitophagy 交集) 与 DEGs-down 的关联
+      (Fig. \@ref(fig:Filtered-and-formated-PPI-network))。
+    - 根据 DEGs-down 的 MCC score 筛选 Top 10 (Fig. \@ref(fig:Top-MCC-score)) 。
+- 获取泛素化相关基因集 (Tab. \@ref(tab:UBI-related-targets-from-GeneCards))
+- 泛素化相关的筛选：
+    - 将 Tab. \@ref(tab:UBI-related-targets-from-GeneCards) 和 Fig. \@ref(fig:Top-MCC-score) 中的 Top 10 DEGs-down 关联分析 (GSE186862 数据集)，获得关联热图 (Fig. \@ref(fig:L02-correlation-heatmap)) 。
+    - 以 P-value < 0.001 筛选 Fig. \@ref(fig:L02-correlation-heatmap)，得到 Fig. \@ref(fig:Correlation-filtered)。
+- 整合上述过程的数据：泛素化 -> DEGs-down -> DEGs-up-Mitophagy，Fig. \@ref(fig:integrated-relationship)
+- 将整合后的所有基因富集分析，Fig. \@ref(fig:INTE-KEGG-enrichment)，Fig. \@ref(fig:INTE-GO-enrichment)：
+    - 主要关注两条通路 (分别与泛素化和自噬相关) ：Fig. \@ref(fig:INTE-hsa04120-visualization)，Fig. \@ref(fig:INTE-hsa04137-visualization)
+    - 两条通路有交错的基因 (\@ref(path-intersect)): `r paste(genes.ins, collapse = ", ")`
+    - 根据交错基因重新整理 Fig. \@ref(fig:integrated-relationship)，
+      得到 Fig. \@ref(fig:co-Exists-in-integrated-relationship)，Tab. \@ref(tab:co-Exists-in-integrated-relationship-data)
+- 最终筛选：
+    - 建议：结合通路 Mitophagy (Fig. \@ref(fig:INTE-hsa04137-visualization))，
+      和 Fig. \@ref(fig:co-Exists-in-integrated-relationship)，
+      可发现： HUWE1 -> RPS27A (UB) -> ULK1 之间存在关联。
+    - 额外：可根据 Tab. \@ref(tab:co-Exists-in-integrated-relationship) 筛选其他可能。
+
+
+```{r}
+dic(di("乙肝病毒"),
+  di("肝癌细胞"),
+  di("线粒体自噬"),
+  di("泛素化")
+)
+
+# HBV: Hepatitis B virus 乙肝病毒
+# LCC: liver cancer cells 肝癌细胞
+# M: mitophagy 线粒体自噬
+# U: ubiquitination 泛素化
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 乙肝病毒 HBx 处理 DEGs
+
+### 数据来源
+
+```{r eval = T, echo = F, results = "asis"}
+#| L02-GSE186862
+autor(ge.l02@params$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| L02-metadata
+autor(as_tibble(lm.l02$.metadata))
+```
+
+注：该 GSE 数据集的补充材料没有注明样品分组 (即，A、B、C……等样品是属于哪个组别) ，
+元数据表格中的分组信息，是我根据原文 Figure 和 LogFC 数值推断的[@HbxIncreasesCZheng2022]。
+
+### DEGs
+
+```{r eval = T, echo = F, results = "asis"}
+#| L02-Model-vs-Control-DEGs
+autor(lm.l02@plots$step2$p.valcano$`Model - Control`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| L02-data-Model-vs-Control-DEGs
+autor(lm.l02@tables$step2$tops$`Model - Control`, key = "Symbol")
+```
+
+```{r}
+ge.l02 <- job_geo("GSE186862")
+ge.l02 <- step1(ge.l02)
+ge.l02@params$prods
+ge.l02@params$guess
+ge.l02 <- step2(ge.l02, "Raw")
+
+counts <- fxlsx("./GSE186862/GSE186862_Raw_gene_counts_matrix.xlsx")
+counts <- dplyr::select(counts, -Description)
+metadata <- dplyr::mutate(ge.l02@params$guess, sample = strsplit(c("ACEBDF"), "")[[1]],
+  group = ifelse(grpl(genotype.ch1, "control"), "Control", "Model")
+)
+metadata <- dplyr::relocate(metadata, sample, group)
+genes <- dplyr::select_if(counts, is.character)
+counts <- dplyr::select(counts, 1:7)
+
+lm.l02 <- job_limma(new_dge(metadata, counts, genes))
+lm.l02 <- step1(lm.l02)
+lm.l02 <- step2(lm.l02, Model - Control, label = "Symbol")
+lm.l02@plots$step2$p.valcano$`Model - Control`
+```
+
+### 富集分析 (尝试)
+
+```{r eval = T, echo = F, results = "asis"}
+#| L02-KEGG-enrichment-with-enriched-genes
+autor(gse.l02@plots$step2$p.highlight)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| L02-GSEA-plot-of-the-pathways
+autor(gse.l02@plots$step2$p.code)
+```
+
+```{r}
+gse.l02 <- job_gsea(lm.l02@tables$step2$tops$`Model - Control`, use = "Symbol")
+gse.l02 <- step1(gse.l02)
+gse.l02 <- step2(gse.l02)
+gse.l02@tables$step1$table_kegg
+gse.l02@plots$step1$p.kegg
+gse.l02@plots$step2$p.highlight
+gse.l02@plots$step2$p.code
+
+```
+
+## 线粒体自噬
+
+### GeneCards
+
+```{r eval = T, echo = F, results = "asis"}
+#| MIT-related-targets-from-GeneCards
+autor(gc.mit@tables$step1$t.genecards)
+```
+
+```{r}
+gc.mit <- job_genecard("mitophagy")
+gc.mit <- step1(gc.mit, 1)
+gc.mit@tables$step1$t.genecards
+```
+
+## DEGs 与线粒体自噬
+
+### 交集 (Inter-DEGs-Mito)
+
+```{r eval = T, echo = F, results = "asis"}
+#| Venn-Intersection-DEGs-with-Mitophagy-related
+autor(p.inter$p.venn)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| UpSet-Intersection-DEGs-with-Mitophagy-related
+autor(wrap(p.inter$p.upset, 8, 5))
+```
+
+```{r}
+fun_inter <- function() {
+  data <- dplyr::filter(lm.l02@tables$step2$tops$`Model - Control`, !is.na(Symbol))
+  DEGs_up <- dplyr::filter(data, logFC > 0)$Symbol
+  DEGs_down <- dplyr::filter(data, logFC < 0)$Symbol
+  Mitophagy <- gc.mit@tables$step1$t.genecards$Symbol
+  lst <- list(DEGs_up = DEGs_up, DEGs_down = DEGs_down, Mitophagy = Mitophagy)
+  p.upset <- new_upset(lst = lst)
+  p.venn <- new_venn(DEGs = data$Symbol, Mitophagy = Mitophagy)
+  namel(p.upset, p.venn, DEGs_up, DEGs_down, Mitophagy)
+}
+p.inter <- fun_inter()
+```
+
+
+### PPI
+
+构建 DEGs 的 PPI 网络。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Raw-PPI-network
+autor(sdb@plots$step1$p.ppi)
+```
+
+预计泛素化会导致基因的表达量下降[@UbiquitinationPopovi2014]，因此这里可以推断，受泛素化的 XXX 基因主要存在于 DEGs-down。
+
+挖掘 DEGs-up-with-Mitophagy (DEGs-up 与 Mitophagy 交集) 与 DEGs-down 的关联。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Filtered-and-formated-PPI-network
+autor(p.link$p.ppi)
+```
+
+根据 DEGs-down 的 MCC score 筛选 Top 10。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Top-MCC-score
+autor(wrap(p.link$p.mcc, 14, 11))
+```
+
+```{r}
+sdb <- job_stringdb(lm.l02@tables$step2$tops$`Model - Control`$Symbol)
+sdb <- step1(sdb)
+sdb@plots$step1$p.ppi
+
+p.link <- filter(sdb, p.inter$DEGs_down, intersect(p.inter$DEGs_up, p.inter$Mitophagy),
+  "DEGs_down", "DEGs_up_Mitophagy",
+  level.x = dplyr::select(lm.l02@tables$step2$tops$`Model - Control`, Symbol, logFC)
+)
+
+wrap(p.link$p.mcc, 14, 11)
+p.link$p.ppi
+p.link$edges_mcc
+```
+
+```{r}
+je <- job_esearch("ubiquitination")
+vis(je, "Nature")
+```
+
+
+## 泛素化
+
+### GeneCards
+
+```{r eval = T, echo = F, results = "asis"}
+#| UBI-related-targets-from-GeneCards
+autor(gc.ubi@tables$step1$t.genecards)
+```
+
+```{r}
+gc.ubi <- job_genecard("ubiquitination")
+gc.ubi <- step1(gc.ubi)
+gc.ubi@tables$step1$t.genecards
+```
+
+## 泛素化基因集与筛选基因集 (DEGs-down) 的相关性
+
+### 关联热图
+
+将 Tab. \@ref(tab:UBI-related-targets-from-GeneCards) 和 Fig. \@ref(fig:Top-MCC-score) 中的 Top 10 DEGs-down
+关联分析 (GSE186862 数据集)。
+
+```{r eval = T, echo = F, results = "asis"}
+#| L02-correlation-heatmap
+autor(p.cor$hp)
+```
+
+```{r}
+p.cor <- cal_corp(lm.l02, NULL,
+  head(gc.ubi@tables$step1$t.genecards$Symbol, n = 50),
+  dplyr::filter(p.link$nodes_mcc, type == "from")$name,
+  c("Ubiquitination_related", "DEGs_down"),
+  use = "Symbol"
+)
+p.cor$sig.corp
+```
+
+### 构建网络
+
+以 P-value < 0.001 筛选 Fig. \@ref(fig:L02-correlation-heatmap)。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Correlation-filtered
+autor(p.allu_corNet)
+```
+
+```{r}
+corNet <- dplyr::filter(p.cor$sig.corp, pvalue < .001)
+p.allu_corNet <- new_allu(corNet, axes = 1:2)
+p.allu_corNet
+```
+
+## 整合：泛素化 -> DEGs-down -> DEGs-up-Mitophagy
+
+```{r eval = T, echo = F, results = "asis"}
+#| integrated-relationship
+autor(wrap(p.inte, 11, 12))
+```
+
+```{r}
+fun_merge <- function() {
+  data <- select(corNet, 1:2)
+  data <- tbmerge(data, p.link$edges_mcc, by = "DEGs_down", all.x = T, allow.cartesian = T)
+  data <- dplyr::relocate(data, Ubiquitination_related)
+  data
+}
+dat.inte <- fun_merge()
+p.inte <- new_allu(dat.inte, axes = 1:3)
+```
+
+## 富集分析
+
+### KEGG
+
+```{r eval = T, echo = F, results = "asis"}
+#| INTE-KEGG-enrichment
+autor(en.inte@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| INTE-GO-enrichment
+autor(en.inte@plots$step1$p.go$ids)
+```
+
+### pathway visualization
+
+```{r eval = T, echo = F, results = "asis"}
+#| INTE-hsa04120-visualization
+autor(en.inte@plots$step2$p.pathviews$hsa04120)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| INTE-hsa04137-visualization
+autor(en.inte@plots$step2$p.pathviews$hsa04137)
+```
+
+```{r}
+en.inte <- job_enrich(unique(unlist(dat.inte)))
+en.inte <- step1(en.inte)
+en.inte@plots$step1$p.kegg$ids
+en.inte@tables$step1$res.kegg$ids
+en.inte <- step2(en.inte, c("hsa04120", "hsa04137"))
+en.inte@plots$step2$p.pathviews$hsa04120
+en.inte@plots$step2$p.pathviews$hsa04137
+
+genes.ins <- ins(lst = en.inte@tables$step1$res.kegg$ids$geneName_list[1:2])
+genes.ins
+# [1] "HUWE1"  "RPS27A"
+```
+
+### 富集于 hsa04120 (Ubiquitination) 与 hsa04137 (Mitophagy) 的基因 {#path-intersect}
+
+```{r eval = T, echo = F, results = "asis"}
+#| co-Exists
+autor(new_lich(genes.ins))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| co-Exists-in-integrated-relationship
+autor(wrap(p.coExists, 8.5, 5.5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| co-Exists-in-integrated-relationship-data
+autor(dat.coExists)
+```
+
+```{r}
+dat.coExists <- dplyr::filter(dat.inte, Ubiquitination_related %in% genes.ins,
+  DEGs_down %in% genes.ins
+)
+vis(dat.coExists)
+
+p.coExists <- new_allu(dat.coExists, axes = 1:3)
+wrap(p.coExists, 8.5, 5.5)
+```
+
