@@ -1,0 +1,284 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    keep_md: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \definecolor{shadecolor}{RGB}{230,230,230}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
+  \tcbuselibrary{breakable}
+  \renewenvironment{Shaded}
+  {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
+    arc = 1mm, auto outer arc, title = {R input}]}
+  {\end{tcolorbox}}
+  \usepackage{titlesec}
+  \titleformat{\paragraph}
+  {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
+---
+
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(2), eval = ic(1, 0, 0, 0, 1))
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+options(prType = "latex")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+## 需求
+
+绘制风险模型，原始数据在压缩包里，图片中文字用中文表示 ，用原始数据做出类似的图1-图3（原文见附件1）
+
+- 急性单纯性阑尾炎组与急性化脓性阑尾炎组
+- 急性单纯性阑尾炎组与急性坏疽性阑尾炎伴穿孔组
+
+## 结果
+
+对应结果分别见 \@ref(supp), \@ref(gang)
+
+注：阑尾管径按照需求，以 ROC 二分类后，再用于 Logistic 回归和建模
+
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("化脓"),
+  di("坏疽")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# S: suppuration 化脓
+# G: gangrene 坏疽
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+```{r}
+file.copy("~/Downloads/20231012-01 胡斌.rar", "./material")
+```
+
+## 预处理表格
+
+```{r eval = T, echo = F, results = "asis"}
+#| raw-data
+autor(Raw)
+```
+
+```{r}
+use <- c("病理结果", "阑尾管径", "管腔内积液", "阑尾周围炎性渗出", "临近肠道")
+
+raw <- readxl::read_xls("./material/原始数据/客户的原始数据.xls")
+raw <- dplyr::select(raw, dplyr::matches(paste0(use, collapse = "|")))
+colnames(raw) %<>% gs("mm$|有/无$", "")
+
+raw <- dplyr::mutate(raw, dplyr::across(is.character, as.factor))
+Raw <- raw
+```
+
+## 急性单纯性阑尾炎组与急性化脓性阑尾炎组 {#supp}
+
+```{r}
+dat.supp <- dplyr::filter(raw, grpl(`病理结果`, "急性单纯性阑尾炎|急性化脓性阑尾炎"))
+dat.supp <- dplyr::mutate(dat.supp, `病理结果` = droplevels(`病理结果`))
+```
+
+### 阑尾管径 cutoff
+
+```{r eval = T, echo = F, results = "asis"}
+#| supp-cutoff
+autor(roc.supp$p.roc)
+```
+
+```{r}
+roc.supp <- new_roc(dat.supp$`病理结果`, dat.supp$`阑尾管径`, plot.thres = "best")
+roc.supp$p.roc
+```
+
+### 数据预处理
+
+```{r eval = T, echo = F, results = "asis"}
+#| data-simple-vs-suppuration
+autor(dat2.supp)
+```
+
+```{r}
+fun_format2 <- function(x, roc) {
+  thres <- roc$thres[[ "threshold" ]]
+  dplyr::mutate(x, `阑尾管径` = ifelse(`阑尾管径` > thres,
+      paste0("> ", thres, " mm"), paste0("<= ", thres, " mm")),
+    `阑尾管径` = as.factor(`阑尾管径`)
+  )
+}
+dat2.supp <- fun_format2(dat.supp, roc.supp)
+dat2.supp
+```
+
+### 结果
+
+```{r eval = T, echo = F, results = "asis", prPrint = "latex"}
+print(lrm.supp$fit)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| supp-Nomogram-plot
+autor(nomo.supp$p.nomo)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| supp-Bootstrap-calibration
+autor(lrm.supp$p.cal)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| supp-ROC
+autor(lrm.supp$roc$p.roc)
+```
+
+```{r}
+lrm.supp <- new_lrm(dat2.supp, `病理结果` ~ `阑尾管径` + `管腔内积液` + `阑尾周围炎性渗出` + `临近肠道反应`, rev.level = T)
+lrm.supp$fit
+lrm.supp$p.cal
+lrm.supp$roc$p.roc
+lrm.supp$coefs
+
+nomo.supp <- new_nomo(lrm.supp)
+nomo.supp$p.nomo
+
+```
+
+## 急性单纯性阑尾炎组与急性坏疽性阑尾炎伴穿孔组 {#gang}
+
+```{r}
+dat.gang <- dplyr::filter(raw, grpl(`病理结果`, "急性单纯性阑尾炎|急性坏疽性阑尾炎伴穿孔"))
+dat.gang <- dplyr::mutate(dat.gang, `病理结果` = droplevels(`病理结果`))
+```
+
+### 阑尾管径 cutoff
+
+```{r eval = T, echo = F, results = "asis"}
+#| gang-cutoff
+autor(roc.gang$p.roc)
+```
+
+```{r}
+roc.gang <- new_roc(dat.gang$`病理结果`, dat.gang$`阑尾管径`, plot.thres = "best")
+roc.gang$p.roc
+```
+
+### 数据预处理
+
+```{r eval = T, echo = F, results = "asis"}
+#| data-simple-vs-ganguration
+autor(dat2.gang)
+```
+
+```{r}
+dat2.gang <- fun_format2(dat.gang, roc.gang)
+dat2.gang
+```
+
+### 结果
+
+```{r eval = T, echo = F, results = "asis"}
+lrm.gang$fit
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gang-Nomogram-plot
+autor(nomo.gang$p.nomo)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gang-Bootstrap-calibration
+autor(lrm.gang$p.cal)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gang-ROC
+autor(lrm.gang$roc$p.roc)
+```
+
+```{r}
+lrm.gang <- new_lrm(dat2.gang, `病理结果` ~ `阑尾管径` + `管腔内积液` + `阑尾周围炎性渗出` + `临近肠道反应`, rev.level = F)
+lrm.gang$fit
+lrm.gang$p.cal
+lrm.gang$roc$p.roc
+lrm.gang$coefs
+
+nomo.gang <- new_nomo(lrm.gang, fun_at = seq(.1, .9, by = .4))
+nomo.gang$p.nomo
+```
+
+

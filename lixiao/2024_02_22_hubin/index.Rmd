@@ -19,6 +19,7 @@ autor_preset()
 ## please install the package `utils.tool` and other related packages (run
 ## install.R)
 options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+options(prType = "latex")
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -31,7 +32,18 @@ set_index()
 
 # 摘要 {#abstract}
 
-现有业务需要绘制风险模型，原始数据在压缩包里，此单为中文订单，图片中文字用中文表示即可 ，我们需要用原始数据做出类似的图1-图3（原文见附件1），
+## 需求
+
+绘制风险模型，原始数据在压缩包里，图片中文字用中文表示 ，用原始数据做出类似的图1-图3（原文见附件1）
+
+- 急性单纯性阑尾炎组与急性化脓性阑尾炎组
+- 急性单纯性阑尾炎组与急性坏疽性阑尾炎伴穿孔组
+
+## 结果
+
+对应结果分别见 \@ref(supp), \@ref(gang)
+
+注：阑尾管径按照需求，以 ROC 二分类后，再用于 Logistic 回归和建模
 
 
 ```{r}
@@ -73,6 +85,11 @@ file.copy("~/Downloads/20231012-01 胡斌.rar", "./material")
 
 ## 预处理表格
 
+```{r eval = T, echo = F, results = "asis"}
+#| raw-data
+autor(Raw)
+```
+
 ```{r}
 use <- c("病理结果", "阑尾管径", "管腔内积液", "阑尾周围炎性渗出", "临近肠道")
 
@@ -80,66 +97,142 @@ raw <- readxl::read_xls("./material/原始数据/客户的原始数据.xls")
 raw <- dplyr::select(raw, dplyr::matches(paste0(use, collapse = "|")))
 colnames(raw) %<>% gs("mm$|有/无$", "")
 
-raw <- dplyr::mutate(raw,
-  dplyr::across(is.character,
-    function(x){
-      x <- dplyr::recode(x, '有' = "1", '无' = "0", .default = x)
-      if (any(is.na(y <- as.integer(x)))) x
-      else y
-    })
-)
-
-raw
+raw <- dplyr::mutate(raw, dplyr::across(is.character, as.factor))
+Raw <- raw
 ```
 
-## 急性单纯性阑尾炎组与急性化脓性阑尾炎组
+## 急性单纯性阑尾炎组与急性化脓性阑尾炎组 {#supp}
 
 ```{r}
 dat.supp <- dplyr::filter(raw, grpl(`病理结果`, "急性单纯性阑尾炎|急性化脓性阑尾炎"))
-fun_format <- function(x) {
-  dplyr::mutate(x, `病理结果` = ifelse(grpl(`病理结果`, "单纯"), 0L, 1L))
-}
-dat.supp <- fun_format(dat.supp)
-dat.supp
+dat.supp <- dplyr::mutate(dat.supp, `病理结果` = droplevels(`病理结果`))
 ```
 
 ### 阑尾管径 cutoff
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Supp-ROC
-autor(rocSupp$p.roc)
+#| supp-cutoff
+autor(roc.supp$p.roc)
 ```
 
 ```{r}
-rocSupp <- new_roc(dat.supp$`病理结果`, dat.supp$`阑尾管径`, plot.thres = "best")
-rocSupp$p.roc
+roc.supp <- new_roc(dat.supp$`病理结果`, dat.supp$`阑尾管径`, plot.thres = "best")
+roc.supp$p.roc
 ```
 
 ### 数据预处理
 
+```{r eval = T, echo = F, results = "asis"}
+#| data-simple-vs-suppuration
+autor(dat2.supp)
+```
+
 ```{r}
 fun_format2 <- function(x, roc) {
-  dplyr::mutate(x, `阑尾管径` = ifelse(`阑尾管径` > roc$thres[[ "threshold" ]], 1L, 0L))
+  thres <- roc$thres[[ "threshold" ]]
+  dplyr::mutate(x, `阑尾管径` = ifelse(`阑尾管径` > thres,
+      paste0("> ", thres, " mm"), paste0("<= ", thres, " mm")),
+    `阑尾管径` = as.factor(`阑尾管径`)
+  )
 }
-dat2.supp <- fun_format2(dat.supp, rocSupp)
-
+dat2.supp <- fun_format2(dat.supp, roc.supp)
 dat2.supp
 ```
 
-### Logistic
+### 结果
+
+```{r eval = T, echo = F, results = "asis", prPrint = "latex"}
+print(lrm.supp$fit)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| supp-Nomogram-plot
+autor(nomo.supp$p.nomo)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| supp-Bootstrap-calibration
+autor(lrm.supp$p.cal)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| supp-ROC
+autor(lrm.supp$roc$p.roc)
+```
 
 ```{r}
-dat2.supp
-fit <- new_lrm(dat2.supp, `病理结果` ~ `阑尾管径` + `管腔内积液` + `阑尾周围炎性渗出` + `临近肠道反应`)
-rms::nomogram(fit$fit, fun.at = c(.01, .05, seq(.1, .9, by = .1), .95, .99))
+lrm.supp <- new_lrm(dat2.supp, `病理结果` ~ `阑尾管径` + `管腔内积液` + `阑尾周围炎性渗出` + `临近肠道反应`, rev.level = T)
+lrm.supp$fit
+lrm.supp$p.cal
+lrm.supp$roc$p.roc
+lrm.supp$coefs
 
-eg <- dplyr::mutate(eg, y = rnorm(10, 5), z = rnorm(10, 5))
-x <- new_lrm(eg, x ~ y + z)
-x$fit
+nomo.supp <- new_nomo(lrm.supp)
+nomo.supp$p.nomo
 
-rms::nomogram(x$fit, fun = plogis, fun.at = c(.001,.01,.05,seq(.1,.9,by = .1),.95,.99,.999), lp = T)
 ```
 
-## 急性单纯性阑尾炎组与急性坏疽性阑尾炎伴穿孔组
+## 急性单纯性阑尾炎组与急性坏疽性阑尾炎伴穿孔组 {#gang}
+
+```{r}
+dat.gang <- dplyr::filter(raw, grpl(`病理结果`, "急性单纯性阑尾炎|急性坏疽性阑尾炎伴穿孔"))
+dat.gang <- dplyr::mutate(dat.gang, `病理结果` = droplevels(`病理结果`))
+```
+
+### 阑尾管径 cutoff
+
+```{r eval = T, echo = F, results = "asis"}
+#| gang-cutoff
+autor(roc.gang$p.roc)
+```
+
+```{r}
+roc.gang <- new_roc(dat.gang$`病理结果`, dat.gang$`阑尾管径`, plot.thres = "best")
+roc.gang$p.roc
+```
+
+### 数据预处理
+
+```{r eval = T, echo = F, results = "asis"}
+#| data-simple-vs-ganguration
+autor(dat2.gang)
+```
+
+```{r}
+dat2.gang <- fun_format2(dat.gang, roc.gang)
+dat2.gang
+```
+
+### 结果
+
+```{r eval = T, echo = F, results = "asis"}
+lrm.gang$fit
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gang-Nomogram-plot
+autor(nomo.gang$p.nomo)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gang-Bootstrap-calibration
+autor(lrm.gang$p.cal)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| gang-ROC
+autor(lrm.gang$roc$p.roc)
+```
+
+```{r}
+lrm.gang <- new_lrm(dat2.gang, `病理结果` ~ `阑尾管径` + `管腔内积液` + `阑尾周围炎性渗出` + `临近肠道反应`, rev.level = F)
+lrm.gang$fit
+lrm.gang$p.cal
+lrm.gang$roc$p.roc
+lrm.gang$coefs
+
+nomo.gang <- new_nomo(lrm.gang, fun_at = seq(.1, .9, by = .4))
+nomo.gang$p.nomo
+```
 
 

@@ -55,10 +55,11 @@ set_index()
     - 预计泛素化会导致基因的表达量下降[@UbiquitinationPopovi2014]，因此这里推断，受泛素化的 XXX 基因主要存在于 DEGs-down;
       随后，挖掘 DEGs-up-with-Mitophagy (DEGs-up 与 Mitophagy 交集) 与 DEGs-down 的关联
       (Fig. \@ref(fig:Filtered-and-formated-PPI-network))。
-    - 根据 DEGs-down 的 MCC score 筛选 Top 10 (Fig. \@ref(fig:Top-MCC-score)) 。
+    - 先根据抑癌基因与 DEGs-down 取交集 (Fig. \@ref(fig:Intersection-with-pre-filter-data))。
+    - 再根据 MCC score 筛选 Top 10 (Fig. \@ref(fig:Top-MCC-score)) 。
 - 获取泛素化相关基因集 (Tab. \@ref(tab:UBI-related-targets-from-GeneCards))
 - 泛素化相关的筛选：
-    - 将 Tab. \@ref(tab:UBI-related-targets-from-GeneCards) 和 Fig. \@ref(fig:Top-MCC-score) 中的 Top 10 DEGs-down 关联分析 (GSE186862 数据集)，获得关联热图 (Fig. \@ref(fig:L02-correlation-heatmap)) 。
+    - 将 Tab. \@ref(tab:UBI-related-targets-from-GeneCards) 和 Fig. \@ref(fig:Top-MCC-score) 中的 Top 10 关联分析 (GSE186862 数据集)，获得关联热图 (Fig. \@ref(fig:L02-correlation-heatmap)) 。
     - 以 P-value < 0.001 筛选 Fig. \@ref(fig:L02-correlation-heatmap)，得到 Fig. \@ref(fig:Correlation-filtered)。
 - 整合上述过程的数据：泛素化 -> DEGs-down -> DEGs-up-Mitophagy，Fig. \@ref(fig:integrated-relationship)
 - 将整合后的所有基因富集分析，Fig. \@ref(fig:INTE-KEGG-enrichment)，Fig. \@ref(fig:INTE-GO-enrichment)：
@@ -70,7 +71,7 @@ set_index()
     - 建议：结合通路 Mitophagy (Fig. \@ref(fig:INTE-hsa04137-visualization))，
       和 Fig. \@ref(fig:co-Exists-in-integrated-relationship)，
       可发现： HUWE1 -> RPS27A (UB) -> ULK1 之间存在关联。
-    - 额外：可根据 Tab. \@ref(tab:co-Exists-in-integrated-relationship) 筛选其他可能。
+    - 额外：可根据 Tab. \@ref(tab:co-Exists-in-integrated-relationship-data) 筛选其他可能。
 
 
 ```{r}
@@ -264,7 +265,14 @@ gc.supp <- step1(gc.supp, 5)
 
 #### MCC 筛选抑癌基因
 
-根据 DEGs-down 的 MCC score 筛选 Top 10。
+先根据抑癌基因与 DEGs-down 取交集。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-with-pre-filter-data
+autor(p.link$p.top_in)
+```
+
+再根据 MCC score 筛选 Top 10。
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Top-MCC-score
@@ -278,8 +286,10 @@ sdb@plots$step1$p.ppi
 
 p.link <- filter(sdb, p.inter$DEGs_down, intersect(p.inter$DEGs_up, p.inter$Mitophagy),
   "DEGs_down", "DEGs_up_Mitophagy",
-  level.x = dplyr::select(lm.l02@tables$step2$tops$`Model - Control`, Symbol, logFC)
+  level.x = dplyr::select(lm.l02@tables$step2$tops$`Model - Control`, Symbol, logFC),
+  top_in = list(Tumor_supp. = gc.supp@tables$step1$t.genecards$Symbol)
 )
+p.link$p.top_in
 
 wrap(p.link$p.mcc, 14, 11)
 p.link$p.ppi
@@ -339,6 +349,12 @@ p.allu_corNet <- new_allu(corNet, axes = 1:2)
 p.allu_corNet
 ```
 
+```{r}
+en.test <- job_enrich(unique(corNet$DEGs_down))
+en.test <- step1(en.test)
+en.test@plots$step1$p.go
+```
+
 ## 整合：泛素化 -> DEGs-down -> DEGs-up-Mitophagy
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -348,7 +364,7 @@ autor(wrap(p.inte, 11, 12))
 
 ```{r}
 fun_merge <- function() {
-  data <- select(corNet, 1:2)
+  data <- dplyr::select(corNet, 1:2)
   data <- tbmerge(data, p.link$edges_mcc, by = "DEGs_down", all.x = T, allow.cartesian = T)
   data <- dplyr::relocate(data, Ubiquitination_related)
   data

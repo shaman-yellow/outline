@@ -31,7 +31,11 @@ set_index()
 
 # 摘要 {#abstract}
 
-列线图模型的建立与验证进行分析，并按参考文献2描述所使用的统计方法
+列线图模型的建立与验证进行分析, 并按参考文献2描述所使用的统计方法
+
+- 自发性蛛网膜下腔出血
+    - 预后良好组
+    - 预后不良组
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
@@ -59,3 +63,33 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+
+```{r}
+fun_read <- function() {
+  file <- "./order_material/原始数据/20230815-04 原始数据.xlsx"
+  sheets <- openxlsx::getSheetNames(file)
+  data <- lapply(1:2, function(x) fxlsx(file, sheet = x))
+  names(data) <- sheets[1:2]
+  frbind(data, idcol = "Group")
+}
+Raw <- fun_read()
+
+```
+
+```{r}
+vars <- c("WFNS分级", "迟发性脑缺血", "肺部感染", "颅内出血")
+
+dat <- dplyr::select(Raw, Group, dplyr::all_of(vars))
+dat <- dplyr::filter(dat, !is.na(`WFNS分级`))
+dat <- dplyr::mutate(dat, Group = gs(Group, " .*$", ""),
+  dplyr::across(dplyr::starts_with("WFNS"),
+    function(x) dplyr::recode(x, '1' = 'Ⅰ级', '2' = 'Ⅱ级', '3' = 'Ⅲ 级', '4' = 'Ⅳ级', '5' = 'Ⅴ级')),
+  dplyr::across(c(`迟发性脑缺血`, `肺部感染`, `颅内出血`), function(x) dplyr::recode(x, '0' = "无", '1' = "有") )
+)
+dat <- dplyr::mutate_all(dat, as.factor)
+dat
+
+```
+
+

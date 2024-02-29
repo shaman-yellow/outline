@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 乙肝病毒HBx利用泛素化系统降解XXX上调YYY诱导肝癌线粒体自噬}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-02-27}}
+\textbf{\textcolor{white}{2024-02-29}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -102,10 +102,11 @@ header-includes:
     - 预计泛素化会导致基因的表达量下降[@UbiquitinationPopovi2014]，因此这里推断，受泛素化的 XXX 基因主要存在于 DEGs-down;
       随后，挖掘 DEGs-up-with-Mitophagy (DEGs-up 与 Mitophagy 交集) 与 DEGs-down 的关联
       (Fig. \@ref(fig:Filtered-and-formated-PPI-network))。
-    - 根据 DEGs-down 的 MCC score 筛选 Top 10 (Fig. \@ref(fig:Top-MCC-score)) 。
+    - 先根据抑癌基因与 DEGs-down 取交集 (Fig. \@ref(fig:Intersection-with-pre-filter-data))。
+    - 再根据 MCC score 筛选 Top 10 (Fig. \@ref(fig:Top-MCC-score)) 。
 - 获取泛素化相关基因集 (Tab. \@ref(tab:UBI-related-targets-from-GeneCards))
 - 泛素化相关的筛选：
-    - 将 Tab. \@ref(tab:UBI-related-targets-from-GeneCards) 和 Fig. \@ref(fig:Top-MCC-score) 中的 Top 10 DEGs-down 关联分析 (GSE186862 数据集)，获得关联热图 (Fig. \@ref(fig:L02-correlation-heatmap)) 。
+    - 将 Tab. \@ref(tab:UBI-related-targets-from-GeneCards) 和 Fig. \@ref(fig:Top-MCC-score) 中的 Top 10 关联分析 (GSE186862 数据集)，获得关联热图 (Fig. \@ref(fig:L02-correlation-heatmap)) 。
     - 以 P-value < 0.001 筛选 Fig. \@ref(fig:L02-correlation-heatmap)，得到 Fig. \@ref(fig:Correlation-filtered)。
 - 整合上述过程的数据：泛素化 -> DEGs-down -> DEGs-up-Mitophagy，Fig. \@ref(fig:integrated-relationship)
 - 将整合后的所有基因富集分析，Fig. \@ref(fig:INTE-KEGG-enrichment)，Fig. \@ref(fig:INTE-GO-enrichment)：
@@ -117,7 +118,7 @@ header-includes:
     - 建议：结合通路 Mitophagy (Fig. \@ref(fig:INTE-hsa04137-visualization))，
       和 Fig. \@ref(fig:co-Exists-in-integrated-relationship)，
       可发现： HUWE1 -> RPS27A (UB) -> ULK1 之间存在关联。
-    - 额外：可根据 Tab. \@ref(tab:co-Exists-in-integrated-relationship) 筛选其他可能。
+    - 额外：可根据 Tab. \@ref(tab:co-Exists-in-integrated-relationship-data) 筛选其他可能。
 
 
 
@@ -436,6 +437,8 @@ All\_intersection
 
 ### PPI
 
+#### 构建 PPI 
+
 构建 DEGs 的 PPI 网络。
 
 Figure \@ref(fig:Raw-PPI-network) (下方图) 为图Raw PPI network概览。
@@ -447,6 +450,8 @@ Figure \@ref(fig:Raw-PPI-network) (下方图) 为图Raw PPI network概览。
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Raw-PPI-network.pdf}
 \caption{Raw PPI network}\label{fig:Raw-PPI-network}
 \end{center}
+
+#### 提取与自噬相关 PPI
 
 预计泛素化会导致基因的表达量下降[@UbiquitinationPopovi2014]，因此这里可以推断，受泛素化的 XXX 基因主要存在于 DEGs-down。
 
@@ -462,7 +467,80 @@ Figure \@ref(fig:Filtered-and-formated-PPI-network) (下方图) 为图Filtered a
 \caption{Filtered and formated PPI network}\label{fig:Filtered-and-formated-PPI-network}
 \end{center}
 
-根据 DEGs-down 的 MCC score 筛选 Top 10。
+#### 抑癌基因集
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by filtering:
+:}
+
+\vspace{0.5em}
+
+    Score > 5
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}Table \@ref(tab:SUPP-disease-related-targets-from-GeneCards) (下方表格) 为表格SUPP disease related targets from GeneCards概览。
+
+**(对应文件为 `Figure+Table/SUPP-disease-related-targets-from-GeneCards.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有589行7列，以下预览的表格可能省略部分数据；表格含有589个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:SUPP-disease-related-targets-from-GeneCards)SUPP disease related targets from GeneCards
+
+|Symbol       |Description   |Category      |UniProt_ID |GIFtS |GC_id       |Score |
+|:------------|:-------------|:-------------|:----------|:-----|:-----------|:-----|
+|TP53         |Tumor Prot... |Protein Co... |P04637     |62    |GC17M007661 |86.22 |
+|VHL          |Von Hippel... |Protein Co... |P40337     |56    |GC03P020237 |61.34 |
+|CDKN2A       |Cyclin Dep... |Protein Co... |Q8N726     |60    |GC09M021967 |51.82 |
+|LATS2        |Large Tumo... |Protein Co... |Q9NRM7     |54    |GC13M020973 |43.15 |
+|LATS1        |Large Tumo... |Protein Co... |O95835     |52    |GC06M149658 |41.07 |
+|PTEN         |Phosphatas... |Protein Co... |P60484     |60    |GC10P106636 |41    |
+|LZTS1        |Leucine Zi... |Protein Co... |Q9Y250     |47    |GC08M020246 |36    |
+|RB1          |RB Transcr... |Protein Co... |P06400     |57    |GC13P048303 |34.87 |
+|LOC107303340 |3p25 Von H... |Functional... |           |9     |GC03P020240 |34.73 |
+|LZTS2        |Leucine Zi... |Protein Co... |Q9BRK4     |41    |GC10P100996 |34.59 |
+|TUSC2        |Tumor Supp... |Protein Co... |O75896     |40    |GC03M053556 |33.38 |
+|TUSC3        |Tumor Supp... |Protein Co... |Q13454     |49    |GC08P015417 |32.39 |
+|NF2          |NF2, Moesi... |Protein Co... |P35240     |57    |GC22P029603 |32.15 |
+|RASSF1       |Ras Associ... |Protein Co... |Q9NS23     |51    |GC03M050329 |30.38 |
+|CDKN1A       |Cyclin Dep... |Protein Co... |P38936     |58    |GC06P125635 |29.84 |
+|...          |...           |...           |...        |...   |...         |...   |
+
+
+
+#### MCC 筛选抑癌基因
+
+先根据抑癌基因与 DEGs-down 取交集。
+
+Figure \@ref(fig:Intersection-with-pre-filter-data) (下方图) 为图Intersection with pre filter data概览。
+
+**(对应文件为 `Figure+Table/Intersection-with-pre-filter-data.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-with-pre-filter-data.pdf}
+\caption{Intersection with pre filter data}\label{fig:Intersection-with-pre-filter-data}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    AURKA, PSMD10, SKP1, CCNB1, RPS27A, SKP2, ST7, CUL1,
+HSP90AA1, CAV1, IGF1R, USP7, TP53INP1, PLAGL1, MKI67, RBMX,
+YBX1, DLG1, PHLPP1, PCNA, RASSF2, CDK1, RDX, IDH1, SESN1,
+NDRG1, TOP2A, HSPA8, PIAS2, MUC1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+**(上述信息框内容已保存至 `Figure+Table/Intersection-with-pre-filter-data-content`)**
+
+再根据 MCC score 筛选 Top 10。
 
 Figure \@ref(fig:Top-MCC-score) (下方图) 为图Top MCC score概览。
 
@@ -473,8 +551,6 @@ Figure \@ref(fig:Top-MCC-score) (下方图) 为图Top MCC score概览。
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Top-MCC-score.pdf}
 \caption{Top MCC score}\label{fig:Top-MCC-score}
 \end{center}
-
-
 
 
 
@@ -559,6 +635,8 @@ Figure \@ref(fig:Correlation-filtered) (下方图) 为图Correlation filtered概
 
 
 
+
+
 ## 整合：泛素化 -> DEGs-down -> DEGs-up-Mitophagy
 
 Figure \@ref(fig:integrated-relationship) (下方图) 为图integrated relationship概览。
@@ -605,7 +683,7 @@ Figure \@ref(fig:INTE-hsa04120-visualization) (下方图) 为图INTE hsa04120 vi
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{pathview2024-02-27_14_52_06.625626/hsa04120.pathview.png}
+\includegraphics[width = 0.9\linewidth]{pathview2024-02-29_11_01_30.353875/hsa04120.pathview.png}
 \caption{INTE hsa04120 visualization}\label{fig:INTE-hsa04120-visualization}
 \end{center}
 
@@ -615,7 +693,7 @@ Figure \@ref(fig:INTE-hsa04137-visualization) (下方图) 为图INTE hsa04137 vi
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{pathview2024-02-27_14_52_06.625626/hsa04137.pathview.png}
+\includegraphics[width = 0.9\linewidth]{pathview2024-02-29_11_01_30.353875/hsa04137.pathview.png}
 \caption{INTE hsa04137 visualization}\label{fig:INTE-hsa04137-visualization}
 \end{center}
 

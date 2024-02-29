@@ -189,11 +189,12 @@ fxlsx("./summary_2024-2/24年2月生信需评估绩效表.xlsx")
 
 alls <- get_orders()
 dplyr::filter(alls, icEval)$.dir
-dplyr::slice(alls, 42:50) %>% dplyr::filter(is.na(icEval)) %>% dplyr::select(.dir)
+dplyr::slice(alls, 42:50) %>% vis()
 ```
 
 ```{r}
 summary_month()
+send_summary("sunhui")
 ```
 
 
