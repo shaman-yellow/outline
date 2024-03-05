@@ -1,0 +1,23 @@
+
+
+UniTmp: unified resources for transmembrane proteins
+
+```{r eval = T, echo = F, results = "asis"}
+#| UniTmp-data-of-htp-all
+autor(ut@object)
+```
+
+```{r}
+ut <- job_unitmp()
+ut@object$transmembrane
+```
+
+### Necroptosis
+
+坏死性凋亡信号通路在肿瘤发生发展、肿瘤坏死、肿瘤转移和肿瘤免疫反应中发挥作用；坏死性凋亡可能促进或抗肿瘤发生，具体取决于肿瘤的类型[@NecroptosisAndYanJ2022]。
+
+```{r}
+filter(sdb.dps, )
+```
+
+

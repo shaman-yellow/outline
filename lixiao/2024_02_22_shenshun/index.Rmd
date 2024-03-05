@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(3), coef = NA)
+info <- items(belong = odate(3), eval = ic(1, 2, 2, 0, 0))
 
 order_publish()
 idname <- order_packaging()
@@ -45,10 +45,23 @@ set_index()
 现需要利用数据库分析正常组与疾病组间的差异表达膜蛋白AA（在癌中高表达的）和对应靶向癌细胞特异性高表达的膜蛋白AA的配体蛋白AA’，
 以及非耐药组与耐药组间的差异表达膜蛋白XX（在耐药组中高表达的）和对应XX的抗体蛋白或相互作用能抑制其表达的蛋白XX’。”
 
-
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("乳腺癌"),
+  di("结直肠癌"),
+  di("蛋白组学"),
+  di("膜蛋白"),
+  di("受体蛋白"),
+  di("配体蛋白")
+)
 
+# DEGs: Differential Expressed Genes 差异表达基因
+# BC: breast cancer 乳腺癌
+# CC: colorectal cancer 结直肠癌
+# P: Proteomics 蛋白组学
+# MP: Membrane Protein 膜蛋白
+# RP: receptor protein 受体蛋白
+# LP: ligand protein 配体蛋白
 ```
 
 # 前言 {#introduction}
@@ -71,4 +84,198 @@ auto_method()
 
 # 结论 {#dis}
 
-# 附：分析流程 {#workflow}
+# 附：分析流程——寻找差异致癌膜蛋白及对应配体蛋白 {#workflow1}
+
+```{r}
+je <- job_esearch("Membrane Protein database")
+vis(je)
+
+je@object$Title %>% grpf("membrane", T)
+
+je.rec <- job_esearch("receptor membrane protein")
+vis(je.rec)
+je.rec@object$Title %>% grpf("membrane", T) %>% grpf("receptor", T)
+
+je.rec <- job_esearch("membrane receptor")
+vis(je.rec)
+je.rec@object$Title %>% grpf("membranes", T)
+
+```
+
+## 结直肠癌差异蛋白
+
+### 数据来源
+
+Proteomics profiling of colorectal cancer progression identifies PLOD2 as a potential therapeutic target
+[@ProteomicsProfShao2022]
+
+```{r eval = T, echo = F, results = "asis"}
+#| PUBLISHED-ProteomicsProfShao2022-metadata-used-sample
+autor(lm.pps@params$metadata, key = "group")
+```
+
+### 差异蛋白
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-data-Cancer-vs-Control-DPs
+autor(tops)
+```
+
+```{r}
+pb.pps <- get_data.pps2022()
+pb.pps@object$metadata
+
+metadata <- dplyr::filter(pb.pps@params$metadata, grpl(Pathology.Type, "Normal Colon|Adenocarcinoma not otherwise"))
+metadata <- dplyr::mutate(metadata, group = ifelse(grpl(Pathology.Type, "Normal"), "Control", "Cancer"))
+
+lm.pps <- job_limma_normed(pb.pps@params$counts, metadata)
+lm.pps <- step1(lm.pps)
+lm.pps <- step2(lm.pps, Cancer - Control, use = "P")
+lm.pps@plots$step2$p.valcano$`Cancer - Control`
+tops <- lm.pps@tables$step2$tops$`Cancer - Control`
+
+pb.pps@object
+tops <- map(tops, "rownames", pb.pps@object$data, "UniProt_Knowledgebase_ID", "Gene_name")
+```
+
+## 膜蛋白筛选
+
+受体蛋白主要分为：
+
+- 离子通道受体 (Ligand-gated ion channel, LICs, LGIC)
+- 催化受体 (酶受体) (catalytic receptor)
+    - 鸟苷酸酰化酶受体
+    - 酪氨酸激酶受体
+- G蛋白偶联受体 (G protein-coupled receptors) (GPCRs) (https://gpcrdb.org/)
+
+以上都是跨膜蛋白类型。
+因此以下筛选将从跨膜蛋白出发。
+
+### Unitmp
+
+UniTmp: unified resources for transmembrane proteins [@UnitmpUnifiedDobson2024]
+
+```{r eval = T, echo = F, results = "asis"}
+#| UniTmp-data-of-htp-all
+autor(ut@object)
+```
+
+```{r}
+ut <- job_unitmp()
+ut@object
+```
+
+### 与高表达差异蛋白 (DPs-Up) 交集
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-Intersection-of-DPs-Up-with-TransMemPs
+autor(p.venn)
+```
+
+```{r}
+p.venn <- new_venn(DPs_Up = dplyr::filter(tops, logFC > 0)$Gene_name, TransMemPs = ut@object$Gene_Name)
+p.venn$ins
+```
+
+## 以蛋白互作筛选配体蛋白
+
+### PPI
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-DPS-filtered-and-formated-PPI-network
+autor(lst.inter$p.ppi)
+```
+
+```{r}
+sdb.dps <- job_stringdb(tops$Gene_name)
+sdb.dps <- step1(sdb.dps)
+
+lst.inter <- filter(
+  sdb.dps,
+  tops$Gene_name[!tops$Gene_name %in% ut@object$Gene_Name], p.venn$ins,
+  level.x = dplyr::select(tops, 1:2), use.top = "from",
+  less.label = F
+)
+
+lst.inter$p.ppi
+lst.inter$edges
+```
+
+### 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-PPI-KEGG-enrichment
+autor(en.ppi@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-PPI-GO-enrichment
+autor(en.ppi@plots$step1$p.go$ids)
+```
+
+坏死性凋亡信号通路在肿瘤发生发展、肿瘤坏死、肿瘤转移和肿瘤免疫反应中发挥作用；坏死性凋亡可能促进或抗肿瘤发生，具体取决于肿瘤的类型[@NecroptosisAndYanJ2022]。
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-PPI-hsa04217-visualization
+autor(en.ppi@plots$step2$p.pathviews$hsa04217)
+```
+
+70-kDa 热休克蛋白 (HSP70) 在癌症中大量存在，通过抑制多种凋亡途径、调节坏死、绕过细胞衰老程序、干扰肿瘤免疫、促进血管生成和支持转移，为恶性细胞提供选择优势 [@Hsp70MultiFunAlbako2020]
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-PPI-hsa04612-visualization
+autor(en.ppi@plots$step2$p.pathviews$hsa04612)
+```
+
+```{r}
+en.ppi <- job_enrich(unique(unlist(lst.inter$edges)))
+en.ppi <- step1(en.ppi, use = "pvalue")
+en.ppi@step <- 1L
+en.ppi <- step2(en.ppi, c("hsa04217", "hsa04612"), gene.level = tops[, 1:2])
+en.ppi@plots$step2$p.pathviews$hsa04612
+
+en.ppi@plots$step1$p.kegg
+en.ppi@plots$step1$p.go
+
+gene.necro <- en.ppi@tables$step1$res.kegg$ids$geneName_list[[1]] %>% .[. %in% lst.inter$edges$to]
+# [1] "AIFM1"   "SLC25A6"
+# tAIF, ANT
+en.ppi@tables$step1$res.kegg$ids
+
+```
+
+### 根据富集结果缩减 PPI
+
+这里尝试根据 KEGG top 10 通路的富集基因缩减 PPI
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-DPS-filtered-by-KEGG-and-formated-PPI-network
+autor(lst.filter$p.ppi)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-DPS-filtered-by-KEGG-Top-MCC-score
+autor(lst.filter$p.mcc)
+```
+
+```{r}
+gene.top10path <- unique(unlist(en.ppi@tables$step1$res.kegg$ids$geneName_list[1:10]))
+
+lst.filter <- filter(
+  sdb.dps,
+  ins(tops$Gene_name[!tops$Gene_name %in% ut@object$Gene_Name], gene.top10path), ins(p.venn$ins, gene.top10path),
+  level.x = dplyr::select(tops, 1:2), use.top = "from",
+  less.label = F
+)
+lst.filter$p.ppi
+```
+
+```{r}
+je.pb <- job_esearch("protein-binding proteins")
+vis(je.pb)
+je.pb@object$Title %>% grpf("affinity", T)
+```
+
+# 附：分析流程——耐药差异膜蛋白及对应抗体蛋白或互作抑制其表达蛋白 {#workflow1}
+
+

@@ -1,0 +1,491 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+Sepsis差异代谢物和热图绘制} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-03-04}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{1},\protect\hyperlink{ref-EdgerDifferenChen}{2}}.
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux6570ux636eux6765ux6e90}{%
+\subsection{数据来源}\label{ux6570ux636eux6765ux6e90}}
+
+Lipid metabolic signatures deviate in sepsis survivors compared to non-survivors
+(\url{PMID:33304464})\textsuperscript{\protect\hyperlink{ref-LipidMetabolicKhaliq2020}{3}}
+
+Supplementary Table 7: Rat sepsis model biochemical and metabolomic data.
+
+`LipidMetabolicKhaliq2020 S7' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LipidMetabolicKhaliq2020-S7})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/LipidMetabolicKhaliq2020-S7共包含2个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Data.csv
+\item 2\_legend.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\subsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+Table \ref{tab:Sepsis-vs-Control-metabolites} (下方表格) 为表格Sepsis vs Control metabolites概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Sepsis-vs-Control-metabolites.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有86行7列，以下预览的表格可能省略部分数据；表格含有86个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Sepsis-vs-Control-metabolites}Sepsis vs Control metabolites}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.12\columnwidth}\raggedright
+rownames\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+logFC\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+AveExpr\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+t\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+P.Value\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+adj.P.Val\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+B\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.12\columnwidth}\raggedright
+rownames\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+logFC\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+AveExpr\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+t\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+P.Value\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+adj.P.Val\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+B\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+interleuki\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.56047476\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.12791682\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+12.3429495\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.30461220\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.28762276\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+21.0095510\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Oxytocin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.20738187\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.78422477\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+10.9425134\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.89129286\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.64302900\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+17.9003821\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Noradrenaline\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.41244229\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.15069029\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.28652664\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.04135641\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.71473938\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+11.3045654\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Aldosterone\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.70242514\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.46275850\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.25768341\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.29982741\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.07889127\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.50900615\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Testosterone\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.5954417\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.86184959\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-7.1433392\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.52972768\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.28298275\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.19116098\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+interleukin-6\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.56940891\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.41883936\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.81407920\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.13632768\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.77257629\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.26902002\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Phosphatid\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.6949464\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-1.3426611\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-6.0618145\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.62990090\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.46676432\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.13114219\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Adrenaline\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.58302921\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+12.9933938\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.67339688\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.94440285\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.86195594\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.01670761\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+cardiac ou\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.4454982\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.96508434\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-5.6245421\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.39024672\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.86195594\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.87633322\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+High-densi\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.5885086\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.2300975\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-5.4803299\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.14207569\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00011780\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.46194103\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+stroke volume\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.5317655\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-1.7342613\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-5.4240458\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.05048026\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00012706\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+3.30024247\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Proline\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.8965239\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.70837944\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-5.2836024\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+9.08106627\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00017603\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.89700218\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+B-type nat\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.31639744\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+8.34682229\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+5.12133438\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.45166920\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00026130\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.43183728\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+lysoPhosph\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.4674402\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+6.38346176\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-4.8991930\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.75688431\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00043155\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.79717803\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+Aspartate \ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.19509294\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+7.43782001\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.89413846\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.79736126\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00043155\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.78277497\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux70edux56fe}{%
+\subsection{热图}\label{ux70edux56fe}}
+
+注：以下热图去除了包含缺失数据的代谢物。
+
+Figure \ref{fig:Defferential-metabolites} (下方图) 为图Defferential metabolites概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Defferential-metabolites.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Defferential-metabolites.pdf}
+\caption{Defferential metabolites}\label{fig:Defferential-metabolites}
+\end{center}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+1. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+2. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-LipidMetabolicKhaliq2020}{}%
+3. Khaliq, W. \emph{et al.} Lipid metabolic signatures deviate in sepsis survivors compared to non-survivors. \emph{Computational and structural biotechnology journal} \textbf{18}, 3678--3691 (2020).
+\end{cslreferences}
+
+\end{document}
