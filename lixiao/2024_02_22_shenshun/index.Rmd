@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(3), eval = ic(1, 2, 2, 0, 0))
+info <- items(belong = odate(3), eval = ic(1, 3, 2, 0, 0))
 
 order_publish()
 idname <- order_packaging()
@@ -52,7 +52,9 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
   di("蛋白组学"),
   di("膜蛋白"),
   di("受体蛋白"),
-  di("配体蛋白")
+  di("配体蛋白"),
+  di("5-氟尿嘧啶"),
+  di("顺铂")
 )
 
 # DEGs: Differential Expressed Genes 差异表达基因
@@ -62,6 +64,8 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
 # MP: Membrane Protein 膜蛋白
 # RP: receptor protein 受体蛋白
 # LP: ligand protein 配体蛋白
+# 5: 5-Fluorouracil 5-氟尿嘧啶
+# C: Cisplatin 顺铂
 ```
 
 # 前言 {#introduction}
@@ -278,4 +282,4 @@ je.pb@object$Title %>% grpf("affinity", T)
 
 # 附：分析流程——耐药差异膜蛋白及对应抗体蛋白或互作抑制其表达蛋白 {#workflow1}
 
-
+(((breast cancer) OR (colorectal cancer)) AND (Proteomics)) AND (Drug resistance)

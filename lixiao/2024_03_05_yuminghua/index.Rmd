@@ -1,0 +1,76 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(3), eval = ic(0, 1, 1, 1, 0))
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+
+```
+
+复方组成：
+
+The decoction consisted of 30 g astragalus membranaceus (huangqi黄芪3), 10 g polygonatum odoratum (yuzu玉竹), 6 g scolopendra subspinipes mutilans (tianlong蜈蚣4), 6 g pberetima (dilong地龙), 20 g solanum nigrum (longkui龙葵5), 20 g herbahedyotis (baihushecao白花蛇舌草), 20 g semen coicis (yiyiren薏苡仁), 6 g euphorbia helioscopia (zeqi泽漆), 10 g curcuma longa (eshu莪术6) and 6 g tendril-leaved fritillary bulb (chuanbei川贝母).
+
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+```{r}
+herbs <- c("黄芪", "玉竹", "蜈蚣", "地龙", "龙葵", "白花蛇舌草", "薏苡仁", "泽漆", "莪术")
+
+hb <- job_herb(herbs)
+hb@params$herbs_info %<>% dplyr::distinct(Herb_cn_name, .keep_all = T)
+hb@params$herbs_info
+hb <- step1(hb)
+hb <- step2(hb)
+hb@tables$step2$compounds_targets
+
+```
