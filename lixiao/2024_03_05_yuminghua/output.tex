@@ -1,0 +1,486 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+网络药理学寻找复方的靶点通路} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-03-06}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux9700ux6c42}{%
+\subsection{需求}\label{ux9700ux6c42}}
+
+复方组成：
+
+The decoction consisted of 30 g astragalus membranaceus (huangqi黄芪3), 10 g polygonatum odoratum (yuzu玉竹), 6 g scolopendra subspinipes mutilans (tianlong蜈蚣4), 6 g pberetima (dilong地龙), 20 g solanum nigrum (longkui龙葵5), 20 g herbahedyotis (baihushecao白花蛇舌草), 20 g semen coicis (yiyiren薏苡仁), 6 g euphorbia helioscopia (zeqi泽漆), 10 g curcuma longa (eshu莪术6) and 6 g tendril-leaved fritillary bulb (chuanbei川贝母).
+
+疾病：自身免疫性肠病
+
+\hypertarget{ux7ed3ux679c}{%
+\subsection{结果}\label{ux7ed3ux679c}}
+
+\begin{itemize}
+\tightlist
+\item
+  网络药理图见 Fig. \ref{fig:Network-pharmacology-with-disease}
+\item
+  通路聚焦见，Fig. \ref{fig:Hsa04068-visualization} (SIRT1 相关)
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{1}}.
+\item
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{2}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{4}}.
+\item
+  Website \texttt{HERB} \url{http://herb.ac.cn/} used for data source\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{5}}.
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux7f51ux7edcux836fux7406ux5b66}{%
+\subsection{网络药理学}\label{ux7f51ux7edcux836fux7406ux5b66}}
+
+\hypertarget{ux6210ux5206ux9776ux70b9}{%
+\subsubsection{成分靶点}\label{ux6210ux5206ux9776ux70b9}}
+
+Table \ref{tab:Herbs-information} (下方表格) 为表格Herbs information概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Herbs-information.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行18列，以下预览的表格可能省略部分数据；表格含有10个唯一`Herb\_'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:Herbs-information}Herbs information}\tabularnewline
+\toprule
+Herb\_ & Herb\_p\ldots{} & Herb\_c\ldots{} & Herb\_e\ldots{} & Herb\_l\ldots{} & Proper\ldots{} & Meridians & UsePart & Function & Indica\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_ & Herb\_p\ldots{} & Herb\_c\ldots{} & Herb\_e\ldots{} & Herb\_l\ldots{} & Proper\ldots{} & Meridians & UsePart & Function & Indica\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endhead
+HERB00\ldots{} & BAI HU\ldots{} & 白花蛇舌草 & all - \ldots{} & Herba \ldots{} & Cold; \ldots{} & Large \ldots{} & whole \ldots{} & 1. To \ldots{} & Lung h\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & CHUAN \ldots{} & 川贝母 & Bulb o\ldots{} & Bulbus\ldots{} & Minor \ldots{} & Lung; \ldots{} & bulb & To rem\ldots{} & Lung h\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & DI LONG & 地龙 & Earthworm & Pheretima & Cold; \ldots{} & Bladde\ldots{} & Pheret\ldots{} & Treatm\ldots{} & 1. Rel\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & E ZHU & 莪术 & Zedora\ldots{} & Rhizom\ldots{} & Warm; \ldots{} & Spleen\ldots{} & NA & To pro\ldots{} & 1. Its\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & HUANG QI & 黄芪 & root o\ldots{} & Radix \ldots{} & Warm; \ldots{} & Lung; \ldots{} & root & To rei\ldots{} & Common\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & LONG KUI & 龙葵 & Solanu\ldots{} & NA & NA & NA & aerial\ldots{} & NA & Clove \ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & WU GONG & 蜈蚣 & Centipede & Scolop\ldots{} & Warm; \ldots{} & Liver & dried \ldots{} & To cal\ldots{} & Acute \ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & YI YI REN & 薏苡仁 & seed o\ldots{} & semen \ldots{} & Minor \ldots{} & Lung; \ldots{} & seed & 1. To \ldots{} & Edema,\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & YU ZHU & 玉竹 & Fragra\ldots{} & Rhizom\ldots{} & Mild; \ldots{} & Lung; \ldots{} & rhizome & To nou\ldots{} & Lung s\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & ZE QI & 泽漆 & Euphor\ldots{} & NA & NA & NA & NA & NA & Edema \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:Components-of-Herbs} (下方表格) 为表格Components of Herbs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Components-of-Herbs.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有897行4列，以下预览的表格可能省略部分数据；表格含有831个唯一`Ingredient.name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:Components-of-Herbs}Components of Herbs}\tabularnewline
+\toprule
+herb\_id & Ingredient.id & Ingredient.name & Ingredient.alias\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+herb\_id & Ingredient.id & Ingredient.name & Ingredient.alias\tabularnewline
+\midrule
+\endhead
+HERB000208 & HBIN002551 & 1H-2,6-dioxacyclo\ldots{} & 14259-45-1; NSC 3\ldots{}\tabularnewline
+HERB000208 & HBIN003265 & (1S,4aS,5R,7aS)-5\ldots{} & (1S,4aS,5R,7aS)-5\ldots{}\tabularnewline
+HERB000208 & HBIN004057 & 2,3-dimethoxy-6-m\ldots{} & NA\tabularnewline
+HERB000208 & HBIN004058 & 2,3-dimethoxy-6-m\ldots{} & NA\tabularnewline
+HERB000208 & HBIN005745 & 2-hydroxy-3-methy\ldots{} & 2-hydroxy-3-methy\ldots{}\tabularnewline
+HERB000208 & HBIN005879 & 2-methoxy-3-methy\ldots{} & 2-methoxy-3-methy\ldots{}\tabularnewline
+HERB000208 & HBIN005968 & 2-methyl-3-hydrox\ldots{} & NA\tabularnewline
+HERB000208 & HBIN008641 & 3-hydroxy-2-methy\ldots{} & NA\tabularnewline
+HERB000208 & HBIN008695 & 3'-Hydroxyan\ldots{} & 3-(4-Methoxypheny\ldots{}\tabularnewline
+HERB000208 & HBIN009961 & 4,4-hydroxy- betw\ldots{} & NA\tabularnewline
+HERB000208 & HBIN010238 & (4aS,6aR,6aS,6bR,\ldots{} & NA\tabularnewline
+HERB000208 & HBIN011872 & 5-o-p-methoxy cin\ldots{} & AC1NSY1Y; 5-o-p-m\ldots{}\tabularnewline
+HERB000208 & HBIN012673 & 6-o-e-p-coumaroyl\ldots{} & NA\tabularnewline
+HERB000208 & HBIN012702 & 6-O- on- hydroxy \ldots{} & NA\tabularnewline
+HERB000208 & HBIN012703 & 6-O- on- methoxy \ldots{} & NA\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:intersection-of-all-compounds} (下方图) 为图intersection of all compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-all-compounds.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-all-compounds.pdf}
+\caption{Intersection of all compounds}\label{fig:intersection-of-all-compounds}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/intersection-of-all-compounds-content})}
+
+\hypertarget{ux75beux75c5}{%
+\subsubsection{疾病}\label{ux75beux75c5}}
+
+Figure \ref{fig:Overall-targets-number-of-datasets} (下方图) 为图Overall targets number of datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-targets-number-of-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-targets-number-of-datasets.pdf}
+\caption{Overall targets number of datasets}\label{fig:Overall-targets-number-of-datasets}
+\end{center}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    autoimmune colitis
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    FALSE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 4
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:GeneCards-used-data} (下方表格) 为表格GeneCards used data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GeneCards-used-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1056行7列，以下预览的表格可能省略部分数据；表格含有1056个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:GeneCards-used-data}GeneCards used data}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+AIRE & Autoimmune\ldots{} & Protein Co\ldots{} & O43918 & 52 & GC21P044285 & 168.07\tabularnewline
+FAS & Fas Cell S\ldots{} & Protein Co\ldots{} & P25445 & 58 & GC10P106652 & 99.65\tabularnewline
+CTLA4 & Cytotoxic \ldots{} & Protein Co\ldots{} & P16410 & 57 & GC02P203854 & 83.05\tabularnewline
+CASP10 & Caspase 10 & Protein Co\ldots{} & Q92851 & 56 & GC02P201182 & 78.14\tabularnewline
+PRKCD & Protein Ki\ldots{} & Protein Co\ldots{} & Q05655 & 60 & GC03P053156 & 77.18\tabularnewline
+FASLG & Fas Ligand & Protein Co\ldots{} & P48023 & 57 & GC01P172659 & 75.31\tabularnewline
+ITCH & Itchy E3 U\ldots{} & Protein Co\ldots{} & Q96J02 & 55 & GC20P034363 & 67.8\tabularnewline
+COPA & COPI Coat \ldots{} & Protein Co\ldots{} & P53621 & 50 & GC01M160288 & 63.31\tabularnewline
+STAT1 & Signal Tra\ldots{} & Protein Co\ldots{} & P42224 & 61 & GC02M190908 & 56.55\tabularnewline
+PTPN22 & Protein Ty\ldots{} & Protein Co\ldots{} & Q9Y2R2 & 55 & GC01M113813 & 55.01\tabularnewline
+HLA-DRB1 & Major Hist\ldots{} & Protein Co\ldots{} & P01911 & 55 & GC06M090793 & 54.62\tabularnewline
+STAT3 & Signal Tra\ldots{} & Protein Co\ldots{} & P40763 & 62 & GC17M042313 & 54.2\tabularnewline
+TNF & Tumor Necr\ldots{} & Protein Co\ldots{} & P01375 & 61 & GC06P125492 & 50.9\tabularnewline
+FOXP3 & Forkhead B\ldots{} & Protein Co\ldots{} & Q9BZS1 & 56 & GC0XM049250 & 50.67\tabularnewline
+IL6 & Interleukin 6 & Protein Co\ldots{} & P05231 & 60 & GC07P022725 & 49.63\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6210ux5206-ux9776ux70b9-ux75beux75c5}{%
+\subsubsection{成分-靶点-疾病}\label{ux6210ux5206-ux9776ux70b9-ux75beux75c5}}
+
+Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Targets intersect with targets of diseases概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf}
+\caption{Targets intersect with targets of diseases}\label{fig:Targets-intersect-with-targets-of-diseases}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    CYP3A5, IL2, TNF, IL2RA, FAS, PRKCD, FASLG, STAT1,
+STAT3, IL6, IL10, IFNG, TG, CASP8, KRAS, ACTA2, ZAP70, IL4,
+INS, IL1B, NFKB1, MPO, SYK, PDCD1, HLA-B, TGFB1, TLR4,
+CXCL8, PRTN3, STAT4, CD40LG, IL18, TPO, IL13, LTF,
+TNFRSF1A, HLA-A, IL12B, IL1A, CCL2, ICAM1, SPP1, ABCB1,
+ALB, TP53, CXCL10, TNFSF...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases-content})}
+
+Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pharmacology with disease概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-with-disease.pdf}
+\caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
+\end{center}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+Figure \ref{fig:KEGG-enrichment} (下方图) 为图KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-enrichment.pdf}
+\caption{KEGG enrichment}\label{fig:KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:GO-enrichment} (下方图) 为图GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GO-enrichment.pdf}
+\caption{GO enrichment}\label{fig:GO-enrichment}
+\end{center}
+
+\hypertarget{ux5bccux96c6ux7ed3ux679cux7b5bux9009}{%
+\subsubsection{富集结果筛选}\label{ux5bccux96c6ux7ed3ux679cux7b5bux9009}}
+
+以 SIRT1 筛选显著富集的通路
+
+Table \ref{tab:Filter-by-match-genes} (下方表格) 为表格Filter by match genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Filter-by-match-genes.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有12行9列，以下预览的表格可能省略部分数据；表格含有12个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:Filter-by-match-genes}Filter by match genes}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa04936 & Alcoho\ldots{} & 36/305 & 142/8661 & 1.4302\ldots{} & 1.4302\ldots{} & 5.4304\ldots{} & 207/71\ldots{} & 36\tabularnewline
+hsa04068 & FoxO s\ldots{} & 29/305 & 131/8661 & 7.6038\ldots{} & 4.3450\ldots{} & 1.6498\ldots{} & 207/47\ldots{} & 29\tabularnewline
+hsa04218 & Cellul\ldots{} & 29/305 & 156/8661 & 9.6984\ldots{} & 4.0530\ldots{} & 1.5389\ldots{} & 207/47\ldots{} & 29\tabularnewline
+hsa04211 & Longev\ldots{} & 20/305 & 89/8661 & 2.0347\ldots{} & 6.8640\ldots{} & 2.6062\ldots{} & 207/94\ldots{} & 20\tabularnewline
+hsa04213 & Longev\ldots{} & 16/305 & 61/8661 & 1.8294\ldots{} & 5.6291\ldots{} & 2.1373\ldots{} & 207/94\ldots{} & 16\tabularnewline
+hsa04148 & Effero\ldots{} & 22/305 & 156/8661 & 2.3337\ldots{} & 6.2089\ldots{} & 2.3575\ldots{} & 240/38\ldots{} & 22\tabularnewline
+hsa05206 & MicroR\ldots{} & 32/305 & 310/8661 & 3.7074\ldots{} & 9.5796\ldots{} & 3.6373\ldots{} & 5243/4\ldots{} & 32\tabularnewline
+hsa04152 & AMPK s\ldots{} & 18/305 & 121/8661 & 2.0060\ldots{} & 4.9708\ldots{} & 1.8874\ldots{} & 207/59\ldots{} & 18\tabularnewline
+hsa04310 & Wnt si\ldots{} & 13/305 & 174/8661 & 0.0083\ldots{} & 0.0144\ldots{} & 0.0055\ldots{} & 595/14\ldots{} & 13\tabularnewline
+hsa05031 & Amphet\ldots{} & 6/305 & 69/8661 & 0.0340\ldots{} & 0.0554\ldots{} & 0.0210\ldots{} & 1644/2\ldots{} & 6\tabularnewline
+hsa04922 & Glucag\ldots{} & 6/305 & 107/8661 & 0.1753\ldots{} & 0.2504\ldots{} & 0.0950\ldots{} & 207/23\ldots{} & 6\tabularnewline
+hsa00760 & Nicoti\ldots{} & 2/305 & 37/8661 & 0.3763\ldots{} & 0.4878\ldots{} & 0.1852\ldots{} & 4860/2\ldots{} & 2\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:Hsa04068-visualization} (下方图) 为图Hsa04068 visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04068.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-03-06_16_45_49.49341/hsa04068.pathview.png}
+\caption{Hsa04068 visualization}\label{fig:Hsa04068-visualization}
+\end{center}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+1. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheDisgenetKnPinero2019}{}%
+2. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+3. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-PharmgkbAWorBarbar2018}{}%
+4. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
+
+\leavevmode\hypertarget{ref-HerbAHighThFang2021}{}%
+5. Fang, S. \emph{et al.} HERB: A high-throughput experiment- and reference-guided database of traditional chinese medicine. \emph{Nucleic Acids Research} \textbf{49}, D1197--D1206 (2021).
+\end{cslreferences}
+
+\end{document}
