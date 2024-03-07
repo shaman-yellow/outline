@@ -290,13 +290,92 @@ je.pb@object$Title %>% grpf("affinity", T)
 
 ```{r}
 tc <- job_tcga("TCGA-COAD")
-tc <- step1(tc, c("protein", "clinical"))
+tc <- step1(tc, c("RNA", "protein", "clinical"))
 tc <- step2(tc)
-tc.pr <- step3(tc, query = "protein", clinical.info = "drug")
+tc@object
 
-tc.pr@params$metadata$drug_name
-pRRophetic::pRRopheticQQplot
+prr <- asjob_prr(tc, "Cisplatin")
+prr <- step1(prr)
+prr@object
+prr@plots$step1$p.cvOut
+prr@step <- 1L
+prr <- step2(prr)
 
+prr@tables$step2$t.predict
+
+lst.pr <- map(tc, prr)
+lst.pr$meta.prr %>% dplyr::group_by(kmeans_group) %>% dplyr::summarise(mean = mean(sensitivity))
+lst.pr
+
+lm.tcgaPr <- do_limma(tc, prr)
+lm.tcgaPr <- step1(lm.tcgaPr)
+lm.tcgaPr <- step2(lm.tcgaPr, Resistance - Non_resistance, use = "P", label = "peptide_target")
+lm.tcgaPr@plots$step2$p.valcano
+
+tops.tcgaPr <- lm.tcgaPr@tables$step2$tops$`Resistance - Non_resistance`
+tops.tcgaPr <- dplyr::mutate(tops.tcgaPr, Gene_name = peptide_target)
+tops.tcgaPr
+
+```
+
+### Unitmp
+
+UniTmp: unified resources for transmembrane proteins [@UnitmpUnifiedDobson2024]
+
+见 Tab. \@ref(tab:UniTmp-data-of-htp-all)
+
+### 与高表达差异蛋白 (TCGA-dps-Up) 交集
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-Intersection-of-DPs-Up-with-TransMemPs
+autor(p.venn_tcgaPr)
+```
+
+```{r}
+p.venn_tcgaPr <- new_venn(DPs_Up = dplyr::filter(tops.tcgaPr, logFC > 0)$Gene_name, TransMemPs = ut@object$Gene_Name)
+p.venn_tcgaPr
+p.venn_tcgaPr$ins
+```
+
+## 以蛋白互作筛选配体蛋白
+
+### TCGA-COAD 的 RNA-seq 差异表达
+
+```{r}
+tc.rna <- step3(tc, query = "RNA")
+lm.tcgaRna <- asjob_limma(tc.rna)
+lm.tcgaRna@object
+
+lm.tcgaRna <- map(lm.tcgaRna, lm.tcgaPr)
+lm.tcgaRna <- step1(lm.tcgaRna)
+lm.tcgaRna <- step2(lm.tcgaRna, Resistance - Non_resistance)
+lm.tcgaRna@plots$step2$p.valcano$`Resistance - Non_resistance`
+tops.tcgaRna <- lm.tcgaRna@tables$step2$tops$`Resistance - Non_resistance`
+tops.tcgaRna
+
+```
+
+### PPI
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-DPS-filtered-and-formated-PPI-network
+autor(lst.inter_tcga$p.ppi)
+```
+
+```{r}
+sdb.tcga <- job_stringdb(c(p.venn_tcgaPr$ins, ))
+sdb.tcga <- step1(sdb.tcga)
+sdb.tcga@plots$step1$p.mcc
+
+lst.inter_tcga <- filter(
+  sdb.tcga,
+  tops$Gene_name[!tops$Gene_name %in% ut@object$Gene_Name], p.venn$ins,
+  level.x = dplyr::select(tops, 1:2), use.top = "from",
+  less.label = F
+)
+
+lst.inter_tcga$p.ppi
+lst.inter_tcga$edges
 ```
 
 

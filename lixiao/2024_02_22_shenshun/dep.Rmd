@@ -27,4 +27,37 @@ Single-cell and spatial profiling identify three response trajectories to pembro
 Abemaciclib Is Effective in Palbociclib-Resistant Hormone Receptor-Positive Metastatic Breast Cancers
 (PMID: 37384539)
 
+```{r}
 
+
+prr <- job_prr(exprDataBortezomib, "Cisplatin")
+prr@params$p.drugQQ
+prr <- step1(prr)
+prr@plots$step1$p.cvOut
+prr <- step2(prr)
+prr@tables$step2$t.predict
+
+
+tc.rna <- step3(tc, query = "RNA")
+lm.rna <- asjob_limma(tc.rna)
+lm.rna <- step1(lm.rna)
+lm.rna@object$genes$gene_name %>% gname
+
+tc.pr <- step3(tc, query = "protein", clinical.info = "drug")
+tc.pr@params$metadata$drug_name
+
+
+fun <- function() {
+  data <- prr@tables$step2$t.predict
+  fun2 <- function(n) {
+    print("-----------")
+    print(mean(data[data$kmeans_group == n, ][[2]]))
+  }
+  fun2(1)
+  fun2(2)
+  fun2(3)
+}
+fun()
+ 
+
+```
