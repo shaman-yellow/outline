@@ -23,7 +23,9 @@ header-includes:
   \renewenvironment{figure}
   {\def\@captype{figure}}
   \makeatother
-  \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
   \definecolor{shadecolor}{RGB}{230,230,230}
   \usepackage{xeCJK}
   \usepackage{setspace}
@@ -36,7 +38,7 @@ header-includes:
   \tcbuselibrary{breakable}
   \renewenvironment{Shaded}
   {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
-    arc = 1mm, auto outer arc, title = {Input}]}
+    arc = 1mm, auto outer arc, title = {R input}]}
   {\end{tcolorbox}}
   \usepackage{titlesec}
   \titleformat{\paragraph}
@@ -50,10 +52,10 @@ header-includes:
 
 
 \begin{titlepage} \newgeometry{top=7.5cm}
-\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
 \begin{center} \textbf{\Huge 白芍网络药理学}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-04}}
+\textbf{\textcolor{white}{2024-03-08}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -103,15 +105,13 @@ header-includes:
 
 Mainly used method:
 
-- R package `ClusterProfiler` used for gene enrichment analysis [@ClusterprofilerWuTi2021].
-- The API of `UniProtKB` (<https://www.uniprot.org/help/api_queries>) used for mapping of names or IDs of proteins .
-- R package `PubChemR` used for querying compounds information .
-- Web tool of `SwissTargetPrediction` used for drug-targets prediction [@SwisstargetpredDaina2019].
-- Website `TCMSP` <https://tcmsp-e.com/tcmsp.php> used for data source [@TcmspADatabaRuJi2014].
-- `AutoDock vina` used for molecular docking [@AutodockVina1Eberha2021].
-- The Human Gene Database `GeneCards` used for disease related genes prediction [@TheGenecardsSStelze2016].
-- R package `biomaRt` used for gene annotation [@MappingIdentifDurinc2009].
-- Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
+- R package `ClusterProfiler` used for gene enrichment analysis[@ClusterprofilerWuTi2021].
+- The API of `UniProtKB` (<https://www.uniprot.org/help/api_queries>) used for mapping of names or IDs of proteins.
+- R package `PubChemR` used for querying compounds information.
+- Web tool of `SwissTargetPrediction` used for drug-targets prediction[@SwisstargetpredDaina2019].
+- Website `TCMSP` <https://tcmsp-e.com/tcmsp.php> used for data source[@TcmspADatabaRuJi2014].
+- `AutoDock vina` used for molecular docking[@AutodockVina1Eberha2021].
+- R version 4.3.2 (2023-10-31); Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
 # 分析结果 {#results}
 
@@ -492,6 +492,8 @@ Figure \@ref(fig:Paeoniflorin-combine-SOX18) (下方图) 为图Paeoniflorin comb
 \includegraphics[width = 0.9\linewidth]{./figs/442534_into_sox18.png}
 \caption{Paeoniflorin combine SOX18}\label{fig:Paeoniflorin-combine-SOX18}
 \end{center}
+
+
 
 
 

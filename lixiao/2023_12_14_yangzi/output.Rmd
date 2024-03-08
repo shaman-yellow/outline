@@ -23,7 +23,9 @@ header-includes:
   \renewenvironment{figure}
   {\def\@captype{figure}}
   \makeatother
-  \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
   \definecolor{shadecolor}{RGB}{230,230,230}
   \usepackage{xeCJK}
   \usepackage{setspace}
@@ -36,7 +38,7 @@ header-includes:
   \tcbuselibrary{breakable}
   \renewenvironment{Shaded}
   {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
-    arc = 1mm, auto outer arc, title = {Input}]}
+    arc = 1mm, auto outer arc, title = {R input}]}
   {\end{tcolorbox}}
   \usepackage{titlesec}
   \titleformat{\paragraph}
@@ -311,7 +313,7 @@ en.p@tables$step1$res.kegg
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Overall-combining-Affinity
-autor(wrap(vn@plots$step5$p.res_vina, 7.2, 2))
+autor(wrap(vn@plots$step5$p.res_vina, 7.2, 1.5))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -335,11 +337,13 @@ file.copy("./order_material/AF-P35713-F1-model_v4.pdb", "./protein_pdb/sox18.pdb
 vn <- step3(vn, extra_pdb.files = c(sox18 = "./protein_pdb/sox18.pdb"),
   extra_layouts = nl(pae.cids$CID[[1]], "sox18"))
 vn <- step4(vn)
-vn <- step5(vn)
+vn@step <- 4L
+vn <- step5(vn, excludes = "USP5")
 vn@tables$step5$res_dock
-wrap(vn@plots$step5$p.res_vina, 7.2, 2)
+wrap(vn@plots$step5$p.res_vina, 7.2, 1.5)
 vn <- step6(vn)
 vn <- step7(vn)
+
 ```
 
 ```{r}
@@ -349,5 +353,9 @@ vis(je)
 je <- job_esearch("drug targets")
 vis(je)
 # https://pubmed.ncbi.nlm.nih.gov/34991690/
+```
+
+```{r}
+load("~/disk_sdb1/2023_12_14_yangzi/.RData")
 ```
 

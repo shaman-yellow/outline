@@ -59,5 +59,8 @@ fun <- function() {
 }
 fun()
  
+lst.pr <- map(tc, prr)
+lst.pr$meta.prr %>% dplyr::group_by(kmeans_group) %>% dplyr::summarise(mean = mean(sensitivity))
+lst.pr
 
 ```

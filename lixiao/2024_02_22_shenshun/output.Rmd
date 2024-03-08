@@ -1,0 +1,625 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    keep_md: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \definecolor{shadecolor}{RGB}{230,230,230}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
+  \tcbuselibrary{breakable}
+  \renewenvironment{Shaded}
+  {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
+    arc = 1mm, auto outer arc, title = {R input}]}
+  {\end{tcolorbox}}
+  \usepackage{titlesec}
+  \titleformat{\paragraph}
+  {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
+---
+
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(3), eval = ic(2, 3, 3, 0, 0))
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+- 研究对象：乳腺癌或结直肠癌
+- 耐药：5-氟尿嘧啶或顺铂
+
+## 需求
+
+1、寻找差异致癌膜蛋白及对应配体蛋白；
+2、耐药差异膜蛋白及对应抗体蛋白或互作抑制其表达蛋白。
+
+现需要利用数据库分析正常组与疾病组间的差异表达膜蛋白AA（在癌中高表达的）和对应靶向癌细胞特异性高表达的膜蛋白AA的配体蛋白AA’；
+以及非耐药组与耐药组间的差异表达膜蛋白XX（在耐药组中高表达的）和对应XX的抗体蛋白或相互作用能抑制其表达的蛋白XX’。
+
+## 结果
+
+### 寻找差异致癌膜蛋白及对应配体蛋白
+
+这一部分思路较简单，找到可用的蛋白质组数据[@ProteomicsProfShao2022]，筛选差异蛋白，
+再以 UniTmp 数据库筛选跨膜蛋白 (膜蛋白受体主要为跨膜蛋白) ，再借助 STRINGdb 构建
+PPI 网络，寻找互作蛋白，再结合富集分析 (\@ref(cut-ppi))，进一步缩小范围。
+
+注意，以上 PPI 构建的来源是所有筛选到的差异蛋白 (拟从差异蛋白中找到候选的配体蛋白)。
+
+差异癌膜蛋白为：`r paste0(unique(lst.filter$edges$to), collapse = ", ")`
+最终筛选的蛋白和对应候选配体关系见：Fig. \@ref(fig:PPS-DPS-filtered-by-KEGG-and-formated-PPI-network)
+
+### 耐药差异膜蛋白及对应抗体蛋白或互作抑制其表达蛋白
+
+这部分思路稍复杂。由于无法直接获得包含耐药性分组的蛋白表达数据，因此需要另寻思路，
+即，获取 TCGA-COAD 的基因表达数据和蛋白定量数据，以 `pRRophetic` 根据基因表达数据
+分析耐药性 (顺铂 Cisplatin)，再对样本分组，随后分析蛋白定量数据。
+
+后续和上一部分近似：筛选差异蛋白，再以 UniTmp 数据库筛选跨膜蛋白，再借助 STRINGdb 构建
+PPI 网络，寻找互作蛋白，再结合富集分析。到这里，筛选蛋白 (TSC1) 和互作蛋白关系见
+Fig. \@ref(fig:TCGA-DPS-filtered-and-formated-PPI-network-logFC)。
+后续的富集分析结果可能有一定参考价值，富集到 TSC1
+(hsa04151, Fig. \@ref(fig:TCGA-TSC1-in-hsa04151-visualization))
+
+注意，以上 PPI 构建的来源是筛选的膜蛋白 (TSC1)，和 RNA-seq 的 DEGs (拟从差异蛋白中找到候选的配体蛋白)。
+
+但这部分还需要指定互作抑制的蛋白，因此又结合了关联分析，挖掘 RNA 表达中呈负相关性的蛋白
+(Fig. \@ref(fig:TCGA-RNA-correlation-heatmap))。
+
+最终可参考的表格：Tab. \@ref(tab:TCGA-RNA-TSC1-negtive-correlated)
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("乳腺癌"),
+  di("结直肠癌"),
+  di("蛋白组学"),
+  di("膜蛋白"),
+  di("受体蛋白"),
+  di("配体蛋白"),
+  di("5-氟尿嘧啶"),
+  di("顺铂"),
+  di("紫杉醇")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# BC: breast cancer 乳腺癌
+# CC: colorectal cancer 结直肠癌
+# P: Proteomics 蛋白组学
+# MP: Membrane Protein 膜蛋白
+# RP: receptor protein 受体蛋白
+# LP: ligand protein 配体蛋白
+# 5: 5-Fluorouracil 5-氟尿嘧啶
+# C: Cisplatin 顺铂
+# P: Paclitaxel 紫杉醇
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程——寻找差异致癌膜蛋白及对应配体蛋白 {#workflow1}
+
+```{r}
+je <- job_esearch("Membrane Protein database")
+vis(je)
+
+je@object$Title %>% grpf("membrane", T)
+
+je.rec <- job_esearch("receptor membrane protein")
+vis(je.rec)
+je.rec@object$Title %>% grpf("membrane", T) %>% grpf("receptor", T)
+
+je.rec <- job_esearch("membrane receptor")
+vis(je.rec)
+je.rec@object$Title %>% grpf("membranes", T)
+
+```
+
+## 结直肠癌差异蛋白
+
+### 数据来源
+
+Proteomics profiling of colorectal cancer progression identifies PLOD2 as a potential therapeutic target
+[@ProteomicsProfShao2022]
+
+```{r eval = T, echo = F, results = "asis"}
+#| PUBLISHED-ProteomicsProfShao2022-metadata-used-sample
+autor(lm.pps@params$metadata, key = "group")
+```
+
+### 差异蛋白
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-Cancer-vs-Control-DEGs
+autor(lm.pps@plots$step2$p.valcano$`Cancer - Control`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-data-Cancer-vs-Control-DPs
+autor(tops.pps, key = "Gene_name")
+```
+
+```{r}
+pb.pps <- get_data.pps2022()
+pb.pps@object$metadata
+
+metadata <- dplyr::filter(pb.pps@params$metadata, grpl(Pathology.Type, "Normal Colon|Adenocarcinoma not otherwise"))
+metadata <- dplyr::mutate(metadata, group = ifelse(grpl(Pathology.Type, "Normal"), "Control", "Cancer"))
+
+lm.pps <- job_limma_normed(pb.pps@params$counts, metadata, pb.pps@object$data)
+lm.pps <- step1(lm.pps)
+lm.pps <- step2(lm.pps, Cancer - Control, use = "P", label = "Gene_name")
+lm.pps@plots$step2$p.valcano$`Cancer - Control`
+tops.pps <- tops <- dplyr::relocate(lm.pps@tables$step2$tops$`Cancer - Control`, Gene_name, logFC)
+
+```
+
+## 膜蛋白筛选
+
+受体蛋白主要分为：
+
+- 离子通道受体 (Ligand-gated ion channel, LICs, LGIC)
+- 催化受体 (酶受体) (catalytic receptor)
+    - 鸟苷酸酰化酶受体
+    - 酪氨酸激酶受体
+- G蛋白偶联受体 (G protein-coupled receptors) (GPCRs) (https://gpcrdb.org/)
+
+以上都是跨膜蛋白类型。
+因此以下筛选将从跨膜蛋白出发。
+
+### Unitmp
+
+UniTmp: unified resources for transmembrane proteins [@UnitmpUnifiedDobson2024]
+
+```{r eval = T, echo = F, results = "asis"}
+#| UniTmp-data-of-htp-all
+autor(ut@object)
+```
+
+```{r}
+ut <- job_unitmp()
+ut@object
+```
+
+### 与高表达差异蛋白 (DPs-Up) 交集
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-Intersection-of-DPs-Up-with-TransMemPs
+autor(p.venn)
+```
+
+```{r}
+p.venn <- new_venn(DPs_Up = dplyr::filter(tops, logFC > 0)$Gene_name, TransMemPs = ut@object$Gene_Name)
+p.venn$ins
+```
+
+## 以蛋白互作筛选配体蛋白
+
+### PPI
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-DPS-filtered-and-formated-PPI-network
+autor(lst.inter$p.ppi)
+```
+
+```{r}
+sdb.dps <- job_stringdb(tops$Gene_name)
+sdb.dps <- step1(sdb.dps)
+
+lst.inter <- filter(
+  sdb.dps,
+  tops$Gene_name[!tops$Gene_name %in% ut@object$Gene_Name], p.venn$ins,
+  level.x = dplyr::select(tops, 1:2), use.top = "from",
+  less.label = F
+)
+
+lst.inter$p.ppi
+lst.inter$edges
+```
+
+### 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-PPI-KEGG-enrichment
+autor(en.ppi@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-PPI-GO-enrichment
+autor(en.ppi@plots$step1$p.go$ids)
+```
+
+坏死性凋亡信号通路在肿瘤发生发展、肿瘤坏死、肿瘤转移和肿瘤免疫反应中发挥作用；坏死性凋亡可能促进或抗肿瘤发生，具体取决于肿瘤的类型[@NecroptosisAndYanJ2022]。
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-PPI-hsa04217-visualization
+autor(en.ppi@plots$step2$p.pathviews$hsa04217)
+```
+
+70-kDa 热休克蛋白 (HSP70) 在癌症中大量存在，通过抑制多种凋亡途径、调节坏死、绕过细胞衰老程序、干扰肿瘤免疫、促进血管生成和支持转移，为恶性细胞提供选择优势 [@Hsp70MultiFunAlbako2020]
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-PPI-hsa04612-visualization
+autor(en.ppi@plots$step2$p.pathviews$hsa04612)
+```
+
+```{r}
+en.ppi <- job_enrich(unique(unlist(lst.inter$edges)))
+en.ppi <- step1(en.ppi, use = "pvalue")
+en.ppi@step <- 1L
+en.ppi <- step2(en.ppi, c("hsa04217", "hsa04612"), gene.level = tops[, 1:2])
+en.ppi@plots$step2$p.pathviews$hsa04612
+
+en.ppi@plots$step1$p.kegg
+en.ppi@plots$step1$p.go
+
+gene.necro <- en.ppi@tables$step1$res.kegg$ids$geneName_list[[1]] %>% .[. %in% lst.inter$edges$to]
+# [1] "AIFM1"   "SLC25A6"
+# tAIF, ANT
+en.ppi@tables$step1$res.kegg$ids
+
+```
+
+### 根据富集结果缩减 PPI {#cut-ppi}
+
+由于富集结果可以凸显肿瘤的性质，这里尝试根据 KEGG top 10 通路的富集基因缩减 PPI
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-DPS-filtered-by-KEGG-and-formated-PPI-network
+autor(lst.filter$p.ppi)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-DPS-filtered-by-KEGG-Top-MCC-score
+autor(lst.filter$p.mcc)
+```
+
+```{r}
+gene.top10path <- unique(unlist(en.ppi@tables$step1$res.kegg$ids$geneName_list[1:10]))
+
+lst.filter <- filter(
+  sdb.dps,
+  ins(tops$Gene_name[!tops$Gene_name %in% ut@object$Gene_Name], gene.top10path), ins(p.venn$ins, gene.top10path),
+  level.x = dplyr::select(tops, 1:2), use.top = "from",
+  less.label = F
+)
+lst.filter$p.ppi
+```
+
+```{r}
+je.pb <- job_esearch("protein-binding proteins")
+vis(je.pb)
+je.pb@object$Title %>% grpf("affinity", T)
+```
+
+# 附：分析流程——耐药差异膜蛋白及对应抗体蛋白或互作抑制其表达蛋白 {#workflow2}
+
+## 结肠癌差异蛋白
+
+注：由于无法直接获得包含耐药性分组的蛋白表达数据，因此这部分的内容另寻思路，
+即，获取 TCGA-COAD 的基因表达数据和蛋白定量数据，以 `pRRophetic` 根据基因表达数据
+分析耐药性，再对样本分组，随后分析蛋白定量数据。
+
+### 数据来源 
+
+共使用了 TCGA-COAD 的 RNA, protein, clinical 数据 (使用了三者都包含的病人的样本数据)。
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-COAD-clinical-metadata
+autor(tc@tables$step1$clinical)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-COAD-protein-metadata
+autor(tc@tables$step1$protein)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-COAD-RNA-metadata
+autor(tc@tables$step1$RNA)
+```
+
+```{r}
+tc <- job_tcga("TCGA-COAD")
+tc <- step1(tc, c("RNA", "protein", "clinical"))
+tc <- step2(tc)
+tc@tables$step1$clinical
+```
+
+## 预测耐药性
+
+### 使用 RNA 数据集预测
+
+以 `pRRophetic` 预测药物敏感性 (Cisplatin)。
+
+```{r eval = T, echo = F, results = "asis"}
+#| QQ-plot-for-distribution-of-the-transformed-IC50-data
+autor(prr@params$p.drugQQ)
+```
+
+Fig. \@ref(fig:QQ-plot-for-distribution-of-the-transformed-IC50-data) 表明，
+Cisplatin 的 IC~50~ 数据特征基本符合正太分布，可以用于线形预测 Cisplatin 敏感性。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Estimate-prediction-accuracy
+autor(prr@plots$step1$p.cvOut)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Predicted-drug-sensitivity
+autor(prr@tables$step2$t.predict)
+```
+
+```{r}
+prr <- asjob_prr(tc, "Cisplatin")
+prr <- step1(prr)
+prr@object
+prr@plots$step1$p.cvOut
+prr <- step2(prr)
+
+prr@tables$step2$t.predict
+```
+
+## 差异蛋白筛选
+
+### 元数据
+
+根据 Tab. \@ref(tab:Predicted-drug-sensitivity) k-means 聚类结果，将
+样品分为三组：耐药组、中等组、低耐药性组 (非耐药组) 。
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-COAD-proteome-metadata
+autor(lm.tcgaPr@params$metadata, key = "group")
+```
+
+### 差异蛋白
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-Resistance-vs-Non-resistance-DEPs
+autor(lm.tcgaPr@plots$step2$p.valcano$`Resistance - Non_resistance`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-data-Resistance-vs-Non-resistance-DEPs
+autor(tops.tcgaPr)
+```
+
+```{r}
+lm.tcgaPr <- do_limma(tc, prr)
+lm.tcgaPr <- step1(lm.tcgaPr)
+lm.tcgaPr <- step2(lm.tcgaPr, Resistance - Non_resistance, use = "P", label = "peptide_target")
+lm.tcgaPr@plots$step2$p.valcano
+
+tops.tcgaPr <- lm.tcgaPr@tables$step2$tops$`Resistance - Non_resistance`
+tops.tcgaPr <- dplyr::mutate(tops.tcgaPr, Gene_name = peptide_target)
+tops.tcgaPr
+
+```
+
+## 膜蛋白筛选
+
+### Unitmp
+
+UniTmp: unified resources for transmembrane proteins [@UnitmpUnifiedDobson2024]
+
+见 Tab. \@ref(tab:UniTmp-data-of-htp-all)
+
+### 与高表达差异蛋白 (TCGA-dps-Up) 交集
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-Intersection-of-DPs-Up-with-TransMemPs
+autor(p.venn_tcgaPr)
+```
+
+```{r}
+p.venn_tcgaPr <- new_venn(DPs_Up = dplyr::filter(tops.tcgaPr, logFC > 0)$Gene_name, TransMemPs = ut@object$Gene_Name)
+p.venn_tcgaPr
+p.venn_tcgaPr$ins
+```
+
+## 以蛋白互作筛选配体蛋白
+
+### TCGA-COAD 的 RNA-seq 差异表达
+
+为了筛选 Fig. \@ref(fig:TCGA-Intersection-of-DPs-Up-with-TransMemPs) 的配体，
+以 TCGA-COAD 的差异表达基因作为候选。
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-RNA-Resistance-vs-Non-resistance-DEGs
+autor(lm.tcgaRna@plots$step2$p.valcano$`Resistance - Non_resistance`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-RNA-data-Resistance-vs-Non-resistance-DEGs
+autor(tops.tcgaRna)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-RNA-DEGs-type
+autor(wrap(p.pie_tcgaRna, 10, 7))
+```
+
+```{r}
+tc.rna <- step3(tc, query = "RNA")
+tc.rna@object <- NULL
+lm.tcgaRna <- asjob_limma(tc.rna)
+lm.tcgaRna@object
+
+lm.tcgaRna <- map(lm.tcgaRna, lm.tcgaPr)
+lm.tcgaRna <- step1(lm.tcgaRna)
+lm.tcgaRna <- step2(lm.tcgaRna, Resistance - Non_resistance)
+lm.tcgaRna@plots$step2$p.valcano$`Resistance - Non_resistance`
+tops.tcgaRna <- lm.tcgaRna@tables$step2$tops$`Resistance - Non_resistance`
+tops.tcgaRna
+
+p.pie_tcgaRna <- new_pie(tops.tcgaRna$gene_type, title = "TCGA-COAD DEGs type", overlap = 35)
+p.pie_tcgaRna
+
+```
+
+### PPI
+
+以 Fig. \@ref(fig:TCGA-Intersection-of-DPs-Up-with-TransMemPs) 和 Tab. \@ref(tab:TCGA-RNA-data-Resistance-vs-Non-resistance-DEGs) top 2000 构建 PPI 网络。
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-raw-PPI-network
+autor(sdb.tcga@plots$step1$p.ppi)
+```
+
+将 PPI 网络过滤，凸显 Fig. \@ref(fig:TCGA-Intersection-of-DPs-Up-with-TransMemPs) 交集蛋白 (MCC 筛选高分相连的其他蛋白)
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-DPS-filtered-and-formated-PPI-network-logFC
+autor(lst.inter_tcga$p.ppi)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-DPS-filtered-and-formated-PPI-network-MCC
+autor(lst.inter_tcga$p.mcc)
+```
+
+```{r}
+genes.top2000 <- head(dplyr::filter(tops.tcgaRna, gene_type == "protein_coding")$gene_name, 2000)
+sdb.tcga <- job_stringdb(c(p.venn_tcgaPr$ins, genes.top2000))
+sdb.tcga <- step1(sdb.tcga)
+sdb.tcga@plots$step1$p.mcc
+sdb.tcga@plots$step1$p.ppi
+
+lst.inter_tcga <- filter(
+  sdb.tcga,
+  genes.top2000[!genes.top2000 %in% ut@object$Gene_Name], p.venn_tcgaPr$ins,
+  level.x = dplyr::select(tops.tcgaRna, gene_name, logFC), use.top = "from",
+  less.label = F
+)
+
+lst.inter_tcga$p.ppi
+lst.inter_tcga$edges
+lst.inter_tcga$p.mcc
+```
+
+### 富集分析
+
+TSC1 在通路可见 Fig. \@ref(fig:TCGA-TSC1-in-hsa04151-visualization)
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-KEGG-enrichment
+autor(en.tcga@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-GO-enrichment
+autor(en.tcga@plots$step1$p.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-TSC1-in-hsa04151-visualization
+autor(en.tcga@plots$step2$p.pathviews$hsa04151)
+```
+
+```{r}
+gene.maybeInt <- unique(unlist(lst.inter_tcga$edges))
+en.tcga <- job_enrich(gene.maybeInt)
+en.tcga <- step1(en.tcga, use = "pvalue")
+en.tcga@plots$step1$p.kegg$ids
+en.tcga@plots$step1$p.go$ids
+en.tcga@tables$step1$res.kegg$ids
+en.tcga <- step2(en.tcga, "hsa04151")
+en.tcga@plots$step2$p.pathviews$hsa04151
+
+filter(en.tcga, "YWHAE")
+```
+
+```{r}
+je.inh <- job_esearch("inhibitory protein")
+vis(je.inh)
+```
+
+### 通过关联分析筛选负相关性互作蛋白
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-RNA-correlation-heatmap
+autor(cor.tcgaRna$hp)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-RNA-TSC1-negtive-correlated
+autor(t.negCor)
+```
+
+```{r}
+lst.inter_tcga$edges
+cor.tcgaRna <- cal_corp(lm.tcgaRna, NULL, gene.maybeInt, gene.maybeInt)
+cor.tcgaRna$sig.corp
+
+t.negCor <- dplyr::filter(cor.tcgaRna$sig.corp, To == "TSC1", cor < 0)
+```
+
