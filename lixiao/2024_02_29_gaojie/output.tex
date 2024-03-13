@@ -77,7 +77,7 @@
 \ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
 \begin{center} \textbf{\Huge 建立风险模型}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-03-01}}
+\textbf{\textcolor{white}{2024-03-12}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -151,8 +151,8 @@ rms::lrm(formula = formula, data = data, x = T, y = T)
 &Model Likelihood&Discrimination&Rank Discrim.\\
 &Ratio Test&Indexes&Indexes\\\hline
 Obs~\hfill 390&LR $\chi^{2}$~\hfill 357.02&$R^{2}$~\hfill 0.833&$C$~\hfill 0.974\\
-~~心率不失常~\hfill 260&d.f.~\hfill 7&$R^{2}_{7,390}$~\hfill 0.592&$D_{xy}$~\hfill 0.948\\
-~~心律失常~\hfill 130&Pr$(>\chi^{2})$~\hfill \textless 0.0001&$R^{2}_{7,260}$~\hfill 0.740&$\gamma$~\hfill 0.948\\
+~~No arrhythmia~\hfill 260&d.f.~\hfill 7&$R^{2}_{7,390}$~\hfill 0.592&$D_{xy}$~\hfill 0.948\\
+~~Arrhythmia~\hfill 130&Pr$(>\chi^{2})$~\hfill \textless 0.0001&$R^{2}_{7,260}$~\hfill 0.740&$\gamma$~\hfill 0.948\\
 $\max|\frac{\partial\log L}{\partial \beta}|$~\hfill $1\!\times\!10^{-5}$&&Brier~\hfill 0.053&$\tau_{a}$~\hfill 0.423\\
 \hline
 \end{tabular}
@@ -169,11 +169,11 @@ $\max|\frac{\partial\log L}{\partial \beta}|$~\hfill $1\!\times\!10^{-5}$&&Brier
 \hline
 \endfoot
 Intercept&~-16.6589~&~3.5388~&-4.71&\textless 0.0001\tabularnewline
-舒张压 (mmHg)&~ -0.0582~&~0.0189~&-3.08&0.0021\tabularnewline
-心功能分级=III-IV 级&~  2.1983~&~0.4797~& 4.58&\textless 0.0001\tabularnewline
-肌酐 (μmol/L)&~  0.0668~&~0.0191~& 3.49&0.0005\tabularnewline
+Diastolic blood pressure (mmHg)&~ -0.0582~&~0.0189~&-3.08&0.0021\tabularnewline
+Cardiac\_function\_classification=III-IV level&~  2.1983~&~0.4797~& 4.58&\textless 0.0001\tabularnewline
+Creatinine (μmol/L)&~  0.0668~&~0.0191~& 3.49&0.0005\tabularnewline
 CRP (mg/L)&~  0.3679~&~0.0805~& 4.57&\textless 0.0001\tabularnewline
-NT-ProBNP峰值 (pg/mL)&~  0.0059~&~0.0009~& 6.92&\textless 0.0001\tabularnewline
+NT-ProBNP peak (pg/mL)&~  0.0059~&~0.0009~& 6.92&\textless 0.0001\tabularnewline
 TBIL (μmol/L)&~  0.0752~&~0.0335~& 2.25&0.0247\tabularnewline
 RDW (\%)&~  0.1389~&~0.0572~& 2.43&0.0152\tabularnewline
 \hline

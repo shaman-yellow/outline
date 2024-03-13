@@ -417,29 +417,29 @@ dplyr::filter(pb.alter, KEGG %in% mt@tables$step1$mapped$KEGG) %>%
 
 ```
 
-#### LossOfSymbiotSadegh2024 结肠癌 (肠道菌) {#valid}
+#### LuminalAndTumRomano2022 结肠癌 (肠道菌) {#valid}
 
-Loss of symbiotic and increase of virulent bacteria through microbial networks
-in Lynch syndrome colon carcinogenesis [@LossOfSymbiotSadegh2024]
+Luminal and Tumor-Associated Gut Microbiome Features Linked to Precancerous
+Lesions Malignancy Risk: A Compositional Approach [@LuminalAndTumRomano2022]
 
 以下是整理自该文献的关联肠道菌汇总：
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LossOfSymbiotSadegh2024-published-data-microbiota
+#| LuminalAndTumRomano2022-published-data-microbiota
 autor(pb.loss)
 ```
 
 匹配到的肠道菌 (Phylum 水平)：
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LossOfSymbiotSadegh2024-matched-Phylum-microbiota
+#| LuminalAndTumRomano2022-matched-Phylum-microbiota
 autor(pb.loss.match)
 ```
 
 ```{r}
 # colorectal cancer
-unzip("~/Downloads/cancers-14-05207-s001.zip", exdir = "./material/LossOfSymbiotSadegh2024")
-pb.loss <- fxlsx("./material/LossOfSymbiotSadegh2024/Supplementary tables.xlsx", startRow = 2)
+unzip("~/Downloads/cancers-14-05207-s001.zip", exdir = "./material/LuminalAndTumRomano2022")
+pb.loss <- fxlsx("./material/LuminalAndTumRomano2022/Supplementary tables.xlsx", startRow = 2)
 
 pb.loss.match <- filter(pb.loss, grpl(taxon, paste0(pattern(qi), collapse = "|")))
 ```

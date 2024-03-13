@@ -77,6 +77,17 @@ dat <- dplyr::mutate(dat, Group = gs(Group, "组 .*", ""),
 dat <- dplyr::filter(dat, !is.na(`心功能分级`))
 dat
 
+dat2 <- dplyr::rename(dat, `Cardiac_function_classification` = `心功能分级`,
+  `Creatinine (μmol/L)` = `肌酐 (μmol/L)`,
+  `NT-ProBNP peak (pg/mL)` = `NT-ProBNP峰值 (pg/mL)`,
+  `Diastolic blood pressure (mmHg)` = `舒张压 (mmHg)`
+)
+
+dat2 <- dplyr::mutate(dat2, Group = dplyr::recode(Group, `心律失常` = "Arrhythmia",
+    `心率不失常` = "No arrhythmia"),
+  Group = as.factor(Group),
+  `Cardiac_function_classification` = as.factor(gs(`Cardiac_function_classification`, "级", "level"))
+)
 ```
 
 ## 结果
@@ -102,8 +113,9 @@ autor(lrm.heart$roc$p.roc)
 
 
 ```{r}
-lrm.heart <- new_lrm(dat, "Group", rev.level = T)
-nomo.heart <- new_nomo(lrm.heart, fun_at = seq(.1, 1, by = .3))
+lrm.heart <- new_lrm(dat2, "Group", rev.level = T, lang = "en")
+nomo.heart <- new_nomo(lrm.heart, fun_at = seq(.1, 1, by = .3), lang = "en")
 nomo.heart$p.nomo
+
 ```
 
