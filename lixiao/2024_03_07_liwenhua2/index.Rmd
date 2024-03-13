@@ -64,6 +64,25 @@ auto_method()
 
 ```{r}
 file.copy("~/Downloads/mmc2 (1).xlsx", "./material/TargetedSuppreFederi2022_s2.xlsx", T)
+
+pb.uc_targ <- fxlsx2("./material/TargetedSuppreFederi2022_s2.xlsx", pattern = "^Corrected", bind = F)
+fun_format <- function(data) {
+  group <- grpf(colnames(data)[-1], "^[^X]")
+  group <- c("", rep(group, each = 2))
+  colnames <- gs(paste0(unlist(data[1, ]), "_", group), "_$", "")
+  data <- data[-1, ]
+  colnames(data) <- colnames
+  data <- dplyr::mutate(data, dplyr::across(dplyr::matches("_"), as.double))
+  data <- dplyr::select(data, 1, dplyr::ends_with("_UC.vs.Ctrl"))
+  data <- dplyr::filter(data, padj_UC.vs.Ctrl < .05)
+  data
+}
+pb.uc_targ <- lapply(pb.uc_targ, fun_format)
+pb.uc_targ
+
+upset.uc_targ <- new_upset(lst = lapply(pb.uc_targ, function(x) x$Species))
+upset.uc_targ$ins
+
 ```
 
 ### DepressionAndYuan2021 结肠炎
@@ -74,39 +93,46 @@ unzip("./material/KGMI_A_1987779_SM8304.zip", exdir = "./material/DepressionAndY
 ```
 
 ```{r}
-pb.dep <- fxlsx("./material/DepressionAndYuan2021/Supplementary information/Supplementary table.xlsx", sheet = 3, startRow = 2)
-filter(pb.dep, grpl(Taxonomy, paste0(pattern(qi), collapse = "|")))
+browseURL("./material/DepressionAndYuan2021/Supplementary information/Supplementary table.xlsx")
+pb.uc_dep <- fxlsx("./material/DepressionAndYuan2021/Supplementary information/Supplementary table.xlsx", sheet = 3, startRow = 2)
+pb.uc_dep
 ```
 
 ### TransplantationSinha2022 结肠炎
 
 ```{r}
 file.copy("~/Downloads/40168_2022_1275_MOESM3_ESM.xlsx", "./material/TransplantationSinha2022_s3.xlsx")
+browseURL("./material/TransplantationSinha2022_s3.xlsx")
+pb.uc_trans <- fxlsx("./material/TransplantationSinha2022_s3.xlsx", startRow = 3)
+pb.uc_trans <- dplyr::filter(pb.uc_trans, detected_0.9)
+pb.uc_trans
+
 ```
 
 ## 结肠癌数据
 
-### LuminalAndTumRomano2022 结肠癌
+### AnIntegratedTRoelan2023 结肠癌
 
 ```{r}
-# colorectal cancer
-unzip("~/Downloads/cancers-14-05207-s001.zip", exdir = "./material/LuminalAndTumRomano2022")
-pb.loss <- fxlsx("./material/LuminalAndTumRomano2022/Supplementary tables.xlsx", startRow = 2)
-
-pb.loss.match <- filter(pb.loss, grpl(taxon, paste0(pattern(qi), collapse = "|")))
+file.copy("~/Downloads/41591_2023_2324_MOESM3_ESM.xlsx", "./material/AnIntegratedTRoelan2023_s2-11.xlsx")
+pb.ca_anin <- fxlsx2("./material/AnIntegratedTRoelan2023_s2-11.xlsx", pattern = "Supplementary Table 5", startRow = 2)
+pb.ca_anin <- dplyr::filter(pb.ca_anin, FDR < .05)
+pb.ca_anin
 ```
 
 ### LocationAndCoSambru2023 结肠癌
 
 ```{r}
 file.copy("~/Downloads/13073_2023_1180_MOESM4_ESM.txt", "./material/LocationAndCoSambru2023_s4.txt")
+browseURL("./material/LocationAndCoSambru2023_s4.txt")
 ```
 
 ### TheCancerMicrDohlma2021 结肠癌
 
-TCMA <https://tcma.pratt.duke.edu/>
+TCMA
+<https://tcma.pratt.duke.edu/>
 
-### IntegratedAnalChen2022 结肠癌
-
-pdf
-
+```{r}
+meta <- ftibble("~/Downloads/sample_metadata.txt")
+meta$sample_type %>% table
+```

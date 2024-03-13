@@ -1,0 +1,14 @@
+
+
+### IntegratedAnalChen2022 结肠癌
+
+pdf
+
+```{r}
+meta <- ftibble("~/Downloads/sample_metadata.txt")
+meta$sample_type %>% table
+```
+```{r}
+meta <- ftibble("~/Downloads/sample_metadata.txt")
+meta$sample_type %>% table
+```
