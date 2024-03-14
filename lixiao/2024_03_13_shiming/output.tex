@@ -1,0 +1,1199 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+养阴通脑颗粒中关键成分对脑缺血再灌注的影响}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-03-14}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\begin{itemize}
+\tightlist
+\item
+  养阴通脑颗粒中治疗脑缺血再灌注的关键成分及相应信号通路（信号通路需要创新性的），1-3条
+\item
+  同时重点分析水蛭素对应的治疗脑缺血再灌注的信号通路
+\end{itemize}
+
+养阴通脑颗粒：地黄15g、黄芪15g、葛根18g、石斛15g、水蛭3g、川芎9g
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+All used GEO expression data and their design:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GSE163614}: Examination of MCAO/R and Sham rat brain samples（n=3）
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  The \texttt{BindingDB} database was used for discovering association between Ligands and Receptors\textsuperscript{\protect\hyperlink{ref-BindingdbIn20Gilson2016}{1}}.
+\item
+  The \texttt{biomart} was used for mapping genes between organism (e.g., mgi\_symbol to hgnc\_symbol)\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{2}}.
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{3}}.
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
+\item
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{4}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{6}}.
+\item
+  Website \texttt{HERB} \url{http://herb.ac.cn/} used for data source\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{7}}.
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{8},\protect\hyperlink{ref-EdgerDifferenChen}{9}}.
+\item
+  R package \texttt{PubChemR} used for querying compounds information.
+\item
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{10},\protect\hyperlink{ref-CytohubbaIdenChin2014}{11}}.
+\item
+  Web tool of \texttt{Super-PRED} used for drug-targets relationship prediction\textsuperscript{\protect\hyperlink{ref-SuperpredUpdaNickel2014}{12}}.
+\item
+  The MCC score was calculated referring to algorithm of \texttt{CytoHubba}\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{11}}.
+\item
+  R package \texttt{UniProt.ws} used for querying Gene or Protein information.
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux517bux9634ux901aux8111ux9897ux7c92}{%
+\subsection{养阴通脑颗粒}\label{ux517bux9634ux901aux8111ux9897ux7c92}}
+
+\hypertarget{ux6210ux5206}{%
+\subsubsection{成分}\label{ux6210ux5206}}
+
+Table \ref{tab:Herbs-information} (下方表格) 为表格Herbs information概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Herbs-information.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有6行18列，以下预览的表格可能省略部分数据；表格含有6个唯一`Herb\_'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:Herbs-information}Herbs information}\tabularnewline
+\toprule
+Herb\_ & Herb\_p\ldots{} & Herb\_c\ldots{} & Herb\_e\ldots{} & Herb\_l\ldots{} & Proper\ldots{} & Meridians & UsePart & Function & Indica\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_ & Herb\_p\ldots{} & Herb\_c\ldots{} & Herb\_e\ldots{} & Herb\_l\ldots{} & Proper\ldots{} & Meridians & UsePart & Function & Indica\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endhead
+HERB00\ldots{} & CHUAN \ldots{} & 川芎 & Chuanx\ldots{} & Radix \ldots{} & Warm; \ldots{} & Liver;\ldots{} & rhizome & 1. To \ldots{} & Cerebr\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & DI HUANG & 地黄 & Radix \ldots{} & NA & NA & NA & NA & NA & NA & \ldots{}\tabularnewline
+HERB00\ldots{} & GE GEN & 葛根 & root o\ldots{} & Radix \ldots{} & Cool; \ldots{} & Spleen\ldots{} & tuberoid & To rel\ldots{} & Angina\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & HUANG QI & 黄芪 & root o\ldots{} & Radix \ldots{} & Warm; \ldots{} & Lung; \ldots{} & root & To rei\ldots{} & Common\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & SHI HU & 石斛 & Dendro\ldots{} & Herba \ldots{} & Minor \ldots{} & Stomac\ldots{} & Dendro\ldots{} & Treatm\ldots{} & 1. Den\ldots{} & \ldots{}\tabularnewline
+HERB00\ldots{} & SHUI ZHI & 水蛭 & Bigflo\ldots{} & Garden\ldots{} & Mild; \ldots{} & Liver & fruit & To cle\ldots{} & Heat t\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:Components-of-Herbs} (下方表格) 为表格Components of Herbs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Components-of-Herbs.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有725行4列，以下预览的表格可能省略部分数据；表格含有696个唯一`Ingredient.name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:Components-of-Herbs}Components of Herbs}\tabularnewline
+\toprule
+herb\_id & Ingredient.id & Ingredient.name & Ingredient.alias\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+herb\_id & Ingredient.id & Ingredient.name & Ingredient.alias\tabularnewline
+\midrule
+\endhead
+HERB002560 & HBIN001244 & 13-hydroxy-9,11-o\ldots{} & NA\tabularnewline
+HERB002560 & HBIN002016 & 1,7-Dihydroxy-3,9\ldots{} & 1,7-dihydroxy-3,9\ldots{}\tabularnewline
+HERB002560 & HBIN003405 & 20-Hexadecanoylin\ldots{} & 20-hexadecanoylin\ldots{}\tabularnewline
+HERB002560 & HBIN003436 & 20(r)-21,24-cyclo\ldots{} & 20(r)-21,24-cyclo\ldots{}\tabularnewline
+HERB002560 & HBIN004319 & 2',4' -\ldots{} & 2', 4'-\ldots{}\tabularnewline
+HERB002560 & HBIN005731 & 2'-hydroxy-3 & NA\tabularnewline
+HERB002560 & HBIN005735 & 2'-hydroxy-3\ldots{} & NA\tabularnewline
+HERB002560 & HBIN005744 & 2-hydroxy-3-metho\ldots{} & NA\tabularnewline
+HERB002560 & HBIN006143 & 2-Nonyl acetate & ANW-21203; SCHEMB\ldots{}\tabularnewline
+HERB002560 & HBIN006743 & (2S)-4-methoxy-7-\ldots{} & (2S)-4-methoxy-7-\ldots{}\tabularnewline
+HERB002560 & HBIN007657 & 3,5-dimethoxystil\ldots{} & 78916-49-1; TR-03\ldots{}\tabularnewline
+HERB002560 & HBIN007848 & 3,9-di-O-methylni\ldots{} & NA\tabularnewline
+HERB002560 & HBIN008647 & 3-Hydroxy-2-picoline & BTB 09012; 3-Hydr\ldots{}\tabularnewline
+HERB002560 & HBIN008667 & 3'-hydroxy-4\ldots{} & NA\tabularnewline
+HERB002560 & HBIN008668 & 3'-Hydroxy-4\ldots{} & 3-(3-hydroxy-4-me\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:intersection-of-all-compounds} (下方图) 为图intersection of all compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-all-compounds.pdf})}
+Figure \ref{fig:intersection-of-all-compounds} (下方图) 为图intersection of all compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-all-compounds.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-all-compounds.pdf}
+\caption{Intersection of all compounds}\label{fig:intersection-of-all-compounds}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/intersection-of-all-compounds-content})}
+
+\hypertarget{ux6210ux5206ux9776ux70b9}{%
+\subsubsection{成分靶点}\label{ux6210ux5206ux9776ux70b9}}
+
+Table \ref{tab:tables-of-Herbs-compounds-and-targets} (下方表格) 为表格tables of Herbs compounds and targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-Herbs-compounds-and-targets.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有13356行9列，以下预览的表格可能省略部分数据；表格含有696个唯一`Ingredient.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:tables-of-Herbs-compounds-and-targets}Tables of Herbs compounds and targets}\tabularnewline
+\toprule
+Ingred\ldots\ldots1 & Herb\_p\ldots{} & Ingred\ldots\ldots3 & Ingred\ldots\ldots4 & Target.id & Target\ldots{} & Databa\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Ingred\ldots\ldots1 & Herb\_p\ldots{} & Ingred\ldots\ldots3 & Ingred\ldots\ldots4 & Target.id & Target\ldots{} & Databa\ldots{} & Paper.id & \ldots{}\tabularnewline
+\midrule
+\endhead
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & ATIC & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & FPGS & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & GART & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTHFD1 & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTHFD2 & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & ALDH1L1 & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTHFD1L & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTFMT & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & ALDH1L2 & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10,12-\ldots{} & NA & HBTAR0\ldots{} & MTHFD2L & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & SHI HU & 10β,13\ldots{} & NA & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & CHUAN \ldots{} & 10-(be\ldots{} & 10-(β-\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & CHUAN \ldots{} & 1,1-Di\ldots{} & 3658-9\ldots{} & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & CHUAN \ldots{} & 1,2,3,\ldots{} & NA & NA & NA & NA & NA & \ldots{}\tabularnewline
+HBIN00\ldots{} & CHUAN \ldots{} & 1,3,8-\ldots{} & 1,3,8-\ldots{} & HBTAR0\ldots{} & ACHE & NA & NA & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux8111ux7f3aux8840ux518dux704cux6ce8-cerebral-ischemia-reperfusion-cir-ux9776ux70b9}{%
+\subsubsection{脑缺血再灌注 cerebral ischemia reperfusion (CIR) 靶点}\label{ux8111ux7f3aux8840ux518dux704cux6ce8-cerebral-ischemia-reperfusion-cir-ux9776ux70b9}}
+
+Figure \ref{fig:Overall-targets-number-of-datasets} (下方图) 为图Overall targets number of datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-targets-number-of-datasets.pdf})}
+Figure \ref{fig:Overall-targets-number-of-datasets} (下方图) 为图Overall targets number of datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-targets-number-of-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-targets-number-of-datasets.pdf}
+\caption{Overall targets number of datasets}\label{fig:Overall-targets-number-of-datasets}
+\end{center}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    cerebral ischemia reperfusion
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    TRUE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:CIR-GeneCards-used-data} (下方表格) 为表格CIR GeneCards used data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/CIR-GeneCards-used-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有139行7列，以下预览的表格可能省略部分数据；表格含有139个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:CIR-GeneCards-used-data}CIR GeneCards used data}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+BDNF-AS & BDNF Antis\ldots{} & RNA Gene & & 28 & GC11P027466 & 11.94\tabularnewline
+CERNA3 & Competing \ldots{} & RNA Gene & & 19 & GC08P056101 & 6.64\tabularnewline
+MEG3 & Maternally\ldots{} & RNA Gene & & 34 & GC14P115583 & 6.13\tabularnewline
+SNHG12 & Small Nucl\ldots{} & RNA Gene & Q9BXW3 & 29 & GC01M030655 & 6.06\tabularnewline
+MIR211 & MicroRNA 211 & RNA Gene & & 28 & GC15M031065 & 5.85\tabularnewline
+SNHG14 & Small Nucl\ldots{} & RNA Gene & & 24 & GC15P147532 & 5.69\tabularnewline
+SOD2-OT1 & SOD2 Overl\ldots{} & RNA Gene & & 18 & GC06M159772 & 5.41\tabularnewline
+H19 & H19 Imprin\ldots{} & RNA Gene & & 34 & GC11M001995 & 4.64\tabularnewline
+GAS5 & Growth Arr\ldots{} & RNA Gene & & 30 & GC01M173947 & 4.56\tabularnewline
+TUG1 & Taurine Up\ldots{} & Protein Co\ldots{} & A0A6I8PU40 & 32 & GC22P030969 & 4.15\tabularnewline
+MIR496 & MicroRNA 496 & RNA Gene & & 16 & GC14P115621 & 4.07\tabularnewline
+BCL2 & BCL2 Apopt\ldots{} & Protein Co\ldots{} & P10415 & 59 & GC18M063123 & 3.7\tabularnewline
+MIR532 & MicroRNA 532 & RNA Gene & & 23 & GC0XP056752 & 3.7\tabularnewline
+SCARNA5 & Small Caja\ldots{} & RNA Gene & & 23 & GC02P233275 & 3.7\tabularnewline
+NFE2L2 & NFE2 Like \ldots{} & Protein Co\ldots{} & Q16236 & 60 & GC02M177227 & 3.64\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux7f51ux7edcux836fux7406-ux75beux75c5}{%
+\subsubsection{网络药理-疾病}\label{ux7f51ux7edcux836fux7406-ux75beux75c5}}
+
+Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pharmacology with disease概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease.pdf})}
+Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pharmacology with disease概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-with-disease.pdf}
+\caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
+\end{center}
+
+Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Targets intersect with targets of diseases概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf})}
+Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Targets intersect with targets of diseases概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf}
+\caption{Targets intersect with targets of diseases}\label{fig:Targets-intersect-with-targets-of-diseases}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    IL10, HMOX1, MMP9, PTGS2, SOD2, MPO, NOS2, IL6, CAT,
+CXCL2, TLR4, ALOX5, RELA, CCL2, CASP3, SELE, XDH, FOS,
+EDN1, TLR2, PLAT, PTEN, MAPK8, PPARA, CDKN1A, KDR, ADORA2A,
+CXCL1, PLAU, BCL2, SOD1, PPARG, NOS3, TNF, IL1B, MAPK9,
+ICAM1, TERT, JUN, ADORA2B, EFNB2, HGF, CD36, IRAK3, SLPI,
+IL12A, CXCL8, C...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases-content})}
+
+\hypertarget{ppi-ux7f51ux7edc}{%
+\subsubsection{PPI 网络}\label{ppi-ux7f51ux7edc}}
+
+Figure \ref{fig:HERBS-raw-PPI-network} (下方图) 为图HERBS raw PPI network概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-raw-PPI-network.pdf})}
+Figure \ref{fig:HERBS-raw-PPI-network} (下方图) 为图HERBS raw PPI network概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-raw-PPI-network.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HERBS-raw-PPI-network.pdf}
+\caption{HERBS raw PPI network}\label{fig:HERBS-raw-PPI-network}
+\end{center}
+
+Figure \ref{fig:HERBS-Top30-MCC-score} (下方图) 为图HERBS Top30 MCC score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-Top30-MCC-score.pdf})}
+Figure \ref{fig:HERBS-Top30-MCC-score} (下方图) 为图HERBS Top30 MCC score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-Top30-MCC-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HERBS-Top30-MCC-score.pdf}
+\caption{HERBS Top30 MCC score}\label{fig:HERBS-Top30-MCC-score}
+\end{center}
+
+\hypertarget{ux5bccux96c6ux5206ux6790-top30}{%
+\subsubsection{富集分析 (Top30)}\label{ux5bccux96c6ux5206ux6790-top30}}
+
+Figure \ref{fig:HERBS-KEGG-enrichment} (下方图) 为图HERBS KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-KEGG-enrichment.pdf})}
+Figure \ref{fig:HERBS-KEGG-enrichment} (下方图) 为图HERBS KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HERBS-KEGG-enrichment.pdf}
+\caption{HERBS KEGG enrichment}\label{fig:HERBS-KEGG-enrichment}
+\end{center}
+
+Table \ref{tab:HERBS-KEGG-enrichment-data} (下方表格) 为表格HERBS KEGG enrichment data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-KEGG-enrichment-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有181行9列，以下预览的表格可能省略部分数据；表格含有181个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:HERBS-KEGG-enrichment-data}HERBS KEGG enrichment data}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa05167 & Kaposi\ldots{} & 19/29 & 194/8661 & 3.0530\ldots{} & 5.5259\ldots{} & 1.0605\ldots{} & 207/59\ldots{} & 19\tabularnewline
+hsa05212 & Pancre\ldots{} & 14/29 & 76/8661 & 3.1769\ldots{} & 2.8751\ldots{} & 5.5178\ldots{} & 207/59\ldots{} & 14\tabularnewline
+hsa05205 & Proteo\ldots{} & 17/29 & 205/8661 & 4.7725\ldots{} & 2.8794\ldots{} & 5.5261\ldots{} & 207/85\ldots{} & 17\tabularnewline
+hsa05418 & Fluid \ldots{} & 15/29 & 139/8661 & 3.5822\ldots{} & 1.6209\ldots{} & 3.1109\ldots{} & 207/85\ldots{} & 15\tabularnewline
+hsa05161 & Hepati\ldots{} & 15/29 & 162/8661 & 3.8556\ldots{} & 1.3957\ldots{} & 2.6786\ldots{} & 207/13\ldots{} & 15\tabularnewline
+hsa05208 & Chemic\ldots{} & 16/29 & 223/8661 & 1.1000\ldots{} & 3.3185\ldots{} & 6.3688\ldots{} & 207/19\ldots{} & 16\tabularnewline
+hsa04917 & Prolac\ldots{} & 12/29 & 70/8661 & 1.3458\ldots{} & 3.4799\ldots{} & 6.6785\ldots{} & 207/59\ldots{} & 12\tabularnewline
+hsa04933 & AGE-RA\ldots{} & 13/29 & 100/8661 & 1.6908\ldots{} & 3.8255\ldots{} & 7.3418\ldots{} & 207/59\ldots{} & 13\tabularnewline
+hsa04010 & MAPK s\ldots{} & 17/29 & 301/8661 & 3.5870\ldots{} & 7.2139\ldots{} & 1.3844\ldots{} & 207/13\ldots{} & 17\tabularnewline
+hsa05210 & Colore\ldots{} & 12/29 & 86/8661 & 1.8784\ldots{} & 3.4000\ldots{} & 6.5252\ldots{} & 207/59\ldots{} & 12\tabularnewline
+hsa05235 & PD-L1 \ldots{} & 12/29 & 89/8661 & 2.9003\ldots{} & 4.4268\ldots{} & 8.4958\ldots{} & 207/19\ldots{} & 12\tabularnewline
+hsa05417 & Lipid \ldots{} & 15/29 & 215/8661 & 2.9349\ldots{} & 4.4268\ldots{} & 8.4958\ldots{} & 207/23\ldots{} & 15\tabularnewline
+hsa04151 & PI3K-A\ldots{} & 17/29 & 359/8661 & 7.1506\ldots{} & 9.9559\ldots{} & 1.9106\ldots{} & 207/13\ldots{} & 17\tabularnewline
+hsa01522 & Endocr\ldots{} & 12/29 & 98/8661 & 9.7631\ldots{} & 1.2622\ldots{} & 2.4224\ldots{} & 207/59\ldots{} & 12\tabularnewline
+hsa01521 & EGFR t\ldots{} & 11/29 & 79/8661 & 5.3600\ldots{} & 6.2132\ldots{} & 1.1924\ldots{} & 207/19\ldots{} & 11\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{cir-ux7684-geo-ux6570ux636eux5deeux5f02ux5206ux6790}{%
+\subsubsection{CIR 的 GEO 数据差异分析}\label{cir-ux7684-geo-ux6570ux636eux5deeux5f02ux5206ux6790}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE163614
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    paired-end reads were harvested from Illumina NovaSeq
+6000 sequencer, and were quality controlled by Q30.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    After 3’ adaptor-trimming and low quality reads
+removing by cutadapt software (v1.9.3), the high quality
+trimmed reads were aligned to the rat reference genome
+(UCSC RN5).
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    Then, guided by the Ensembl gtf gene annotation file
+with hisat2 software (v2.0.4), cuffdiff software (v2.2.1,
+part of cufflinks) was used to get the gene level FPKM as
+the expression profiles of mRNA, and fold change and
+p-value were calculated based on FPKM, differentially
+expressed mRNA were i...
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Genome\_build: UCSC RN5
+
+\vspace{2em}
+
+
+\textbf{
+(Others)
+:}
+
+\vspace{0.5em}
+
+    ...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:RAT-metadata} (下方表格) 为表格RAT metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RAT-metadata.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有6行9列，以下预览的表格可能省略部分数据；表格含有6个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample:  样品名称
+\item group:  分组名称
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:RAT-metadata}RAT metadata}\tabularnewline
+\toprule
+sample & group & lib.size & norm.f\ldots{} & rownames & title & strain\ldots{} & time.p\ldots{} & tissue\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sample & group & lib.size & norm.f\ldots{} & rownames & title & strain\ldots{} & time.p\ldots{} & tissue\ldots{}\tabularnewline
+\midrule
+\endhead
+MCAO1 & Model & 523780\ldots{} & 1 & GSM498\ldots{} & MCAO/R-1 & Spragu\ldots{} & 24 h & brain\tabularnewline
+MCAO2 & Model & 531002\ldots{} & 1 & GSM498\ldots{} & MCAO/R-2 & Spragu\ldots{} & 24 h & brain\tabularnewline
+MCAO3 & Model & 582734\ldots{} & 1 & GSM498\ldots{} & MCAO/R-3 & Spragu\ldots{} & 24 h & brain\tabularnewline
+Sham1 & Control & 599207\ldots{} & 1 & GSM498\ldots{} & Sham-1 & Spragu\ldots{} & 24 h & brain\tabularnewline
+Sham2 & Control & 585317\ldots{} & 1 & GSM498\ldots{} & Sham-2 & Spragu\ldots{} & 24 h & brain\tabularnewline
+Sham3 & Control & 588288\ldots{} & 1 & GSM498\ldots{} & Sham-3 & Spragu\ldots{} & 24 h & brain\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\paragraph{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+Figure \ref{fig:RAT-Model-vs-Control-DEGs} (下方图) 为图RAT Model vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RAT-Model-vs-Control-DEGs.pdf})}
+Figure \ref{fig:RAT-Model-vs-Control-DEGs} (下方图) 为图RAT Model vs Control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RAT-Model-vs-Control-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/RAT-Model-vs-Control-DEGs.pdf}
+\caption{RAT Model vs Control DEGs}\label{fig:RAT-Model-vs-Control-DEGs}
+\end{center}
+
+\hypertarget{ux7531ux5927ux9f20ux57faux56e0ux6620ux5c04ux5230ux4ebaux7c7bux57faux56e0}{%
+\paragraph{由大鼠基因映射到人类基因}\label{ux7531ux5927ux9f20ux57faux56e0ux6620ux5c04ux5230ux4ebaux7c7bux57faux56e0}}
+
+使用 biomart 将基因映射。
+
+Table \ref{tab:RAT-Mapped-DEGs} (下方表格) 为表格RAT Mapped DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/RAT-Mapped-DEGs.tsv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2921行23列，以下预览的表格可能省略部分数据；表格含有2921个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item pathway:  相关通路。
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item strand:  genomic strand
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:RAT-Mapped-DEGs}RAT Mapped DEGs}\tabularnewline
+\toprule
+hgnc\_s\ldots{} & rgd\_sy\ldots{} & rownames & gene\_id & gene\_s\ldots{} & biotype & strand & locus & Synonyms & dbXrefs\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_s\ldots{} & rgd\_sy\ldots{} & rownames & gene\_id & gene\_s\ldots{} & biotype & strand & locus & Synonyms & dbXrefs\tabularnewline
+\midrule
+\endhead
+GPNMB & Gpnmb & 4927 & ENSRNO\ldots{} & Gpnmb & protei\ldots{} & + & chr4:1\ldots{} & - & RGD:71\ldots{}\tabularnewline
+PDPN & Pdpn & 8530 & ENSRNO\ldots{} & Pdpn & protei\ldots{} & - & chr5:1\ldots{} & E11\textbar Gp\ldots{} & RGD:61\ldots{}\tabularnewline
+STAT3 & Stat3 & 11467 & ENSRNO\ldots{} & Stat3 & protei\ldots{} & - & chr10:\ldots{} & - & RGD:37\ldots{}\tabularnewline
+CNN3 & Cnn3 & 6554 & ENSRNO\ldots{} & Cnn3 & protei\ldots{} & + & chr2:2\ldots{} & - & RGD:71\ldots{}\tabularnewline
+DDX21 & Ddx21 & 18611 & ENSRNO\ldots{} & Ddx21 & protei\ldots{} & - & chr20:\ldots{} & Ddx21a\ldots{} & RGD:13\ldots{}\tabularnewline
+FLNC & Flnc & 4001 & ENSRNO\ldots{} & Flnc & protei\ldots{} & + & chr4:5\ldots{} & ABP-L\textbar\ldots{} & RGD:13\ldots{}\tabularnewline
+IGFBP3 & Igfbp3 & 4835 & ENSRNO\ldots{} & Igfbp3 & protei\ldots{} & - & chr14:\ldots{} & IGF-BP3 & RGD:28\ldots{}\tabularnewline
+MMP9 & Mmp9 & 10085 & ENSRNO\ldots{} & Mmp9 & protei\ldots{} & + & chr3:1\ldots{} & - & RGD:62\ldots{}\tabularnewline
+PDE10A & Pde10a & 6404 & ENSRNO\ldots{} & Pde10a & protei\ldots{} & - & chr1:5\ldots{} & Pde10a3 & RGD:68\ldots{}\tabularnewline
+SBNO2 & Sbno2 & 7959 & ENSRNO\ldots{} & Sbno2 & protei\ldots{} & + & chr7:1\ldots{} & RGD130\ldots{} & RGD:13\ldots{}\tabularnewline
+SERPINA3 & Serpina3n & 5928 & ENSRNO\ldots{} & Serpina3n & protei\ldots{} & + & chr6:1\ldots{} & CPi-26\ldots{} & RGD:37\ldots{}\tabularnewline
+CSF2RB & Csf2rb & 83 & ENSRNO\ldots{} & Csf2rb & protei\ldots{} & + & chr7:1\ldots{} & Csf2rb1 & RGD:62\ldots{}\tabularnewline
+FLNA & Flna & 17331 & ENSRNO\ldots{} & Flna & protei\ldots{} & + & chr1:1\ldots{} & RGD156\ldots{} & RGD:15\ldots{}\tabularnewline
+LCP1 & Lcp1 & 5808 & ENSRNO\ldots{} & Lcp1 & protei\ldots{} & + & chr15:\ldots{} & - & RGD:13\ldots{}\tabularnewline
+MAST3 & Mast3 & 12964 & ENSRNO\ldots{} & Mast3 & protei\ldots{} & + & chr16:\ldots{} & - & RGD:15\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\paragraph{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+Figure \ref{fig:MAP-KEGG-enrichment} (下方图) 为图MAP KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAP-KEGG-enrichment.pdf})}
+Figure \ref{fig:MAP-KEGG-enrichment} (下方图) 为图MAP KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAP-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MAP-KEGG-enrichment.pdf}
+\caption{MAP KEGG enrichment}\label{fig:MAP-KEGG-enrichment}
+\end{center}
+
+Table \ref{tab:MAP-KEGG-enrichment-data} (下方表格) 为表格MAP KEGG enrichment data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAP-KEGG-enrichment-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有337行9列，以下预览的表格可能省略部分数据；表格含有337个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:MAP-KEGG-enrichment-data}MAP KEGG enrichment data}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa04724 & Glutam\ldots{} & 57/1486 & 115/8661 & 9.1917\ldots{} & 3.0976\ldots{} & 1.6641\ldots{} & 107/19\ldots{} & 57\tabularnewline
+hsa05033 & Nicoti\ldots{} & 27/1486 & 40/8661 & 2.0977\ldots{} & 3.5346\ldots{} & 1.8989\ldots{} & 773/77\ldots{} & 27\tabularnewline
+hsa04010 & MAPK s\ldots{} & 98/1486 & 301/8661 & 2.5161\ldots{} & 2.8264\ldots{} & 1.5185\ldots{} & 10000/\ldots{} & 98\tabularnewline
+hsa04727 & GABAer\ldots{} & 42/1486 & 89/8661 & 4.4346\ldots{} & 3.7361\ldots{} & 2.0072\ldots{} & 18/107\ldots{} & 42\tabularnewline
+hsa05205 & Proteo\ldots{} & 73/1486 & 205/8661 & 9.9744\ldots{} & 6.7227\ldots{} & 3.6117\ldots{} & 60/71/\ldots{} & 73\tabularnewline
+hsa05163 & Human \ldots{} & 76/1486 & 225/8661 & 7.0361\ldots{} & 3.9519\ldots{} & 2.1231\ldots{} & 107/19\ldots{} & 76\tabularnewline
+hsa04971 & Gastri\ldots{} & 36/1486 & 76/8661 & 9.5518\ldots{} & 4.5985\ldots{} & 2.4705\ldots{} & 60/71/\ldots{} & 36\tabularnewline
+hsa04925 & Aldost\ldots{} & 42/1486 & 98/8661 & 1.8482\ldots{} & 7.7857\ldots{} & 4.1828\ldots{} & 107/19\ldots{} & 42\tabularnewline
+hsa04510 & Focal \ldots{} & 69/1486 & 203/8661 & 3.2209\ldots{} & 1.2060\ldots{} & 6.4794\ldots{} & 60/71/\ldots{} & 69\tabularnewline
+hsa04933 & AGE-RA\ldots{} & 42/1486 & 100/8661 & 3.8738\ldots{} & 1.3054\ldots{} & 7.0136\ldots{} & 183/10\ldots{} & 42\tabularnewline
+hsa04015 & Rap1 s\ldots{} & 70/1486 & 210/8661 & 6.3009\ldots{} & 1.8176\ldots{} & 9.7653\ldots{} & 60/71/\ldots{} & 70\tabularnewline
+hsa05032 & Morphi\ldots{} & 39/1486 & 91/8661 & 7.0065\ldots{} & 1.8176\ldots{} & 9.7653\ldots{} & 107/19\ldots{} & 39\tabularnewline
+hsa04360 & Axon g\ldots{} & 63/1486 & 182/8661 & 7.0117\ldots{} & 1.8176\ldots{} & 9.7653\ldots{} & 655/65\ldots{} & 63\tabularnewline
+hsa04611 & Platel\ldots{} & 48/1486 & 124/8661 & 7.7305\ldots{} & 1.8608\ldots{} & 9.9974\ldots{} & 60/71/\ldots{} & 48\tabularnewline
+hsa04670 & Leukoc\ldots{} & 45/1486 & 115/8661 & 1.5365\ldots{} & 3.4520\ldots{} & 1.8546\ldots{} & 60/71/\ldots{} & 45\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+可以发现，`MARK' 通路居于首位。以下展示 Fig. \ref{fig:HERBS-KEGG-enrichment} 富集结果的 `MARK' 通路：
+
+Figure \ref{fig:HERBS-hsa04010-visualization} (下方图) 为图HERBS hsa04010 visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04010.pathview.png})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa04010}
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Figure \ref{fig:HERBS-hsa04010-visualization} (下方图) 为图HERBS hsa04010 visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa04010.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-03-14_14_08_35.864097/hsa04010.pathview.png}
+\caption{HERBS hsa04010 visualization}\label{fig:HERBS-hsa04010-visualization}
+\end{center}
+
+\hypertarget{ux590dux65b9ux9776ux70b9ux901aux8defux4e0e-cir-degs-ux5bccux96c6ux7ed3ux679cux7684ux5171ux540cux5bccux96c6ux901aux8def}{%
+\subsubsection{复方靶点通路与 CIR DEGs 富集结果的共同富集通路}\label{ux590dux65b9ux9776ux70b9ux901aux8defux4e0e-cir-degs-ux5bccux96c6ux7ed3ux679cux7684ux5171ux540cux5bccux96c6ux901aux8def}}
+
+Table \ref{tab:HERBS-pathways-intersection} (下方表格) 为表格HERBS pathways intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-pathways-intersection.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有99行9列，以下预览的表格可能省略部分数据；表格含有99个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:HERBS-pathways-intersection}HERBS pathways intersection}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa05167 & Kaposi\ldots{} & 19/29 & 194/8661 & 3.0530\ldots{} & 5.5259\ldots{} & 1.0605\ldots{} & 207/59\ldots{} & 19\tabularnewline
+hsa05212 & Pancre\ldots{} & 14/29 & 76/8661 & 3.1769\ldots{} & 2.8751\ldots{} & 5.5178\ldots{} & 207/59\ldots{} & 14\tabularnewline
+hsa05205 & Proteo\ldots{} & 17/29 & 205/8661 & 4.7725\ldots{} & 2.8794\ldots{} & 5.5261\ldots{} & 207/85\ldots{} & 17\tabularnewline
+hsa05418 & Fluid \ldots{} & 15/29 & 139/8661 & 3.5822\ldots{} & 1.6209\ldots{} & 3.1109\ldots{} & 207/85\ldots{} & 15\tabularnewline
+hsa05161 & Hepati\ldots{} & 15/29 & 162/8661 & 3.8556\ldots{} & 1.3957\ldots{} & 2.6786\ldots{} & 207/13\ldots{} & 15\tabularnewline
+hsa04933 & AGE-RA\ldots{} & 13/29 & 100/8661 & 1.6908\ldots{} & 3.8255\ldots{} & 7.3418\ldots{} & 207/59\ldots{} & 13\tabularnewline
+hsa04010 & MAPK s\ldots{} & 17/29 & 301/8661 & 3.5870\ldots{} & 7.2139\ldots{} & 1.3844\ldots{} & 207/13\ldots{} & 17\tabularnewline
+hsa05210 & Colore\ldots{} & 12/29 & 86/8661 & 1.8784\ldots{} & 3.4000\ldots{} & 6.5252\ldots{} & 207/59\ldots{} & 12\tabularnewline
+hsa05417 & Lipid \ldots{} & 15/29 & 215/8661 & 2.9349\ldots{} & 4.4268\ldots{} & 8.4958\ldots{} & 207/23\ldots{} & 15\tabularnewline
+hsa04151 & PI3K-A\ldots{} & 17/29 & 359/8661 & 7.1506\ldots{} & 9.9559\ldots{} & 1.9106\ldots{} & 207/13\ldots{} & 17\tabularnewline
+hsa01522 & Endocr\ldots{} & 12/29 & 98/8661 & 9.7631\ldots{} & 1.2622\ldots{} & 2.4224\ldots{} & 207/59\ldots{} & 12\tabularnewline
+hsa04510 & Focal \ldots{} & 14/29 & 203/8661 & 5.4923\ldots{} & 6.2132\ldots{} & 1.1924\ldots{} & 207/85\ldots{} & 14\tabularnewline
+hsa05207 & Chemic\ldots{} & 14/29 & 212/8661 & 1.0132\ldots{} & 1.0787\ldots{} & 2.0703\ldots{} & 207/13\ldots{} & 14\tabularnewline
+hsa05163 & Human \ldots{} & 14/29 & 225/8661 & 2.3412\ldots{} & 2.3542\ldots{} & 4.5181\ldots{} & 207/13\ldots{} & 14\tabularnewline
+hsa04926 & Relaxi\ldots{} & 12/29 & 129/8661 & 2.9702\ldots{} & 2.8295\ldots{} & 5.4304\ldots{} & 207/13\ldots{} & 12\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux590dux65b9ux5bf9-mark-ux901aux8def}{%
+\subsubsection{复方对 MARK 通路}\label{ux590dux65b9ux5bf9-mark-ux901aux8def}}
+
+Figure \ref{fig:Network-pharmacology-target-MARK} (下方图) 为图Network pharmacology target MARK概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-target-MARK.pdf})}
+Figure \ref{fig:Network-pharmacology-target-MARK} (下方图) 为图Network pharmacology target MARK概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-target-MARK.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-target-MARK.pdf}
+\caption{Network pharmacology target MARK}\label{fig:Network-pharmacology-target-MARK}
+\end{center}
+
+Table \ref{tab:Network-pharmacology-target-MARK-data} (下方表格) 为表格Network pharmacology target MARK data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-target-MARK-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有297行3列，以下预览的表格可能省略部分数据；表格含有6个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:Network-pharmacology-target-MARK-data}Network pharmacology target MARK data}\tabularnewline
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name\tabularnewline
+\midrule
+\endhead
+HUANG QI & 1,7-Dihydroxy-3,9-dimethoxy\ldots{} & MAPK14\tabularnewline
+CHUAN XIONG & 1-Acetyl-beta-carboline & MAPK14\tabularnewline
+CHUAN XIONG & 1-beta-ethylacrylate-7-alde\ldots{} & MAPK14\tabularnewline
+HUANG QI & 3,9-di-O-methylnissolin & MAPK14\tabularnewline
+CHUAN XIONG & 3-butylidene-phalide & TP53\tabularnewline
+GE GEN & 3'-Methoxydaidzein & MAPK14\tabularnewline
+HUANG QI & 5'-hydroxyiso-muronula\ldots{} & RELA\tabularnewline
+HUANG QI & (6aR,11aR)-9,10-dimethoxy-6\ldots{} & MAPK14\tabularnewline
+GE GEN & 7,8,4'-Trihydroxyisofl\ldots{} & MAPK14\tabularnewline
+HUANG QI & 7-O-methylisomucronulatol & MAPK14\tabularnewline
+HUANG QI & acetic acid & FOS\tabularnewline
+HUANG QI & acetic acid & RELA\tabularnewline
+HUANG QI & acetic acid & FOS\tabularnewline
+HUANG QI & acetic acid & RELA\tabularnewline
+HUANG QI & adeninenucleoside & FOS\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6c34ux86edux7d20-hirudin}{%
+\subsection{水蛭素 Hirudin}\label{ux6c34ux86edux7d20-hirudin}}
+
+\hypertarget{hirudin-ux9776ux70b9-ux83b7ux53d6ux66f4ux591aux9776ux70b9}{%
+\subsubsection{Hirudin 靶点 (获取更多靶点)}\label{hirudin-ux9776ux70b9-ux83b7ux53d6ux66f4ux591aux9776ux70b9}}
+
+HERBs 数据库包含的 Hirudin 靶点较少：
+
+Table \ref{tab:Hirudin-targets-in-HERB-database} (下方表格) 为表格Hirudin targets in HERB database概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Hirudin-targets-in-HERB-database.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4行3列，以下预览的表格可能省略部分数据；表格含有1个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:Hirudin-targets-in-HERB-database}Hirudin targets in HERB database}\tabularnewline
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name\tabularnewline
+\midrule
+\endhead
+SHUI ZHI & hirudin & F2\tabularnewline
+SHUI ZHI & hirudin & F3\tabularnewline
+SHUI ZHI & hirudin & F5\tabularnewline
+SHUI ZHI & hirudin & MIF\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{genecards-ux83b7ux53d6ux5316ux5408ux7269ux9776ux70b9}{%
+\paragraph{GeneCards 获取化合物靶点}\label{genecards-ux83b7ux53d6ux5316ux5408ux7269ux9776ux70b9}}
+
+bindingdb, drugbank, 以及预测工具 Super-Pred 等都难以获取更多关于 hirudin 靶点信息。
+因此，这里使用 \texttt{GeneCards} 搜索。
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    hirudin
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    FALSE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 0
+
+\vspace{2em}
+
+
+\textbf{
+Advance search:
+:}
+
+\vspace{0.5em}
+
+    [compounds] ( hirudin )
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:Hirudin-targets-from-GeneCards} (下方表格) 为表格Hirudin targets from GeneCards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Hirudin-targets-from-GeneCards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有45行7列，以下预览的表格可能省略部分数据；表格含有45个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Hirudin-targets-from-GeneCards}Hirudin targets from GeneCards}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+F2 & Coagulatio\ldots{} & Protein Co\ldots{} & P00734 & 58 & GC11P047386 & 2.58\tabularnewline
+F2R & Coagulatio\ldots{} & Protein Co\ldots{} & P25116 & 55 & GC05P076716 & 2.23\tabularnewline
+F10 & Coagulatio\ldots{} & Protein Co\ldots{} & P00742 & 58 & GC13P113122 & 1.76\tabularnewline
+FGA & Fibrinogen\ldots{} & Protein Co\ldots{} & P02671 & 58 & GC04M154583 & 1.76\tabularnewline
+PLAT & Plasminoge\ldots{} & Protein Co\ldots{} & P00750 & 57 & GC08M042174 & 1.76\tabularnewline
+F3 & Coagulatio\ldots{} & Protein Co\ldots{} & P13726 & 54 & GC01M094825 & 1.76\tabularnewline
+PLG & Plasminogen & Protein Co\ldots{} & P00747 & 58 & GC06P160702 & 1.59\tabularnewline
+CPA1 & Carboxypep\ldots{} & Protein Co\ldots{} & P15085 & 51 & GC07P130380 & 1.12\tabularnewline
+PLAU & Plasminoge\ldots{} & Protein Co\ldots{} & P00749 & 60 & GC10P073909 & 0.64\tabularnewline
+SERPINE1 & Serpin Fam\ldots{} & Protein Co\ldots{} & P05121 & 59 & GC07P101127 & 0.64\tabularnewline
+CCL2 & C-C Motif \ldots{} & Protein Co\ldots{} & P13500 & 58 & GC17P034255 & 0.64\tabularnewline
+CD40LG & CD40 Ligand & Protein Co\ldots{} & P29965 & 58 & GC0XP136649 & 0.64\tabularnewline
+CD55 & CD55 Molec\ldots{} & Protein Co\ldots{} & P08174 & 58 & GC01P207321 & 0.64\tabularnewline
+SERPINC1 & Serpin Fam\ldots{} & Protein Co\ldots{} & P01008 & 58 & GC01M174899 & 0.64\tabularnewline
+TBXA2R & Thromboxan\ldots{} & Protein Co\ldots{} & P21731 & 58 & GC19M003594 & 0.64\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{hirudin-ux9776ux70b9ux4e0e-cir-degs-ux4ea4ux96c6}{%
+\subsubsection{Hirudin 靶点与 CIR DEGs 交集}\label{hirudin-ux9776ux70b9ux4e0e-cir-degs-ux4ea4ux96c6}}
+
+Figure \ref{fig:Intersection-of-Hirudin-Targets-with-CIR-DEGs} (下方图) 为图Intersection of Hirudin Targets with CIR DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-Hirudin-Targets-with-CIR-DEGs.pdf})}
+Figure \ref{fig:Intersection-of-Hirudin-Targets-with-CIR-DEGs} (下方图) 为图Intersection of Hirudin Targets with CIR DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-Hirudin-Targets-with-CIR-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-Hirudin-Targets-with-CIR-DEGs.pdf}
+\caption{Intersection of Hirudin Targets with CIR DEGs}\label{fig:Intersection-of-Hirudin-Targets-with-CIR-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    PLAT, PLAU, SERPINE1, VWF, THBD, SELP, THBS1, TIMP1,
+PLAUR, F2RL1, SELE, PROCR, FGL2, SCG5
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-Hirudin-Targets-with-CIR-DEGs-content})}
+
+\hypertarget{ux4ea4ux96c6ux57faux56e0ux7684ux5bccux96c6ux5206ux6790}{%
+\paragraph{交集基因的富集分析}\label{ux4ea4ux96c6ux57faux56e0ux7684ux5bccux96c6ux5206ux6790}}
+
+Figure \ref{fig:HIRUDIN-CIR-KEGG-enrichment} (下方图) 为图HIRUDIN CIR KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HIRUDIN-CIR-KEGG-enrichment.pdf})}
+Figure \ref{fig:HIRUDIN-CIR-KEGG-enrichment} (下方图) 为图HIRUDIN CIR KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HIRUDIN-CIR-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HIRUDIN-CIR-KEGG-enrichment.pdf}
+\caption{HIRUDIN CIR KEGG enrichment}\label{fig:HIRUDIN-CIR-KEGG-enrichment}
+\end{center}
+
+\hypertarget{ux4e0eux590dux65b9ux5171ux540cux4f5cux7528ux7684ux4fe1ux53f7ux901aux8def}{%
+\paragraph{与复方共同作用的信号通路}\label{ux4e0eux590dux65b9ux5171ux540cux4f5cux7528ux7684ux4fe1ux53f7ux901aux8def}}
+
+因为在 Hirudin 的富集分析前，额外从 GeneCards 获取了 Hirudin 的靶点，这一部分在复方分析中是不包含的；
+因此，这里尝试寻找它们共同的靶向通路 (复方与获取了额外靶点的 Hirudin 的共同富集通路)。
+
+Table \ref{tab:HIRUDIN-Herbs-pathways-intersection} (下方表格) 为表格HIRUDIN Herbs pathways intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HIRUDIN-Herbs-pathways-intersection.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有7行9列，以下预览的表格可能省略部分数据；表格含有7个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:HIRUDIN-Herbs-pathways-intersection}HIRUDIN Herbs pathways intersection}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa04933 & AGE-RA\ldots{} & 3/12 & 100/8661 & 0.0003\ldots{} & 0.0034\ldots{} & 0.0018\ldots{} & 6401/5\ldots{} & 3\tabularnewline
+hsa05418 & Fluid \ldots{} & 3/12 & 139/8661 & 0.0008\ldots{} & 0.0068\ldots{} & 0.0035\ldots{} & 5327/6\ldots{} & 3\tabularnewline
+hsa05205 & Proteo\ldots{} & 3/12 & 205/8661 & 0.0024\ldots{} & 0.0139\ldots{} & 0.0073\ldots{} & 5328/5\ldots{} & 3\tabularnewline
+hsa04115 & p53 si\ldots{} & 2/12 & 75/8661 & 0.0046\ldots{} & 0.0224\ldots{} & 0.0118\ldots{} & 5054/7057 & 2\tabularnewline
+hsa05215 & Prosta\ldots{} & 2/12 & 97/8661 & 0.0076\ldots{} & 0.0287\ldots{} & 0.0151\ldots{} & 5327/5328 & 2\tabularnewline
+hsa04066 & HIF-1 \ldots{} & 2/12 & 109/8661 & 0.0095\ldots{} & 0.0324\ldots{} & 0.0170\ldots{} & 5054/7076 & 2\tabularnewline
+hsa04371 & Apelin\ldots{} & 2/12 & 139/8661 & 0.0151\ldots{} & 0.0469\ldots{} & 0.0247\ldots{} & 5327/5054 & 2\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6700ux7ec8ux7b5bux9009-ux7740ux91cdux8003ux8651-hirudin}{%
+\subsection{最终筛选 (着重考虑 Hirudin)}\label{ux6700ux7ec8ux7b5bux9009-ux7740ux91cdux8003ux8651-hirudin}}
+
+为了缩小可选通路范围，这里尝试将以下的富集结果取共同的交集 (已在上述部分完成) ：
+
+\begin{itemize}
+\tightlist
+\item
+  复方靶向 CIR (靶点来源见 Fig. \ref{fig:Overall-targets-number-of-datasets}) 的通路
+  (富集见 Fig. \ref{fig:HERBS-KEGG-enrichment})
+\item
+  GEO 数据集 (GSE163614) CIR DEGs 的富集结果的通路 (富集见 Fig. \ref{fig:MAP-KEGG-enrichment})
+\item
+  获取了更多靶点信息 (因为 HERBS 数据库或其他数据库包含的靶点信息太少，不利于分析) 的 Hirudin 靶向 CIR (GEO DEGs) 的基因的富集分析 (Fig. \ref{fig:HIRUDIN-CIR-KEGG-enrichment})
+\end{itemize}
+
+得到 (去除了名称包含其他疾病的通路)：
+
+Table \ref{tab:All-pathways-intersection} (下方表格) 为表格All pathways intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-pathways-intersection.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2行9列，以下预览的表格可能省略部分数据；表格含有2个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:All-pathways-intersection}All pathways intersection}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa04066 & HIF-1 \ldots{} & 11/29 & 109/8661 & 2.1482\ldots{} & 1.4400\ldots{} & 2.7637\ldots{} & 207/10\ldots{} & 11\tabularnewline
+hsa04371 & Apelin\ldots{} & 3/29 & 139/8661 & 0.0108\ldots{} & 0.0141\ldots{} & 0.0027\ldots{} & 207/59\ldots{} & 3\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-BindingdbIn20Gilson2016}{}%
+1. Gilson, M. K. \emph{et al.} BindingDB in 2015: A public database for medicinal chemistry, computational chemistry and systems pharmacology. \emph{Nucleic acids research} \textbf{44}, D1045--D1053 (2016).
+
+\leavevmode\hypertarget{ref-MappingIdentifDurinc2009}{}%
+2. Durinck, S., Spellman, P. T., Birney, E. \& Huber, W. Mapping identifiers for the integration of genomic datasets with the r/bioconductor package biomaRt. \emph{Nature protocols} \textbf{4}, 1184--1191 (2009).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+3. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheDisgenetKnPinero2019}{}%
+4. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+5. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-PharmgkbAWorBarbar2018}{}%
+6. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
+
+\leavevmode\hypertarget{ref-HerbAHighThFang2021}{}%
+7. Fang, S. \emph{et al.} HERB: A high-throughput experiment- and reference-guided database of traditional chinese medicine. \emph{Nucleic Acids Research} \textbf{49}, D1197--D1206 (2021).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+8. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+9. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+10. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+11. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+
+\leavevmode\hypertarget{ref-SuperpredUpdaNickel2014}{}%
+12. Nickel, J. \emph{et al.} SuperPred: Update on drug classification and target prediction. \emph{Nucleic acids research} \textbf{42}, W26--W31 (2014).
+\end{cslreferences}
+
+\end{document}

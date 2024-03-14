@@ -1,3 +1,26 @@
 
 
 test
+
+sp.hir <- asjob_superpred(pb.hir)
+sp.hir <- step1(sp.hir)
+
+
+pb.hir <- job_pubchemr(info.hir$CID)
+pb.hir <- step1(pb.hir)
+pb.hir@params$smiles
+
+
+bdb <- job_bindingdb()
+bdb <- step1(bdb, info.hir$CID)
+bdb@tables$step1$res
+
+
+fun_search <- function() {
+  targets <- gn$Symbol
+  pattern <- paste0(paste0("^", targets, "$"), collapse = "|")
+  print(pattern)
+  filter(en.herbs, pattern, use = en.herbs@params$intersect_paths)
+}
+lst.hirudin <- fun_search()
+lst.hirudin
