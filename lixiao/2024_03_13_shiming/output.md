@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 养阴通脑颗粒中关键成分对脑缺血再灌注的影响}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-03-14}}
+\textbf{\textcolor{white}{2024-03-15}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -78,10 +78,39 @@ header-includes:
 
 # 摘要 {#abstract}
 
+## 需求
+
 - 养阴通脑颗粒中治疗脑缺血再灌注的关键成分及相应信号通路（信号通路需要创新性的），1-3条
 - 同时重点分析水蛭素对应的治疗脑缺血再灌注的信号通路
 
 养阴通脑颗粒：地黄15g、黄芪15g、葛根18g、石斛15g、水蛭3g、川芎9g
+
+## 结果
+
+### 整体复方
+
+- 常规网络药理学，见 Fig. \@ref(fig:Network-pharmacology-with-disease), 富集结果见 Fig. \@ref(fig:HERBS-KEGG-enrichment)
+- 额外对 CIR 的 GEO 数据差异分析，富集结果 Fig. \@ref(fig:MAP-KEGG-enrichment)
+- 综合以上富集，发现 MARK 通路 (Fig. \@ref(fig:HERBS-hsa04010-visualization)) 可能是治疗的关键通路之一，其靶向成分见 Tab. \@ref(tab:Network-pharmacology-target-MARK-data)
+
+### 权衡 Hirudin 的作用
+
+HERBs 数据库 (其他数据库也是如此) 包含的 Hirudin 靶点较少。
+这里，额外从 GeneCards 获取了 Hirudin 的靶点 (Tab. \@ref(tab:Hirudin-targets-from-GeneCards))。
+
+为了缩小可选通路范围，这里尝试将以下的富集结果取共同的交集 (已在上述部分完成) ：
+
+- 复方靶向 CIR (靶点来源见 Fig. \@ref(fig:Overall-targets-number-of-datasets)) 的通路
+  (富集见 Fig. \@ref(fig:HERBS-KEGG-enrichment))
+- GEO 数据集 (GSE163614) CIR DEGs 的富集结果的通路 (富集见 Fig. \@ref(fig:MAP-KEGG-enrichment))
+- 获取了更多靶点信息 (因为 HERBS 数据库或其他数据库包含的靶点信息太少，不利于分析) 的 Hirudin 靶向 CIR (GEO DEGs) 的基因的富集分析  (Fig. \@ref(fig:HIRUDIN-CIR-KEGG-enrichment)) 
+
+得到 (去除了名称包含其他疾病的通路)：Tab. \@ref(tab:All-pathways-intersection)
+
+- HIF-1 signaling pathway
+- Apelin signaling pathway
+
+更多信息见 \@ref(he-t) 和 \@ref(hi-t)
 
 
 
@@ -172,9 +201,6 @@ Table: (\#tab:Components-of-Herbs)Components of Herbs
 Figure \@ref(fig:intersection-of-all-compounds) (下方图) 为图intersection of all compounds概览。
 
 **(对应文件为 `Figure+Table/intersection-of-all-compounds.pdf`)**
-Figure \@ref(fig:intersection-of-all-compounds) (下方图) 为图intersection of all compounds概览。
-
-**(对应文件为 `Figure+Table/intersection-of-all-compounds.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
@@ -227,9 +253,6 @@ Table: (\#tab:tables-of-Herbs-compounds-and-targets)Tables of Herbs compounds an
 
 ### 脑缺血再灌注 cerebral ischemia reperfusion (CIR) 靶点
 
-Figure \@ref(fig:Overall-targets-number-of-datasets) (下方图) 为图Overall targets number of datasets概览。
-
-**(对应文件为 `Figure+Table/Overall-targets-number-of-datasets.pdf`)**
 Figure \@ref(fig:Overall-targets-number-of-datasets) (下方图) 为图Overall targets number of datasets概览。
 
 **(对应文件为 `Figure+Table/Overall-targets-number-of-datasets.pdf`)**
@@ -306,9 +329,6 @@ Table: (\#tab:CIR-GeneCards-used-data)CIR GeneCards used data
 Figure \@ref(fig:Network-pharmacology-with-disease) (下方图) 为图Network pharmacology with disease概览。
 
 **(对应文件为 `Figure+Table/Network-pharmacology-with-disease.pdf`)**
-Figure \@ref(fig:Network-pharmacology-with-disease) (下方图) 为图Network pharmacology with disease概览。
-
-**(对应文件为 `Figure+Table/Network-pharmacology-with-disease.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
@@ -316,9 +336,6 @@ Figure \@ref(fig:Network-pharmacology-with-disease) (下方图) 为图Network ph
 \caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
 \end{center}
 
-Figure \@ref(fig:Targets-intersect-with-targets-of-diseases) (下方图) 为图Targets intersect with targets of diseases概览。
-
-**(对应文件为 `Figure+Table/Targets-intersect-with-targets-of-diseases.pdf`)**
 Figure \@ref(fig:Targets-intersect-with-targets-of-diseases) (下方图) 为图Targets intersect with targets of diseases概览。
 
 **(对应文件为 `Figure+Table/Targets-intersect-with-targets-of-diseases.pdf`)**
@@ -352,9 +369,6 @@ IL12A, CXCL8, C...
 Figure \@ref(fig:HERBS-raw-PPI-network) (下方图) 为图HERBS raw PPI network概览。
 
 **(对应文件为 `Figure+Table/HERBS-raw-PPI-network.pdf`)**
-Figure \@ref(fig:HERBS-raw-PPI-network) (下方图) 为图HERBS raw PPI network概览。
-
-**(对应文件为 `Figure+Table/HERBS-raw-PPI-network.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
@@ -362,9 +376,6 @@ Figure \@ref(fig:HERBS-raw-PPI-network) (下方图) 为图HERBS raw PPI network�
 \caption{HERBS raw PPI network}\label{fig:HERBS-raw-PPI-network}
 \end{center}
 
-Figure \@ref(fig:HERBS-Top30-MCC-score) (下方图) 为图HERBS Top30 MCC score概览。
-
-**(对应文件为 `Figure+Table/HERBS-Top30-MCC-score.pdf`)**
 Figure \@ref(fig:HERBS-Top30-MCC-score) (下方图) 为图HERBS Top30 MCC score概览。
 
 **(对应文件为 `Figure+Table/HERBS-Top30-MCC-score.pdf`)**
@@ -377,9 +388,6 @@ Figure \@ref(fig:HERBS-Top30-MCC-score) (下方图) 为图HERBS Top30 MCC score�
 
 ### 富集分析 (Top30)
 
-Figure \@ref(fig:HERBS-KEGG-enrichment) (下方图) 为图HERBS KEGG enrichment概览。
-
-**(对应文件为 `Figure+Table/HERBS-KEGG-enrichment.pdf`)**
 Figure \@ref(fig:HERBS-KEGG-enrichment) (下方图) 为图HERBS KEGG enrichment概览。
 
 **(对应文件为 `Figure+Table/HERBS-KEGG-enrichment.pdf`)**
@@ -529,9 +537,6 @@ Table: (\#tab:RAT-metadata)RAT metadata
 Figure \@ref(fig:RAT-Model-vs-Control-DEGs) (下方图) 为图RAT Model vs Control DEGs概览。
 
 **(对应文件为 `Figure+Table/RAT-Model-vs-Control-DEGs.pdf`)**
-Figure \@ref(fig:RAT-Model-vs-Control-DEGs) (下方图) 为图RAT Model vs Control DEGs概览。
-
-**(对应文件为 `Figure+Table/RAT-Model-vs-Control-DEGs.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
@@ -588,9 +593,6 @@ Table: (\#tab:RAT-Mapped-DEGs)RAT Mapped DEGs
 Figure \@ref(fig:MAP-KEGG-enrichment) (下方图) 为图MAP KEGG enrichment概览。
 
 **(对应文件为 `Figure+Table/MAP-KEGG-enrichment.pdf`)**
-Figure \@ref(fig:MAP-KEGG-enrichment) (下方图) 为图MAP KEGG enrichment概览。
-
-**(对应文件为 `Figure+Table/MAP-KEGG-enrichment.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
@@ -635,6 +637,12 @@ Table: (\#tab:MAP-KEGG-enrichment-data)MAP KEGG enrichment data
 Figure \@ref(fig:HERBS-hsa04010-visualization) (下方图) 为图HERBS hsa04010 visualization概览。
 
 **(对应文件为 `Figure+Table/hsa04010.pathview.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-03-14_14_08_35.864097/hsa04010.pathview.png}
+\caption{HERBS hsa04010 visualization}\label{fig:HERBS-hsa04010-visualization}
+\end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 Interactive figure
@@ -646,14 +654,6 @@ Interactive figure
 
 \vspace{2em}
 \end{tcolorbox}
-\end{center}Figure \@ref(fig:HERBS-hsa04010-visualization) (下方图) 为图HERBS hsa04010 visualization概览。
-
-**(对应文件为 `Figure+Table/hsa04010.pathview.png`)**
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{pathview2024-03-14_14_08_35.864097/hsa04010.pathview.png}
-\caption{HERBS hsa04010 visualization}\label{fig:HERBS-hsa04010-visualization}
 \end{center}
 
 ### 复方靶点通路与 CIR DEGs 富集结果的共同富集通路
@@ -695,15 +695,14 @@ Table: (\#tab:HERBS-pathways-intersection)HERBS pathways intersection
 Figure \@ref(fig:Network-pharmacology-target-MARK) (下方图) 为图Network pharmacology target MARK概览。
 
 **(对应文件为 `Figure+Table/Network-pharmacology-target-MARK.pdf`)**
-Figure \@ref(fig:Network-pharmacology-target-MARK) (下方图) 为图Network pharmacology target MARK概览。
-
-**(对应文件为 `Figure+Table/Network-pharmacology-target-MARK.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-target-MARK.pdf}
 \caption{Network pharmacology target MARK}\label{fig:Network-pharmacology-target-MARK}
 \end{center}
+
+#### 复方作用于 MARK 通路的成分
 
 Table \@ref(tab:Network-pharmacology-target-MARK-data) (下方表格) 为表格Network pharmacology target MARK data概览。
 
@@ -845,9 +844,6 @@ Table: (\#tab:Hirudin-targets-from-GeneCards)Hirudin targets from GeneCards
 Figure \@ref(fig:Intersection-of-Hirudin-Targets-with-CIR-DEGs) (下方图) 为图Intersection of Hirudin Targets with CIR DEGs概览。
 
 **(对应文件为 `Figure+Table/Intersection-of-Hirudin-Targets-with-CIR-DEGs.pdf`)**
-Figure \@ref(fig:Intersection-of-Hirudin-Targets-with-CIR-DEGs) (下方图) 为图Intersection of Hirudin Targets with CIR DEGs概览。
-
-**(对应文件为 `Figure+Table/Intersection-of-Hirudin-Targets-with-CIR-DEGs.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
@@ -871,9 +867,6 @@ PLAUR, F2RL1, SELE, PROCR, FGL2, SCG5
 
 #### 交集基因的富集分析
 
-Figure \@ref(fig:HIRUDIN-CIR-KEGG-enrichment) (下方图) 为图HIRUDIN CIR KEGG enrichment概览。
-
-**(对应文件为 `Figure+Table/HIRUDIN-CIR-KEGG-enrichment.pdf`)**
 Figure \@ref(fig:HIRUDIN-CIR-KEGG-enrichment) (下方图) 为图HIRUDIN CIR KEGG enrichment概览。
 
 **(对应文件为 `Figure+Table/HIRUDIN-CIR-KEGG-enrichment.pdf`)**
@@ -943,6 +936,157 @@ Table: (\#tab:All-pathways-intersection)All pathways intersection
 |hsa04066 |HIF-1 ... |11/29     |109/8661 |2.1482... |1.4400... |2.7637... |207/10... |11    |
 |hsa04371 |Apelin... |3/29      |139/8661 |0.0108... |0.0141... |0.0027... |207/59... |3     |
 
+### 复方对筛选通路的靶向 {#he-t}
+
+Figure \@ref(fig:HERBS-hsa04066-visualization) (下方图) 为图HERBS hsa04066 visualization概览。
+
+**(对应文件为 `Figure+Table/hsa04066.pathview.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-03-14_14_08_35.864097/hsa04066.pathview.png}
+\caption{HERBS hsa04066 visualization}\label{fig:HERBS-hsa04066-visualization}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa04066}
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Figure \@ref(fig:HERBS-hsa04371-visualization) (下方图) 为图HERBS hsa04371 visualization概览。
+
+**(对应文件为 `Figure+Table/hsa04371.pathview.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-03-14_14_08_35.864097/hsa04371.pathview.png}
+\caption{HERBS hsa04371 visualization}\label{fig:HERBS-hsa04371-visualization}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa04371}
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+#### 相关成分
+
+Table \@ref(tab:Compounds-target-HIF-1-signaling-pathway) (下方表格) 为表格Compounds target HIF 1 signaling pathway概览。
+
+**(对应文件为 `Figure+Table/Compounds-target-HIF-1-signaling-pathway.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有137行9列，以下预览的表格可能省略部分数据；表格含有38个唯一`Ingredient.id'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Compounds-target-HIF-1-signaling-pathway)Compounds target HIF 1 signaling pathway
+
+|Ingred......1 |Herb_p... |Ingred......3 |Ingred......4 |Target.id |Target... |Databa... |Paper.id |... |
+|:-------------|:---------|:-------------|:-------------|:---------|:---------|:---------|:--------|:---|
+|HBIN00...     |CHUAN ... |3-buty...     |NA            |HBTAR0... |CDKN1A    |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |5&apos...     |NA            |HBTAR0... |RELA      |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |acetic...     |AI3-02...     |HBTAR0... |RELA      |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |acetic...     |AI3-02...     |HBTAR0... |RELA      |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |adenin...     |NA            |HBTAR0... |HIF1A     |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |adenin...     |NA            |HBTAR0... |VEGFA     |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |adenin...     |NA            |HBTAR0... |HIF1A     |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |adenin...     |NA            |HBTAR0... |VEGFA     |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |adenin...     |NA            |HBTAR0... |HIF1A     |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |adenin...     |NA            |HBTAR0... |VEGFA     |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |adenin...     |NA            |HBTAR0... |HIF1A     |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |adenin...     |NA            |HBTAR0... |VEGFA     |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |astram...     |AC1L3V...     |HBTAR0... |AKT1      |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |astram...     |AC1L3V...     |HBTAR0... |TEK       |NA        |NA       |... |
+|HBIN01...     |HUANG QI  |beta c...     |Spectr...     |HBTAR0... |AKT1      |NA        |NA       |... |
+|...           |...       |...           |...           |...       |...       |...       |...      |... |
+
+Table \@ref(tab:Compounds-target-Apelin-signaling-pathway) (下方表格) 为表格Compounds target Apelin signaling pathway概览。
+
+**(对应文件为 `Figure+Table/Compounds-target-Apelin-signaling-pathway.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有61行9列，以下预览的表格可能省略部分数据；表格含有17个唯一`Ingredient.id'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Compounds-target-Apelin-signaling-pathway)Compounds target Apelin signaling pathway
+
+|Ingred......1 |Herb_p... |Ingred......3 |Ingred......4 |Target.id |Target... |Databa... |Paper.id  |... |
+|:-------------|:---------|:-------------|:-------------|:---------|:---------|:---------|:---------|:---|
+|HBIN00...     |CHUAN ... |3-buty...     |NA            |HBTAR0... |CCND1     |NA        |NA        |... |
+|HBIN01...     |HUANG QI  |5&apos...     |NA            |HBTAR0... |CCND1     |NA        |NA        |... |
+|HBIN01...     |HUANG QI  |astram...     |AC1L3V...     |HBTAR0... |AKT1      |NA        |NA        |... |
+|HBIN01...     |HUANG QI  |beta c...     |Spectr...     |HBTAR0... |AKT1      |NA        |NA        |... |
+|HBIN01...     |HUANG QI  |beta c...     |Spectr...     |HBTAR0... |AKT1      |NA        |NA        |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |AKT1      |NA        |HBREF0... |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |MAPK1     |NA        |HBREF0... |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |AKT1      |NA        |HBREF0... |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |MAPK1     |NA        |HBREF0... |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |AKT1      |NA        |HBREF0... |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |MAPK1     |NA        |HBREF0... |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |AKT1      |NA        |HBREF0... |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |MAPK1     |NA        |HBREF0... |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |AKT1      |NA        |HBREF0... |... |
+|HBIN01...     |HUANG QI  |calycosin     |HSDB 8...     |HBTAR0... |MAPK1     |NA        |HBREF0... |... |
+|...           |...       |...           |...           |...       |...       |...       |...       |... |
+
+
+
+### Hirudin 对筛选通路的靶向 {#hi-t}
+
+Figure \@ref(fig:HIRUDIN-hsa04066-visualization) (下方图) 为图HIRUDIN hsa04066 visualization概览。
+
+**(对应文件为 `Figure+Table/hsa04066.pathview.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-03-14_16_15_48.263803/hsa04066.pathview.png}
+\caption{HIRUDIN hsa04066 visualization}\label{fig:HIRUDIN-hsa04066-visualization}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa04066}
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Figure \@ref(fig:HIRUDIN-hsa04371-visualization) (下方图) 为图HIRUDIN hsa04371 visualization概览。
+
+**(对应文件为 `Figure+Table/hsa04371.pathview.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-03-14_16_15_48.263803/hsa04371.pathview.png}
+\caption{HIRUDIN hsa04371 visualization}\label{fig:HIRUDIN-hsa04371-visualization}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa04371}
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
 
 
 

@@ -32,10 +32,38 @@ set_index()
 
 # 摘要 {#abstract}
 
+## 需求
+
 - 养阴通脑颗粒中治疗脑缺血再灌注的关键成分及相应信号通路（信号通路需要创新性的），1-3条
 - 同时重点分析水蛭素对应的治疗脑缺血再灌注的信号通路
 
 养阴通脑颗粒：地黄15g、黄芪15g、葛根18g、石斛15g、水蛭3g、川芎9g
+
+## 结果
+
+### 整体复方
+
+- 常规网络药理学，见 Fig. \@ref(fig:Network-pharmacology-with-disease), 富集结果见 Fig. \@ref(fig:HERBS-KEGG-enrichment)
+- 额外对 CIR 的 GEO 数据差异分析，富集结果 Fig. \@ref(fig:MAP-KEGG-enrichment)
+- 综合以上富集，发现 MARK 通路 (Fig. \@ref(fig:HERBS-hsa04010-visualization)) 可能是治疗的关键通路之一，其靶向成分见 Tab. \@ref(tab:Network-pharmacology-target-MARK-data)
+
+### 权衡 Hirudin 的作用
+
+HERBs 数据库 (其他数据库也是如此) 包含的 Hirudin 靶点较少。
+这里，额外从 GeneCards 获取了 Hirudin 的靶点 (Tab. \@ref(tab:Hirudin-targets-from-GeneCards))。
+
+为了缩小可选通路范围，这里尝试将以下的富集结果取共同的交集 (已在上述部分完成) ：
+
+- 复方靶向 CIR (靶点来源见 Fig. \@ref(fig:Overall-targets-number-of-datasets)) 的通路
+  (富集见 Fig. \@ref(fig:HERBS-KEGG-enrichment))
+- GEO 数据集 (GSE163614) CIR DEGs 的富集结果的通路 (富集见 Fig. \@ref(fig:MAP-KEGG-enrichment))
+- 获取了更多靶点信息 (因为 HERBS 数据库或其他数据库包含的靶点信息太少，不利于分析) 的 Hirudin 靶向 CIR (GEO DEGs) 的基因的富集分析  (Fig. \@ref(fig:HIRUDIN-CIR-KEGG-enrichment)) 
+
+得到 (去除了名称包含其他疾病的通路)：Tab. \@ref(tab:All-pathways-intersection)
+
+`r paste0(paste0("- ", paths.herb2hir0dis$Description), collapse = "\n")`
+
+更多信息见 \@ref(he-t) 和 \@ref(hi-t)
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
@@ -204,6 +232,8 @@ autor(en.herbs@params$intersect_paths)
 #| Network-pharmacology-target-MARK
 autor(hb@params$p.pharm2MARK)
 ```
+
+#### 复方作用于 MARK 通路的成分
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Network-pharmacology-target-MARK-data
@@ -377,6 +407,52 @@ en.hirudin@params$intersect_paths
 autor(paths.herb2hir0dis)
 ```
 
+### 复方对筛选通路的靶向 {#he-t}
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-hsa04066-visualization
+autor(en.herbs@plots$step2$p.pathviews$hsa04066)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-hsa04371-visualization
+autor(en.herbs@plots$step2$p.pathviews$hsa04371)
+```
+
+#### 相关成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Compounds-target-HIF-1-signaling-pathway
+autor(lst.comps[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Compounds-target-Apelin-signaling-pathway
+autor(lst.comps[[2]])
+```
+
+```{r}
+fun_filter <- function(n) {
+  t.path <- paths.herb2hir0dis
+  genes <- t.path$geneName_list[[ n ]]
+  data <- dplyr::filter(hb@params$easyRead, Target.name %in% !!unlist(genes))
+  lab(data) <- paste0("Compounds target ", t.path$Description[[ n ]])
+  data
+}
+lst.comps <- lapply(1:2, fun_filter)
+```
+
+### Hirudin 对筛选通路的靶向 {#hi-t}
+
+```{r eval = T, echo = F, results = "asis"}
+#| HIRUDIN-hsa04066-visualization
+autor(en.hirudin@plots$step2$p.pathviews$hsa04066)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HIRUDIN-hsa04371-visualization
+autor(en.hirudin@plots$step2$p.pathviews$hsa04371)
+```
 
 ```{r}
 # herbs, CIR, hirudin

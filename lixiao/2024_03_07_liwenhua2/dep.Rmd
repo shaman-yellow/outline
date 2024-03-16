@@ -12,3 +12,29 @@ meta$sample_type %>% table
 meta <- ftibble("~/Downloads/sample_metadata.txt")
 meta$sample_type %>% table
 ```
+### LuminalAndTumRomano2022 结肠癌
+
+```{r}
+# colorectal cancer
+unzip("~/Downloads/cancers-14-05207-s001.zip", exdir = "./material/LuminalAndTumRomano2022")
+browseURL("./material/LuminalAndTumRomano2022/Supplementary tables.xlsx")
+pb.ca_loss <- fxlsx("./material/LuminalAndTumRomano2022/Supplementary tables.xlsx", startRow = 2)
+
+```
+
+### TheCancerMicrDohlma2021 结肠癌
+
+TCMA
+<https://tcma.pratt.duke.edu/>
+
+```{r}
+meta <- ftibble("~/Downloads/sample_metadata.txt")
+meta
+meta$sample_type %>% table
+```
+
+
+upset.uc_targ <- new_upset(lst = lapply(pb.uc_targ, function(x) x$Species))
+upset.uc_targ$ins
+upset.uc_targ
+

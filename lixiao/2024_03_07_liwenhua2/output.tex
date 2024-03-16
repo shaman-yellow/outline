@@ -1,0 +1,509 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+开源数据库结肠炎和结肠癌的菌群差异分析}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-03-15}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+Other data obtained from published article (e.g., supplementary tables):
+
+\begin{itemize}
+\tightlist
+\item
+  Supplementary file from article refer to TransplantationSinha2022\textsuperscript{\protect\hyperlink{ref-TransplantationSinha2022}{1}}.
+\item
+  Supplementary file from article refer to TargetedSuppreFederi2022\textsuperscript{\protect\hyperlink{ref-TargetedSuppreFederi2022}{2}}.
+\item
+  Supplementary file from article refer to DepressionAndYuan2021\textsuperscript{\protect\hyperlink{ref-DepressionAndYuan2021}{3}}.
+\item
+  Supplementary file from article refer to AnIntegratedTRoelan2023\textsuperscript{\protect\hyperlink{ref-AnIntegratedTRoelan2023}{4}}.
+\item
+  Supplementary file from article refer to LocationAndCoSambru2023\textsuperscript{\protect\hyperlink{ref-LocationAndCoSambru2023}{5}}.
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux6570ux636eux6765ux6e90}{%
+\subsection{数据来源}\label{ux6570ux636eux6765ux6e90}}
+
+\hypertarget{ux7ed3ux80a0ux708eux6570ux636e}{%
+\subsubsection{结肠炎数据}\label{ux7ed3ux80a0ux708eux6570ux636e}}
+
+\hypertarget{targetedsupprefederi2022-ux7ed3ux80a0ux708e}{%
+\paragraph{TargetedSuppreFederi2022 结肠炎}\label{targetedsupprefederi2022-ux7ed3ux80a0ux708e}}
+
+`TargetedSuppreFederi2022 data' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TargetedSuppreFederi2022-data})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/TargetedSuppreFederi2022-data共包含4个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Corrected France.csv
+\item 2\_Corrected Israel.csv
+\item 3\_Corrected US.csv
+\item 4\_Corrected Germany.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{depressionandyuan2021-ux7ed3ux80a0ux708e}{%
+\paragraph{DepressionAndYuan2021 结肠炎}\label{depressionandyuan2021-ux7ed3ux80a0ux708e}}
+
+Table \ref{tab:DepressionAndYuan2021-data} (下方表格) 为表格DepressionAndYuan2021 data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DepressionAndYuan2021-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有91行4列，以下预览的表格可能省略部分数据；表格含有91个唯一`Taxonomy'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:DepressionAndYuan2021-data}DepressionAndYuan2021 data}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.22\columnwidth}\raggedright
+Taxonomy\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+p.value\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+MRA.in.UC\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+MRA.in.HC\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.22\columnwidth}\raggedright
+Taxonomy\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+p.value\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+MRA.in.UC\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+MRA.in.HC\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_Gemmatimonadetes\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00049553252446827\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00171119907683608\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.000160190585722501\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_Actinobacteria\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00834784591709094\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0617033057472256\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0389112516772091\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_Firmicutes\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00478686441960355\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.589610871565727\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.499806265231797\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_Bacteroidetes\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+9.60337999115942e-05\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.250752809840626\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.403687121772228\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+p\_\_unidentified\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+1.40986578996555e-07\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.000640301130981834\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.05372545798078e-06\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Actinobacteria\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00353055167754535\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.046725454341533\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0237116295626934\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Longimicrobia\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+7.16632518063251e-07\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00145496100157866\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Bacteroidia\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+6.38198131772293e-05\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.24518920382048\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.403287329883075\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Deinococci\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+3.17450175630301e-06\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00131123215732429\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Bacilli\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00330587139663399\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0649165901033199\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0154563377967633\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Cytophagia\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.10636789003367e-05\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0016664310495747\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+4.24436594649361e-05\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_unidentified\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.64154914758447e-08\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0016652538833675\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+8.83101946931736e-05\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+c\_\_Flavobacteriia\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+5.26714172360768e-05\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00167703418517471\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+5.95580382814426e-05\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+o\_\_Oceanospirillales\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00495867783478051\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.000461817587592187\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.05372545798077e-06\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+o\_\_Bifidobacteriales\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.00354779153342515\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0443044462799416\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.0224465346805772\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{transplantationsinha2022-ux7ed3ux80a0ux708e}{%
+\paragraph{TransplantationSinha2022 结肠炎}\label{transplantationsinha2022-ux7ed3ux80a0ux708e}}
+
+Table \ref{tab:TransplantationSinha2022-data} (下方表格) 为表格TransplantationSinha2022 data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TransplantationSinha2022-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有141行12列，以下预览的表格可能省略部分数据；表格含有83个唯一`W'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:TransplantationSinha2022-data}TransplantationSinha2022 data}\tabularnewline
+\toprule
+W & detect\ldots\ldots2 & detect\ldots\ldots3 & detect\ldots\ldots4 & detect\ldots\ldots5 & Kingdom & Phylum & Class & Order & Family & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+W & detect\ldots\ldots2 & detect\ldots\ldots3 & detect\ldots\ldots4 & detect\ldots\ldots5 & Kingdom & Phylum & Class & Order & Family & \ldots{}\tabularnewline
+\midrule
+\endhead
+121 & FALSE & TRUE & TRUE & TRUE & d\_\_Bac\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Rikene\ldots{} & \ldots{}\tabularnewline
+89 & FALSE & FALSE & FALSE & TRUE & d\_\_Bac\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Rikene\ldots{} & \ldots{}\tabularnewline
+87 & FALSE & FALSE & FALSE & TRUE & d\_\_Bac\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Marini\ldots{} & \ldots{}\tabularnewline
+94 & FALSE & FALSE & FALSE & TRUE & d\_\_Bac\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Barnes\ldots{} & \ldots{}\tabularnewline
+125 & FALSE & TRUE & TRUE & TRUE & d\_\_Bac\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Barnes\ldots{} & \ldots{}\tabularnewline
+94 & FALSE & FALSE & FALSE & TRUE & d\_\_Bac\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Barnes\ldots{} & \ldots{}\tabularnewline
+95 & FALSE & FALSE & FALSE & TRUE & d\_\_Bac\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Barnes\ldots{} & \ldots{}\tabularnewline
+135 & TRUE & TRUE & TRUE & TRUE & d\_\_Bac\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Prevot\ldots{} & \ldots{}\tabularnewline
+138 & TRUE & TRUE & TRUE & TRUE & d\_\_Bac\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Bacter\ldots{} & Prevot\ldots{} & \ldots{}\tabularnewline
+103 & FALSE & FALSE & TRUE & TRUE & d\_\_Bac\ldots{} & Firmic\ldots{} & Bacilli & Lactob\ldots{} & Entero\ldots{} & \ldots{}\tabularnewline
+134 & TRUE & TRUE & TRUE & TRUE & d\_\_Bac\ldots{} & Firmic\ldots{} & Bacilli & Erysip\ldots{} & Erysip\ldots{} & \ldots{}\tabularnewline
+118 & FALSE & TRUE & TRUE & TRUE & d\_\_Bac\ldots{} & Firmic\ldots{} & Bacilli & Erysip\ldots{} & Erysip\ldots{} & \ldots{}\tabularnewline
+90 & FALSE & FALSE & FALSE & TRUE & d\_\_Bac\ldots{} & Firmic\ldots{} & Bacilli & Erysip\ldots{} & Erysip\ldots{} & \ldots{}\tabularnewline
+87 & FALSE & FALSE & FALSE & TRUE & d\_\_Bac\ldots{} & Firmic\ldots{} & Bacilli & Erysip\ldots{} & Erysip\ldots{} & \ldots{}\tabularnewline
+95 & FALSE & FALSE & FALSE & TRUE & d\_\_Bac\ldots{} & Firmic\ldots{} & Bacilli & Erysip\ldots{} & Erysip\ldots{} & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux7ed3ux80a0ux764cux6570ux636e}{%
+\subsubsection{结肠癌数据}\label{ux7ed3ux80a0ux764cux6570ux636e}}
+
+\hypertarget{anintegratedtroelan2023-ux7ed3ux80a0ux764c}{%
+\paragraph{AnIntegratedTRoelan2023 结肠癌}\label{anintegratedtroelan2023-ux7ed3ux80a0ux764c}}
+
+Table \ref{tab:AnIntegratedTRoelan2023-data} (下方表格) 为表格AnIntegratedTRoelan2023 data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/AnIntegratedTRoelan2023-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有74行15列，以下预览的表格可能省略部分数据；表格含有1个唯一`sheet'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:AnIntegratedTRoelan2023-data}AnIntegratedTRoelan2023 data}\tabularnewline
+\toprule
+sheet & Taxonomy & p\_val & FDR & wilcox\ldots{} & mean\_N & mean\_T & median\_N & median\_T & Direction\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sheet & Taxonomy & p\_val & FDR & wilcox\ldots{} & mean\_N & mean\_T & median\_N & median\_T & Direction\tabularnewline
+\midrule
+\endhead
+Supple\ldots{} & D\_0\_\_B\ldots{} & 2.8875\ldots{} & 4.2447\ldots{} & 1965 & 0.0121\ldots{} & 0.0524\ldots{} & 0.0006\ldots{} & 0.0059\ldots{} & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 6.6405\ldots{} & 4.8807\ldots{} & 657 & 0.0018\ldots{} & 0.0095\ldots{} & 0 & 0 & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 7.1087\ldots{} & 3.4833\ldots{} & 21023.5 & 0.0190\ldots{} & 0.0126\ldots{} & 0.0128\ldots{} & 0.0067\ldots{} & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 2.8160\ldots{} & 1.0348\ldots{} & 18604 & 0.0132\ldots{} & 0.0087\ldots{} & 0.0078\ldots{} & 0.0041\ldots{} & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 1.7251\ldots{} & 5.0718\ldots{} & 11985 & 0.0070\ldots{} & 0.0043\ldots{} & 0.0034\ldots{} & 0.0019\ldots{} & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 5.0924\ldots{} & 1.2476\ldots{} & 7227.5 & 0.0126\ldots{} & 0.0315\ldots{} & 0.0031\ldots{} & 0.0076\ldots{} & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 9.2218\ldots{} & 1.9365\ldots{} & 223.5 & 0.0002\ldots{} & 0.0052\ldots{} & 0 & 0 & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 1.5535\ldots{} & 2.8547\ldots{} & 16631.5 & 0.0106\ldots{} & 0.0076\ldots{} & 0.0064\ldots{} & 0.0041\ldots{} & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 2.1475\ldots{} & 3.5075\ldots{} & 1494 & 0.0022\ldots{} & 0.0076\ldots{} & 0 & 0 & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 4.3690\ldots{} & 6.2979\ldots{} & 62 & 0.0001\ldots{} & 0.0026\ldots{} & 0 & 0 & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 4.7127\ldots{} & 6.2979\ldots{} & 20341 & 0.0280\ldots{} & 0.0232\ldots{} & 0.0228\ldots{} & 0.0170\ldots{} & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 7.9474\ldots{} & 9.7356\ldots{} & 237.5 & 0.0008\ldots{} & 0.0058\ldots{} & 0 & 0 & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 1.6820\ldots{} & 1.9019\ldots{} & 4806.5 & 0.0040\ldots{} & 0.0026\ldots{} & 0 & 0 & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 1.5690\ldots{} & 1.5376\ldots{} & 4009 & 0.0025\ldots{} & 0.0039\ldots{} & 0.0006\ldots{} & 0.0013\ldots{} & Enrich\ldots{}\tabularnewline
+Supple\ldots{} & D\_0\_\_B\ldots{} & 1.5362\ldots{} & 1.5376\ldots{} & 12107.5 & 0.0075\ldots{} & 0.0059\ldots{} & 0.0017\ldots{} & 0.0012\ldots{} & Enrich\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{locationandcosambru2023-ux7ed3ux80a0ux764c}{%
+\paragraph{LocationAndCoSambru2023 结肠癌}\label{locationandcosambru2023-ux7ed3ux80a0ux764c}}
+
+Table \ref{tab:LocationAndCoSambru2023-data} (下方表格) 为表格LocationAndCoSambru2023 data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LocationAndCoSambru2023-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有44行2列，以下预览的表格可能省略部分数据；表格含有44个唯一`tax\_id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:LocationAndCoSambru2023-data}LocationAndCoSambru2023 data}\tabularnewline
+\toprule
+tax\_id & taxon\_name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+tax\_id & taxon\_name\tabularnewline
+\midrule
+\endhead
+40545 & Sutterella\_wadsworthensis\tabularnewline
+214856 & Alistipes\_finegoldii\tabularnewline
+328814 & Alistipes\_shahii\tabularnewline
+674529 & Bacteroides\_faecis\tabularnewline
+333367 & {[}Clostridium{]}\_asparagiforme\tabularnewline
+437898 & Sutterella\_parvirubra\tabularnewline
+74426 & Collinsella\_aerofaciens\tabularnewline
+1531 & {[}Clostridium{]}\_clostridioforme\tabularnewline
+239935 & Akkermansia\_muciniphila\tabularnewline
+901 & Desulfovibrio\_piger\tabularnewline
+1892897 & Shigella\_sp.\_FC569\tabularnewline
+68259 & Streptomyces\_purpurogeneisc\ldots{}\tabularnewline
+1450439 & Bacteroides\_sp.\_UW\tabularnewline
+585543 & Bacteroides\_sp.\_D20\tabularnewline
+1581131 & Actinomyces\_sp.\_HMSC08A01\tabularnewline
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5faeux751fux7269ux6ce8ux91ca}{%
+\subsection{微生物注释}\label{ux5faeux751fux7269ux6ce8ux91ca}}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-TransplantationSinha2022}{}%
+1. Sinha, A. \emph{et al.} Transplantation of bacteriophages from ulcerative colitis patients shifts the gut bacteriome and exacerbates the severity of dss colitis. \emph{Microbiome} \textbf{10}, (2022).
+
+\leavevmode\hypertarget{ref-TargetedSuppreFederi2022}{}%
+2. Federici, S. \emph{et al.} Targeted suppression of human ibd-associated gut microbiota commensals by phage consortia for treatment of intestinal inflammation. \emph{Cell} \textbf{185}, 2879--2898.e24 (2022).
+
+\leavevmode\hypertarget{ref-DepressionAndYuan2021}{}%
+3. Yuan, X. \emph{et al.} Depression and anxiety in patients with active ulcerative colitis: Crosstalk of gut microbiota, metabolomics and proteomics. \emph{Gut microbes} \textbf{13}, (2021).
+
+\leavevmode\hypertarget{ref-AnIntegratedTRoelan2023}{}%
+4. Roelands, J. \emph{et al.} An integrated tumor, immune and microbiome atlas of colon cancer. \emph{Nature medicine} \textbf{29}, 1273--1286 (2023).
+
+\leavevmode\hypertarget{ref-LocationAndCoSambru2023}{}%
+5. Sambruni, G. \emph{et al.} Location and condition based reconstruction of colon cancer microbiome from human rna sequencing data. \emph{Genome medicine} \textbf{15}, (2023).
+\end{cslreferences}
+
+\end{document}
