@@ -197,4 +197,47 @@ summary_month()
 send_summary("sunhui")
 ```
 
+## Disk clear
+
+```{r}
+codes <- lapply(list.files("~/utils.tool/R/", full.names = T), readLines)
+matchs <- grpf(unlist(codes), "\\.prefix\\(.*\"db\"\\)")
+matches <- gs(matchs, ".*.prefix\\((.*)\\).*", "\\1")
+matches <- grpf(matches, "^\"")
+matches <- gs(matches, "\"|,.*", "")
+
+files <- vapply(matches, FUN.VALUE = character(1),
+  function(x) {
+    if (grpl(x, "/")) {
+      get_path(x)
+    } else x
+  })
+files <- unique(files)
+
+dir.create("~/disk_sdb5/job_internal_data")
+pbapply::pblapply(files,
+  function(file) {
+    x <- paste0("/home/echo/outline/lixiao/", file)
+    target <- "~/disk_sdb5/job_internal_data"
+    if (file.exists(x) & !file.exists(paste0(target, "/", file))) {
+      cdRun("cp -r \"", x, "\" -t ", target)
+    } else if (file.exists(x)) {
+      cdRun("rm -r \"", x, "\"")
+      message("File remove:", x)
+    } else {
+      message("File not exists.")
+    }
+  })
+
+dirs <- list.files("~/outline/lixiao/", "^202[34]", full.names = T, recursive = F)
+
+infos <- lapply(dirs,
+  function(dir) {
+    files <- list.files(dir, full.names = T)
+    as_tibble(file.info(files))
+  })
+infos
+
+```
+
 

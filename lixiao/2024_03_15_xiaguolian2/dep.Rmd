@@ -1,0 +1,21 @@
+
+
+```{r}
+je <- job_esearch("epigenetic modification protein")
+vis(je)
+
+je@object$Title %>% grpf("epigenetic")
+```
+
+
+
+### 富集分析
+
+```{r}
+en.epi <- job_enrich(genes.herbEpi)
+en.epi <- step1(en.epi)
+en.epi@plots$step1$p.kegg
+en.epi <- step2(en.epi)
+en.epi@plots$step1$p.kegg$ids
+```
+

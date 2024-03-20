@@ -47,8 +47,6 @@ auto_method()
 
 ## `r odb("name", "analysis")`
 
-### 成分
-
 ```{r}
 hb <- job_herb(c("半夏", "甘草", "黄芩", "人参", "干姜", "黄连", "大枣"))
 hb <- step1(hb)
@@ -56,6 +54,8 @@ hb <- step2(hb, 100)
 hb <- step3(hb)
 clear(hb)
 ```
+
+### 成分
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Herbs-information

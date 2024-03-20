@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(3), eval = ic(1, 2, 2, 0, 0), lock = T)
+info <- items(belong = odate(3), eval = ic(1, 2, 2, 0, 0), lock = F)
 show.ic(info)
 
 order_publish()
@@ -33,12 +33,17 @@ set_index()
 # 摘要 {#abstract}
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("脓毒症肠损伤"),
+  di("表观遗传学修饰")
+)
 
+# DEGs: Differential Expressed Genes 差异表达基因
+# SII: sepsis intestinal injury 脓毒症肠损伤
+# EM: epigenetic modification 表观遗传学修饰
 ```
 
-客户夏国莲有生信分析需求，网络药理学分析参苓白术散治治疗脓毒症肠损伤的药物活性成分XXX，对接下游的靶点YYY（表观遗传学修饰蛋白）， YYY可以对靶点ZZZ进行表观遗传学修饰。YYY-ZZZ的机制和调控脓毒症肠损伤相关。
-
+网络药理学分析参苓白术散治治疗脓毒症肠损伤的药物活性成分XXX，对接下游的靶点YYY（表观遗传学修饰蛋白）， YYY可以对靶点ZZZ进行表观遗传学修饰。YYY-ZZZ的机制和调控脓毒症肠损伤相关。
 
 
 # 前言 {#introduction}
@@ -62,3 +67,331 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+```{r}
+herbs <- c("白扁豆", "白术", "茯苓", "甘草", "桔梗", "莲子", "人参", "砂仁", "山药", "薏苡仁")
+
+hb.slbj <- job_herb(herbs)
+hb.slbj <- step1(hb.slbj)
+hb.slbj <- step2(hb.slbj)
+hb.slbj <- step3(hb.slbj)
+hb.slbj
+
+```
+
+## 网络药理学分析
+
+### 成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-information
+autor(hb.slbj@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Components-of-Herbs
+autor(hb.slbj@tables$step1$herbs_compounds)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-compounds
+autor(wrap(hb.slbj@plots$step3$p.herbs_compounds, 12))
+```
+
+### 成分靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-Herbs-compounds-and-targets
+autor(hb.slbj@params$easyRead)
+```
+
+### 疾病靶点
+
+取以下基因集的合集：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-targets-number-of-datasets
+autor(gm@plots$step2$p.cols)
+```
+
+```{r}
+gm <- job_gmix("sepsis-induced intestinal injury", "sepsis")
+gm <- step1(gm)
+gm@params$lst_dis
+gm <- step2(gm, 1, 6, 1)
+gm@tables$step2$t.genecard
+
+hb.slbj <- map(hb.slbj, gm@params$lst.genes)
+hb.slbj@params$p.pharm2dis
+hb.slbj@params$p.venn2dis
+```
+
+## 表观遗传学蛋白
+
+自数据库 <https://epifactors.autosome.org/> 获取相关蛋白。
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-protein-of-epigenetic-regulators
+autor(ep@tables$step1$protein)
+```
+
+```{r}
+ep <- job_epifactor()
+ep <- step1(ep)
+ep@tables$step1$protein
+
+p.vennEp <- new_venn(Dis._related = hb.slbj@params$p.venn2dis$ins,
+ Epi._protein = ep@tables$step1$protein$HGNC_symbol)
+p.vennEp
+```
+
+## 筛选表观遗传学靶点
+
+### 复方成分与表观遗传学靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| SLBJ-network-pharmacology-of-epigenetic-target
+autor(hb.slbj@params$p.pharm2epi)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SLBJ-Herbs-compounds-and-targets-of-epigenetic-target
+autor(hb.slbj@params$p.pharm2epi$.data)
+```
+
+```{r}
+hb.slbj <- map(hb.slbj, list(p.vennEp$ins), name = "epi", less.label = F)
+hb.slbj@params$p.pharm2epi
+hb.slbj@params$p.pharm2epi$.data
+
+genes.herbEpi <- unique(hb.slbj@params$p.pharm2epi$.data$Target.name)
+genes.herbEpi
+```
+
+## 脓毒症肠损伤的 GEO 数据分析
+
+### 数据来源
+
+注：由于该数据的原作者没有上传定量后的原始 Count，不利于差异分析；因此，这里下载了 SRA 原始数据，使用 Kallisto 重新定量。
+
+```{r eval = T, echo = F, results = "asis"}
+#| SII-GSE202261
+autor(geo.sii@params$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SII-metadata
+autor(lm.sii@params$.metadata)
+```
+
+### fastp 质控
+
+```{r eval = T, echo = F, results = "asis"}
+#| fastp-QC
+autor("./fastp_report/")
+```
+
+### RNA 定量
+
+使用小鼠 cDNA 作为参考基因组 (Mus\_musculus.GRCm39.cdna.all.fa.gz), `Kallisto` 定量。 
+
+```{r eval = T, echo = F, results = "asis"}
+#| Quantification
+autor(ka@tables$step3$counts)
+```
+
+### 差异分析
+
+使用 limma 差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| SII-model-vs-control-DEGs
+autor(lm.sii@plots$step2$p.valcano[[1]])
+```
+
+### 将小鼠基因 symbol 映射到人类 (hgnc\_symbol)
+
+使用 biomart 将基因映射
+
+```{r eval = T, echo = F, results = "asis"}
+#| Mapped-DEGs
+autor(Tops)
+```
+
+
+```{r}
+geo.sii <- job_geo("GSE202261")
+geo.sii <- step1(geo.sii)
+geo.sii@params$guess
+geo.sii@params$prods
+
+sra.sii <- job_sra("PRJNA835149", "~/disk_sda1/sepsis_intestinal_injury")
+sra.sii <- step1(sra.sii)
+sra.sii@params$info %<>% dplyr::filter(grpl(LibraryStrategy, "^RNA"))
+sra.sii <- step2(sra.sii)
+sra.sii <- step3(sra.sii)
+
+fp <- job_fastp("~/disk_sda1/sepsis_intestinal_injury/")
+fp <- step1(fp, c("_1", "_2"), ".fastq.gz")
+fp <- step2(fp)
+
+ka <- asjob_kall(fp)
+ka <- step1(ka, org = "mmu")
+ka <- step2(ka)
+ka <- step3(ka)
+
+metadata <- meta(ka, sra.sii, geo.sii)
+metadata <- dplyr::mutate(metadata, group = ifelse(grpl(group, "CLP"), "model", "control"))
+metadata
+
+bm <- job_biomart("mmu", F)
+bm <- step1(bm, ka@tables$step3$counts$target_id, "ensembl_trans")
+bm$anno
+
+lm.sii <- job_limma(new_dge(metadata, ka@tables$step3$counts, bm$anno))
+lm.sii <- step1(lm.sii, norm_vis = T)
+lm.sii@plots$step1$p.filter
+lm.sii@plots$step1$p.norm
+lm.sii <- step2(lm.sii, model - control, label = "mgi_symbol", use = "P")
+lm.sii@plots$step2$p.valcano[[1]]
+lm.sii@tables$step2$tops$`model - control`
+# lm.sii <- step3(lm.sii, use.gene = "mgi_symbol")
+
+bm2 <- job_biomart2(lm.sii@tables$step2$tops$`model - control`$mgi_symbol, "mmu", "hsa")
+bm2 <- step1(bm2)
+bm2@params$mapped
+
+Tops <- lm.sii@tables$step2$tops$`model - control`
+Tops <- dplyr::relocate(Tops, mgi_symbol)
+Tops <- map(Tops, "mgi_symbol", bm2@params$mapped, "mgi_symbol", "hgnc_symbol", col = "hgnc_symbol")
+Tops <- dplyr::distinct(Tops, hgnc_symbol, mgi_symbol, .keep_all = T)
+Tops <- dplyr::relocate(Tops, hgnc_symbol, mgi_symbol, logFC, P.Value)
+Tops <- dplyr::filter(Tops, !is.na(hgnc_symbol))
+Tops
+
+```
+
+### 富集分析 (GSEA)
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-enrichment
+autor(gse@plots$step1$p.kegg)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-enrichment-data
+autor(gse@tables$step1$table_kegg)
+```
+
+```{r}
+gse <- job_gsea(Tops)
+gse <- step1(gse)
+gse@plots$step1$p.kegg
+gse@tables$step1$table_kegg
+
+```
+
+## 复方成分表观遗传学靶点的通路调控
+
+### 富集表观修饰蛋白的通路
+
+以 Fig. \@ref(fig:SLBJ-network-pharmacology-of-epigenetic-target)
+的靶点筛选，发现存在三条通路：
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-enrichment-with-enriched-genes
+autor(wrap(gse@plots$step2$p.highlight, 13, 11))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSEA-plot-of-the-pathways
+autor(gse@plots$step2$p.code)
+```
+
+### 表观修饰靶点
+
+```{r eval = T, echo = F, results = "asis"}
+autor(lich.genes)
+```
+
+### 上下游
+
+```{r eval = T, echo = F, results = "asis"}
+#| Hsa04920-visualization
+autor(gse@plots$step3$p.pathviews$hsa04920)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Hsa04010-visualization
+autor(gse@plots$step3$p.pathviews$hsa04010)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Hsa04657-visualization
+autor(gse@plots$step3$p.pathviews$hsa04657)
+```
+
+### 相关成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| SLBJ-network-pharmacology-Target-epigenetic-related-pathway
+autor(wrap(hb.slbj@params$p.pharm2enrich, 9, 7))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SLBJ-network-pharmacology-Target-epigenetic-related-pathway-data
+autor(hb.slbj@params$p.pharm2enrich$.data)
+```
+
+```{r}
+
+pathes.match <- filter(gse, genes = genes.herbEpi)
+pathes.match
+pathes.match$match_genes
+pathes.match$ID
+# [1] "hsa04920" "hsa04010" "hsa04657"
+
+gse@step <- 1L
+gse <- step2(gse, pathes.match$ID, pathes.match$ID)
+wrap(gse@plots$step2$p.highlight, 13, 11)
+gse@step <- 2L
+gse <- step3(gse, pathes.match$ID)
+
+gse@plots$step2$p.code
+
+pathes.match$match_genes
+lich.genes <- new_lich(nl(pathes.match$Description, pathes.match$match_genes))
+lich.genes
+
+gse@plots$step3$p.pathviews$hsa04920
+gse@plots$step3$p.pathviews$hsa04010
+gse@plots$step3$p.pathviews$hsa04657
+
+hb.slbj <- map(hb.slbj, list(pathes.match$match_genes), name = "enrich", less.label = F, edge_width = 1)
+hb.slbj@params$p.pharm2enrich
+
+```
+
+## 分子对接
+
+注：无法获取到 PubChem CID 的化合物没有对接 (mannose-b) 
+
+```{r}
+layouts <- dplyr::distinct(hb.slbj@params$p.pharm2enrich$.data, Ingredient.name, Target.name)
+layouts <- map(layouts, "Ingredient.name", hb.slbj@object$component, "Ingredient_name", "PubChem_id", col = "CID")
+layouts$CID[ layouts$Ingredient.name == "capsaicin (e)" ] <- 1548943
+layouts <- dplyr::filter(layouts, !is.na(CID))
+layouts
+
+vn <- job_vina(nl(layouts$Ingredient.name, layouts$CID, F), layouts$Target.name, layouts)
+vn <- step1(vn)
+vn <- step2(vn)
+vn <- step3(vn, extra_pdb.files = c(GADD45B = "./material/GADD45B.pdb"))
+vn@params$dock_layout
+vn <- set_remote(vn, "/data/hlc/vina")
+vn <- step4(vn)
+
+vn <- step5(vn)
+vn <- step6(vn)
+vn <- step7(vn)
+```
