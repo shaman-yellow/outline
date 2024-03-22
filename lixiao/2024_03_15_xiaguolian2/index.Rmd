@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(3), eval = ic(1, 2, 2, 0, 0), lock = F)
+info <- items(belong = odate(3), eval = ic(1, 2, 2, 2, 0), lock = F)
 show.ic(info)
 
 order_publish()
@@ -351,7 +351,6 @@ pathes.match$match_genes
 pathes.match$ID
 # [1] "hsa04920" "hsa04010" "hsa04657"
 
-gse@step <- 1L
 gse <- step2(gse, pathes.match$ID, pathes.match$ID)
 wrap(gse@plots$step2$p.highlight, 13, 11)
 gse@step <- 2L
@@ -374,12 +373,12 @@ hb.slbj@params$p.pharm2enrich
 
 ## 分子对接
 
-注：无法获取到 PubChem CID 的化合物没有对接 (mannose-b) 
+### 第一批对接
 
 ```{r}
 layouts <- dplyr::distinct(hb.slbj@params$p.pharm2enrich$.data, Ingredient.name, Target.name)
 layouts <- map(layouts, "Ingredient.name", hb.slbj@object$component, "Ingredient_name", "PubChem_id", col = "CID")
-layouts$CID[ layouts$Ingredient.name == "capsaicin (e)" ] <- 1548943
+layouts$CID[ layouts$Ingredient.name %in% c("capsaicin (e)", "mannose-b") ] <- c(1548943, 206)
 layouts <- dplyr::filter(layouts, !is.na(CID))
 layouts
 
@@ -390,8 +389,49 @@ vn <- step3(vn, extra_pdb.files = c(GADD45B = "./material/GADD45B.pdb"))
 vn@params$dock_layout
 vn <- set_remote(vn, "/data/hlc/vina")
 vn <- step4(vn)
-
+vn@step <- 4L
 vn <- step5(vn)
+vn@tables$step5$res_dock
+vn@plots$step5$p.res_vina
 vn <- step6(vn)
+vn@step <- 6L
 vn <- step7(vn)
+
+vn@plots$step5$p.res_vina
+```
+
+### 以口服利用度筛选其他成分
+
+```{r}
+cpds <- dplyr::distinct(hb.slbj@params$easyRead, Ingredient.id)
+ref <- dplyr::filter(hb.slbj@object$component, !is.na(PubChem_id))
+cpds <- map(cpds, "Ingredient.id", ref, "Ingredient_id", "Ingredient_Smile", col = "smiles")
+cpds <- map(cpds, "Ingredient.id", ref, "Ingredient_id", "Ingredient_name", col = "names")
+cpds <- dplyr::filter(cpds, !grpl(smiles, "Not"), !is.na(smiles))
+cpds
+
+hob <- job_hob(nl(cpds$names, cpds$smiles, F))
+hob <- step1(hob)
+hob@tables$step1$t.hob
+hob@plots$step1$p.hob
+res(hob)$isOK
+
+cpds.20 <- dplyr::filter(cpds, res(hob)$isOK)
+cpds.20 <- map(cpds.20, "Ingredient.id", ref, "Ingredient_id", "PubChem_id", col = "cid")
+cpds.20
+
+```
+
+### 第二批对接
+
+```{r}
+vn2 <- job_vina(nl(cpds.20$names, cpds.20$cid, F), unique(layouts$Target.name))
+vn2 <- step1(vn2)
+vn2 <- step2(vn2)
+vn2 <- step3(vn2, extra_pdb.files = c(GADD45B = "./material/GADD45B.pdb"))
+vn2 <- set_remote(vn2, "/data/hlc/vina")
+vn2 <- step4(vn2)
+vn2@object
+
+ChemmineR::read.SDFset("./SDFs/all_compounds_random.sdf")
 ```

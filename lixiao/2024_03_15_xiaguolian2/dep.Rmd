@@ -19,3 +19,39 @@ en.epi <- step2(en.epi)
 en.epi@plots$step1$p.kegg$ids
 ```
 
+
+dplyr::filter(hb.slbj@object$component, Ingredient_name == "mannose-b")
+
+layouts2 <- dplyr::filter(layouts, CID == 206)
+vn2 <- job_vina(.layout = layouts2)
+vn2 <- step1(vn2, each_target = 5)
+vn2 <- step2(vn2)
+vn2 <- step3(vn2, filter = F)
+vn2 <- set_remote(vn2, "/data/hlc/vina")
+vn2 <- step4(vn2)
+vn2 <- step5(vn2)
+vn2 <- step6(vn2)
+vn2 <- step7(vn2)
+
+
+sdfset <- e(ChemmineR::read.SDFset("./SDFs/all_compounds.sdf"))
+apset <- e(ChemmineR::sdf2ap(sdfset))
+cluster <- ChemmineR::cmp.cluster(db = apset, cutoff = seq(0.8, 0.4, by = -0.1))
+cluster <- dplyr::select(cluster, 1, dplyr::starts_with("CLID"))
+
+nCl <- apply(cluster[, -1], 2, function(x) length(unique(x)))
+useWhich <- which( nCl < 30 )[1] + 1
+useWhich
+
+groups <- split(seq_along(sdfset), cluster[useWhich])
+
+set.seed(100)
+groups <- lapply(groups,
+  function(x) {
+    if (length(x) > 3) {
+      sample(x, 3)
+    } else x
+  })
+
+sdfset <- sdfset[unlist(groups, use.names = F)]
+ChemmineR::write.SDF(sdfset)
