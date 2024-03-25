@@ -3,7 +3,8 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(3), coef = cf(50), eval = ic())
+info <- items(belong = odate(3), eval = ic())
+show.ic(info)
 
 order_publish()
 idname <- order_packaging()
@@ -35,12 +36,6 @@ set_index()
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
 ```
-
-思路还是相对简单的，到机器学习建立预后模型为止了。可以尝试进一步挖掘“线粒体基因”这一主题，
-丰富分析方法。
-文中的 “4.6 MitoDEGs-TF 网络 MitoDEGs-MiRNA 网络” 这一段，和整体没有逻辑关系，后续没有说明
-这一分析得出的结论。
-
 
 # 前言 {#introduction}
 

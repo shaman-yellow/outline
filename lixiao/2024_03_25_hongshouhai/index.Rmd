@@ -1,0 +1,129 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(3), eval = ic(1, 2, 1, 2, 0), lock = T)
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("腰椎间盘突出")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# LDH: Lumbar disc herniation 腰椎间盘突出
+```
+
+PMID：37392674
+
+The TCMSP system (Ru et al., 2014) was used to retrieve the main chemical
+components of the individual herbs Da Huang (DH), Hong Hua (HH), Huang Qi (HQ)
+and Dan Shen (DS) (Table 1). Those characterized by OB ≥ 30% and DL ≥ 0.18 and
+their corresponding targets were obtained. A search for “Diabetic Kidney
+Disease” was performed in five databases (Zhu et al., 2021) of GenGards, OMIM,
+drugbank, TTD, and Disgenet, to identify candidate targets. The diabetic
+nephropathy targets was mapped with the drug action targets to obtain the
+intersection target and a Venny map was drawn. The intersection targets were
+imported into the String database for PPI analysis and then the results were
+visualized via Cytoscape 3.9.0. GO and KEGG analysis of intersection targets
+were performed using the Metascape database (Zhou et al., 2019), and GO
+information histograms and bubble maps of pathway information were drawn on
+WeLifeInfo.
+
+PMID：36288650
+
+Active compounds of each herb in the SSW formula were obtained by searching the
+Traditional Chinese Medicine Systems Pharmacology (TCMSP)
+(http://lsp.nwu.edu.cn/tcmsp.php) and Encyclopedia of Traditional Chinese
+Medicine (ETCM) (http://www.tcmip.cn/ETCM/index.php/Home/Index/) databases
+(Ru et al., 2014; Xu et al., 2019; Zhang et al., 2019). We set the cutoff of
+oral bioavailability (OB) ≥ 30% and drug-likeness (DL) ≥ 0.18 in TCMSP and
+drug-likeness grading ≥ 0.49 in ETCM as the threshold for the active
+substances.
+
+Insomnia-related targets were mined from the Online Mendelian Inheritance in
+Man (OMIM; https://omim.org/), DisGeNET (http://www.disgenet.org/), GeneCards
+(https://www.genecards.org/), Drugbank (https://go.drugbank.com/), Therapeutic
+Target Database (TTD; http://db.idrblab.net/ttd/), PharmGKB
+(https://www.pharmgkb.org/) and Malacards (https://www.malacards.org/)
+databases, and we selected targets with relevant score > 1 in GeneCards
+database. All gene targets were normalized to the STRING database
+(https://string-db.org/) to eliminate redundancy.
+
+Network establishment and analysis The TCM compound-target-disease network was
+established by calculating the relationship between nodes, representing the
+information collected from the databases. The molecular association between
+drugs and diseases was determined based on the network to explain the overall
+mechanism of action of the TCM compounds through functional analysis
+(Luo et al., 2020).
+
+The intersection between the targets of active compounds in SSW and insomnia
+genes was visualized using VENNY 2.0.2
+(https://bioinfogp.cnb.csic.es/tools/venny/index2.0.2.html). These intersection
+targets were used to establish a protein-protein interaction network using
+Cytoscape software (Version 3.8.2). Each node represents a target, and the
+edges represent whether there is a linkage between the targets and high-quality
+interactomes. The degree represents the number of source node-linked target
+nodes, which indicates the topological importance of nodes in the network;
+nodes with degrees larger than 20 were considered hub targets. Degree analysis
+was performed using the network analyzer tool CytoHubba.
+
+PMID：38295661
+
+Identification of the compounds in QHZYF by UPLC-Q-TOF/MS
+
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+```{r}
+gm <- job_gmix("Lumbar disc herniation", "herniation")
+gm <- step1(gm)
+gm <- step2(gm)
+```

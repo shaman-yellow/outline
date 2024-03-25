@@ -3,7 +3,8 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(3), coef = cf(50), eval = ic())
+info <- items(belong = odate(3), coef = cf(50))
+show.ic(info)
 
 order_publish()
 idname <- order_packaging()
@@ -36,11 +37,9 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
 ```
 
-思路还是相对简单的，到机器学习建立预后模型为止了。可以尝试进一步挖掘“线粒体基因”这一主题，
-丰富分析方法。
-文中的 “4.6 MitoDEGs-TF 网络 MitoDEGs-MiRNA 网络” 这一段，和整体没有逻辑关系，后续没有说明
-这一分析得出的结论。
-
+思路和上几篇还是接近的，最后添加了药物敏感性分析，但是作用好像不突出。
+这一篇其实可以尝试拓宽到具体代谢物的分析和筛选，从代谢物还能联系到肠道菌群，
+不一定只局限于基因的分析。
 
 # 前言 {#introduction}
 
