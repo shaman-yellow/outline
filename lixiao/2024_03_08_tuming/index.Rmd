@@ -43,6 +43,8 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 - PRmePred <http://bioinfo.icgeb.res.in/PRmePRed/>
 - GPS-MSP <https://msp.biocuckoo.org/>
 
+protein post-translational modification site (PTM)
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -71,6 +73,24 @@ auto_method()
 
 ### MusiteDeep
 
+```{r eval = T, echo = F, results = "asis"}
+#| Prediction-PTM-of-Methylarginine
+autor(ms@tables$step2$t.data)
+```
 
+```{r eval = T, echo = F, results = "asis"}
+#| High-score-prediction-PTM-of-Methylarginine
+autor(ms@tables$step2$t.cutoff)
+```
+
+```{r}
+ms <- job_musite("VASH2")
+ms <- step1(ms)
+
+ms@step <- 1L
+ms <- step2(ms, "Methylarginine")
+ms@tables$step2$t.data
+
+```
 
 
