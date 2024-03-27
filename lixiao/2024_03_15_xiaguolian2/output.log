@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  25 MAR 2024 15:11
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  27 MAR 2024 12:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1294,13 +1294,13 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-))
+) [1
+
+])
 \tf@toc=\write4
 \openout4 = `output.toc'.
 
-(./output.lof [1
-
-])
+(./output.lof)
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
@@ -1312,7 +1312,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 107.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 121.
+(Font)              scaled to size 11.64862pt on input line 127.
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
@@ -1338,23 +1338,59 @@ guage=dflt;"
 
 [1]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 228.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 194.
+File: ./Figure+Table/fig1.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig1.pdf>
 
-Overfull \hbox (80.32513pt too wide) in alignment at lines 234--239
- [] [] [] [] [] [] [] [] [] [] [] 
- []
-
-
-Overfull \hbox (80.32513pt too wide) in alignment at lines 239--243
- [] [] [] [] [] [] [] [] [] [] [] 
- []
-
-
-Overfull \hbox (80.32513pt too wide) in alignment at lines 243--255
- [] [] [] [] [] [] [] [] [] [] [] 
- []
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 199.
+See the caption package documentation for explanation.
 
 [2]
+File: ./Figure+Table/SLBJ-network-pharmacology-of-epigenetic-target.pdf Graphic
+ file (type pdf)
+<use ./Figure+Table/SLBJ-network-pharmacology-of-epigenetic-target.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 221.
+See the caption package documentation for explanation.
+
+[3]
+File: ./Figure+Table/fig3.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig3.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 252.
+See the caption package documentation for explanation.
+
+[4] [5]
+
+LaTeX Warning: Reference `tab:Main-fig-3' on page 6 undefined on input line 282
+.
+
+File: ./Figure+Table/fig4.pdf Graphic file (type pdf)
+<use ./Figure+Table/fig4.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 293.
+See the caption package documentation for explanation.
+
+[6]
+Overfull \hbox (80.32513pt too wide) in alignment at lines 360--365
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (80.32513pt too wide) in alignment at lines 365--369
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (80.32513pt too wide) in alignment at lines 369--381
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[7]
 Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
 ex-text;!
 Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
@@ -1363,103 +1399,103 @@ File: Figure+Table/intersection-of-all-compounds.pdf Graphic file (type pdf)
 <use Figure+Table/intersection-of-all-compounds.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 301.
+(caption)                particular \caption on input line 427.
 See the caption package documentation for explanation.
 
-[3]
+[8]
 Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
 ex-text;!
 Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
 ex-text;!
 Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
 ex-text;!
-[4]
+[9]
 File: Figure+Table/Overall-targets-number-of-datasets.pdf Graphic file (type pd
 f)
 <use Figure+Table/Overall-targets-number-of-datasets.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 370.
+(caption)                particular \caption on input line 496.
 See the caption package documentation for explanation.
 
 
-Overfull \hbox (62.62515pt too wide) in alignment at lines 386--391
+Overfull \hbox (62.62515pt too wide) in alignment at lines 512--517
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (62.62515pt too wide) in alignment at lines 391--395
+Overfull \hbox (62.62515pt too wide) in alignment at lines 517--521
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (62.62515pt too wide) in alignment at lines 395--413
+Overfull \hbox (62.62515pt too wide) in alignment at lines 521--539
  [] [] [] [] [] [] [] [] [] [] 
  []
 
-[5]
+[10]
 File: Figure+Table/SLBJ-network-pharmacology-of-epigenetic-target.pdf Graphic f
 ile (type pdf)
 <use Figure+Table/SLBJ-network-pharmacology-of-epigenetic-target.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 428.
+(caption)                particular \caption on input line 554.
 See the caption package documentation for explanation.
 
-[6] [7] [8] [9]
+[11] [12] [13] [14]
 File: Figure+Table/SII-model-vs-control-DEGs.pdf Graphic file (type pdf)
 <use Figure+Table/SII-model-vs-control-DEGs.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 655.
+(caption)                particular \caption on input line 781.
 See the caption package documentation for explanation.
 
-[10]
-Overfull \hbox (12.74512pt too wide) in alignment at lines 681--686
+[15]
+Overfull \hbox (12.74512pt too wide) in alignment at lines 807--812
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (12.74512pt too wide) in alignment at lines 686--690
+Overfull \hbox (12.74512pt too wide) in alignment at lines 812--816
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (12.74512pt too wide) in alignment at lines 690--708
+Overfull \hbox (12.74512pt too wide) in alignment at lines 816--834
  [] [] [] [] [] [] [] [] [] [] 
  []
 
-[11]
+[16]
 File: Figure+Table/KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 720.
+(caption)                particular \caption on input line 846.
 See the caption package documentation for explanation.
 
-[12] [13]
+[17] [18]
 File: Figure+Table/KEGG-enrichment-with-enriched-genes.pdf Graphic file (type p
 df)
 <use Figure+Table/KEGG-enrichment-with-enriched-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 769.
+(caption)                particular \caption on input line 895.
 See the caption package documentation for explanation.
 
 File: Figure+Table/GSEA-plot-of-the-pathways.pdf Graphic file (type pdf)
 <use Figure+Table/GSEA-plot-of-the-pathways.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 779.
+(caption)                particular \caption on input line 905.
 See the caption package documentation for explanation.
 
-[14] [15]
+[19] [20]
 File: pathview2024-03-22_17_39_29.870039/hsa04920.pathview.png Graphic file (ty
 pe bmp)
 <pathview2024-03-22_17_39_29.870039/hsa04920.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 834.
+(caption)                particular \caption on input line 960.
 See the caption package documentation for explanation.
 
 File: pathview2024-03-22_17_39_29.870039/hsa04010.pathview.png Graphic file (ty
@@ -1467,95 +1503,99 @@ pe bmp)
 <pathview2024-03-22_17_39_29.870039/hsa04010.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 856.
+(caption)                particular \caption on input line 982.
 See the caption package documentation for explanation.
 
-[16]
+[21]
 File: pathview2024-03-22_17_39_29.870039/hsa04657.pathview.png Graphic file (ty
 pe bmp)
 <pathview2024-03-22_17_39_29.870039/hsa04657.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 878.
+(caption)                particular \caption on input line 1004.
 See the caption package documentation for explanation.
 
-[17]
+[22]
 File: Figure+Table/SLBJ-network-pharmacology-Target-epigenetic-related-pathway.
 pdf Graphic file (type pdf)
 <use Figure+Table/SLBJ-network-pharmacology-Target-epigenetic-related-pathway.p
 df>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 903.
+(caption)                particular \caption on input line 1029.
 See the caption package documentation for explanation.
 
-[18]
-Overfull \hbox (15.52425pt too wide) in paragraph at lines 908--909
+[23]
+Overfull \hbox (15.52425pt too wide) in paragraph at lines 1034--1035
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 对 应 文 件 为 \TU/lmtt/b/n/10 F
 igure+Table/SLBJ-network-pharmacology-Target-epigenetic-related-pathway-data.cs
 v\TU/lmr/bx/n/10 ) 
  []
 
-[19]
+[24]
 File: Figure+Table/FIRST-Overall-combining-Affinity.pdf Graphic file (type pdf)
 
 <use Figure+Table/FIRST-Overall-combining-Affinity.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 961.
+(caption)                particular \caption on input line 1087.
 See the caption package documentation for explanation.
 
-[20] [21]
+[25] [26]
 File: Figure+Table/HOB-20-prediction.pdf Graphic file (type pdf)
 <use Figure+Table/HOB-20-prediction.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 982.
+(caption)                particular \caption on input line 1108.
 See the caption package documentation for explanation.
 
-[22]
+[27]
 File: Figure+Table/Overall-combining-Affinity.pdf Graphic file (type pdf)
 <use Figure+Table/Overall-combining-Affinity.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1073.
+(caption)                particular \caption on input line 1199.
 See the caption package documentation for explanation.
 
-[23]
+[28]
 File: vina_space/72326_into_GADD45B/72326_into_GADD45B.png Graphic file (type b
 mp)
 <vina_space/72326_into_GADD45B/72326_into_GADD45B.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1086.
+(caption)                particular \caption on input line 1212.
 See the caption package documentation for explanation.
 
-[24]
+[29]
 File: vina_space/12313579_into_GADD45B/12313579_into_GADD45B.png Graphic file (
 type bmp)
 <vina_space/12313579_into_GADD45B/12313579_into_GADD45B.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1096.
+(caption)                particular \caption on input line 1222.
 See the caption package documentation for explanation.
 
-[25]
+[30]
 File: vina_space/5316891_into_GADD45B/5316891_into_GADD45B.png Graphic file (ty
 pe bmp)
 <vina_space/5316891_into_GADD45B/5316891_into_GADD45B.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1106.
+(caption)                particular \caption on input line 1232.
 See the caption package documentation for explanation.
 
-[26] [27] [28] (./output.aux) ) 
+[31] [32] [33] [34] (./output.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 32310 strings out of 476191
- 663079 string characters out of 5812072
- 1116118 words of memory out of 5000000
- 52492 multiletter control sequences out of 15000+600000
+ 32359 strings out of 476191
+ 664659 string characters out of 5812072
+ 1117469 words of memory out of 5000000
+ 52537 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1365b,643s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (31 pages).
+Output written on output.pdf (37 pages).

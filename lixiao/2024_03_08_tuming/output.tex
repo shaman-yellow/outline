@@ -1,0 +1,309 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge VASH2 序列分析}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-03-27}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux9700ux6c42}{%
+\subsection{需求}\label{ux9700ux6c42}}
+
+为了鉴定 VASH2 被 PRMT5 甲基化的精氨酸残基 (methylarginine)，使用甲基化预测工具包括 PRmePred 和 GPS-MSP 分析 VASH2 的蛋白序列
+
+protein post-translational modification site (PTM)
+
+\hypertarget{ux7ed3ux679c}{%
+\subsection{结果}\label{ux7ed3ux679c}}
+
+VASH2 的序列见 \ref{seq}。
+
+共尝试使用了以下三种工具预测位点。
+
+\begin{itemize}
+\tightlist
+\item
+  MusiteDeep \url{https://www.musite.net} \url{https://github.com/duolinwang/MusiteDeep_web}
+\item
+  GPS-MSP \url{https://msp.biocuckoo.org/}
+\item
+  PRmePred \url{http://bioinfo.icgeb.res.in/PRmePRed/}
+\end{itemize}
+
+更推荐 MusiteDeep 的预测结果\textsuperscript{\protect\hyperlink{ref-MusitedeepADWang2020}{1}} (发表于 Nucleic Acids Research)，其结果已整理，见
+Fig. \ref{fig:PTM-score}, 和 Tab. \ref{tab:Prediction-PTM-of-Methylarginine}。
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Python tool \texttt{MusiteDeep} was used for protein post-translational modification site prediction and visualization\textsuperscript{\protect\hyperlink{ref-MusitedeepADWang2020}{1}}.
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{seq}{%
+\subsection{获取蛋白序列}\label{seq}}
+
+`VASH2 protein fasta' 数据已提供。
+
+\textbf{(对应文件为 \texttt{fasta/Seq.fasta})}
+
+\hypertarget{ux9884ux6d4bux4f4dux70b9}{%
+\subsection{预测位点}\label{ux9884ux6d4bux4f4dux70b9}}
+
+使用以下工具：
+
+\hypertarget{musitedeep}{%
+\subsubsection{MusiteDeep}\label{musitedeep}}
+
+Table \ref{tab:Prediction-PTM-of-Methylarginine} (下方表格) 为表格Prediction PTM of Methylarginine概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Prediction-PTM-of-Methylarginine.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有29行5列，以下预览的表格可能省略部分数据；表格含有1个唯一`Sequence\_name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:Prediction-PTM-of-Methylarginine}Prediction PTM of Methylarginine}\tabularnewline
+\toprule
+Sequence\_name & PTM\_type & Position & Residue & PTM\_score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Sequence\_name & PTM\_type & Position & Residue & PTM\_score\tabularnewline
+\midrule
+\endhead
+VASH2 & Methylarginine & 309 & R & 0.7\tabularnewline
+VASH2 & Methylarginine & 102 & R & 0.43\tabularnewline
+VASH2 & Methylarginine & 177 & R & 0.258\tabularnewline
+VASH2 & Methylarginine & 65 & R & 0.215\tabularnewline
+VASH2 & Methylarginine & 307 & R & 0.198\tabularnewline
+VASH2 & Methylarginine & 203 & R & 0.151\tabularnewline
+VASH2 & Methylarginine & 10 & R & 0.146\tabularnewline
+VASH2 & Methylarginine & 212 & R & 0.137\tabularnewline
+VASH2 & Methylarginine & 85 & R & 0.132\tabularnewline
+VASH2 & Methylarginine & 211 & R & 0.113\tabularnewline
+VASH2 & Methylarginine & 134 & R & 0.107\tabularnewline
+VASH2 & Methylarginine & 21 & R & 0.081\tabularnewline
+VASH2 & Methylarginine & 316 & R & 0.072\tabularnewline
+VASH2 & Methylarginine & 324 & R & 0.071\tabularnewline
+VASH2 & Methylarginine & 23 & R & 0.069\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:High-score-prediction-PTM-of-Methylarginine} (下方表格) 为表格High score prediction PTM of Methylarginine概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/High-score-prediction-PTM-of-Methylarginine.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行5列，以下预览的表格可能省略部分数据；表格含有1个唯一`Sequence\_name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:High-score-prediction-PTM-of-Methylarginine}High score prediction PTM of Methylarginine}\tabularnewline
+\toprule
+Sequence\_name & PTM\_type & Position & Residue & PTM\_score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Sequence\_name & PTM\_type & Position & Residue & PTM\_score\tabularnewline
+\midrule
+\endhead
+VASH2 & Methylarginine & 309 & R & 0.7\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:PTM-score} (下方图) 为图PTM score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PTM-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PTM-score.pdf}
+\caption{PTM score}\label{fig:PTM-score}
+\end{center}
+
+\hypertarget{gps-msp}{%
+\subsubsection{GPS-MSP}\label{gps-msp}}
+
+该网络服务器好像并没有提供 甲基化的精氨酸残基 (methylarginine) 位点预测工具 (没有 type: R.Me) 。
+
+\url{https://msp.biocuckoo.org/online.php}
+
+\hypertarget{prmepred}{%
+\subsubsection{PRmePred}\label{prmepred}}
+
+\url{http://bioinfo.icgeb.res.in/PRmePRed/}
+
+Table \ref{tab:PRmePred-results} (下方表格) 为表格PRmePred results概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PRmePred-results.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有19行4列，以下预览的表格可能省略部分数据；表格含有1个唯一`SeqId'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:PRmePred-results}PRmePred results}\tabularnewline
+\toprule
+SeqId & R site & Peptides & Prediction Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+SeqId & R site & Peptides & Prediction Score\tabularnewline
+\midrule
+\endhead
+VASH2 & 10 & MTGSAADTHRCPHPKGAKG & 0.753787\tabularnewline
+VASH2 & 21 & PHPKGAKGTRSRSSHARPV & 0.939423\tabularnewline
+VASH2 & 23 & PKGAKGTRSRSSHARPVSL & 0.837776\tabularnewline
+VASH2 & 28 & GTRSRSSHARPVSLATSGG & 0.959969\tabularnewline
+VASH2 & 85 & KGGEMVGAIRNAAFLAKPS & 0.651501\tabularnewline
+VASH2 & 134 & HTGTQFFEIRKMRPLSGLM & 0.532284\tabularnewline
+VASH2 & 151 & LMETAKEMTRESLPIKCLE & 0.602389\tabularnewline
+VASH2 & 203 & VVLGIYCNGRYGSLGMSRR & 0.884941\tabularnewline
+VASH2 & 211 & GRYGSLGMSRRAELMDKPL & 0.815102\tabularnewline
+VASH2 & 212 & RYGSLGMSRRAELMDKPLT & 0.7399\tabularnewline
+VASH2 & 307 & ASAHSPTQVRSRGKSLSPR & 0.963406\tabularnewline
+VASH2 & 309 & AHSPTQVRSRGKSLSPRRR & 0.98479\tabularnewline
+VASH2 & 316 & RSRGKSLSPRRRQASPPRR & 0.819054\tabularnewline
+VASH2 & 317 & SRGKSLSPRRRQASPPRRL & 0.921694\tabularnewline
+VASH2 & 318 & RGKSLSPRRRQASPPRRLG & 0.96432\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-MusitedeepADWang2020}{}%
+1. Wang, D. \emph{et al.} MusiteDeep: A deep-learning based webserver for protein post-translational modification site prediction and visualization. \emph{Nucleic Acids Research} \textbf{48}, W140--W146 (2020).
+\end{cslreferences}
+
+\end{document}

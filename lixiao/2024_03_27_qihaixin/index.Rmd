@@ -1,0 +1,94 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(4), eval = ic(3, 2, 0, 2, 0))
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+中药复方乌梅丸：乌梅，花椒，细辛，黄连，黄柏，干姜，附子，桂枝，人参，当归
+网络药理学部分可参考附件pdf文献
+疾病为：慢性结肠炎，炎性肠病，肠纤维化，可以都包含，也可以单独一种疾病（如果单独疾病可以做出来，优先级按照语序来）
+目标：筛出有效成分XX，及其作用靶点蛋白YY，YY需满足1、与XX能对接 2、富集分析显示YY与疾病相关的机制相关（比如炎症，纤维化，再放宽可以免疫细胞调控）
+
+1、选取中药复方（乌梅丸）中和调控纤维化相关的单体成分，结合pubchem、chemical book、scifinder等数据库分析排名靠前的化合物的活性信息，并通过中医网络药理学方法（如TCMSP平台和BATMAN-TCM数据库），分析有效成分XXX的对应靶点YYY，功能富集分析显示YYY调控肠道纤维化。
+2、、通过PubChem数据库（https://pubchem.ncbi.nlm.nih.gov/）获取中药单体主要活性成分的2D化学结构，在PDB数据库（https://www.rcsb.org/）中查找相关核心靶点蛋白3D结构，通过Autodock软件进行分子对接，获取结合能最高的位点，最后通过Pymol软件进行可视化处理。
+
+交付：
+1、疾病-复方-成分-靶点网络图
+2、成分XX-靶点网络图
+3、XX与YY分子对接pymol可视化图，注意细节标注
+4、成分XX靶点功能富集分析
+5、总的复方靶点的功能富集分析
+6、YY可能参与的环节需要标注在4上或者单独注释分
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("慢性结肠炎")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# CC: chronic colitis 慢性结肠炎
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+```{r}
+herbs <- c("乌梅", "花椒", "细辛", "黄连", "黄柏", "干姜", "附子", "桂枝", "人参", "当归")
+
+tc <- job_tcmsp(herbs)
+tc <- step1(tc)
+
+
+```
+
+```{r}
+gm <- gmix("chronic colitis", "colitis")
+x <- get_batman_data()
+```

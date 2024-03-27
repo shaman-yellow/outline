@@ -37,13 +37,24 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
 ```
 
+## 需求
+
 为了鉴定 VASH2 被 PRMT5 甲基化的精氨酸残基 (methylarginine)，使用甲基化预测工具包括 PRmePred 和 GPS-MSP 分析 VASH2 的蛋白序列
 
-- MusiteDeep <https://www.musite.net> <https://github.com/duolinwang/MusiteDeep_web>
-- PRmePred <http://bioinfo.icgeb.res.in/PRmePRed/>
-- GPS-MSP <https://msp.biocuckoo.org/>
-
 protein post-translational modification site (PTM)
+
+## 结果
+
+VASH2 的序列见 \@ref(seq)。
+
+共尝试使用了以下三种工具预测位点。
+
+- MusiteDeep <https://www.musite.net> <https://github.com/duolinwang/MusiteDeep_web>
+- GPS-MSP <https://msp.biocuckoo.org/>
+- PRmePred <http://bioinfo.icgeb.res.in/PRmePRed/>
+
+更推荐 MusiteDeep 的预测结果 [@MusitedeepADWang2020] (发表于 Nucleic Acids Research)，其结果已整理，见 
+Fig. \@ref(fig:PTM-score), 和 Tab. \@ref(tab:Prediction-PTM-of-Methylarginine)。
 
 # 前言 {#introduction}
 
@@ -67,9 +78,16 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
-## 获取蛋白序列
+## 获取蛋白序列 {#seq}
+
+```{r eval = T, echo = F, results = "asis"}
+#| VASH2-protein-fasta
+autor(ms@params$seqs_file)
+```
 
 ## 预测位点
+
+使用以下工具：
 
 ### MusiteDeep
 
@@ -83,14 +101,43 @@ autor(ms@tables$step2$t.data)
 autor(ms@tables$step2$t.cutoff)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| PTM-score
+autor(ms@plots$step2$p.tops)
+```
+
 ```{r}
 ms <- job_musite("VASH2")
 ms <- step1(ms)
 
 ms@step <- 1L
 ms <- step2(ms, "Methylarginine")
-ms@tables$step2$t.data
 
+ms@step <- 2L
+ms <- step3(ms)
+
+ms@plots$step2$p.tops
+ms@tables$step2$t.data
+ms@params$seqs$fasta %>% Read()
+ms
 ```
 
+### GPS-MSP 
 
+该网络服务器好像并没有提供 甲基化的精氨酸残基 (methylarginine) 位点预测工具  (没有 type: R.Me) 。
+
+<https://msp.biocuckoo.org/online.php>
+
+### PRmePred
+
+<http://bioinfo.icgeb.res.in/PRmePRed/>
+
+```{r eval = T, echo = F, results = "asis"}
+#| PRmePred-results
+autor(prme.vash2)
+```
+
+```{r}
+file.copy("~/Downloads/result_out_3_163327.txt", "./material/PRmePred_VASH2.txt")
+prme.vash2 <- ftibble("./material/PRmePred_VASH2.txt")
+```

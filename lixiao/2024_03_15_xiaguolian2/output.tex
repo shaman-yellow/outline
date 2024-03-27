@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 网络药理学和表观遗传学修饰筛选靶点} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-03-25}}
+\textbf{\textcolor{white}{2024-03-27}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -106,13 +106,19 @@
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
 
-网络药理学分析参苓白术散治治疗脓毒症肠损伤的药物活性成分XXX，对接下游的靶点YYY（表观遗传学修饰蛋白）， YYY可以对靶点ZZZ进行表观遗传学修饰。YYY-ZZZ的机制和调控脓毒症肠损伤相关。
-
-最终筛得成分： Betulin (CID: 72326) (见 Fig. \ref{fig:Overall-combining-Affinity}) ，对接靶点 GADD45B (表观遗传学蛋白),
+以中药复方参苓白术散为研究对象，脓毒症肠损伤为疾病，结合网络药理学、RNA-seq 分析、分子对接等多种技术方法，联合表观遗传学蛋白数据库，筛选该复方中能有效作用于脓毒症肠损伤的成分，并挖掘作用于 表观遗传学蛋白 的成分极其具体靶点和下游靶点。最终筛得成分： Betulin (CID: 72326) (见 Fig. \ref{fig:Overall-combining-Affinity}) ，成功分子对接靶点 GADD45B (表观遗传学蛋白),
 根据 KEGG (MARK) 通路图 (Fig. \ref{fig:Hsa04010-visualization}) ，其可作用于 MAP3K4 和 TAOK3, 与脓毒症肠损伤有关。
 
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
+
+脓毒症是宿主对感染综合征的反应失调，导致危及生命的器官功能障碍。脓毒症引起的肠道功能障碍是多系统器官衰竭进展的关键因素\textsuperscript{\protect\hyperlink{ref-TargetingStingKobrit2023}{1}}。
+
+核酸的表观遗传修饰是核酸领域最重要的研究领域之一，因为它使基因调控变得更加复杂，遗传也更加复杂，从而表明它对遗传、生长和疾病等方面产生了深远的影响\textsuperscript{\protect\hyperlink{ref-EpigeneticModiChen2017}{2}}。
+
+中药对表观遗传修饰调控作用而治疗疾病正成为研究焦点。例如，越来越多的研究表明，中药通过调节DNA甲基化修饰过程发挥着相当大的抗肿瘤作用。中药调控DNA甲基化修饰的研究主要集中在全基因组和活性成分或单一化合物以及中药配方（CHF）的异常甲基化状态。 中医理论的平衡和整体观念与肿瘤环境中DNA甲基化修饰的平衡不谋而合\textsuperscript{\protect\hyperlink{ref-TraditionalChiZhuD2022}{3}}。
+
+本研究以中药复方参苓白术散为研究对象，脓毒症肠损伤为疾病，结合网络药理学、RNA-seq 分析、分子对接等多种技术方法，从表观遗传学修饰调控的视角，探讨 参苓白术散的 脓毒症肠损伤的治疗作用。
 
 \hypertarget{methods}{%
 \section{材料和方法}\label{methods}}
@@ -136,39 +142,165 @@ Mainly used method:
 \begin{itemize}
 \tightlist
 \item
-  R package \texttt{biomaRt} used for gene annotation\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{1}}.
+  R package \texttt{biomaRt} used for gene annotation\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{4}}.
 \item
-  The \texttt{biomart} was used for mapping genes between organism (e.g., mgi\_symbol to hgnc\_symbol)\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{1}}.
+  The \texttt{biomart} was used for mapping genes between organism (e.g., mgi\_symbol to hgnc\_symbol)\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{4}}.
 \item
-  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{5}}.
 \item
-  Database \texttt{EpiFactors} used for screening epigenetic regulators\textsuperscript{\protect\hyperlink{ref-Epifactors2022Maraku2023}{3}}.
+  Database \texttt{EpiFactors} used for screening epigenetic regulators\textsuperscript{\protect\hyperlink{ref-Epifactors2022Maraku2023}{6}}.
 \item
-  \texttt{Fastp} used for Fastq data preprocessing\textsuperscript{\protect\hyperlink{ref-UltrafastOnePChen2023}{4}}.
+  \texttt{Fastp} used for Fastq data preprocessing\textsuperscript{\protect\hyperlink{ref-UltrafastOnePChen2023}{7}}.
 \item
   GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
 \item
-  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{5}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{7}}.
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{8}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{10}}.
 \item
-  R package \texttt{ClusterProfiler} used for GSEA enrichment\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+  R package \texttt{ClusterProfiler} used for GSEA enrichment\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{5}}.
 \item
-  Website \texttt{HERB} \url{http://herb.ac.cn/} used for data source\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{8}}.
+  Website \texttt{HERB} \url{http://herb.ac.cn/} used for data source\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{11}}.
 \item
-  Python tool of \texttt{HOB} was used for prediction of human oral bioavailability\textsuperscript{\protect\hyperlink{ref-HobpreAccuratWeiM2022}{9}}.
+  Python tool of \texttt{HOB} was used for prediction of human oral bioavailability\textsuperscript{\protect\hyperlink{ref-HobpreAccuratWeiM2022}{12}}.
 \item
-  \texttt{Kallisto} used for RNA-seq mapping and quantification\textsuperscript{\protect\hyperlink{ref-NearOptimalPrBray2016}{10}}.
+  \texttt{Kallisto} used for RNA-seq mapping and quantification\textsuperscript{\protect\hyperlink{ref-NearOptimalPrBray2016}{13}}.
 \item
-  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{11},\protect\hyperlink{ref-EdgerDifferenChen}{12}}.
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{14},\protect\hyperlink{ref-EdgerDifferenChen}{15}}.
 \item
-  The CLI tools of \texttt{AutoDock\ vina} and \texttt{ADFR} software used for auto molecular docking\textsuperscript{\protect\hyperlink{ref-AutodockVina1Eberha2021}{13}--\protect\hyperlink{ref-AutodockfrAdvRavind2015}{17}}.
+  The CLI tools of \texttt{AutoDock\ vina} and \texttt{ADFR} software used for auto molecular docking\textsuperscript{\protect\hyperlink{ref-AutodockVina1Eberha2021}{16}--\protect\hyperlink{ref-AutodockfrAdvRavind2015}{20}}.
 \item
-  R package \texttt{ChemmineR} used for similar chemical compounds clustering\textsuperscript{\protect\hyperlink{ref-ChemminerACoCaoY2008}{18}}.
+  R package \texttt{ChemmineR} used for similar chemical compounds clustering\textsuperscript{\protect\hyperlink{ref-ChemminerACoCaoY2008}{21}}.
 \item
   R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
 
 \hypertarget{results}{%
-\section{分析结果}\label{results}}
+\section{结果与讨论}\label{results}}
+
+\hypertarget{pharm}{%
+\subsection{网络药理学成分靶点}\label{pharm}}
+
+为了实现对 参苓白术散的 全面的网络药理学分析，本研究从 HERB 数据库挖掘 其成分和靶点信息\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{11}}。
+该数据库记录的 参苓白术散中 各味中药的成分如 Fig. \ref{fig:Main-fig-1}a 所示。
+随后，这些成分的靶点信息被挖掘，整理以备网络药理学分析 (所有数据整理于 Tab. \ref{tab:tables-of-Herbs-compounds-and-targets}) 。
+
+脓毒症肠损伤的靶基因信息被收集。如 Fig. \ref{fig:Main-fig-1}b 所示，
+我们不仅仅收集了脓毒症肠损伤 (sepsis intestinal injury, SII) 的 (GeneCards) ，
+还 收集了来自 DisGeNet 和 PharmGKB 的脓毒症相关的靶点，因为考虑到
+中医用药辨证论治、治病求本的特性。由于 GeneCards 的数据来源有一定预测性成分，所以，我们随后还进行了脓毒症肠损伤的
+RNA-seq 分析，以增强分析的可靠性 (见 \ref{rna})。
+
+Figure \ref{fig:Main-fig-1} (下方图) 为图Main fig 1概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig1.pdf}
+\caption{Main fig 1}\label{fig:Main-fig-1}
+\end{center}
+
+\hypertarget{ux590dux65b9ux9776ux70b9ux7684ux8868ux89c2ux9057ux4f20ux5b66ux4feeux9970ux9776ux70b9}{%
+\subsection{复方靶点的表观遗传学修饰靶点}\label{ux590dux65b9ux9776ux70b9ux7684ux8868ux89c2ux9057ux4f20ux5b66ux4feeux9970ux9776ux70b9}}
+
+表观遗传修饰 (epigenetic modification， EM) 包括 DNA 和 RNA 的表观遗传修饰。
+为了尽可能囊括所有的 EM 相关蛋白，以全面探究 参苓白术散的靶向 EM 作用，
+这里，我们收集了 EpiFactors 数据库的所有 EM 蛋白数据
+(数据见 Tab. \ref{tab:All-protein-of-epigenetic-regulators}) 。
+之后，我们联合了 参苓白术散的成分靶点数据，疾病靶点数据，以及 EM 蛋白数据，
+构建了 参苓白术散网络药理学靶向 EM 蛋白 治疗 SII 的网络体系。
+见 Fig. \ref{fig:Main-fig-2}，参苓白术散中各味药都具有多个成分可能通过
+EM 对 SII 发挥治疗作用，其中以砂仁的成分为数量众多。
+
+Figure \ref{fig:Main-fig-2} (下方图) 为图Main fig 2概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/SLBJ-network-pharmacology-of-epigenetic-target.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/SLBJ-network-pharmacology-of-epigenetic-target.pdf}
+\caption{Main fig 2}\label{fig:Main-fig-2}
+\end{center}
+
+\hypertarget{rna}{%
+\subsection{脓毒症肠损伤 RNA-seq 分析}\label{rna}}
+
+在 \ref{pharm} 中，主要以 既定的数据库为来源筛选了 SII 或者 脓毒症的靶点信息。
+这里，我们从 GEO 数据库补充了 SII 为研究对象的 RNA-seq 数据以用于差异分析，筛选
+SII 差异表达基因 (DEGs) ，以补充、增强网络药理学分析的可靠性。
+差异分析结果见 Fig. \ref{fig:Main-fig-3}a。由于这一批数据是以 小鼠为来源的，
+为了对应到 人类的药物网络药理学研究，这里使用 Biomart 将小鼠基因映射到
+人类基因 (MGI symbol 转化为 HGNC symbol)，然后以 KEGG 富集分析 (GSEA 算法)，
+富集见 Fig. \ref{fig:Main-fig-3}b。
+在 Fig. \ref{fig:Main-fig-3}b 中，我们着重了三条通路，
+这三条通路是通过 Fig. \ref{fig:Main-fig-2} 中的 EM 相关靶基因为条件筛选出的
+通路。
+现在我们可以更加确信，参苓白术散可能通过 EM 调控治疗 SII，且涉及 Fig. \ref{fig:Main-fig-3}b
+所示的三条信号通路。
+其中 MARK 通路的具体展示如 Fig. \ref{fig:Main-fig-3} 所示
+(将在后续的分子对接中，发现复方中的成分可能作用于其中的 EM 相关靶点) 。
+随后，以 Fig. \ref{fig:Main-fig-3}b 中三条的 EM 靶点为条件，
+我们简化了 Fig. \ref{fig:Main-fig-2} 的网络体系，呈现 Fig. \ref{fig:Main-fig-3}d。
+这将是 HERB 数据库所能提供的全部 参苓白术散 对 EM 的调控作用信息，且与 SII 疾病相关。
+
+Figure \ref{fig:Main-fig-3} (下方图) 为图Main fig 3概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig3.pdf}
+\caption{Main fig 3}\label{fig:Main-fig-3}
+\end{center}
+
+\hypertarget{ux5206ux5b50ux5bf9ux63a5ux7b5bux9009ux6210ux5206}{%
+\subsection{分子对接筛选成分}\label{ux5206ux5b50ux5bf9ux63a5ux7b5bux9009ux6210ux5206}}
+
+Fig. \ref{fig:Main-fig-3}d 所示，相关成分对三个靶点有调控作用，出于 HERB 数据库的性质，
+这调控作用可能是间接的 (进入机体后代谢为其它成分作用于靶点；或者通过调控更上游的靶点，间接作用于下游) ，
+可能是直接的 (进入机体后，该成分可直接与对应蛋白结合，发挥药理作用) 。
+这里，我们尝试以分子对接的方式，筛选可直接作用的成分。
+我们联合了 AutoDock Vina 和 ADFR 工具组，实现对分子和蛋白的全自动批量对接。
+这一批的对接结果，总体所需能量均超过 1，对接能量过高，匹配性较差。
+可以推测，这些成分更有可能是通过间接的方式作用于这些蛋白。
+
+为了挖掘可能直接作用于相关 EM 靶点的活性成分，以下尝试筛选 参苓白术散中的其它成分。
+须知，受限于 HERB 数据库或其他数据库的成分靶点记录，可能忽略一部分药物对于机体疾病的靶向作用。
+这里，通过从头筛选、分子对接，将有助于挖掘直接作用于 EM 靶点的活性成分。
+我们以 参苓白术散中的所有成分为研究对象，首先 以 HOB 工具，预测 这些成分的 20\% 口服利用度 (HOB) ，
+仅保留符合条件的成分以下一步研究。
+可以通过 AutoDock vina 和 ADFR 工具组，实现对余下所有成分的对 EM 相关靶点的对接 (Fig. \ref{fig:Main-fig-3}d 靶点) ，
+然而这将耗费大量计算的时间。为了减小计算负担，之后，我们以 ChemmineR 对 余下成分按结构相似度聚类 (Binning clustering) ，
+设定 Cut-off 为 0.4，然后将各个聚类团中随机抽取 3 个成分，以匹配 EM 相关靶点，尝试分子对接
+(实际对接的成分 CID 和靶点蛋白 PDB 可见 \ref{dock2})。
+
+Fig. \ref{fig:Main-fig-4}a 展示了三个 EM 靶点各自对应的对接能量最小前 5 的成分。
+可知，参苓白术散中的更多的成分可能通过调控 GADD45B 发挥治疗 SII 的作用。
+这里筛选得出的直接对接能量的成分为 Betulin (CID: 72326)，该成分可 作用于 EM 相关靶点 GADD45B 。
+Fig. \ref{fig:Main-fig-4}b 展示了 其分子对接结果的可视化呈现 (此外，Fig. \ref{fig:Main-fig-4}c、d
+展示了对接能量其次的两个分子的可视化) 。
+
+联系 Tab. \ref{tab:Main-fig-3}d，该 GEO 的 SII 数据，GADD45B 呈上调，而其下游 TAOK1 也呈上调趋势。
+如 参苓白术散可对 EM 相关的 GADD45B 发挥调控作用治疗 SII，将有可能通过下调 GADD45B ，随后间接调控 TAOK1，
+以发挥治疗 SII 的作用。这推测需要进一步实验论证。
+
+Figure \ref{fig:Main-fig-4} (下方图) 为图Main fig 4概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig4.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig4.pdf}
+\caption{Main fig 4}\label{fig:Main-fig-4}
+\end{center}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+筛得成分： Betulin (CID: 72326) (见 Fig. \ref{fig:Overall-combining-Affinity}) ，成功分子对接靶点 GADD45B (表观遗传学蛋白),
+根据 KEGG (MARK) 通路图 (Fig. \ref{fig:Hsa04010-visualization}) ，其可作用于 MAP3K4 和 TAOK3, 与脓毒症肠损伤有关。
+
+\hypertarget{ux9644ux6587ux4ef6ux6982ux8981}{%
+\section{附：文件概要}\label{ux9644ux6587ux4ef6ux6982ux8981}}
 
 \begin{itemize}
 \tightlist
@@ -205,12 +337,6 @@ Mainly used method:
   联系 Fig. \ref{fig:Hsa04010-visualization} ，可知 GADD45B 下游调控的靶点。其中，TAOK3 是 SH 中上调的基因，
   GADD45B-TAOK3 的作用，可能是最佳结果，对应成分为 Betulin (CID: 72326)。
 \end{itemize}
-
-\hypertarget{dis}{%
-\section{结论}\label{dis}}
-
-最终筛得成分： Betulin (CID: 72326) (见 Fig. \ref{fig:Overall-combining-Affinity}) ，对接靶点 GADD45B (表观遗传学蛋白),
-根据 KEGG (MARK) 通路图 (Fig. \ref{fig:Hsa04010-visualization}) ，其可作用于 MAP3K4 和 TAOK3, 与脓毒症肠损伤有关。
 
 \hypertarget{workflow}{%
 \section{附：分析流程}\label{workflow}}
@@ -819,7 +945,7 @@ IL-17 signaling pathway
 \end{tcolorbox}
 \end{center}
 
-\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/unnamed-chunk-32-content})}
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/unnamed-chunk-40-content})}
 
 \hypertarget{epi-path}{%
 \subsubsection{上下游}\label{epi-path}}
@@ -982,8 +1108,8 @@ Figure \ref{fig:HOB-20-prediction} (下方图) 为图HOB 20 prediction概览。
 \caption{HOB 20 prediction}\label{fig:HOB-20-prediction}
 \end{center}
 
-\hypertarget{ux7b2cux4e8cux6279ux5bf9ux63a5}{%
-\subsubsection{第二批对接}\label{ux7b2cux4e8cux6279ux5bf9ux63a5}}
+\hypertarget{dock2}{%
+\subsubsection{第二批对接}\label{dock2}}
 
 对于 Fig. \ref{fig:HOB-20-prediction} 满足 HOB 条件的化合物，尝试分子对接；
 然而由于化合物数量过多，运算过于将过于耗时，这里，以 ChemmineR 对化合物结构聚类 (0.4 cut-off) ，
@@ -1059,7 +1185,7 @@ Figure \ref{fig:HOB-20-prediction} (下方图) 为图HOB 20 prediction概览。
 \end{tcolorbox}
 \end{center}
 
-\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/unnamed-chunk-43-content})}
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/unnamed-chunk-51-content})}
 
 对每个靶点都选择了对接能量最小的 Top 5，结果如下：
 
@@ -1112,59 +1238,68 @@ Figure \ref{fig:Docking-5316891-into-GADD45B} (下方图) 为图Docking 5316891 
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-TargetingStingKobrit2023}{}%
+1. Kobritz, M. \emph{et al.} Targeting sting to reduce sepsis-induced acute intestinal injury. \emph{Surgery} \textbf{174}, 1071--1077 (2023).
+
+\leavevmode\hypertarget{ref-EpigeneticModiChen2017}{}%
+2. Chen, Y. \emph{et al.} Epigenetic modification of nucleic acids: From basic studies to medical applications. \emph{Chemical Society reviews} \textbf{46}, 2844--2872 (2017).
+
+\leavevmode\hypertarget{ref-TraditionalChiZhuD2022}{}%
+3. Zhu, D., Li, A., Lv, Y. \& Fan, Q. Traditional chinese medicine: A class of potentially reliable epigenetic drugs. \emph{Frontiers in pharmacology} \textbf{13}, (2022).
+
 \leavevmode\hypertarget{ref-MappingIdentifDurinc2009}{}%
-1. Durinck, S., Spellman, P. T., Birney, E. \& Huber, W. Mapping identifiers for the integration of genomic datasets with the r/bioconductor package biomaRt. \emph{Nature protocols} \textbf{4}, 1184--1191 (2009).
+4. Durinck, S., Spellman, P. T., Birney, E. \& Huber, W. Mapping identifiers for the integration of genomic datasets with the r/bioconductor package biomaRt. \emph{Nature protocols} \textbf{4}, 1184--1191 (2009).
 
 \leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
-2. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+5. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
 
 \leavevmode\hypertarget{ref-Epifactors2022Maraku2023}{}%
-3. Marakulina, D. \emph{et al.} EpiFactors 2022: Expansion and enhancement of a curated database of human epigenetic factors and complexes. \emph{Nucleic acids research} \textbf{51}, D564--D570 (2023).
+6. Marakulina, D. \emph{et al.} EpiFactors 2022: Expansion and enhancement of a curated database of human epigenetic factors and complexes. \emph{Nucleic acids research} \textbf{51}, D564--D570 (2023).
 
 \leavevmode\hypertarget{ref-UltrafastOnePChen2023}{}%
-4. Chen, S. Ultrafast one-pass fastq data preprocessing, quality control, and deduplication using fastp. \emph{iMeta} \textbf{2}, (2023).
+7. Chen, S. Ultrafast one-pass fastq data preprocessing, quality control, and deduplication using fastp. \emph{iMeta} \textbf{2}, (2023).
 
 \leavevmode\hypertarget{ref-TheDisgenetKnPinero2019}{}%
-5. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
+8. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
 
 \leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
-6. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+9. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
 
 \leavevmode\hypertarget{ref-PharmgkbAWorBarbar2018}{}%
-7. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
+10. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
 
 \leavevmode\hypertarget{ref-HerbAHighThFang2021}{}%
-8. Fang, S. \emph{et al.} HERB: A high-throughput experiment- and reference-guided database of traditional chinese medicine. \emph{Nucleic Acids Research} \textbf{49}, D1197--D1206 (2021).
+11. Fang, S. \emph{et al.} HERB: A high-throughput experiment- and reference-guided database of traditional chinese medicine. \emph{Nucleic Acids Research} \textbf{49}, D1197--D1206 (2021).
 
 \leavevmode\hypertarget{ref-HobpreAccuratWeiM2022}{}%
-9. Wei, M. \emph{et al.} HobPre: Accurate prediction of human oral bioavailability for small molecules. \emph{Journal of Cheminformatics} \textbf{14}, (2022).
+12. Wei, M. \emph{et al.} HobPre: Accurate prediction of human oral bioavailability for small molecules. \emph{Journal of Cheminformatics} \textbf{14}, (2022).
 
 \leavevmode\hypertarget{ref-NearOptimalPrBray2016}{}%
-10. Bray, N. L., Pimentel, H., Melsted, P. \& Pachter, L. Near-optimal probabilistic rna-seq quantification. \emph{Nature Biotechnology} \textbf{34}, (2016).
+13. Bray, N. L., Pimentel, H., Melsted, P. \& Pachter, L. Near-optimal probabilistic rna-seq quantification. \emph{Nature Biotechnology} \textbf{34}, (2016).
 
 \leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
-11. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+14. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
 
 \leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
-12. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+15. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
 
 \leavevmode\hypertarget{ref-AutodockVina1Eberha2021}{}%
-13. Eberhardt, J., Santos-Martins, D., Tillack, A. F. \& Forli, S. AutoDock vina 1.2.0: New docking methods, expanded force field, and python bindings. \emph{Journal of Chemical Information and Modeling} \textbf{61}, 3891--3898 (2021).
+16. Eberhardt, J., Santos-Martins, D., Tillack, A. F. \& Forli, S. AutoDock vina 1.2.0: New docking methods, expanded force field, and python bindings. \emph{Journal of Chemical Information and Modeling} \textbf{61}, 3891--3898 (2021).
 
 \leavevmode\hypertarget{ref-AutogridfrImpZhang2019}{}%
-14. Zhang, Y., Forli, S., Omelchenko, A. \& Sanner, M. F. AutoGridFR: Improvements on autodock affinity maps and associated software tools. \emph{Journal of computational chemistry} \textbf{40}, 2882--2886 (2019).
+17. Zhang, Y., Forli, S., Omelchenko, A. \& Sanner, M. F. AutoGridFR: Improvements on autodock affinity maps and associated software tools. \emph{Journal of computational chemistry} \textbf{40}, 2882--2886 (2019).
 
 \leavevmode\hypertarget{ref-AutodockCrankpZhang2019}{}%
-15. Zhang, Y. \& Sanner, M. F. AutoDock crankpep: Combining folding and docking to predict protein-peptide complexes. \emph{Bioinformatics (Oxford, England)} \textbf{35}, 5121--5127 (2019).
+18. Zhang, Y. \& Sanner, M. F. AutoDock crankpep: Combining folding and docking to predict protein-peptide complexes. \emph{Bioinformatics (Oxford, England)} \textbf{35}, 5121--5127 (2019).
 
 \leavevmode\hypertarget{ref-AutositeAnAuRavind2016}{}%
-16. Ravindranath, P. A. \& Sanner, M. F. AutoSite: An automated approach for pseudo-ligands prediction-from ligand-binding sites identification to predicting key ligand atoms. \emph{Bioinformatics (Oxford, England)} \textbf{32}, 3142--3149 (2016).
+19. Ravindranath, P. A. \& Sanner, M. F. AutoSite: An automated approach for pseudo-ligands prediction-from ligand-binding sites identification to predicting key ligand atoms. \emph{Bioinformatics (Oxford, England)} \textbf{32}, 3142--3149 (2016).
 
 \leavevmode\hypertarget{ref-AutodockfrAdvRavind2015}{}%
-17. Ravindranath, P. A., Forli, S., Goodsell, D. S., Olson, A. J. \& Sanner, M. F. AutoDockFR: Advances in protein-ligand docking with explicitly specified binding site flexibility. \emph{PLoS computational biology} \textbf{11}, (2015).
+20. Ravindranath, P. A., Forli, S., Goodsell, D. S., Olson, A. J. \& Sanner, M. F. AutoDockFR: Advances in protein-ligand docking with explicitly specified binding site flexibility. \emph{PLoS computational biology} \textbf{11}, (2015).
 
 \leavevmode\hypertarget{ref-ChemminerACoCaoY2008}{}%
-18. Cao, Y., Charisi, A., Cheng, L.-C., Jiang, T. \& Girke, T. ChemmineR: A compound mining framework for r. \emph{Bioinformatics (Oxford, England)} \textbf{24}, 1733--1734 (2008).
+21. Cao, Y., Charisi, A., Cheng, L.-C., Jiang, T. \& Girke, T. ChemmineR: A compound mining framework for r. \emph{Bioinformatics (Oxford, England)} \textbf{24}, 1733--1734 (2008).
 \end{cslreferences}
 
 \end{document}
