@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  27 MAR 2024 12:09
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  28 MAR 2024 09:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1364,10 +1364,6 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 See the caption package documentation for explanation.
 
 [4] [5]
-
-LaTeX Warning: Reference `tab:Main-fig-3' on page 6 undefined on input line 282
-.
-
 File: ./Figure+Table/fig4.pdf Graphic file (type pdf)
 <use ./Figure+Table/fig4.pdf>
 
@@ -1584,16 +1580,12 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 1232.
 See the caption package documentation for explanation.
 
-[31] [32] [33] [34] (./output.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+[31] [32] [33] [34] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 32359 strings out of 476191
- 664659 string characters out of 5812072
+ 32358 strings out of 476191
+ 664643 string characters out of 5812072
  1117469 words of memory out of 5000000
- 52537 multiletter control sequences out of 15000+600000
+ 52536 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1365b,643s stack positions out of 5000i,500n,10000p,200000b,80000s

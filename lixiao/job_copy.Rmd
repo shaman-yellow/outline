@@ -195,16 +195,27 @@ dplyr::slice(alls, 42:50) %>% vis()
 ```{r}
 summary_month()
 send_summary("sunhui")
+
+backup_jobs(alls, time <- "2024-02-01")
 ```
 
 ### 2024-03
 
 ```{r}
 summary_month()
-update_registers()
 
 send_eval("sunhui")
 send_prin("sunhui")
+
+summary_month(rm = T)
+send_summary("sunhui")
+
+update_registers()
+send_registers("sunhui")
+
+backup_jobs(alls, time <- "2024-03-01")
+# move_rds_all(alls, time)
+# move_raw_all(alls, time)
 ```
 
 

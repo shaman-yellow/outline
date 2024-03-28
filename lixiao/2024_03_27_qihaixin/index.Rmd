@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(3, 2, 0, 2, 0))
+info <- items(belong = odate(4), eval = ic(2, 3, 0, 2, 0))
 show.ic(info)
 
 order_publish()
@@ -48,6 +48,8 @@ set_index()
 5、总的复方靶点的功能富集分析
 6、YY可能参与的环节需要标注在4上或者单独注释分
 
+oral bioavailability (OB) and drug likeness (DL)
+
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
   di("慢性结肠炎")
@@ -85,10 +87,43 @@ herbs <- c("乌梅", "花椒", "细辛", "黄连", "黄柏", "干姜", "附子",
 tc <- job_tcmsp(herbs)
 tc <- step1(tc)
 
+bt <- job_batman(herbs)
+bt <- slice(bt, 1:10)
+bt <- step1(bt)
+bt <- step2(bt)
+bt <- step3(bt)
+
+bt <- anno(bt)
+bt@params$compounds_info
+
+
+
+bt@plots$step3$p.pharm
+bt@params$compounds_info
+
+bt@params$compounds_info
+bt@params$herbs_info
+bt@tables$step1$herbs_compounds
+bt@tables$step2$compounds_targets
 
 ```
 
 ```{r}
+
+je.bio <- job_esearch("drug Bioactivity")
+vis(je.bio)
+
 gm <- gmix("chronic colitis", "colitis")
-x <- get_batman_data()
+je <- job_esearch("drug likeness")
+vis(je)
 ```
+
+
+
+```{r}
+x <- get_ctd_data()
+
+
+```
+
+

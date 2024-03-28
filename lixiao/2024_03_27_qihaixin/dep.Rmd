@@ -1,0 +1,13 @@
+
+
+
+x <- PubChemR::get_properties(
+  properties = "LiteratureCount",
+  identifier = "aspirin",
+)
+
+
+.add_properties.PubChemR()
+maps <- PubChemR:::property_map 
+maps
+
