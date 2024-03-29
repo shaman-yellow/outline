@@ -11,3 +11,23 @@ x <- PubChemR::get_properties(
 maps <- PubChemR:::property_map 
 maps
 
+
+```{r}
+x <- get_ctd_data()
+y <- dplyr::filter(x$CTD_diseases, grpl(DiseaseName, "colitis", T))
+y <- dplyr::filter(x$CTD_chemicals_diseases, DiseaseID %in% y$DiseaseID)
+
+```
+
+
+
+je.bio <- job_esearch("drug Bioactivity")
+vis(je.bio)
+
+
+
+```{r}
+vn$runs
+lapply(vn$runs, function(x) vn$res.ligand[[ x[1] ]])
+lapply(vn$runs, function(x) vn$res.receptor[[ x[2] ]])
+```

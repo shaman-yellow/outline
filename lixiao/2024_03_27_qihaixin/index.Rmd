@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(2, 3, 0, 2, 0))
+info <- items(belong = odate(4), eval = ic(2, 2, 0, 2, 0))
 show.ic(info)
 
 order_publish()
@@ -93,11 +93,6 @@ bt <- step1(bt)
 bt <- step2(bt)
 bt <- step3(bt)
 
-bt <- anno(bt)
-bt@params$compounds_info
-
-
-
 bt@plots$step3$p.pharm
 bt@params$compounds_info
 
@@ -105,25 +100,91 @@ bt@params$compounds_info
 bt@params$herbs_info
 bt@tables$step1$herbs_compounds
 bt@tables$step2$compounds_targets
+```
+
+```{r}
+gm <- job_gmix("chronic colitis", "colitis")
+gm <- step1(gm)
+gm <- step2(gm, 1, 10, 0, restrict = T)
+gm@tables$step2$t.genecard
+
+bt <- map(bt, gm@params$lst.genes)
+bt@params$p.pharm2dis
+bt@params$p.venn2dis
+```
+
+```{r}
+en.herbs <- job_enrich(bt@params$p.venn2dis$ins)
+en.herbs <- step1(en.herbs)
+en.herbs <- step2(en.herbs, "hsa05321")
+en.herbs@plots$step1$p.kegg$ids
+en.herbs@tables$step1$res.kegg$ids
+en.herbs@plots$step2$p.pathviews$hsa05321
 
 ```
 
 ```{r}
+genes.infla <- dplyr::filter(en.herbs@tables$step1$res.kegg$ids, ID == "hsa05321")$geneName_list[[1]]
+genes.infla
 
-je.bio <- job_esearch("drug Bioactivity")
-vis(je.bio)
+cpds.infla <- dplyr::filter(bt@params$data.allu, Target.name %in% genes.infla)
+cpds.infla <- map(cpds.infla, "Ingredient.name", bt@params$compounds_info, "name", "LiteratureCount", col = "LiteratureCount")
+cpds.infla <- map(cpds.infla, "Ingredient.name", bt@params$compounds_info, "name", "cids", col = "cids")
+cpds.infla
 
-gm <- gmix("chronic colitis", "colitis")
-je <- job_esearch("drug likeness")
-vis(je)
 ```
-
-
 
 ```{r}
-x <- get_ctd_data()
+ct <- job_ctd()
+ct <- step1(ct, "colitis")
+ct@params$dis %<>% dplyr::slice(2)
+ct <- step2(ct)
+ct@tables$step2$t.chemical
 
+p.vennShip <- new_venn(lst = list(CTD_records = ct@tables$step2$t.chemical$CID,
+    herbs_related = cpds.infla$cids))
+p.vennShip$ins
+```
+
+```{r}
+cpds.infla.ctd <- dplyr::filter(cpds.infla, cids %in% as.integer(p.vennShip$ins))
+cpds.infla.ctd
+```
+
+```{r}
+file.copy("~/Downloads/AF-Q9HC29-F1-model_v4.pdb", "./order_material/nod2.pdb")
+vn <- job_vina(.layout = dplyr::distinct(cpds.infla.ctd, Ingredient.name, Target.name, cids))
+vn <- step1(vn, pdbs = c(IL13 = "3lb6"))
+vn <- step2(vn, F)
+vn <- step3(vn, extra_pdb.files = c(NOD2 = "./order_material/nod2.pdb"))
+vn <- set_remote(vn)
+vn <- step4(vn)
+vn@step <- 4L
+vn <- step5(vn)
+vn@plots$step5$p.res_vina
+vn@tables$step5$res_dock
+res(vn)
+
+vn@step <- 5L
+vn <- step6(vn, top = 3, unique = T)
+vn@plots$step6$Top1_72326_into_9ilb
+vn@plots$step6$Top2_969516_into_4xfu
+vn@plots$step6$Top3_774_into_nod2
+vn@tables$step6$data
 
 ```
 
+```{r}
+cpd.top <- dplyr::filter(cpds.infla.ctd, cids %in% vn@tables$step6$data$PubChem_id[1])
+en.top <- job_enrich(cpd.top$Target.name)
+en.top <- step1(en.top)
+en.top@plots$step1$p.kegg
+en.top <- step2(en.top, "hsa05321")
+en.top@plots$step2$p.pathviews$hsa05321
 
+p.alluTop.dis <- new_allu(cpd.top, axes = 1:3, trunc = T)
+
+p.alluTop.all <- new_allu(
+  dplyr::filter(bt@params$data.allu, Ingredient.name %in% unique(cpd.top$Ingredient.name)), axes = 1:3, trunc = T)
+
+```

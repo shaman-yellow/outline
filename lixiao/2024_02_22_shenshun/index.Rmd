@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(3), eval = ic(2, 3, 3, 0, 0))
+info <- items(belong = c(odate(3), odate(4)), eval = list(ic(2, 3, 3, 0, 0), ic(1, 0, 0, 3, 0)))
 show.ic(info)
 
 order_publish()
@@ -576,3 +576,8 @@ cor.tcgaRna$sig.corp
 
 t.negCor <- dplyr::filter(cor.tcgaRna$sig.corp, To == "TSC1", cor < 0)
 ```
+
+# 附：进一步分析蛋白结合
+
+
+
