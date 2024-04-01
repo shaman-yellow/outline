@@ -32,23 +32,56 @@ set_index()
 
 # 摘要 {#abstract}
 
+## 需求
+
 中药复方乌梅丸：乌梅，花椒，细辛，黄连，黄柏，干姜，附子，桂枝，人参，当归
-网络药理学部分可参考附件pdf文献
-疾病为：慢性结肠炎，炎性肠病，肠纤维化，可以都包含，也可以单独一种疾病（如果单独疾病可以做出来，优先级按照语序来）
-目标：筛出有效成分XX，及其作用靶点蛋白YY，YY需满足1、与XX能对接 2、富集分析显示YY与疾病相关的机制相关（比如炎症，纤维化，再放宽可以免疫细胞调控）
+
+疾病：慢性结肠炎，炎性肠病，肠纤维化，可以都包含，也可以单独一种疾病（如果单独疾病可以做出来，优先级按照语序来）
+
+目标：筛出有效成分XX，及其作用靶点蛋白YY，YY需满足：1、与XX能对接 2、富集分析显示YY与疾病相关的机制相关（比如炎症，纤维化，再放宽可以免疫细胞调控）
+
+其它：
 
 1、选取中药复方（乌梅丸）中和调控纤维化相关的单体成分，结合pubchem、chemical book、scifinder等数据库分析排名靠前的化合物的活性信息，并通过中医网络药理学方法（如TCMSP平台和BATMAN-TCM数据库），分析有效成分XXX的对应靶点YYY，功能富集分析显示YYY调控肠道纤维化。
-2、、通过PubChem数据库（https://pubchem.ncbi.nlm.nih.gov/）获取中药单体主要活性成分的2D化学结构，在PDB数据库（https://www.rcsb.org/）中查找相关核心靶点蛋白3D结构，通过Autodock软件进行分子对接，获取结合能最高的位点，最后通过Pymol软件进行可视化处理。
+
+2、、通过PubChem数据库获取中药单体主要活性成分的2D化学结构，在PDB数据库中查找相关核心靶点蛋白3D结构，通过Autodock软件进行分子对接，获取结合能最高的位点，最后通过Pymol软件进行可视化处理。
 
 交付：
-1、疾病-复方-成分-靶点网络图
-2、成分XX-靶点网络图
-3、XX与YY分子对接pymol可视化图，注意细节标注
-4、成分XX靶点功能富集分析
-5、总的复方靶点的功能富集分析
-6、YY可能参与的环节需要标注在4上或者单独注释分
 
-oral bioavailability (OB) and drug likeness (DL)
+1. 疾病-复方-成分-靶点网络图
+2. 成分XX-靶点网络图
+3. XX与YY分子对接pymol可视化图，注意细节标注
+4. 成分XX靶点功能富集分析
+5. 总的复方靶点的功能富集分析
+6. YY可能参与的环节需要标注在4上或者单独注释分
+
+## 结果
+
+1. 利用 BATMAN-TCM 数据库作为成分靶点数据库，并结合 Fig. \@ref(fig:Overall-targets-number-of-datasets) 所示的疾病靶点数据
+   获得的疾病-复方-成分-靶点网络图见 Fig. \@ref(fig:Network-pharmacology-with-disease)
+2. 筛选的成分的靶点关系图见 Fig. \@ref(fig:TOP-pharmacology-visualization)。
+   这里的成分是后续的分析和分子对接筛选的 TOP 1，其名称等相关信息 (TOP 1-3) 可参考 Tab. \@ref(tab:Metadata-of-visualized-Docking)
+3. Pymol 可视化见 Fig. \@ref(fig:Docking-72326-into-9ilb-detail) (局部放大加注释),
+   Fig. \@ref(fig:Docking-72326-into-9ilb) (全局图)。
+   此外，对接 TOP 2 和 TOP 3 的可视化也附在随后。
+4. TOP 1 成分的富集分析见 Fig. \@ref(fig:TOP-KEGG-enrichment) 和 Fig. \@ref(fig:TOP-GO-enrichment)
+5. 总的复方靶点的富集分析见 Fig. \@ref(fig:HERBS-KEGG-enrichment) 和 Fig. \@ref(fig:HERBS-GO-enrichment)
+6. YY  (TOP 1 对应的结合靶点为 IL1B ) 参与的环节见
+   Fig. \@ref(fig:TOP-hsa05321-visualization)
+
+补充说明：
+
+- TCMSP 网站最近几日都无法打开，所以草药数据来源只选用 BATMAN (这个数据库比 TCMSP 全面) 。
+- 关于 “结合pubchem、chemical book、scifinder等数据库分析排名靠前的化合物的活性信息”，
+  chemical book 和 scifinder 为商业工具，预计是无法获取权限的，这里没有使用；
+  而 PubChem，我这里的分析中获取了成分的文献记录，即 LiteratureCount，
+  具体可见 Tab. \@ref(tab:All-compounds-Literature-Count)，
+  Tab. \@ref(tab:hsa05321-related-genes-and-compounds)。
+  此外，还根据 CTD 对疾病相关的成分做了筛选，
+  Fig. \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related)
+- 其它候选成分靶点 Tab. \@ref(tab:Intersection-Herbs-compounds-and-targets)
+- 分子对接良好的结果汇总表格 Tab. \@ref(tab:Combining-Affinity)
+
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
@@ -81,6 +114,27 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
+## 网络药理学
+
+### 成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-information
+autor(bt@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-compounds
+autor(wrap(bt@plots$step3$p.herbs_compounds, 12))
+```
+
+### 成分靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-Herbs-compounds-and-targets
+autor(bt@params$easyRead[, -1])
+```
+
 ```{r}
 herbs <- c("乌梅", "花椒", "细辛", "黄连", "黄柏", "干姜", "附子", "桂枝", "人参", "当归")
 
@@ -102,6 +156,18 @@ bt@tables$step1$herbs_compounds
 bt@tables$step2$compounds_targets
 ```
 
+### 疾病靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-targets-number-of-datasets
+autor(gm@plots$step2$p.cols)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GeneCards-used-data
+autor(gm@tables$step2$t.genecard)
+```
+
 ```{r}
 gm <- job_gmix("chronic colitis", "colitis")
 gm <- step1(gm)
@@ -111,6 +177,38 @@ gm@tables$step2$t.genecard
 bt <- map(bt, gm@params$lst.genes)
 bt@params$p.pharm2dis
 bt@params$p.venn2dis
+```
+
+
+### 疾病-成分-靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-with-disease
+autor(bt@params$p.pharm2dis)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Targets-intersect-with-targets-of-diseases
+autor(bt@params$p.venn2dis)
+```
+
+### 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-KEGG-enrichment
+autor(en.herbs@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-GO-enrichment
+autor(en.herbs@plots$step1$p.go$ids)
+```
+
+#### 与肠道炎症相关的通路和基因
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-hsa05321-visualization
+autor(en.herbs@plots$step2$p.pathviews$hsa05321)
 ```
 
 ```{r}
@@ -123,6 +221,21 @@ en.herbs@plots$step2$p.pathviews$hsa05321
 
 ```
 
+
+### 与疾病相关的活性成分筛选
+
+#### PubMed 文献报道数 (任意领域)
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-compounds-Literature-Count
+autor(dplyr::arrange(bt@params$compounds_info, dplyr::desc(LiteratureCount)))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| hsa05321-related-genes-and-compounds
+autor(cpds.infla)
+```
+
 ```{r}
 genes.infla <- dplyr::filter(en.herbs@tables$step1$res.kegg$ids, ID == "hsa05321")$geneName_list[[1]]
 genes.infla
@@ -131,7 +244,18 @@ cpds.infla <- dplyr::filter(bt@params$data.allu, Target.name %in% genes.infla)
 cpds.infla <- map(cpds.infla, "Ingredient.name", bt@params$compounds_info, "name", "LiteratureCount", col = "LiteratureCount")
 cpds.infla <- map(cpds.infla, "Ingredient.name", bt@params$compounds_info, "name", "cids", col = "cids")
 cpds.infla
+```
 
+#### CTD 数据库记录与肾炎相关的化合物
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-CTD-records-with-herbs-of-hsa05321-related
+autor(p.vennShip)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-Herbs-compounds-and-targets
+autor(cpds.infla.ctd)
 ```
 
 ```{r}
@@ -143,6 +267,7 @@ ct@tables$step2$t.chemical
 
 p.vennShip <- new_venn(lst = list(CTD_records = ct@tables$step2$t.chemical$CID,
     herbs_related = cpds.infla$cids))
+
 p.vennShip$ins
 ```
 
@@ -150,6 +275,66 @@ p.vennShip$ins
 cpds.infla.ctd <- dplyr::filter(cpds.infla, cids %in% as.integer(p.vennShip$ins))
 cpds.infla.ctd
 ```
+
+## 分子对接
+
+### Top docking
+
+取 Tab. \@ref(tab:Intersection-Herbs-compounds-and-targets) 
+(即，Fig. \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related) 交集)
+成分与靶点，进行批量分子对接。
+
+以下展示了各个靶点结合度 Top 5 的成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-combining-Affinity
+autor(wrap(vn@plots$step5$p.res_vina, 9, 12.5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Combining-Affinity
+autor(res(vn))
+```
+
+### 对接可视化
+
+```{r eval = T, echo = F, results = "asis"}
+#| Metadata-of-visualized-Docking
+autor(vn@tables$step6$data)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-72326-into-9ilb
+autor(vn@plots$step6$Top1_72326_into_9ilb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-969516-into-4xfu
+autor(vn@plots$step6$Top2_969516_into_4xfu)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-774-into-nod2
+autor(vn@plots$step6$Top3_774_into_nod2)
+```
+
+### 局部对接细节
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-72326-into-9ilb-detail
+autor(vn@plots$step7$Top1_72326_into_9ilb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-969516-into-4xfu-detail
+autor(vn@plots$step7$Top2_969516_into_4xfu)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-774-into-nod2-detail
+autor(vn@plots$step7$Top3_774_into_nod2)
+```
+
 
 ```{r}
 file.copy("~/Downloads/AF-Q9HC29-F1-model_v4.pdb", "./order_material/nod2.pdb")
@@ -171,7 +356,32 @@ vn@plots$step6$Top1_72326_into_9ilb
 vn@plots$step6$Top2_969516_into_4xfu
 vn@plots$step6$Top3_774_into_nod2
 vn@tables$step6$data
+vn <- step7(vn)
+vn@plots$step7$Top1_72326_into_9ilb
+vn@plots$step7$Top2_969516_into_4xfu
+vn@plots$step7$Top3_774_into_nod2
+```
 
+### Top1 的靶点的富集分析 (参与 hsa05321 靶点) 
+
+```{r eval = T, echo = F, results = "asis"}
+#| TOP-KEGG-enrichment
+autor(en.top@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TOP-GO-enrichment
+autor(en.top@plots$step1$p.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TOP-hsa05321-visualization
+autor(en.top@plots$step2$p.pathviews$hsa05321)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TOP-pharmacology-visualization
+autor(p.alluTop.dis)
 ```
 
 ```{r}
@@ -179,6 +389,7 @@ cpd.top <- dplyr::filter(cpds.infla.ctd, cids %in% vn@tables$step6$data$PubChem_
 en.top <- job_enrich(cpd.top$Target.name)
 en.top <- step1(en.top)
 en.top@plots$step1$p.kegg
+en.top@tables$step1$res.kegg$ids
 en.top <- step2(en.top, "hsa05321")
 en.top@plots$step2$p.pathviews$hsa05321
 
@@ -186,5 +397,29 @@ p.alluTop.dis <- new_allu(cpd.top, axes = 1:3, trunc = T)
 
 p.alluTop.all <- new_allu(
   dplyr::filter(bt@params$data.allu, Ingredient.name %in% unique(cpd.top$Ingredient.name)), axes = 1:3, trunc = T)
+p.alluTop.all
+```
 
+#### TOP1 的结合靶点 (IL1B) 参与的通路
+
+```{r eval = T, echo = F, results = "asis"}
+#| IL1B-kegg
+autor(path.il1b)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IL1B-go
+autor(pathGo.il1b)
+```
+
+```{r}
+pathKegg.il1b <- filter(en.top, "IL1B")
+path.il1b
+
+pathGo.il1b <- filter(en.top, "IL1B", use = "go")
+pathGo.il1b
+```
+
+```{r}
+pretty_docking("9ilb.pdbqt", "72326_into_9ilb_out.pdbqt", "vina_space/72326_into_9ilb")
 ```

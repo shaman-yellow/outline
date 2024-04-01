@@ -1,0 +1,990 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+中药复方乌梅丸网络药理学分析} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-04-01}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux9700ux6c42}{%
+\subsection{需求}\label{ux9700ux6c42}}
+
+中药复方乌梅丸：乌梅，花椒，细辛，黄连，黄柏，干姜，附子，桂枝，人参，当归
+
+疾病：慢性结肠炎，炎性肠病，肠纤维化，可以都包含，也可以单独一种疾病（如果单独疾病可以做出来，优先级按照语序来）
+
+目标：筛出有效成分XX，及其作用靶点蛋白YY，YY需满足：1、与XX能对接 2、富集分析显示YY与疾病相关的机制相关（比如炎症，纤维化，再放宽可以免疫细胞调控）
+
+其它：
+
+1、选取中药复方（乌梅丸）中和调控纤维化相关的单体成分，结合pubchem、chemical book、scifinder等数据库分析排名靠前的化合物的活性信息，并通过中医网络药理学方法（如TCMSP平台和BATMAN-TCM数据库），分析有效成分XXX的对应靶点YYY，功能富集分析显示YYY调控肠道纤维化。
+
+2、、通过PubChem数据库获取中药单体主要活性成分的2D化学结构，在PDB数据库中查找相关核心靶点蛋白3D结构，通过Autodock软件进行分子对接，获取结合能最高的位点，最后通过Pymol软件进行可视化处理。
+
+交付：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  疾病-复方-成分-靶点网络图
+\item
+  成分XX-靶点网络图
+\item
+  XX与YY分子对接pymol可视化图，注意细节标注
+\item
+  成分XX靶点功能富集分析
+\item
+  总的复方靶点的功能富集分析
+\item
+  YY可能参与的环节需要标注在4上或者单独注释分
+\end{enumerate}
+
+\hypertarget{ux7ed3ux679c}{%
+\subsection{结果}\label{ux7ed3ux679c}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  利用 BATMAN-TCM 数据库作为成分靶点数据库，并结合 Fig. \ref{fig:Overall-targets-number-of-datasets} 所示的疾病靶点数据
+  获得的疾病-复方-成分-靶点网络图见 Fig. \ref{fig:Network-pharmacology-with-disease}
+\item
+  筛选的成分的靶点关系图见 Fig. \ref{fig:TOP-pharmacology-visualization}。
+  这里的成分是后续的分析和分子对接筛选的 TOP 1，其名称等相关信息 (TOP 1-3) 可参考 Tab. \ref{tab:Metadata-of-visualized-Docking}
+\item
+  Pymol 可视化见 Fig. \ref{fig:Docking-72326-into-9ilb-detail} (局部放大加注释),
+  Fig. \ref{fig:Docking-72326-into-9ilb} (全局图)。
+  此外，对接 TOP 2 和 TOP 3 的可视化也附在随后。
+\item
+  TOP 1 成分的富集分析见 Fig. \ref{fig:TOP-KEGG-enrichment} 和 Fig. \ref{fig:TOP-GO-enrichment}
+\item
+  总的复方靶点的富集分析见 Fig. \ref{fig:HERBS-KEGG-enrichment} 和 Fig. \ref{fig:HERBS-GO-enrichment}
+\item
+  YY (TOP 1 对应的结合靶点为 IL1B ) 参与的环节见
+  Fig. \ref{fig:TOP-hsa05321-visualization}
+\end{enumerate}
+
+补充说明：
+
+\begin{itemize}
+\tightlist
+\item
+  TCMSP 网站最近几日都无法打开，所以草药数据来源只选用 BATMAN (这个数据库比 TCMSP 全面) 。
+\item
+  关于 ``结合pubchem、chemical book、scifinder等数据库分析排名靠前的化合物的活性信息''，
+  chemical book 和 scifinder 为商业工具，预计是无法获取权限的，这里没有使用；
+  而 PubChem，我这里的分析中获取了成分的文献记录，即 LiteratureCount，
+  具体可见 Tab. \ref{tab:All-compounds-Literature-Count}，
+  Tab. \ref{tab:hsa05321-related-genes-and-compounds}。
+  此外，还根据 CTD 对疾病相关的成分做了筛选，
+  Fig. \ref{fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related}
+\item
+  其它候选成分靶点 Tab. \ref{tab:Intersection-Herbs-compounds-and-targets}
+\item
+  分子对接良好的结果汇总表格 Tab. \ref{tab:Combining-Affinity}
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Database \texttt{BATMAN-TCM} was used as source data of TCM ingredients and target proteins\textsuperscript{\protect\hyperlink{ref-BatmanTcm20Kong2024}{1}}.
+\item
+  The Comparative Toxicogenomics Database (CTD) used for finding relationship between chemicals and disease\textsuperscript{\protect\hyperlink{ref-ComparativeToxDavis2023}{2}}.
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{3}}.
+\item
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{4}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{6}}.
+\item
+  The CLI tools of \texttt{AutoDock\ vina} and \texttt{ADFR} software used for auto molecular docking\textsuperscript{\protect\hyperlink{ref-AutodockVina1Eberha2021}{7}--\protect\hyperlink{ref-AutodockfrAdvRavind2015}{11}}.
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux7f51ux7edcux836fux7406ux5b66}{%
+\subsection{网络药理学}\label{ux7f51ux7edcux836fux7406ux5b66}}
+
+\hypertarget{ux6210ux5206}{%
+\subsubsection{成分}\label{ux6210ux5206}}
+
+Table \ref{tab:Herbs-information} (下方表格) 为表格Herbs information概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Herbs-information.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行4列，以下预览的表格可能省略部分数据；表格含有10个唯一`Pinyin.Name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:Herbs-information}Herbs information}\tabularnewline
+\toprule
+Pinyin.Name & Chinese.Name & English.Name & Latin.Name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Pinyin.Name & Chinese.Name & English.Name & Latin.Name\tabularnewline
+\midrule
+\endhead
+FU ZI & 附子 & Prepared common m\ldots{} & Aconitum carmichaeli\tabularnewline
+GAN JIANG & 干姜 & Common ginger dri\ldots{} & Zingiber officinale\tabularnewline
+DANG GUI & 当归 & Chinese angelica \ldots{} & Angelica sinensis\tabularnewline
+REN SHEN & 人参 & Ginseng & Panax ginseng {[}s\ldots{}\tabularnewline
+XI XIN & 细辛 & Siebold wildginge\ldots{} & Asarum sieboldii\tabularnewline
+GUI ZHI & 桂枝 & Cassiabarktree twig & Cinnamomum cassia\ldots{}\tabularnewline
+HUA JIAO & 花椒 & Bunge pricklyash \ldots{} & Zanthoxylum bunge\ldots{}\tabularnewline
+WU MEI & 乌梅 & Japanese apricot & Prunus mume\tabularnewline
+HUANG LIAN & 黄连 & Chinese goldthrea\ldots{} & Coptis chinensis\tabularnewline
+HUANG BAI & 黄柏 & Amur corktree equ\ldots{} & Phellodendron amu\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:intersection-of-all-compounds} (下方图) 为图intersection of all compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-all-compounds.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-all-compounds.pdf}
+\caption{Intersection of all compounds}\label{fig:intersection-of-all-compounds}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/intersection-of-all-compounds-content})}
+
+\hypertarget{ux6210ux5206ux9776ux70b9}{%
+\subsubsection{成分靶点}\label{ux6210ux5206ux9776ux70b9}}
+
+Table \ref{tab:tables-of-Herbs-compounds-and-targets} (下方表格) 为表格tables of Herbs compounds and targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-Herbs-compounds-and-targets.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有15264行3列，以下预览的表格可能省略部分数据；表格含有10个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:tables-of-Herbs-compounds-and-targets}Tables of Herbs compounds and targets}\tabularnewline
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name\tabularnewline
+\midrule
+\endhead
+GUI ZHI & 3,4-dihydroxybenzoic acid & AKT1\tabularnewline
+GUI ZHI & 3,4-dihydroxybenzoic acid & MGAM\tabularnewline
+GUI ZHI & {[}5-(6-aminopurin-9-yl)-4-hy\ldots{} & NA\tabularnewline
+GUI ZHI & 3-hydroxybenzaldehyde & NA\tabularnewline
+GUI ZHI & 3-phenylpropanoic acid & NA\tabularnewline
+GUI ZHI & 4-hydroxybenzoic acid & HDAC6\tabularnewline
+GUI ZHI & acetaldehyde & HDAC11\tabularnewline
+GUI ZHI & acetaldehyde & MMP2\tabularnewline
+GUI ZHI & acetaldehyde & CDT1\tabularnewline
+GUI ZHI & acetaldehyde & CAT\tabularnewline
+GUI ZHI & acetaldehyde & MMP1\tabularnewline
+GUI ZHI & acetaldehyde & PPARG\tabularnewline
+GUI ZHI & acetaldehyde & TIMP1\tabularnewline
+GUI ZHI & acetaldehyde & AGT\tabularnewline
+GUI ZHI & acetaldehyde & IL1B\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux75beux75c5ux9776ux70b9}{%
+\subsubsection{疾病靶点}\label{ux75beux75c5ux9776ux70b9}}
+
+Figure \ref{fig:Overall-targets-number-of-datasets} (下方图) 为图Overall targets number of datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-targets-number-of-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-targets-number-of-datasets.pdf}
+\caption{Overall targets number of datasets}\label{fig:Overall-targets-number-of-datasets}
+\end{center}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    chronic colitis
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    TRUE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 0
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:GeneCards-used-data} (下方表格) 为表格GeneCards used data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GeneCards-used-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有172行7列，以下预览的表格可能省略部分数据；表格含有172个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:GeneCards-used-data}GeneCards used data}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+CARMIL2 & Capping Pr\ldots{} & Protein Co\ldots{} & Q6F5E8 & 43 & GC16P067644 & 3\tabularnewline
+WAS & WASP Actin\ldots{} & Protein Co\ldots{} & P42768 & 56 & GC0XP048676 & 2.13\tabularnewline
+IL37 & Interleuki\ldots{} & Protein Co\ldots{} & Q9NZH6 & 48 & GC02P141239 & 2.04\tabularnewline
+LINC02605 & Long Inter\ldots{} & RNA Gene & & 19 & GC08P078838 & 2.04\tabularnewline
+TNFSF15 & TNF Superf\ldots{} & Protein Co\ldots{} & O95150 & 52 & GC09M114784 & 1.96\tabularnewline
+LINC01672 & Long Inter\ldots{} & RNA Gene & & 18 & GC01P011469 & 1.96\tabularnewline
+STAT3 & Signal Tra\ldots{} & Protein Co\ldots{} & P40763 & 62 & GC17M042313 & 1.91\tabularnewline
+BDNF-AS & BDNF Antis\ldots{} & RNA Gene & & 28 & GC11P027466 & 1.91\tabularnewline
+CERNA3 & Competing \ldots{} & RNA Gene & & 19 & GC08P056101 & 1.8\tabularnewline
+NOS2 & Nitric Oxi\ldots{} & Protein Co\ldots{} & P35228 & 58 & GC17M027756 & 1.73\tabularnewline
+IL17A & Interleuki\ldots{} & Protein Co\ldots{} & Q16552 & 52 & GC06P052186 & 1.69\tabularnewline
+IFNG & Interferon\ldots{} & Protein Co\ldots{} & P01579 & 59 & GC12M068154 & 1.49\tabularnewline
+IL23A & Interleuki\ldots{} & Protein Co\ldots{} & Q9NPF7 & 48 & GC12P059649 & 1.44\tabularnewline
+MPO & Myeloperox\ldots{} & Protein Co\ldots{} & P05164 & 61 & GC17M058269 & 1.38\tabularnewline
+IL7R & Interleuki\ldots{} & Protein Co\ldots{} & P16871 & 55 & GC05P035852 & 1.38\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux75beux75c5-ux6210ux5206-ux9776ux70b9}{%
+\subsubsection{疾病-成分-靶点}\label{ux75beux75c5-ux6210ux5206-ux9776ux70b9}}
+
+Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pharmacology with disease概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-with-disease.pdf}
+\caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
+\end{center}
+
+Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Targets intersect with targets of diseases概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf}
+\caption{Targets intersect with targets of diseases}\label{fig:Targets-intersect-with-targets-of-diseases}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    IL10, TNF, IL7, ACAD8, IL1B, NLRP3, PRKAB1, PRKAA1,
+TACR1, SLC7A2, PRKAA2, AKR1B10, NOD2, TLR4, CD44, DCLK1,
+IL33, TP53, PON1, LY96, SIRT1, ESR2, NR0B1, AGER, CSF3,
+GABPA, NFE2L2, MUC2, MMP9, MIF, IL17A, CXCL8, PIAS3, STAT3,
+NOS2, IFNG, MPO, EGF, IL6, VCAM1, MIR18A, TCF4, MST1,
+MIR155, CA4, EGFR,...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases-content})}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+Figure \ref{fig:HERBS-KEGG-enrichment} (下方图) 为图HERBS KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HERBS-KEGG-enrichment.pdf}
+\caption{HERBS KEGG enrichment}\label{fig:HERBS-KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:HERBS-GO-enrichment} (下方图) 为图HERBS GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HERBS-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HERBS-GO-enrichment.pdf}
+\caption{HERBS GO enrichment}\label{fig:HERBS-GO-enrichment}
+\end{center}
+
+\hypertarget{ux4e0eux80a0ux9053ux708eux75c7ux76f8ux5173ux7684ux901aux8defux548cux57faux56e0}{%
+\paragraph{与肠道炎症相关的通路和基因}\label{ux4e0eux80a0ux9053ux708eux75c7ux76f8ux5173ux7684ux901aux8defux548cux57faux56e0}}
+
+Figure \ref{fig:HERBS-hsa05321-visualization} (下方图) 为图HERBS hsa05321 visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa05321.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-03-29_15_06_14.604672/hsa05321.pathview.png}
+\caption{HERBS hsa05321 visualization}\label{fig:HERBS-hsa05321-visualization}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa05321}
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux4e0eux75beux75c5ux76f8ux5173ux7684ux6d3bux6027ux6210ux5206ux7b5bux9009}{%
+\subsubsection{与疾病相关的活性成分筛选}\label{ux4e0eux75beux75c5ux76f8ux5173ux7684ux6d3bux6027ux6210ux5206ux7b5bux9009}}
+
+\hypertarget{pubmed-ux6587ux732eux62a5ux9053ux6570-ux4efbux610fux9886ux57df}{%
+\paragraph{PubMed 文献报道数 (任意领域)}\label{pubmed-ux6587ux732eux62a5ux9053ux6570-ux4efbux610fux9886ux57df}}
+
+Table \ref{tab:All-compounds-Literature-Count} (下方表格) 为表格All compounds Literature Count概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-compounds-Literature-Count.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2200行3列，以下预览的表格可能省略部分数据；表格含有2200个唯一`cids'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:All-compounds-Literature-Count}All compounds Literature Count}\tabularnewline
+\toprule
+cids & name & LiteratureCount\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+cids & name & LiteratureCount\tabularnewline
+\midrule
+\endhead
+702 & ethanol & 540787\tabularnewline
+5997 & (3S,8S,9S,10R,13R,14S,17R)-\ldots{} & 337620\tabularnewline
+5988 & (2R,3R,4S,5S,6R)-2-{[}(2S,3S,\ldots{} & 204482\tabularnewline
+24749 & 2,3,4,5,6-pentahydroxyhexanal & 197377\tabularnewline
+180 & propan-2-one & 182194\tabularnewline
+241 & benzene & 155727\tabularnewline
+5957 & {[}{[}(2R,3S,4R,5R)-5-(6-aminop\ldots{} & 151618\tabularnewline
+5757 & (8R,9S,13S,14S,17S)-13-meth\ldots{} & 143457\tabularnewline
+996 & phenol & 125953\tabularnewline
+612 & 2-hydroxypropanoic acid & 115138\tabularnewline
+8058 & hexane & 112457\tabularnewline
+5461108 & {[}{[}{[}(2R,3S,4R,5R)-5-(6-amino\ldots{} & 110671\tabularnewline
+774 & 2-(1H-imidazol-5-yl)ethanamine & 98412\tabularnewline
+60961 & (2R,3R,4S,5R)-2-(6-aminopur\ldots{} & 90522\tabularnewline
+311 & 2-hydroxypropane-1,2,3-tric\ldots{} & 78795\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:hsa05321-related-genes-and-compounds} (下方表格) 为表格hsa05321 related genes and compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa05321-related-genes-and-compounds.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有409行5列，以下预览的表格可能省略部分数据；表格含有10个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:hsa05321-related-genes-and-compounds}Hsa05321 related genes and compounds}\tabularnewline
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name & LiteratureCount & cids\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name & LiteratureCount & cids\tabularnewline
+\midrule
+\endhead
+GUI ZHI & acetaldehyde & IL1B & 37277 & 177\tabularnewline
+GUI ZHI & acetaldehyde & TNF & 37277 & 177\tabularnewline
+GUI ZHI & acetaldehyde & IL6 & 37277 & 177\tabularnewline
+HUANG BAI & acetaldehyde & IL1B & 37277 & 177\tabularnewline
+HUANG BAI & acetaldehyde & TNF & 37277 & 177\tabularnewline
+HUANG BAI & acetaldehyde & IL6 & 37277 & 177\tabularnewline
+DANG GUI & 2-hydroxyethyl(tr\ldots{} & TNF & 24884 & 305\tabularnewline
+REN SHEN & 2-hydroxyethyl(tr\ldots{} & TNF & 24884 & 305\tabularnewline
+GUI ZHI & chromen-2-one & IL6 & 26252 & 323\tabularnewline
+GUI ZHI & chromen-2-one & STAT3 & 26252 & 323\tabularnewline
+REN SHEN & 2-hydroxybenzoic \ldots{} & IL4 & 38476 & 338\tabularnewline
+GUI ZHI & octanoic acid & TLR4 & 7352 & 379\tabularnewline
+HUANG BAI & octanoic acid & TLR4 & 7352 & 379\tabularnewline
+WU MEI & octanoic acid & TLR4 & 7352 & 379\tabularnewline
+XI XIN & octanoic acid & TLR4 & 7352 & 379\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ctd-ux6570ux636eux5e93ux8bb0ux5f55ux4e0eux80beux708eux76f8ux5173ux7684ux5316ux5408ux7269}{%
+\paragraph{CTD 数据库记录与肾炎相关的化合物}\label{ctd-ux6570ux636eux5e93ux8bb0ux5f55ux4e0eux80beux708eux76f8ux5173ux7684ux5316ux5408ux7269}}
+
+Figure \ref{fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related} (下方图) 为图Intersection of CTD records with herbs of hsa05321 related概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-CTD-records-with-herbs-of-hsa05321-related.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-CTD-records-with-herbs-of-hsa05321-related.pdf}
+\caption{Intersection of CTD records with herbs of hsa05321 related}\label{fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    8530, 54675866, 177, 7847, 119258, 2353, 72326, 64971,
+2519, 644019, 2703, 5959, 5280795, 5997, 305, 637511,
+638011, 323, 969516, 637568, 5281613, 16078, 5757, 702,
+2758, 445070, 5280805, 5280961, 441923, 774, 72303,
+5280863, 10255, 3893, 8181, 439246, 6184, 12389, 379,
+10228, 11092, 985, 8158, 9...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-CTD-records-with-herbs-of-hsa05321-related-content})}
+
+Table \ref{tab:Intersection-Herbs-compounds-and-targets} (下方表格) 为表格Intersection Herbs compounds and targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-Herbs-compounds-and-targets.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有307行5列，以下预览的表格可能省略部分数据；表格含有10个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:Intersection-Herbs-compounds-and-targets}Intersection Herbs compounds and targets}\tabularnewline
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name & LiteratureCount & cids\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_pinyin\_name & Ingredient.name & Target.name & LiteratureCount & cids\tabularnewline
+\midrule
+\endhead
+GUI ZHI & acetaldehyde & IL1B & 37277 & 177\tabularnewline
+GUI ZHI & acetaldehyde & TNF & 37277 & 177\tabularnewline
+GUI ZHI & acetaldehyde & IL6 & 37277 & 177\tabularnewline
+HUANG BAI & acetaldehyde & IL1B & 37277 & 177\tabularnewline
+HUANG BAI & acetaldehyde & TNF & 37277 & 177\tabularnewline
+HUANG BAI & acetaldehyde & IL6 & 37277 & 177\tabularnewline
+DANG GUI & 2-hydroxyethyl(tr\ldots{} & TNF & 24884 & 305\tabularnewline
+REN SHEN & 2-hydroxyethyl(tr\ldots{} & TNF & 24884 & 305\tabularnewline
+GUI ZHI & chromen-2-one & IL6 & 26252 & 323\tabularnewline
+GUI ZHI & chromen-2-one & STAT3 & 26252 & 323\tabularnewline
+REN SHEN & 2-hydroxybenzoic \ldots{} & IL4 & 38476 & 338\tabularnewline
+GUI ZHI & octanoic acid & TLR4 & 7352 & 379\tabularnewline
+HUANG BAI & octanoic acid & TLR4 & 7352 & 379\tabularnewline
+WU MEI & octanoic acid & TLR4 & 7352 & 379\tabularnewline
+XI XIN & octanoic acid & TLR4 & 7352 & 379\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5206ux5b50ux5bf9ux63a5}{%
+\subsection{分子对接}\label{ux5206ux5b50ux5bf9ux63a5}}
+
+\hypertarget{top-docking}{%
+\subsubsection{Top docking}\label{top-docking}}
+
+取 Tab. \ref{tab:Intersection-Herbs-compounds-and-targets}
+(即，Fig. \ref{fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related} 交集)
+成分与靶点，进行批量分子对接。
+
+以下展示了各个靶点结合度 Top 5 的成分
+
+Figure \ref{fig:Overall-combining-Affinity} (下方图) 为图Overall combining Affinity概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-combining-Affinity.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-combining-Affinity.pdf}
+\caption{Overall combining Affinity}\label{fig:Overall-combining-Affinity}
+\end{center}
+
+Table \ref{tab:Combining-Affinity} (下方表格) 为表格Combining Affinity概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Combining-Affinity.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有35行6列，以下预览的表格可能省略部分数据；表格含有10个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:Combining-Affinity}Combining Affinity}\tabularnewline
+\toprule
+hgnc\_symbol & Ingredient\ldots{} & Affinity & PubChem\_id & PDB\_ID & Combn\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_symbol & Ingredient\ldots{} & Affinity & PubChem\_id & PDB\_ID & Combn\tabularnewline
+\midrule
+\endhead
+IL1B & (1R,3aS,5a\ldots{} & -7.303 & 72326 & 9ilb & 72326\_into\ldots{}\tabularnewline
+IL1B & (3S,8S,9S,\ldots{} & -6.096 & 5997 & 9ilb & 5997\_into\_\ldots{}\tabularnewline
+IL1B & (2R,3R)-2-\ldots{} & -5.083 & 119258 & 9ilb & 119258\_int\ldots{}\tabularnewline
+IL1B & 2,2-dichlo\ldots{} & -5.038 & 5959 & 9ilb & 5959\_into\_\ldots{}\tabularnewline
+IL18 & (1E,6E)-1,\ldots{} & -4.999 & 969516 & 4xfu & 969516\_int\ldots{}\tabularnewline
+IL1B & 2-{[}(1R,6R)\ldots{} & -4.959 & 644019 & 9ilb & 644019\_int\ldots{}\tabularnewline
+IL18 & 2-(4-hydro\ldots{} & -4.76 & 72303 & 4xfu & 72303\_into\ldots{}\tabularnewline
+NOD2 & 2-(1H-imid\ldots{} & -4.417 & 774 & nod2 & 774\_into\_nod2\tabularnewline
+FOXP3 & (1E,6E)-1,\ldots{} & -4.169 & 969516 & 4wk8 & 969516\_int\ldots{}\tabularnewline
+TLR4 & (2E,6E)-3,\ldots{} & -3.564 & 445070 & 5nao & 445070\_int\ldots{}\tabularnewline
+TLR4 & (E)-3-phen\ldots{} & -3.467 & 637511 & 5nao & 637511\_int\ldots{}\tabularnewline
+TLR4 & 2-(1H-imid\ldots{} & -3.032 & 774 & 5nao & 774\_into\_5nao\tabularnewline
+TLR4 & 5-{[}(E)-2-(\ldots{} & -2.558 & 445154 & 5nao & 445154\_int\ldots{}\tabularnewline
+TLR4 & prop-2-enal & -2.434 & 7847 & 5nao & 7847\_into\_\ldots{}\tabularnewline
+IL18 & ethanol & -2.225 & 702 & 4xfu & 702\_into\_4xfu\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5bf9ux63a5ux53efux89c6ux5316}{%
+\subsubsection{对接可视化}\label{ux5bf9ux63a5ux53efux89c6ux5316}}
+
+Table \ref{tab:Metadata-of-visualized-Docking} (下方表格) 为表格Metadata of visualized Docking概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Metadata-of-visualized-Docking.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3行5列，以下预览的表格可能省略部分数据；表格含有3个唯一`PubChem\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:Metadata-of-visualized-Docking}Metadata of visualized Docking}\tabularnewline
+\toprule
+PubChem\_id & PDB\_ID & Affinity & hgnc\_symbol & Ingredient\_name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+PubChem\_id & PDB\_ID & Affinity & hgnc\_symbol & Ingredient\_name\tabularnewline
+\midrule
+\endhead
+72326 & 9ilb & -7.303 & IL1B & (1R,3aS,5aR,5bR,7\ldots{}\tabularnewline
+969516 & 4xfu & -4.999 & IL18 & (1E,6E)-1,7-bis(4\ldots{}\tabularnewline
+774 & nod2 & -4.417 & NOD2 & 2-(1H-imidazol-5-\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:Docking-72326-into-9ilb} (下方图) 为图Docking 72326 into 9ilb概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/72326\_into\_9ilb.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/72326_into_9ilb/72326_into_9ilb.png}
+\caption{Docking 72326 into 9ilb}\label{fig:Docking-72326-into-9ilb}
+\end{center}
+
+Figure \ref{fig:Docking-969516-into-4xfu} (下方图) 为图Docking 969516 into 4xfu概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/969516\_into\_4xfu.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/969516_into_4xfu/969516_into_4xfu.png}
+\caption{Docking 969516 into 4xfu}\label{fig:Docking-969516-into-4xfu}
+\end{center}
+
+Figure \ref{fig:Docking-774-into-nod2} (下方图) 为图Docking 774 into nod2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/774\_into\_nod2.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/774_into_nod2/774_into_nod2.png}
+\caption{Docking 774 into nod2}\label{fig:Docking-774-into-nod2}
+\end{center}
+
+\hypertarget{ux5c40ux90e8ux5bf9ux63a5ux7ec6ux8282}{%
+\subsubsection{局部对接细节}\label{ux5c40ux90e8ux5bf9ux63a5ux7ec6ux8282}}
+
+Figure \ref{fig:Docking-72326-into-9ilb-detail} (下方图) 为图Docking 72326 into 9ilb detail概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/detail\_72326\_into\_9ilb.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/72326_into_9ilb/detail_72326_into_9ilb.png}
+\caption{Docking 72326 into 9ilb detail}\label{fig:Docking-72326-into-9ilb-detail}
+\end{center}
+
+Figure \ref{fig:Docking-969516-into-4xfu-detail} (下方图) 为图Docking 969516 into 4xfu detail概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/detail\_969516\_into\_4xfu.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/969516_into_4xfu/detail_969516_into_4xfu.png}
+\caption{Docking 969516 into 4xfu detail}\label{fig:Docking-969516-into-4xfu-detail}
+\end{center}
+
+Figure \ref{fig:Docking-774-into-nod2-detail} (下方图) 为图Docking 774 into nod2 detail概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/detail\_774\_into\_nod2.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/774_into_nod2/detail_774_into_nod2.png}
+\caption{Docking 774 into nod2 detail}\label{fig:Docking-774-into-nod2-detail}
+\end{center}
+
+\hypertarget{top1-ux7684ux9776ux70b9ux7684ux5bccux96c6ux5206ux6790-ux53c2ux4e0e-hsa05321-ux9776ux70b9}{%
+\subsubsection{Top1 的靶点的富集分析 (参与 hsa05321 靶点)}\label{top1-ux7684ux9776ux70b9ux7684ux5bccux96c6ux5206ux6790-ux53c2ux4e0e-hsa05321-ux9776ux70b9}}
+
+Figure \ref{fig:TOP-KEGG-enrichment} (下方图) 为图TOP KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TOP-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TOP-KEGG-enrichment.pdf}
+\caption{TOP KEGG enrichment}\label{fig:TOP-KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:TOP-GO-enrichment} (下方图) 为图TOP GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TOP-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TOP-GO-enrichment.pdf}
+\caption{TOP GO enrichment}\label{fig:TOP-GO-enrichment}
+\end{center}
+
+Figure \ref{fig:TOP-hsa05321-visualization} (下方图) 为图TOP hsa05321 visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/hsa05321.pathview.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-03-29_17_34_39.609851/hsa05321.pathview.png}
+\caption{TOP hsa05321 visualization}\label{fig:TOP-hsa05321-visualization}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa05321}
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Figure \ref{fig:TOP-pharmacology-visualization} (下方图) 为图TOP pharmacology visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TOP-pharmacology-visualization.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TOP-pharmacology-visualization.pdf}
+\caption{TOP pharmacology visualization}\label{fig:TOP-pharmacology-visualization}
+\end{center}
+
+\hypertarget{top1-ux7684ux7ed3ux5408ux9776ux70b9-il1b-ux53c2ux4e0eux7684ux901aux8def}{%
+\paragraph{TOP1 的结合靶点 (IL1B) 参与的通路}\label{top1-ux7684ux7ed3ux5408ux9776ux70b9-il1b-ux53c2ux4e0eux7684ux901aux8def}}
+
+Table \ref{tab:IL1B-kegg} (下方表格) 为表格IL1B kegg概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IL1B-kegg.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有43行9列，以下预览的表格可能省略部分数据；表格含有43个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:IL1B-kegg}IL1B kegg}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+hsa05143 & Africa\ldots{} & 4/4 & 37/8672 & 2.8046\ldots{} & 1.9487\ldots{} & 3.0019\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa05332 & Graft-\ldots{} & 4/4 & 42/8672 & 4.7531\ldots{} & 1.9487\ldots{} & 3.0019\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa05144 & Malaria & 4/4 & 50/8672 & 9.7797\ldots{} & 2.6731\ldots{} & 4.1177\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa05321 & Inflam\ldots{} & 4/4 & 65/8672 & 2.8750\ldots{} & 5.8939\ldots{} & 9.0791\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa05323 & Rheuma\ldots{} & 4/4 & 93/8672 & 1.2398\ldots{} & 1.7698\ldots{} & 2.7262\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa04657 & IL-17 \ldots{} & 4/4 & 94/8672 & 1.2949\ldots{} & 1.7698\ldots{} & 2.7262\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa05142 & Chagas\ldots{} & 4/4 & 102/8672 & 1.8045\ldots{} & 1.8497\ldots{} & 2.8493\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa05146 & Amoebi\ldots{} & 4/4 & 102/8672 & 1.8045\ldots{} & 1.8497\ldots{} & 2.8493\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa05164 & Influe\ldots{} & 4/4 & 171/8672 & 1.4603\ldots{} & 1.2227\ldots{} & 1.8835\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa01523 & Antifo\ldots{} & 3/4 & 30/8672 & 1.4911\ldots{} & 1.2227\ldots{} & 1.8835\ldots{} & 3553/3\ldots{} & 3\tabularnewline
+hsa05152 & Tuberc\ldots{} & 4/4 & 180/8672 & 1.7961\ldots{} & 1.3389\ldots{} & 2.0625\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa04940 & Type I\ldots{} & 3/4 & 43/8672 & 4.5273\ldots{} & 3.0937\ldots{} & 4.7656\ldots{} & 3458/3\ldots{} & 3\tabularnewline
+hsa05134 & Legion\ldots{} & 3/4 & 56/8672 & 1.0157\ldots{} & 6.4072\ldots{} & 9.8699\ldots{} & 3553/3\ldots{} & 3\tabularnewline
+hsa04060 & Cytoki\ldots{} & 4/4 & 297/8672 & 1.3490\ldots{} & 7.9018\ldots{} & 1.2172\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+hsa05133 & Pertussis & 3/4 & 76/8672 & 2.5716\ldots{} & 1.3712\ldots{} & 2.1123\ldots{} & 3553/3\ldots{} & 3\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:IL1B-go} (下方表格) 为表格IL1B go概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/IL1B-go.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有431行10列，以下预览的表格可能省略部分数据；表格含有2个唯一`ont'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\item ont:  One of "BP", "MF", and "CC" subontologies. The Cellular Component (CC), the Molecular Function (MF) and the Biological Process (BP).
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:IL1B-go}IL1B go}\tabularnewline
+\toprule
+ont & ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ont & ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+BP & \url{GO:004}\ldots{} & astroc\ldots{} & 4/4 & 24/18614 & 2.1250\ldots{} & 2.5330\ldots{} & 2.0802\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:001}\ldots{} & astroc\ldots{} & 4/4 & 43/18614 & 2.4679\ldots{} & 1.4709\ldots{} & 1.2080\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:006}\ldots{} & glial \ldots{} & 4/4 & 55/18614 & 6.8205\ldots{} & 2.7100\ldots{} & 2.2256\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:003}\ldots{} & positi\ldots{} & 4/4 & 70/18614 & 1.8336\ldots{} & 5.4642\ldots{} & 4.4875\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:015}\ldots{} & neuroi\ldots{} & 4/4 & 76/18614 & 2.5657\ldots{} & 6.1166\ldots{} & 5.0234\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:004}\ldots{} & astroc\ldots{} & 4/4 & 87/18614 & 4.4514\ldots{} & 8.8434\ldots{} & 7.2628\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:003}\ldots{} & regula\ldots{} & 4/4 & 98/18614 & 7.2239\ldots{} & 1.0385\ldots{} & 8.5296\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:003}\ldots{} & chemok\ldots{} & 4/4 & 99/18614 & 7.5281\ldots{} & 1.0385\ldots{} & 8.5296\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:003}\ldots{} & positi\ldots{} & 4/4 & 100/18614 & 7.8417\ldots{} & 1.0385\ldots{} & 8.5296\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:002}\ldots{} & glial \ldots{} & 4/4 & 119/18614 & 1.5880\ldots{} & 1.8929\ldots{} & 1.5545\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:005}\ldots{} & positi\ldots{} & 3/4 & 16/18614 & 2.0831\ldots{} & 2.2573\ldots{} & 1.8539\ldots{} & 3458/3\ldots{} & 3\tabularnewline
+BP & \url{GO:015}\ldots{} & positi\ldots{} & 3/4 & 18/18614 & 3.0352\ldots{} & 3.0149\ldots{} & 2.4760\ldots{} & 3553/3\ldots{} & 3\tabularnewline
+BP & \url{GO:005}\ldots{} & positi\ldots{} & 4/4 & 154/18614 & 4.5062\ldots{} & 4.1318\ldots{} & 3.3933\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+BP & \url{GO:006}\ldots{} & positi\ldots{} & 3/4 & 21/18614 & 4.9465\ldots{} & 4.2115\ldots{} & 3.4588\ldots{} & 3553/3\ldots{} & 3\tabularnewline
+BP & \url{GO:005}\ldots{} & regula\ldots{} & 4/4 & 163/18614 & 5.6679\ldots{} & 4.5041\ldots{} & 3.6991\ldots{} & 3458/3\ldots{} & 4\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-BatmanTcm20Kong2024}{}%
+1. Kong, X. \emph{et al.} BATMAN-tcm 2.0: An enhanced integrative database for known and predicted interactions between traditional chinese medicine ingredients and target proteins. \emph{Nucleic acids research} \textbf{52}, D1110--D1120 (2024).
+
+\leavevmode\hypertarget{ref-ComparativeToxDavis2023}{}%
+2. Davis, A. P. \emph{et al.} Comparative toxicogenomics database (ctd): Update 2023. \emph{Nucleic acids research} \textbf{51}, D1257--D1262 (2023).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+3. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheDisgenetKnPinero2019}{}%
+4. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+5. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-PharmgkbAWorBarbar2018}{}%
+6. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
+
+\leavevmode\hypertarget{ref-AutodockVina1Eberha2021}{}%
+7. Eberhardt, J., Santos-Martins, D., Tillack, A. F. \& Forli, S. AutoDock vina 1.2.0: New docking methods, expanded force field, and python bindings. \emph{Journal of Chemical Information and Modeling} \textbf{61}, 3891--3898 (2021).
+
+\leavevmode\hypertarget{ref-AutogridfrImpZhang2019}{}%
+8. Zhang, Y., Forli, S., Omelchenko, A. \& Sanner, M. F. AutoGridFR: Improvements on autodock affinity maps and associated software tools. \emph{Journal of computational chemistry} \textbf{40}, 2882--2886 (2019).
+
+\leavevmode\hypertarget{ref-AutodockCrankpZhang2019}{}%
+9. Zhang, Y. \& Sanner, M. F. AutoDock crankpep: Combining folding and docking to predict protein-peptide complexes. \emph{Bioinformatics (Oxford, England)} \textbf{35}, 5121--5127 (2019).
+
+\leavevmode\hypertarget{ref-AutositeAnAuRavind2016}{}%
+10. Ravindranath, P. A. \& Sanner, M. F. AutoSite: An automated approach for pseudo-ligands prediction-from ligand-binding sites identification to predicting key ligand atoms. \emph{Bioinformatics (Oxford, England)} \textbf{32}, 3142--3149 (2016).
+
+\leavevmode\hypertarget{ref-AutodockfrAdvRavind2015}{}%
+11. Ravindranath, P. A., Forli, S., Goodsell, D. S., Olson, A. J. \& Sanner, M. F. AutoDockFR: Advances in protein-ligand docking with explicitly specified binding site flexibility. \emph{PLoS computational biology} \textbf{11}, (2015).
+\end{cslreferences}
+
+\end{document}
