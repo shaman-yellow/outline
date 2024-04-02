@@ -47,11 +47,9 @@ set_index()
 
 ### 进一步分析
 
-
 1. 查询正常组与结直肠癌组相比，TSC1的表达情况。期望TSC1仅在结肠癌的耐药群体种高表达，在正常组以及癌组织的非耐药中不表达或低表达。若在癌组织中高表达，则仅看“2”；若在正常组中高表达，则仅看“3”。
 2. 生信分析结果已知，与TSC1有相互作用且抑制的蛋白有5种（YWHAE、HSPA8、PTGES3、PSMG2、PLK2），但是能否直接结合作为筛选靶点未知，麻烦进行分子对接研究TSC1与5种蛋白直接结合的可能性。届时将选择直接结合的对子进行实验。
 3. 生信分析结果已知，差异癌膜蛋白AA为：AIFM1, TFRC, ITGAM, PECAM1 ，其对应的相互作用的蛋白AA‘分别有9、7、4、1个。请将这21对相互作用的蛋白做一下关联分析，找到非抑制的对子（可以促进表达也可以没有促进抑制关系）；然后进行分子对接，需要了解AA和AA'直接结合的可能性。届时将选择直接结合的对子进行实验。
-
 
 
 
@@ -186,7 +184,7 @@ lm.pps <- step1(lm.pps)
 lm.pps <- step2(lm.pps, Cancer - Control, use = "P", label = "Gene_name")
 lm.pps@plots$step2$p.valcano$`Cancer - Control`
 tops.pps <- tops <- dplyr::relocate(lm.pps@tables$step2$tops$`Cancer - Control`, Gene_name, logFC)
-
+tops.pps
 ```
 
 ## 膜蛋白筛选
@@ -319,6 +317,7 @@ lst.filter <- filter(
   less.label = F
 )
 lst.filter$p.ppi
+lst.filter$edges
 ```
 
 ```{r}
@@ -476,9 +475,9 @@ autor(wrap(p.pie_tcgaRna, 10, 7))
 
 ```{r}
 tc.rna <- step3(tc, query = "RNA")
-tc.rna@object <- NULL
 lm.tcgaRna <- asjob_limma(tc.rna)
 lm.tcgaRna@object
+tc.rna@object <- NULL
 
 lm.tcgaRna <- map(lm.tcgaRna, lm.tcgaPr)
 lm.tcgaRna <- step1(lm.tcgaRna)
@@ -591,5 +590,33 @@ t.negCor <- dplyr::filter(cor.tcgaRna$sig.corp, To == "TSC1", cor < 0)
 
 # 附：进一步分析蛋白结合
 
+## TSC1 在正常组与结直肠癌组的表达
 
+```{r}
+asjob_limma(tc)
+lm.tcgaRna2 <- asjob_limma(step3(tc, query = "RNA"), group = "isTumor")
+lm.tcgaRna2 <- step1(lm.tcgaRna2)
+lm.tcgaRna2 <- step2(lm.tcgaRna2, tumor - normal)
+lm.tcgaRna2@plots$step2$p.valcano
+lm.tcgaRna2@params$normed_data$genes$gene_name %>% grpf("TSC1", T)
+dplyr::filter(lm.tcgaRna2@tables$step2$tops$`tumor - normal`, grpl(gene_name, "TSC1", T))
 
+p.box.tsc1 <- map(lm.tcgaRna2, "TSC1", "gene_name")
+p.box.tsc1
+
+```
+
+## 差异癌膜蛋白AA 与候选结合蛋白的相关性
+
+```{r}
+lm.pps$genes
+cor.pps <- cal_corp(lm.pps, NULL, lst.filter$edges$from, lst.filter$edges$to, use = "Gene_name")
+cor.pps$hp
+
+lst.filter$edges
+cor.pps$corp
+
+lst.filter$edges
+cor.ppsFilter <- as_tibble(merge(lst.filter$edges, cor.pps$corp, by.x = c("from", "to"), by.y = c("From", "To")))
+cor.ppsFilter
+```

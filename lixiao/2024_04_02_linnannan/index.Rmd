@@ -1,0 +1,122 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(4), eval = ic())
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+1、能否发表关于ADHD（儿童注意力缺陷多动障碍）的生信文章
+2、或者是ADHD与过敏类疾病（如过敏性鼻炎）的生信文章
+3、如果可以发表，有没有建议的拟题
+
+Attention deficit/hyperactivity disorder (ADHD)
+
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+Sherlock: detecting gene-disease associations by matching patterns of expression QTL and GWAS
+SMR: Integration of summary data from GWAS and eQTL studies predicts complex trait gene targets
+
+## ADHD 
+
+### eQTL
+
+大脑
+
+### GWAS
+
+Review: PMID: 33495110
+<https://www.sciencedirect.com/science/article/pii/S0924977X21000067?via%3Dihub>
+
+### Mendelian randomization (MR)
+
+PMID: 36124769
+Association Between Human **Blood Metabolome** and the Risk of Psychiatric Disorders
+<https://pubmed.ncbi.nlm.nih.gov/36124769/>
+
+PMID: 37168108
+Two-sample Mendelian randomization analysis investigates causal associations
+between **gut microbiota** and attention deficit hyperactivity disorder
+<https://pubmed.ncbi.nlm.nih.gov/37168108/>
+
+### Microbiota
+
+(main data)
+Gut microbiome in ADHD and its relation to neural reward anticipation
+<https://pubmed.ncbi.nlm.nih.gov/28863139/>
+
+PMID: 26046241
+Gut-Microbiota-Brain Axis and Its Effect on Neuropsychiatric Disorders With Suspected Immune Dysregulation
+<https://pubmed.ncbi.nlm.nih.gov/26046241/>
+(influence the immune and nervous systems)
+
+PMID: 37233633
+Understanding the ADHD-Gut Axis by Metabolic Network Analysis.
+<https://pubmed.ncbi.nlm.nih.gov/37233633/>
+
+### transcriptome
+
+Integrated Analysis of microRNA and mRNA Expression Profiles: An Attempt to Disentangle the Complex Interaction Network in Attention Deficit Hyperactivity Disorder
+<https://www.mdpi.com/2076-3425/9/10/288>
+
+(no data)
+Immune signatures and disorder-specific patterns in a cross-disorder gene expression analysis
+<https://www.cambridge.org/core/journals/the-british-journal-of-psychiatry/article/immune-signatures-and-disorderspecific-patterns-in-a-crossdisorder-gene-expression-analysis/A35E995DD31A2174FE998C5F09FBA6CF>
+
+GSE205129 (WBC?)
+
+### Epigenetic modification
+
+

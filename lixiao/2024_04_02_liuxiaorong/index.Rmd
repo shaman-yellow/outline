@@ -32,6 +32,8 @@ set_index()
 
 # 摘要 {#abstract}
 
+生信需求：三阴乳腺癌的多药耐药的靶点分析看看有没有什么创新性比较好的通路
+
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
@@ -58,16 +60,3 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
-
-```{r}
-je <- job_esearch("DNA methylation")
-
-vis(je)
-
-```
-
-## abismal
-
-<https://github.com/smithlabcode/abismal>
-
-
