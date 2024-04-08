@@ -49,7 +49,7 @@ header-includes:
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(2, 2, 0, 2, 0))
+info <- items(belong = odate(4), eval = ic(2, 2, 0, 2, 1))
 show.ic(info)
 
 order_publish()
@@ -92,6 +92,8 @@ set_index()
 
 2、、通过PubChem数据库获取中药单体主要活性成分的2D化学结构，在PDB数据库中查找相关核心靶点蛋白3D结构，通过Autodock软件进行分子对接，获取结合能最高的位点，最后通过Pymol软件进行可视化处理。
 
+化合物 3081405
+
 交付：
 
 1. 疾病-复方-成分-靶点网络图
@@ -128,6 +130,27 @@ set_index()
 - 其它候选成分靶点 Tab. \@ref(tab:Intersection-Herbs-compounds-and-targets)
 - 分子对接良好的结果汇总表格 Tab. \@ref(tab:Combining-Affinity)
 
+
+## 补充的内容
+
+- 分子对接前的网络图 Fig. \@ref(fig:CTD-filtered-Compounds-Network-pharmacology-with-disease)，
+  仅根据 Fig. \@ref(fig:Overall-targets-number-of-datasets) 过滤靶点，和
+  Fig. \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related) 过滤成分。
+- 随后分子对接已全部重做。
+- 分子对接后，筛选 Affinity &lt; -1.2, 网络图 Fig. \@ref(fig:Network-pharmacology-Affinity-filtered)
+  (唯独 Fig. \@ref(fig:Network-pharmacology-Affinity-filtered) 中化合物采用了最简洁的同义名，其他图没有修改;
+  此外，Tab. \@ref(tab:Combining-Affinity) 有化合物名称和来源药物)
+- 关于化合物 3081405, 存在于收集的复方成分中，
+  可在 Tab. \@ref(tab:tables-of-Herbs-compounds-and-targets) 中找到；
+  但不在 Tab. \@ref(tab:Intersection-Herbs-compounds-and-targets) 中，
+  是 CTD 的步骤过滤除外的 (Fig. \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related))。
+
+以下是 BATMAN 记录的 3081405 的靶点 (预测的靶点的 score cutoff 设置为 0.9)。
+
+```{r eval = T, echo = F, results = "asis"}
+#| 3081405-targets
+autor(dplyr::filter(bt@params$easyRead, Ingredient.id == 3081405))
+```
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
@@ -178,7 +201,7 @@ autor(wrap(bt@plots$step3$p.herbs_compounds, 12))
 
 ```{r eval = T, echo = F, results = "asis"}
 #| tables-of-Herbs-compounds-and-targets
-autor(bt@params$easyRead[, -1])
+autor(bt@params$easyRead)
 ```
 
 ```{r}
@@ -195,6 +218,8 @@ bt <- step3(bt)
 
 bt@plots$step3$p.pharm
 bt@params$compounds_info
+
+3081405 %in% bt@params$compounds_info$cids
 
 bt@params$compounds_info
 bt@params$herbs_info
@@ -270,29 +295,7 @@ en.herbs@plots$step2$p.pathviews$hsa05321
 
 ### 与疾病相关的活性成分筛选
 
-#### PubMed 文献报道数 (任意领域)
-
-```{r eval = T, echo = F, results = "asis"}
-#| All-compounds-Literature-Count
-autor(dplyr::arrange(bt@params$compounds_info, dplyr::desc(LiteratureCount)))
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| hsa05321-related-genes-and-compounds
-autor(cpds.infla)
-```
-
-```{r}
-genes.infla <- dplyr::filter(en.herbs@tables$step1$res.kegg$ids, ID == "hsa05321")$geneName_list[[1]]
-genes.infla
-
-cpds.infla <- dplyr::filter(bt@params$data.allu, Target.name %in% genes.infla)
-cpds.infla <- map(cpds.infla, "Ingredient.name", bt@params$compounds_info, "name", "LiteratureCount", col = "LiteratureCount")
-cpds.infla <- map(cpds.infla, "Ingredient.name", bt@params$compounds_info, "name", "cids", col = "cids")
-cpds.infla
-```
-
-#### CTD 数据库记录与肾炎相关的化合物
+#### CTD 数据库记录与肠炎 (Colitis) 相关的化合物
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Intersection-of-CTD-records-with-herbs-of-hsa05321-related
@@ -301,7 +304,24 @@ autor(p.vennShip)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Intersection-Herbs-compounds-and-targets
-autor(cpds.infla.ctd)
+autor(cpds.int.ctd)
+```
+
+## 分子对接前的网络图
+
+```{r eval = T, echo = F, results = "asis"}
+#| CTD-filtered-Compounds-Network-pharmacology-with-disease
+autor(bt@params$p.pharm2cpdCTD)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Compounds-CTD-Synonyms
+autor(syns)
+```
+
+```{r}
+syns <- try_get_syn(unique(cpds.int.ctd$cids))
+syns
 ```
 
 ```{r}
@@ -311,26 +331,31 @@ ct@params$dis %<>% dplyr::slice(2)
 ct <- step2(ct)
 ct@tables$step2$t.chemical
 
-p.vennShip <- new_venn(lst = list(CTD_records = ct@tables$step2$t.chemical$CID,
-    herbs_related = cpds.infla$cids))
+cpds.int <- dplyr::filter(bt@params$data.allu, Target.name %in% bt@params$p.venn2dis$ins)
+cpds.int <- map(cpds.int, "Ingredient.name", bt@params$compounds_info, "name", "LiteratureCount", col = "LiteratureCount")
+cpds.int <- map(cpds.int, "Ingredient.name", bt@params$compounds_info, "name", "cids", col = "cids")
+cpds.int
 
+p.vennShip <- new_venn(lst = list(CTD_records = ct@tables$step2$t.chemical$CID,
+    herbs_related = cpds.int$cids))
 p.vennShip$ins
 ```
 
 ```{r}
-cpds.infla.ctd <- dplyr::filter(cpds.infla, cids %in% as.integer(p.vennShip$ins))
-cpds.infla.ctd
+cpds.int.ctd <- dplyr::filter(cpds.int, cids %in% as.integer(p.vennShip$ins))
+cpds.int.ctd
+
+bt <- map(bt, list(gm@params$lst.genes), compounds = unique(cpds.int.ctd$Ingredient.name), name = "cpdCTD")
+
 ```
 
 ## 分子对接
 
 ### Top docking
 
-取 Tab. \@ref(tab:Intersection-Herbs-compounds-and-targets) 
-(即，Fig. \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related) 交集)
-成分与靶点，进行批量分子对接。
+取  Fig. \@ref(fig:CTD-filtered-Compounds-Network-pharmacology-with-disease) 成分与靶点，进行批量分子对接。
 
-以下展示了各个靶点结合度 Top 5 的成分
+以下展示了各个靶点结合度 Top 5 的成分 (前 25 条记录)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Overall-combining-Affinity
@@ -339,7 +364,16 @@ autor(wrap(vn@plots$step5$p.res_vina, 9, 12.5))
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Combining-Affinity
-autor(res(vn))
+autor(resAff)
+```
+
+```{r}
+resAff <- res(vn, bt$data.allu)
+resAff <- map(resAff, "PubChem_id", syns, "CID", "Synonym", col = "Synonym")
+resAff
+
+3081405
+
 ```
 
 ### 对接可视化
@@ -356,12 +390,12 @@ autor(vn@plots$step6$Top1_72326_into_9ilb)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Docking-969516-into-4xfu
-autor(vn@plots$step6$Top2_969516_into_4xfu)
+autor(vn@plots$step6$Top2_969516_into_7kxw)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Docking-774-into-nod2
-autor(vn@plots$step6$Top3_774_into_nod2)
+autor(vn@plots$step6$Top3_644019_into_8dc8)
 ```
 
 ### 局部对接细节
@@ -373,18 +407,18 @@ autor(vn@plots$step7$Top1_72326_into_9ilb)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Docking-969516-into-4xfu-detail
-autor(vn@plots$step7$Top2_969516_into_4xfu)
+autor(vn@plots$step7$Top2_969516_into_7kxw)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Docking-774-into-nod2-detail
-autor(vn@plots$step7$Top3_774_into_nod2)
+autor(vn@plots$step7$Top3_644019_into_8dc8)
 ```
 
 
 ```{r}
 file.copy("~/Downloads/AF-Q9HC29-F1-model_v4.pdb", "./order_material/nod2.pdb")
-vn <- job_vina(.layout = dplyr::distinct(cpds.infla.ctd, Ingredient.name, Target.name, cids))
+vn <- job_vina(.layout = dplyr::distinct(cpds.int.ctd, Ingredient.name, Target.name, cids))
 vn <- step1(vn, pdbs = c(IL13 = "3lb6"))
 vn <- step2(vn, F)
 vn <- step3(vn, extra_pdb.files = c(NOD2 = "./order_material/nod2.pdb"))
@@ -394,18 +428,37 @@ vn@step <- 4L
 vn <- step5(vn)
 vn@plots$step5$p.res_vina
 vn@tables$step5$res_dock
-res(vn)
 
-vn@step <- 5L
 vn <- step6(vn, top = 3, unique = T)
 vn@plots$step6$Top1_72326_into_9ilb
-vn@plots$step6$Top2_969516_into_4xfu
-vn@plots$step6$Top3_774_into_nod2
+vn@plots$step6$Top2_969516_into_7kxw
+vn@plots$step6$Top3_644019_into_8dc8
 vn@tables$step6$data
 vn <- step7(vn)
 vn@plots$step7$Top1_72326_into_9ilb
-vn@plots$step7$Top2_969516_into_4xfu
-vn@plots$step7$Top3_774_into_nod2
+vn@plots$step7$Top2_969516_into_7kxw
+vn@plots$step7$Top3_644019_into_8dc8
+```
+
+### 对接能量 < -1.2 网络图
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-Affinity-filtered
+autor(bt@params$p.pharm2aff)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-Affinity-filtered-data
+autor(bt@params$p.pharm2aff$.data)
+```
+
+```{r}
+cpd.aff <- dplyr::filter(vn@tables$step5$res_dock, Affinity < -1.2)
+cpd.aff
+
+bt <- map(bt, list(gm@params$lst.genes), compounds = unique(cpd.aff$Ingredient_name), name = "aff",
+  syns = dplyr::distinct(resAff, Ingredient_name, Synonym), less.label = F)
+bt@params$p.pharm2aff
 ```
 
 ### Top1 的靶点的富集分析 (参与 hsa05321 靶点) 
@@ -421,24 +474,16 @@ autor(en.top@plots$step1$p.go$ids)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| TOP-hsa05321-visualization
-autor(en.top@plots$step2$p.pathviews$hsa05321)
-```
-
-```{r eval = T, echo = F, results = "asis"}
 #| TOP-pharmacology-visualization
 autor(p.alluTop.dis)
 ```
 
 ```{r}
-cpd.top <- dplyr::filter(cpds.infla.ctd, cids %in% vn@tables$step6$data$PubChem_id[1])
+cpd.top <- dplyr::filter(cpds.int.ctd, cids %in% vn@tables$step6$data$PubChem_id[1])
 en.top <- job_enrich(cpd.top$Target.name)
 en.top <- step1(en.top)
 en.top@plots$step1$p.kegg
 en.top@tables$step1$res.kegg$ids
-en.top <- step2(en.top, "hsa05321")
-en.top@plots$step2$p.pathviews$hsa05321
-
 p.alluTop.dis <- new_allu(cpd.top, axes = 1:3, trunc = T)
 
 p.alluTop.all <- new_allu(
@@ -468,5 +513,9 @@ pathGo.il1b
 
 ```{r}
 pretty_docking("9ilb.pdbqt", "72326_into_9ilb_out.pdbqt", "vina_space/72326_into_9ilb")
+```
+
+```{r}
+txt <- pdftools::pdf_text("./material/note.pdf")
 ```
 

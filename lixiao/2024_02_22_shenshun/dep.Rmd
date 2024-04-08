@@ -64,3 +64,9 @@ lst.pr$meta.prr %>% dplyr::group_by(kmeans_group) %>% dplyr::summarise(mean = me
 lst.pr
 
 ```
+
+link <- start_drive()
+link$open()
+
+ele <- link$findElement("xpath", "//form//div//select[@name='rec_select']//option[@value='pdbid']")
+ele$clickElement()

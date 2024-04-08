@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic())
+info <- items(belong = odate(4), eval = ic(0, 0, 0, 0, 0))
 show.ic(info)
 
 order_publish()
@@ -37,6 +37,8 @@ set_index()
 
 CDS（coding sequences）它就是与蛋白序列一一对应的DNA序列，并且序列中间不存在其他与蛋白无关的序列，和真实情况最接近。
 
+HBx病毒基因组序列的链接：<https://www.ncbi.nlm.nih.gov/nuccore/NC_003977.2/>
+
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
@@ -63,5 +65,6 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
 
 

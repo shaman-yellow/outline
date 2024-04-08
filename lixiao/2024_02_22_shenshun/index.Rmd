@@ -608,6 +608,8 @@ p.box.tsc1
 
 ## 差异癌膜蛋白AA 与候选结合蛋白的相关性
 
+### 相关性
+
 ```{r}
 lm.pps$genes
 cor.pps <- cal_corp(lm.pps, NULL, lst.filter$edges$from, lst.filter$edges$to, use = "Gene_name")
@@ -619,4 +621,29 @@ cor.pps$corp
 lst.filter$edges
 cor.ppsFilter <- as_tibble(merge(lst.filter$edges, cor.pps$corp, by.x = c("from", "to"), by.y = c("From", "To")))
 cor.ppsFilter
+
 ```
+
+### 蛋白对接
+
+RosettaDock4.0
+
+- <https://zhuanlan.zhihu.com/p/490274309>
+- <https://pubmed.ncbi.nlm.nih.gov/17825317/>
+- <https://pubmed.ncbi.nlm.nih.gov/18640688/>
+- <https://www.rosettacommons.org/docs/latest/getting_started/Getting-Started>
+- <https://github.com/RosettaCommons/rosetta>
+- <https://www.pyrosetta.org/downloads>
+
+- <https://cluspro.bu.edu/publications.php>
+
+```{r}
+hk <- job_hawkdock(.layout = cor.ppsFilter)
+hk <- step1(hk)
+hk@params$layouts
+
+
+
+```
+
+

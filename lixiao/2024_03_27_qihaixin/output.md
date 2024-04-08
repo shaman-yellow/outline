@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 中药复方乌梅丸网络药理学分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-01}}
+\textbf{\textcolor{white}{2024-04-08}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -91,6 +91,8 @@ header-includes:
 1、选取中药复方（乌梅丸）中和调控纤维化相关的单体成分，结合pubchem、chemical book、scifinder等数据库分析排名靠前的化合物的活性信息，并通过中医网络药理学方法（如TCMSP平台和BATMAN-TCM数据库），分析有效成分XXX的对应靶点YYY，功能富集分析显示YYY调控肠道纤维化。
 
 2、、通过PubChem数据库获取中药单体主要活性成分的2D化学结构，在PDB数据库中查找相关核心靶点蛋白3D结构，通过Autodock软件进行分子对接，获取结合能最高的位点，最后通过Pymol软件进行可视化处理。
+
+化合物 3081405
 
 交付：
 
@@ -129,6 +131,40 @@ header-includes:
 - 分子对接良好的结果汇总表格 Tab. \@ref(tab:Combining-Affinity)
 
 
+## 补充的内容
+
+- 分子对接前的网络图 Fig. \@ref(fig:CTD-filtered-Compounds-Network-pharmacology-with-disease)，
+  仅根据 Fig. \@ref(fig:Overall-targets-number-of-datasets) 过滤靶点，和
+  Fig. \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related) 过滤成分。
+- 随后分子对接已全部重做。
+- 分子对接后，筛选 Affinity &lt; -1.2, 网络图 Fig. \@ref(fig:Network-pharmacology-Affinity-filtered)
+  (唯独 Fig. \@ref(fig:Network-pharmacology-Affinity-filtered) 中化合物采用了最简洁的同义名，其他图没有修改;
+  此外，Tab. \@ref(tab:Combining-Affinity) 有化合物名称和来源药物)
+- 关于化合物 3081405, 存在于收集的复方成分中，
+  可在 Tab. \@ref(tab:tables-of-Herbs-compounds-and-targets) 中找到；
+  但不在 Tab. \@ref(tab:Intersection-Herbs-compounds-and-targets) 中，
+  是 CTD 的步骤过滤除外的 (Fig. \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related))。
+
+以下是 BATMAN 记录的 3081405 的靶点 (预测的靶点的 score cutoff 设置为 0.9)。
+
+Table \@ref(tab:3081405-targets) (下方表格) 为表格3081405 targets概览。
+
+**(对应文件为 `Figure+Table/3081405-targets.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有6行4列，以下预览的表格可能省略部分数据；含有1个唯一`Ingredient.id；含有2个唯一`Herb\_pinyin\_name；含有1个唯一`Ingredient.name；含有3个唯一`Target.name'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:3081405-targets)3081405 targets
+
+|Ingredient.id |Herb_pinyin_name |Ingredient.name      |Target.name |
+|:-------------|:----------------|:--------------------|:-----------|
+|3081405       |HUANG BAI        |(7S,13aS)-3,10-di... |CYP2C9      |
+|3081405       |HUANG BAI        |(7S,13aS)-3,10-di... |CYP1A2      |
+|3081405       |HUANG BAI        |(7S,13aS)-3,10-di... |CYP3A4      |
+|3081405       |HUANG LIAN       |(7S,13aS)-3,10-di... |CYP2C9      |
+|3081405       |HUANG LIAN       |(7S,13aS)-3,10-di... |CYP1A2      |
+|3081405       |HUANG LIAN       |(7S,13aS)-3,10-di... |CYP3A4      |
+
 
 
 # 前言 {#introduction}
@@ -148,6 +184,7 @@ Mainly used method:
 - R package `ClusterProfiler` used for gene enrichment analysis[@ClusterprofilerWuTi2021].
 - Databses of `DisGeNet`, `GeneCards`, `PharmGKB` used for collating disease related targets[@TheDisgenetKnPinero2019; @TheGenecardsSStelze2016; @PharmgkbAWorBarbar2018].
 - The CLI tools of `AutoDock vina` and `ADFR` software used for auto molecular docking[@AutodockVina1Eberha2021; @AutogridfrImpZhang2019; @AutodockCrankpZhang2019; @AutositeAnAuRavind2016; @AutodockfrAdvRavind2015].
+- R package `pathview` used for KEGG pathways visualization[@PathviewAnRLuoW2013].
 - R version 4.3.2 (2023-10-31); Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
 # 分析结果 {#results}
@@ -163,7 +200,7 @@ Mainly used method:
 Table \@ref(tab:Herbs-information) (下方表格) 为表格Herbs information概览。
 
 **(对应文件为 `Figure+Table/Herbs-information.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行4列，以下预览的表格可能省略部分数据；表格含有10个唯一`Pinyin.Name'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10行4列，以下预览的表格可能省略部分数据；含有10个唯一`Pinyin.Name'。
 \end{tcolorbox}
 \end{center}
 
@@ -210,30 +247,30 @@ All\_intersection
 Table \@ref(tab:tables-of-Herbs-compounds-and-targets) (下方表格) 为表格tables of Herbs compounds and targets概览。
 
 **(对应文件为 `Figure+Table/tables-of-Herbs-compounds-and-targets.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有15264行3列，以下预览的表格可能省略部分数据；表格含有10个唯一`Herb\_pinyin\_name'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有15264行4列，以下预览的表格可能省略部分数据；含有2200个唯一`Ingredient.id；含有10个唯一`Herb\_pinyin\_name；含有2186个唯一`Ingredient.name；含有2267个唯一`Target.name'。
 \end{tcolorbox}
 \end{center}
 
 Table: (\#tab:tables-of-Herbs-compounds-and-targets)Tables of Herbs compounds and targets
 
-|Herb_pinyin_name |Ingredient.name                |Target.name |
-|:----------------|:------------------------------|:-----------|
-|GUI ZHI          |3,4-dihydroxybenzoic acid      |AKT1        |
-|GUI ZHI          |3,4-dihydroxybenzoic acid      |MGAM        |
-|GUI ZHI          |[5-(6-aminopurin-9-yl)-4-hy... |NA          |
-|GUI ZHI          |3-hydroxybenzaldehyde          |NA          |
-|GUI ZHI          |3-phenylpropanoic acid         |NA          |
-|GUI ZHI          |4-hydroxybenzoic acid          |HDAC6       |
-|GUI ZHI          |acetaldehyde                   |HDAC11      |
-|GUI ZHI          |acetaldehyde                   |MMP2        |
-|GUI ZHI          |acetaldehyde                   |CDT1        |
-|GUI ZHI          |acetaldehyde                   |CAT         |
-|GUI ZHI          |acetaldehyde                   |MMP1        |
-|GUI ZHI          |acetaldehyde                   |PPARG       |
-|GUI ZHI          |acetaldehyde                   |TIMP1       |
-|GUI ZHI          |acetaldehyde                   |AGT         |
-|GUI ZHI          |acetaldehyde                   |IL1B        |
-|...              |...                            |...         |
+|Ingredient.id |Herb_pinyin_name |Ingredient.name      |Target.name |
+|:-------------|:----------------|:--------------------|:-----------|
+|72            |GUI ZHI          |3,4-dihydroxybenz... |AKT1        |
+|72            |GUI ZHI          |3,4-dihydroxybenz... |MGAM        |
+|73            |GUI ZHI          |[5-(6-aminopurin-... |NA          |
+|101           |GUI ZHI          |3-hydroxybenzalde... |NA          |
+|107           |GUI ZHI          |3-phenylpropanoic... |NA          |
+|135           |GUI ZHI          |4-hydroxybenzoic ... |HDAC6       |
+|177           |GUI ZHI          |acetaldehyde         |HDAC11      |
+|177           |GUI ZHI          |acetaldehyde         |MMP2        |
+|177           |GUI ZHI          |acetaldehyde         |CDT1        |
+|177           |GUI ZHI          |acetaldehyde         |CAT         |
+|177           |GUI ZHI          |acetaldehyde         |MMP1        |
+|177           |GUI ZHI          |acetaldehyde         |PPARG       |
+|177           |GUI ZHI          |acetaldehyde         |TIMP1       |
+|177           |GUI ZHI          |acetaldehyde         |AGT         |
+|177           |GUI ZHI          |acetaldehyde         |IL1B        |
+|...           |...              |...                  |...         |
 
 
 
@@ -285,7 +322,7 @@ Filtering by Score:
 \end{center}Table \@ref(tab:GeneCards-used-data) (下方表格) 为表格GeneCards used data概览。
 
 **(对应文件为 `Figure+Table/GeneCards-used-data.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有172行7列，以下预览的表格可能省略部分数据；表格含有172个唯一`Symbol'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有172行7列，以下预览的表格可能省略部分数据；含有172个唯一`Symbol'。
 \end{tcolorbox}
 \end{center}
 
@@ -396,6 +433,18 @@ Interactive figure
     \url{https://www.genome.jp/pathway/hsa05321}
 
 \vspace{2em}
+
+
+\textbf{
+Enriched genes
+:}
+
+\vspace{0.5em}
+
+    NOD2, TNF, IL6, IL12A, IFNG, STAT1, IL4, IL1B, IL13,
+IL10, TLR4, IL17A, STAT3, IL18, FOXP3
+
+\vspace{2em}
 \end{tcolorbox}
 \end{center}
 
@@ -404,67 +453,7 @@ Interactive figure
 
 ### 与疾病相关的活性成分筛选
 
-#### PubMed 文献报道数 (任意领域)
-
-Table \@ref(tab:All-compounds-Literature-Count) (下方表格) 为表格All compounds Literature Count概览。
-
-**(对应文件为 `Figure+Table/All-compounds-Literature-Count.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2200行3列，以下预览的表格可能省略部分数据；表格含有2200个唯一`cids'。
-\end{tcolorbox}
-\end{center}
-
-Table: (\#tab:All-compounds-Literature-Count)All compounds Literature Count
-
-|cids    |name                           |LiteratureCount |
-|:-------|:------------------------------|:---------------|
-|702     |ethanol                        |540787          |
-|5997    |(3S,8S,9S,10R,13R,14S,17R)-... |337620          |
-|5988    |(2R,3R,4S,5S,6R)-2-[(2S,3S,... |204482          |
-|24749   |2,3,4,5,6-pentahydroxyhexanal  |197377          |
-|180     |propan-2-one                   |182194          |
-|241     |benzene                        |155727          |
-|5957    |[[(2R,3S,4R,5R)-5-(6-aminop... |151618          |
-|5757    |(8R,9S,13S,14S,17S)-13-meth... |143457          |
-|996     |phenol                         |125953          |
-|612     |2-hydroxypropanoic acid        |115138          |
-|8058    |hexane                         |112457          |
-|5461108 |[[[(2R,3S,4R,5R)-5-(6-amino... |110671          |
-|774     |2-(1H-imidazol-5-yl)ethanamine |98412           |
-|60961   |(2R,3R,4S,5R)-2-(6-aminopur... |90522           |
-|311     |2-hydroxypropane-1,2,3-tric... |78795           |
-|...     |...                            |...             |
-
-Table \@ref(tab:hsa05321-related-genes-and-compounds) (下方表格) 为表格hsa05321 related genes and compounds概览。
-
-**(对应文件为 `Figure+Table/hsa05321-related-genes-and-compounds.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有409行5列，以下预览的表格可能省略部分数据；表格含有10个唯一`Herb\_pinyin\_name'。
-\end{tcolorbox}
-\end{center}
-
-Table: (\#tab:hsa05321-related-genes-and-compounds)Hsa05321 related genes and compounds
-
-|Herb_pinyin_name |Ingredient.name      |Target.name |LiteratureCount |cids |
-|:----------------|:--------------------|:-----------|:---------------|:----|
-|GUI ZHI          |acetaldehyde         |IL1B        |37277           |177  |
-|GUI ZHI          |acetaldehyde         |TNF         |37277           |177  |
-|GUI ZHI          |acetaldehyde         |IL6         |37277           |177  |
-|HUANG BAI        |acetaldehyde         |IL1B        |37277           |177  |
-|HUANG BAI        |acetaldehyde         |TNF         |37277           |177  |
-|HUANG BAI        |acetaldehyde         |IL6         |37277           |177  |
-|DANG GUI         |2-hydroxyethyl(tr... |TNF         |24884           |305  |
-|REN SHEN         |2-hydroxyethyl(tr... |TNF         |24884           |305  |
-|GUI ZHI          |chromen-2-one        |IL6         |26252           |323  |
-|GUI ZHI          |chromen-2-one        |STAT3       |26252           |323  |
-|REN SHEN         |2-hydroxybenzoic ... |IL4         |38476           |338  |
-|GUI ZHI          |octanoic acid        |TLR4        |7352            |379  |
-|HUANG BAI        |octanoic acid        |TLR4        |7352            |379  |
-|WU MEI           |octanoic acid        |TLR4        |7352            |379  |
-|XI XIN           |octanoic acid        |TLR4        |7352            |379  |
-|...              |...                  |...         |...             |...  |
-
-
-
-#### CTD 数据库记录与肾炎相关的化合物
+#### CTD 数据库记录与肠炎 (Colitis) 相关的化合物
 
 Figure \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related) (下方图) 为图Intersection of CTD records with herbs of hsa05321 related概览。
 
@@ -482,12 +471,12 @@ Intersection
 
 \vspace{0.5em}
 
-    8530, 54675866, 177, 7847, 119258, 2353, 72326, 64971,
-2519, 644019, 2703, 5959, 5280795, 5997, 305, 637511,
-638011, 323, 969516, 637568, 5281613, 16078, 5757, 702,
-2758, 445070, 5280805, 5280961, 441923, 774, 72303,
-5280863, 10255, 3893, 8181, 439246, 6184, 12389, 379,
-10228, 11092, 985, 8158, 9...
+    8530, 335, 54675866, 177, 7847, 190, 60961, 5280934,
+637563, 444899, 2236, 119258, 5282102, 241, 2353, 6918391,
+72326, 64971, 31404, 2519, 644019, 1548943, 2703, 5959,
+312, 1794427, 5280795, 5997, 305, 637511, 638011, 8842,
+323, 969516, 3026, 637568, 5281612, 5281613, 16078, 5757,
+5756, 702, 5991...
 
 \vspace{2em}
 \end{tcolorbox}
@@ -497,30 +486,72 @@ Intersection
 Table \@ref(tab:Intersection-Herbs-compounds-and-targets) (下方表格) 为表格Intersection Herbs compounds and targets概览。
 
 **(对应文件为 `Figure+Table/Intersection-Herbs-compounds-and-targets.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有307行5列，以下预览的表格可能省略部分数据；表格含有10个唯一`Herb\_pinyin\_name'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1030行5列，以下预览的表格可能省略部分数据；含有10个唯一`Herb\_pinyin\_name；含有108个唯一`Ingredient.name；含有94个唯一`Target.name'。
 \end{tcolorbox}
 \end{center}
 
 Table: (\#tab:Intersection-Herbs-compounds-and-targets)Intersection Herbs compounds and targets
 
-|Herb_pinyin_name |Ingredient.name      |Target.name |LiteratureCount |cids |
-|:----------------|:--------------------|:-----------|:---------------|:----|
-|GUI ZHI          |acetaldehyde         |IL1B        |37277           |177  |
-|GUI ZHI          |acetaldehyde         |TNF         |37277           |177  |
-|GUI ZHI          |acetaldehyde         |IL6         |37277           |177  |
-|HUANG BAI        |acetaldehyde         |IL1B        |37277           |177  |
-|HUANG BAI        |acetaldehyde         |TNF         |37277           |177  |
-|HUANG BAI        |acetaldehyde         |IL6         |37277           |177  |
-|DANG GUI         |2-hydroxyethyl(tr... |TNF         |24884           |305  |
-|REN SHEN         |2-hydroxyethyl(tr... |TNF         |24884           |305  |
-|GUI ZHI          |chromen-2-one        |IL6         |26252           |323  |
-|GUI ZHI          |chromen-2-one        |STAT3       |26252           |323  |
-|REN SHEN         |2-hydroxybenzoic ... |IL4         |38476           |338  |
-|GUI ZHI          |octanoic acid        |TLR4        |7352            |379  |
-|HUANG BAI        |octanoic acid        |TLR4        |7352            |379  |
-|WU MEI           |octanoic acid        |TLR4        |7352            |379  |
-|XI XIN           |octanoic acid        |TLR4        |7352            |379  |
-|...              |...                  |...         |...             |...  |
+|Herb_pinyin_name |Ingredient.name  |Target.name |LiteratureCount |cids |
+|:----------------|:----------------|:-----------|:---------------|:----|
+|GUI ZHI          |acetaldehyde     |MMP1        |37277           |177  |
+|GUI ZHI          |acetaldehyde     |IL1B        |37277           |177  |
+|GUI ZHI          |acetaldehyde     |TNF         |37277           |177  |
+|GUI ZHI          |acetaldehyde     |NFKBIA      |37277           |177  |
+|GUI ZHI          |acetaldehyde     |IL6         |37277           |177  |
+|GUI ZHI          |acetaldehyde     |MMP9        |37277           |177  |
+|GUI ZHI          |acetaldehyde     |VCAM1       |37277           |177  |
+|HUANG BAI        |acetaldehyde     |MMP1        |37277           |177  |
+|HUANG BAI        |acetaldehyde     |IL1B        |37277           |177  |
+|HUANG BAI        |acetaldehyde     |TNF         |37277           |177  |
+|HUANG BAI        |acetaldehyde     |NFKBIA      |37277           |177  |
+|HUANG BAI        |acetaldehyde     |IL6         |37277           |177  |
+|HUANG BAI        |acetaldehyde     |MMP9        |37277           |177  |
+|HUANG BAI        |acetaldehyde     |VCAM1       |37277           |177  |
+|DANG GUI         |7H-purin-6-amine |PRKAA1      |63177           |190  |
+|...              |...              |...         |...             |...  |
+
+## 分子对接前的网络图
+
+Figure \@ref(fig:CTD-filtered-Compounds-Network-pharmacology-with-disease) (下方图) 为图CTD filtered Compounds Network pharmacology with disease概览。
+
+**(对应文件为 `Figure+Table/CTD-filtered-Compounds-Network-pharmacology-with-disease.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/CTD-filtered-Compounds-Network-pharmacology-with-disease.pdf}
+\caption{CTD filtered Compounds Network pharmacology with disease}\label{fig:CTD-filtered-Compounds-Network-pharmacology-with-disease}
+\end{center}
+
+Table \@ref(tab:Compounds-CTD-Synonyms) (下方表格) 为表格Compounds CTD Synonyms概览。
+
+**(对应文件为 `Figure+Table/Compounds-CTD-Synonyms.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有108行2列，以下预览的表格可能省略部分数据；含有108个唯一`CID'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Compounds-CTD-Synonyms)Compounds CTD Synonyms
+
+|CID |Synonym      |
+|:---|:------------|
+|177 |acetaldehyde |
+|190 |adenine      |
+|241 |benzene      |
+|305 |choline      |
+|311 |Aciletten    |
+|312 |chloride     |
+|323 |coumarin     |
+|335 |Orthocresol  |
+|338 |Rutranex     |
+|370 |gallate      |
+|379 |Caprylsaeure |
+|612 |lactate      |
+|702 |ethanol      |
+|774 |histamine    |
+|931 |naphthalene  |
+|... |...          |
+
+
 
 
 
@@ -530,11 +561,9 @@ Table: (\#tab:Intersection-Herbs-compounds-and-targets)Intersection Herbs compou
 
 ### Top docking
 
-取 Tab. \@ref(tab:Intersection-Herbs-compounds-and-targets) 
-(即，Fig. \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related) 交集)
-成分与靶点，进行批量分子对接。
+取  Fig. \@ref(fig:CTD-filtered-Compounds-Network-pharmacology-with-disease) 成分与靶点，进行批量分子对接。
 
-以下展示了各个靶点结合度 Top 5 的成分
+以下展示了各个靶点结合度 Top 5 的成分 (前 25 条记录)
 
 Figure \@ref(fig:Overall-combining-Affinity) (下方图) 为图Overall combining Affinity概览。
 
@@ -549,7 +578,7 @@ Figure \@ref(fig:Overall-combining-Affinity) (下方图) 为图Overall combining
 Table \@ref(tab:Combining-Affinity) (下方表格) 为表格Combining Affinity概览。
 
 **(对应文件为 `Figure+Table/Combining-Affinity.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有35行6列，以下预览的表格可能省略部分数据；表格含有10个唯一`hgnc\_symbol'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有134行8列，以下预览的表格可能省略部分数据；含有43个唯一`hgnc\_symbol；含有21个唯一`Herb\_pinyin\_name'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -559,31 +588,33 @@ Table \@ref(tab:Combining-Affinity) (下方表格) 为表格Combining Affinity�
 
 Table: (\#tab:Combining-Affinity)Combining Affinity
 
-|hgnc_symbol |Ingredient... |Affinity |PubChem_id |PDB_ID |Combn         |
-|:-----------|:-------------|:--------|:----------|:------|:-------------|
-|IL1B        |(1R,3aS,5a... |-7.303   |72326      |9ilb   |72326_into... |
-|IL1B        |(3S,8S,9S,... |-6.096   |5997       |9ilb   |5997_into_... |
-|IL1B        |(2R,3R)-2-... |-5.083   |119258     |9ilb   |119258_int... |
-|IL1B        |2,2-dichlo... |-5.038   |5959       |9ilb   |5959_into_... |
-|IL18        |(1E,6E)-1,... |-4.999   |969516     |4xfu   |969516_int... |
-|IL1B        |2-[(1R,6R)... |-4.959   |644019     |9ilb   |644019_int... |
-|IL18        |2-(4-hydro... |-4.76    |72303      |4xfu   |72303_into... |
-|NOD2        |2-(1H-imid... |-4.417   |774        |nod2   |774_into_nod2 |
-|FOXP3       |(1E,6E)-1,... |-4.169   |969516     |4wk8   |969516_int... |
-|TLR4        |(2E,6E)-3,... |-3.564   |445070     |5nao   |445070_int... |
-|TLR4        |(E)-3-phen... |-3.467   |637511     |5nao   |637511_int... |
-|TLR4        |2-(1H-imid... |-3.032   |774        |5nao   |774_into_5nao |
-|TLR4        |5-[(E)-2-(... |-2.558   |445154     |5nao   |445154_int... |
-|TLR4        |prop-2-enal   |-2.434   |7847       |5nao   |7847_into_... |
-|IL18        |ethanol       |-2.225   |702        |4xfu   |702_into_4xfu |
-|...         |...           |...      |...        |...    |...           |
+|hgnc_s... |Ingred... |Affinity |PubChe... |PDB_ID |Combn     |Herb_p... |Synonym   |
+|:---------|:---------|:--------|:---------|:------|:---------|:---------|:---------|
+|IL1B      |(1R,3a... |-7.303   |72326     |9ilb   |72326_... |HUANG ... |Betulin   |
+|DCLK1     |(1E,6E... |-7.265   |969516    |7kxw   |969516... |DANG GUI  |curcumin  |
+|IL1B      |(3S,8S... |-6.096   |5997      |9ilb   |5997_i... |WU MEI    |choles... |
+|TP53      |2-[(1R... |-6.09    |644019    |8dc8   |644019... |GUI ZHI   |cannab... |
+|TP53      |5-hydr... |-5.706   |3806      |8dc8   |3806_i... |FU ZI     |juglone   |
+|TP53      |16,17-... |-5.465   |2353      |8dc8   |2353_i... |HUA JI... |berberine |
+|TP53      |8-meth... |-5.458   |2236      |8dc8   |2236_i... |XI XIN    |Aristo... |
+|TP53      |(1R,3a... |-5.083   |64971     |8dc8   |64971_... |HUANG BAI |Mairin    |
+|IL1B      |(2R,3R... |-5.083   |119258    |9ilb   |119258... |REN SHEN  |Astilbin  |
+|IL1B      |2,2-di... |-5.038   |5959      |9ilb   |5959_i... |XI XIN    |chlora... |
+|IL18      |(1E,6E... |-4.999   |969516    |4xfu   |969516... |DANG GUI  |curcumin  |
+|IL1B      |2-[(1R... |-4.959   |644019    |9ilb   |644019... |GUI ZHI   |cannab... |
+|AREG      |(1E,6E... |-4.91    |969516    |2rnl   |969516... |DANG GUI  |curcumin  |
+|IL18      |2-(4-h... |-4.76    |72303     |4xfu   |72303_... |FU ZI     |Honokiol  |
+|EGF       |2-[(1R... |-4.636   |644019    |2kv4   |644019... |GUI ZHI   |cannab... |
+|...       |...       |...      |...       |...    |...       |...       |...       |
+
+
 
 ### 对接可视化
 
 Table \@ref(tab:Metadata-of-visualized-Docking) (下方表格) 为表格Metadata of visualized Docking概览。
 
 **(对应文件为 `Figure+Table/Metadata-of-visualized-Docking.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3行5列，以下预览的表格可能省略部分数据；表格含有3个唯一`PubChem\_id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3行6列，以下预览的表格可能省略部分数据；含有3个唯一`PubChem\_id；含有3个唯一`hgnc\_symbol'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -593,11 +624,11 @@ Table \@ref(tab:Metadata-of-visualized-Docking) (下方表格) 为表格Metadata
 
 Table: (\#tab:Metadata-of-visualized-Docking)Metadata of visualized Docking
 
-|PubChem_id |PDB_ID |Affinity |hgnc_symbol |Ingredient_name      |
-|:----------|:------|:--------|:-----------|:--------------------|
-|72326      |9ilb   |-7.303   |IL1B        |(1R,3aS,5aR,5bR,7... |
-|969516     |4xfu   |-4.999   |IL18        |(1E,6E)-1,7-bis(4... |
-|774        |nod2   |-4.417   |NOD2        |2-(1H-imidazol-5-... |
+|PubChem_id |PDB_ID |Affinity |Combn         |hgnc_symbol |Ingredient... |
+|:----------|:------|:--------|:-------------|:-----------|:-------------|
+|72326      |9ilb   |-7.303   |72326_into... |IL1B        |(1R,3aS,5a... |
+|969516     |7kxw   |-7.265   |969516_int... |DCLK1       |(1E,6E)-1,... |
+|644019     |8dc8   |-6.09    |644019_int... |TP53        |2-[(1R,6R)... |
 
 Figure \@ref(fig:Docking-72326-into-9ilb) (下方图) 为图Docking 72326 into 9ilb概览。
 
@@ -611,21 +642,21 @@ Figure \@ref(fig:Docking-72326-into-9ilb) (下方图) 为图Docking 72326 into 9
 
 Figure \@ref(fig:Docking-969516-into-4xfu) (下方图) 为图Docking 969516 into 4xfu概览。
 
-**(对应文件为 `Figure+Table/969516_into_4xfu.png`)**
+**(对应文件为 `Figure+Table/969516_into_7kxw.png`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{vina_space/969516_into_4xfu/969516_into_4xfu.png}
+\includegraphics[width = 0.9\linewidth]{vina_space/969516_into_7kxw/969516_into_7kxw.png}
 \caption{Docking 969516 into 4xfu}\label{fig:Docking-969516-into-4xfu}
 \end{center}
 
 Figure \@ref(fig:Docking-774-into-nod2) (下方图) 为图Docking 774 into nod2概览。
 
-**(对应文件为 `Figure+Table/774_into_nod2.png`)**
+**(对应文件为 `Figure+Table/644019_into_8dc8.png`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{vina_space/774_into_nod2/774_into_nod2.png}
+\includegraphics[width = 0.9\linewidth]{vina_space/644019_into_8dc8/644019_into_8dc8.png}
 \caption{Docking 774 into nod2}\label{fig:Docking-774-into-nod2}
 \end{center}
 
@@ -643,24 +674,66 @@ Figure \@ref(fig:Docking-72326-into-9ilb-detail) (下方图) 为图Docking 72326
 
 Figure \@ref(fig:Docking-969516-into-4xfu-detail) (下方图) 为图Docking 969516 into 4xfu detail概览。
 
-**(对应文件为 `Figure+Table/detail_969516_into_4xfu.png`)**
+**(对应文件为 `Figure+Table/detail_969516_into_7kxw.png`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{vina_space/969516_into_4xfu/detail_969516_into_4xfu.png}
+\includegraphics[width = 0.9\linewidth]{vina_space/969516_into_7kxw/detail_969516_into_7kxw.png}
 \caption{Docking 969516 into 4xfu detail}\label{fig:Docking-969516-into-4xfu-detail}
 \end{center}
 
 Figure \@ref(fig:Docking-774-into-nod2-detail) (下方图) 为图Docking 774 into nod2 detail概览。
 
-**(对应文件为 `Figure+Table/detail_774_into_nod2.png`)**
+**(对应文件为 `Figure+Table/detail_644019_into_8dc8.png`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{vina_space/774_into_nod2/detail_774_into_nod2.png}
+\includegraphics[width = 0.9\linewidth]{vina_space/644019_into_8dc8/detail_644019_into_8dc8.png}
 \caption{Docking 774 into nod2 detail}\label{fig:Docking-774-into-nod2-detail}
 \end{center}
 
+
+
+
+### 对接能量 < -1.2 网络图
+
+Figure \@ref(fig:Network-pharmacology-Affinity-filtered) (下方图) 为图Network pharmacology Affinity filtered概览。
+
+**(对应文件为 `Figure+Table/Network-pharmacology-Affinity-filtered.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-Affinity-filtered.pdf}
+\caption{Network pharmacology Affinity filtered}\label{fig:Network-pharmacology-Affinity-filtered}
+\end{center}
+
+Table \@ref(tab:Network-pharmacology-Affinity-filtered-data) (下方表格) 为表格Network pharmacology Affinity filtered data概览。
+
+**(对应文件为 `Figure+Table/Network-pharmacology-Affinity-filtered-data.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有505行3列，以下预览的表格可能省略部分数据；含有10个唯一`Herb\_pinyin\_name；含有25个唯一`Ingredient.name；含有77个唯一`Target.name'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Network-pharmacology-Affinity-filtered-data)Network pharmacology Affinity filtered data
+
+|Herb_pinyin_name |Ingredient.name |Target.name |
+|:----------------|:---------------|:-----------|
+|DANG GUI         |adenine         |PRKAA1      |
+|DANG GUI         |adenine         |PRKAA2      |
+|DANG GUI         |adenine         |PRKAB1      |
+|REN SHEN         |adenine         |PRKAA1      |
+|REN SHEN         |adenine         |PRKAA2      |
+|REN SHEN         |adenine         |PRKAB1      |
+|DANG GUI         |ethanol         |VCAM1       |
+|DANG GUI         |ethanol         |TP53        |
+|DANG GUI         |ethanol         |NFE2L2      |
+|DANG GUI         |ethanol         |HMOX1       |
+|DANG GUI         |ethanol         |PON1        |
+|DANG GUI         |ethanol         |IL6         |
+|DANG GUI         |ethanol         |NOS2        |
+|DANG GUI         |ethanol         |IL10        |
+|DANG GUI         |ethanol         |TNF         |
+|...              |...             |...         |
 
 
 
@@ -686,28 +759,6 @@ Figure \@ref(fig:TOP-GO-enrichment) (下方图) 为图TOP GO enrichment概览。
 \caption{TOP GO enrichment}\label{fig:TOP-GO-enrichment}
 \end{center}
 
-Figure \@ref(fig:TOP-hsa05321-visualization) (下方图) 为图TOP hsa05321 visualization概览。
-
-**(对应文件为 `Figure+Table/hsa05321.pathview.png`)**
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{pathview2024-03-29_17_34_39.609851/hsa05321.pathview.png}
-\caption{TOP hsa05321 visualization}\label{fig:TOP-hsa05321-visualization}
-\end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
-\textbf{
-Interactive figure
-:}
-
-\vspace{0.5em}
-
-    \url{https://www.genome.jp/pathway/hsa05321}
-
-\vspace{2em}
-\end{tcolorbox}
-\end{center}
-
 Figure \@ref(fig:TOP-pharmacology-visualization) (下方图) 为图TOP pharmacology visualization概览。
 
 **(对应文件为 `Figure+Table/TOP-pharmacology-visualization.pdf`)**
@@ -725,7 +776,7 @@ Figure \@ref(fig:TOP-pharmacology-visualization) (下方图) 为图TOP pharmacol
 Table \@ref(tab:IL1B-kegg) (下方表格) 为表格IL1B kegg概览。
 
 **(对应文件为 `Figure+Table/IL1B-kegg.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有43行9列，以下预览的表格可能省略部分数据；表格含有43个唯一`ID'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有43行9列，以下预览的表格可能省略部分数据；含有43个唯一`ID'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -757,7 +808,7 @@ Table: (\#tab:IL1B-kegg)IL1B kegg
 Table \@ref(tab:IL1B-go) (下方表格) 为表格IL1B go概览。
 
 **(对应文件为 `Figure+Table/IL1B-go.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有431行10列，以下预览的表格可能省略部分数据；表格含有2个唯一`ont'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有431行10列，以下预览的表格可能省略部分数据；含有2个唯一`ont'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -770,22 +821,24 @@ Table: (\#tab:IL1B-go)IL1B go
 
 |ont |ID        |Descri... |GeneRatio |BgRatio   |pvalue    |p.adjust  |qvalue    |geneID    |Count |
 |:---|:---------|:---------|:---------|:---------|:---------|:---------|:---------|:---------|:-----|
-|BP  |GO:004... |astroc... |4/4       |24/18614  |2.1250... |2.5330... |2.0802... |3458/3... |4     |
-|BP  |GO:001... |astroc... |4/4       |43/18614  |2.4679... |1.4709... |1.2080... |3458/3... |4     |
-|BP  |GO:006... |glial ... |4/4       |55/18614  |6.8205... |2.7100... |2.2256... |3458/3... |4     |
-|BP  |GO:003... |positi... |4/4       |70/18614  |1.8336... |5.4642... |4.4875... |3458/3... |4     |
-|BP  |GO:015... |neuroi... |4/4       |76/18614  |2.5657... |6.1166... |5.0234... |3458/3... |4     |
-|BP  |GO:004... |astroc... |4/4       |87/18614  |4.4514... |8.8434... |7.2628... |3458/3... |4     |
-|BP  |GO:003... |regula... |4/4       |98/18614  |7.2239... |1.0385... |8.5296... |3458/3... |4     |
-|BP  |GO:003... |chemok... |4/4       |99/18614  |7.5281... |1.0385... |8.5296... |3458/3... |4     |
-|BP  |GO:003... |positi... |4/4       |100/18614 |7.8417... |1.0385... |8.5296... |3458/3... |4     |
-|BP  |GO:002... |glial ... |4/4       |119/18614 |1.5880... |1.8929... |1.5545... |3458/3... |4     |
-|BP  |GO:005... |positi... |3/4       |16/18614  |2.0831... |2.2573... |1.8539... |3458/3... |3     |
-|BP  |GO:015... |positi... |3/4       |18/18614  |3.0352... |3.0149... |2.4760... |3553/3... |3     |
-|BP  |GO:005... |positi... |4/4       |154/18614 |4.5062... |4.1318... |3.3933... |3458/3... |4     |
-|BP  |GO:006... |positi... |3/4       |21/18614  |4.9465... |4.2115... |3.4588... |3553/3... |3     |
-|BP  |GO:005... |regula... |4/4       |163/18614 |5.6679... |4.5041... |3.6991... |3458/3... |4     |
+|BP  |GO:006... |positi... |7/9       |146/18614 |5.6140... |9.0217... |1.5305... |3458/3... |7     |
+|BP  |GO:006... |regula... |7/9       |331/18614 |1.8434... |1.4812... |2.5129... |3458/3... |7     |
+|BP  |GO:000... |fatty ... |6/9       |161/18614 |3.1353... |1.6794... |2.8492... |3553/5... |6     |
+|BP  |GO:004... |regula... |6/9       |182/18614 |6.5956... |2.6497... |4.4954... |3458/3... |6     |
+|BP  |GO:015... |neuroi... |5/9       |76/18614  |1.2349... |3.9690... |6.7335... |3458/3... |5     |
+|BP  |GO:003... |positi... |7/9       |450/18614 |1.5913... |4.2620... |7.2306... |3458/3... |7     |
+|BP  |GO:007... |monoca... |6/9       |220/18614 |2.0766... |4.7603... |8.0760... |3553/5... |6     |
+|BP  |GO:004... |positi... |5/9       |87/18614  |2.4649... |4.7603... |8.0760... |3458/3... |5     |
+|BP  |GO:004... |astroc... |4/9       |24/18614  |2.6660... |4.7603... |8.0760... |3458/3... |4     |
+|BP  |GO:000... |positi... |4/9       |28/18614  |5.1326... |8.2482... |1.3993... |3553/3... |4     |
+|BP  |GO:007... |cellul... |6/9       |327/18614 |2.2565... |2.7249... |4.6229... |3553/5... |6     |
+|BP  |GO:004... |carbox... |6/9       |328/18614 |2.2982... |2.7249... |4.6229... |3553/5... |6     |
+|BP  |GO:001... |organi... |6/9       |331/18614 |2.4272... |2.7249... |4.6229... |3553/5... |6     |
+|BP  |GO:015... |regula... |4/9       |41/18614  |2.5315... |2.7249... |4.6229... |3553/3... |4     |
+|BP  |GO:004... |positi... |4/9       |42/18614  |2.7974... |2.7249... |4.6229... |3458/3... |4     |
 |... |...       |...       |...       |...       |...       |...       |...       |...       |...   |
+
+
 
 
 

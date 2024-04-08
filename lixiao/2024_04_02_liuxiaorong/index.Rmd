@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic())
+info <- items(belong = odate(4), eval = ic(1, 0, 1, 0, 0))
 show.ic(info)
 
 order_publish()
@@ -32,11 +32,31 @@ set_index()
 
 # 摘要 {#abstract}
 
-生信需求：三阴乳腺癌的多药耐药的靶点分析看看有没有什么创新性比较好的通路
+## 生信需求
+
+三阴乳腺癌的多药耐药的靶点分析 (创新性比较好的通路)
+
+## 结果
+
+经查阅资料，发现 MDR 所能应用的数据库或方法比较有限，难以拓展分析。
+以下采用了比较简单的办法得出结果，仅供参考。
+
+- 分别对 MDR 和 TNBC 使用 GeneCards 获取相关基因，见
+  Tab. \@ref(tab:MDR-related-targets-from-GeneCards) 和
+  Tab. \@ref(tab:TNBC-related-targets-from-GeneCards)
+- 取交集基因 Fig. \@ref(fig:Intersection-of-MDR-with-TNBC)
+- 对交集基因做富集分析见 Fig. \@ref(fig:KEGG-enrichment) 和 Fig. \@ref(fig:GO-enrichment)。
+- "MicroRNAs in cancer" 可能是良好的候选通路，见 Fig. \@ref(fig:Hsa05206-visualization) 中的 "breast cancer" 部分。
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("三阴乳腺癌"),
+  di("多药耐药")
+)
 
+# DEGs: Differential Expressed Genes 差异表达基因
+# TNBC: triple negative breast cancer 三阴乳腺癌
+# MR: multidrug resistance 多药耐药
 ```
 
 # 前言 {#introduction}
@@ -52,7 +72,7 @@ auto_material()
 ## 方法
 
 ```{r eval = T, echo = F, results = "asis"}
-auto_method()
+auto_method(c("job_limma", "job_tcga", "job_epifactor", "[@ProteomicsProfShao2022]"))
 ```
 
 # 分析结果 {#results}
@@ -60,3 +80,68 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+## 三阴乳腺癌
+
+```{r eval = T, echo = F, results = "asis"}
+#| TNBC-related-targets-from-GeneCards
+autor(ge.tnbc@tables$step1$t.genecards)
+```
+
+## 多药耐药
+
+```{r eval = T, echo = F, results = "asis"}
+#| MDR-related-targets-from-GeneCards
+autor(ge.mdr@tables$step1$t.genecards)
+```
+
+
+
+## 交集基因的富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-MDR-with-TNBC
+autor(p.venn_mdr2tnbc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| KEGG-enrichment
+autor(en@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GO-enrichment
+autor(en@plots$step1$p.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Hsa05206-visualization
+autor(en@plots$step2$p.pathviews$hsa05206)
+```
+
+
+
+```{r}
+ge.mdr <- job_genecard("Multidrug Resistance")
+ge.mdr <- step1(ge.mdr, 1, restrict = T)
+ge.mdr@tables$step1$t.genecards
+
+ge.tnbc <- job_genecard("Triple negative breast cancer")
+ge.tnbc <- step1(ge.tnbc, 3, restrict = T)
+ge.tnbc@tables$step1$t.genecards
+
+p.venn_mdr2tnbc <- map(ge.mdr, ge.tnbc, c("MDR", "TNBC"))
+p.venn_mdr2tnbc
+
+en <- job_enrich(p.venn_mdr2tnbc$ins)
+en <- step1(en)
+en@plots$step1$p.kegg
+en@plots$step1$p.go
+en@tables$step1$res.kegg$ids
+
+en <- step2(en, "hsa05206")
+en@plots$step2$p.pathviews$hsa05206
+
+```
+
+

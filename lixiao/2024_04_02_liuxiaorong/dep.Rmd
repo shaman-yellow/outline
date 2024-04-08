@@ -1,0 +1,65 @@
+
+
+test
+
+```{r}
+tc <- job_tcga("TCGA-BRCA")
+tc <- step1(tc)
+tc <- filter(tc, use.tnbc = T)
+tc <- step2(tc)
+tc.rna <- step3(tc, clinical.info = "drug")
+
+lm.rna <- asjob_limma(tc.rna)
+lm.rna@params$.metadata
+
+usedDrug <- frbind(lm.rna@params$.metadata$treatments, fill = T)
+usedDrug
+
+```
+
+
+```{r}
+je <- job_esearch("Multidrug Resistance")
+vis(je, col = c("SortPubDate", "Title"))
+je@object$Title %>% grpf("Multi.?drug", T)
+je@object$Title[27]
+
+je@object[70, ]
+
+og <- job_ogwas("Multidrug Resistance")
+og@object
+
+```
+
+多药耐药(multidrug resistance，MDR)是指肿瘤细胞对一种化疗药物产生耐药的同时，对其他结构和作用机制不同的化疗药物也产生交叉耐药的现象，是导致化疗失败的主要原因
+
+
+```{r}
+
+
+ep <- job_epifactor()
+ep <- step1(ep)
+ep@tables$step1$protein
+
+p.venn <- new_venn(TNBC_MDR = p.venn_mdr2tnbc$ins, EpiFactors = ep@tables$step1$protein$HGNC_symbol)
+p.venn
+
+en.epi <- job_enrich(p.venn$ins)
+en.epi <- step1(en.epi)
+en.epi@plots$step1$p.kegg$ids
+en.epi <- step2(en.epi, "hsa05206")
+en.epi@plots$step2$p.pathviews$hsa05206
+```
+
+
+- Multidrug Resistance [@MechanismsOfMBukows2020]
+    - Cisplatin
+    - Etoposide
+    - Castration *
+    - Taxane *
+- TNBC (MDR PMID:34357119 [@InvestigationalDamask2021])
+    -  The mechanisms of MDR include elevated metabolism of xenobiotics,
+      enhanced efflux of drugs, growth factors, increased DNA repair capacity,
+      and genetic factors (gene mutations, amplifications, and epigenetic
+      alterations)
+

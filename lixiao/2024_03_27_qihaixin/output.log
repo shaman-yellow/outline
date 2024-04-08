@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  1 APR 2024 15:01
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  8 APR 2024 15:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1313,17 +1313,31 @@ LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 107.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 11.64862pt on input line 110.
+
+LaTeX Warning: Reference `fig:TOP-hsa05321-visualization' on page 1 undefined o
+n input line 167.
+
 [1]
+
+LaTeX Warning: Reference `tab:All-compounds-Literature-Count' on page 2 undefin
+ed on input line 180.
+
+
+LaTeX Warning: Reference `tab:hsa05321-related-genes-and-compounds' on page 2 u
+ndefined on input line 181.
+
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
 
 
-Package fontspec Info: FandolFang-Regular scale = 0.941043990458295.
+Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 
 
-Package fontspec Info: FandolFang-Regular scale = 0.941043990458295.
+Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
 
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 216.
 
 Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             'FandolFang-Regular' with options
@@ -1333,185 +1347,198 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <->s*[0.941043990458295]"[FandolFang-Regular.otf]/OT:lan
-guage=dflt;"
+(fontspec)             <->s*[0.9694292301336638]"[FandolFang-Regular.otf]/OT:la
+nguage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 235.
-[2]
+[2] [3]
 File: Figure+Table/intersection-of-all-compounds.pdf Graphic file (type pdf)
 <use Figure+Table/intersection-of-all-compounds.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 271.
+(caption)                particular \caption on input line 326.
 See the caption package documentation for explanation.
 
-[3]
+[4]
 File: Figure+Table/Overall-targets-number-of-datasets.pdf Graphic file (type pd
 f)
 <use Figure+Table/Overall-targets-number-of-datasets.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 338.
+(caption)                particular \caption on input line 393.
 See the caption package documentation for explanation.
 
-[4] [5]
+[5]
 File: Figure+Table/Network-pharmacology-with-disease.pdf Graphic file (type pdf
 )
 <use Figure+Table/Network-pharmacology-with-disease.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 423.
+(caption)                particular \caption on input line 478.
 See the caption package documentation for explanation.
 
+[6]
 File: Figure+Table/Targets-intersect-with-targets-of-diseases.pdf Graphic file 
 (type pdf)
 <use Figure+Table/Targets-intersect-with-targets-of-diseases.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 433.
+(caption)                particular \caption on input line 488.
 See the caption package documentation for explanation.
 
-[6]
+[7]
 File: Figure+Table/HERBS-KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/HERBS-KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 465.
+(caption)                particular \caption on input line 520.
 See the caption package documentation for explanation.
 
 File: Figure+Table/HERBS-GO-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/HERBS-GO-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 475.
+(caption)                particular \caption on input line 530.
 See the caption package documentation for explanation.
 
-[7]
+[8]
 File: pathview2024-03-29_15_06_14.604672/hsa05321.pathview.png Graphic file (ty
 pe bmp)
 <pathview2024-03-29_15_06_14.604672/hsa05321.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 488.
+(caption)                particular \caption on input line 543.
 See the caption package documentation for explanation.
 
-[8] [9] [10]
+[9] [10]
 File: Figure+Table/Intersection-of-CTD-records-with-herbs-of-hsa05321-related.p
 df Graphic file (type pdf)
 <use Figure+Table/Intersection-of-CTD-records-with-herbs-of-hsa05321-related.pd
 f>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 593.
+(caption)                particular \caption on input line 583.
 See the caption package documentation for explanation.
 
 
-Overfull \hbox (63.26735pt too wide) in paragraph at lines 613--614
+Overfull \hbox (63.26735pt too wide) in paragraph at lines 603--604
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 上 述 信 息 框 内 容 已 保 存 至 \TU/l
 mtt/b/n/10 Figure+Table/Intersection-of-CTD-records-with-herbs-of-hsa05321-rela
 ted-content\TU/lmr/bx/n/10 ) 
  []
 
 [11]
+File: Figure+Table/CTD-filtered-Compounds-Network-pharmacology-with-disease.pdf
+ Graphic file (type pdf)
+<use Figure+Table/CTD-filtered-Compounds-Network-pharmacology-with-disease.pdf>
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 652.
+See the caption package documentation for explanation.
+
+[12]
 File: Figure+Table/Overall-combining-Affinity.pdf Graphic file (type pdf)
 <use Figure+Table/Overall-combining-Affinity.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 671.
+(caption)                particular \caption on input line 709.
 See the caption package documentation for explanation.
 
-[12] [13] [14]
+[13] [14] [15]
 File: vina_space/72326_into_9ilb/72326_into_9ilb.png Graphic file (type bmp)
 <vina_space/72326_into_9ilb/72326_into_9ilb.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 753.
+(caption)                particular \caption on input line 791.
 See the caption package documentation for explanation.
 
-File: vina_space/969516_into_4xfu/969516_into_4xfu.png Graphic file (type bmp)
-<vina_space/969516_into_4xfu/969516_into_4xfu.png>
+File: vina_space/969516_into_7kxw/969516_into_7kxw.png Graphic file (type bmp)
+<vina_space/969516_into_7kxw/969516_into_7kxw.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 763.
-See the caption package documentation for explanation.
-
-[15]
-File: vina_space/774_into_nod2/774_into_nod2.png Graphic file (type bmp)
-<vina_space/774_into_nod2/774_into_nod2.png>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 773.
+(caption)                particular \caption on input line 801.
 See the caption package documentation for explanation.
 
 [16]
+File: vina_space/644019_into_8dc8/644019_into_8dc8.png Graphic file (type bmp)
+<vina_space/644019_into_8dc8/644019_into_8dc8.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 811.
+See the caption package documentation for explanation.
+
+[17]
 File: vina_space/72326_into_9ilb/detail_72326_into_9ilb.png Graphic file (type 
 bmp)
 <vina_space/72326_into_9ilb/detail_72326_into_9ilb.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 786.
-See the caption package documentation for explanation.
-
-[17]
-File: vina_space/969516_into_4xfu/detail_969516_into_4xfu.png Graphic file (typ
-e bmp)
-<vina_space/969516_into_4xfu/detail_969516_into_4xfu.png>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 796.
+(caption)                particular \caption on input line 824.
 See the caption package documentation for explanation.
 
 [18]
-File: vina_space/774_into_nod2/detail_774_into_nod2.png Graphic file (type bmp)
-
-<vina_space/774_into_nod2/detail_774_into_nod2.png>
+File: vina_space/969516_into_7kxw/detail_969516_into_7kxw.png Graphic file (typ
+e bmp)
+<vina_space/969516_into_7kxw/detail_969516_into_7kxw.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 806.
+(caption)                particular \caption on input line 834.
 See the caption package documentation for explanation.
 
 [19]
+File: vina_space/644019_into_8dc8/detail_644019_into_8dc8.png Graphic file (typ
+e bmp)
+<vina_space/644019_into_8dc8/detail_644019_into_8dc8.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 844.
+See the caption package documentation for explanation.
+
+[20]
+File: Figure+Table/Network-pharmacology-Affinity-filtered.pdf Graphic file (typ
+e pdf)
+<use Figure+Table/Network-pharmacology-Affinity-filtered.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 857.
+See the caption package documentation for explanation.
+
+[21] [22]
 File: Figure+Table/TOP-KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/TOP-KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 819.
+(caption)                particular \caption on input line 907.
 See the caption package documentation for explanation.
 
-[20]
 File: Figure+Table/TOP-GO-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/TOP-GO-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 829.
+(caption)                particular \caption on input line 917.
 See the caption package documentation for explanation.
 
-[21]
-File: pathview2024-03-29_17_34_39.609851/hsa05321.pathview.png Graphic file (ty
-pe bmp)
-<pathview2024-03-29_17_34_39.609851/hsa05321.pathview.png>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 839.
-See the caption package documentation for explanation.
-
+[23]
 File: Figure+Table/TOP-pharmacology-visualization.pdf Graphic file (type pdf)
 <use Figure+Table/TOP-pharmacology-visualization.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 861.
+(caption)                particular \caption on input line 927.
 See the caption package documentation for explanation.
 
-[22] [23] [24] [25] [26] (./output.aux) ) 
+[24] [25] [26] [27] [28] (./output.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 32312 strings out of 476191
- 663159 string characters out of 5812072
- 1121766 words of memory out of 5000000
- 52492 multiletter control sequences out of 15000+600000
+ 32327 strings out of 476191
+ 664120 string characters out of 5812072
+ 1122058 words of memory out of 5000000
+ 52506 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1365b,642s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (29 pages).
+Output written on output.pdf (31 pages).

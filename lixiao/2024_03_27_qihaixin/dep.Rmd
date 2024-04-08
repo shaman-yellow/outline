@@ -31,3 +31,15 @@ vn$runs
 lapply(vn$runs, function(x) vn$res.ligand[[ x[1] ]])
 lapply(vn$runs, function(x) vn$res.receptor[[ x[2] ]])
 ```
+
+en.top@step <- 1L
+en.top <- step2(en.top, "hsa05321")
+en.top@plots$step2$p.pathviews$hsa05321$ins
+en.top@tables$step2$res.pathviews
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TOP-hsa05321-visualization
+autor(en.top@plots$step2$p.pathviews$hsa05321)
+```
+
