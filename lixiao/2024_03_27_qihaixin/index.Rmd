@@ -465,29 +465,14 @@ pathGo.il1b <- filter(en.top, "IL1B", use = "go")
 pathGo.il1b
 ```
 
-```{r}
-pretty_docking("9ilb.pdbqt", "72326_into_9ilb_out.pdbqt", "vina_space/72326_into_9ilb")
-```
 
-```{r}
-txt <- pdftools::pdf_text("./material/note.pdf")
-```
 
 ```{r}
 # https://www.tcmsp-e.com/#/
+tc2 <- job_tcmsp2(herbs)
+tc2 <- step1(tc2)
+tc2 <- step2(tc2)
+tc2@tables$step2$ingredients
 
-link <- start_drive(port = 8888)
-link$open()
 
-"//div//input[@class='el-input__inner']"
-ele <- link$findElement("xpath", "//div//div[@id='login-btn']")
-ele$clickElement()
-
-kb <- job_uniprotkb("Nitric oxide synthase, inducible", .prefix("tcmsp/largedata/uniprotkb.rds", "db"))
-
-```
-
-```{r}
-tc <- job_tcga("")
-tc <- step1(tc)
 ```

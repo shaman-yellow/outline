@@ -38,6 +38,20 @@ set_index()
 
 Attention deficit/hyperactivity disorder (ADHD)
 
+microbiota-gut-brain axis
+
+题目暂定：通过预测因果基因 (CG, causal genes) 及结合表达量分析关联微生物-肠-脑轴探究 ADHD 疾病机制
+
+ADHD 在下述各个领域都有不同程度的研究发现，但目前缺乏集成各个环节的更完整的研究，故拟题。
+
+- 因果基因分析，结合 GWAS 和 eQTL 数据发现因果基因
+- RNA-seq 基因表达分析
+- 代谢物分析
+- 肠道菌分析
+- 代谢物-微生物-肠-脑轴分析
+- ...
+- 上述思路获得结果后的集成分析。
+
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))

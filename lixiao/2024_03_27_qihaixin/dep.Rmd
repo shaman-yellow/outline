@@ -43,3 +43,53 @@ en.top@tables$step2$res.pathviews
 autor(en.top@plots$step2$p.pathviews$hsa05321)
 ```
 
+
+```{r}
+pretty_docking("9ilb.pdbqt", "72326_into_9ilb_out.pdbqt", "vina_space/72326_into_9ilb")
+```
+
+
+```{r}
+txt <- pdftools::pdf_text("./material/note.pdf")
+```
+
+
+tc2@params$dbs %<>% lapply(
+  function(x) {
+    x@db <- data.frame()
+    x
+  })
+
+
+link <- tc2@params$link
+ele <- link$findElement("xpath", paste0("//div[@class='el-radio-group']//span[text()='", "Ingredients", "']/.."))
+ele$clickElement()
+
+
+x <- tc2@params$link$getPageSource()
+get_table.html(x[[1]])
+
+link <- start_drive(port = 8888)
+link$open()
+
+"//div//input[@class='el-input__inner']"
+
+ele <- link$findElement("xpath", paste0("//span[@class='el-pagination__sizes']",
+    "//i[@class='el-icon el-select__caret el-select__icon']"))
+
+ele$clickElement()
+
+link <- tc2@params$link
+ele2 <- link$findElement("xpath", "//ul[@role='listbox']//li//span[contains(text(), '200条/页')]")
+ele2 <- link$findElement("xpath", "//ul[@role='listbox']//li//span[text()='200条/页']")
+ele2$clickElement()
+
+x <- tc2@params$link$getPageSource()
+y <- get_table.html(x[[1]])
+
+# 黄柏
+strx(x[[1]], ".{200}100条.{200}")
+
+
+tc <- job_tcga("")
+tc <- step1(tc)
