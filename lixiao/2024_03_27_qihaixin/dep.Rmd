@@ -93,3 +93,148 @@ strx(x[[1]], ".{200}100条.{200}")
 
 tc <- job_tcga("")
 tc <- step1(tc)
+
+tc <- job_tcmsp(herbs)
+tc <- step1(tc)
+
+
+bt <- job_batman(herbs)
+bt <- slice(bt, 1:10)
+bt <- step1(bt)
+bt <- step2(bt)
+bt <- step3(bt)
+
+bt@plots$step3$p.pharm
+bt@params$compounds_info
+
+
+#### 与肠道炎症相关的通路和基因
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-hsa05321-visualization
+autor(en.herbs@plots$step2$p.pathviews$hsa05321)
+```
+
+```{r}
+
+#### 与肠道炎症相关的通路和基因
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-hsa05321-visualization
+autor(en.herbs@plots$step2$p.pathviews$hsa05321)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Metadata-of-visualized-Docking
+autor(vn@tables$step6$data)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-72326-into-9ilb
+autor(vn@plots$step6$Top1_72326_into_9ilb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-969516-into-4xfu
+autor(vn@plots$step6$Top2_969516_into_7kxw)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-774-into-nod2
+autor(vn@plots$step6$Top3_644019_into_8dc8)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-72326-into-9ilb-detail
+autor(vn@plots$step7$Top1_72326_into_9ilb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-969516-into-4xfu-detail
+autor(vn@plots$step7$Top2_969516_into_7kxw)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-774-into-nod2-detail
+autor(vn@plots$step7$Top3_644019_into_8dc8)
+```
+
+
+### Top1 的靶点的富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| TOP-KEGG-enrichment
+autor(en.top@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TOP-GO-enrichment
+autor(en.top@plots$step1$p.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TOP-pharmacology-visualization
+autor(p.alluTop.dis)
+```
+
+```{r}
+cpd.top <- dplyr::filter(cpds.int.ctd, cids %in% vn@tables$step6$data$PubChem_id[1])
+en.top <- job_enrich(cpd.top$Target.name)
+en.top <- step1(en.top)
+en.top@plots$step1$p.kegg
+en.top@tables$step1$res.kegg$ids
+p.alluTop.dis <- new_allu(cpd.top, axes = 1:3, trunc = T)
+
+p.alluTop.all <- new_allu(
+  dplyr::filter(tc2@params$data.allu, Ingredient.name %in% unique(cpd.top$Ingredient.name)), axes = 1:3, trunc = T)
+p.alluTop.all
+```
+
+#### TOP1 的结合靶点 (IL1B) 参与的通路
+
+```{r eval = T, echo = F, results = "asis"}
+#| IL1B-kegg
+autor(path.il1b)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| IL1B-go
+autor(pathGo.il1b)
+```
+
+```{r}
+pathKegg.il1b <- filter(en.top, "IL1B")
+path.il1b
+
+pathGo.il1b <- filter(en.top, "IL1B", use = "go")
+pathGo.il1b
+```
+
+
+```{r}
+vn <- step6(vn, top = 3, unique = T)
+vn@plots$step6$Top1_72326_into_9ilb
+vn@plots$step6$Top2_969516_into_7kxw
+vn@plots$step6$Top3_644019_into_8dc8
+vn@tables$step6$data
+vn <- step7(vn)
+vn@plots$step7$Top1_72326_into_9ilb
+vn@plots$step7$Top2_969516_into_7kxw
+vn@plots$step7$Top3_644019_into_8dc8
+```
+
+
+```{r}
+# https://www.tcmsp-e.com/#/
+tc2 <- job_tcmsp2(herbs)
+tc2 <- step1(tc2)
+tc2 <- step2(tc2)
+tc2 <- step3(tc2, cl = 10)
+tc2@tables$step2$ingredients
+tc2@tables$step2$compounds_targets
+tc2@plots$step3$p.pharm
+
+
+```
