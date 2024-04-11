@@ -49,7 +49,7 @@ header-includes:
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(2, 2, 0, 2, 1))
+info <- items(belong = odate(4), eval = ic(3, 3, 0, 3, 2))
 show.ic(info)
 
 order_publish()
@@ -105,17 +105,18 @@ set_index()
 
 ## 结果
 
-1. 利用 BATMAN-TCM 数据库作为成分靶点数据库，并结合 Fig. \@ref(fig:Overall-targets-number-of-datasets) 所示的疾病靶点数据
+注：以下 “??” 引用为修改后暂保留内容。
+
+1. 利用 ~~BATMAN-TCM~~ 数据库作为成分靶点数据库，并结合 Fig. \@ref(fig:Overall-targets-number-of-datasets) 所示的疾病靶点数据
    获得的疾病-复方-成分-靶点网络图见 Fig. \@ref(fig:Network-pharmacology-with-disease)
 2. 筛选的成分的靶点关系图见 Fig. \@ref(fig:TOP-pharmacology-visualization)。
-   这里的成分是后续的分析和分子对接筛选的 TOP 1，其名称等相关信息 (TOP 1-3) 可参考 Tab. \@ref(tab:Metadata-of-visualized-Docking)
-3. Pymol 可视化见 Fig. \@ref(fig:Docking-72326-into-9ilb-detail) (局部放大加注释),
+   ~~这里的成分是后续的分析和分子对接筛选的 TOP 1，其名称等相关信息 (TOP 1-3) 可参考 Tab. \@ref(tab:Metadata-of-visualized-Docking)~~
+3. ~~Pymol 可视化见 Fig. \@ref(fig:Docking-72326-into-9ilb-detail) (局部放大加注释),
    Fig. \@ref(fig:Docking-72326-into-9ilb) (全局图)。
-   此外，对接 TOP 2 和 TOP 3 的可视化也附在随后。
-4. TOP 1 成分的富集分析见 Fig. \@ref(fig:TOP-KEGG-enrichment) 和 Fig. \@ref(fig:TOP-GO-enrichment)
+   此外，对接 TOP 2 和 TOP 3 的可视化也附在随后。~~
+4. ~~TOP 1 成分的富集分析见 Fig. \@ref(fig:TOP-KEGG-enrichment) 和 Fig. \@ref(fig:TOP-GO-enrichment)~~
 5. 总的复方靶点的富集分析见 Fig. \@ref(fig:HERBS-KEGG-enrichment) 和 Fig. \@ref(fig:HERBS-GO-enrichment)
-6. YY  (TOP 1 对应的结合靶点为 IL1B ) 参与的环节见
-   Fig. \@ref(fig:TOP-hsa05321-visualization)
+6. ~~YY  (TOP 1 对应的结合靶点为 IL1B ) 参与的环节见 Fig. \@ref(fig:TOP-hsa05321-visualization)~~
 
 补充说明：
 
@@ -145,12 +146,16 @@ set_index()
   但不在 Tab. \@ref(tab:Intersection-Herbs-compounds-and-targets) 中，
   是 CTD 的步骤过滤除外的 (Fig. \@ref(fig:Intersection-of-CTD-records-with-herbs-of-hsa05321-related))。
 
-以下是 BATMAN 记录的 3081405 的靶点 (预测的靶点的 score cutoff 设置为 0.9)。
 
-```{r eval = T, echo = F, results = "asis"}
-#| 3081405-targets
-autor(dplyr::filter(bt@params$easyRead, Ingredient.id == 3081405))
-```
+## 再次修改的内容
+
+- 数据库已换成 TCMSP, 根据 DL 和 OB 过滤成分, Tab. \@ref(tab:Compounds-filtered-by-OB-and-DL)
+  (修改数据库来源后，全部内容已重做)
+- 疾病靶点与成分靶点做交后，不再与IBD通路做交
+- 成分-靶点通过批量分子对接滤过能量 >-1.2kcal/mol 的靶点,
+  随后创建网络药理图 (对接能量为负值的结果见 Tab. \@ref(tab:Combining-Affinity))
+- 中药-成分-靶点基因-相关通路, 见 Fig. \@ref(fig:Network-pharmacology-Affinity-filtered)，对应数据表格见
+  Tab. \@ref(tab:Network-pharmacology-Affinity-filtered-data)
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
@@ -174,7 +179,7 @@ auto_material()
 ## 方法
 
 ```{r eval = T, echo = F, results = "asis"}
-auto_method()
+auto_method("job_tcga")
 ```
 
 # 分析结果 {#results}
@@ -189,42 +194,40 @@ auto_method()
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Herbs-information
-autor(bt@params$herbs_info)
+autor(tc2@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Compounds-filtered-by-OB-and-DL
+autor(tc2@tables$step3$t.ob_dl_filtered)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| intersection-of-all-compounds
-autor(wrap(bt@plots$step3$p.herbs_compounds, 12))
+autor(wrap(tc2@plots$step3$p.herbs_compounds, 12))
 ```
 
 ### 成分靶点
 
 ```{r eval = T, echo = F, results = "asis"}
 #| tables-of-Herbs-compounds-and-targets
-autor(bt@params$easyRead)
+autor(tc2@params$easyRead)
 ```
 
 ```{r}
 herbs <- c("乌梅", "花椒", "细辛", "黄连", "黄柏", "干姜", "附子", "桂枝", "人参", "当归")
 
-tc <- job_tcmsp(herbs)
-tc <- step1(tc)
+tc2 <- job_tcmsp2(herbs)
+tc2 <- step1(tc2)
+tc2 <- step2(tc2)
+tc2 <- step3(tc2, cl = 10)
+tc2@tables$step2$ingredients
+tc2@tables$step2$compounds_targets
 
-bt <- job_batman(herbs)
-bt <- slice(bt, 1:10)
-bt <- step1(bt)
-bt <- step2(bt)
-bt <- step3(bt)
+tc2@plots$step3$p.pharm
 
-bt@plots$step3$p.pharm
-bt@params$compounds_info
-
-3081405 %in% bt@params$compounds_info$cids
-
-bt@params$compounds_info
-bt@params$herbs_info
-bt@tables$step1$herbs_compounds
-bt@tables$step2$compounds_targets
+tc2@params$herbs_info
+tc2@tables$step2$compounds_targets
 ```
 
 ### 疾病靶点
@@ -245,9 +248,9 @@ gm <- step1(gm)
 gm <- step2(gm, 1, 10, 0, restrict = T)
 gm@tables$step2$t.genecard
 
-bt <- map(bt, gm@params$lst.genes)
-bt@params$p.pharm2dis
-bt@params$p.venn2dis
+tc2 <- map(tc2, gm@params$lst.genes, less.label = F)
+tc2@params$p.pharm2dis
+tc2@params$p.venn2dis
 ```
 
 
@@ -255,12 +258,12 @@ bt@params$p.venn2dis
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Network-pharmacology-with-disease
-autor(bt@params$p.pharm2dis)
+autor(tc2@params$p.pharm2dis)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Targets-intersect-with-targets-of-diseases
-autor(bt@params$p.venn2dis)
+autor(tc2@params$p.venn2dis)
 ```
 
 ### 富集分析
@@ -272,23 +275,16 @@ autor(en.herbs@plots$step1$p.kegg$ids)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| HERBS-GO-enrichment
-autor(en.herbs@plots$step1$p.go$ids)
-```
-
-#### 与肠道炎症相关的通路和基因
-
-```{r eval = T, echo = F, results = "asis"}
-#| HERBS-hsa05321-visualization
-autor(en.herbs@plots$step2$p.pathviews$hsa05321)
+autor(wrap(en.herbs@plots$step1$p.go$ids, 15, 9))
 ```
 
 ```{r}
-en.herbs <- job_enrich(bt@params$p.venn2dis$ins)
+en.herbs <- job_enrich(tc2@params$p.venn2dis$ins)
 en.herbs <- step1(en.herbs)
-en.herbs <- step2(en.herbs, "hsa05321")
+
+# en.herbs <- step2(en.herbs, "hsa05321")
 en.herbs@plots$step1$p.kegg$ids
 en.herbs@tables$step1$res.kegg$ids
-en.herbs@plots$step2$p.pathviews$hsa05321
 
 ```
 
@@ -307,23 +303,6 @@ autor(p.vennShip)
 autor(cpds.int.ctd)
 ```
 
-## 分子对接前的网络图
-
-```{r eval = T, echo = F, results = "asis"}
-#| CTD-filtered-Compounds-Network-pharmacology-with-disease
-autor(bt@params$p.pharm2cpdCTD)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| Compounds-CTD-Synonyms
-autor(syns)
-```
-
-```{r}
-syns <- try_get_syn(unique(cpds.int.ctd$cids))
-syns
-```
-
 ```{r}
 ct <- job_ctd()
 ct <- step1(ct, "colitis")
@@ -331,21 +310,32 @@ ct@params$dis %<>% dplyr::slice(2)
 ct <- step2(ct)
 ct@tables$step2$t.chemical
 
-cpds.int <- dplyr::filter(bt@params$data.allu, Target.name %in% bt@params$p.venn2dis$ins)
-cpds.int <- map(cpds.int, "Ingredient.name", bt@params$compounds_info, "name", "LiteratureCount", col = "LiteratureCount")
-cpds.int <- map(cpds.int, "Ingredient.name", bt@params$compounds_info, "name", "cids", col = "cids")
+cpds.int <- dplyr::filter(tc2@params$data.allu, Target.name %in% tc2@params$p.venn2dis$ins)
+cpds.int$Ingredient.name
+
+cids <- PubChemR::get_cids(unique(cpds.int$Ingredient.name))
+cids
+
+cpds.int <- map(cpds.int, "Ingredient.name", cids, "Identifier", "CID", col = "CID")
 cpds.int
 
 p.vennShip <- new_venn(lst = list(CTD_records = ct@tables$step2$t.chemical$CID,
-    herbs_related = cpds.int$cids))
+    herbs_related = cpds.int$CID))
 p.vennShip$ins
 ```
 
+## 分子对接前的网络图
+
+```{r eval = T, echo = F, results = "asis"}
+#| CTD-filtered-Compounds-Network-pharmacology-with-disease
+autor(tc2@params$p.pharm2cpdCTD)
+```
+
 ```{r}
-cpds.int.ctd <- dplyr::filter(cpds.int, cids %in% as.integer(p.vennShip$ins))
+cpds.int.ctd <- dplyr::filter(cpds.int, CID %in% as.integer(p.vennShip$ins))
 cpds.int.ctd
 
-bt <- map(bt, list(gm@params$lst.genes), compounds = unique(cpds.int.ctd$Ingredient.name), name = "cpdCTD")
+tc2 <- map(tc2, list(gm@params$lst.genes), compounds = unique(cpds.int.ctd$Ingredient.name), name = "cpdCTD", less.label = F)
 
 ```
 
@@ -355,7 +345,7 @@ bt <- map(bt, list(gm@params$lst.genes), compounds = unique(cpds.int.ctd$Ingredi
 
 取  Fig. \@ref(fig:CTD-filtered-Compounds-Network-pharmacology-with-disease) 成分与靶点，进行批量分子对接。
 
-以下展示了各个靶点结合度 Top 5 的成分 (前 25 条记录)
+以下展示了各个靶点结合度 Top 的成分
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Overall-combining-Affinity
@@ -368,8 +358,7 @@ autor(resAff)
 ```
 
 ```{r}
-resAff <- res(vn, bt$data.allu)
-resAff <- map(resAff, "PubChem_id", syns, "CID", "Synonym", col = "Synonym")
+resAff <- res(vn, tc2$data.allu)
 resAff
 
 3081405
@@ -377,145 +366,59 @@ resAff
 ```
 
 ### 对接可视化
-
-```{r eval = T, echo = F, results = "asis"}
-#| Metadata-of-visualized-Docking
-autor(vn@tables$step6$data)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| Docking-72326-into-9ilb
-autor(vn@plots$step6$Top1_72326_into_9ilb)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| Docking-969516-into-4xfu
-autor(vn@plots$step6$Top2_969516_into_7kxw)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| Docking-774-into-nod2
-autor(vn@plots$step6$Top3_644019_into_8dc8)
-```
-
 ### 局部对接细节
-
-```{r eval = T, echo = F, results = "asis"}
-#| Docking-72326-into-9ilb-detail
-autor(vn@plots$step7$Top1_72326_into_9ilb)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| Docking-969516-into-4xfu-detail
-autor(vn@plots$step7$Top2_969516_into_7kxw)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| Docking-774-into-nod2-detail
-autor(vn@plots$step7$Top3_644019_into_8dc8)
-```
-
 
 ```{r}
 file.copy("~/Downloads/AF-Q9HC29-F1-model_v4.pdb", "./order_material/nod2.pdb")
-vn <- job_vina(.layout = dplyr::distinct(cpds.int.ctd, Ingredient.name, Target.name, cids))
+vn <- job_vina(.layout = dplyr::distinct(cpds.int.ctd, Ingredient.name, Target.name, CID))
 vn <- step1(vn, pdbs = c(IL13 = "3lb6"))
 vn <- step2(vn, F)
-vn <- step3(vn, extra_pdb.files = c(NOD2 = "./order_material/nod2.pdb"))
+vn <- step3(vn)
 vn <- set_remote(vn)
 vn <- step4(vn)
 vn@step <- 4L
 vn <- step5(vn)
+vn@params$targets_annotation
 vn@plots$step5$p.res_vina
 vn@tables$step5$res_dock
 
-vn <- step6(vn, top = 3, unique = T)
-vn@plots$step6$Top1_72326_into_9ilb
-vn@plots$step6$Top2_969516_into_7kxw
-vn@plots$step6$Top3_644019_into_8dc8
-vn@tables$step6$data
-vn <- step7(vn)
-vn@plots$step7$Top1_72326_into_9ilb
-vn@plots$step7$Top2_969516_into_7kxw
-vn@plots$step7$Top3_644019_into_8dc8
 ```
 
-### 对接能量 < -1.2 网络图
+### 对接能量 < -1.2 的成分与靶点分析
+
+#### 对应靶点的富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| AFF-KEGG-enrichment
+autor(en.aff@plots$step1$p.kegg$ids)
+```
+
+#### 中药-成分-靶点-通路
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Network-pharmacology-Affinity-filtered
-autor(bt@params$p.pharm2aff)
+autor(tc2@params$p.pharm2aff)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Network-pharmacology-Affinity-filtered-data
-autor(bt@params$p.pharm2aff$.data)
+autor(tc2@params$p.pharm2aff$.path)
 ```
 
 ```{r}
 cpd.aff <- dplyr::filter(vn@tables$step5$res_dock, Affinity < -1.2)
 cpd.aff
 
-bt <- map(bt, list(gm@params$lst.genes), compounds = unique(cpd.aff$Ingredient_name), name = "aff",
-  syns = dplyr::distinct(resAff, Ingredient_name, Synonym), less.label = F)
-bt@params$p.pharm2aff
+en.aff <- job_enrich(unique(cpd.aff$hgnc_symbol))
+en.aff <- step1(en.aff)
+en.aff@plots$step1$p.kegg
+en.aff@tables$step1$res.kegg$ids
+
+tc2 <- map(tc2, list(gm@params$lst.genes), compounds = unique(cpd.aff$Ingredient_name), name = "aff", less.label = F,
+  enrichment = en.aff)
+tc2@params$p.pharm2aff
+
+
 ```
 
-### Top1 的靶点的富集分析 (参与 hsa05321 靶点) 
-
-```{r eval = T, echo = F, results = "asis"}
-#| TOP-KEGG-enrichment
-autor(en.top@plots$step1$p.kegg$ids)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| TOP-GO-enrichment
-autor(en.top@plots$step1$p.go$ids)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| TOP-pharmacology-visualization
-autor(p.alluTop.dis)
-```
-
-```{r}
-cpd.top <- dplyr::filter(cpds.int.ctd, cids %in% vn@tables$step6$data$PubChem_id[1])
-en.top <- job_enrich(cpd.top$Target.name)
-en.top <- step1(en.top)
-en.top@plots$step1$p.kegg
-en.top@tables$step1$res.kegg$ids
-p.alluTop.dis <- new_allu(cpd.top, axes = 1:3, trunc = T)
-
-p.alluTop.all <- new_allu(
-  dplyr::filter(bt@params$data.allu, Ingredient.name %in% unique(cpd.top$Ingredient.name)), axes = 1:3, trunc = T)
-p.alluTop.all
-```
-
-#### TOP1 的结合靶点 (IL1B) 参与的通路
-
-```{r eval = T, echo = F, results = "asis"}
-#| IL1B-kegg
-autor(path.il1b)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| IL1B-go
-autor(pathGo.il1b)
-```
-
-```{r}
-pathKegg.il1b <- filter(en.top, "IL1B")
-path.il1b
-
-pathGo.il1b <- filter(en.top, "IL1B", use = "go")
-pathGo.il1b
-```
-
-```{r}
-pretty_docking("9ilb.pdbqt", "72326_into_9ilb_out.pdbqt", "vina_space/72326_into_9ilb")
-```
-
-```{r}
-txt <- pdftools::pdf_text("./material/note.pdf")
-```
 

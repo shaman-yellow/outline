@@ -238,3 +238,9 @@ tc2@plots$step3$p.pharm
 
 
 ```
+
+```{r eval = T, echo = F, results = "asis"}
+#| 3081405-targets
+autor(dplyr::filter(tc2@params$easyRead, Ingredient.id == 3081405))
+```
+

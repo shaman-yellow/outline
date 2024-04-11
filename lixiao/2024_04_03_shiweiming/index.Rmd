@@ -79,14 +79,47 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
+## 糖酵解相关基因
+
+## RNA-seq
+
 ```{r}
 geo <- job_geo("GSE216678")
 ```
-
-
 
 ```{r}
 geo <- job_geo("GSE235508")
 geo <- step1(geo)
 geo@params$guess
+```
+
+## scRNA-seq
+
+```{r}
+geo <- job_geo("GSE159117")
+geo <- step1(geo)
+geo@params$guess
+geo <- step2(geo)
+untar("./GSE159117/GSE159117_RAW.tar", exdir = "./GSE159117")
+
+sr <- job_seurat(file_h5 = "./GSE159117/GSM4819747_RA_filtered_feature_bc_matrix.h5", project = "RA")
+sr <- step1(sr)
+sr@plots$step1$p.qc
+sr <- step2(sr, 500, 5000, 20)
+sr@plots$step2$p.pca_rank
+sr <- step3(sr, 1:15, 1.2)
+sr <- step4(sr, "")
+sr <- step5(sr)
+sr@plots$step3$p.umap
+sr@step <- 5L
+sr <- step6(sr, "Peripheral\\ blood")
+sr@plots$step6$p.map_scsa
+
+# https://platform.openai.com/docs/models/gpt-3-5-turbo
+
+require(openai)
+Sys.setenv(OPENAI_API_KEY = getOption("OPENAI_API_KEY"))
+
+res <- applyGptcelltype(data.frame(sr@tables$step5$all_markers_no_filter), model = 'gpt-3.5-turbo')
+
 ```
