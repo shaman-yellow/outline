@@ -1,0 +1,29 @@
+
+
+# Top 10 up- and down-Regulated genes common to M1 and M2 macrophages.
+m1m2 <- "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4689374/table/pone.0145342.t003/?report=objectonly"
+# Genes increased more than 2-FC in M1 and decreased more than 2-FC in M2 macrophages.
+m1_up_m2_down <- "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4689374/table/pone.0145342.t004/?report=objectonly"
+# Genes increased more than 2-FC in M2 and decreased more than 2-FC in M1 macrophages.
+m2_up_m1_down <- "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4689374/table/pone.0145342.t005/?report=objectonly"
+
+
+# 26699615
+fun_m1m2 <- function(url) {
+  x <- as_tibble(get_table.html(RCurl::getURL(url))[[1]])
+  x <- dplyr::filter(x, !grpl(V1, "Gene|Regulated"), grpl(V1, "^[A-Za-z0-9]+$"))
+  colnames(x) <- c("gene", "FC.M1_vs_M0", "p.M1_vs_M0", "FC.M2_vs_M0", "p.M2_vs_M0")
+  x <- dplyr::mutate(x, dplyr::across(2:5, as.double))
+  x
+}
+x <- fun_m1m2(m1m2)
+
+fun_m <- function(url) {
+  x <- as_tibble(get_table.html(RCurl::getURL(url))[[1]], .name_repair = "minimal")
+  colnames(x) <- c("gene", "FC.M1_vs_M0", "p.M1_vs_M0", "FC.M2_vs_M0", "p.M2_vs_M0")
+  x <- dplyr::mutate(x, dplyr::across(2:5, as.double))
+  x
+}
+x <- fun_m(m1_up_m2_down)
+y <- fun_m(m2_up_m1_down)
+

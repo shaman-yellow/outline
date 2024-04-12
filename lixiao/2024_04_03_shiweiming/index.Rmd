@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(0, 2, 2, 0, 0))
+info <- items(belong = odate(4), eval = ic(1, 2, 2, 0, 0))
 show.ic(info)
 
 order_publish()
@@ -96,30 +96,47 @@ geo@params$guess
 ## scRNA-seq
 
 ```{r}
-geo <- job_geo("GSE159117")
+geo <- job_geo("GSE184609")
 geo <- step1(geo)
 geo@params$guess
 geo <- step2(geo)
-untar("./GSE159117/GSE159117_RAW.tar", exdir = "./GSE159117")
+untar("./GSE184609/GSE184609_RAW.tar", exdir = "./GSE184609")
+prepare_10x("./GSE184609", "./GSE184609/GSM5593453_A_D25_barcodes")
 
-sr <- job_seurat(file_h5 = "./GSE159117/GSM4819747_RA_filtered_feature_bc_matrix.h5", project = "RA")
+sr <- job_seurat("./GSE184609/GSM5593453_A_D25_barcodes", project = "GPI-day25-RA")
+
 sr <- step1(sr)
 sr@plots$step1$p.qc
-sr <- step2(sr, 500, 5000, 20)
+sr <- step2(sr, 0, 8000, 20)
 sr@plots$step2$p.pca_rank
 sr <- step3(sr, 1:15, 1.2)
 sr <- step4(sr, "")
-sr <- step5(sr)
-sr@plots$step3$p.umap
+sr <- step5(sr, 10)
 sr@step <- 5L
-sr <- step6(sr, "Peripheral\\ blood")
+sr <- step6(sr, "All", org = "M")
 sr@plots$step6$p.map_scsa
 
 # https://platform.openai.com/docs/models/gpt-3-5-turbo
+```
 
-require(openai)
-Sys.setenv(OPENAI_API_KEY = getOption("OPENAI_API_KEY"))
+```{r}
+sr.mc <- getsub(sr, cells = which(sr@object@meta.data$scsa_cell == "Macrophage"))
+sr.mc@step <- 2L
+sr.mc <- step3(sr.mc, 1:15, .8)
+sr.mc <- step4(sr.mc, "")
+sr.mc <- step5(sr.mc)
+sr.mc@plots$step3$p.umap
 
-res <- applyGptcelltype(data.frame(sr@tables$step5$all_markers_no_filter), model = 'gpt-3.5-turbo')
+rownames(sr.mc@object) %>% head(n = 100)
+```
+
+```{r}
+pb.nmt <- get_data.nmt2015()
+
+x <- rm.no(unlist(lapply(pb.nmt@object, function(x) x$gene)))
+x %in% rownames(sr.mc@object) %>% table
+
+identify.mouseMacroPhe(sr.mc)
+
 
 ```
