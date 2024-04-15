@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic())
+info <- items(belong = odate(4), eval = ic(0, 2, 1, 0, 0))
 show.ic(info)
 
 order_publish()
@@ -32,17 +32,24 @@ set_index()
 
 # 摘要 {#abstract}
 
+利用生物信息学分析结合已有文献资料，筛选并验证与XX相关的乙酰化酶AA
+
 具体要求为：
    利用开源数据库，筛选心肌梗死机体的心脏细胞中关键差异表达基因XX以及与乙酰化相关酶基因的关联性。
 1. 因客户之前所做基因为FKBP5，故XX初步定为FKBP5。假设FKBP5在心肌梗死机体心肌细胞中高表达，抑制FKBP5后可缓解心肌梗死。
-
 2. 乙酰化酶AA备选：去乙酰化酶sirtuin 1（SIRT1）可以直接与FKBP5相互作用。
 3. 若方案中的AA选择为HDAC6（客户之前发表过LncRNA NORAD-HDAC6-H3K9 -VEGF），那么方案中的XX选择不一定非要是FKBP5，若有创新点的更好的基因也可。
 
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("心肌梗死"),
+  di("心脏细胞")
+)
 
+# DEGs: Differential Expressed Genes 差异表达基因
+# MI: myocardial infarction 心肌梗死
+# HC: heart cells 心脏细胞
 ```
 
 # 前言 {#introduction}
@@ -66,3 +73,71 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+## MI targets
+
+```{r}
+gm <- job_gmix("myocardial infarction", "infarction")
+gm <- step1(gm)
+gm <- step2(gm, 1, 4, 5, restrict = T)
+gm@plots$step2$p.cols
+```
+
+## MI mice DEGs
+
+```{r}
+geo <- job_geo("GSE235257")
+geo <- job_geo("GSE182205")
+
+geo <- job_geo("GSE236374")
+geo <- step1(geo)
+geo@params$guess
+geo <- step2(geo)
+counts <- ftibble(list.files("./GSE236374/", full.names = T))
+counts
+
+```
+
+
+
+```{r}
+metadata <- dplyr::mutate(geo@params$guess, sample = tolower(strx(time.ch1, "[^ ]+")),
+  sample = ifelse(grpl(sample, "[0-9]"), paste0(sample, "d"), sample),
+  rep = strx(title, "[0-9]$"),
+  group = paste0("MI_", sample),
+  sample = paste0(group, "_", rep)
+)
+metadata <- dplyr::relocate(metadata, sample, group)
+metadata
+genes <- dplyr::select(counts, Genesymbol)
+genes
+
+lm.mi <- job_limma(new_dge(metadata, counts, genes))
+lm.mi <- step1(lm.mi)
+lm.mi <- step2(lm.mi, MI_7d - MI_sham, label = "Genesymbol", cut.fc = 1)
+lm.mi@plots$step2$p.valcano$`MI_7d - MI_sham`
+
+Tops <- lm.mi@tables$step2$tops$`MI_7d - MI_sham`
+Tops
+```
+
+```{r}
+bm2 <- job_biomart2(Tops$Genesymbol, "mm", "hs")
+bm2 <- step1(bm2)
+bm2@params$mapped
+```
+
+## MI intersection
+
+```{r}
+p.vennMI <- new_venn(MI_DEGs = bm2@params$mapped$hgnc_symbol, MI_targets = unlist(gm@params$lst.genes))
+p.vennMI$ins
+```
+
+## 乙酰化酶
+
+```{r}
+ep <- job_epifactor()
+ep <- step1(ep)
+ep@tables$step1$protein
+```

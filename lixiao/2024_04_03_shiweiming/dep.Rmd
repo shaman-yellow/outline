@@ -27,3 +27,32 @@ fun_m <- function(url) {
 x <- fun_m(m1_up_m2_down)
 y <- fun_m(m2_up_m1_down)
 
+
+```{r}
+geo.human <- job_geo("GSE216678")
+```
+
+
+```{r}
+geo <- job_geo("GSE235508")
+geo <- step1(geo)
+geo@params$guess
+```
+
+
+## RNA-seq
+
+```{r}
+geo.human <- job_geo("GSE216678")
+geo.human <- step1(geo.human)
+geo.human@params$guess
+geo.human <- step2(geo.human)
+counts <- ftibble(list.files("GSE216678", full.names = T))
+counts <- dplyr::rename_all(counts, function(x) gs(x, "_.*$", ""))
+counts
+
+metadata <- dplyr::mutate(geo.human@params$guess)
+metadata
+
+```
+
