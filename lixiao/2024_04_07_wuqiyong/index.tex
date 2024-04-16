@@ -1,0 +1,260 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{frame}
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge 乙酰化酶分析筛选}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-04-16}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+
+
+\pagenumbering{arabic}
+\end{frame}
+
+\begin{frame}{摘要}
+\protect\hypertarget{abstract}{}
+利用生物信息学分析结合已有文献资料，筛选并验证与XX相关的乙酰化酶AA
+
+具体要求为：
+利用开源数据库，筛选心肌梗死机体的心脏细胞中关键差异表达基因XX以及与乙酰化相关酶基因的关联性。
+1.
+因客户之前所做基因为FKBP5，故XX初步定为FKBP5。假设FKBP5在心肌梗死机体心肌细胞中高表达，抑制FKBP5后可缓解心肌梗死。
+2. 乙酰化酶AA备选：去乙酰化酶sirtuin 1（SIRT1）可以直接与FKBP5相互作用。
+3. 若方案中的AA选择为HDAC6（客户之前发表过LncRNA NORAD-HDAC6-H3K9
+-VEGF），那么方案中的XX选择不一定非要是FKBP5，若有创新点的更好的基因也可。
+\end{frame}
+
+\begin{frame}{前言}
+\protect\hypertarget{introduction}{}
+\end{frame}
+
+\begin{frame}[fragile]{材料和方法}
+\protect\hypertarget{methods}{}
+\begin{block}{材料}
+\protect\hypertarget{ux6750ux6599}{}
+All used GEO expression data and their design:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GSE236374}: Nine 8-week-old male C57BL/6JR mice were included
+  in the experiment. The experiment was divided into 3 groups. Each
+  group contained 3 mice, 2 groups of which required surgery to make
+  models, called\ldots{}
+\end{itemize}
+\end{block}
+
+\begin{block}{方法}
+\protect\hypertarget{ux65b9ux6cd5}{}
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  The \texttt{biomart} was used for mapping genes between organism
+  (e.g., mgi\_symbol to hgnc\_symbol){[}@MappingIdentifDurinc2009{]}.
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment
+  analysis{[}@ClusterprofilerWuTi2021{]}.
+\item
+  Database \texttt{EpiFactors} used for screening epigenetic
+  regulators{[}@Epifactors2022Maraku2023{]}.
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression
+  dataset aquisition.
+\item
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB}
+  used for collating disease related targets{[}@TheDisgenetKnPinero2019;
+  @TheGenecardsSStelze2016; @PharmgkbAWorBarbar2018{]}.
+\item
+  The Human Gene Database \texttt{GeneCards} used for disease related
+  genes prediction{[}@TheGenecardsSStelze2016{]}.
+\item
+  R package \texttt{ClusterProfiler} used for GSEA
+  enrichment{[}@ClusterprofilerWuTi2021{]}.
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential
+  expression analysis{[}@LimmaPowersDiRitchi2015; @EdgerDifferenChen{]}.
+\item
+  R package \texttt{STEINGdb} used for PPI network
+  construction{[}@TheStringDataSzklar2021; @CytohubbaIdenChin2014{]}.
+\item
+  R package \texttt{pathview} used for KEGG pathways
+  visualization{[}@PathviewAnRLuoW2013{]}.
+\item
+  The MCC score was calculated referring to algorithm of
+  \texttt{CytoHubba}{[}@CytohubbaIdenChin2014{]}.
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr}
+  and \texttt{ggplot2}) used for statistic analysis or data
+  visualization.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{分析结果}
+\protect\hypertarget{results}{}
+\end{frame}
+
+\begin{frame}{结论}
+\protect\hypertarget{dis}{}
+\end{frame}
+
+\begin{frame}[fragile]{附：分析流程}
+\protect\hypertarget{workflow}{}
+\begin{block}{MI targets}
+\protect\hypertarget{mi-targets}{}
+\end{block}
+
+\begin{block}{MI mice DEGs}
+\protect\hypertarget{MI}{}
+\begin{block}{数据来源}
+\protect\hypertarget{ux6570ux636eux6765ux6e90}{}
+\end{block}
+
+\begin{block}{差异分析}
+\protect\hypertarget{ux5deeux5f02ux5206ux6790}{}
+\end{block}
+
+\begin{block}{基因映射}
+\protect\hypertarget{ux57faux56e0ux6620ux5c04}{}
+\end{block}
+\end{block}
+
+\begin{block}{MI intersection (\texttt{MI\_key\_DEGs})}
+\protect\hypertarget{mi-intersection-mi_key_degs}{}
+\end{block}
+
+\begin{block}{乙酰化酶}
+\protect\hypertarget{ux4e59ux9170ux5316ux9176}{}
+\begin{block}{使用的乙酰化酶及其相关信息}
+\protect\hypertarget{ux4f7fux7528ux7684ux4e59ux9170ux5316ux9176ux53caux5176ux76f8ux5173ux4fe1ux606f}{}
+\end{block}
+
+\begin{block}{筛选差异表达的乙酰化酶}
+\protect\hypertarget{ux7b5bux9009ux5deeux5f02ux8868ux8fbeux7684ux4e59ux9170ux5316ux9176}{}
+使用 MI 数据 (@ref(MI)) 的 DEGs，筛选差异表达的乙酰化酶。
+
+以 \texttt{mgi\_symbol} 取交集。
+\end{block}
+\end{block}
+
+\begin{block}{以 PPI 网络筛选与 \texttt{CoA\_DEGs} 相关的
+\texttt{MI\_key\_DEGs}}
+\protect\hypertarget{ux4ee5-ppi-ux7f51ux7edcux7b5bux9009ux4e0e-coa_degs-ux76f8ux5173ux7684-mi_key_degs}{}
+\end{block}
+
+\begin{block}{关联分析}
+\protect\hypertarget{ux5173ux8054ux5206ux6790}{}
+\end{block}
+
+\begin{block}{富集分析}
+\protect\hypertarget{ux5bccux96c6ux5206ux6790}{}
+\end{block}
+\end{frame}
+
+\end{document}

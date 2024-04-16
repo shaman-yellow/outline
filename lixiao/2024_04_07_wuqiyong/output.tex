@@ -1,0 +1,987 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge 乙酰化酶分析筛选}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-04-16}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux9700ux6c42}{%
+\subsection{需求}\label{ux9700ux6c42}}
+
+利用生物信息学分析结合已有文献资料，筛选并验证与XX相关的乙酰化酶AA
+
+具体要求为： 利用开源数据库，筛选心肌梗死机体的心脏细胞中关键差异表达基因XX以及与乙酰化相关酶基因的关联性。
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  因客户之前所做基因为FKBP5，故XX初步定为FKBP5。假设FKBP5在心肌梗死机体心肌细胞中高表达，抑制FKBP5后可缓解心肌梗死。
+\item
+  乙酰化酶AA备选：去乙酰化酶sirtuin 1（SIRT1）可以直接与FKBP5相互作用。
+\item
+  若方案中的AA选择为HDAC6（客户之前发表过LncRNA NORAD-HDAC6-H3K9 -VEGF），那么方案中的XX选择不一定非要是FKBP5，若有创新点的更好的基因也可。
+\end{enumerate}
+
+\hypertarget{ux7ed3ux679c}{%
+\subsection{结果}\label{ux7ed3ux679c}}
+
+\begin{itemize}
+\tightlist
+\item
+  结合数据库 MI 靶点 和 MI 小鼠数据集获取一批 MI 基因 Fig. \ref{fig:Intersection-of-MI-DEGs-with-MI-targets}
+\item
+  从 epiFactor 数据库获取乙酰酶 (CoA) (Tab. \ref{tab:All-protein-of-CoA}) ，筛选了 MI 中为差异表达的 CoA (Fig. \ref{fig:Intersection-of-All-CoA-with-MI-DEGs}) 。
+\item
+  根据 Fig. \ref{fig:Intersection-of-MI-DEGs-with-MI-targets}
+  和 Fig. \ref{fig:Intersection-of-All-CoA-with-MI-DEGs}
+  建立 PPI 网络 (有实验基础的蛋白物理直接互作) ，见 Fig. \ref{fig:Filtered-and-formated-PPI-network}
+\item
+  筛选 CoA 与 DEGs 显著关联的组合，Fig. \ref{fig:MI-correlation-heatmap}，Tab. \ref{tab:MI-significant-correlation}
+\item
+  筛选上述关系：存在 PPI 关联且关联分析显著的组合 Tab. \ref{tab:PPI-interact-and-significant-correlated-in-MI}
+\item
+  将上述 DEGs GO 富集分析，Fig. \ref{fig:GO-enrichment}，BP 结果指向了 MI。
+\item
+  建立 CoA-XX-pathways 网络关系图，Fig. \ref{fig:CoA-XX-GOpathways},
+  数据见 Tab. \ref{tab:All-candidates-and-enriched-GO-BP-pathways}。
+\item
+  最后，推荐 CoA-XX 组合为：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    CoA:BRCA1, DEG:FLNA
+  \item
+    CoA:HDAC9, DEG:PIK3CG
+  \item
+    以上 DEG 相关 GO 通路：cardiac muscle contraction; coagulation; muscle system process; regulation of body fluid levels; striated muscle contraction; wound healing
+  \end{itemize}
+\item
+  其它候选见 Tab. \ref{tab:All-candidates-and-enriched-GO-BP-pathways}
+\end{itemize}
+
+注：
+
+\begin{itemize}
+\tightlist
+\item
+  FKBP5 (Fkbp5) 在 MI 中属于显著高表达，见 Tab. \ref{tab:Fkbp5-expression}。
+\item
+  FKBP5 在 Fig. \ref{fig:Intersection-of-MI-DEGs-with-MI-targets} 被筛离。
+\item
+  尝试单独建立 PPI，未发现 SIRT1 与 FKBP5 的直接结合作用。
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+All used GEO expression data and their design:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GSE236374}: Nine 8-week-old male C57BL/6JR mice were included in the experiment. The experiment was divided into 3 groups. Each group contained 3 mice, 2 groups of which required surgery to make models, called\ldots{}
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  The \texttt{biomart} was used for mapping genes between organism (e.g., mgi\_symbol to hgnc\_symbol)\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{1}}.
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+\item
+  Database \texttt{EpiFactors} used for screening epigenetic regulators\textsuperscript{\protect\hyperlink{ref-Epifactors2022Maraku2023}{3}}.
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
+\item
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{4}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{6}}.
+\item
+  The Human Gene Database \texttt{GeneCards} used for disease related genes prediction\textsuperscript{\protect\hyperlink{ref-TheGenecardsSStelze2016}{5}}.
+\item
+  R package \texttt{ClusterProfiler} used for GSEA enrichment\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{7},\protect\hyperlink{ref-EdgerDifferenChen}{8}}.
+\item
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{9},\protect\hyperlink{ref-CytohubbaIdenChin2014}{10}}.
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{mi-targets}{%
+\subsection{MI targets}\label{mi-targets}}
+
+使用以下合集：
+
+Figure \ref{fig:Overall-targets-number-of-datasets} (下方图) 为图Overall targets number of datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-targets-number-of-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-targets-number-of-datasets.pdf}
+\caption{Overall targets number of datasets}\label{fig:Overall-targets-number-of-datasets}
+\end{center}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    myocardial infarction
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    TRUE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 5
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:GeneCards-used-data} (下方表格) 为表格GeneCards used data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GeneCards-used-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有567行7列，以下预览的表格可能省略部分数据；含有567个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:GeneCards-used-data}GeneCards used data}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+ACE & Angiotensi\ldots{} & Protein Co\ldots{} & P12821 & 60 & GC17P063477 & 75.08\tabularnewline
+MIAT & Myocardial\ldots{} & RNA Gene (\ldots{} & & 32 & GC22P026646 & 71.09\tabularnewline
+F7 & Coagulatio\ldots{} & Protein Co\ldots{} & P08709 & 56 & GC13P113105 & 54.33\tabularnewline
+ITGB3 & Integrin S\ldots{} & Protein Co\ldots{} & P05106 & 61 & GC17P112532 & 48.15\tabularnewline
+LTA & Lymphotoxi\ldots{} & Protein Co\ldots{} & P01374 & 52 & GC06P134818 & 44.63\tabularnewline
+OLR1 & Oxidized L\ldots{} & Protein Co\ldots{} & P78380 & 51 & GC12M029495 & 44.32\tabularnewline
+PLAT & Plasminoge\ldots{} & Protein Co\ldots{} & P00750 & 58 & GC08M042174 & 39.78\tabularnewline
+MCI2 & Myocardial\ldots{} & Genetic Locus & & 4 & GC13U900611 & 39.39\tabularnewline
+F13A1 & Coagulatio\ldots{} & Protein Co\ldots{} & P00488 & 56 & GC06M006144 & 39.35\tabularnewline
+CDKN2B-AS1 & CDKN2B Ant\ldots{} & RNA Gene (\ldots{} & & 31 & GC09P021994 & 39.31\tabularnewline
+LGALS2 & Galectin 2 & Protein Co\ldots{} & P05162 & 47 & GC22M037570 & 38.25\tabularnewline
+MEF2A & Myocyte En\ldots{} & Protein Co\ldots{} & Q02078 & 54 & GC15P099565 & 38.14\tabularnewline
+MIR499A & MicroRNA 499a & RNA Gene (\ldots{} & & 29 & GC20P034990 & 37.65\tabularnewline
+ESR1 & Estrogen R\ldots{} & Protein Co\ldots{} & P03372 & 62 & GC06P151656 & 37.58\tabularnewline
+MIR208B & MicroRNA 208b & RNA Gene (\ldots{} & & 27 & GC14M023417 & 35.34\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{MI}{%
+\subsection{MI mice DEGs}\label{MI}}
+
+\hypertarget{ux6570ux636eux6765ux6e90}{%
+\subsubsection{数据来源}\label{ux6570ux636eux6765ux6e90}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE236374
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Raw reads were trimmed adaptor sequences and removed
+low-quality reads using TrimGalore with default settings
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    Trimmed reads were aligned to the mm10 reference genome
+by STAR with default settings
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    Read count extraction were performed using
+FeatureCounts
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Assembly: mm10
+
+\vspace{2em}
+
+
+\textbf{
+(Others)
+:}
+
+\vspace{0.5em}
+
+    ...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/GSE236374-content})}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+\begin{itemize}
+\tightlist
+\item
+  MI-7d (7 day) vs Control
+\end{itemize}
+
+Figure \ref{fig:MI-MI-7d-vs-MI-sham-DEGs} (下方图) 为图MI MI 7d vs MI sham DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MI-MI-7d-vs-MI-sham-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MI-MI-7d-vs-MI-sham-DEGs.pdf}
+\caption{MI MI 7d vs MI sham DEGs}\label{fig:MI-MI-7d-vs-MI-sham-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+adj.P.Val cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/MI-MI-7d-vs-MI-sham-DEGs-content})}
+
+Table \ref{tab:MI-data-MI-7d-vs-MI-sham-DEGs} (下方表格) 为表格MI data MI 7d vs MI sham DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MI-data-MI-7d-vs-MI-sham-DEGs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5724行8列，以下预览的表格可能省略部分数据；含有5724个唯一`Genesymbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:MI-data-MI-7d-vs-MI-sham-DEGs}MI data MI 7d vs MI sham DEGs}\tabularnewline
+\toprule
+rownames & Genesy\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val & B\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & Genesy\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val & B\tabularnewline
+\midrule
+\endhead
+7514 & Ctss & 4.8320\ldots{} & 7.4632\ldots{} & 50.601\ldots{} & 5.8181\ldots{} & 8.3472\ldots{} & 19.814\ldots{}\tabularnewline
+14679 & Adamts2 & 3.9541\ldots{} & 7.5930\ldots{} & 37.675\ldots{} & 9.6997\ldots{} & 3.8153\ldots{} & 17.557\ldots{}\tabularnewline
+23411 & Col14a1 & 4.5612\ldots{} & 7.5634\ldots{} & 37.311\ldots{} & 1.0637\ldots{} & 3.8153\ldots{} & 17.437\ldots{}\tabularnewline
+11851 & Lox & 5.9882\ldots{} & 7.0429\ldots{} & 37.907\ldots{} & 9.1490\ldots{} & 3.8153\ldots{} & 17.419\ldots{}\tabularnewline
+21619 & Fstl1 & 3.9252\ldots{} & 9.4422\ldots{} & 33.841\ldots{} & 2.6934\ldots{} & 6.6702\ldots{} & 16.550\ldots{}\tabularnewline
+1261 & Ctsh & 2.6147\ldots{} & 6.6709\ldots{} & 31.959\ldots{} & 4.6403\ldots{} & 6.6702\ldots{} & 16.144\ldots{}\tabularnewline
+13487 & Pla2g7 & 4.0298\ldots{} & 4.6625\ldots{} & 32.933\ldots{} & 3.4885\ldots{} & 6.6702\ldots{} & 16.129\ldots{}\tabularnewline
+22176 & Laptm5 & 3.3558\ldots{} & 6.9162\ldots{} & 31.874\ldots{} & 4.7596\ldots{} & 6.6702\ldots{} & 16.105\ldots{}\tabularnewline
+1490 & Sparc & 3.2522\ldots{} & 11.160\ldots{} & 32.579\ldots{} & 3.8660\ldots{} & 6.6702\ldots{} & 16.079\ldots{}\tabularnewline
+6315 & Hexb & 3.1220\ldots{} & 6.3869\ldots{} & 31.264\ldots{} & 5.7173\ldots{} & 6.6702\ldots{} & 15.929\ldots{}\tabularnewline
+5004 & Ctsz & 3.0952\ldots{} & 6.9421\ldots{} & 30.777\ldots{} & 6.6372\ldots{} & 6.6702\ldots{} & 15.790\ldots{}\tabularnewline
+21174 & Fbln5 & 3.7685\ldots{} & 7.2452\ldots{} & 30.367\ldots{} & 7.5384\ldots{} & 6.6702\ldots{} & 15.656\ldots{}\tabularnewline
+1805 & Litaf & 2.3676\ldots{} & 5.9412\ldots{} & 30.219\ldots{} & 7.8956\ldots{} & 6.6702\ldots{} & 15.624\ldots{}\tabularnewline
+12260 & Nckap1l & 3.3359\ldots{} & 5.8304\ldots{} & 29.954\ldots{} & 8.5853\ldots{} & 6.6702\ldots{} & 15.519\ldots{}\tabularnewline
+3893 & Gusb & 2.3568\ldots{} & 6.0931\ldots{} & 29.740\ldots{} & 9.1894\ldots{} & 6.6702\ldots{} & 15.480\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux57faux56e0ux6620ux5c04}{%
+\subsubsection{基因映射}\label{ux57faux56e0ux6620ux5c04}}
+
+将小鼠基因映射到人类
+
+Table \ref{tab:Mapped-genes} (下方表格) 为表格Mapped genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Mapped-genes.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5274行2列，以下预览的表格可能省略部分数据；含有5123个唯一`mgi\_symbol；含有5146个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:Mapped-genes}Mapped genes}\tabularnewline
+\toprule
+mgi\_symbol & hgnc\_symbol\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+mgi\_symbol & hgnc\_symbol\tabularnewline
+\midrule
+\endhead
+Tmsb4x & TMSB4Y\tabularnewline
+Hopx & HOPX\tabularnewline
+Cyth4 & CYTH4\tabularnewline
+Col6a2 & COL6A2\tabularnewline
+Pacsin2 & PACSIN2\tabularnewline
+Fbln1 & FBLN1\tabularnewline
+Sh3bp2 & SH3BP2\tabularnewline
+Abcg1 & ABCG1\tabularnewline
+Mipep & MIPEP\tabularnewline
+Itgb2 & ITGB2\tabularnewline
+Pmepa1 & PMEPA1\tabularnewline
+Maged2 & MAGED2\tabularnewline
+Postn & POSTN\tabularnewline
+Slc39a6 & SLC39A6\tabularnewline
+Sirpa & SIRPG\tabularnewline
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{fkbp5-ux7684ux8868ux8fbe}{%
+\subsubsection{FKBP5 的表达}\label{fkbp5-ux7684ux8868ux8fbe}}
+
+FKBP5 (Fkbp5) 在 MI 中属于显著高表达。
+
+Table \ref{tab:Fkbp5-expression} (下方表格) 为表格Fkbp5 expression概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Fkbp5-expression.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行10列，以下预览的表格可能省略部分数据；含有1个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Fkbp5-expression}Fkbp5 expression}\tabularnewline
+\toprule
+hgnc\_s\ldots{} & mgi\_sy\ldots{} & rownames & Genesy\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val & B\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+hgnc\_s\ldots{} & mgi\_sy\ldots{} & rownames & Genesy\ldots{} & logFC & AveExpr & t & P.Value & adj.P.Val & B\tabularnewline
+\midrule
+\endhead
+FKBP5 & Fkbp5 & 9124 & Fkbp5 & 1.5635\ldots{} & 5.3072\ldots{} & 5.7027\ldots{} & 0.0002\ldots{} & 0.0005\ldots{} & 0.0172\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{mi-intersection-mi_key_degs}{%
+\subsection{\texorpdfstring{MI intersection (\texttt{MI\_key\_DEGs})}{MI intersection (MI\_key\_DEGs)}}\label{mi-intersection-mi_key_degs}}
+
+Figure \ref{fig:Intersection-of-MI-DEGs-with-MI-targets} (下方图) 为图Intersection of MI DEGs with MI targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-MI-DEGs-with-MI-targets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-MI-DEGs-with-MI-targets.pdf}
+\caption{Intersection of MI DEGs with MI targets}\label{fig:Intersection-of-MI-DEGs-with-MI-targets}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    ABCG1, ITGB2, POSTN, EGLN3, PPARGC1A, LTBP2, CYBB,
+C3AR1, THBS1, SERPINE1, CLU, SFRP2, TGFB3, IGFBP4, TNC,
+LCP1, GAS6, CTSZ, HPGDS, BGN, VLDLR, GUCY1A1, CYP4F3, LIPA,
+NCAM1, GLA, HLA-DMB, FERMT3, LGALS3, TLR2, MMP2, GPNMB,
+CYBA, ALCAM, KDR, TNNI3, ARNTL, IGFBP7, ANPEP, PPM1L,
+TNFRSF1B, SERPINF1, ...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-MI-DEGs-with-MI-targets-content})}
+
+\hypertarget{ux4e59ux9170ux5316ux9176}{%
+\subsection{乙酰化酶}\label{ux4e59ux9170ux5316ux9176}}
+
+\hypertarget{ux4f7fux7528ux7684ux4e59ux9170ux5316ux9176ux53caux5176ux76f8ux5173ux4fe1ux606f}{%
+\subsubsection{使用的乙酰化酶及其相关信息}\label{ux4f7fux7528ux7684ux4e59ux9170ux5316ux9176ux53caux5176ux76f8ux5173ux4fe1ux606f}}
+
+Table \ref{tab:All-protein-of-CoA} (下方表格) 为表格All protein of CoA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-protein-of-CoA.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有145行25列，以下预览的表格可能省略部分数据；含有142个唯一`HGNC\_symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:All-protein-of-CoA}All protein of CoA}\tabularnewline
+\toprule
+HGNC\_s\ldots{} & Modifi\ldots{} & Id & Status & HGNC\_ID & HGNC\_name & GeneID & UniPro\ldots\ldots8 & UniPro\ldots\ldots9 & Domain\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+HGNC\_s\ldots{} & Modifi\ldots{} & Id & Status & HGNC\_ID & HGNC\_name & GeneID & UniPro\ldots\ldots8 & UniPro\ldots\ldots9 & Domain\tabularnewline
+\midrule
+\endhead
+ARID4A & Histon\ldots{} & 36 & \# & 9885 & AT ric\ldots{} & 5926 & P29374 & ARI4A\_\ldots{} & ARID P\ldots{}\tabularnewline
+ARID4B & Histon\ldots{} & 37 & \# & 15550 & AT ric\ldots{} & 51742 & Q4LE39 & ARI4B\_\ldots{} & ARID P\ldots{}\tabularnewline
+ATF2 & Histon\ldots{} & 49 & \# & 784 & activa\ldots{} & 1386 & P15336 & ATF2\_H\ldots{} & bZIP\_1\ldots{}\tabularnewline
+ATXN7 & Histon\ldots{} & 55 & \# & 10560 & ataxin 7 & 6314 & O15265 & ATX7\_H\ldots{} & Pfam-B\ldots{}\tabularnewline
+BANP & Histon\ldots{} & 62 & \# & 13450 & BTG3 a\ldots{} & 54971 & Q8N9N5 & BANP\_H\ldots{} & BEN PF\ldots{}\tabularnewline
+BAZ2A & Histon\ldots{} & 67 & \# & 962 & bromod\ldots{} & 11176 & Q9UIF9 & BAZ2A\_\ldots{} & Bromod\ldots{}\tabularnewline
+BCORL1 & Histon\ldots{} & 70 & \# & 25657 & BCL6 c\ldots{} & 63035 & Q5H9F3 & BCORL\_\ldots{} & Ank\_2 \ldots{}\tabularnewline
+BRCA1 & Histon\ldots{} & 73 & \# & 1100 & breast\ldots{} & 672 & P38398 & BRCA1\_\ldots{} & BRCT P\ldots{}\tabularnewline
+BRCA2 & Histon\ldots{} & 74 & \# & 1101 & breast\ldots{} & 675 & P51587 & BRCA2\_\ldots{} & BRCA-2\ldots{}\tabularnewline
+BRMS1L & Histon\ldots{} & 86 & \# & 20512 & breast\ldots{} & 84312 & Q5PSV4 & BRM1L\_\ldots{} & Sds3 P\ldots{}\tabularnewline
+BRPF3 & Histon\ldots{} & 88 & \# & 14256 & bromod\ldots{} & 27154 & Q9ULD4 & BRPF3\_\ldots{} & Bromod\ldots{}\tabularnewline
+CDY1 & Histon\ldots{} & 115 & \# & 1809 & chromo\ldots{} & 9085 & Q9Y6F8 & CDY1\_H\ldots{} & Chromo\ldots{}\tabularnewline
+CDY1B & Histon\ldots{} & 116 & \# & 23920 & chromo\ldots{} & 253175 & Q9Y6F8 & CDY1\_H\ldots{} & Chromo\ldots{}\tabularnewline
+CDY2A & Histon\ldots{} & 117 & \# & 1810 & chromo\ldots{} & 9426 & Q9Y6F7 & CDY2\_H\ldots{} & Chromo\ldots{}\tabularnewline
+CDY2B & Histon\ldots{} & 118 & \# & 23921 & chromo\ldots{} & 203611 & Q9Y6F7 & CDY2\_H\ldots{} & Chromo\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux7b5bux9009ux5deeux5f02ux8868ux8fbeux7684ux4e59ux9170ux5316ux9176-coa_degs}{%
+\subsubsection{\texorpdfstring{筛选差异表达的乙酰化酶 (\texttt{CoA\_DEGs})}{筛选差异表达的乙酰化酶 (CoA\_DEGs)}}\label{ux7b5bux9009ux5deeux5f02ux8868ux8fbeux7684ux4e59ux9170ux5316ux9176-coa_degs}}
+
+使用 MI 数据 (\ref{MI}) 的 DEGs，筛选差异表达的乙酰化酶。
+
+以 \texttt{mgi\_symbol} 取交集。
+
+Figure \ref{fig:Intersection-of-All-CoA-with-MI-DEGs} (下方图) 为图Intersection of All CoA with MI DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-All-CoA-with-MI-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-All-CoA-with-MI-DEGs.pdf}
+\caption{Intersection of All CoA with MI DEGs}\label{fig:Intersection-of-All-CoA-with-MI-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    Brca1, Eid1, Eid2b, Hdac11, Hdac9, Hif1an, Jdp2,
+Morf4l2, Ncoa1, Nsl1, Sirt7, Smarca1, Taf7, Zbtb16
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-All-CoA-with-MI-DEGs-content})}
+
+\hypertarget{ux5176ux5b83ux5019ux9009}{%
+\subsection{其它候选}\label{ux5176ux5b83ux5019ux9009}}
+
+\hypertarget{ppi}{%
+\subsubsection{\texorpdfstring{以 PPI 网络筛选与 \texttt{CoA\_DEGs} 相关的 \texttt{MI\_key\_DEGs}}{以 PPI 网络筛选与 CoA\_DEGs 相关的 MI\_key\_DEGs}}\label{ppi}}
+
+根据 Fig. \ref{fig:Intersection-of-MI-DEGs-with-MI-targets}
+和 Fig. \ref{fig:Intersection-of-All-CoA-with-MI-DEGs}
+建立 PPI 网络 (有实验基础的蛋白物理直接互作) 。
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+STRINGdb network type:
+:}
+
+\vspace{0.5em}
+
+    physical
+
+\vspace{2em}
+
+
+\textbf{
+Filter experiments score:
+:}
+
+\vspace{0.5em}
+
+    At least score 100
+
+\vspace{2em}
+
+
+\textbf{
+Filter textmining score:
+:}
+
+\vspace{0.5em}
+
+    At least score 0
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:PPI-annotation} (下方表格) 为表格PPI annotation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-annotation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1364行10列，以下预览的表格可能省略部分数据；含有381个唯一`from'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item experiments:  相关实验。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:PPI-annotation}PPI annotation}\tabularnewline
+\toprule
+from & to & homology & experi\ldots\ldots4 & experi\ldots\ldots5 & database & databa\ldots{} & textmi\ldots\ldots8 & textmi\ldots\ldots9 & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+from & to & homology & experi\ldots\ldots4 & experi\ldots\ldots5 & database & databa\ldots{} & textmi\ldots\ldots8 & textmi\ldots\ldots9 & \ldots{}\tabularnewline
+\midrule
+\endhead
+TNFRSF1A & RIPK3 & 0 & 292 & 0 & 0 & 0 & 473 & 0 & \ldots{}\tabularnewline
+DCN & PLAT & 0 & 205 & 0 & 0 & 0 & 0 & 0 & \ldots{}\tabularnewline
+DCN & TGFB1 & 0 & 457 & 0 & 500 & 0 & 979 & 60 & \ldots{}\tabularnewline
+MMP2 & TGFB1 & 0 & 548 & 0 & 0 & 0 & 118 & 0 & \ldots{}\tabularnewline
+PLAT & SERPINE1 & 0 & 955 & 0 & 700 & 0 & 982 & 0 & \ldots{}\tabularnewline
+MYH9 & ACTA2 & 0 & 205 & 97 & 900 & 0 & 0 & 91 & \ldots{}\tabularnewline
+MMP2 & COL1A1 & 0 & 292 & 0 & 0 & 0 & 0 & 0 & \ldots{}\tabularnewline
+TGFB1 & VDR & 0 & 292 & 0 & 0 & 0 & 0 & 0 & \ldots{}\tabularnewline
+COL1A1 & VDR & 0 & 292 & 0 & 0 & 0 & 0 & 0 & \ldots{}\tabularnewline
+MMP2 & LOX & 0 & 238 & 0 & 0 & 0 & 0 & 0 & \ldots{}\tabularnewline
+COL1A1 & LOX & 0 & 230 & 0 & 0 & 0 & 0 & 0 & \ldots{}\tabularnewline
+COL1A1 & SPARC & 0 & 457 & 0 & 0 & 0 & 89 & 90 & \ldots{}\tabularnewline
+VDR & IL12B & 0 & 292 & 0 & 0 & 0 & 0 & 0 & \ldots{}\tabularnewline
+ACTA2 & CTSD & 0 & 229 & 0 & 0 & 0 & 0 & 0 & \ldots{}\tabularnewline
+VDR & EGR1 & 0 & 292 & 0 & 0 & 0 & 0 & 0 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+获取 CoA -\textgreater{} DEGs 的网络：
+
+Figure \ref{fig:Filtered-and-formated-PPI-network} (下方图) 为图Filtered and formated PPI network概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Filtered-and-formated-PPI-network.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Filtered-and-formated-PPI-network.pdf}
+\caption{Filtered and formated PPI network}\label{fig:Filtered-and-formated-PPI-network}
+\end{center}
+
+\hypertarget{cor}{%
+\subsubsection{关联分析}\label{cor}}
+
+根据 Fig. \ref{fig:Filtered-and-formated-PPI-network}，以小鼠数据集 (\ref{MI}) 进行关联分析。
+
+Figure \ref{fig:MI-correlation-heatmap} (下方图) 为图MI correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MI-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MI-correlation-heatmap.pdf}
+\caption{MI correlation heatmap}\label{fig:MI-correlation-heatmap}
+\end{center}
+
+Table \ref{tab:MI-significant-correlation} (下方表格) 为表格MI significant correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MI-significant-correlation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有738行7列，以下预览的表格可能省略部分数据；含有13个唯一`CoA\_DEGs\_ppi'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor:  皮尔逊关联系数，正关联或负关联。
+\item pvalue:  显著性 P。
+\item -log2(P.value):  P 的对数转化。
+\item significant:  显著性。
+\item sign:  人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:MI-significant-correlation}MI significant correlation}\tabularnewline
+\toprule
+CoA\_DEGs\_ppi & MI\_key\_DEG\ldots{} & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+CoA\_DEGs\_ppi & MI\_key\_DEG\ldots{} & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
+\midrule
+\endhead
+Morf4l2 & Ppargc1a & -0.95 & 1e-04 & 13.2877123\ldots{} & \textless{} 0.001 & **\tabularnewline
+Hdac9 & Ppargc1a & 0.98 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+Sirt7 & Ppargc1a & -0.92 & 5e-04 & 10.9657842\ldots{} & \textless{} 0.001 & **\tabularnewline
+Nsl1 & Ppargc1a & -0.94 & 2e-04 & 12.2877123\ldots{} & \textless{} 0.001 & **\tabularnewline
+Taf7 & Ppargc1a & 0.9 & 0.001 & 9.96578428\ldots{} & \textless{} 0.001 & **\tabularnewline
+Ncoa1 & Ppargc1a & 0.91 & 7e-04 & 10.4803574\ldots{} & \textless{} 0.001 & **\tabularnewline
+Jdp2 & Ppargc1a & -0.74 & 0.0217 & 5.52616114\ldots{} & \textless{} 0.05 & *\tabularnewline
+Hif1an & Ppargc1a & 0.99 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+Brca1 & Ppargc1a & -0.93 & 3e-04 & 11.7027498\ldots{} & \textless{} 0.001 & **\tabularnewline
+Smarca1 & Ppargc1a & -0.95 & 1e-04 & 13.2877123\ldots{} & \textless{} 0.001 & **\tabularnewline
+Hdac11 & Ppargc1a & 0.96 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+Eid1 & Ppargc1a & -0.87 & 0.0024 & 8.70274987\ldots{} & \textless{} 0.05 & *\tabularnewline
+Zbtb16 & Ppargc1a & 0.67 & 0.0483 & 4.37183300\ldots{} & \textless{} 0.05 & *\tabularnewline
+Morf4l2 & Il18r1 & 0.88 & 0.0018 & 9.11778737\ldots{} & \textless{} 0.05 & *\tabularnewline
+Hdac9 & Il18r1 & -0.78 & 0.013 & 6.26534456\ldots{} & \textless{} 0.05 & *\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5b58ux5728-ppi-ux5173ux8054ux4e14ux5173ux8054ux5206ux6790ux663eux8457ux7684ux7ec4ux5408}{%
+\subsubsection{存在 PPI 关联且关联分析显著的组合}\label{ux5b58ux5728-ppi-ux5173ux8054ux4e14ux5173ux8054ux5206ux6790ux663eux8457ux7684ux7ec4ux5408}}
+
+结合 \ref{ppi} 和 \ref{cor} 筛选 CoA 与 XX
+
+Table \ref{tab:PPI-interact-and-significant-correlated-in-MI} (下方表格) 为表格PPI interact and significant correlated in MI概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-interact-and-significant-correlated-in-MI.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有64行9列，以下预览的表格可能省略部分数据；含有13个唯一`CoA\_DEGs\_ppi'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor:  皮尔逊关联系数，正关联或负关联。
+\item pvalue:  显著性 P。
+\item -log2(P.value):  P 的对数转化。
+\item significant:  显著性。
+\item sign:  人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:PPI-interact-and-significant-correlated-in-MI}PPI interact and significant correlated in MI}\tabularnewline
+\toprule
+CoA\_DE\ldots{} & MI\_key\ldots{} & cor & pvalue & -log2(\ldots{} & signif\ldots{} & sign & CoA\_hg\ldots{} & DEG\_hg\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+CoA\_DE\ldots{} & MI\_key\ldots{} & cor & pvalue & -log2(\ldots{} & signif\ldots{} & sign & CoA\_hg\ldots{} & DEG\_hg\ldots{}\tabularnewline
+\midrule
+\endhead
+Brca1 & Casp1 & 0.91 & 8e-04 & 10.287\ldots{} & \textless{} 0.001 & ** & BRCA1 & CASP1\tabularnewline
+Brca1 & Ccna2 & 0.9 & 0.0011 & 9.8282\ldots{} & \textless{} 0.05 & * & BRCA1 & CCNA2\tabularnewline
+Brca1 & Ccnd1 & -0.87 & 0.0024 & 8.7027\ldots{} & \textless{} 0.05 & * & BRCA1 & CCND1\tabularnewline
+Brca1 & Cdk1 & 0.95 & 1e-04 & 13.287\ldots{} & \textless{} 0.001 & ** & BRCA1 & CDK1\tabularnewline
+Brca1 & E2f1 & 0.95 & 1e-04 & 13.287\ldots{} & \textless{} 0.001 & ** & BRCA1 & E2F1\tabularnewline
+Brca1 & Esr1 & 0.7 & 0.0356 & 4.8119\ldots{} & \textless{} 0.05 & * & BRCA1 & ESR1\tabularnewline
+Brca1 & Ezh2 & 0.88 & 0.002 & 8.9657\ldots{} & \textless{} 0.05 & * & BRCA1 & EZH2\tabularnewline
+Brca1 & Fancd2 & 0.94 & 2e-04 & 12.287\ldots{} & \textless{} 0.001 & ** & BRCA1 & FANCD2\tabularnewline
+Brca1 & Flna & 0.92 & 4e-04 & 11.287\ldots{} & \textless{} 0.001 & ** & BRCA1 & FLNA\tabularnewline
+Brca1 & Jup & -0.94 & 2e-04 & 12.287\ldots{} & \textless{} 0.001 & ** & BRCA1 & JUP\tabularnewline
+Brca1 & Kif2c & 0.89 & 0.0011 & 9.8282\ldots{} & \textless{} 0.05 & * & BRCA1 & KIF2C\tabularnewline
+Brca1 & Lgals3 & 0.89 & 0.0013 & 9.5872\ldots{} & \textless{} 0.05 & * & BRCA1 & LGALS3\tabularnewline
+Brca1 & Lmna & 0.89 & 0.0015 & 9.3808\ldots{} & \textless{} 0.05 & * & BRCA1 & LMNA\tabularnewline
+Brca1 & Mapt & -0.91 & 8e-04 & 10.287\ldots{} & \textless{} 0.001 & ** & BRCA1 & MAPT\tabularnewline
+Brca1 & Mefv & 0.97 & 0 & 16.609\ldots{} & \textless{} 0.001 & ** & BRCA1 & MEFV\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+将 Tab. \ref{tab:PPI-interact-and-significant-correlated-in-MI} 中的 DEGs 进行富集分析
+
+Figure \ref{fig:GO-enrichment} (下方图) 为图GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GO-enrichment.pdf}
+\caption{GO enrichment}\label{fig:GO-enrichment}
+\end{center}
+
+\hypertarget{coa-xx-pathways}{%
+\subsubsection{CoA-XX-pathways}\label{coa-xx-pathways}}
+
+Figure \ref{fig:CoA-XX-GOpathways} (下方图) 为图CoA XX GOpathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/CoA-XX-GOpathways.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/CoA-XX-GOpathways.pdf}
+\caption{CoA XX GOpathways}\label{fig:CoA-XX-GOpathways}
+\end{center}
+
+Table \ref{tab:All-candidates-and-enriched-GO-BP-pathways} (下方表格) 为表格All candidates and enriched GO BP pathways概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-candidates-and-enriched-GO-BP-pathways.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有64行4列，以下预览的表格可能省略部分数据；含有13个唯一`CoA\_hgnc\_symbol；含有51个唯一`DEG\_hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:All-candidates-and-enriched-GO-BP-pathways}All candidates and enriched GO BP pathways}\tabularnewline
+\toprule
+CoA\_hgnc\_symbol & DEG\_hgnc\_symbol & Hit\_pathway\_number & Enriched\_pathways\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+CoA\_hgnc\_symbol & DEG\_hgnc\_symbol & Hit\_pathway\_number & Enriched\_pathways\tabularnewline
+\midrule
+\endhead
+BRCA1 & FLNA & 6 & cardiac muscle co\ldots{}\tabularnewline
+BRCA1 & SRC & 6 & coagulation; regu\ldots{}\tabularnewline
+HDAC9 & PIK3CG & 6 & cardiac muscle co\ldots{}\tabularnewline
+NCOA1 & SRC & 6 & coagulation; regu\ldots{}\tabularnewline
+ZBTB16 & CASP3 & 5 & response to corti\ldots{}\tabularnewline
+BRCA1 & CCND1 & 4 & regulation of bod\ldots{}\tabularnewline
+BRCA1 & TTN & 4 & cardiac muscle co\ldots{}\tabularnewline
+JDP2 & FOS & 4 & response to corti\ldots{}\tabularnewline
+MORF4L2 & ACTG1 & 4 & coagulation; regu\ldots{}\tabularnewline
+MORF4L2 & TNNT2 & 4 & cardiac muscle co\ldots{}\tabularnewline
+NCOA1 & CCND1 & 4 & regulation of bod\ldots{}\tabularnewline
+NCOA1 & FOS & 4 & response to corti\ldots{}\tabularnewline
+NCOA1 & PPARA & 4 & muscle system pro\ldots{}\tabularnewline
+BRCA1 & JUP & 3 & cardiac muscle co\ldots{}\tabularnewline
+BRCA1 & PLAUR & 3 & coagulation; regu\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-MappingIdentifDurinc2009}{}%
+1. Durinck, S., Spellman, P. T., Birney, E. \& Huber, W. Mapping identifiers for the integration of genomic datasets with the r/bioconductor package biomaRt. \emph{Nature protocols} \textbf{4}, 1184--1191 (2009).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+2. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-Epifactors2022Maraku2023}{}%
+3. Marakulina, D. \emph{et al.} EpiFactors 2022: Expansion and enhancement of a curated database of human epigenetic factors and complexes. \emph{Nucleic acids research} \textbf{51}, D564--D570 (2023).
+
+\leavevmode\hypertarget{ref-TheDisgenetKnPinero2019}{}%
+4. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+5. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-PharmgkbAWorBarbar2018}{}%
+6. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+7. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+8. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+9. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+10. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+\end{cslreferences}
+
+\end{document}

@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(), lock = T)
+info <- items(belong = odate(4), eval = ic(0, 2, 0, 1, 0))
 show.ic(info)
 
 order_publish()
@@ -37,6 +37,14 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
 ```
 
+复方：地黄15g、黄芪15g、葛根18g、石斛15g、水蛭3g、川芎9g
+有效成分：水蛭中水蛭素Hirudin（重点关注）
+疾病：缺血性脑卒中
+机制：血管生成
+目标：找到水蛭素通过XX靶点及XX靶点涉及的通路YY影响缺血性脑卒中的血管生成
+请注意，网药有效成分筛选时确认包括水蛭素，如不包括，请及时联系
+ 
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -58,3 +66,11 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+```{r}
+herbs <- c("地黄", "黄芪", "葛根", "石斛", "水蛭", "川芎")
+
+tc2 <- job_tcmsp2(herbs)
+tc2 <- step1(tc2)
+tc2 <- step2(tc2)
+```

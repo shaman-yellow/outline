@@ -5,3 +5,86 @@ gn <- job_genecard("myocardial infarction")
 gn <- step1(gn)
 ```
 
+
+### 富集分析
+
+```{r}
+gse.mi <- job_gsea(bm2$tops_mapped, use = "hgnc_symbol")
+gse.mi <- step1(gse.mi)
+gse.mi@plots$step1$p.kegg
+```
+
+
+### 在富集的 KEGG 通路中寻找包含差异表达乙酰化酶的通路
+
+```{r}
+genesHGNC.coaDEGs <- bm2$mapped$hgnc_symbol[ match(p.vennCoa$ins, bm2$mapped$mgi_symbol) ]
+path.coaDEGs <- filter(gse.mi, genes = genesHGNC.coaDEGs)
+path.coaDEGs$match_genes
+
+gse.mi@step <- 2L
+gse.mi <- step3(gse.mi, path.coaDEGs$ID)
+gse.mi@plots$step3$p.pathviews$hsa04151
+```
+
+
+### 富集分析 {#en}
+
+```{r}
+gse.mi <- job_gsea(bm2$tops_mapped, use = "hgnc_symbol")
+gse.mi <- step1(gse.mi)
+gse.mi@plots$step1$p.kegg
+```
+
+
+### 富集分析
+
+```{r}
+en <- job_enrich(unlist(genesHGNC.ppi))
+en <- step1(en)
+en@plots$step1$p.kegg$ids
+en@tables$step1$res.kegg$ids
+en <- step2(en)
+```
+
+
+## FKBP5 与 `CoA_DEGs`
+
+```{r}
+corp.fkbp5 <- cal_corp(lm.mi, NULL, p.vennCoa$ins, "Fkbp5", c("CoA_DEGs_ppi", "Fkbp5"), use = "Genesymbol")
+```
+
+
+fun_check <- function(x) {
+  data <- dplyr::select(x, 1:2)
+  data <- pbapply::pbapply(data, 1, sort)
+}
+y <- fun_check(x)
+y <- as_tibble(data.frame(t(y)))
+y.1 <- dplyr::distinct(y)
+
+
+```{r}
+fun_test <- function(x) {
+  w <- sample(1:nrow(x), 100)
+  sam <- rev <-  dplyr::slice(x, w)
+  rev <- rev[, 2:1]
+  colnames(rev) <- colnames(sam)
+  rev <- merge(rev, x, by = colnames(rev), sort = F)
+  fun_ex <- function(x, n) x[[ n ]]
+  lapply(3:10,
+    function(n) {
+      message("Iden: ", identical(fun_ex(rev, n), fun_ex(sam, n)))
+    })
+  namel(sam, rev)
+}
+y <- fun_test(x)
+```
+
+## SIRT1 与 FKBP5
+
+```{r}
+st.sirt1_fkbp5 <- job_stringdb(c("SIRT1", "FKBP5", unlist(st@params$edges[1:2, 1:2])))
+st.sirt1_fkbp5 <- step1(st.sirt1_fkbp5)
+st.sirt1_fkbp5@params$edges
+```

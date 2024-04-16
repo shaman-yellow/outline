@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(), lock = T)
+info <- items(belong = odate(4), eval = ic(0, 1, 0, 1, 0))
 show.ic(info)
 
 order_publish()
@@ -37,6 +37,11 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
 ```
 
+药对：白花蛇舌草，半枝莲，浙贝母
+疾病：乳腺癌
+目标：提供中药-有效成分-乳腺癌相关靶点的网药分析
+
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -58,3 +63,40 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+## 网络药理学
+
+### 成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-information
+autor(tc2@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Compounds-filtered-by-OB-and-DL
+autor(tc2@tables$step3$t.ob_dl_filtered)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-compounds
+autor(wrap(tc2@plots$step3$p.herbs_compounds, 7, 5))
+```
+
+### 成分靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-Herbs-compounds-and-targets
+autor(tc2@params$easyRead)
+```
+
+```{r}
+herbs <- c("白花蛇舌草", "半枝莲", "浙贝母")
+
+tc2 <- job_tcmsp2(herbs)
+tc2 <- step1(tc2)
+tc2 <- step2(tc2)
+tc2 <- step3(tc2)
+tc2@tables$step3$t.ob_dl_filtered
+
+```
