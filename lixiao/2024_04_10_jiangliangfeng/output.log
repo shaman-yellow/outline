@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  17 APR 2024 14:01
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  17 APR 2024 16:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1244,9 +1244,9 @@ Package caption Info: End \AtBeginDocument code.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 24.15147pt on input line 83.
+(Font)              scaled to size 24.15147pt on input line 84.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
-(Font)              scaled to size 14.4pt on input line 89.
+(Font)              scaled to size 14.4pt on input line 90.
 File: ~/outline/lixiao//cover_page.pdf Graphic file (type pdf)
 <use ~/outline/lixiao//cover_page.pdf>
 
@@ -1294,7 +1294,25 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
+))
+\tf@toc=\write4
+\openout4 = `output.toc'.
+
+(./output.lof)
+\tf@lof=\write5
+\openout5 = `output.lof'.
+
+(./output.lot)
+\tf@lot=\write6
+\openout6 = `output.lot'.
+
+[1
+
+]
+LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
+(Font)              scaled to size 13.97833pt on input line 107.
+LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
+(Font)              scaled to size 11.64862pt on input line 110.
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
@@ -1318,147 +1336,88 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 guage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
-)
-\tf@toc=\write4
-\openout4 = `output.toc'.
-
-(./output.lof [1
-
-])
-\tf@lof=\write5
-\openout5 = `output.lof'.
-
-(./output.lot)
-\tf@lot=\write6
-\openout6 = `output.lot'.
-
-[2]
-LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 13.97833pt on input line 106.
-LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 109.
 [1]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 238.
-File: Figure+Table/Overall-targets-number-of-datasets.pdf Graphic file (type pd
-f)
-<use Figure+Table/Overall-targets-number-of-datasets.pdf>
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 185.
+[2]
+File: Figure+Table/intersection-of-all-compounds.pdf Graphic file (type pdf)
+<use Figure+Table/intersection-of-all-compounds.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 243.
+(caption)                particular \caption on input line 262.
 See the caption package documentation for explanation.
 
-[2] [3]
-File: Figure+Table/MI-MI-7d-vs-MI-sham-DEGs.pdf Graphic file (type pdf)
-<use Figure+Table/MI-MI-7d-vs-MI-sham-DEGs.pdf>
+[3] [4]
+File: Figure+Table/Network-pharmacology-with-disease.pdf Graphic file (type pdf
+)
+<use Figure+Table/Network-pharmacology-with-disease.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 413.
+(caption)                particular \caption on input line 402.
 See the caption package documentation for explanation.
 
-[4] [5] [6]
-Overfull \hbox (12.74512pt too wide) in alignment at lines 556--561
- [] [] [] [] [] [] [] [] [] [] 
- []
+[5]
+File: Figure+Table/Targets-intersect-with-targets-of-diseases.pdf Graphic file 
+(type pdf)
+<use Figure+Table/Targets-intersect-with-targets-of-diseases.pdf>
 
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 412.
+See the caption package documentation for explanation.
 
-Overfull \hbox (12.74512pt too wide) in alignment at lines 561--565
- [] [] [] [] [] [] [] [] [] [] 
- []
+[6]
+File: Figure+Table/KEGG-enrichment.pdf Graphic file (type pdf)
+<use Figure+Table/KEGG-enrichment.pdf>
 
-
-Overfull \hbox (12.74512pt too wide) in alignment at lines 565--568
- [] [] [] [] [] [] [] [] [] [] 
- []
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 444.
+See the caption package documentation for explanation.
 
 [7]
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 571.
-File: Figure+Table/Intersection-of-MI-DEGs-with-MI-targets.pdf Graphic file (ty
-pe pdf)
-<use Figure+Table/Intersection-of-MI-DEGs-with-MI-targets.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 580.
-See the caption package documentation for explanation.
-
-[8]
-Overfull \hbox (53.92516pt too wide) in alignment at lines 616--621
- [] [] [] [] [] [] [] [] [] [] 
- []
-
-
-Overfull \hbox (53.92516pt too wide) in alignment at lines 621--625
- [] [] [] [] [] [] [] [] [] [] 
- []
-
-
-Overfull \hbox (53.92516pt too wide) in alignment at lines 625--643
- [] [] [] [] [] [] [] [] [] [] 
- []
-
-File: Figure+Table/Intersection-of-All-CoA-with-MI-DEGs.pdf Graphic file (type 
-pdf)
-<use Figure+Table/Intersection-of-All-CoA-with-MI-DEGs.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 659.
-See the caption package documentation for explanation.
-
-[9] [10]
-Overfull \hbox (48.87509pt too wide) in alignment at lines 734--739
- [] [] [] [] [] [] [] [] [] [] 
- []
-
-
-Overfull \hbox (48.87509pt too wide) in alignment at lines 739--743
- [] [] [] [] [] [] [] [] [] [] 
- []
-
-
-Overfull \hbox (48.87509pt too wide) in alignment at lines 743--761
- [] [] [] [] [] [] [] [] [] [] 
- []
-
-File: Figure+Table/Filtered-and-formated-PPI-network.pdf Graphic file (type pdf
-)
-<use Figure+Table/Filtered-and-formated-PPI-network.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 772.
-See the caption package documentation for explanation.
-
-[11]
-File: Figure+Table/MI-correlation-heatmap.pdf Graphic file (type pdf)
-<use Figure+Table/MI-correlation-heatmap.pdf>
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 787.
-See the caption package documentation for explanation.
-
-[12] [13] [14]
 File: Figure+Table/GO-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/GO-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 897.
+(caption)                particular \caption on input line 454.
 See the caption package documentation for explanation.
 
-File: Figure+Table/CoA-XX-GOpathways.pdf Graphic file (type pdf)
-<use Figure+Table/CoA-XX-GOpathways.pdf>
+[8]
+File: Figure+Table/Network-pharmacology-with-disease-and-pathway.pdf Graphic fi
+le (type pdf)
+<use Figure+Table/Network-pharmacology-with-disease-and-pathway.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 910.
+(caption)                particular \caption on input line 467.
 See the caption package documentation for explanation.
 
-[15] [16] [17] (./output.aux) ) 
-Here is how much of TeX's memory you used:
- 32212 strings out of 476191
- 657881 string characters out of 5812072
- 1109437 words of memory out of 5000000
- 52407 multiletter control sequences out of 15000+600000
- 473498 words of font info for 80 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 86i,12n,129p,1365b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
+[9]
+Overfull \hbox (7.13252pt too wide) in paragraph at lines 482--483
+[]\TU/lmr/m/n/10 Herb_pinyin_name|  
+ []
 
-Output written on output.pdf (20 pages).
+
+Overfull \hbox (9.6754pt too wide) in paragraph at lines 488--489
+[]\TU/lmr/m/n/10 Hit_pathway_number|  
+ []
+
+
+Overfull \hbox (7.13252pt too wide) in paragraph at lines 496--497
+[]\TU/lmr/m/n/10 Herb_pinyin_name|  
+ []
+
+
+Overfull \hbox (9.6754pt too wide) in paragraph at lines 502--503
+[]\TU/lmr/m/n/10 Hit_pathway_number|  
+ []
+
+[10] [11] (./output.aux) ) 
+Here is how much of TeX's memory you used:
+ 32107 strings out of 476191
+ 653360 string characters out of 5812072
+ 1104931 words of memory out of 5000000
+ 52305 multiletter control sequences out of 15000+600000
+ 473490 words of font info for 79 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 86i,12n,121p,1365b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on output.pdf (13 pages).

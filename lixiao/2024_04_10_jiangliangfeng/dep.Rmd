@@ -1,0 +1,8 @@
+
+
+```{r}
+gm <- job_gmix("breast cancer", "breast cancer")
+gm <- step1(gm)
+gm@params$lst_dis
+```
+

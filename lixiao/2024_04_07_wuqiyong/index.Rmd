@@ -315,7 +315,7 @@ genesMGI.ppi
 
 ```{r eval = T, echo = F, results = "asis"}
 #| MI-correlation-heatmap
-autor(wrap(corp$hp, 20, 9))
+autor(wrap(corp$hp, 17, 6))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -324,8 +324,10 @@ autor(corp$sig.corp)
 ```
 
 ```{r}
-corp <- cal_corp(lm.mi, NULL, genesMGI.ppi$from, genesMGI.ppi$to, c("CoA_DEGs_ppi", "MI_key_DEGs_ppi"), use = "Genesymbol")
-wrap(corp$hp, 20, 9)
+corp <- cal_corp(lm.mi, NULL, genesMGI.ppi$from, genesMGI.ppi$to, c("CoA_DEGs_ppi", "MI_key_DEGs_ppi"),
+  use = "Genesymbol", HLs = c("Brca1", "Flna"))
+
+wrap(corp$hp, 17, 6)
 corp$sig.corp
 
 ```
@@ -391,7 +393,7 @@ autor(lst.netEn$dataPath[, -1], key = 1:2)
 ```
 
 ```{r}
-lst.netEn <- plot_network.enrich(link.bothData, en, "go", less.label = F, edge_width = 1)
+lst.netEn <- plot_network.enrich(link.bothData, en, "go", less.label = F, edge_width = 1, HLs = c("BRCA1", "FLNA"))
 wrap(lst.netEn$p.pharm, 14, 12)
 
 lst.netEn$dataPath

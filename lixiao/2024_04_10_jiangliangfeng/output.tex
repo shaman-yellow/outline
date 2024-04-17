@@ -1,0 +1,703 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+中药-有效成分-乳腺癌相关靶点的网药分析}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-04-17}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux9700ux6c42}{%
+\subsection{需求}\label{ux9700ux6c42}}
+
+网络药理学分析
+
+\begin{itemize}
+\tightlist
+\item
+  药对：白花蛇舌草，半枝莲，浙贝母
+\item
+  疾病：乳腺癌
+\item
+  目标：提供中药-有效成分-乳腺癌相关靶点的网药分析
+\end{itemize}
+
+\hypertarget{ux7ed3ux679c}{%
+\subsection{结果}\label{ux7ed3ux679c}}
+
+\begin{itemize}
+\tightlist
+\item
+  数据来源于 TCMSP，以 OB、DL 筛选过化合物 Tab. \ref{tab:Compounds-filtered-by-OB-and-DL}。
+\item
+  疾病靶点来源于 GeneCards, Tab. \ref{tab:Disease-related-targets-from-GeneCards}
+\item
+  疾病成分靶点网络图：Fig. \ref{fig:Targets-intersect-with-targets-of-diseases}
+\item
+  包含通路：Fig. \ref{fig:Network-pharmacology-with-disease-and-pathway},
+  Tab. \ref{tab:Network-pharmacology-with-disease-and-pathway-data}
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{1}}.
+\item
+  The Human Gene Database \texttt{GeneCards} used for disease related genes prediction\textsuperscript{\protect\hyperlink{ref-TheGenecardsSStelze2016}{2}}.
+\item
+  Website \texttt{TCMSP} \url{https://tcmsp-e.com/} used for data source\textsuperscript{\protect\hyperlink{ref-TcmspADatabaRuJi2014}{3}}.
+\item
+  The API of \texttt{UniProtKB} (\url{https://www.uniprot.org/help/api_queries}) used for mapping of names or IDs of proteins.
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux7f51ux7edcux836fux7406ux5b66}{%
+\subsection{网络药理学}\label{ux7f51ux7edcux836fux7406ux5b66}}
+
+\hypertarget{ux6210ux5206}{%
+\subsubsection{成分}\label{ux6210ux5206}}
+
+Table \ref{tab:Herbs-information} (下方表格) 为表格Herbs information概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Herbs-information.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3行2列，以下预览的表格可能省略部分数据；含有3个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:Herbs-information}Herbs information}\tabularnewline
+\toprule
+Herb\_pinyin\_name & Herb\_cn\_name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_pinyin\_name & Herb\_cn\_name\tabularnewline
+\midrule
+\endhead
+Baihuasheshecao & 白花蛇舌草\tabularnewline
+Banzhilian & 半枝莲\tabularnewline
+Zhebeimu & 浙贝母\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:Compounds-filtered-by-OB-and-DL} (下方表格) 为表格Compounds filtered by OB and DL概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Compounds-filtered-by-OB-and-DL.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有43行15列，以下预览的表格可能省略部分数据；含有39个唯一`Mol ID；含有3个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+OB (\%) and DL cut-off
+:}
+
+\vspace{0.5em}
+
+    OB >= 30\%; DL >= 0.18
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Compounds-filtered-by-OB-and-DL}Compounds filtered by OB and DL}\tabularnewline
+\toprule
+Mol ID & Molecu\ldots{} & MW & AlogP & Hdon & Hacc & OB (\%) & Caco-2 & BBB & DL\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Mol ID & Molecu\ldots{} & MW & AlogP & Hdon & Hacc & OB (\%) & Caco-2 & BBB & DL\tabularnewline
+\midrule
+\endhead
+MOL001646 & 2,3-di\ldots{} & 282.310 & 3.262 & 0 & 4 & 34.858\ldots{} & 0.75128 & 0.17357 & 0.26255\tabularnewline
+MOL001659 & Porife\ldots{} & 412.770 & 7.640 & 1 & 1 & 43.829\ldots{} & 1.43659 & 1.03472 & 0.75596\tabularnewline
+MOL001663 & (4aS,6\ldots{} & 456.780 & 6.422 & 2 & 3 & 32.028\ldots{} & 0.60932 & 0.39268 & 0.75713\tabularnewline
+MOL001670 & 2-meth\ldots{} & 252.280 & 3.278 & 0 & 3 & 37.827\ldots{} & 0.72896 & -0.12795 & 0.20517\tabularnewline
+MOL000449 & Stigma\ldots{} & 412.770 & 7.640 & 1 & 1 & 43.829\ldots{} & 1.44458 & 1.00045 & 0.75665\tabularnewline
+MOL000358 & beta-s\ldots{} & 414.790 & 8.084 & 1 & 1 & 36.913\ldots{} & 1.32463 & 0.98588 & 0.75123\tabularnewline
+MOL000098 & quercetin & 302.250 & 1.504 & 5 & 7 & 46.433\ldots{} & 0.04842 & -0.76890 & 0.27525\tabularnewline
+MOL001040 & (2R)-5\ldots{} & 272.270 & 2.298 & 3 & 5 & 42.363\ldots{} & 0.37818 & -0.47578 & 0.21141\tabularnewline
+MOL012245 & 5,7,4'\ldots{} & 302.300 & 2.281 & 3 & 6 & 36.626\ldots{} & 0.43274 & -0.31890 & 0.26833\tabularnewline
+MOL012246 & 5,7,4'\ldots{} & 302.300 & 2.281 & 3 & 6 & 74.235\ldots{} & 0.37328 & -0.43273 & 0.26479\tabularnewline
+MOL012248 & 5-hydr\ldots{} & 328.340 & 2.820 & 1 & 6 & 65.818\ldots{} & 0.84750 & 0.07437 & 0.32874\tabularnewline
+MOL012250 & 7-hydr\ldots{} & 298.310 & 2.836 & 1 & 5 & 43.716\ldots{} & 0.95759 & 0.22129 & 0.25376\tabularnewline
+MOL012251 & Chrysi\ldots{} & 268.280 & 2.853 & 1 & 4 & 37.268\ldots{} & 0.90922 & 0.15556 & 0.20317\tabularnewline
+MOL012252 & 9,19-c\ldots{} & 426.800 & 7.554 & 1 & 1 & 38.685\ldots{} & 1.44891 & 1.16360 & 0.78074\tabularnewline
+MOL002776 & Baicalin & 446.390 & 0.639 & 6 & 11 & 40.123\ldots{} & -0.84777 & -1.74426 & 0.75264\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:intersection-of-all-compounds} (下方图) 为图intersection of all compounds概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/intersection-of-all-compounds.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-all-compounds.pdf}
+\caption{Intersection of all compounds}\label{fig:intersection-of-all-compounds}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    MOL000358
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/intersection-of-all-compounds-content})}
+
+\hypertarget{ux6210ux5206ux9776ux70b9}{%
+\subsubsection{成分靶点}\label{ux6210ux5206ux9776ux70b9}}
+
+Table \ref{tab:tables-of-Herbs-compounds-and-targets} (下方表格) 为表格tables of Herbs compounds and targets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/tables-of-Herbs-compounds-and-targets.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1846行4列，以下预览的表格可能省略部分数据；含有3个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:tables-of-Herbs-compounds-and-targets}Tables of Herbs compounds and targets}\tabularnewline
+\toprule
+Herb\_pinyin\_name & Molecule name & symbols & protein.names\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Herb\_pinyin\_name & Molecule name & symbols & protein.names\tabularnewline
+\midrule
+\endhead
+Banzhilian & luteolin & NA & NA\tabularnewline
+Banzhilian & luteolin & MMP2 & 72 kDa type IV co\ldots{}\tabularnewline
+Banzhilian & luteolin & CLG4A & 72 kDa type IV co\ldots{}\tabularnewline
+Banzhilian & luteolin & ADCY2 & Adenylate cyclase\ldots{}\tabularnewline
+Banzhilian & luteolin & KIAA1060 & Adenylate cyclase\ldots{}\tabularnewline
+Banzhilian & luteolin & APP & Amyloid-beta prec\ldots{}\tabularnewline
+Banzhilian & luteolin & A4 & Amyloid-beta prec\ldots{}\tabularnewline
+Banzhilian & luteolin & AD1 & Amyloid-beta prec\ldots{}\tabularnewline
+Banzhilian & luteolin & AR & Androgen receptor\ldots{}\tabularnewline
+Banzhilian & luteolin & DHTR & Androgen receptor\ldots{}\tabularnewline
+Banzhilian & luteolin & NR3C4 & Androgen receptor\ldots{}\tabularnewline
+Banzhilian & luteolin & XIAP & E3 ubiquitin-prot\ldots{}\tabularnewline
+Banzhilian & luteolin & API3 & E3 ubiquitin-prot\ldots{}\tabularnewline
+Banzhilian & luteolin & BIRC4 & E3 ubiquitin-prot\ldots{}\tabularnewline
+Banzhilian & luteolin & IAP3 & E3 ubiquitin-prot\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux75beux75c5ux9776ux70b9}{%
+\subsubsection{疾病靶点}\label{ux75beux75c5ux9776ux70b9}}
+
+Table \ref{tab:Disease-related-targets-from-GeneCards} (下方表格) 为表格Disease related targets from GeneCards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Disease-related-targets-from-GeneCards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1746行7列，以下预览的表格可能省略部分数据；含有1746个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    breast cancer
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    FALSE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 15
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Disease-related-targets-from-GeneCards}Disease related targets from GeneCards}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+BRCA2 & BRCA2 DNA \ldots{} & Protein Co\ldots{} & P51587 & 56 & GC13P032315 & 584.27\tabularnewline
+BRCA1 & BRCA1 DNA \ldots{} & Protein Co\ldots{} & P38398 & 59 & GC17M043044 & 565.02\tabularnewline
+PALB2 & Partner An\ldots{} & Protein Co\ldots{} & Q86YC2 & 53 & GC16M023603 & 366.84\tabularnewline
+ATM & ATM Serine\ldots{} & Protein Co\ldots{} & Q13315 & 61 & GC11P108223 & 340.7\tabularnewline
+CHEK2 & Checkpoint\ldots{} & Protein Co\ldots{} & O96017 & 63 & GC22M028687 & 336.43\tabularnewline
+BRIP1 & BRCA1 Inte\ldots{} & Protein Co\ldots{} & Q9BX63 & 57 & GC17M061679 & 325.07\tabularnewline
+CDH1 & Cadherin 1 & Protein Co\ldots{} & P12830 & 58 & GC16P068737 & 306.68\tabularnewline
+BARD1 & BRCA1 Asso\ldots{} & Protein Co\ldots{} & Q99728 & 55 & GC02M214725 & 291.41\tabularnewline
+TP53 & Tumor Prot\ldots{} & Protein Co\ldots{} & P04637 & 62 & GC17M007661 & 287.34\tabularnewline
+MSH6 & MutS Homol\ldots{} & Protein Co\ldots{} & P52701 & 58 & GC02P047695 & 239.29\tabularnewline
+MSH2 & MutS Homol\ldots{} & Protein Co\ldots{} & P43246 & 57 & GC02P047403 & 231.87\tabularnewline
+MLH1 & MutL Homol\ldots{} & Protein Co\ldots{} & P40692 & 58 & GC03P036993 & 223.25\tabularnewline
+C11orf65 & Chromosome\ldots{} & Protein Co\ldots{} & Q8NCR3 & 40 & GC11M108308 & 218.43\tabularnewline
+LOC126862571 & BRD4-Indep\ldots{} & Functional\ldots{} & & 10 & GC17P114574 & 215.91\tabularnewline
+APC & APC Regula\ldots{} & Protein Co\ldots{} & P25054 & 58 & GC05P112707 & 199.23\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux75beux75c5-ux6210ux5206-ux9776ux70b9ux7f51ux7edcux56fe}{%
+\subsubsection{疾病-成分-靶点网络图}\label{ux75beux75c5-ux6210ux5206-ux9776ux70b9ux7f51ux7edcux56fe}}
+
+Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pharmacology with disease概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-with-disease.pdf}
+\caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
+\end{center}
+
+Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Targets intersect with targets of diseases概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf}
+\caption{Targets intersect with targets of diseases}\label{fig:Targets-intersect-with-targets-of-diseases}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    CHEK2, TP53, PTEN, ERBB2, CDKN2A, AKT1, AR, CASP8,
+ERBB3, JUN, MYC, IL2, MDM2, CDK2, IL1B, FGFR4, BCL2, BAX,
+TGFB1, ESR2, IGF2, NFE2L2, PPARG, EGF, PTGS2, TNF, MMP2,
+MMP9, RAF1, CASP3, CYP1A1, NFKB1, CTSD, PCNA, PLAU, TOP2A,
+CDK1, MMP1, E2F1, VEGFC, IFNG, CYP1B1, CHEK1, PIK3CG, IL10,
+CASP9, CAV1,...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases-content})}
+
+\hypertarget{ux5bccux96c6ux5206ux6790}{%
+\subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
+
+Figure \ref{fig:KEGG-enrichment} (下方图) 为图KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-enrichment.pdf}
+\caption{KEGG enrichment}\label{fig:KEGG-enrichment}
+\end{center}
+
+Figure \ref{fig:GO-enrichment} (下方图) 为图GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GO-enrichment.pdf}
+\caption{GO enrichment}\label{fig:GO-enrichment}
+\end{center}
+
+\hypertarget{ux75beux75c5-ux6210ux5206-ux9776ux70b9-ux901aux8defux7f51ux7edcux56fe}{%
+\subsubsection{疾病-成分-靶点-通路网络图}\label{ux75beux75c5-ux6210ux5206-ux9776ux70b9-ux901aux8defux7f51ux7edcux56fe}}
+
+Figure \ref{fig:Network-pharmacology-with-disease-and-pathway} (下方图) 为图Network pharmacology with disease and pathway概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease-and-pathway.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-with-disease-and-pathway.pdf}
+\caption{Network pharmacology with disease and pathway}\label{fig:Network-pharmacology-with-disease-and-pathway}
+\end{center}
+
+Table \ref{tab:Network-pharmacology-with-disease-and-pathway-data} (下方表格) 为表格Network pharmacology with disease and pathway data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease-and-pathway-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有431行5列，以下预览的表格可能省略部分数据；含有3个唯一`Herb\_pinyin\_name；含有24个唯一`Ingredient.name；含有101个唯一`Target.name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:Network-pharmacology-with-disease-and-pathway-data}Network pharmacology with disease and pathway data}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.17\columnwidth}\raggedright
+Herb\_pinyin\_name\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Ingredient.name\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+Target.name\strut
+\end{minipage} & \begin{minipage}[b]{0.19\columnwidth}\raggedright
+Hit\_pathway\_number\strut
+\end{minipage} & \begin{minipage}[b]{0.21\columnwidth}\raggedright
+Enriched\_pathways\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.17\columnwidth}\raggedright
+Herb\_pinyin\_name\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Ingredient.name\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+Target.name\strut
+\end{minipage} & \begin{minipage}[b]{0.19\columnwidth}\raggedright
+Hit\_pathway\_number\strut
+\end{minipage} & \begin{minipage}[b]{0.21\columnwidth}\raggedright
+Enriched\_pathways\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Baihuasheshecao\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NFKB1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Baihuasheshecao\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+RELA\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+baicalein\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+RELA\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+luteolin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+RELA\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NFKB1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+RELA\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+wogonin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+RELA\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+18\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Baihuasheshecao\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+AKT1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+17\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+baicalein\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+AKT1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+17\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+luteolin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+AKT1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+17\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+AKT1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+17\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+wogonin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+AKT1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+17\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+AGE-RAGE signalin\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Baihuasheshecao\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+14\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Cellular senescen\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+baicalein\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+14\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Cellular senescen\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Banzhilian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+luteolin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+14\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Cellular senescen\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+1. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+2. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-TcmspADatabaRuJi2014}{}%
+3. Ru, J. \emph{et al.} TCMSP: A database of systems pharmacology for drug discovery from herbal medicines. \emph{Journal of cheminformatics} \textbf{6}, (2014).
+\end{cslreferences}
+
+\end{document}
