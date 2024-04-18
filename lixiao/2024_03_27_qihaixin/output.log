@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  11 APR 2024 11:30
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  18 APR 2024 11:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1398,7 +1398,7 @@ File: Figure+Table/intersection-of-all-compounds.pdf Graphic file (type pdf)
 <use Figure+Table/intersection-of-all-compounds.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 384.
+(caption)                particular \caption on input line 382.
 See the caption package documentation for explanation.
 
 [4] [5]
@@ -1407,7 +1407,7 @@ f)
 <use Figure+Table/Overall-targets-number-of-datasets.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 451.
+(caption)                particular \caption on input line 449.
 See the caption package documentation for explanation.
 
 [6]
@@ -1416,7 +1416,7 @@ File: Figure+Table/Network-pharmacology-with-disease.pdf Graphic file (type pdf
 <use Figure+Table/Network-pharmacology-with-disease.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 536.
+(caption)                particular \caption on input line 532.
 See the caption package documentation for explanation.
 
 [7]
@@ -1425,7 +1425,7 @@ File: Figure+Table/Targets-intersect-with-targets-of-diseases.pdf Graphic file
 <use Figure+Table/Targets-intersect-with-targets-of-diseases.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 546.
+(caption)                particular \caption on input line 542.
 See the caption package documentation for explanation.
 
 [8]
@@ -1433,14 +1433,14 @@ File: Figure+Table/HERBS-KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/HERBS-KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 575.
+(caption)                particular \caption on input line 571.
 See the caption package documentation for explanation.
 
 File: Figure+Table/HERBS-GO-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/HERBS-GO-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 585.
+(caption)                particular \caption on input line 581.
 See the caption package documentation for explanation.
 
 [9]
@@ -1450,11 +1450,11 @@ df Graphic file (type pdf)
 f>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 601.
+(caption)                particular \caption on input line 597.
 See the caption package documentation for explanation.
 
 [10]
-Overfull \hbox (63.26735pt too wide) in paragraph at lines 618--619
+Overfull \hbox (63.26735pt too wide) in paragraph at lines 614--615
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 上 述 信 息 框 内 容 已 保 存 至 \TU/l
 mtt/b/n/10 Figure+Table/Intersection-of-CTD-records-with-herbs-of-hsa05321-rela
 ted-content\TU/lmr/bx/n/10 ) 
@@ -1466,7 +1466,7 @@ File: Figure+Table/CTD-filtered-Compounds-Network-pharmacology-with-disease.pdf
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 667.
+(caption)                particular \caption on input line 663.
 See the caption package documentation for explanation.
 
 [11]
@@ -1474,7 +1474,7 @@ File: Figure+Table/Overall-combining-Affinity.pdf Graphic file (type pdf)
 <use Figure+Table/Overall-combining-Affinity.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 687.
+(caption)                particular \caption on input line 683.
 See the caption package documentation for explanation.
 
 [12] [13]
@@ -1482,7 +1482,7 @@ File: Figure+Table/AFF-KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/AFF-KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 750.
+(caption)                particular \caption on input line 746.
 See the caption package documentation for explanation.
 
 [14]
@@ -1491,10 +1491,30 @@ e pdf)
 <use Figure+Table/Network-pharmacology-Affinity-filtered.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 763.
+(caption)                particular \caption on input line 759.
 See the caption package documentation for explanation.
 
-[15] [16] [17] (./output.aux)
+[15]
+Overfull \hbox (7.13252pt too wide) in paragraph at lines 774--775
+[]\TU/lmr/m/n/10 Herb_pinyin_name|  
+ []
+
+
+Overfull \hbox (9.6754pt too wide) in paragraph at lines 780--781
+[]\TU/lmr/m/n/10 Hit_pathway_number|  
+ []
+
+
+Overfull \hbox (7.13252pt too wide) in paragraph at lines 788--789
+[]\TU/lmr/m/n/10 Herb_pinyin_name|  
+ []
+
+
+Overfull \hbox (9.6754pt too wide) in paragraph at lines 794--795
+[]\TU/lmr/m/n/10 Hit_pathway_number|  
+ []
+
+[16] [17] (./output.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1502,10 +1522,10 @@ LaTeX Warning: There were undefined references.
 Here is how much of TeX's memory you used:
  32330 strings out of 476191
  661310 string characters out of 5812072
- 1111103 words of memory out of 5000000
+ 1111120 words of memory out of 5000000
  52518 multiletter control sequences out of 15000+600000
  473596 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,12n,121p,1365b,579s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,12n,121p,1365b,575s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on output.pdf (20 pages).

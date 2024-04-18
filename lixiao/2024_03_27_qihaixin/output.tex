@@ -86,7 +86,7 @@
 \begin{center} \textbf{\Huge
 中药复方乌梅丸网络药理学分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-11}}
+\textbf{\textcolor{white}{2024-04-18}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -313,7 +313,13 @@ Danggui & 当归\tabularnewline
 \bottomrule
 \end{longtable}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \ref{tab:Compounds-filtered-by-OB-and-DL} (下方表格) 为表格Compounds filtered by OB and DL概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Compounds-filtered-by-OB-and-DL.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有129行15列，以下预览的表格可能省略部分数据；含有102个唯一`Mol ID；含有10个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 OB (%) cut-off
 :}
@@ -334,14 +340,6 @@ DL cut-off
     0.18
 
 \vspace{2em}
-\end{tcolorbox}
-\end{center}
-
-Table \ref{tab:Compounds-filtered-by-OB-and-DL} (下方表格) 为表格Compounds filtered by OB and DL概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/Compounds-filtered-by-OB-and-DL.xlsx})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有129行15列，以下预览的表格可能省略部分数据；含有102个唯一`Mol ID；含有10个唯一`Herb\_pinyin\_name'。
 \end{tcolorbox}
 \end{center}
 
@@ -451,7 +449,13 @@ Figure \ref{fig:Overall-targets-number-of-datasets} (下方图) 为图Overall ta
 \caption{Overall targets number of datasets}\label{fig:Overall-targets-number-of-datasets}
 \end{center}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \ref{tab:GeneCards-used-data} (下方表格) 为表格GeneCards used data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GeneCards-used-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有172行7列，以下预览的表格可能省略部分数据；含有172个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 The GeneCards data was obtained by querying
 :}
@@ -483,14 +487,6 @@ Filtering by Score:
     Score > 0
 
 \vspace{2em}
-\end{tcolorbox}
-\end{center}
-
-Table \ref{tab:GeneCards-used-data} (下方表格) 为表格GeneCards used data概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/GeneCards-used-data.xlsx})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有172行7列，以下预览的表格可能省略部分数据；含有172个唯一`Symbol'。
 \end{tcolorbox}
 \end{center}
 
@@ -767,36 +763,216 @@ Table \ref{tab:Network-pharmacology-Affinity-filtered-data} (下方表格) 为�
 
 \textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-Affinity-filtered-data.csv})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有125行4列，以下预览的表格可能省略部分数据；含有6个唯一`Herb\_pinyin\_name；含有7个唯一`Ingredient.name；含有23个唯一`Target.name'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有26行5列，以下预览的表格可能省略部分数据；含有6个唯一`Herb\_pinyin\_name；含有4个唯一`Ingredient.name；含有6个唯一`Target.name'。
 \end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}llll@{}}
+\begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:Network-pharmacology-Affinity-filtered-data}Network pharmacology Affinity filtered data}\tabularnewline
 \toprule
-Herb\_pinyin\_name & Ingredient.name & Target.name & Enriched\_pathways\tabularnewline
+\begin{minipage}[b]{0.17\columnwidth}\raggedright
+Herb\_pinyin\_name\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Ingredient.name\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+Target.name\strut
+\end{minipage} & \begin{minipage}[b]{0.19\columnwidth}\raggedright
+Hit\_pathway\_number\strut
+\end{minipage} & \begin{minipage}[b]{0.21\columnwidth}\raggedright
+Enriched\_pathways\strut
+\end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-Herb\_pinyin\_name & Ingredient.name & Target.name & Enriched\_pathways\tabularnewline
+\begin{minipage}[b]{0.17\columnwidth}\raggedright
+Herb\_pinyin\_name\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Ingredient.name\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+Target.name\strut
+\end{minipage} & \begin{minipage}[b]{0.19\columnwidth}\raggedright
+Hit\_pathway\_number\strut
+\end{minipage} & \begin{minipage}[b]{0.21\columnwidth}\raggedright
+Enriched\_pathways\strut
+\end{minipage}\tabularnewline
 \midrule
 \endhead
-Huajiao & quercetin & ALOX5 & NA\tabularnewline
-Huajiao & quercetin & CD40LG & NA\tabularnewline
-Huajiao & quercetin & CDKN2A & NA\tabularnewline
-Huajiao & quercetin & EGF & Bladder cancer; B\ldots{}\tabularnewline
-Huajiao & quercetin & ERBB2 & NA\tabularnewline
-Huajiao & quercetin & GJA1 & NA\tabularnewline
-Huajiao & quercetin & HMOX1 & Chemical carcinog\ldots{}\tabularnewline
-Huajiao & quercetin & IFNG & NA\tabularnewline
-Huajiao & quercetin & IL10 & NA\tabularnewline
-Huajiao & quercetin & IL1B & Fluid shear stres\ldots{}\tabularnewline
-Huajiao & quercetin & MAP3K7 & NA\tabularnewline
-Huajiao & quercetin & MMP1 & NA\tabularnewline
-Huajiao & quercetin & MMP9 & NA\tabularnewline
-Huajiao & quercetin & MPO & NA\tabularnewline
-Huajiao & quercetin & NCF2 & NA\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huajiao\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+9\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Bladder cancer; B\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huangbo\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+9\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Bladder cancer; B\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huanglian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+9\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Bladder cancer; B\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Wumei\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+TP53\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+9\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Bladder cancer; B\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huajiao\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+EGF\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+6\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Bladder cancer; B\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huangbo\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+EGF\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+6\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Bladder cancer; B\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huanglian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+EGF\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+6\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Bladder cancer; B\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Wumei\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+EGF\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+6\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Bladder cancer; B\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huajiao\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+HMOX1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Chemical carcinog\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huajiao\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NFE2L2\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Chemical carcinog\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huangbo\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+HMOX1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Chemical carcinog\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huangbo\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NFE2L2\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Chemical carcinog\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huanglian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+HMOX1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Chemical carcinog\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Huanglian\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+quercetin\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+NFE2L2\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Chemical carcinog\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+Renshen\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+kaempferol\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+HMOX1\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+Chemical carcinog\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 

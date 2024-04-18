@@ -1,0 +1,17 @@
+
+
+```{r}
+cids <- head(bt@tables$step1$herbs_compounds$CID, 300)
+smiles <- PubChemR::get_properties("IsomericSMILES", cids, as_dataframe = T)
+
+dl <- job_dl(smiles)
+dl <- step1(dl)
+dl <- step2(dl)
+dl@plots$step2$p.res
+
+hob <- job_hob(head(smiles))
+hob <- step1(hob)
+res(hob)
+```
+
+get_smiles_batch(cids, n = 2)

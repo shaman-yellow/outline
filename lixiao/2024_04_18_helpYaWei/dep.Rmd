@@ -1,0 +1,7 @@
+
+
+link <- tc2$link
+xpath <- paste0("//div[@class='el-radio-group']//span[text()='", "Related Targets", "']")
+ele <- link$findElement("xpath", xpath)
+ele$clickElement()
+

@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 中药复方乌梅丸网络药理学分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-11}}
+\textbf{\textcolor{white}{2024-04-18}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -213,7 +213,12 @@ Table: (\#tab:Herbs-information)Herbs information
 |Renshen          |人参         |
 |Danggui          |当归         |
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \@ref(tab:Compounds-filtered-by-OB-and-DL) (下方表格) 为表格Compounds filtered by OB and DL概览。
+
+**(对应文件为 `Figure+Table/Compounds-filtered-by-OB-and-DL.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有129行15列，以下预览的表格可能省略部分数据；含有102个唯一`Mol ID；含有10个唯一`Herb\_pinyin\_name'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 OB (%) cut-off
 :}
@@ -234,11 +239,6 @@ DL cut-off
     0.18
 
 \vspace{2em}
-\end{tcolorbox}
-\end{center}Table \@ref(tab:Compounds-filtered-by-OB-and-DL) (下方表格) 为表格Compounds filtered by OB and DL概览。
-
-**(对应文件为 `Figure+Table/Compounds-filtered-by-OB-and-DL.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有129行15列，以下预览的表格可能省略部分数据；含有102个唯一`Mol ID；含有10个唯一`Herb\_pinyin\_name'。
 \end{tcolorbox}
 \end{center}
 
@@ -330,7 +330,12 @@ Figure \@ref(fig:Overall-targets-number-of-datasets) (下方图) 为图Overall t
 \caption{Overall targets number of datasets}\label{fig:Overall-targets-number-of-datasets}
 \end{center}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \@ref(tab:GeneCards-used-data) (下方表格) 为表格GeneCards used data概览。
+
+**(对应文件为 `Figure+Table/GeneCards-used-data.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有172行7列，以下预览的表格可能省略部分数据；含有172个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 The GeneCards data was obtained by querying
 :}
@@ -362,11 +367,6 @@ Filtering by Score:
     Score > 0
 
 \vspace{2em}
-\end{tcolorbox}
-\end{center}Table \@ref(tab:GeneCards-used-data) (下方表格) 为表格GeneCards used data概览。
-
-**(对应文件为 `Figure+Table/GeneCards-used-data.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有172行7列，以下预览的表格可能省略部分数据；含有172个唯一`Symbol'。
 \end{tcolorbox}
 \end{center}
 
@@ -615,31 +615,30 @@ Figure \@ref(fig:Network-pharmacology-Affinity-filtered) (下方图) 为图Netwo
 Table \@ref(tab:Network-pharmacology-Affinity-filtered-data) (下方表格) 为表格Network pharmacology Affinity filtered data概览。
 
 **(对应文件为 `Figure+Table/Network-pharmacology-Affinity-filtered-data.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有125行4列，以下预览的表格可能省略部分数据；含有6个唯一`Herb\_pinyin\_name；含有7个唯一`Ingredient.name；含有23个唯一`Target.name'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有26行5列，以下预览的表格可能省略部分数据；含有6个唯一`Herb\_pinyin\_name；含有4个唯一`Ingredient.name；含有6个唯一`Target.name'。
 \end{tcolorbox}
 \end{center}
 
 Table: (\#tab:Network-pharmacology-Affinity-filtered-data)Network pharmacology Affinity filtered data
 
-|Herb_pinyin_name |Ingredient.name |Target.name |Enriched_pathways    |
-|:----------------|:---------------|:-----------|:--------------------|
-|Huajiao          |quercetin       |ALOX5       |NA                   |
-|Huajiao          |quercetin       |CD40LG      |NA                   |
-|Huajiao          |quercetin       |CDKN2A      |NA                   |
-|Huajiao          |quercetin       |EGF         |Bladder cancer; B... |
-|Huajiao          |quercetin       |ERBB2       |NA                   |
-|Huajiao          |quercetin       |GJA1        |NA                   |
-|Huajiao          |quercetin       |HMOX1       |Chemical carcinog... |
-|Huajiao          |quercetin       |IFNG        |NA                   |
-|Huajiao          |quercetin       |IL10        |NA                   |
-|Huajiao          |quercetin       |IL1B        |Fluid shear stres... |
-|Huajiao          |quercetin       |MAP3K7      |NA                   |
-|Huajiao          |quercetin       |MMP1        |NA                   |
-|Huajiao          |quercetin       |MMP9        |NA                   |
-|Huajiao          |quercetin       |MPO         |NA                   |
-|Huajiao          |quercetin       |NCF2        |NA                   |
-|...              |...             |...         |...                  |
-
+|Herb_pinyin_name |Ingredient.name |Target.name |Hit_pathway_number |Enriched_pathways    |
+|:----------------|:---------------|:-----------|:------------------|:--------------------|
+|Huajiao          |quercetin       |TP53        |9                  |Bladder cancer; B... |
+|Huangbo          |quercetin       |TP53        |9                  |Bladder cancer; B... |
+|Huanglian        |quercetin       |TP53        |9                  |Bladder cancer; B... |
+|Wumei            |quercetin       |TP53        |9                  |Bladder cancer; B... |
+|Huajiao          |quercetin       |EGF         |6                  |Bladder cancer; B... |
+|Huangbo          |quercetin       |EGF         |6                  |Bladder cancer; B... |
+|Huanglian        |quercetin       |EGF         |6                  |Bladder cancer; B... |
+|Wumei            |quercetin       |EGF         |6                  |Bladder cancer; B... |
+|Huajiao          |quercetin       |HMOX1       |4                  |Chemical carcinog... |
+|Huajiao          |quercetin       |NFE2L2      |4                  |Chemical carcinog... |
+|Huangbo          |quercetin       |HMOX1       |4                  |Chemical carcinog... |
+|Huangbo          |quercetin       |NFE2L2      |4                  |Chemical carcinog... |
+|Huanglian        |quercetin       |HMOX1       |4                  |Chemical carcinog... |
+|Huanglian        |quercetin       |NFE2L2      |4                  |Chemical carcinog... |
+|Renshen          |kaempferol      |HMOX1       |4                  |Chemical carcinog... |
+|...              |...             |...         |...                |...                  |
 
 
 

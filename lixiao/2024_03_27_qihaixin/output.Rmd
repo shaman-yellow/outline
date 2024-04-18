@@ -49,7 +49,7 @@ header-includes:
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(3, 3, 0, 3, 2))
+info <- items(belong = odate(4), eval = ic(3, 3, 0, 3, 0))
 show.ic(info)
 
 order_publish()
@@ -381,7 +381,7 @@ vn <- step5(vn)
 vn@params$targets_annotation
 vn@plots$step5$p.res_vina
 vn@tables$step5$res_dock
-
+vn <- step6(vn)
 ```
 
 ### 对接能量 < -1.2 的成分与靶点分析
@@ -414,11 +414,9 @@ en.aff <- step1(en.aff)
 en.aff@plots$step1$p.kegg
 en.aff@tables$step1$res.kegg$ids
 
-tc2 <- map(tc2, list(gm@params$lst.genes), compounds = unique(cpd.aff$Ingredient_name), name = "aff", less.label = F,
-  enrichment = en.aff)
+tc2 <- map(tc2, list(cpd.aff$hgnc_symbol), compounds = unique(cpd.aff$Ingredient_name), name = "aff", less.label = F,
+  enrichment = en.aff, ax4.layout = "linear")
 tc2@params$p.pharm2aff
 
-
 ```
-
 

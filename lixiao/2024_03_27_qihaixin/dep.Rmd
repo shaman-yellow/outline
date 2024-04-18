@@ -244,3 +244,12 @@ tc2@plots$step3$p.pharm
 autor(dplyr::filter(tc2@params$easyRead, Ingredient.id == 3081405))
 ```
 
+
+```{r}
+vn2 <- job_vina(c(kaempferol = 5280863), "ALOX5")
+vn2 <- step1(vn2)
+vn2 <- step2(vn2)
+vn2 <- step3(vn2)
+vn2 <- step4(vn2)
+vn2 <- step5(vn2)
+```
