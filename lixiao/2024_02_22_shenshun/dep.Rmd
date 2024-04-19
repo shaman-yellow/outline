@@ -70,3 +70,28 @@ link$open()
 
 ele <- link$findElement("xpath", "//form//div//select[@name='rec_select']//option[@value='pdbid']")
 ele$clickElement()
+
+```{r}
+hk <- job_hawkdock(.layout = cor.ppsFilter)
+hk <- step1(hk)
+hk@params$layouts
+
+```
+
+
+RosettaDock4.0
+
+- <https://zhuanlan.zhihu.com/p/490274309>
+- <https://pubmed.ncbi.nlm.nih.gov/17825317/>
+- <https://pubmed.ncbi.nlm.nih.gov/18640688/>
+- <https://www.rosettacommons.org/docs/latest/getting_started/Getting-Started>
+- <https://github.com/RosettaCommons/rosetta>
+- <https://www.pyrosetta.org/downloads>
+- <https://cluspro.bu.edu/publications.php>
+
+
+```{r}
+link <- start_drive()
+link$open()
+"https://cluspro.bu.edu/"
+```

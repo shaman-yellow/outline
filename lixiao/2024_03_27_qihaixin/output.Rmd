@@ -349,7 +349,7 @@ tc2 <- map(tc2, list(gm@params$lst.genes), compounds = unique(cpds.int.ctd$Ingre
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Overall-combining-Affinity
-autor(wrap(vn@plots$step5$p.res_vina, 9, 12.5))
+autor(wrap(vn@plots$step5$p.res_vina, 9, 10))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -365,9 +365,6 @@ resAff
 
 ```
 
-### 对接可视化
-### 局部对接细节
-
 ```{r}
 file.copy("~/Downloads/AF-Q9HC29-F1-model_v4.pdb", "./order_material/nod2.pdb")
 vn <- job_vina(.layout = dplyr::distinct(cpds.int.ctd, Ingredient.name, Target.name, CID))
@@ -377,11 +374,10 @@ vn <- step3(vn)
 vn <- set_remote(vn)
 vn <- step4(vn)
 vn@step <- 4L
-vn <- step5(vn)
+vn <- step5(vn, cutoff.af = -1.2)
 vn@params$targets_annotation
 vn@plots$step5$p.res_vina
 vn@tables$step5$res_dock
-vn <- step6(vn)
 ```
 
 ### 对接能量 < -1.2 的成分与靶点分析
@@ -415,8 +411,27 @@ en.aff@plots$step1$p.kegg
 en.aff@tables$step1$res.kegg$ids
 
 tc2 <- map(tc2, list(cpd.aff$hgnc_symbol), compounds = unique(cpd.aff$Ingredient_name), name = "aff", less.label = F,
-  enrichment = en.aff, ax4.layout = "linear")
+  enrichment = en.aff, ax4.layout = "linear", HLs = c("kaempferol", "HMOX1"), edge_width = 1, HLs.label = F)
 tc2@params$p.pharm2aff
 
+```
+
+### kaempferol 和 HMOX1 对接可视化
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-5280863-into-6eha
+autor(vn@plots$step6$Top1_5280863_into_6eha)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-5280863-into-6eha-detail
+autor(vn@plots$step7$Top1_5280863_into_6eha)
+```
+
+```{r}
+vn@tables$step5$res_dock
+vn@step <- 5L
+vn <- step6(vn, cpd = "kaempferol", symbol = "HMOX1", unique = T)
+vn <- step7(vn)
 ```
 

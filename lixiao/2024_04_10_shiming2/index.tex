@@ -1,0 +1,219 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{frame}
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge } \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-04-19}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+
+
+\pagenumbering{arabic}
+\end{frame}
+
+\begin{frame}{摘要}
+\protect\hypertarget{abstract}{}
+\begin{itemize}
+\tightlist
+\item
+  复方：地黄15g、黄芪15g、葛根18g、石斛15g、水蛭3g、川芎9g
+\item
+  有效成分：水蛭中水蛭素 Hirudin（重点关注）
+\item
+  疾病：缺血性脑卒中
+\item
+  机制：血管生成
+\item
+  目标：找到水蛭素通过XX靶点及XX靶点涉及的通路YY影响缺血性脑卒中的血管生成
+\end{itemize}
+
+请注意，网药有效成分筛选时确认包括水蛭素，如不包括，请及时联系
+\end{frame}
+
+\begin{frame}{前言}
+\protect\hypertarget{introduction}{}
+\end{frame}
+
+\begin{frame}[fragile]{材料和方法}
+\protect\hypertarget{methods}{}
+\begin{block}{材料}
+\protect\hypertarget{ux6750ux6599}{}
+\end{block}
+
+\begin{block}{方法}
+\protect\hypertarget{ux65b9ux6cd5}{}
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Database \texttt{BATMAN-TCM} was used as source data of TCM
+  ingredients and target proteins{[}@BatmanTcm20Kong2024{]}.
+\item
+  The deep learning method \texttt{D-GCAN} (python) was used for
+  prediction of drug-likeness{[}@PredictionOfDSunJ2022{]}.
+\item
+  Website \texttt{HERB} \url{http://herb.ac.cn/} used for TCM data
+  source{[}@HerbAHighThFang2021{]}.
+\item
+  Python tool of \texttt{HOB} was used for prediction of human oral
+  bioavailability{[}@HobpreAccuratWeiM2022{]}.
+\item
+  Website \texttt{TCMSP} \url{https://tcmsp-e.com/} used for data
+  source{[}@TcmspADatabaRuJi2014{]}.
+\item
+  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr}
+  and \texttt{ggplot2}) used for statistic analysis or data
+  visualization.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{分析结果}
+\protect\hypertarget{results}{}
+\end{frame}
+
+\begin{frame}{结论}
+\protect\hypertarget{dis}{}
+\end{frame}
+
+\begin{frame}[fragile]{附：分析流程}
+\protect\hypertarget{workflow}{}
+Figure @ref(fig:Prediction-of-HOB-and-Drug-Likeness) (下方图)
+为图Prediction of HOB and Drug Likeness概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/Prediction-of-HOB-and-Drug-Likeness.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Prediction-of-HOB-and-Drug-Likeness.pdf}
+\caption{Prediction of HOB and Drug Likeness}\label{fig:Prediction-of-HOB-and-Drug-Likeness}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    C/C(=C\C(=O)O)/C=C/C1(C(CCCC1(C)O)(C)C)O,
+CC(=O)/C=C/[C@@]1([C@](CCCC1(C)C)(C)O)O,
+C1CO[C@H]2[C@H]3[C@@H]1[C@@H]([C@H]([C@]3(CO2)O)Cl)O,
+COC1=C(C=CC(=C1)CCC(=O)O)O,
+CC(=O)/C=C/[C@@]1([C@](CCCC1(C)C)(C)O[C@H]2[C@@H]([C@@H]([C@H]([C@H](O2)CO)O)O)O)O,
+C1=CC(=CC=C1CCOC2[C@@H]([C@H]([C@@H]([C@H](O2)CO...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至
+\texttt{Figure+Table/Prediction-of-HOB-and-Drug-Likeness-content})}
+\end{frame}
+
+\end{document}

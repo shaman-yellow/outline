@@ -626,23 +626,25 @@ cor.ppsFilter
 
 ### 蛋白对接
 
-RosettaDock4.0
-
-- <https://zhuanlan.zhihu.com/p/490274309>
-- <https://pubmed.ncbi.nlm.nih.gov/17825317/>
-- <https://pubmed.ncbi.nlm.nih.gov/18640688/>
-- <https://www.rosettacommons.org/docs/latest/getting_started/Getting-Started>
-- <https://github.com/RosettaCommons/rosetta>
-- <https://www.pyrosetta.org/downloads>
-
-- <https://cluspro.bu.edu/publications.php>
-
 ```{r}
-hk <- job_hawkdock(.layout = cor.ppsFilter)
-hk <- step1(hk)
-hk@params$layouts
+cp <- job_cluspro(.layout = cor.ppsFilter)
+cp <- step1(cp, c(CLU = "7zet"))
+cp@params$layouts
+cp <- step2(cp)
+cp@params$link
+cp@step <- 2L
+cp <- step3(cp)
+cp@params$groups
+cp@params$groups_status
 
+"//div//input[@name='jobname']"
+ele <- cp$link$findElement("xpath", "//form//div//select[@name='server']//option[@value='gpu']")
+ele$clickElement()
+"//div//span//input[@id='recpdb']"
+"//div//span//input[@id='ligpdb']"
+"//div//input[@type='submit']"
 
+cp <- login(cp)
 
 ```
 

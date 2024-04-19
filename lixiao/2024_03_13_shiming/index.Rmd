@@ -365,6 +365,18 @@ autor(genes.hir2cir)
 autor(en.hirudin@plots$step1$p.kegg$ids)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| HIRUDIN-KEGG-enrichment-data
+autor(en.hirudin@tables$step1$res.kegg$ids)
+```
+
+```{r}
+hir.kegg <- reframe_col(en.hirudin@tables$step1$res.kegg$ids, "geneName_list", function(x) paste0(unlist(x), collapse = "|"))
+hir.kegg <- dplyr::arrange(hir.kegg, p.adjust)
+hir.kegg
+autosv(hir.kegg, "hir-kegg")
+```
+
 #### 与复方共同作用的信号通路
 
 因为在 Hirudin 的富集分析前，额外从 GeneCards 获取了 Hirudin 的靶点，这一部分在复方分析中是不包含的；

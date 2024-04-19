@@ -15,3 +15,126 @@ res(hob)
 ```
 
 get_smiles_batch(cids, n = 2)
+
+```{r}
+tc2 <- job_tcmsp2(herbs)
+tc2 <- step1(tc2)
+tc2@step <- 1L
+tc2 <- step2(tc2)
+tc2@tables$step2$ingredients
+tc2$herbs
+tc2$herbs_notGet
+tc2@params$herbs_info
+tc2@params$dbHerbs
+```
+
+```{r}
+bt <- job_batman(herbs[1])
+bt <- step1(bt)
+wrap(bt@plots$step1$p.upset, 5.5, 4)
+bt@tables$step1$predicted
+bt <- step2(bt)
+bt@tables$step2$compounds_targets
+bt@params$compounds_info
+bt@tables$step1$herbs_compounds
+bt <- step3(bt)
+bt@plots$step3$p.pharm
+bt@plots$step1$p.upset$ins
+
+x <- dplyr::filter(bt@tables$step1$herbs_compounds, Pinyin.Name == "SHUI ZHI")
+syns <- PubChemR::get_synonyms(unique(x$CID))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Prediction-of-HOB-and-Drug-Likeness
+autor(wrap(bt@plots$step1$p.upset, 5.5, 4))
+```
+
+
+## 养阴通脑颗粒
+
+### 成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-information
+autor(hb@params$herbs_info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Components-of-Herbs
+autor(hb@tables$step1$herbs_compounds, key = "Ingredient.name")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-compounds
+autor(wrap(hb@plots$step3$p.herbs_compounds, 10))
+```
+
+### 成分靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| tables-of-Herbs-compounds-and-targets
+autor(hb@params$easyRead)
+```
+
+#### Hirudin 水蛭素
+
+HERBs 数据库包含的 Hirudin 靶点较少。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Hirudin-targets-in-HERB-database
+autor(targets.hir)
+```
+
+bindingdb, drugbank, 以及预测工具 Super-Pred 等都难以获取更多关于 hirudin 靶点信息。
+因此，这里使用 `GeneCards` 搜索获取水蛭素其他可能的靶点。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Hirudin-targets-from-GeneCards
+autor(gn)
+```
+
+```{r}
+herbs <- c("地黄", "黄芪", "葛根", "石斛", "水蛭", "川芎")
+
+hb <- job_herb(herbs)
+hb@params$herbs_info %<>% dplyr::distinct(Herb_cn_name, .keep_all = T)
+hb@params$herbs_info
+hb <- step1(hb, filter.hob = F, filter.dl = F)
+"hirudin" %in% hb@tables$step1$herbs_compounds$Ingredient.name
+hb <- step2(hb)
+
+gn <- get_from_genecards("hirudin", 0, advance = T, term = "com")
+
+hb <- step3(hb)
+hb@plots$step3$p.pharm
+hb@tables$step1$herbs_compounds
+
+dplyr::filter(hb@object$component, Ingredient_id == "HBIN029420")
+```
+
+```{r}
+if (F) targets.hir <- dplyr::filter(hb@params$data.allu, Ingredient.name == "hirudin")
+targets.hir
+```
+
+### 缺血性脑卒中
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-targets-number-of-datasets
+autor(gm@plots$step2$p.cols)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| CIR-GeneCards-used-data
+autor(gm@tables$step2$t.genecard)
+```
+
+```{r}
+gm <- job_gmix("ischemic stroke", "stroke")
+gm <- step1(gm)
+gm <- step2(gm, 1, 7, restrict = T)
+```
+
+

@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 中药复方乌梅丸网络药理学分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-18}}
+\textbf{\textcolor{white}{2024-04-19}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -581,9 +581,6 @@ Table: (\#tab:Combining-Affinity)Combining Affinity
 
 
 
-### 对接可视化
-### 局部对接细节
-
 
 
 ### 对接能量 < -1.2 的成分与靶点分析
@@ -639,6 +636,30 @@ Table: (\#tab:Network-pharmacology-Affinity-filtered-data)Network pharmacology A
 |Huanglian        |quercetin       |NFE2L2      |4                  |Chemical carcinog... |
 |Renshen          |kaempferol      |HMOX1       |4                  |Chemical carcinog... |
 |...              |...             |...         |...                |...                  |
+
+
+
+### kaempferol 和 HMOX1 对接可视化
+
+Figure \@ref(fig:Docking-5280863-into-6eha) (下方图) 为图Docking 5280863 into 6eha概览。
+
+**(对应文件为 `Figure+Table/5280863_into_6eha.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/5280863_into_6eha/5280863_into_6eha.png}
+\caption{Docking 5280863 into 6eha}\label{fig:Docking-5280863-into-6eha}
+\end{center}
+
+Figure \@ref(fig:Docking-5280863-into-6eha-detail) (下方图) 为图Docking 5280863 into 6eha detail概览。
+
+**(对应文件为 `Figure+Table/detail_5280863_into_6eha.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/5280863_into_6eha/detail_5280863_into_6eha.png}
+\caption{Docking 5280863 into 6eha detail}\label{fig:Docking-5280863-into-6eha-detail}
+\end{center}
 
 
 
