@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = c(odate(3), odate(4)), eval = list(ic(2, 3, 3, 0, 0), ic(1, 0, 0, 3, 0)))
+info <- items(belong = c(odate(3), odate(4)), eval = list(ic(2, 3, 3, 0, 0), ic(2, 0, 0, 3, 0)))
 show.ic(info)
 
 order_publish()
@@ -629,23 +629,18 @@ cor.ppsFilter
 ```{r}
 cp <- job_cluspro(.layout = cor.ppsFilter)
 cp <- step1(cp, c(CLU = "7zet"))
-cp@params$layouts
 cp <- step2(cp)
-cp@params$link
-cp@step <- 2L
 cp <- step3(cp)
 cp@params$groups
 cp@params$groups_status
-
-"//div//input[@name='jobname']"
-ele <- cp$link$findElement("xpath", "//form//div//select[@name='server']//option[@value='gpu']")
-ele$clickElement()
-"//div//span//input[@id='recpdb']"
-"//div//span//input[@id='ligpdb']"
-"//div//input[@type='submit']"
+cp@params$layouts
+cp <- upload(cp)
 
 cp <- login(cp)
+cp <- pull(cp, "test")
+cp@params$tmp_models
 
+x <- get_table.html(cp$link$getPageSource()[[1]])
 ```
 
 

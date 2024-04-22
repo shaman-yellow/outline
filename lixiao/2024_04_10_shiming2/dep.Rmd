@@ -138,3 +138,440 @@ gm <- step2(gm, 1, 7, restrict = T)
 ```
 
 
+
+### CIR 的 GEO 数据差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE163614
+autor(ge$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| RAT-metadata
+autor(lm.rat@params$.metadata)
+```
+
+#### 差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| RAT-Model-vs-Control-DEGs
+autor(lm.rat@plots$step2$p.valcano$`Model - Control`)
+```
+
+#### 由大鼠基因映射到人类基因
+
+使用 biomart 将基因映射。
+
+```{r eval = T, echo = F, results = "asis"}
+#| RAT-Mapped-DEGs
+autor(bm2@params$tops_mapped)
+```
+
+#### 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAP-KEGG-enrichment
+autor(en.map@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAP-KEGG-enrichment-data
+autor(en.map@tables$step1$res.kegg$ids)
+```
+
+可以发现，'MARK' 通路居于首位。以下展示 Fig. \@ref(fig:HERBS-KEGG-enrichment) 富集结果的 'MARK' 通路：
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-hsa04010-visualization
+autor(en.herbs@plots$step2$p.pathviews$hsa04010)
+```
+
+### 复方靶点通路与 CIR DEGs 富集结果的共同富集通路
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-pathways-intersection
+autor(en.herbs@params$intersect_paths)
+```
+
+### 复方对 MARK 通路
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-target-MARK
+autor(hb@params$p.pharm2MARK)
+```
+
+#### 复方作用于 MARK 通路的成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-target-MARK-data
+autor(hb@params$p.pharm2MARK$.data)
+```
+
+```{r}
+herbs <- c("地黄", "黄芪", "葛根", "石斛", "水蛭", "川芎")
+
+hb <- job_herb(herbs)
+hb@params$herbs_info %<>% dplyr::distinct(Herb_cn_name, .keep_all = T)
+hb@params$herbs_info
+hb <- step1(hb)
+hb <- step2(hb)
+hb <- step3(hb)
+
+gm <- job_gmix("cerebral ischemia reperfusion", "reperfusion")
+gm <- step1(gm)
+gm <- step2(gm, NULL, 2, restrict = T)
+gm@plots$step2$p.cols
+
+hb <- map(hb, gm@params$lst.genes, HLs = "hirudin", edge_width = 1)
+hb@params$p.venn2dis
+hb@params$p.pharm2dis
+hb@params$p.pharm2dis$.data
+
+sdb.herbs <- job_stringdb(hb@params$p.pharm2dis$.data$Target.name)
+sdb.herbs <- step1(sdb.herbs)
+sdb.herbs@plots$step1$p.mcc
+sdb.herbs@tables$step1$hub_genes
+
+en.herbs <- job_enrich(head(sdb.herbs@tables$step1$hub_genes$hgnc_symbol, n = 30))
+en.herbs <- step1(en.herbs)
+en.herbs@tables$step1$res.kegg
+en.herbs@plots$step1$p.kegg
+
+en.herbs@step <- 1L
+en.herbs <- step2(en.herbs, "hsa04010")
+en.herbs@plots$step2$p.pathviews$hsa04010
+```
+
+
+
+```{r}
+
+ge <- job_geo("GSE163614")
+ge <- step1(ge)
+ge@params$guess
+ge@params$prods
+ge <- step2(ge, "mRNA")
+
+browseURL("./GSE163614/GSE163614_mRNA_Expression_Profiling.xlsx")
+counts <- fxlsx("./GSE163614/GSE163614_mRNA_Expression_Profiling.xlsx", startRow = 26)
+counts <- dplyr::select(counts, dplyr::where(is.character), dplyr::ends_with("_count"))
+genes <- dplyr::select(counts, gene_id, dplyr::where(is.character))
+counts <- dplyr::select(counts, gene_id, dplyr::where(is.double))
+counts <- dplyr::rename_all(counts, function(x) gs(x, "\\.Input_count$", ""))
+metadata <- dplyr::mutate(ge@params$guess,
+  sample = gs(title, "([a-zA-Z]{4}).*([0-9])", "\\1\\2"),
+  group = ifelse(grpl(sample, "Sham"), "Control", "Model")
+)
+metadata <- dplyr::relocate(metadata, sample, group)
+
+lm.rat <- job_limma(new_dge(metadata, counts, genes))
+lm.rat <- step1(lm.rat)
+lm.rat <- step2(lm.rat, Model - Control, label = "gene_short_name")
+lm.rat@plots$step2$p.valcano$`Model - Control`
+lm.rat@tables$step2$tops$`Model - Control`
+
+bm2 <- job_biomart2(rm.no(lm.rat@tables$step2$tops$`Model - Control`$gene_short_name), from = "rno", to = "hsa")
+bm2 <- step1(bm2)
+bm2 <- step2(bm2, lm.rat@tables$step2$tops$`Model - Control`, use = "adj", idcol = "gene_short_name")
+bm2@params$tops_mapped
+
+en.map <- job_enrich(rm.no(bm2@params$tops_mapped$hgnc_symbol))
+en.map <- step1(en.map)
+en.map@plots$step1$p.kegg
+en.map@tables$step1$res.kegg$ids
+
+en.herbs <- map(en.herbs, en.map)
+en.herbs@params$intersect_paths
+
+en.herbs@params$intersect_paths
+genes.mark <- dplyr::filter(en.herbs@params$intersect_paths, ID == "hsa04010")$geneName_list[[1]]
+
+hb <- map(hb, list(genes.mark), name = "MARK", HLs = "hirudin", edge_width = 1, less.label = F)
+hb@params$p.pharm2MARK
+hb@params$p.venn2MARK
+
+```
+
+
+### CIR 的 GEO 数据差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE163614
+autor(ge$prods)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| RAT-metadata
+autor(lm.rat@params$.metadata)
+```
+
+#### 差异分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| RAT-Model-vs-Control-DEGs
+autor(lm.rat@plots$step2$p.valcano$`Model - Control`)
+```
+
+#### 由大鼠基因映射到人类基因
+
+使用 biomart 将基因映射。
+
+```{r eval = T, echo = F, results = "asis"}
+#| RAT-Mapped-DEGs
+autor(bm2@params$tops_mapped)
+```
+
+#### 富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAP-KEGG-enrichment
+autor(en.map@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAP-KEGG-enrichment-data
+autor(en.map@tables$step1$res.kegg$ids)
+```
+
+可以发现，'MARK' 通路居于首位。以下展示 Fig. \@ref(fig:HERBS-KEGG-enrichment) 富集结果的 'MARK' 通路：
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-hsa04010-visualization
+autor(en.herbs@plots$step2$p.pathviews$hsa04010)
+```
+
+### 复方靶点通路与 CIR DEGs 富集结果的共同富集通路
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-pathways-intersection
+autor(en.herbs@params$intersect_paths)
+```
+
+### 复方对 MARK 通路
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-target-MARK
+autor(hb@params$p.pharm2MARK)
+```
+
+#### 复方作用于 MARK 通路的成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-target-MARK-data
+autor(hb@params$p.pharm2MARK$.data)
+```
+
+
+```{r}
+
+ge <- job_geo("GSE163614")
+ge <- step1(ge)
+ge@params$guess
+ge@params$prods
+ge <- step2(ge, "mRNA")
+
+browseURL("./GSE163614/GSE163614_mRNA_Expression_Profiling.xlsx")
+counts <- fxlsx("./GSE163614/GSE163614_mRNA_Expression_Profiling.xlsx", startRow = 26)
+counts <- dplyr::select(counts, dplyr::where(is.character), dplyr::ends_with("_count"))
+genes <- dplyr::select(counts, gene_id, dplyr::where(is.character))
+counts <- dplyr::select(counts, gene_id, dplyr::where(is.double))
+counts <- dplyr::rename_all(counts, function(x) gs(x, "\\.Input_count$", ""))
+metadata <- dplyr::mutate(ge@params$guess,
+  sample = gs(title, "([a-zA-Z]{4}).*([0-9])", "\\1\\2"),
+  group = ifelse(grpl(sample, "Sham"), "Control", "Model")
+)
+metadata <- dplyr::relocate(metadata, sample, group)
+
+lm.rat <- job_limma(new_dge(metadata, counts, genes))
+lm.rat <- step1(lm.rat)
+lm.rat <- step2(lm.rat, Model - Control, label = "gene_short_name")
+lm.rat@plots$step2$p.valcano$`Model - Control`
+lm.rat@tables$step2$tops$`Model - Control`
+
+bm2 <- job_biomart2(rm.no(lm.rat@tables$step2$tops$`Model - Control`$gene_short_name), from = "rno", to = "hsa")
+bm2 <- step1(bm2)
+bm2 <- step2(bm2, lm.rat@tables$step2$tops$`Model - Control`, use = "adj", idcol = "gene_short_name")
+bm2@params$tops_mapped
+
+en.map <- job_enrich(rm.no(bm2@params$tops_mapped$hgnc_symbol))
+en.map <- step1(en.map)
+en.map@plots$step1$p.kegg
+en.map@tables$step1$res.kegg$ids
+
+en.herbs <- map(en.herbs, en.map)
+en.herbs@params$intersect_paths
+
+en.herbs@params$intersect_paths
+genes.mark <- dplyr::filter(en.herbs@params$intersect_paths, ID == "hsa04010")$geneName_list[[1]]
+
+hb <- map(hb, list(genes.mark), name = "MARK", HLs = "hirudin", edge_width = 1, less.label = F)
+hb@params$p.pharm2MARK
+hb@params$p.venn2MARK
+
+```
+
+
+### Hirudin 靶点与 CIR DEGs 交集
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-Hirudin-Targets-with-CIR-DEGs
+autor(genes.hir2cir)
+```
+
+
+#### 交集基因的富集分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| HIRUDIN-CIR-KEGG-enrichment
+autor(en.hirudin@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HIRUDIN-KEGG-enrichment-data
+autor(en.hirudin@tables$step1$res.kegg$ids)
+```
+
+```{r}
+hir.kegg <- reframe_col(en.hirudin@tables$step1$res.kegg$ids, "geneName_list", function(x) paste0(unlist(x), collapse = "|"))
+hir.kegg <- dplyr::arrange(hir.kegg, p.adjust)
+hir.kegg
+autosv(hir.kegg, "hir-kegg")
+```
+
+#### 与复方共同作用的信号通路
+
+因为在 Hirudin 的富集分析前，额外从 GeneCards 获取了 Hirudin 的靶点，这一部分在复方分析中是不包含的；
+因此，这里尝试寻找它们共同的靶向通路 (复方与获取了额外靶点的 Hirudin 的共同富集通路)。
+
+```{r eval = T, echo = F, results = "asis"}
+#| HIRUDIN-Herbs-pathways-intersection
+autor(en.hirudin@params$intersect_paths)
+```
+
+```{r}
+info.hir <- PubChemR::get_cids("hirudin")
+gn <- get_from_genecards("hirudin", 0, advance = T, term = "com")
+gn
+
+genes.hir2cir <- new_venn(Hir._Targets = gn$Symbol, CIR_DEGs = bm2@params$tops_mapped$hgnc_symbol)
+genes.hir2cir
+en.hirudin <- job_enrich(genes.hir2cir$ins)
+en.hirudin <- step1(en.hirudin)
+en.hirudin@plots$step1$p.kegg$ids
+
+en.hirudin <- map(en.hirudin, en.herbs)
+en.hirudin@params$intersect_paths
+
+```
+
+## 最终筛选 (着重考虑 Hirudin)
+
+为了缩小可选通路范围，这里尝试将以下的富集结果取共同的交集 (已在上述部分完成) ：
+
+- 复方靶向 CIR (靶点来源见 Fig. \@ref(fig:Overall-targets-number-of-datasets)) 的通路
+  (富集见 Fig. \@ref(fig:HERBS-KEGG-enrichment))
+- GEO 数据集 (GSE163614) CIR DEGs 的富集结果的通路 (富集见 Fig. \@ref(fig:MAP-KEGG-enrichment))
+- 获取了更多靶点信息 (因为 HERBS 数据库或其他数据库包含的靶点信息太少，不利于分析) 的 Hirudin 靶向 CIR (GEO DEGs) 的基因的富集分析  (Fig. \@ref(fig:HIRUDIN-CIR-KEGG-enrichment)) 
+
+得到 (去除了名称包含其他疾病的通路)：
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-pathways-intersection
+autor(paths.herb2hir0dis)
+```
+
+### 复方对筛选通路的靶向 {#he-t}
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-hsa04066-visualization
+autor(en.herbs@plots$step2$p.pathviews$hsa04066)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HERBS-hsa04371-visualization
+autor(en.herbs@plots$step2$p.pathviews$hsa04371)
+```
+
+#### 相关成分
+
+```{r eval = T, echo = F, results = "asis"}
+#| Compounds-target-HIF-1-signaling-pathway
+autor(lst.comps[[1]])
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Compounds-target-Apelin-signaling-pathway
+autor(lst.comps[[2]])
+```
+
+```{r}
+fun_filter <- function(n) {
+  t.path <- paths.herb2hir0dis
+  genes <- t.path$geneName_list[[ n ]]
+  data <- dplyr::filter(hb@params$easyRead, Target.name %in% !!unlist(genes))
+  lab(data) <- paste0("Compounds target ", t.path$Description[[ n ]])
+  data
+}
+lst.comps <- lapply(1:2, fun_filter)
+```
+
+### Hirudin 对筛选通路的靶向 {#hi-t}
+
+```{r eval = T, echo = F, results = "asis"}
+#| HIRUDIN-hsa04066-visualization
+autor(en.hirudin@plots$step2$p.pathviews$hsa04066)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HIRUDIN-hsa04371-visualization
+autor(en.hirudin@plots$step2$p.pathviews$hsa04371)
+```
+
+```{r}
+# herbs, CIR, hirudin
+paths.herb2hir <- dplyr::filter(
+  en.herbs@params$intersect_paths, ID %in% en.hirudin@params$intersect_paths$ID
+)
+paths.herb2hir
+paths.herb2hir0dis <- dplyr::slice(paths.herb2hir, 4:5)
+paths.herb2hir0dis
+paths.herb2hir0dis$ID
+
+en.herbs@step <- 1L
+en.herbs <- step2(en.herbs, paths.herb2hir0dis$ID)
+en.herbs@plots$step2$p.pathviews$hsa04066
+en.herbs@plots$step2$p.pathviews$hsa04371
+
+en.hirudin@step <- 1L
+en.hirudin <- step2(en.hirudin, paths.herb2hir0dis$ID)
+en.hirudin@plots$step2$p.pathviews$hsa04066
+en.hirudin@plots$step2$p.pathviews$hsa04371
+
+```
+
+
+#### Hirudin 靶点
+
+```{r eval = T, echo = F, results = "asis"}
+#| Hirudin-targets-in-HERB-database
+autor(targets.hir)
+```
+
+```{r}
+targets.hir <- dplyr::filter(hb@params$data.allu, Ingredient.name == "hirudin")
+targets.hir
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersection-of-all-compounds
+autor(wrap(hb@plots$step3$p.herbs_compounds, 10))
+```
+
+
+```{r}
+en.herbs@step <- 1L
+en.herbs <- step2(en.herbs, "hsa04010")
+en.herbs@plots$step2$p.pathviews$hsa04010
+```
+

@@ -95,3 +95,11 @@ link <- start_drive()
 link$open()
 "https://cluspro.bu.edu/"
 ```
+
+"//div//input[@name='jobname']"
+ele <- cp$link$findElement("xpath", "//form//div//select[@name='server']//option[@value='gpu']")
+ele$clickElement()
+"//div//span//input[@id='recpdb']"
+"//div//span//input[@id='ligpdb']"
+"//div//input[@type='submit']"
+
