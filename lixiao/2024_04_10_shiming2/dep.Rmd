@@ -575,3 +575,9 @@ en.herbs <- step2(en.herbs, "hsa04010")
 en.herbs@plots$step2$p.pathviews$hsa04010
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| CIR-GeneCards-used-data
+autor(gm@tables$step2$t.genecard)
+```
+

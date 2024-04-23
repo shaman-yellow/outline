@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 水蛭素与缺血性脑卒中} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-22}}
+\textbf{\textcolor{white}{2024-04-23}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -89,7 +89,12 @@ header-includes:
 - 目标：找到水蛭素通过XX靶点及XX靶点涉及的通路YY影响缺血性脑卒中的血管生成
 
 请注意，网药有效成分筛选时确认包括水蛭素，如不包括，请及时联系
+
  
+追加:
+
+- 水蛭素与CXCL8、CXCR2、CCL2的分子对接结果
+
 ## 结果
 
 这是以上一份文档 (名为：养阴通脑颗粒中关键成分对脑缺血再灌注的影响) 为基础修改的 PDF 文档 。
@@ -303,67 +308,6 @@ Figure \@ref(fig:Overall-targets-number-of-datasets) (下方图) 为图Overall t
 \caption{Overall targets number of datasets}\label{fig:Overall-targets-number-of-datasets}
 \end{center}
 
-Table \@ref(tab:CIR-GeneCards-used-data) (下方表格) 为表格CIR GeneCards used data概览。
-
-**(对应文件为 `Figure+Table/CIR-GeneCards-used-data.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有144行7列，以下预览的表格可能省略部分数据；含有144个唯一`Symbol'。
-\end{tcolorbox}
-\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
-\textbf{
-The GeneCards data was obtained by querying
-:}
-
-\vspace{0.5em}
-
-    cerebral ischemia reperfusion
-
-\vspace{2em}
-
-
-\textbf{
-Restrict (with quotes)
-:}
-
-\vspace{0.5em}
-
-    TRUE
-
-\vspace{2em}
-
-
-\textbf{
-Filtering by Score:
-:}
-
-\vspace{0.5em}
-
-    Score > 1
-
-\vspace{2em}
-\end{tcolorbox}
-\end{center}
-
-Table: (\#tab:CIR-GeneCards-used-data)CIR GeneCards used data
-
-|Symbol   |Description   |Category      |UniProt_ID |GIFtS |GC_id       |Score |
-|:--------|:-------------|:-------------|:----------|:-----|:-----------|:-----|
-|BDNF-AS  |BDNF Antis... |RNA Gene (... |           |29    |GC11P027466 |11.93 |
-|CERNA3   |Competing ... |RNA Gene (... |           |19    |GC08P056323 |6.6   |
-|MEG3     |Maternally... |RNA Gene (... |           |34    |GC14P116735 |6.12  |
-|SNHG12   |Small Nucl... |RNA Gene (... |Q9BXW3     |30    |GC01M031297 |6.05  |
-|MIR211   |MicroRNA 211  |RNA Gene (... |           |29    |GC15M031065 |5.79  |
-|SNHG14   |Small Nucl... |RNA Gene (... |           |24    |GC15P156537 |5.68  |
-|SOD2-OT1 |SOD2 Overl... |RNA Gene (... |           |18    |GC06M159772 |5.4   |
-|H19      |H19 Imprin... |RNA Gene (... |           |34    |GC11M001995 |4.64  |
-|GAS5     |Growth Arr... |RNA Gene (... |           |31    |GC01M173947 |4.55  |
-|MIR496   |MicroRNA 496  |RNA Gene (... |           |16    |GC14P116773 |4.06  |
-|BCL2     |BCL2 Apopt... |Protein Co... |P10415     |59    |GC18M063123 |3.69  |
-|TUG1     |Taurine Up... |Protein Co... |A0A6I8PU40 |32    |GC22P030969 |3.69  |
-|SCARNA5  |Small Caja... |RNA Gene (... |           |23    |GC02P233275 |3.69  |
-|NFE2L2   |NFE2 Like ... |Protein Co... |Q16236     |60    |GC02M177227 |3.64  |
-|SOD1     |Superoxide... |Protein Co... |P00441     |61    |GC21P031659 |3.59  |
-|...      |...           |...           |...        |...   |...         |...   |
-
 
 
 ### 网络药理-疾病
@@ -520,24 +464,24 @@ Figure \@ref(fig:Hirudin-targets-of-disease) (下方图) 为图Hirudin targets o
 \caption{Hirudin targets of disease}\label{fig:Hirudin-targets-of-disease}
 \end{center}
 
-Figure \@ref(fig:HIRU KEGG enrichment) (下方图) 为图HIRU KEGG enrichment概览。
+Figure \@ref(fig:HIRU-KEGG-enrichment) (下方图) 为图HIRU KEGG enrichment概览。
 
-**(对应文件为 `Figure+Table/HIRU KEGG enrichment.pdf`)**
+**(对应文件为 `Figure+Table/HIRU-KEGG-enrichment.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/HIRU KEGG enrichment.pdf}
-\caption{HIRU KEGG enrichment}\label{fig:HIRU KEGG enrichment}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HIRU-KEGG-enrichment.pdf}
+\caption{HIRU KEGG enrichment}\label{fig:HIRU-KEGG-enrichment}
 \end{center}
 
-Figure \@ref(fig:HIRU GO enrichment) (下方图) 为图HIRU GO enrichment概览。
+Figure \@ref(fig:HIRU-GO-enrichment) (下方图) 为图HIRU GO enrichment概览。
 
-**(对应文件为 `Figure+Table/HIRU GO enrichment.pdf`)**
+**(对应文件为 `Figure+Table/HIRU-GO-enrichment.pdf`)**
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/HIRU GO enrichment.pdf}
-\caption{HIRU GO enrichment}\label{fig:HIRU GO enrichment}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HIRU-GO-enrichment.pdf}
+\caption{HIRU GO enrichment}\label{fig:HIRU-GO-enrichment}
 \end{center}
 
 

@@ -103,3 +103,10 @@ ele$clickElement()
 "//div//span//input[@id='ligpdb']"
 "//div//input[@type='submit']"
 
+
+vis_pdb.cluspro("./cluspro/HMGB1_ITGAM/model.000.00.pdb", "test1", "test2")
+
+x <- sep_list(readLines("./cluspro/C4B_ITGAM/model.000.00.pdb"), "HEADER", T)
+length(x)
+lapply(x, function(x) data.table::fread(text = x))
+ftibble("./cluspro/C4B_ITGAM/model.000.00.pdb", fill = T)

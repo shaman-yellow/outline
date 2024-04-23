@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(0, 1, 0, 0, 0), lock = F)
+info <- items(belong = odate(4), eval = ic(0, 2, 0, 3, 0), lock = F)
 show.ic(info)
 
 order_publish()
@@ -52,7 +52,12 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
 - 目标：找到水蛭素通过XX靶点及XX靶点涉及的通路YY影响缺血性脑卒中的血管生成
 
 请注意，网药有效成分筛选时确认包括水蛭素，如不包括，请及时联系
+
  
+追加:
+
+- 水蛭素与CXCL8、CXCR2、CCL2的分子对接结果
+
 ## 结果
 
 这是以上一份文档 (名为：养阴通脑颗粒中关键成分对脑缺血再灌注的影响) 为基础修改的 PDF 文档 。
@@ -151,11 +156,6 @@ hb <- step3(hb)
 autor(gm@plots$step2$p.cols)
 ```
 
-```{r eval = T, echo = F, results = "asis"}
-#| CIR-GeneCards-used-data
-autor(gm@tables$step2$t.genecard)
-```
-
 ```{r}
 gm <- job_gmix("cerebral ischemia reperfusion", "reperfusion")
 gm <- step1(gm)
@@ -234,21 +234,25 @@ en.herbs@plots$step1$p.kegg
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Hirudin-targets-of-disease
-autor(wrap(hb@params$p.pharm2hirudin, 7, 4))
+autor(hb@params$p.pharm2hirudin)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| HIRU KEGG enrichment
+#| HIRU-KEGG-enrichment
 autor(en.hiru@plots$step1$p.kegg$ids)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| HIRU GO enrichment
+#| HIRU-GO-enrichment
 autor(en.hiru@plots$step1$p.go$ids)
 ```
 
 ```{r}
-hb <- map(hb, gm@params$lst.genes, edge_width = 1, compounds = "hirudin", name = "hirudin")
+hb <- map(hb, gm@params$lst.genes, edge_width = 1, compounds = "hirudin",
+  compounds.keep.intersection = T, name = "hirudin", enrichment = en.hiru,
+  ax3.layout = "grid", ax4.layout = "linear", less.label = F, HLs = "hirudin")
+hb@params$p.pharm2hirudin
+
 hb@params$p.pharm2hirudin$.data
 
 en.hiru <- job_enrich(hb@params$p.pharm2hirudin$.data$Target.name)
@@ -264,8 +268,11 @@ autosv(dat.hiru, "hirudin_kegg")
 ### 分子对接
 
 ```{r}
-vn <- job_vina(c(hirudin = 72941487), hb@params$p.pharm2hirudin$.data$Target.name)
-vn <- step1(vn, pdbs = c(SELP = "1g1q"))
-vn <- step2(vn)
+vn <- job_vina(c(hirudin = 72941487), c("CXCL8", "CXCR2", "CCL2"))
+vn <- step1(vn, pdbs = NULL)
+vn <- step2(vn, sdf.3d = "./SDFs/all_compounds_3D.sdf")
 vn <- step3(vn)
+vn <- set_remote(vn)
+vn@step <- 3L
+vn <- step4(vn, 3600 * 1000)
 ```

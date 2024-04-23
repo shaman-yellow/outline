@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = c(odate(3), odate(4)), eval = list(ic(2, 3, 3, 0, 0), ic(2, 0, 0, 3, 0)))
+info <- items(belong = c(odate(3), odate(4)), eval = list(ic(2, 3, 3, 0, 0), ic(2, 1, 0, 3, 0)))
 show.ic(info)
 
 order_publish()
@@ -631,16 +631,16 @@ cp <- job_cluspro(.layout = cor.ppsFilter)
 cp <- step1(cp, c(CLU = "7zet"))
 cp <- step2(cp)
 cp <- step3(cp)
-cp@params$groups
-cp@params$groups_status
-cp@params$layouts
 cp <- upload(cp)
 
 cp <- login(cp)
-cp <- pull(cp, "test")
-cp@params$tmp_models
+cp <- pull(cp)
+cp@step <- 3L
+cp <- step4(cp)
+cp@plots$step4$p.score
+cp@plots$step4$top$Top_1_HMGB1_ITGAM
+cp@params$pdb_files
 
-x <- get_table.html(cp$link$getPageSource()[[1]])
 ```
 
 
