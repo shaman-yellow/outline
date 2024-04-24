@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 筛选差异蛋白和对应配体蛋白} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-03-08}}
+\textbf{\textcolor{white}{2024-04-24}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -83,11 +83,21 @@ header-includes:
 
 ## 需求
 
+### 首次分析
+
 1、寻找差异致癌膜蛋白及对应配体蛋白；
 2、耐药差异膜蛋白及对应抗体蛋白或互作抑制其表达蛋白。
 
 现需要利用数据库分析正常组与疾病组间的差异表达膜蛋白AA（在癌中高表达的）和对应靶向癌细胞特异性高表达的膜蛋白AA的配体蛋白AA’；
 以及非耐药组与耐药组间的差异表达膜蛋白XX（在耐药组中高表达的）和对应XX的抗体蛋白或相互作用能抑制其表达的蛋白XX’。
+
+### 进一步分析 {#fur}
+
+1. 查询正常组与结直肠癌组相比，TSC1的表达情况。期望TSC1仅在结肠癌的耐药群体种高表达，在正常组以及癌组织的非耐药中不表达或低表达。若在癌组织中高表达，则仅看“2”；若在正常组中高表达，则仅看“3”。
+2. 生信分析结果已知，与TSC1有相互作用且抑制的蛋白有5种（YWHAE、HSPA8、PTGES3、PSMG2、PLK2），但是能否直接结合作为筛选靶点未知，麻烦进行分子对接研究TSC1与5种蛋白直接结合的可能性。届时将选择直接结合的对子进行实验。
+3. 生信分析结果已知，差异癌膜蛋白AA为：AIFM1, TFRC, ITGAM, PECAM1 ，其对应的相互作用的蛋白AA‘分别有9、7、4、1个。请将这21对相互作用的蛋白做一下关联分析，找到非抑制的对子（可以促进表达也可以没有促进抑制关系）；然后进行分子对接，需要了解AA和AA'直接结合的可能性。届时将选择直接结合的对子进行实验。
+
+
 
 ## 结果
 
@@ -121,6 +131,19 @@ Fig. \@ref(fig:TCGA-DPS-filtered-and-formated-PPI-network-logFC)。
 
 最终可参考的表格：Tab. \@ref(tab:TCGA-RNA-TSC1-negtive-correlated)
 
+### 进一步分析的结果 (蛋白对接) {#res-fur}
+
+- 见 Fig. \@ref(fig:compare-tsc1-in-cancer-and-control),
+  TSC1 在正常组与癌症中无显著差异。因此，后续分析将依据 \@ref(fur) 中的 “3” 展开。
+- 筛选非负相关性的蛋白 (非抑制关系) ，共 19 对, 见 Tab. \@ref(tab:PPS-correlation-details)。
+- 为了筛选具有结合可能的蛋白对，采取以下两步：
+    - STRINGdb 数据库中，具有物理 (直接) 结合，并有实验基础 (experiments 得分) 的蛋白对，最后获得 Tab. \@ref(tab:EXP-pair)
+    - 以 cluspro 蛋白对接，获取得分 Fig. \@ref(fig:Overview-of-protein-docking-results)
+      和模型 (这里只展示Top 5的模型, Top 1 见 Fig. \@ref(fig:Top1-Protein-docking-of-HMGB1-ITGAM))。
+- 取上述两步 (蛋白对接设置了 -1000 cut-off) 的综合，见 Fig. \@ref(fig:Intersection-of-StringDB-exp--with-Protein-docking)
+  和 Tab. \@ref(tab:intersected-data)。
+  共有 5 对：FTH1_TFRC, SERPINA1_TFRC, HSPA8_TFRC, DDX3X_AIFM1, HMGB1_ITGAM
+
 
 
 # 前言 {#introduction}
@@ -131,20 +154,22 @@ Fig. \@ref(fig:TCGA-DPS-filtered-and-formated-PPI-network-logFC)。
 
 Other data obtained from published article (e.g., supplementary tables):
 
-- Supplementary file from article refer to[@ProteomicsProfShao2022].
+- Supplementary file from article refer to ProteomicsProfShao2022[@ProteomicsProfShao2022].
 
 ## 方法
 
 Mainly used method:
 
+- The `ClusPro` server used for Protein-Protein docking[@TheClusproWebKozako2017].
 - R package `ClusterProfiler` used for gene enrichment analysis[@ClusterprofilerWuTi2021].
+- `HawkDock` webservers used for protein–protein docking[@HawkdockAWebWeng2019].
 - R package `Limma` and `edgeR` used for differential expression analysis[@LimmaPowersDiRitchi2015; @EdgerDifferenChen].
 - R Package `pRRophetic` was used for Prediction of Clinical Chemotherapeutic Response[@PrropheticAnGeeleh2014].
 - R package `STEINGdb` used for PPI network construction[@TheStringDataSzklar2021; @CytohubbaIdenChin2014].
 - R package `TCGAbiolinks` used for abtain TCGA dataset[@TcgabiolinksAColapr2015].
 - The UNIfied database of TransMembrane Proteins (UniTmp) was used for transmembrane protein information retrieving[@UnitmpUnifiedDobson2024; @TheHumanTransDobson2015].
 - The MCC score was calculated referring to algorithm of `CytoHubba`[@CytohubbaIdenChin2014].
-- R version 4.3.2 (2023-10-31); Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
+- R version 4.3.3 (2024-02-29); Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
 # 分析结果 {#results}
 
@@ -164,7 +189,7 @@ Proteomics profiling of colorectal cancer progression identifies PLOD2 as a pote
 Table \@ref(tab:PUBLISHED-ProteomicsProfShao2022-metadata-used-sample) (下方表格) 为表格PUBLISHED ProteomicsProfShao2022 metadata used sample概览。
 
 **(对应文件为 `Figure+Table/PUBLISHED-ProteomicsProfShao2022-metadata-used-sample.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有31行5列，以下预览的表格可能省略部分数据；表格含有2个唯一`group'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有31行5列，以下预览的表格可能省略部分数据；含有2个唯一`group'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -209,7 +234,7 @@ Figure \@ref(fig:PPS-Cancer-vs-Control-DEGs) (下方图) 为图PPS Cancer vs Con
 Table \@ref(tab:PPS-data-Cancer-vs-Control-DPs) (下方表格) 为表格PPS data Cancer vs Control DPs概览。
 
 **(对应文件为 `Figure+Table/PPS-data-Cancer-vs-Control-DPs.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有509行8列，以下预览的表格可能省略部分数据；表格含有509个唯一`Gene\_name'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有509行8列，以下预览的表格可能省略部分数据；含有509个唯一`Gene\_name'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -264,7 +289,7 @@ UniTmp: unified resources for transmembrane proteins [@UnitmpUnifiedDobson2024]
 Table \@ref(tab:UniTmp-data-of-htp-all) (下方表格) 为表格UniTmp data of htp all概览。
 
 **(对应文件为 `Figure+Table/UniTmp-data-of-htp-all.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5499行5列，以下预览的表格可能省略部分数据；表格含有5499个唯一`id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5499行5列，以下预览的表格可能省略部分数据；含有5499个唯一`id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -431,7 +456,7 @@ Figure \@ref(fig:PPS-DPS-filtered-by-KEGG-Top-MCC-score) (下方图) 为图PPS D
 Table \@ref(tab:TCGA-COAD-clinical-metadata) (下方表格) 为表格TCGA COAD clinical metadata概览。
 
 **(对应文件为 `Figure+Table/TCGA-COAD-clinical-metadata.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有459行19列，以下预览的表格可能省略部分数据；表格含有459个唯一`rownames'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有459行19列，以下预览的表格可能省略部分数据；含有459个唯一`rownames'。
 \end{tcolorbox}
 \end{center}
 
@@ -459,7 +484,7 @@ Table: (\#tab:TCGA-COAD-clinical-metadata)TCGA COAD clinical metadata
 Table \@ref(tab:TCGA-COAD-protein-metadata) (下方表格) 为表格TCGA COAD protein metadata概览。
 
 **(对应文件为 `Figure+Table/TCGA-COAD-protein-metadata.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有363行24列，以下预览的表格可能省略部分数据；表格含有363个唯一`id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有363行24列，以下预览的表格可能省略部分数据；含有363个唯一`id'。
 \end{tcolorbox}
 \end{center}
 
@@ -487,7 +512,7 @@ Table: (\#tab:TCGA-COAD-protein-metadata)TCGA COAD protein metadata
 Table \@ref(tab:TCGA-COAD-RNA-metadata) (下方表格) 为表格TCGA COAD RNA metadata概览。
 
 **(对应文件为 `Figure+Table/TCGA-COAD-RNA-metadata.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有524行29列，以下预览的表格可能省略部分数据；表格含有524个唯一`id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有524行29列，以下预览的表格可能省略部分数据；含有524个唯一`id'。
 \end{tcolorbox}
 \end{center}
 
@@ -543,7 +568,16 @@ Figure \@ref(fig:Estimate-prediction-accuracy) (下方图) 为图Estimate predic
 \caption{Estimate prediction accuracy}\label{fig:Estimate-prediction-accuracy}
 \end{center}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \@ref(tab:Predicted-drug-sensitivity) (下方表格) 为表格Predicted drug sensitivity概览。
+
+**(对应文件为 `Figure+Table/Predicted-drug-sensitivity.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有357行3列，以下预览的表格可能省略部分数据；含有357个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample:  样品名称
+\end{enumerate}\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 k-means clustering
 :}
@@ -554,15 +588,6 @@ k-means clustering
 
 \vspace{2em}
 \end{tcolorbox}
-\end{center}Table \@ref(tab:Predicted-drug-sensitivity) (下方表格) 为表格Predicted drug sensitivity概览。
-
-**(对应文件为 `Figure+Table/Predicted-drug-sensitivity.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有357行3列，以下预览的表格可能省略部分数据；表格含有357个唯一`sample'。
-\end{tcolorbox}
-\end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
-\item sample:  样品名称
-\end{enumerate}\end{tcolorbox}
 \end{center}
 
 Table: (\#tab:Predicted-drug-sensitivity)Predicted drug sensitivity
@@ -595,7 +620,17 @@ Table: (\#tab:Predicted-drug-sensitivity)Predicted drug sensitivity
 根据 Tab. \@ref(tab:Predicted-drug-sensitivity) k-means 聚类结果，将
 样品分为三组：耐药组、中等组、低耐药性组 (非耐药组) 。
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \@ref(tab:TCGA-COAD-proteome-metadata) (下方表格) 为表格TCGA COAD proteome metadata概览。
+
+**(对应文件为 `Figure+Table/TCGA-COAD-proteome-metadata.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有178行4列，以下预览的表格可能省略部分数据；含有2个唯一`group'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample:  样品名称
+\item group:  分组名称
+\end{enumerate}\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 k-means clustering
 :}
@@ -606,16 +641,6 @@ k-means clustering
 
 \vspace{2em}
 \end{tcolorbox}
-\end{center}Table \@ref(tab:TCGA-COAD-proteome-metadata) (下方表格) 为表格TCGA COAD proteome metadata概览。
-
-**(对应文件为 `Figure+Table/TCGA-COAD-proteome-metadata.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有178行4列，以下预览的表格可能省略部分数据；表格含有2个唯一`group'。
-\end{tcolorbox}
-\end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
-\item sample:  样品名称
-\item group:  分组名称
-\end{enumerate}\end{tcolorbox}
 \end{center}
 
 Table: (\#tab:TCGA-COAD-proteome-metadata)TCGA COAD proteome metadata
@@ -654,7 +679,7 @@ Figure \@ref(fig:TCGA-Resistance-vs-Non-resistance-DEPs) (下方图) 为图TCGA 
 Table \@ref(tab:TCGA-data-Resistance-vs-Non-resistance-DEPs) (下方表格) 为表格TCGA data Resistance vs Non resistance DEPs概览。
 
 **(对应文件为 `Figure+Table/TCGA-data-Resistance-vs-Non-resistance-DEPs.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有30行9列，以下预览的表格可能省略部分数据；表格含有30个唯一`rownames'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有30行9列，以下预览的表格可能省略部分数据；含有30个唯一`rownames'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -744,7 +769,7 @@ Figure \@ref(fig:TCGA-RNA-Resistance-vs-Non-resistance-DEGs) (下方图) 为图T
 Table \@ref(tab:TCGA-RNA-data-Resistance-vs-Non-resistance-DEGs) (下方表格) 为表格TCGA RNA data Resistance vs Non resistance DEGs概览。
 
 **(对应文件为 `Figure+Table/TCGA-RNA-data-Resistance-vs-Non-resistance-DEGs.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10108行22列，以下预览的表格可能省略部分数据；表格含有10108个唯一`rownames'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10108行22列，以下预览的表格可能省略部分数据；含有10108个唯一`rownames'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -883,7 +908,7 @@ Figure \@ref(fig:TCGA-RNA-correlation-heatmap) (下方图) 为图TCGA RNA correl
 Table \@ref(tab:TCGA-RNA-TSC1-negtive-correlated) (下方表格) 为表格TCGA RNA TSC1 negtive correlated概览。
 
 **(对应文件为 `Figure+Table/TCGA-RNA-TSC1-negtive-correlated.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5行7列，以下预览的表格可能省略部分数据；表格含有5个唯一`From'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5行7列，以下预览的表格可能省略部分数据；含有5个唯一`From'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -904,6 +929,312 @@ Table: (\#tab:TCGA-RNA-TSC1-negtive-correlated)TCGA RNA TSC1 negtive correlated
 |PTGES3 |TSC1 |-0.15 |0.0497 |4.33061033... |< 0.05      |*    |
 |PSMG2  |TSC1 |-0.2  |0.0061 |7.35697504... |< 0.05      |*    |
 |PLK2   |TSC1 |-0.17 |0.0265 |5.23786383... |< 0.05      |*    |
+
+
+
+# 附：进一步分析蛋白结合
+
+## TSC1 在正常组与结直肠癌组的表达
+
+TSC1 在正常组与癌症中无显著差异。因此，后续分析将依据 \@ref(fur) 中的 “3” 组织。
+
+Figure \@ref(fig:compare-tsc1-in-cancer-and-control) (下方图) 为图compare tsc1 in cancer and control概览。
+
+**(对应文件为 `Figure+Table/compare-tsc1-in-cancer-and-control.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/compare-tsc1-in-cancer-and-control.pdf}
+\caption{Compare tsc1 in cancer and control}\label{fig:compare-tsc1-in-cancer-and-control}
+\end{center}
+
+
+
+## 差异癌膜蛋白AA 与候选结合蛋白的相关性
+
+### 相关性
+
+筛选非负相关的蛋白对
+
+Figure \@ref(fig:PPS-correlation-heatmap) (下方图) 为图PPS correlation heatmap概览。
+
+**(对应文件为 `Figure+Table/PPS-correlation-heatmap.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPS-correlation-heatmap.pdf}
+\caption{PPS correlation heatmap}\label{fig:PPS-correlation-heatmap}
+\end{center}
+
+具体如下：
+
+Table \@ref(tab:PPS-correlation-details) (下方表格) 为表格PPS correlation details概览。
+
+**(对应文件为 `Figure+Table/PPS-correlation-details.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有19行7列，以下预览的表格可能省略部分数据；含有18个唯一`from'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor:  皮尔逊关联系数，正关联或负关联。
+\item pvalue:  显著性 P。
+\item -log2(P.value):  P 的对数转化。
+\item significant:  显著性。
+\item sign:  人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:PPS-correlation-details)PPS correlation details
+
+|from  |to    |cor   |pvalue |-log2(P.va... |significant |sign |
+|:-----|:-----|:-----|:------|:-------------|:-----------|:----|
+|C4B   |ITGAM |0.64  |1e-04  |13.2877123... |< 0.001     |**   |
+|CLU   |AIFM1 |0.16  |0.3759 |1.41157917... |> 0.05      |-    |
+|DDX3X |AIFM1 |0.38  |0.0348 |4.84476888... |< 0.05      |*    |
+|FGB   |ITGAM |0.28  |0.1235 |3.01741705... |> 0.05      |-    |
+|FGG   |ITGAM |0.31  |0.0915 |3.45008444... |> 0.05      |-    |
+|FTH1  |TFRC  |0.18  |0.3414 |1.55046503... |> 0.05      |-    |
+|HMGB1 |ITGAM |0.31  |0.0952 |3.39289461... |> 0.05      |-    |
+|HSPA4 |TFRC  |0.39  |0.0311 |5.00694160... |< 0.05      |*    |
+|HSPA8 |AIFM1 |0.36  |0.0439 |4.50963525... |< 0.05      |*    |
+|HSPA8 |TFRC  |0.45  |0.0117 |6.41734765... |< 0.05      |*    |
+|HSPD1 |ITGAM |-0.04 |0.8262 |0.27543703... |> 0.05      |-    |
+|KNG1  |ITGAM |0.03  |0.8907 |0.16698850... |> 0.05      |-    |
+|MMP2  |ITGAM |0.52  |0.0027 |8.53282487... |< 0.05      |*    |
+|MPO   |ITGAM |0.81  |0      |16.6096404... |< 0.001     |**   |
+|PPIA  |AIFM1 |0.26  |0.154  |2.69899774... |> 0.05      |-    |
+|...   |...   |...   |...    |...           |...         |...  |
+
+
+
+### stringDB 数据库中有实验基础的
+
+依据 Tab. \@ref(tab:PPS-correlation-details)
+
+获取 stringDB 有直接物理作用的蛋白数据，并且取得有实验基础的蛋白对
+ (experiments score &gt; 100)
+
+
+
+Table \@ref(tab:EXP-scores) (下方表格) 为表格EXP scores概览。
+
+**(对应文件为 `Figure+Table/EXP-scores.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有17行10列，以下预览的表格可能省略部分数据；含有9个唯一`from'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item experiments:  相关实验。
+\end{enumerate}\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+STRINGdb network type:
+:}
+
+\vspace{0.5em}
+
+    physical
+
+\vspace{2em}
+
+
+\textbf{
+Filter experiments score:
+:}
+
+\vspace{0.5em}
+
+    At least score 100
+
+\vspace{2em}
+
+
+\textbf{
+Filter textmining score:
+:}
+
+\vspace{0.5em}
+
+    At least score 0
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:EXP-scores)EXP scores
+
+|from   |to       |homology |experi......4 |experi......5 |database |databa... |textmi......8 |textmi......9 |... |
+|:------|:--------|:--------|:-------------|:-------------|:--------|:---------|:-------------|:-------------|:---|
+|FGB    |CLU      |0        |224           |0             |0        |0         |275           |0             |... |
+|FGB    |FGG      |0        |946           |582           |900      |0         |920           |0             |... |
+|HSPA4  |HSPD1    |0        |225           |0             |0        |0         |0             |287           |... |
+|CLU    |HSPD1    |0        |292           |0             |0        |0         |0             |0             |... |
+|AIFM1  |TXN      |0        |593           |0             |0        |0         |0             |132           |... |
+|HMGB1  |TXN      |0        |362           |0             |0        |0         |0             |0             |... |
+|FTH1   |TFRC     |0        |852           |0             |0        |0         |779           |49            |... |
+|FGB    |SERPINA1 |0        |235           |0             |0        |0         |167           |0             |... |
+|CLU    |SERPINA1 |0        |235           |0             |0        |0         |688           |0             |... |
+|AIFM1  |PPIA     |0        |292           |0             |800      |0         |186           |133           |... |
+|HSPA4  |HSPA8    |0        |642           |83            |500      |0         |978           |91            |... |
+|HSPD1  |HSPA8    |0        |628           |0             |0        |0         |0             |206           |... |
+|HMGB1  |HSPA8    |0        |292           |0             |0        |0         |414           |0             |... |
+|PECAM1 |PTPN11   |0        |549           |0             |900      |0         |959           |0             |... |
+|AIFM1  |DDX3X    |0        |329           |0             |0        |0         |0             |0             |... |
+|...    |...      |...      |...           |...           |...      |...       |...           |...           |... |
+
+Figure \@ref(fig:EXP-with-experiments-score) (下方图) 为图EXP with experiments score概览。
+
+**(对应文件为 `Figure+Table/EXP-with-experiments-score.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/EXP-with-experiments-score.pdf}
+\caption{EXP with experiments score}\label{fig:EXP-with-experiments-score}
+\end{center}
+
+Table \@ref(tab:EXP-pair) (下方表格) 为表格EXP pair概览。
+
+**(对应文件为 `Figure+Table/EXP-pair.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有15行2列，以下预览的表格可能省略部分数据；含有13个唯一`from'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:EXP-pair)EXP pair
+
+|from     |to     |
+|:--------|:------|
+|CLU      |AIFM1  |
+|TXN      |AIFM1  |
+|MMP2     |TFRC   |
+|FTH1     |TFRC   |
+|HSPA4    |TFRC   |
+|SERPINA1 |TFRC   |
+|PPIA     |AIFM1  |
+|HSPA8    |TFRC   |
+|MMP2     |PECAM1 |
+|PTPN11   |PECAM1 |
+|DDX3X    |AIFM1  |
+|MPO      |ITGAM  |
+|HSPA4    |ITGAM  |
+|FGB      |ITGAM  |
+|HMGB1    |ITGAM  |
+
+### 蛋白对接
+
+依据 Tab. \@ref(tab:PPS-correlation-details),
+在 cluspro 服务器进行蛋白对接。
+
+注：总共有 19 对蛋白，由于 HSPA4 未找到 PDB (蛋白结构文件)，因此实际对接的为 18 对。
+
+
+
+Figure \@ref(fig:Overview-of-protein-docking-results) (下方图) 为图Overview of protein docking results概览。
+
+**(对应文件为 `Figure+Table/Overview-of-protein-docking-results.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overview-of-protein-docking-results.pdf}
+\caption{Overview of protein docking results}\label{fig:Overview-of-protein-docking-results}
+\end{center}
+
+Table \@ref(tab:Overview-of-protein-docking-results-data) (下方表格) 为表格Overview of protein docking results data概览。
+
+**(对应文件为 `Figure+Table/Overview-of-protein-docking-results-data.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有18行11列，以下预览的表格可能省略部分数据；含有18个唯一`Name'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Overview-of-protein-docking-results-data)Overview of protein docking results data
+
+|Name      |pro1     |pro2   |Cluster |Members |Center  |Lowest... |value   |pdb1 |pdb2 |
+|:---------|:--------|:------|:-------|:-------|:-------|:---------|:-------|:----|:----|
+|HMGB1_... |HMGB1    |ITGAM  |0       |45      |-2270.7 |-2270.7   |-2270.7 |6OEO |7USM |
+|HSPA8_... |HSPA8    |TFRC   |0       |67      |-1792.1 |-1792.1   |-1792.1 |6ZYJ |7ZQS |
+|SERPIN... |SERPINA1 |TFRC   |0       |84      |-1336.4 |-1456.1   |-1456.1 |9API |7ZQS |
+|FTH1_TFRC |FTH1     |TFRC   |0       |21      |-1335.4 |-1426.7   |-1426.7 |8DNP |7ZQS |
+|DDX3X_... |DDX3X    |AIFM1  |0       |61      |-1229.3 |-1410     |-1410   |7LIU |5KVI |
+|KNG1_I... |KNG1     |ITGAM  |0       |27      |-1139   |-1249.1   |-1249.1 |7F6I |7USM |
+|YWHAZ_... |YWHAZ    |ITGAM  |0       |96      |-805.3  |-1013.2   |-1013.2 |8AH2 |7USM |
+|MPO_ITGAM |MPO      |ITGAM  |0       |15      |-999.5  |-999.5    |-999.5  |7OIH |7USM |
+|C4B_ITGAM |C4B      |ITGAM  |0       |24      |-883.5  |-973.4    |-973.4  |6YSQ |7USM |
+|HSPD1_... |HSPD1    |ITGAM  |0       |22      |-730.8  |-973.3    |-973.3  |7L7S |7USM |
+|CLU_AIFM1 |CLU      |AIFM1  |0       |96      |-707.3  |-883.7    |-883.7  |7zet |5KVI |
+|FGB_ITGAM |FGB      |ITGAM  |0       |37      |-800.3  |-829.5    |-829.5  |3HUS |7USM |
+|MMP2_I... |MMP2     |ITGAM  |0       |32      |-629    |-827.8    |-827.8  |1RTG |7USM |
+|PTPN11... |PTPN11   |PECAM1 |0       |33      |-759.2  |-803.5    |-803.5  |7VXG |5GNI |
+|PPIA_A... |PPIA     |AIFM1  |0       |152     |-550.8  |-755.1    |-755.1  |7TA8 |5KVI |
+|...       |...      |...    |...     |...     |...     |...       |...     |...  |...  |
+
+Figure \@ref(fig:Top1-Protein-docking-of-HMGB1-ITGAM) (下方图) 为图Top1 Protein docking of HMGB1 ITGAM概览。
+
+**(对应文件为 `Figure+Table/ITGAM..7USM._with_HMGB1..6OEO..png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/ITGAM..7USM._with_HMGB1..6OEO..png}
+\caption{Top1 Protein docking of HMGB1 ITGAM}\label{fig:Top1-Protein-docking-of-HMGB1-ITGAM}
+\end{center}
+
+ 
+`Top 5 visualization' 数据已全部提供。
+
+**(对应文件为 `Figure+Table/Top-5-visualization`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Top-5-visualization共包含5个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Top\_1\_HMGB1\_ITGAM.txt
+\item 2\_Top\_2\_HSPA8\_TFRC.txt
+\item 3\_Top\_3\_SERPINA1\_TFRC.txt
+\item 4\_Top\_4\_FTH1\_TFRC.txt
+\item 5\_Top\_5\_DDX3X\_AIFM1.txt
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+
+
+### 同时满足 stringdb 实验得分和蛋白对接的
+ 
+若设置对接阈值 (Lowest.Energy) 为 -1000，则
+
+Figure \@ref(fig:Intersection-of-StringDB-exp--with-Protein-docking) (下方图) 为图Intersection of StringDB exp  with Protein docking概览。
+
+**(对应文件为 `Figure+Table/Intersection-of-StringDB-exp--with-Protein-docking.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-StringDB-exp--with-Protein-docking.pdf}
+\caption{Intersection of StringDB exp  with Protein docking}\label{fig:Intersection-of-StringDB-exp--with-Protein-docking}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    FTH1\_TFRC, SERPINA1\_TFRC, HSPA8\_TFRC, DDX3X\_AIFM1,
+HMGB1\_ITGAM
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+**(上述信息框内容已保存至 `Figure+Table/Intersection-of-StringDB-exp--with-Protein-docking-content`)**
+
+Table \@ref(tab:intersected-data) (下方表格) 为表格intersected data概览。
+
+**(对应文件为 `Figure+Table/intersected-data.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5行11列，以下预览的表格可能省略部分数据；含有5个唯一`pro1'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:intersected-data)Intersected data
+
+|pro1     |pro2  |Name      |Cluster |Members |Center  |Lowest... |value   |pdb1 |pdb2 |
+|:--------|:-----|:---------|:-------|:-------|:-------|:---------|:-------|:----|:----|
+|HMGB1    |ITGAM |HMGB1_... |0       |45      |-2270.7 |-2270.7   |-2270.7 |6OEO |7USM |
+|HSPA8    |TFRC  |HSPA8_... |0       |67      |-1792.1 |-1792.1   |-1792.1 |6ZYJ |7ZQS |
+|SERPINA1 |TFRC  |SERPIN... |0       |84      |-1336.4 |-1456.1   |-1456.1 |9API |7ZQS |
+|FTH1     |TFRC  |FTH1_TFRC |0       |21      |-1335.4 |-1426.7   |-1426.7 |8DNP |7ZQS |
+|DDX3X    |AIFM1 |DDX3X_... |0       |61      |-1229.3 |-1410     |-1410   |7LIU |5KVI |
 
 
 

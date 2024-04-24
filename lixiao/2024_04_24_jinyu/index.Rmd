@@ -1,0 +1,69 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(4), eval = ic())
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+
+```
+
+分析的要求和预期目标：
+
+1. 混合感染用python分析作图；
+2. 在现有的500例数据基础上挖掘新的亮点，看能否有其他深入的研究可以发表论文；
+3. 多重感染中怎么判断致病菌，并提供相关文献便于撰写论文 ；
+4. 生信的逻辑是否可以整理一篇文档便于在论文中讨论生信技术
+
+
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}

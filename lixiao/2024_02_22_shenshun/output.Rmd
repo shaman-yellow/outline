@@ -49,7 +49,7 @@ header-includes:
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(3), eval = ic(2, 3, 3, 0, 0))
+info <- items(belong = c(odate(3), odate(4)), eval = list(ic(2, 3, 3, 0, 0), ic(2, 1, 0, 3, 0)))
 show.ic(info)
 
 order_publish()
@@ -83,11 +83,21 @@ set_index()
 
 ## 需求
 
+### 首次分析
+
 1、寻找差异致癌膜蛋白及对应配体蛋白；
 2、耐药差异膜蛋白及对应抗体蛋白或互作抑制其表达蛋白。
 
 现需要利用数据库分析正常组与疾病组间的差异表达膜蛋白AA（在癌中高表达的）和对应靶向癌细胞特异性高表达的膜蛋白AA的配体蛋白AA’；
 以及非耐药组与耐药组间的差异表达膜蛋白XX（在耐药组中高表达的）和对应XX的抗体蛋白或相互作用能抑制其表达的蛋白XX’。
+
+### 进一步分析 {#fur}
+
+1. 查询正常组与结直肠癌组相比，TSC1的表达情况。期望TSC1仅在结肠癌的耐药群体种高表达，在正常组以及癌组织的非耐药中不表达或低表达。若在癌组织中高表达，则仅看“2”；若在正常组中高表达，则仅看“3”。
+2. 生信分析结果已知，与TSC1有相互作用且抑制的蛋白有5种（YWHAE、HSPA8、PTGES3、PSMG2、PLK2），但是能否直接结合作为筛选靶点未知，麻烦进行分子对接研究TSC1与5种蛋白直接结合的可能性。届时将选择直接结合的对子进行实验。
+3. 生信分析结果已知，差异癌膜蛋白AA为：AIFM1, TFRC, ITGAM, PECAM1 ，其对应的相互作用的蛋白AA‘分别有9、7、4、1个。请将这21对相互作用的蛋白做一下关联分析，找到非抑制的对子（可以促进表达也可以没有促进抑制关系）；然后进行分子对接，需要了解AA和AA'直接结合的可能性。届时将选择直接结合的对子进行实验。
+
+
 
 ## 结果
 
@@ -120,6 +130,19 @@ Fig. \@ref(fig:TCGA-DPS-filtered-and-formated-PPI-network-logFC)。
 (Fig. \@ref(fig:TCGA-RNA-correlation-heatmap))。
 
 最终可参考的表格：Tab. \@ref(tab:TCGA-RNA-TSC1-negtive-correlated)
+
+### 进一步分析的结果 (蛋白对接) {#res-fur}
+
+- 见 Fig. \@ref(fig:compare-tsc1-in-cancer-and-control),
+  TSC1 在正常组与癌症中无显著差异。因此，后续分析将依据 \@ref(fur) 中的 “3” 展开。
+- 筛选非负相关性的蛋白 (非抑制关系) ，共 19 对, 见 Tab. \@ref(tab:PPS-correlation-details)。
+- 为了筛选具有结合可能的蛋白对，采取以下两步：
+    - STRINGdb 数据库中，具有物理 (直接) 结合，并有实验基础 (experiments 得分) 的蛋白对，最后获得 Tab. \@ref(tab:EXP-pair)
+    - 以 cluspro 蛋白对接，获取得分 Fig. \@ref(fig:Overview-of-protein-docking-results)
+      和模型 (这里只展示Top 5的模型, Top 1 见 Fig. \@ref(fig:Top1-Protein-docking-of-HMGB1-ITGAM))。
+- 取上述两步 (蛋白对接设置了 -1000 cut-off) 的综合，见 Fig. \@ref(fig:Intersection-of-StringDB-exp--with-Protein-docking)
+  和 Tab. \@ref(tab:intersected-data)。
+  共有 5 对：`r paste0(p.vennInte$ins, collapse = ", ")`
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
@@ -220,7 +243,7 @@ lm.pps <- step1(lm.pps)
 lm.pps <- step2(lm.pps, Cancer - Control, use = "P", label = "Gene_name")
 lm.pps@plots$step2$p.valcano$`Cancer - Control`
 tops.pps <- tops <- dplyr::relocate(lm.pps@tables$step2$tops$`Cancer - Control`, Gene_name, logFC)
-
+tops.pps
 ```
 
 ## 膜蛋白筛选
@@ -259,7 +282,7 @@ autor(p.venn)
 
 ```{r}
 p.venn <- new_venn(DPs_Up = dplyr::filter(tops, logFC > 0)$Gene_name, TransMemPs = ut@object$Gene_Name)
-p.venn$ins
+p.venn
 ```
 
 ## 以蛋白互作筛选配体蛋白
@@ -353,6 +376,7 @@ lst.filter <- filter(
   less.label = F
 )
 lst.filter$p.ppi
+lst.filter$edges
 ```
 
 ```{r}
@@ -510,9 +534,9 @@ autor(wrap(p.pie_tcgaRna, 10, 7))
 
 ```{r}
 tc.rna <- step3(tc, query = "RNA")
-tc.rna@object <- NULL
 lm.tcgaRna <- asjob_limma(tc.rna)
 lm.tcgaRna@object
+tc.rna@object <- NULL
 
 lm.tcgaRna <- map(lm.tcgaRna, lm.tcgaPr)
 lm.tcgaRna <- step1(lm.tcgaRna)
@@ -621,5 +645,169 @@ cor.tcgaRna <- cal_corp(lm.tcgaRna, NULL, gene.maybeInt, gene.maybeInt)
 cor.tcgaRna$sig.corp
 
 t.negCor <- dplyr::filter(cor.tcgaRna$sig.corp, To == "TSC1", cor < 0)
+```
+
+# 附：进一步分析蛋白结合
+
+## TSC1 在正常组与结直肠癌组的表达
+
+TSC1 在正常组与癌症中无显著差异。因此，后续分析将依据 \@ref(fur) 中的 “3” 组织。
+
+```{r eval = T, echo = F, results = "asis"}
+#| compare-tsc1-in-cancer-and-control
+autor(wrap(p.box.tsc1, 5, 4))
+```
+
+```{r}
+asjob_limma(tc)
+lm.tcgaRna2 <- asjob_limma(step3(tc, query = "RNA"), group = "isTumor")
+lm.tcgaRna2 <- step1(lm.tcgaRna2)
+lm.tcgaRna2 <- step2(lm.tcgaRna2, tumor - normal)
+lm.tcgaRna2@plots$step2$p.valcano
+lm.tcgaRna2@params$normed_data$genes$gene_name %>% grpf("TSC1", T)
+dplyr::filter(lm.tcgaRna2@tables$step2$tops$`tumor - normal`, grpl(gene_name, "TSC1", T))
+
+p.box.tsc1 <- map(lm.tcgaRna2, "TSC1", "gene_name")
+p.box.tsc1
+
+```
+
+## 差异癌膜蛋白AA 与候选结合蛋白的相关性
+
+### 相关性
+
+筛选非负相关的蛋白对
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-correlation-heatmap
+autor(wrap(cor.pps$hp, 5, 5))
+```
+
+具体如下：
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPS-correlation-details
+autor(cor.ppsFilter)
+```
+
+```{r}
+lm.pps$genes
+cor.pps <- cal_corp(lm.pps, NULL, lst.filter$edges$from, lst.filter$edges$to, use = "Gene_name")
+cor.pps$hp
+
+lst.filter$edges
+cor.pps$corp
+
+lst.filter$edges
+cor.ppsFilter <- as_tibble(merge(lst.filter$edges, cor.pps$corp, by.x = c("from", "to"), by.y = c("From", "To")))
+cor.ppsFilter
+
+```
+
+### stringDB 数据库中有实验基础的
+
+依据 Tab. \@ref(tab:PPS-correlation-details)
+
+获取 stringDB 有直接物理作用的蛋白数据，并且取得有实验基础的蛋白对
+ (experiments score &gt; 100)
+
+```{r}
+sdb.exp <- job_stringdb(unlist(cor.ppsFilter[, 1:2], use.names = F))
+sdb.exp <- step1(sdb.exp, filter.exp = 100)
+sdb.exp@params$edges
+lst.exp <- filter(sdb.exp, cor.ppsFilter[[1]], cor.ppsFilter[[2]], top = 100)
+lst.exp$p.mcc
+lst.exp$edges
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| EXP-scores
+autor(sdb.exp@params$edges)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| EXP-with-experiments-score
+autor(lst.exp$p.mcc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| EXP-pair
+autor(lst.exp$edges)
+```
+
+### 蛋白对接
+
+依据 Tab. \@ref(tab:PPS-correlation-details),
+在 cluspro 服务器进行蛋白对接。
+
+注：总共有 19 对蛋白，由于 `r cp$notGot` 未找到 PDB (蛋白结构文件)，因此实际对接的为 18 对。
+
+```{r}
+cp$notGot
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overview-of-protein-docking-results
+autor(cp@plots$step4$p.score)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overview-of-protein-docking-results-data
+autor(cp@tables$step4$t.data)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Top1-Protein-docking-of-HMGB1-ITGAM
+autor(cp@plots$step4$top$Top_1_HMGB1_ITGAM)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Top-5-visualization
+autor(cp@plots$step4$top)
+```
+
+```{r}
+cp <- job_cluspro(.layout = cor.ppsFilter)
+cp <- step1(cp, c(CLU = "7zet"))
+cp <- step2(cp)
+cp <- step3(cp)
+cp <- upload(cp)
+cp@params$notGot
+cor.ppsFilter
+
+cp <- login(cp)
+cp <- pull(cp)
+cp@step <- 3L
+cp <- step4(cp, 5)
+cp@tables$step4$t.data
+cp@plots$step4$p.score
+cp@plots$step4$top$Top_5_DDX3X_AIFM1
+
+```
+
+### 同时满足 stringdb 实验得分和蛋白对接的
+ 
+若设置对接阈值 (Lowest.Energy) 为 -1000，则
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-StringDB-exp--with-Protein-docking
+autor(p.vennInte)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| intersected-data
+autor(t.inte)
+```
+
+```{r}
+t.cutoff <- dplyr::filter(cp@tables$step4$t.data, Lowest.Energy <= -1000)
+t.inte <- tbmerge(t.cutoff, lst.exp$edges, by.x = c("pro1", "pro2"), by.y = c("from", "to"), sort = F)
+t.inte
+
+p.vennInte <- new_venn(
+  StringDB_exp. = paste0(lst.exp$edges$from, "_", lst.exp$edges$to),
+  Protein_docking = paste0(t.cutoff$pro1, "_", t.cutoff$pro2)
+)
+p.vennInte
 ```
 
