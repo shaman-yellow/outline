@@ -218,6 +218,14 @@ backup_jobs(alls, time <- "2024-03-01")
 # move_raw_all(alls, time)
 ```
 
+### 2024-04
+
+```{r}
+summary_month()
+
+send_eval("sunhui")
+send_prin("sunhui")
+```
 
 ## Disk clear
 

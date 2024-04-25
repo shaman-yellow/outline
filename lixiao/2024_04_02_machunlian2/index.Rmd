@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(0, 0, 0, 0, 0))
+info <- items(belong = odate(4), eval = ic(0, 0, 0, 0, 0), title = "确定HBX的CDS区序列")
 show.ic(info)
 
 order_publish()
