@@ -1,5 +1,3 @@
 
-data <- ftibble("~/Downloads/GSE244317_Counts.tsv.gz")
-data
+list.dirs()
 
-geo <- job_geo("GSE244317")
