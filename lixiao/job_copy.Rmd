@@ -8,6 +8,7 @@ alls <- get_orders()
 print(alls, n = Inf)
 
 filter(alls, is.na(coef))
+
 ```
 
 ## Summary month
@@ -225,6 +226,15 @@ summary_month()
 
 send_eval("sunhui")
 send_prin("sunhui")
+
+summary_month()
+send_summary("sunhui")
+
+update_registers()
+send_registers("sunhui")
+
+alls <- get_orders()
+backup_jobs(alls, time <- "2024-04-01")
 ```
 
 ## Disk clear

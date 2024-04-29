@@ -3,15 +3,9 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic())
-show.ic(info)
+info <- items(belong = odate(5), eval = ic())
+iiashow.ic(info)
 
-order_publish()
-idname <- order_packaging()
-```
-
-```{r include = F}
-#| setup
 if (!requireNamespace("utils.tool"))
   devtools::load_all("~/utils.tool/")
 autor_preset()

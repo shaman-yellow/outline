@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic())
+info <- items(belong = odate(5), eval = ic())
 show.ic(info)
 
 order_publish()
@@ -37,6 +37,16 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
 ```
 
+青少年特发性脊柱侧凸 (adolescent idiopathic scoliosis，AIS) 是儿童及青少年常见的骨骼系统畸形，是一种三维平面的复杂畸形。传统二维畸形评估存在误差，而基于二维平面面的AIS分型系统、缺乏三维考量，以此为依据的治疗方案和手术决策可能存在缺陷。因此，针对AIS的三维畸形特点进行分析、概括，进而提出三维分型十分必要。目前国际上此类研究尚处起步，国内更是空白。自组织映射(Self-organizing map, SOM)神经网络算法是解决三维构象分型的一种高效、准确的人工智能无监督学习算法，本项目拟通过SOM聚类分析复杂的AIS三维畸形数据，归类其特征进而提出三维分型。其意义在于通过SOM对大数据的提炼，特别适合对复杂三维畸形数据的归类分析，以此建立的AIS三维分型符合国人流行病学特点，可为患者的个体化精准治疗提供依据，具有广泛的临床应用价值。
+
+- 青少年特发性脊柱侧凸(AIS)
+- AIS是包含冠状面的侧凸、矢状面上的前凸或后凸及横断面上椎体旋转在内的一种复杂三维复合畸形
+- 自组织映射神经网络算法 (Self-organizing map, SOM)
+  
+采集三维畸形参数的数据包括: a. 达芬奇圆内各段侧凸PMC方向；b. 冠状面侧凸Cobb角；c. 矢状面胸椎后凸角（T1-T12）、腰椎前凸角（L1-S1）；d. PMC侧凸Cobb角；e. 胸弯顶椎旋转度、腰弯顶椎旋转度；f. PMC旋转度；g. 骨盆入射角（pelvic incidence, PI）
+
+last search: `adolescent idiopathic scoliosis machine learning`
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -58,3 +68,5 @@ auto_method()
 # 结论 {#dis}
 
 # 附：分析流程 {#workflow}
+
+

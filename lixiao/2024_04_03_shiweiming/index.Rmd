@@ -72,6 +72,16 @@ M2标志：CD206，IL-10，TGF-beta等
 - 其中糖酵解相关的基因见 Fig. \@ref(fig:Intersection-of-RA-M1M2-related-with-Glycolysis-related)
 - 筛选到唯一的基因: PPARG (小鼠 Pparg)。其表达特征见 Fig. \@ref(fig:Violing-plot-of-expression-level-of-the-Pparg)
 
+## 进一步分析需求
+
+利用开源数据库进行生物信息学分析，筛选并验证类风湿性关节炎临床患者和动物模型中与巨噬细胞极化和糖酵解相关的关键基因XX的表达情况
+
+- XX (VWF) 表达水平与炎症因子、巨噬细胞浸润、巨噬细胞极化相关因子、糖酵解相关因子的相关性
+- 与患者状态（例如血清类风湿因子（RF）、抗链球菌溶血素抗体（ASO）、红细胞沉降率（ESR）和C反应蛋白（CRP））的相关性
+
+1.  Cheng, L., et al., New Insights From Single-Cell Sequencing Data: Synovial Fibroblasts and Synovial Macrophages in Rheumatoid Arthritis. Front Immunol, 2021. 12: p. 709178.
+2.	Zhou, S., H. Lu, and M. Xiong, Identifying Immune Cell Infiltration and Effective Diagnostic Biomarkers in Rheumatoid Arthritis by Bioinformatics Analysis. Front Immunol, 2021. 12: p. 726747.
+3.	Li, X., et al., A Single-Cell RNA-Sequencing Analysis of Distinct Subsets of Synovial Macrophages in Rheumatoid Arthritis. DNA Cell Biol, 2023. 42(4): p. 212-222.
 
 # 前言 {#introduction}
 
@@ -278,4 +288,7 @@ dplyr::filter(bm2@params$mapped, hgnc_symbol %in% p.vennGly$ins)$mgi_symbol
 p.foc <- focus(sr.mc, "Pparg", "Phenotypes")
 p.foc$p.vln
 ```
+
+# 进一步分析
+
 
