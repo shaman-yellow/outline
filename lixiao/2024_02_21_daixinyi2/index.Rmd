@@ -1,0 +1,292 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(5), eval = ic(2, 3, 2, 0, 2), lock = F)
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+# "../2023_07_07_eval"
+```
+
+1. 客户的 RNA-seq 数据集，以 DEGs 建立 PPI 网络，试分析 HNRNPH1 的作用，以及 wnt 通路。
+2. scRNA-seq (可能需要两组数据，瘢痕增生 (SH) 和正常组织), HNRNPH1 的作用，免疫细胞的行为，免疫细胞的 DEGs。
+ - 拟时分析，HNRNPH1、TCF4 的拟时表达变化等
+ - 细胞通讯，巨噬细胞等的通讯，Wnt 通路相关基因的表达和通讯
+3. 姜黄素对 HNRNPH1 的作用 (直接作用还是间接，是否可以结合，可以尝试分子对接，或者从转录因子角度出发)
+4. 视结果整理，可做一些新的分析，或探究一些新的方法。
+5. 源代码
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("瘢痕增生")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# SH: scar hyperplasia 瘢痕增生
+```
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## HNRNPH1 与 PPI 网络分析
+
+### DEGs
+
+```{r}
+lst_mrna <- read_kall_quant("~/outline/lixiao/2023_07_07_eval/quant_hg38_mrna")
+
+lst_mrna$metadata <- dplyr::mutate(lst_mrna$metadata,
+  group = ifelse(grpl(sample, "^CT"), "control", "treat")
+)
+lst_mrna$metadata
+
+mart <- new_biomart()
+lst_mrna$genes <- filter_biomart(mart, general_attrs(F, T),
+  "ensembl_transcript_id", lst_mrna$counts$target_id
+)
+
+lm <- job_limma(new_dge(lst_mrna$metadata, lst_mrna$counts, lst_mrna$genes))
+lm <- step1(lm)
+lm <- step2(lm, treat - control, use = "P.Value", use.cut = .05, cut.fc = 1)
+Tops <- lm@tables$step2$tops$`treat - control`
+dplyr::filter(Tops, hgnc_symbol == "HNRNPH1")[, -(1:4)]
+Tops
+
+```
+
+### wnt 信号通路
+
+```{r}
+en.deg <- job_enrich(Tops$hgnc_symbol)
+en.deg <- step1(en.deg)
+en.deg <- step2(en.deg, "hsa04310", gene.level = dplyr::select(Tops, hgnc_symbol, logFC))
+en.deg@plots$step2$p.pathviews$hsa04310
+
+genes.wnt <- dplyr::filter(en.deg@tables$step1$res.kegg$ids, ID == "hsa04310")
+genes.wnt <- dplyr::select(genes.wnt, ID, Description, geneName_list)
+genes.wnt <- reframe_col(genes.wnt, "geneName_list", function(x) x[[1]])
+genes.wnt
+```
+
+### 构建 PPI 网络
+
+#### DEGs PPI
+
+```{r}
+sdb.deg <- job_stringdb(Tops$hgnc_symbol)
+sdb.deg <- step1(sdb.deg)
+sdb.deg@plots$step1$p.ppi
+sdb.deg@plots$step1$p.mcc
+sdb.deg@tables$step1$hub_genes
+
+```
+
+#### HNRNPH1 与 Wnt 通路
+
+```{r}
+lstPPI <- filter(sdb.deg, genes.wnt$geneName_list, "HNRNPH1",
+  level.x = dplyr::select(Tops, hgnc_symbol, logFC),
+  top = NULL, keep.ref = T, arrow = F, HLs = "HNRNPH1")
+
+lstPPI$p.mcc
+```
+
+HNRNPH1 与 TP53 protein-docking
+
+## HNRNPH1 与斑痕的 scRNA-seq 分析
+
+### 数据来源
+
+```{r}
+geo.sc <- job_geo("GSE156326")
+geo.sc <- step1(geo.sc)
+geo.sc@params$guess
+geo.sc <- step2(geo.sc)
+untar("./GSE156326/GSE156326_RAW.tar", exdir = "./GSE156326")
+prepare_10x("./GSE156326/", "GSM4729097_human_skin_1")
+prepare_10x("./GSE156326/", "GSM4729100_human_scar_1")
+```
+
+### 细胞聚类和鉴定
+
+```{r}
+# sr.scar <- job_seurat("./GSE156326/GSM4729100_human_scar_1_barcodes")
+# sr.scar <- step1(sr.scar)
+# sr.scar@plots$step1$p.qc
+# sr.scar <- step2(sr.scar, 0, 5000, 20)
+# 
+# sr.skin <- job_seurat("./GSE156326/GSM4729097_human_skin_1_barcodes")
+# sr.skin <- step1(sr.skin)
+# sr.skin@plots$step1$p.qc
+# rm(sr.skin, sr.scar)
+
+sr <- job_seuratn(c("./GSE156326/GSM4729100_human_scar_1_barcodes", "./GSE156326/GSM4729097_human_skin_1_barcodes"),
+  c("Scar", "Skin"))
+
+sr <- step1(sr, 0, 5000, 20)
+sr <- step2(sr)
+sr@plots$step2$p.pca_rank
+sr <- step3(sr, 1:15, 1.2)
+sr@plots$step3$p.umap
+sr <- step4(sr, "")
+sr <- step5(sr)
+sr <- step6(sr, "Skin")
+sr@plots$step6$p.map_scsa
+
+```
+
+### 差异分析
+
+```{r}
+sr <- mutate(sr, group_cellType = paste0(orig.ident, "_", make.names(scsa_cell)))
+contrasts.sr <- lapply(make.names(ids(sr)), function(x) paste0(c("Scar", "Skin"), "_", x))
+contrasts.sr
+
+sr <- diff(sr, "group_cellType", contrasts.sr, name = "HN_group")
+sr@params$HN_group
+```
+
+#### HNRNPH1 的表达
+
+```{r}
+p.mapHn_cell <- focus(sr, "HNRNPH1")
+p.mapHn_group <- focus(sr, "HNRNPH1", "orig.ident")
+wrap(p.mapHn_group$p.vln, 3, 4)
+
+dplyr::filter(sr@params$HN_group, gene == "HNRNPH1")
+```
+
+#### Wnt 通路基因的表达
+
+- scRNA-seq, Scar vs Skin (Fibroblast, Pericyte), TP53 $\downarrow$, APCDD1 $\uparrow$
+- RNA-seq, 姜黄素给药, TP53 $\uparrow$, APCDD1 $\downarrow$
+
+```{r}
+scDegs.wnt <- dplyr::filter(sr@params$HN_group, gene %in% genes.wnt$geneName_list)
+scDegs.wnt
+
+scCell.degWnt <- which(ids(sr, "scsa_cell", F) %in% c("Fibroblast", "Pericyte"))
+scCell.degWnt
+
+sr <- mutate(sr, cellType_group = gs(group_cellType, "^([^_]+)_(.*)", "\\2_\\1"))
+p.hpWnt <- map(sr, scDegs.wnt$gene, group.by = "cellType_group", cells = scCell.degWnt)
+p.hpWnt
+
+p.focScDegWnt <- focus(getsub(sr, cells = scCell.degWnt), scDegs.wnt$gene, group.by = "cellType_group")
+p.focScDegWnt$p.vln
+```
+
+### 拟时分析
+
+#### 拟时终点与 APCDD1
+
+```{r}
+vis(mn@params$sr_sub)
+monocle::importCDS(mn@params$sr_sub)
+monocle::newCellDataSet
+mn@params$sr_sub@
+
+
+mn <- do_monocle(sr, "Fibroblast")
+mn <- step1(mn, "cellType_group", pre = T)
+p.srSub_wnt <- focus(mn@params$sr_sub, scDegs.wnt$gene)
+p.srSub_wnt$p.dim
+
+wrap(mn@plots$step1$p.prin, 5, 4)
+mn <- step2(mn, c("Y_3", "Y_6"))
+mn@plots$step2$p.pseu
+mn <- step3(mn, group.by = "seurat_clusters")
+mn <- step4(mn, ids(mn), "APCDD1", "cellType_group")
+mn@plots$step4$genes_in_pseudotime
+mn@plots$step3$gene_module_heatdata$graph_test.sig
+mn@tables$step3$graph_test.sig
+
+
+```
+
+```{r}
+p.hpPseu <- map(mn, head(scDegs.pseu$gene_id, 100))
+p.hpPseu
+
+dat <- as_tibble(Terror$heatmap_matrix)
+dat <- tidyr::pivot_longer(dat, -rownames, names_to = "Pseudo_Time", values_to = "Levels")
+dat <- dplyr::mutate(dat, Pseudo_Time = as.integer(Pseudo_Time))
+
+tidyHeatmap::heatmap(dat, rownames, Pseudo_Time, Levels, cluster_columns = F, cluster_rows = T) |>
+  tidyHeatmap::annotation_tile(rownames)
+  
+
+```
+
+#### Fibroblast 拟时轨迹下的差异基因
+
+```{r}
+scDegs.pseu <- head(dplyr::filter(mn@tables$step3$graph_test.sig, q_value < .000001), 500)
+scDegs.pseu
+
+en.pseu <- job_enrich(scDegs.pseu$gene_id)
+en.pseu <- step1(en.pseu)
+en.pseu@plots$step1$p.go
+```
+
+#### 姜黄素有调控作用的靶点
+
+```{r}
+p.vennTreatPseu <- new_venn(FB_pseu_DEGs = scDegs.pseu$gene_id, Treat_DEGs = Tops$hgnc_symbol)
+p.vennTreatPseu
+
+en.treatPseu <- job_enrich(p.vennTreatPseu$ins)
+en.treatPseu <- step1(en.treatPseu)
+en.treatPseu@plots$step1$p.go
+```
+
+## HNRNPH1 与姜黄素
+
+

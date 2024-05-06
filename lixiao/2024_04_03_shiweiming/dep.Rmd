@@ -56,3 +56,21 @@ metadata
 
 ```
 
+
+geo.human@params$guess
+
+metadata <- dplyr::filter(geo.human$guess, grpl(disease.ch1, "healthy indi|^rheumatoid", T))
+metadata <- dplyr::mutate(metadata)
+
+dir.create("GSE17755")
+cdRun("mv ~/Downloads/GSE17755_RAW.tar -t ./GSE17755")
+untar("./GSE17755/GSE17755_RAW.tar", exdir = "./GSE17755")
+file.remove("./GSE17755/GSE17755_RAW.tar")
+
+lapply(list.files("./GSE17755/", ".gz$", full.names = T),
+  function(x) {
+    gsm <- strx(get_filename(x), "^GSM[0-9]+")
+    if (any(gsm == metadata$rownames))
+      R.utils::gunzip(x)
+  })
+

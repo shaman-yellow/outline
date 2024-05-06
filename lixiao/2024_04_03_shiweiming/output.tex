@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 XX基因通过促进糖酵解促进巨噬细胞M1极化}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-15}}
+\textbf{\textcolor{white}{2024-05-06}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -152,6 +152,30 @@ M2标志：CD206，IL-10，TGF-beta等
   筛选到唯一的基因: PPARG (小鼠 Pparg)。其表达特征见 Fig. \ref{fig:Violing-plot-of-expression-level-of-the-Pparg}
 \end{itemize}
 
+\hypertarget{ux8fdbux4e00ux6b65ux5206ux6790ux9700ux6c42}{%
+\subsection{进一步分析需求}\label{ux8fdbux4e00ux6b65ux5206ux6790ux9700ux6c42}}
+
+利用开源数据库进行生物信息学分析，筛选并验证类风湿性关节炎临床患者和动物模型中与巨噬细胞极化和糖酵解相关的关键基因XX的表达情况
+
+\begin{itemize}
+\tightlist
+\item
+  XX (VWF) 表达水平与炎症因子、巨噬细胞浸润、巨噬细胞极化相关因子、糖酵解相关因子的相关性
+\item
+  与患者状态（例如血清类风湿因子（RF）、抗链球菌溶血素抗体（ASO）、红细胞沉降率（ESR）和C反应蛋白（CRP））的相关性
+\end{itemize}
+
+\hypertarget{ux8fdbux4e00ux6b65ux5206ux6790ux7ed3ux679c}{%
+\subsection{进一步分析结果}\label{ux8fdbux4e00ux6b65ux5206ux6790ux7ed3ux679c}}
+
+\begin{itemize}
+\tightlist
+\item
+  关联分析结果见 Fig. \ref{fig:HUMAN-correlation-heatmap}, Tab. \ref{tab:HUMAN-correlation}。
+\item
+  未找到可用的 RA 表型数据集。
+\end{itemize}
+
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
 
@@ -164,9 +188,10 @@ M2标志：CD206，IL-10，TGF-beta等
 All used GEO expression data and their design:
 
 \begin{itemize}
-\tightlist
 \item
   \textbf{GSE184609}: scRNA-Seq analysis of FACS-sorted live synovial cells isolated from naïve mice (two replicates) or from mice at day 6, 14, or 25 of GPI-induced arthritis (one replicate per time point).
+\item
+  \textbf{GSE17755}: Peripheral blood was obtained from patients with RA (n=112), SLE (n=22), polyJIA (n=6), sJIA (n=51), HC (n=8), and HI (n=45). Blood samples from 8 HC and 45 HI are used as control.
 \end{itemize}
 
 \hypertarget{ux65b9ux6cd5}{%
@@ -183,13 +208,15 @@ Mainly used method:
 \item
   GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
 \item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{4},\protect\hyperlink{ref-EdgerDifferenChen}{5}}.
+\item
   The data in published article of Jablonski et al used for distinguishing macrophage phenotypes (M0/M1/M2)\textsuperscript{\protect\hyperlink{ref-NovelMarkersTJablon2015}{1}}.
 \item
-  The R package \texttt{Seurat} used for scRNA-seq processing\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{4},\protect\hyperlink{ref-ComprehensiveIStuart2019}{5}}.
+  The R package \texttt{Seurat} used for scRNA-seq processing\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{6},\protect\hyperlink{ref-ComprehensiveIStuart2019}{7}}.
 \item
-  \texttt{SCSA} (python) used for cell type annotation\textsuperscript{\protect\hyperlink{ref-ScsaACellTyCaoY2020}{6}}.
+  \texttt{SCSA} (python) used for cell type annotation\textsuperscript{\protect\hyperlink{ref-ScsaACellTyCaoY2020}{8}}.
 \item
-  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
 
 \hypertarget{results}{%
@@ -308,7 +335,7 @@ Figure \ref{fig:Microphage-UMAP-Clustering} (下方图) 为图Microphage UMAP Cl
 
 Table \ref{tab:The-markers-for-Macrophage-phenotypes-annotation} (下方表格) 为表格The markers for Macrophage phenotypes annotation概览。
 
-\textbf{(对应文件为 \texttt{Figure+Table/The-markers-for-Macrophage-phenotypes-annotation})}
+\textbf{(对应文件为 \texttt{Figure+Table/The-markers-for-Macrophage-phenotypes-annotation.csv})}
 
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有26行2列，以下预览的表格可能省略部分数据；含有3个唯一`cell'。
 \end{tcolorbox}
@@ -500,7 +527,13 @@ Gstm1 & GSTM1\tabularnewline
 \hypertarget{ux7cd6ux9175ux89e3ux76f8ux5173ux57faux56e0}{%
 \subsection{糖酵解相关基因}\label{ux7cd6ux9175ux89e3ux76f8ux5173ux57faux56e0}}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \ref{tab:Glycolysis-related-genes-from-GeneCards} (下方表格) 为表格Glycolysis related genes from GeneCards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Glycolysis-related-genes-from-GeneCards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有118行7列，以下预览的表格可能省略部分数据；含有118个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 The GeneCards data was obtained by querying
 :}
@@ -532,14 +565,6 @@ Filtering by Score:
     Score > 3
 
 \vspace{2em}
-\end{tcolorbox}
-\end{center}
-
-Table \ref{tab:Glycolysis-related-genes-from-GeneCards} (下方表格) 为表格Glycolysis related genes from GeneCards概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/Glycolysis-related-genes-from-GeneCards.xlsx})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有118行7列，以下预览的表格可能省略部分数据；含有118个唯一`Symbol'。
 \end{tcolorbox}
 \end{center}
 
@@ -609,6 +634,178 @@ Figure \ref{fig:Violing-plot-of-expression-level-of-the-Pparg} (下方图) 为�
 \caption{Violing plot of expression level of the Pparg}\label{fig:Violing-plot-of-expression-level-of-the-Pparg}
 \end{center}
 
+\hypertarget{ux8fdbux4e00ux6b65ux5206ux6790}{%
+\section{进一步分析}\label{ux8fdbux4e00ux6b65ux5206ux6790}}
+
+\hypertarget{ux6570ux636eux6765ux6e90-1}{%
+\subsection{数据来源}\label{ux6570ux636eux6765ux6e90-1}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE17755
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Log2 ratios of Cy3 to Cy5 were calculated and
+normalized by the method of global ratio median
+normalization.
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/HUMAN-GSE17755-content})}
+
+\hypertarget{ux708eux75c7ux56e0ux5b50ux5de8ux566cux7ec6ux80deux6d78ux6da6ux5de8ux566cux7ec6ux80deux6781ux5316ux76f8ux5173ux56e0ux5b50ux7cd6ux9175ux89e3ux76f8ux5173ux56e0ux5b50}{%
+\subsection{炎症因子、巨噬细胞浸润、巨噬细胞极化相关因子、糖酵解相关因子}\label{ux708eux75c7ux56e0ux5b50ux5de8ux566cux7ec6ux80deux6d78ux6da6ux5de8ux566cux7ec6ux80deux6781ux5316ux76f8ux5173ux56e0ux5b50ux7cd6ux9175ux89e3ux76f8ux5173ux56e0ux5b50}}
+
+使用 genecards 获取相关基因 (各取前 50 基因)：
+
+\begin{itemize}
+\tightlist
+\item
+  IF: Inflammatory factors 炎症因子
+\item
+  MI: Macrophage infiltration 巨噬细胞浸润
+\item
+  MP: Macrophage polarization 巨噬细胞极化
+\item
+  G: Glycolysis 糖酵解
+\end{itemize}
+
+Table \ref{tab:All-Factors} (下方表格) 为表格All Factors概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-Factors.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有200行2列，以下预览的表格可能省略部分数据；含有4个唯一`type'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:All-Factors}All Factors}\tabularnewline
+\toprule
+type & name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+type & name\tabularnewline
+\midrule
+\endhead
+Inflammatory factors & IL6\tabularnewline
+Inflammatory factors & TNF\tabularnewline
+Inflammatory factors & CRP\tabularnewline
+Inflammatory factors & BDNF-AS\tabularnewline
+Inflammatory factors & IL1B\tabularnewline
+Inflammatory factors & LINC02605\tabularnewline
+Inflammatory factors & TLR4\tabularnewline
+Inflammatory factors & MIR146B\tabularnewline
+Inflammatory factors & ADIPOQ\tabularnewline
+Inflammatory factors & LINC01672\tabularnewline
+Inflammatory factors & CXCL8\tabularnewline
+Inflammatory factors & IL1A\tabularnewline
+Inflammatory factors & NFKB1\tabularnewline
+Inflammatory factors & CERNA3\tabularnewline
+Inflammatory factors & IL18\tabularnewline
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+对上述基因集去重复后，关联分析。
+
+\hypertarget{ux5173ux8054ux5206ux6790}{%
+\subsection{关联分析}\label{ux5173ux8054ux5206ux6790}}
+
+Figure \ref{fig:HUMAN-correlation-heatmap} (下方图) 为图HUMAN correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HUMAN-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HUMAN-correlation-heatmap.pdf}
+\caption{HUMAN correlation heatmap}\label{fig:HUMAN-correlation-heatmap}
+\end{center}
+
+Figure \ref{fig:HUMAN-correlation-heatmap-VWF-significant} (下方图) 为图HUMAN correlation heatmap VWF significant概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HUMAN-correlation-heatmap-VWF-significant.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HUMAN-correlation-heatmap-VWF-significant.pdf}
+\caption{HUMAN correlation heatmap VWF significant}\label{fig:HUMAN-correlation-heatmap-VWF-significant}
+\end{center}
+
+`HUMAN regression VWF significant' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HUMAN-regression-VWF-significant})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/HUMAN-regression-VWF-significant共包含4个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Glycolysis.pdf
+\item 2\_Inflammatory factors.pdf
+\item 3\_Macrophage infiltration.pdf
+\item 4\_Macrophage polarization.pdf
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:HUMAN-correlation} (下方表格) 为表格HUMAN correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HUMAN-correlation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2023行9列，以下预览的表格可能省略部分数据；含有17个唯一`From'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor:  皮尔逊关联系数，正关联或负关联。
+\item pvalue:  显著性 P。
+\item -log2(P.value):  P 的对数转化。
+\item significant:  显著性。
+\item sign:  人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:HUMAN-correlation}HUMAN correlation}\tabularnewline
+\toprule
+From & To & cor & pvalue & -log2(\ldots{} & signif\ldots{} & sign & Factors & Type\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+From & To & cor & pvalue & -log2(\ldots{} & signif\ldots{} & sign & Factors & Type\tabularnewline
+\midrule
+\endhead
+EDNRB & GAPDH & -0.14 & 0.0931 & 3.4250\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+PPARG & GAPDH & -0.06 & 0.4812 & 1.0552\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+CADM1 & GAPDH & -0.26 & 9e-04 & 10.117\ldots{} & \textless{} 0.001 & ** & Glycol\ldots{} & Others\tabularnewline
+BMP2 & GAPDH & -0.1 & 0.225 & 2.1520\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+SLC28A2 & GAPDH & 0.06 & 0.4919 & 1.0235\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+RRM1 & GAPDH & 0.33 & 0 & 16.609\ldots{} & \textless{} 0.001 & ** & Glycol\ldots{} & Others\tabularnewline
+BAMBI & GAPDH & -0.16 & 0.0796 & 3.6510\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+PLK2 & GAPDH & -0.08 & 0.3648 & 1.4548\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+P2RY14 & GAPDH & 0.43 & 0 & 16.609\ldots{} & \textless{} 0.001 & ** & Glycol\ldots{} & Others\tabularnewline
+MNDA & GAPDH & -0.02 & 0.7616 & 0.3928\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+GSTM1 & GAPDH & -0.16 & 0.073 & 3.7759\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+IFI44 & GAPDH & -0.33 & 0 & 16.609\ldots{} & \textless{} 0.001 & ** & Glycol\ldots{} & Others\tabularnewline
+RCN3 & GAPDH & 0.12 & 0.148 & 2.7563\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+SPON1 & GAPDH & -0.14 & 0.0882 & 3.5030\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+GFRA2 & GAPDH & -0.07 & 0.3662 & 1.4492\ldots{} & \textgreater{} 0.05 & - & Glycol\ldots{} & Others\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
 \addcontentsline{toc}{section}{Reference}
@@ -624,14 +821,20 @@ Figure \ref{fig:Violing-plot-of-expression-level-of-the-Pparg} (下方图) 为�
 \leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
 3. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
 
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+4. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+5. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
 \leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
-4. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+6. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
 
 \leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
-5. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+7. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
 
 \leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
-6. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+8. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
 \end{cslreferences}
 
 \end{document}

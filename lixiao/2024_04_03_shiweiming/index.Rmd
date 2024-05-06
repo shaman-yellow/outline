@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(1, 2, 1, 0, 0))
+info <- items(belong = c(odate(4), odate(5)), eval = list(ic(1, 2, 1, 0, 0), ic(0, 2, 1, 0, 0)))
 show.ic(info)
 
 order_publish()
@@ -35,11 +35,17 @@ set_index()
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
   di("类风湿性关节炎"),
+  di("炎症因子"),
+  di("巨噬细胞浸润"),
+  di("巨噬细胞极化"),
   di("糖酵解")
 )
 
 # DEGs: Differential Expressed Genes 差异表达基因
-# RA: rheumatoid arthritis 类风湿性关节炎
+# RA: Rheumatoid arthritis 类风湿性关节炎
+# IF: Inflammatory factors 炎症因子
+# MI: Macrophage infiltration 巨噬细胞浸润
+# MP: Macrophage polarization 巨噬细胞极化
 # G: Glycolysis 糖酵解
 ```
 
@@ -79,9 +85,10 @@ M2标志：CD206，IL-10，TGF-beta等
 - XX (VWF) 表达水平与炎症因子、巨噬细胞浸润、巨噬细胞极化相关因子、糖酵解相关因子的相关性
 - 与患者状态（例如血清类风湿因子（RF）、抗链球菌溶血素抗体（ASO）、红细胞沉降率（ESR）和C反应蛋白（CRP））的相关性
 
-1.  Cheng, L., et al., New Insights From Single-Cell Sequencing Data: Synovial Fibroblasts and Synovial Macrophages in Rheumatoid Arthritis. Front Immunol, 2021. 12: p. 709178.
-2.	Zhou, S., H. Lu, and M. Xiong, Identifying Immune Cell Infiltration and Effective Diagnostic Biomarkers in Rheumatoid Arthritis by Bioinformatics Analysis. Front Immunol, 2021. 12: p. 726747.
-3.	Li, X., et al., A Single-Cell RNA-Sequencing Analysis of Distinct Subsets of Synovial Macrophages in Rheumatoid Arthritis. DNA Cell Biol, 2023. 42(4): p. 212-222.
+## 进一步分析结果
+
+- 关联分析结果见 Fig. \@ref(fig:HUMAN-correlation-heatmap), Tab. \@ref(tab:HUMAN-correlation)。
+- 未找到可用的 RA 表型数据集。
 
 # 前言 {#introduction}
 
@@ -291,4 +298,131 @@ p.foc$p.vln
 
 # 进一步分析
 
+## 数据来源
 
+```{r eval = T, echo = F, results = "asis"}
+#| HUMAN-GSE17755
+autor(geo.human@params$prods)
+```
+
+```{r}
+geo.human <- job_geo("GSE17755")
+geo.human <- step1(geo.human)
+geo.human@params$test
+geo.human@params$prods
+
+metadata <- dplyr::filter(geo.human$guess, grpl(disease.ch1, "healthy indi|^rheumatoid", T))
+metadata <- dplyr::mutate(metadata, sample = rownames, group = ifelse(grpl(disease.ch1, "rheu"), "Disease", "Control"))
+metadata <- dplyr::relocate(metadata, sample, group)
+
+lm.human <- job_limma_normed(dplyr::select(geo.human@params$test$counts, 1, dplyr::all_of(metadata$rownames)),
+  metadata, geo.human@params$test$genes
+)
+
+lm.human <- step1(lm.human)
+lm.human@params$normed_data
+
+```
+
+## 炎症因子、巨噬细胞浸润、巨噬细胞极化相关因子、糖酵解相关因子
+
+使用 genecards 获取相关基因 (各取前 50 基因)：
+
+- IF: Inflammatory factors 炎症因子
+- MI: Macrophage infiltration 巨噬细胞浸润
+- MP: Macrophage polarization 巨噬细胞极化
+- G: Glycolysis 糖酵解
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-Factors
+autor(as_tibble(dat.fat0))
+```
+
+对上述基因集去重复后，关联分析。
+
+```{r}
+# IF: Inflammatory factors 炎症因子
+# MI: Macrophage infiltration 巨噬细胞浸润
+# MP: Macrophage polarization 巨噬细胞极化
+
+gn.if <- job_genecard("Inflammatory factors")
+gn.if <- step1(gn.if, 1, T)
+gn.if@tables$step1$t.genecards
+
+gn.mi <- job_genecard("Macrophage infiltration")
+gn.mi <- step1(gn.mi, 1, T)
+gn.mi@tables$step1$t.genecards
+
+gn.mp <- job_genecard("Macrophage polarization")
+gn.mp <- step1(gn.mp, 2, T)
+gn.mp@tables$step1$t.genecards
+
+gn@tables$step1$t.genecards
+
+
+genes.fac <- lapply(list(gn.if, gn.mi, gn.mp, gn),
+  function(x) nl(x@object, list(head(x@tables$step1$t.genecards$Symbol, n = 50))))
+genes.fac <- unlist(genes.fac, recursive = F)
+genes.fac
+dat.fac <- dat.fat0 <- as_df.lst(genes.fac)
+dat.fac <- dplyr::distinct(dat.fac, name, .keep_all = T)
+dat.fac
+```
+
+## 关联分析
+
+```{r eval = T, echo = F, results = "asis"}
+#| HUMAN-correlation-heatmap
+autor(wrap(tihp.cor, 17, 6))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HUMAN-correlation-heatmap-VWF-significant
+autor(wrap(tihp.corVWF, 10, 1.8))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HUMAN-regression-VWF-significant
+autor(p.reg)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HUMAN-correlation
+autor(dat.cor)
+```
+
+```{r}
+bm2$mapped$hgnc_symbol
+
+cor.m2fac <- cal_corp(lm.human, NULL, bm2$mapped$hgnc_symbol, dat.fac$name, use = "Symbol")
+cor.m2fac$corp
+cor.m2fac$corp
+
+dat.cor <- as_tibble(cor.m2fac$corp)
+dat.cor <- map(dat.cor, "To", dat.fac, "name", "type", col = "Factors")
+dat.cor <- dplyr::mutate(dat.cor, Type = ifelse(From == "VWF", "VWF", "Others"))
+dat.cor <- dplyr::group_by(dat.cor, Factors, Type)
+
+tihp.cor <- new_hp.cor(dat.cor)
+wrap(tihp.cor, 17, 6)
+
+dat.corVWF <- dplyr::filter(dat.cor, From == "VWF", pvalue < .05)
+dat.corVWF <- dplyr::group_by(dat.corVWF, Factors)
+dat.corVWF
+tihp.corVWF <- new_hp.cor(dat.corVWF, sig = F, fontsize = 10)
+
+wrap(tihp.corVWF, 10, 1.8)
+
+
+```
+
+```{r}
+dat.corVMFsig <- cal_corp(lm.human, NULL, dat.corVWF$From, dat.corVWF$To, use = "Symbol", mode = "l")
+dat.corVMFsig
+
+dat.corVMFsig <- map(dat.corVMFsig, "To", dat.fac, "name", "type", col = "Factors")
+
+p.reg <- vis(.corp(dat.corVMFsig), "Factors")
+
+p.reg$`Macrophage polarization`
+```

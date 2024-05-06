@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic())
+info <- items(belong = odate(05), eval = ic())
 show.ic(info)
 
 order_publish()
@@ -37,6 +37,8 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
 ```
 
+
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -59,16 +61,4 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
-```{r}
-vn <- job_vina(c(acecetin = 20355032, wogonin = 5281703), c("CDKN1A", "AKT1", "TP53", "EGFR"))
-vn <- step1(vn)
-vn <- step2(vn)
-vn <- step3(vn)
-vn <- set_remote(vn)
-vn <- step4(vn)
-vn <- step5(vn)
-vn <- step6(vn)
-vn <- step7(vn)
-vn@plots$step5$p.res_vina
 
-```

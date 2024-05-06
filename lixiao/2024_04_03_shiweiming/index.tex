@@ -1,0 +1,921 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\usepackage{longtable,booktabs}
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{frame}
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+XX基因通过促进糖酵解促进巨噬细胞M1极化}
+\vspace{4em} \begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-05-06}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+
+
+\pagenumbering{arabic}
+\end{frame}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\begin{frame}{生信需求}
+\protect\hypertarget{ux751fux4fe1ux9700ux6c42}{}
+疾病：类风湿性关节炎RA 物种：临床患者或者动物模型都可以 细胞：巨噬细胞
+
+目标：筛出XX基因，XX基因满足， 1、是糖酵解相关基因
+2、与巨噬细胞极化相关（M1/M2）
+
+设想：XX基因在RA中上调，RA中M1巨噬细胞上调，其中XX基因主要分布在M1巨噬细胞而非M2巨噬细胞上，XX基因可能通过促进糖酵解促进巨噬细胞M1极化
+
+M1标志：iNOS，CD11c，CD86等 M2标志：CD206，IL-10，TGF-beta等
+\end{frame}
+
+\begin{frame}[fragile]{结果}
+\protect\hypertarget{ux7ed3ux679c}{}
+\begin{itemize}
+\tightlist
+\item
+  首先通过分析 GEO 单细胞数据，鉴定出巨噬细胞不同表型 Fig.
+  @ref(fig:The-Phenotypes)。
+\item
+  该数据集为小鼠来源，鉴定 M0、M1、M2 的小鼠基因 Marker
+  参考{[}@NovelMarkersTJablon2015{]}， 实际使用的 Marker 见 Tab.
+  @ref(tab:The-markers-for-Macrophage-phenotypes-annotation)
+\item
+  进行差异分析 (Tab. @ref(tab:DEGs-of-the-contrasts)) ：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    XX 在RA中M1巨噬细胞上调: \texttt{GPI-day25-RA\_Macrophage\_M1} vs
+    \texttt{Control\_Macrophage\_M1}
+  \item
+    其中XX基因主要分布在M1巨噬细胞而非M2巨噬细胞上:
+    \texttt{GPI-day25-RA\_Macrophage\_M1} vs
+    \texttt{GPI-day25-RA\_Macrophage\_M2}
+  \end{itemize}
+\item
+  以上两组差异基因交集见 Fig.
+  @ref(fig:Intersection-of-RA-M1-up-with-M1-not-M2)
+\item
+  小鼠基因映射到人类 Tab. @ref(tab:Mapped-genes)
+\item
+  其中糖酵解相关的基因见 Fig.
+  @ref(fig:Intersection-of-RA-M1M2-related-with-Glycolysis-related)
+\item
+  筛选到唯一的基因: PPARG (小鼠 Pparg)。其表达特征见 Fig.
+  @ref(fig:Violing-plot-of-expression-level-of-the-Pparg)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{进一步分析需求}
+\protect\hypertarget{ux8fdbux4e00ux6b65ux5206ux6790ux9700ux6c42}{}
+利用开源数据库进行生物信息学分析，筛选并验证类风湿性关节炎临床患者和动物模型中与巨噬细胞极化和糖酵解相关的关键基因XX的表达情况
+
+\begin{itemize}
+\tightlist
+\item
+  XX (VWF)
+  表达水平与炎症因子、巨噬细胞浸润、巨噬细胞极化相关因子、糖酵解相关因子的相关性
+\item
+  与患者状态（例如血清类风湿因子（RF）、抗链球菌溶血素抗体（ASO）、红细胞沉降率（ESR）和C反应蛋白（CRP））的相关性
+\end{itemize}
+\end{frame}
+
+\begin{frame}{进一步分析结果}
+\protect\hypertarget{ux8fdbux4e00ux6b65ux5206ux6790ux7ed3ux679c}{}
+\begin{itemize}
+\tightlist
+\item
+  关联分析结果见 Fig. @ref(fig:HUMAN-correlation-heatmap), Tab.
+  @ref(tab:HUMAN-correlation)。
+\item
+  未找到可用的 RA 表型数据集。
+\end{itemize}
+\end{frame}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\begin{frame}{材料}
+\protect\hypertarget{ux6750ux6599}{}
+All used GEO expression data and their design:
+
+\begin{itemize}
+\item
+  \textbf{GSE184609}: scRNA-Seq analysis of FACS-sorted live synovial
+  cells isolated from naïve mice (two replicates) or from mice at day 6,
+  14, or 25 of GPI-induced arthritis (one replicate per time point).
+\item
+  \textbf{GSE17755}: Peripheral blood was obtained from patients with RA
+  (n=112), SLE (n=22), polyJIA (n=6), sJIA (n=51), HC (n=8), and HI
+  (n=45). Blood samples from 8 HC and 45 HI are used as control.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{方法}
+\protect\hypertarget{ux65b9ux6cd5}{}
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  The \texttt{biomart} was used for mapping genes between organism
+  (e.g., mgi\_symbol to hgnc\_symbol){[}@MappingIdentifDurinc2009{]}.
+\item
+  The Human Gene Database \texttt{GeneCards} used for disease related
+  genes prediction{[}@TheGenecardsSStelze2016{]}.
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression
+  dataset aquisition.
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential
+  expression analysis{[}@LimmaPowersDiRitchi2015; @EdgerDifferenChen{]}.
+\item
+  The data in published article of Jablonski et al used for
+  distinguishing macrophage phenotypes
+  (M0/M1/M2){[}@NovelMarkersTJablon2015{]}.
+\item
+  The R package \texttt{Seurat} used for scRNA-seq
+  processing{[}@IntegratedAnalHaoY2021; @ComprehensiveIStuart2019{]}.
+\item
+  \texttt{SCSA} (python) used for cell type
+  annotation{[}@ScsaACellTyCaoY2020{]}.
+\item
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr}
+  and \texttt{ggplot2}) used for statistic analysis or data
+  visualization.
+\end{itemize}
+\end{frame}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\begin{frame}[fragile]{scRNA-seq}
+\protect\hypertarget{scrna-seq}{}
+\begin{block}{数据来源}
+\protect\hypertarget{ux6570ux636eux6765ux6e90}{}
+这是一批小鼠的 单细胞测序数据。
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE184609
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    10X Genomics Cell Ranger v3.1
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    Gene-cell UMI matrix was generated for downstream
+analyses. Low-quality cells were removed based on their
+unique feature counts and mitochondrial gene content. Data
+was normalized and log transformed using the default
+setting of Seurat (version 3.1.4).
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    Genome\_build: mm10
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content: For each
+sample, there is one mtx file with filtered gene expressing
+UMI counts for each sample, one tsv file containing gene
+names, and one tsv file with cell barcodes.
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至
+\texttt{Figure+Table/GSE184609-content})}
+\end{block}
+
+\begin{block}{细胞聚类与初步注释}
+\protect\hypertarget{ux7ec6ux80deux805aux7c7bux4e0eux521dux6b65ux6ce8ux91ca}{}
+使用 SCSA 对细胞类型注释。
+
+Figure @ref(fig:SCSA-Cell-type-annotation) (下方图) 为图SCSA Cell type
+annotation概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/SCSA-Cell-type-annotation.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCSA-Cell-type-annotation.pdf}
+\caption{SCSA Cell type annotation}\label{fig:SCSA-Cell-type-annotation}
+\end{center}
+\end{block}
+
+\begin{block}{巨噬细胞重聚类}
+\protect\hypertarget{ux5de8ux566cux7ec6ux80deux91cdux805aux7c7b}{}
+Figure @ref(fig:Microphage-UMAP-Clustering) (下方图) 为图Microphage UMAP
+Clustering概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/Microphage-UMAP-Clustering.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Microphage-UMAP-Clustering.pdf}
+\caption{Microphage UMAP Clustering}\label{fig:Microphage-UMAP-Clustering}
+\end{center}
+\end{block}
+
+\begin{block}{巨噬细胞表型 M0、M1、M2 鉴定 Markers}
+\protect\hypertarget{ux5de8ux566cux7ec6ux80deux8868ux578b-m0m1m2-ux9274ux5b9a-markers}{}
+Table @ref(tab:The-markers-for-Macrophage-phenotypes-annotation)
+(下方表格) 为表格The markers for Macrophage phenotypes annotation概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/The-markers-for-Macrophage-phenotypes-annotation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有26行2列，以下预览的表格可能省略部分数据；含有3个唯一`cell'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{The markers for Macrophage phenotypes
+annotation}\tabularnewline
+\toprule
+cell & markers\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+cell & markers\tabularnewline
+\midrule
+\endhead
+Macrophage\_M0 & Sh2d3c\tabularnewline
+Macrophage\_M0 & Slc13a3\tabularnewline
+Macrophage\_M0 & Rcan1\tabularnewline
+Macrophage\_M0 & Trp53inp1\tabularnewline
+Macrophage\_M0 & Slc40a1\tabularnewline
+Macrophage\_M0 & Il16\tabularnewline
+Macrophage\_M1 & Cfb\tabularnewline
+Macrophage\_M1 & Slfn4\tabularnewline
+Macrophage\_M1 & H2-Q6\tabularnewline
+Macrophage\_M1 & Fpr1\tabularnewline
+Macrophage\_M1 & Slfn1\tabularnewline
+Macrophage\_M1 & Ccrl2\tabularnewline
+Macrophage\_M1 & Fpr2\tabularnewline
+Macrophage\_M1 & Cxcl10\tabularnewline
+Macrophage\_M1 & Oasl1\tabularnewline
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure @ref(fig:Heatmap-show-the-reference-genes) (下方图) 为图Heatmap
+show the reference genes概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/Heatmap-show-the-reference-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Heatmap-show-the-reference-genes.pdf}
+\caption{Heatmap show the reference genes}\label{fig:Heatmap-show-the-reference-genes}
+\end{center}
+
+Figure @ref(fig:Macrophage-phenotypes-type-annotation) (下方图)
+为图Macrophage phenotypes type annotation概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/Macrophage-phenotypes-type-annotation.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Macrophage-phenotypes-type-annotation.pdf}
+\caption{Macrophage phenotypes type annotation}\label{fig:Macrophage-phenotypes-type-annotation}
+\end{center}
+\end{block}
+
+\begin{block}{RA 与 Control 的巨噬细胞表型}
+\protect\hypertarget{ra-ux4e0e-control-ux7684ux5de8ux566cux7ec6ux80deux8868ux578b}{}
+随后，根据数据集的来源 (RA 或 Control，将巨噬细胞分类)
+
+Figure @ref(fig:The-Phenotypes) (下方图) 为图The Phenotypes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/The-Phenotypes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/The-Phenotypes.pdf}
+\caption{The Phenotypes}\label{fig:The-Phenotypes}
+\end{center}
+\end{block}
+
+\begin{block}{差异分析}
+\protect\hypertarget{ux5deeux5f02ux5206ux6790}{}
+\begin{itemize}
+\tightlist
+\item
+  XX 在RA中M1巨噬细胞上调: \texttt{GPI-day25-RA\_Macrophage\_M1} vs
+  \texttt{Control\_Macrophage\_M1}
+\item
+  其中XX基因主要分布在M1巨噬细胞而非M2巨噬细胞上:
+  \texttt{GPI-day25-RA\_Macrophage\_M1} vs
+  \texttt{GPI-day25-RA\_Macrophage\_M2}
+\end{itemize}
+
+Table @ref(tab:DEGs-of-the-contrasts) (下方表格) 为表格DEGs of the
+contrasts概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-the-contrasts.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有355行7列，以下预览的表格可能省略部分数据；含有2个唯一`contrast；含有335个唯一`gene'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{DEGs of the contrasts}\tabularnewline
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj &
+gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj &
+gene\tabularnewline
+\midrule
+\endhead
+GPI-day25-\ldots{} & 1.75831850\ldots{} & 2.17770295\ldots{} & 0.044 &
+0.385 & 5.27495551\ldots{} & Adora3\tabularnewline
+GPI-day25-\ldots{} & 2.23900708\ldots{} & 9.52901476\ldots{} & 0.069 &
+0.427 & 6.71702126\ldots{} & F7\tabularnewline
+GPI-day25-\ldots{} & 6.04375313\ldots{} & 9.97788827\ldots{} & 0.093 &
+0.536 & 1.81312594\ldots{} & Hal\tabularnewline
+GPI-day25-\ldots{} & 1.83819770\ldots{} & 13.5930067\ldots{} & 0.052 &
+0.641 & 5.51459312\ldots{} & Cxcl13\tabularnewline
+GPI-day25-\ldots{} & 1.00690808\ldots{} & 4.79632080\ldots{} & 0.153 &
+0.583 & 3.02072424\ldots{} & Ifi44\tabularnewline
+GPI-day25-\ldots{} & 2.16444867\ldots{} & 8.41136649\ldots{} & 0.153 &
+0.87 & 6.49334601\ldots{} & Slc13a3\tabularnewline
+GPI-day25-\ldots{} & 8.87142099\ldots{} & 7.46793928\ldots{} & 0.081 &
+0.391 & 2.66142629\ldots{} & Cd4\tabularnewline
+GPI-day25-\ldots{} & 1.52778766\ldots{} & 0.95745400\ldots{} & 0.141 &
+0.307 & 4.58336298\ldots{} & Tnfsf14\tabularnewline
+GPI-day25-\ldots{} & 4.80404528\ldots{} & 3.93765968\ldots{} & 0.169 &
+0.484 & 1.44121358\ldots{} & Cd79b\tabularnewline
+GPI-day25-\ldots{} & 8.42060311\ldots{} & 3.12179649\ldots{} & 0.06 &
+0.651 & 2.52618093\ldots{} & Cd209e\tabularnewline
+GPI-day25-\ldots{} & 8.42067724\ldots{} & 1.96704094\ldots{} & 0.145 &
+0.786 & 2.52620317\ldots{} & Adgre4\tabularnewline
+GPI-day25-\ldots{} & 8.24915617\ldots{} & 8.83724798\ldots{} & 0.161 &
+0.766 & 2.47474685\ldots{} & Pparg\tabularnewline
+GPI-day25-\ldots{} & 1.31157015\ldots{} & 8.50505864\ldots{} & 0.153 &
+0.292 & 3.93471045\ldots{} & F10\tabularnewline
+GPI-day25-\ldots{} & 2.28779328\ldots{} & 2.51813054\ldots{} & 0.024 &
+0.411 & 6.86337986\ldots{} & Apoc4\tabularnewline
+GPI-day25-\ldots{} & 2.75634208\ldots{} & 4.11075823\ldots{} & 0.073 &
+0.755 & 8.26902626\ldots{} & Il10\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} &
+\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure @ref(fig:Intersection-of-RA-M1-up-with-M1-not-M2) (下方图)
+为图Intersection of RA M1 up with M1 not M2概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/Intersection-of-RA-M1-up-with-M1-not-M2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-RA-M1-up-with-M1-not-M2.pdf}
+\caption{Intersection of RA M1 up with M1 not M2}\label{fig:Intersection-of-RA-M1-up-with-M1-not-M2}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    Ifi44, Adgre4, Pparg, Dppa3, Cadm1, P2ry14, Gm1673,
+Vwf, Ednrb, Fam43a, Bambi, Slc28a2, Plk2, Rcn3, Rrm1,
+Ifi204, Bmp2, Gfra2, Spon1, Gstm1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至
+\texttt{Figure+Table/Intersection-of-RA-M1-up-with-M1-not-M2-content})}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{小鼠基因映射到人类基因}
+\protect\hypertarget{ux5c0fux9f20ux57faux56e0ux6620ux5c04ux5230ux4ebaux7c7bux57faux56e0}{}
+Table @ref(tab:Mapped-genes) (下方表格) 为表格Mapped genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Mapped-genes.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有19行2列，以下预览的表格可能省略部分数据；含有19个唯一`mgi\_symbol；含有19个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Mapped genes}\tabularnewline
+\toprule
+mgi\_symbol & hgnc\_symbol\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+mgi\_symbol & hgnc\_symbol\tabularnewline
+\midrule
+\endhead
+Bmp2 & BMP2\tabularnewline
+Ednrb & EDNRB\tabularnewline
+Dppa3 & DPPA3\tabularnewline
+Spon1 & SPON1\tabularnewline
+Gfra2 & GFRA2\tabularnewline
+Bambi & BAMBI\tabularnewline
+Cadm1 & CADM1\tabularnewline
+Slc28a2 & SLC28A2\tabularnewline
+Rrm1 & RRM1\tabularnewline
+Ifi44 & IFI44\tabularnewline
+Gm1673 & C4orf48\tabularnewline
+Ifi204 & MNDA\tabularnewline
+P2ry14 & P2RY14\tabularnewline
+Rcn3 & RCN3\tabularnewline
+Gstm1 & GSTM1\tabularnewline
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{糖酵解相关基因}
+\protect\hypertarget{ux7cd6ux9175ux89e3ux76f8ux5173ux57faux56e0}{}
+Table @ref(tab:Glycolysis-related-genes-from-GeneCards) (下方表格)
+为表格Glycolysis related genes from GeneCards概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/Glycolysis-related-genes-from-GeneCards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有118行7列，以下预览的表格可能省略部分数据；含有118个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    Glycolysis
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    FALSE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{Glycolysis related genes from GeneCards}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id &
+Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id &
+Score\tabularnewline
+\midrule
+\endhead
+TIGAR & TP53 Induc\ldots{} & Protein Co\ldots{} & Q9NQ88 & 45 &
+GC12P038924 & 22.4\tabularnewline
+PKM & Pyruvate K\ldots{} & Protein Co\ldots{} & P14618 & 58 &
+GC15M072199 & 20.77\tabularnewline
+HK2 & Hexokinase 2 & Protein Co\ldots{} & P52789 & 55 & GC02P074947 &
+19.42\tabularnewline
+GAPDH & Glyceralde\ldots{} & Protein Co\ldots{} & P04406 & 59 &
+GC12P038965 & 17.14\tabularnewline
+LDHA & Lactate De\ldots{} & Protein Co\ldots{} & P00338 & 59 &
+GC11P018394 & 15.81\tabularnewline
+HIF1A & Hypoxia In\ldots{} & Protein Co\ldots{} & Q16665 & 57 &
+GC14P061695 & 15.1\tabularnewline
+RRAD & RRAD, Ras \ldots{} & Protein Co\ldots{} & P55042 & 46 &
+GC16M067483 & 15.1\tabularnewline
+HK1 & Hexokinase 1 & Protein Co\ldots{} & P19367 & 59 & GC10P069269 &
+14.64\tabularnewline
+PKLR & Pyruvate K\ldots{} & Protein Co\ldots{} & P30613 & 55 &
+GC01M155289 & 13.37\tabularnewline
+ENO1 & Enolase 1 & Protein Co\ldots{} & P06733 & 56 & GC01M008861 &
+13.36\tabularnewline
+ENO3 & Enolase 3 & Protein Co\ldots{} & P13929 & 54 & GC17P004948 &
+13.33\tabularnewline
+PFKP & Phosphofru\ldots{} & Protein Co\ldots{} & Q01813 & 53 &
+GC10P003066 & 13.19\tabularnewline
+TPI1 & Triosephos\ldots{} & Protein Co\ldots{} & P60174 & 55 &
+GC12P006867 & 13.18\tabularnewline
+GLTC1 & Glycolysis\ldots{} & RNA Gene (\ldots{} & & 2 & GC11U909607 &
+12.97\tabularnewline
+PGK1 & Phosphogly\ldots{} & Protein Co\ldots{} & P00558 & 57 &
+GC0XP078166 & 12.94\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} &
+\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure @ref(fig:Intersection-of-RA-M1M2-related-with-Glycolysis-related)
+(下方图) 为图Intersection of RA M1M2 related with Glycolysis
+related概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/Intersection-of-RA-M1M2-related-with-Glycolysis-related.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-RA-M1M2-related-with-Glycolysis-related.pdf}
+\caption{Intersection of RA M1M2 related with Glycolysis related}\label{fig:Intersection-of-RA-M1M2-related-with-Glycolysis-related}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    PPARG
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至
+\texttt{Figure+Table/Intersection-of-RA-M1M2-related-with-Glycolysis-related-content})}
+\end{frame}
+
+\begin{frame}[fragile]{交集基因的表达 (小鼠单细胞数据)}
+\protect\hypertarget{ux4ea4ux96c6ux57faux56e0ux7684ux8868ux8fbe-ux5c0fux9f20ux5355ux7ec6ux80deux6570ux636e}{}
+Figure @ref(fig:Violing-plot-of-expression-level-of-the-Pparg) (下方图)
+为图Violing plot of expression level of the Pparg概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/Violing-plot-of-expression-level-of-the-Pparg.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Violing-plot-of-expression-level-of-the-Pparg.pdf}
+\caption{Violing plot of expression level of the Pparg}\label{fig:Violing-plot-of-expression-level-of-the-Pparg}
+\end{center}
+\end{frame}
+
+\hypertarget{ux8fdbux4e00ux6b65ux5206ux6790}{%
+\section{进一步分析}\label{ux8fdbux4e00ux6b65ux5206ux6790}}
+
+\begin{frame}[fragile]{数据来源}
+\protect\hypertarget{ux6570ux636eux6765ux6e90-1}{}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE17755
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Log2 ratios of Cy3 to Cy5 were calculated and
+normalized by the method of global ratio median
+normalization.
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至
+\texttt{Figure+Table/HUMAN-GSE17755-content})}
+\end{frame}
+
+\begin{frame}[fragile]{炎症因子、巨噬细胞浸润、巨噬细胞极化相关因子、糖酵解相关因子}
+\protect\hypertarget{ux708eux75c7ux56e0ux5b50ux5de8ux566cux7ec6ux80deux6d78ux6da6ux5de8ux566cux7ec6ux80deux6781ux5316ux76f8ux5173ux56e0ux5b50ux7cd6ux9175ux89e3ux76f8ux5173ux56e0ux5b50}{}
+使用 genecards 获取相关基因 (各取前 50 基因)：
+
+\begin{itemize}
+\tightlist
+\item
+  IF: Inflammatory factors 炎症因子
+\item
+  MI: Macrophage infiltration 巨噬细胞浸润
+\item
+  MP: Macrophage polarization 巨噬细胞极化
+\item
+  G: Glycolysis 糖酵解
+\end{itemize}
+
+Table @ref(tab:All-Factors) (下方表格) 为表格All Factors概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/All-Factors.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有200行2列，以下预览的表格可能省略部分数据；含有4个唯一`type'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{All Factors}\tabularnewline
+\toprule
+type & name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+type & name\tabularnewline
+\midrule
+\endhead
+Inflammatory factors & IL6\tabularnewline
+Inflammatory factors & TNF\tabularnewline
+Inflammatory factors & CRP\tabularnewline
+Inflammatory factors & BDNF-AS\tabularnewline
+Inflammatory factors & IL1B\tabularnewline
+Inflammatory factors & LINC02605\tabularnewline
+Inflammatory factors & TLR4\tabularnewline
+Inflammatory factors & MIR146B\tabularnewline
+Inflammatory factors & ADIPOQ\tabularnewline
+Inflammatory factors & LINC01672\tabularnewline
+Inflammatory factors & CXCL8\tabularnewline
+Inflammatory factors & IL1A\tabularnewline
+Inflammatory factors & NFKB1\tabularnewline
+Inflammatory factors & CERNA3\tabularnewline
+Inflammatory factors & IL18\tabularnewline
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+对上述基因集去重复后，关联分析。
+\end{frame}
+
+\begin{frame}[fragile]{关联分析}
+\protect\hypertarget{ux5173ux8054ux5206ux6790}{}
+Figure @ref(fig:HUMAN-correlation-heatmap) (下方图) 为图HUMAN
+correlation heatmap概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/HUMAN-correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HUMAN-correlation-heatmap.pdf}
+\caption{HUMAN correlation heatmap}\label{fig:HUMAN-correlation-heatmap}
+\end{center}
+
+Figure @ref(fig:HUMAN-correlation-heatmap-VWF-significant) (下方图)
+为图HUMAN correlation heatmap VWF significant概览。
+
+\textbf{(对应文件为
+\texttt{Figure+Table/HUMAN-correlation-heatmap-VWF-significant.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HUMAN-correlation-heatmap-VWF-significant.pdf}
+\caption{HUMAN correlation heatmap VWF significant}\label{fig:HUMAN-correlation-heatmap-VWF-significant}
+\end{center}
+
+Table @ref(tab:HUMAN-correlation) (下方表格) 为表格HUMAN
+correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/HUMAN-correlation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2023行9列，以下预览的表格可能省略部分数据；含有17个唯一`From'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor:  皮尔逊关联系数，正关联或负关联。
+\item pvalue:  显著性 P。
+\item -log2(P.value):  P 的对数转化。
+\item significant:  显著性。
+\item sign:  人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{HUMAN correlation}\tabularnewline
+\toprule
+From & To & cor & pvalue & -log2(\ldots{} & signif\ldots{} & sign &
+Factors & Type\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+From & To & cor & pvalue & -log2(\ldots{} & signif\ldots{} & sign &
+Factors & Type\tabularnewline
+\midrule
+\endhead
+EDNRB & GAPDH & -0.14 & 0.0931 & 3.4250\ldots{} & \textgreater{} 0.05 &
+- & Glycol\ldots{} & Others\tabularnewline
+PPARG & GAPDH & -0.06 & 0.4812 & 1.0552\ldots{} & \textgreater{} 0.05 &
+- & Glycol\ldots{} & Others\tabularnewline
+CADM1 & GAPDH & -0.26 & 9e-04 & 10.117\ldots{} & \textless{} 0.001 & **
+& Glycol\ldots{} & Others\tabularnewline
+BMP2 & GAPDH & -0.1 & 0.225 & 2.1520\ldots{} & \textgreater{} 0.05 & - &
+Glycol\ldots{} & Others\tabularnewline
+SLC28A2 & GAPDH & 0.06 & 0.4919 & 1.0235\ldots{} & \textgreater{} 0.05 &
+- & Glycol\ldots{} & Others\tabularnewline
+RRM1 & GAPDH & 0.33 & 0 & 16.609\ldots{} & \textless{} 0.001 & ** &
+Glycol\ldots{} & Others\tabularnewline
+BAMBI & GAPDH & -0.16 & 0.0796 & 3.6510\ldots{} & \textgreater{} 0.05 &
+- & Glycol\ldots{} & Others\tabularnewline
+PLK2 & GAPDH & -0.08 & 0.3648 & 1.4548\ldots{} & \textgreater{} 0.05 & -
+& Glycol\ldots{} & Others\tabularnewline
+P2RY14 & GAPDH & 0.43 & 0 & 16.609\ldots{} & \textless{} 0.001 & ** &
+Glycol\ldots{} & Others\tabularnewline
+MNDA & GAPDH & -0.02 & 0.7616 & 0.3928\ldots{} & \textgreater{} 0.05 & -
+& Glycol\ldots{} & Others\tabularnewline
+GSTM1 & GAPDH & -0.16 & 0.073 & 3.7759\ldots{} & \textgreater{} 0.05 & -
+& Glycol\ldots{} & Others\tabularnewline
+IFI44 & GAPDH & -0.33 & 0 & 16.609\ldots{} & \textless{} 0.001 & ** &
+Glycol\ldots{} & Others\tabularnewline
+RCN3 & GAPDH & 0.12 & 0.148 & 2.7563\ldots{} & \textgreater{} 0.05 & - &
+Glycol\ldots{} & Others\tabularnewline
+SPON1 & GAPDH & -0.14 & 0.0882 & 3.5030\ldots{} & \textgreater{} 0.05 &
+- & Glycol\ldots{} & Others\tabularnewline
+GFRA2 & GAPDH & -0.07 & 0.3662 & 1.4492\ldots{} & \textgreater{} 0.05 &
+- & Glycol\ldots{} & Others\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} &
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+\end{frame}
+
+\end{document}

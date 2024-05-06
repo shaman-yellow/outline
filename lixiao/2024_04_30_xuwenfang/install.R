@@ -84,6 +84,7 @@ BiocManager::install("SparseArray")
 install.packages(c("sva"))
 BiocManager::install(c('fastDummies', 'RcppHNSW', 'RSpectra'))
 remotes::install_github("satijalab/seurat", "seurat5")
+remotes::install_github("HenrikBengtsson/future", ref = "develop")
 
 BiocManager::install(c('HDF5Array', 'beachmat'))
 BiocManager::install("glmGamPoi")
@@ -247,3 +248,18 @@ BiocManager::install(c("car", "ridge", "preprocessCore", "genefilter", "sva"))
 BiocManager::install("epidecodeR")
 
 BiocManager::install("ChemmineR")
+
+install.packages("openai")
+remotes::install_github("Winnie09/GPTCelltype")
+
+# R CMD javareconf
+install.packages("rJava", repos = "https://mirrors.ustc.edu.cn/CRAN/")
+install.packages("rcdk")
+
+remove.packages(c("codetools", "lattice", "MASS", "nlme", "spatial"), lib = "/usr/lib/R/library")
+devtools::install_github("cysouw/qlcMatrix")
+BiocManager::install("monocle")
+install.packages("codetools")
+install.packages("nlme")
+
+devtools::install_github("stemangiola/tidyHeatmap")

@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 XX基因通过促进糖酵解促进巨噬细胞M1极化}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-15}}
+\textbf{\textcolor{white}{2024-05-06}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -109,6 +109,17 @@ M2标志：CD206，IL-10，TGF-beta等
 - 其中糖酵解相关的基因见 Fig. \@ref(fig:Intersection-of-RA-M1M2-related-with-Glycolysis-related)
 - 筛选到唯一的基因: PPARG (小鼠 Pparg)。其表达特征见 Fig. \@ref(fig:Violing-plot-of-expression-level-of-the-Pparg)
 
+## 进一步分析需求
+
+利用开源数据库进行生物信息学分析，筛选并验证类风湿性关节炎临床患者和动物模型中与巨噬细胞极化和糖酵解相关的关键基因XX的表达情况
+
+- XX (VWF) 表达水平与炎症因子、巨噬细胞浸润、巨噬细胞极化相关因子、糖酵解相关因子的相关性
+- 与患者状态（例如血清类风湿因子（RF）、抗链球菌溶血素抗体（ASO）、红细胞沉降率（ESR）和C反应蛋白（CRP））的相关性
+
+## 进一步分析结果
+
+- 关联分析结果见 Fig. \@ref(fig:HUMAN-correlation-heatmap), Tab. \@ref(tab:HUMAN-correlation)。
+- 未找到可用的 RA 表型数据集。
 
 # 前言 {#introduction}
 
@@ -120,6 +131,8 @@ All used GEO expression data and their design:
 
 - **GSE184609**: scRNA-Seq analysis of FACS-sorted live synovial cells isolated from naïve mice (two replicates) or from mice at day 6, 14, or 25 of GPI-induced arthritis (one replicate per time point).
 
+- **GSE17755**: Peripheral blood was obtained from patients with RA (n=112), SLE (n=22), polyJIA (n=6), sJIA (n=51), HC (n=8), and HI (n=45). Blood samples from 8 HC and 45 HI are used as control.
+
 ## 方法
 
 Mainly used method:
@@ -127,10 +140,11 @@ Mainly used method:
 - The `biomart` was used for mapping genes between organism (e.g., mgi_symbol to hgnc_symbol)[@MappingIdentifDurinc2009].
 - The Human Gene Database `GeneCards` used for disease related genes prediction[@TheGenecardsSStelze2016].
 - GEO <https://www.ncbi.nlm.nih.gov/geo/> used for expression dataset aquisition.
+- R package `Limma` and `edgeR` used for differential expression analysis[@LimmaPowersDiRitchi2015; @EdgerDifferenChen].
 - The data in published article of Jablonski et al used for distinguishing macrophage phenotypes (M0/M1/M2)[@NovelMarkersTJablon2015].
 - The R package `Seurat` used for scRNA-seq processing[@IntegratedAnalHaoY2021; @ComprehensiveIStuart2019].
 - `SCSA` (python) used for cell type annotation[@ScsaACellTyCaoY2020].
-- R version 4.3.2 (2023-10-31); Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
+- R version 4.4.0 (2024-04-24); Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
 # 分析结果 {#results}
 
@@ -246,7 +260,7 @@ Figure \@ref(fig:Microphage-UMAP-Clustering) (下方图) 为图Microphage UMAP C
 
 Table \@ref(tab:The-markers-for-Macrophage-phenotypes-annotation) (下方表格) 为表格The markers for Macrophage phenotypes annotation概览。
 
-**(对应文件为 `Figure+Table/The-markers-for-Macrophage-phenotypes-annotation`)**
+**(对应文件为 `Figure+Table/The-markers-for-Macrophage-phenotypes-annotation.csv`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有26行2列，以下预览的表格可能省略部分数据；含有3个唯一`cell'。
 \end{tcolorbox}
 \end{center}
@@ -408,7 +422,12 @@ Table: (\#tab:Mapped-genes)Mapped genes
 
 ## 糖酵解相关基因
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \@ref(tab:Glycolysis-related-genes-from-GeneCards) (下方表格) 为表格Glycolysis related genes from GeneCards概览。
+
+**(对应文件为 `Figure+Table/Glycolysis-related-genes-from-GeneCards.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有118行7列，以下预览的表格可能省略部分数据；含有118个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 The GeneCards data was obtained by querying
 :}
@@ -440,11 +459,6 @@ Filtering by Score:
     Score > 3
 
 \vspace{2em}
-\end{tcolorbox}
-\end{center}Table \@ref(tab:Glycolysis-related-genes-from-GeneCards) (下方表格) 为表格Glycolysis related genes from GeneCards概览。
-
-**(对应文件为 `Figure+Table/Glycolysis-related-genes-from-GeneCards.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有118行7列，以下预览的表格可能省略部分数据；含有118个唯一`Symbol'。
 \end{tcolorbox}
 \end{center}
 
@@ -505,6 +519,156 @@ Figure \@ref(fig:Violing-plot-of-expression-level-of-the-Pparg) (下方图) 为�
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Violing-plot-of-expression-level-of-the-Pparg.pdf}
 \caption{Violing plot of expression level of the Pparg}\label{fig:Violing-plot-of-expression-level-of-the-Pparg}
 \end{center}
+
+
+
+# 进一步分析
+
+## 数据来源
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE17755
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Log2 ratios of Cy3 to Cy5 were calculated and
+normalized by the method of global ratio median
+normalization.
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+**(上述信息框内容已保存至 `Figure+Table/HUMAN-GSE17755-content`)**
+
+
+
+## 炎症因子、巨噬细胞浸润、巨噬细胞极化相关因子、糖酵解相关因子
+
+使用 genecards 获取相关基因 (各取前 50 基因)：
+
+- IF: Inflammatory factors 炎症因子
+- MI: Macrophage infiltration 巨噬细胞浸润
+- MP: Macrophage polarization 巨噬细胞极化
+- G: Glycolysis 糖酵解
+
+Table \@ref(tab:All-Factors) (下方表格) 为表格All Factors概览。
+
+**(对应文件为 `Figure+Table/All-Factors.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有200行2列，以下预览的表格可能省略部分数据；含有4个唯一`type'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:All-Factors)All Factors
+
+|type                 |name      |
+|:--------------------|:---------|
+|Inflammatory factors |IL6       |
+|Inflammatory factors |TNF       |
+|Inflammatory factors |CRP       |
+|Inflammatory factors |BDNF-AS   |
+|Inflammatory factors |IL1B      |
+|Inflammatory factors |LINC02605 |
+|Inflammatory factors |TLR4      |
+|Inflammatory factors |MIR146B   |
+|Inflammatory factors |ADIPOQ    |
+|Inflammatory factors |LINC01672 |
+|Inflammatory factors |CXCL8     |
+|Inflammatory factors |IL1A      |
+|Inflammatory factors |NFKB1     |
+|Inflammatory factors |CERNA3    |
+|Inflammatory factors |IL18      |
+|...                  |...       |
+
+对上述基因集去重复后，关联分析。
+
+
+
+## 关联分析
+
+Figure \@ref(fig:HUMAN-correlation-heatmap) (下方图) 为图HUMAN correlation heatmap概览。
+
+**(对应文件为 `Figure+Table/HUMAN-correlation-heatmap.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HUMAN-correlation-heatmap.pdf}
+\caption{HUMAN correlation heatmap}\label{fig:HUMAN-correlation-heatmap}
+\end{center}
+
+Figure \@ref(fig:HUMAN-correlation-heatmap-VWF-significant) (下方图) 为图HUMAN correlation heatmap VWF significant概览。
+
+**(对应文件为 `Figure+Table/HUMAN-correlation-heatmap-VWF-significant.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/HUMAN-correlation-heatmap-VWF-significant.pdf}
+\caption{HUMAN correlation heatmap VWF significant}\label{fig:HUMAN-correlation-heatmap-VWF-significant}
+\end{center}
+
+ 
+`HUMAN regression VWF significant' 数据已全部提供。
+
+**(对应文件为 `Figure+Table/HUMAN-regression-VWF-significant`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/HUMAN-regression-VWF-significant共包含4个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Glycolysis.pdf
+\item 2\_Inflammatory factors.pdf
+\item 3\_Macrophage infiltration.pdf
+\item 4\_Macrophage polarization.pdf
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table \@ref(tab:HUMAN-correlation) (下方表格) 为表格HUMAN correlation概览。
+
+**(对应文件为 `Figure+Table/HUMAN-correlation.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2023行9列，以下预览的表格可能省略部分数据；含有17个唯一`From'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item cor:  皮尔逊关联系数，正关联或负关联。
+\item pvalue:  显著性 P。
+\item -log2(P.value):  P 的对数转化。
+\item significant:  显著性。
+\item sign:  人为赋予的符号，参考 significant。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:HUMAN-correlation)HUMAN correlation
+
+|From    |To    |cor   |pvalue |-log2(... |signif... |sign |Factors   |Type   |
+|:-------|:-----|:-----|:------|:---------|:---------|:----|:---------|:------|
+|EDNRB   |GAPDH |-0.14 |0.0931 |3.4250... |> 0.05    |-    |Glycol... |Others |
+|PPARG   |GAPDH |-0.06 |0.4812 |1.0552... |> 0.05    |-    |Glycol... |Others |
+|CADM1   |GAPDH |-0.26 |9e-04  |10.117... |< 0.001   |**   |Glycol... |Others |
+|BMP2    |GAPDH |-0.1  |0.225  |2.1520... |> 0.05    |-    |Glycol... |Others |
+|SLC28A2 |GAPDH |0.06  |0.4919 |1.0235... |> 0.05    |-    |Glycol... |Others |
+|RRM1    |GAPDH |0.33  |0      |16.609... |< 0.001   |**   |Glycol... |Others |
+|BAMBI   |GAPDH |-0.16 |0.0796 |3.6510... |> 0.05    |-    |Glycol... |Others |
+|PLK2    |GAPDH |-0.08 |0.3648 |1.4548... |> 0.05    |-    |Glycol... |Others |
+|P2RY14  |GAPDH |0.43  |0      |16.609... |< 0.001   |**   |Glycol... |Others |
+|MNDA    |GAPDH |-0.02 |0.7616 |0.3928... |> 0.05    |-    |Glycol... |Others |
+|GSTM1   |GAPDH |-0.16 |0.073  |3.7759... |> 0.05    |-    |Glycol... |Others |
+|IFI44   |GAPDH |-0.33 |0      |16.609... |< 0.001   |**   |Glycol... |Others |
+|RCN3    |GAPDH |0.12  |0.148  |2.7563... |> 0.05    |-    |Glycol... |Others |
+|SPON1   |GAPDH |-0.14 |0.0882 |3.5030... |> 0.05    |-    |Glycol... |Others |
+|GFRA2   |GAPDH |-0.07 |0.3662 |1.4492... |> 0.05    |-    |Glycol... |Others |
+|...     |...   |...   |...    |...       |...       |...  |...       |...    |
+
+
 
 
 

@@ -47,6 +47,18 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
 
 last search: `adolescent idiopathic scoliosis machine learning`
 
+AIS RNA: GSE110359
+AIS GWAS: 
+
+- AIS 因果基因分析，结合 GWAS (Disease ⇄ Variants) 和 eQTL 数据发现因果基因
+    - 使用方法：Sherlock 或 SMR, Depict 等
+    - ...
+- RNA-seq 基因表达分析 (AIS 有 RNA-seq 数据可用)
+- 整合上述分析
+- 其它内容 (少量文献报道了 AIS 与代谢物、肠道菌的联系) 
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4772092/
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -69,4 +81,11 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
+```{r}
+og <- job_ogwas("adolescent idiopathic scoliosis")
+og@object
+og <- step1(og)
 
+# https://www.ebi.ac.uk/gwas/docs/abbreviations
+# risk allele frequency (RAF)
+```

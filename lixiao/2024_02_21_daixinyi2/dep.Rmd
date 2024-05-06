@@ -1,0 +1,87 @@
+
+
+对这个基因再选择其它公共数据集做进一步的验证
+(例如瘢痕的 RNA seq 或 scRNA-seq 数据集，分析这个基因的表达情况，再做一些锦上添花的分析) 。
+
+在前一次的分析中，已经筛选出一个目标基因 (HNRNPH1) ，随后，将从 GEO 数据库筛选公共数据并验证：
+
+- 从 GEO 数据库筛选出瘢痕增生 (Scar Hyperplasia) 相关数据集 1-3 个。
+    - 这些数据集可以是 RNA-seq (为主) 或 scRNA-seq。
+    - 最好能既包含 mRNA，也包含 lncRNA。
+- 对筛选完毕的数据集进行差异分析，确认 HNRNPH1 表达 (是否为差异表达基因) 。
+- 如果能找到既包含 mRNA 也包含 lncRNA 的数据集：
+    - 可以尝试 WGCNA，重新确认其与TCF4-AS1 lncRNA 和 TCF4 mRNA 之间是否存在共表达关系。
+    - 或者仅尝试目标基因是否和 TCF4 mRNA 之间有共表达关系。
+- 额外的，可以做一些富集分析。
+- 实情况添加其它分析。
+
+
+```{r}
+lst_mrna <- read_kall_quant("~/outline/lixiao/2023_07_07_eval/quant_hg38_mrna")
+lst_ncrna <- read_kall_quant("~/outline/lixiao/2023_07_07_eval/quant_hg38_ncrna")
+
+lst_merged <- list(
+  counts = rbind(lst_mrna$counts, lst_ncrna$counts),
+  metadata = select(lst_mrna$metadata, sample)
+)
+
+mart <- new_biomart()
+genes_merged <- filter_biomart(mart, general_attrs(F, T), "ensembl_transcript_id", lst_merged$counts$target_id)
+
+fun <- function(data) {
+  mutate(data, group = stringr::str_extract(sample, "^[A-Z]+"),
+    group = dplyr::recode(group, CT = "control", CUR = "treat"))
+}
+lst_merged$metadata %<>% fun()
+
+dge <- new_dge(lst_merged$metadata, lst_merged$counts, genes_merged)
+lm <- job_limma(dge)
+lm <- step1(lm)
+lm <- step2(lm, treat - control, use = "P.Value", use.cut = .05, cut.fc = .3)
+
+```
+
+```{r}
+je <- job_esearch("RBP")
+```
+
+ge.deg <- job_gsea(Tops, use = "hgnc_symbol")
+ge.deg <- step1(ge.deg)
+ge.deg@tables$step1$table_kegg
+ge.deg <- step2(ge.deg)
+
+
+```{r}
+genes.wnt <- get_genes.keggPath("hsa04310")
+genes.wnt %in% Tops$hgnc_symbol
+```
+
+
+p.mapWnt_cell <- focus(sr, genes.wnt$geneName_list)
+p.mapWnt_cell$p.vln
+
+p.mapWnt_group <- focus(sr, genes.wnt$geneName_list, "orig.ident")
+p.mapWnt_group$p.vln
+p.mapWnt_group$p.dim
+
+
+p.mapHn_cell <- focus(sr, "HNRNPH1")
+p.mapHn_group <- focus(sr, "HNRNPH1", "orig.ident")
+wrap(p.mapHn_group$p.vln, 3, 4)
+
+
+mn@plots$step3$gene_module_heatdata$graph_test.sig
+sr_sub <- asjob_seurat(mn, 5, rename = )
+vis(sr_sub, "regroup.hclust")
+mn <- clear(mn)
+sr <- map(sr, sr_sub, "scsa_cell", "regroup.hclust")
+vis(sr, "cell_mapped")
+vis(sr, "scsa_cell")
+
+
+test <- mn@params$sr_sub@object
+test2 <- test[rownames(test) %in% head(scDegs.pseu$gene_id, 100), ]
+
+source("./monocle_plot_pseudo_heatmap.R")
+x <- plot_pseudotime_heatmap(test2, show_rownames = T, pseudotime = monocle3::pseudotime(mn@object))
+

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  15 APR 2024 15:31
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.21)  6 MAY 2024 17:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1298,13 +1298,13 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@toc=\write4
 \openout4 = `output.toc'.
 
-(./output.lof)
+(./output.lof [1
+
+])
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
-(./output.lot [1
-
-])
+(./output.lot)
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
@@ -1336,31 +1336,31 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 guage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
-[1]
+[1] [2]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 276.
-[2]
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 303.
 File: Figure+Table/SCSA-Cell-type-annotation.pdf Graphic file (type pdf)
 <use Figure+Table/SCSA-Cell-type-annotation.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 290.
+(caption)                particular \caption on input line 317.
 See the caption package documentation for explanation.
 
+[3]
 File: Figure+Table/Microphage-UMAP-Clustering.pdf Graphic file (type pdf)
 <use Figure+Table/Microphage-UMAP-Clustering.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 303.
+(caption)                particular \caption on input line 330.
 See the caption package documentation for explanation.
 
-[3] [4]
+[4] [5]
 File: Figure+Table/Heatmap-show-the-reference-genes.pdf Graphic file (type pdf)
 
 <use Figure+Table/Heatmap-show-the-reference-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 353.
+(caption)                particular \caption on input line 380.
 See the caption package documentation for explanation.
 
 File: Figure+Table/Macrophage-phenotypes-type-annotation.pdf Graphic file (type
@@ -1368,37 +1368,37 @@ File: Figure+Table/Macrophage-phenotypes-type-annotation.pdf Graphic file (type
 <use Figure+Table/Macrophage-phenotypes-type-annotation.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 363.
+(caption)                particular \caption on input line 390.
 See the caption package documentation for explanation.
 
-[5]
+[6]
 File: Figure+Table/The-Phenotypes.pdf Graphic file (type pdf)
 <use Figure+Table/The-Phenotypes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 378.
+(caption)                particular \caption on input line 405.
 See the caption package documentation for explanation.
 
-[6]
+[7]
 File: Figure+Table/Intersection-of-RA-M1-up-with-M1-not-M2.pdf Graphic file (ty
 pe pdf)
 <use Figure+Table/Intersection-of-RA-M1-up-with-M1-not-M2.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 436.
+(caption)                particular \caption on input line 463.
 See the caption package documentation for explanation.
 
-[7] [8] [9]
+[8] [9] [10]
 File: Figure+Table/Intersection-of-RA-M1M2-related-with-Glycolysis-related.pdf 
 Graphic file (type pdf)
 <use Figure+Table/Intersection-of-RA-M1M2-related-with-Glycolysis-related.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 582.
+(caption)                particular \caption on input line 607.
 See the caption package documentation for explanation.
 
 
-Overfull \hbox (47.51735pt too wide) in paragraph at lines 597--598
+Overfull \hbox (47.51735pt too wide) in paragraph at lines 622--623
 []\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 上 述 信 息 框 内 容 已 保 存 至 \TU/l
 mtt/b/n/10 Figure+Table/Intersection-of-RA-M1M2-related-with-Glycolysis-related
 -content\TU/lmr/bx/n/10 ) 
@@ -1409,17 +1409,34 @@ le (type pdf)
 <use Figure+Table/Violing-plot-of-expression-level-of-the-Pparg.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 609.
+(caption)                particular \caption on input line 634.
 See the caption package documentation for explanation.
 
-[10] [11] (./output.aux) ) 
+[11] [12]
+File: Figure+Table/HUMAN-correlation-heatmap.pdf Graphic file (type pdf)
+<use Figure+Table/HUMAN-correlation-heatmap.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 737.
+See the caption package documentation for explanation.
+
+[13]
+File: Figure+Table/HUMAN-correlation-heatmap-VWF-significant.pdf Graphic file (
+type pdf)
+<use Figure+Table/HUMAN-correlation-heatmap-VWF-significant.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 747.
+See the caption package documentation for explanation.
+
+[14] [15] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 32163 strings out of 476191
- 657214 string characters out of 5812072
- 1101073 words of memory out of 5000000
- 52359 multiletter control sequences out of 15000+600000
+ 32234 strings out of 476191
+ 660896 string characters out of 5812072
+ 1105685 words of memory out of 5000000
+ 52428 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1365b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (14 pages).
+Output written on output.pdf (18 pages).
