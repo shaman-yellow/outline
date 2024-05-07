@@ -85,3 +85,45 @@ test2 <- test[rownames(test) %in% head(scDegs.pseu$gene_id, 100), ]
 source("./monocle_plot_pseudo_heatmap.R")
 x <- plot_pseudotime_heatmap(test2, show_rownames = T, pseudotime = monocle3::pseudotime(mn@object))
 
+
+dat <- as_tibble(Terror$heatmap_matrix)
+dat <- tidyr::pivot_longer(dat, -rownames, names_to = "Pseudo_Time", values_to = "Levels")
+dat <- dplyr::mutate(dat, Pseudo_Time = as.integer(Pseudo_Time))
+dat
+
+
+tidyHeatmap::heatmap(dat, rownames, Pseudo_Time, Levels, cluster_columns = F, cluster_rows = T,
+  row_title = "Genes", column_title = character(0), row_km = 3,
+  palette_value = fun_color(-3, 3)) |>
+  tidyHeatmap::annotation_tile(Pseudo_Time, show_annotation_name = F)
+
+
+get_principal_nodes(mn@object)
+mn@object@principal_graph_aux
+
+add_anno(mn)
+mn@object@colData
+
+igraph::V(monocle3::principal_graph(mn@object)[["UMAP"]])
+mn@object@principal_graph_aux@listData$UMAP$root_pr_nodes
+
+
+linkPrin <- monocle3::principal_graph(object(mn))[["UMAP"]]
+linkPrin
+
+g <- igraph::shortest_paths(linkPrin, "Y_6", "Y_24")
+
+mtcars_tidy <- 
+    mtcars |> 
+    dplyr::as_tibble(rownames="Car name") |> 
+    dplyr::mutate_at(dplyr::vars(-`Car name`, -hp, -vs), scale) |>
+    tidyr::pivot_longer(cols = -c(`Car name`, hp, vs), names_to = "Property", values_to = "Value")
+
+  mtcars_tidy2 <- dplyr::bind_rows(dplyr::mutate(mtcars_tidy, group = "x"), dplyr::mutate(mtcars_tidy, group = "y"))
+  mtcars_tidy2 <- dplyr::group_by(mtcars_tidy2, group)
+  mtcars_tidy2
+
+mtcars_tidy2 |> 
+  tidyHeatmap::heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
+  tidyHeatmap::annotation_tile(group)
+
