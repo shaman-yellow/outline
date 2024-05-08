@@ -245,9 +245,12 @@ mn@plots$step2$p.pseu
 
 mn <- step3(mn, group.by = "seurat_clusters")
 mn <- step4(mn, ids(mn), "APCDD1", "cellType_group")
-mn@plots$step4$genes_in_pseudotime
+
 mn@plots$step3$gene_module_heatdata$graph_test.sig
 mn@tables$step3$graph_test.sig
+
+mn@plots$step4$genes_in_pseudotime$pseudo1
+mn@plots$step4$plot_density$pseudo1
 
 ```
 
@@ -264,15 +267,15 @@ en.pseu@tables$step1$res.go$ids
 ```
 
 ```{r}
-mn@object
+genes.allWnt <- get_genes.keggPath("hsa04310")
 
 p.hpPseu <- map(mn, head(scDegs.pseu$gene_id, 50), enrich = en.pseu,
-  branches = list(c("Y_6", "Y_24"), c("Y_3", "Y_24")))
+  branches = list(c("Y_6", "Y_24"), c("Y_3", "Y_24")),
+  HLs = list(Wnt = genes.allWnt, Curcumin_Wnt = genes.wnt$geneName_list)
+)
 
 p.hpPseu
-
 ```
-
 
 
 #### 姜黄素有调控作用的靶点
@@ -284,6 +287,33 @@ p.vennTreatPseu
 en.treatPseu <- job_enrich(p.vennTreatPseu$ins)
 en.treatPseu <- step1(en.treatPseu)
 en.treatPseu@plots$step1$p.go
+```
+
+### 细胞通讯
+
+```{r}
+mn <- add_anno(mn, branches = list(c("Y_6", "Y_24"), c("Y_3", "Y_24")))
+sr <- map(sr, mn)
+sr <- mutate(sr, branch = strx(branch, "^B[0-9]"),
+  branch_time = paste0(branch, ":", ifelse(pseudotime > 10, "Ends", "Begins")),
+  cellType_sub = as.character(scsa_cell),
+  cellType_sub = ifelse(is.na(branch), cellType_sub, paste0(cellType_sub, ":", branch_time)))
+sr@object@meta.data
+
+
+cc <- asjob_cellchat(sr)
+cc <- step1(cc)
+cc@plots$step1$p.aggre_weight
+cc@tables$step1$pathway_net
+cc@tables$step1$lp_net
+chat.mac <- select_pathway(cc, "Macro")
+
+cc <- step2(cc)
+
+en.cellchat <- job_enrich(chat.mac$pathway_name)
+en.cellchat <- step1(en.cellchat)
+en.cellchat@plots$step1$p.kegg
+en.cellchat@plots$step1$p.go
 ```
 
 ## HNRNPH1 与姜黄素

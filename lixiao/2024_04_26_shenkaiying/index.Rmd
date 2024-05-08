@@ -3,7 +3,8 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(5), eval = ic())
+# 文献计量
+info <- items(belong = odate(5), eval = ic(0, 1, 1, 0, 2), lock = T, id = "...")
 show.ic(info)
 
 order_publish()
@@ -55,7 +56,8 @@ AIS GWAS:
     - ...
 - RNA-seq 基因表达分析 (AIS 有 RNA-seq 数据可用)
 - 整合上述分析
-- 其它内容 (少量文献报道了 AIS 与代谢物、肠道菌的联系) 
+- 如果客户有 AIS 的其他数据，也可以视情况辅助分析。
+- 其它内容 (极少量文献报道了 AIS 与代谢物、肠道菌的联系，视情况调用) 
 
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4772092/
 

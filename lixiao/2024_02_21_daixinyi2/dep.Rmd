@@ -127,3 +127,8 @@ mtcars_tidy2 |>
   tidyHeatmap::heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
   tidyHeatmap::annotation_tile(group)
 
+
+ggplot(dplyr::filter(data.frame(Terror$p$data), expression > 1)) + ggplot2::geom_density(aes(pseudotime, color = orig.ident))
+Terror$p$layers
+
+mn <- add_anno(mn, branches = list(c("Y_6", "Y_24"), c("Y_3", "Y_24")))
