@@ -95,7 +95,7 @@
 \begin{center} \textbf{\Huge HNRNPH1
 与瘢痕增生的关联性挖掘} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-25}}
+\textbf{\textcolor{white}{2024-05-09}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -176,6 +176,12 @@ Mainly used method:
 \begin{itemize}
 \tightlist
 \item
+  R package \texttt{CellChat} used for cell communication
+  analysis{[}@InferenceAndAJinS2021{]}.
+\item
+  R package \texttt{STEINGdb} used for PPI network
+  construction{[}@TheStringDataSzklar2021; @CytohubbaIdenChin2014{]}.
+\item
   R package \texttt{ClusterProfiler} used for gene enrichment
   analysis{[}@ClusterprofilerWuTi2021{]}.
 \item
@@ -188,8 +194,8 @@ Mainly used method:
   R package \texttt{Limma} and \texttt{edgeR} used for differential
   expression analysis{[}@LimmaPowersDiRitchi2015; @EdgerDifferenChen{]}.
 \item
-  R package \texttt{STEINGdb} used for PPI network
-  construction{[}@TheStringDataSzklar2021; @CytohubbaIdenChin2014{]}.
+  R package \texttt{Monocle3} used for cell pseudotime
+  analysis{[}@ReversedGraphQiuX2017; @TheDynamicsAnTrapne2014{]}.
 \item
   The R package \texttt{Seurat} used for scRNA-seq
   processing{[}@IntegratedAnalHaoY2021; @ComprehensiveIStuart2019{]}.
@@ -203,7 +209,7 @@ Mainly used method:
   \texttt{SCSA} (python) used for cell type
   annotation{[}@ScsaACellTyCaoY2020{]}.
 \item
-  R version 4.3.3 (2024-02-29); Other R packages (eg., \texttt{dplyr}
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr}
   and \texttt{ggplot2}) used for statistic analysis or data
   visualization.
 \end{itemize}
@@ -249,8 +255,46 @@ HNRNPH1 与 TP53 protein-docking
 \protect\hypertarget{ux6570ux636eux6765ux6e90}{}
 \end{block}
 
-\begin{block}{细胞聚类}
-\protect\hypertarget{ux7ec6ux80deux805aux7c7b}{}
+\begin{block}{细胞聚类和鉴定}
+\protect\hypertarget{ux7ec6ux80deux805aux7c7bux548cux9274ux5b9a}{}
+\end{block}
+
+\begin{block}{差异分析}
+\protect\hypertarget{ux5deeux5f02ux5206ux6790}{}
+\begin{block}{HNRNPH1 的表达}
+\protect\hypertarget{hnrnph1-ux7684ux8868ux8fbe}{}
+\end{block}
+
+\begin{block}{Wnt 通路基因的表达}
+\protect\hypertarget{wnt-ux901aux8defux57faux56e0ux7684ux8868ux8fbe}{}
+\begin{itemize}
+\tightlist
+\item
+  scRNA-seq, Scar vs Skin (Fibroblast, Pericyte), TP53 \(\downarrow\),
+  APCDD1 \(\uparrow\)
+\item
+  RNA-seq, 姜黄素给药, TP53 \(\uparrow\), APCDD1 \(\downarrow\)
+\end{itemize}
+\end{block}
+\end{block}
+
+\begin{block}{拟时分析}
+\protect\hypertarget{ux62dfux65f6ux5206ux6790}{}
+\begin{block}{拟时终点与 APCDD1}
+\protect\hypertarget{ux62dfux65f6ux7ec8ux70b9ux4e0e-apcdd1}{}
+\end{block}
+
+\begin{block}{Fibroblast 拟时轨迹下的差异基因}
+\protect\hypertarget{fibroblast-ux62dfux65f6ux8f68ux8ff9ux4e0bux7684ux5deeux5f02ux57faux56e0}{}
+\end{block}
+
+\begin{block}{姜黄素有调控作用的靶点}
+\protect\hypertarget{ux59dcux9ec4ux7d20ux6709ux8c03ux63a7ux4f5cux7528ux7684ux9776ux70b9}{}
+\end{block}
+\end{block}
+
+\begin{block}{细胞通讯}
+\protect\hypertarget{ux7ec6ux80deux901aux8baf}{}
 \end{block}
 \end{block}
 

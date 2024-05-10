@@ -132,3 +132,57 @@ ggplot(dplyr::filter(data.frame(Terror$p$data), expression > 1)) + ggplot2::geom
 Terror$p$layers
 
 mn <- add_anno(mn, branches = list(c("Y_6", "Y_24"), c("Y_3", "Y_24")))
+
+en.cellchat <- job_enrich(chat.mac$pathway_name)
+en.cellchat <- step1(en.cellchat)
+en.cellchat@plots$step1$p.kegg
+en.cellchat@plots$step1$p.go
+
+```{r}
+head(scDegs.pseu$gene_id, 50)
+
+sdb.FB_pseu <- job_stringdb(head(scDegs.pseu$gene_id, 50))
+sdb.FB_pseu <- step1(sdb.FB_pseu, 50, network_type = "full")
+sdb.FB_pseu@plots$step1$p.mcc
+
+lstPPI.FB <- filter(sdb.FB_pseu, scDegs.pseu$gene_id, "APCDD1",
+  # level.x = dplyr::select(Tops, hgnc_symbol, logFC),
+  top = NULL, keep.ref = T, arrow = F, HLs = "APCDD1")
+
+lstPPI.FB$p.ppi
+
+```
+
+
+```{r}
+head(scDegs.pseu$gene_id, 50)
+
+sdb.FB_pseu <- job_stringdb(c(head(scDegs.pseu$gene_id, 100), genes.wnt$geneName_list))
+sdb.FB_pseu <- step1(sdb.FB_pseu, 50, network_type = "full")
+sdb.FB_pseu@plots$step1$p.mcc
+
+genes.collagen <- dplyr::filter(en.pseu@tables$step1$res.go$ids,
+  ont == "CC", grpl(Description, "collagen"))$geneName_list[[1]]
+
+# Macro
+
+lstPPI.FB <- filter(sdb.FB_pseu,
+  genes.wnt$geneName_list, genes.collagen,
+  level.x = dplyr::select(Tops, hgnc_symbol, logFC),
+  top = NULL, keep.ref = T, arrow = F)
+
+lstPPI.FB$p.mcc
+
+dplyr::filter(Tops, grpl(hgnc_symbol, "COL"))
+
+```
+
+vis(mn@params$sr_sub)
+monocle::importCDS(mn@params$sr_sub)
+monocle::newCellDataSet
+mn@params$sr_sub@
+
+
+en.treatPseu <- job_enrich(p.vennTreatPseu$ins)
+en.treatPseu <- step1(en.treatPseu)
+en.treatPseu@plots$step1$p.go

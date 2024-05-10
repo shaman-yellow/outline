@@ -1,0 +1,1722 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge HNRNPH1、Wnt
+与瘢痕增生的关联性挖掘} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-05-10}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux9700ux6c42}{%
+\subsection{需求}\label{ux9700ux6c42}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  客户的 RNA-seq 数据集，以 DEGs 建立 PPI 网络，试分析 HNRNPH1 的作用，以及 wnt 通路。
+\item
+  scRNA-seq (可能需要两组数据，瘢痕增生 (SH) 和正常组织), HNRNPH1 的作用，免疫细胞的行为，免疫细胞的 DEGs。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  拟时分析，HNRNPH1 的拟时表达变化等
+\item
+  细胞通讯，巨噬细胞等的通讯，Wnt 通路相关基因的表达和通讯
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  姜黄素对 HNRNPH1 的作用 (直接作用还是间接，是否可以结合，可以尝试分子对接，或者从转录因子角度出发)
+\item
+  视结果整理，可做一些新的分析，或探究一些新的方法。
+\item
+  提供分析源代码
+\end{enumerate}
+
+\hypertarget{ux7ed3ux679c}{%
+\subsection{结果}\label{ux7ed3ux679c}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  差异分析和 PPI 发现，姜黄素可对 HNRNPH1 和 Wnt 通路的基因具调控作用，且 HNRNPH1 和 Wnt 以 TP53 存在直接互作联系。
+\item
+  scRNA-seq 数据分析，未发现 HNRNPH1 的差异表达；发现了以 APCDD1 为代表的 Wnt 通路基因的表达量变化，且关联斑痕增生。
+  拟时分析表明，拟时末期 APCDD1 在 Fibroblast 中表达量显著上升 (Top 2) 。而姜黄素的 RNA-seq 数据集中，APCDD1 表达量
+  下调。APCDD1 表现为经典 Wnt 通路抑制作用。以上表明，Curcumin 可通过下调 APCDD1，激活经典 Wnt 通路，改善斑痕增生。
+\item
+  分子对接进一步发现了，Curcumin 与 APCDD1 蛋白的优异结合能，说明 Curcumin 可能通过直接结合 APCDD1 发挥调控作用。
+\item
+  额外的分析已包含在上述各部分中。
+\item
+  本文档提供了与图表一一对应的分析源代码。
+  如果客户需要根据源代码重现分析，请注意，所有的源代码和分析均实现于 Linux 系统 (Pop!\_OS 22.04 LTS)。
+  更多系统和 R 配置信息请参考 \ref{session}。
+  此外，本分析涉及的软件和代码的简要说明见 \ref{code}
+\end{enumerate}
+
+详见 \ref{results}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+All used GEO expression data and their design:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GSE156326}: Single-cell transcriptome of human hypertrophic scars and human skin, and 6 and 8 weeks old mouse scars
+  \textgreater\textgreater\textgreater{} Raw data are unvailable due to patient privacy concerns \textless\textless\textless{}
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{CellChat} used for cell communication analysis\textsuperscript{\protect\hyperlink{ref-InferenceAndAJinS2021}{1}}.
+\item
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{2},\protect\hyperlink{ref-CytohubbaIdenChin2014}{3}}.
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{4}}.
+\item
+  R package \texttt{ClusterProfiler} used for GSEA enrichment\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{4}}.
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{5},\protect\hyperlink{ref-EdgerDifferenChen}{6}}.
+\item
+  R package \texttt{Monocle3} used for cell pseudotime analysis\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{7},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{8}}.
+\item
+  The R package \texttt{Seurat} used for scRNA-seq processing\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{9},\protect\hyperlink{ref-ComprehensiveIStuart2019}{10}}.
+\item
+  The CLI tools of \texttt{AutoDock\ vina} and \texttt{ADFR} software used for auto molecular docking\textsuperscript{\protect\hyperlink{ref-AutodockVina1Eberha2021}{11}--\protect\hyperlink{ref-AutodockfrAdvRavind2015}{15}}.
+\item
+  R package \texttt{pathview} used for KEGG pathways visualization\textsuperscript{\protect\hyperlink{ref-PathviewAnRLuoW2013}{16}}.
+\item
+  The MCC score was calculated referring to algorithm of \texttt{CytoHubba}\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{3}}.
+\item
+  \texttt{SCSA} (python) used for cell type annotation\textsuperscript{\protect\hyperlink{ref-ScsaACellTyCaoY2020}{17}}.
+\item
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{hnrnph1wnt-ux4e0e-ppi-ux7f51ux7edcux5206ux6790}{%
+\subsection{HNRNPH1、Wnt 与 PPI 网络分析}\label{hnrnph1wnt-ux4e0e-ppi-ux7f51ux7edcux5206ux6790}}
+
+对姜黄素 (Curcumin) 的 mRNA 数据集进行差异分析， Fig. \ref{fig:MAIN-Fig-1}a，
+Wnt 通路为 Fig. \ref{fig:MAIN-Fig-1}c，所示，Curcumin 可以调控 Wnt 中的多个基因。
+将 HNRNPH1 与 Wnt 的各个调控基因建立 PPI 网络 (Phisical 网络) 。发现 HNRNPH1 与 TP53 存在直接作用。
+而 TP53 与其它 Wnt 蛋白存在互作。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fig1 \textless{}{-}}\StringTok{ }\KeywordTok{cls}\NormalTok{(}
+  \KeywordTok{cl}\NormalTok{(}\StringTok{"./Figure+Table/Treat{-}vs{-}control{-}DEGs.pdf"}\NormalTok{,}
+    \StringTok{"./Figure+Table/PPI{-}HNRNPH1{-}and{-}Wnt.pdf"}\NormalTok{),}
+  \KeywordTok{cl}\NormalTok{(}\StringTok{"./Figure+Table/DEG{-}hsa04310{-}visualization.png"}\NormalTok{)}
+\NormalTok{)}
+\KeywordTok{render}\NormalTok{(fig1)}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:MAIN-Fig-1} (下方图) 为图MAIN Fig 1概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig1.pdf}
+\caption{MAIN Fig 1}\label{fig:MAIN-Fig-1}
+\end{center}
+
+\hypertarget{hnrnph1wnt-ux4e0eux6591ux75d5ux7684-scrna-seq-ux5206ux6790}{%
+\subsection{HNRNPH1、Wnt 与斑痕的 scRNA-seq 分析}\label{hnrnph1wnt-ux4e0eux6591ux75d5ux7684-scrna-seq-ux5206ux6790}}
+
+分析 GSE156326 的两组数据 (Scar 和 Skin) ，以 Seurat 初步分析，细胞聚类后注释如 Fig. \ref{fig:SCSA-Cell-type-annotation}a 所示。
+对 Scar 和 Skin 的各类细胞进行差异分析，见 Tab. \ref{tab:DEGs-of-the-contrasts}，探究 HNRNPH1 和 Wnt 通路
+各个基因的表达，发现 HNRNPH1 为非差异表达基因 (Fig. \ref{fig:MAIN-Fig-2}b 。
+而在 Fibroblast 细胞和 pericyte 细胞中，共有 6 个差异表达基因 (Fig. \ref{fig:MAIN-Fig-2}c) 。
+再对这 6 个基因的进一步考察中 (Fibroblast 细胞) ，发现 APCDD1 集中表达于特定区域 (Fig. \ref{fig:MAIN-Fig-3}a) ，而其它
+基因不具备此特点。
+
+提取 Fibroblast 细胞并重聚类，以 Monocle3 进行拟时分析。这里将 APCDD1 高表达的区域定为拟时终点，随后我们发现
+Fibroblast 可以主要分为 2 大 Branch，向拟时终点变化 (Fig. \ref{fig:MAIN-Fig-3}b) 。
+绘制 APCDD1 沿拟时轨迹的表达量变化可以发现，APCDD1 在拟时末期时呈上升趋势。进一步探究其来源可以发现，
+APCDD1 在拟时末期时，主要在 Scar 中表达量增加。而结合 Fig. \ref{fig:MAIN-Fig-1}c 可以知道，Curcumin 是可以
+下调 APCDD1 的表达量。可以推测，Curcumin 对 Fibroblast 细胞 APCDD1 的下调作用，可能改善瘢痕增生。
+
+随后，根据 Fibroblast 拟时图 (Fig. \ref{fig:MAIN-Fig-3}b) 进行差异分析 (Graph test) 。
+结果见 Tab. \ref{tab:graph-test-significant-results}。其中，APCDD1 为 Top 2 的差异基因。
+将 Top 50 的差异基因分 2 个分支 (根据 Fig. \ref{fig:MAIN-Fig-2}) 绘制拟时热图 (Fig. \ref{fig:MAIN-Fig-4}) ，
+并结合了这些基因在 GO 的富集和是否存在于 Wnt 通路以及 Curcumin 是否对其有调控作用。
+在这些基因中，APCDD1 和 JUN 基因属于 Wnt 通路，在 Curcumin 的数据中，仅 APCDD1 表现出被
+Curcumin 调控表达量变化，为下调趋势。而其余差异基因与 Collagen、ECM 等相关。这些都可能是
+与瘢痕增生密切关联的通路。
+
+结合 Fig. \ref{fig:MAIN-Fig-3}c，将 Fibroblast Pseudotime \textgreater{} 10 的细胞分为 FB:ends, \textless{} 10 的细胞分为
+FB:begins, 和其他细胞做 CellChat 细胞通讯分析，以发现两部分细胞的差异点 (见 Fig. \ref{fig:MAIN-Fig-5}a 和 b，
+代表通讯数量和权重 (count，weight)) 。
+在这些细胞中，COLLAGEN 通路在输入和输出通路都为强度最高的通路 (Fig. \ref{fig:MAIN-Fig-5}c、d)。
+随后，我们对比了 FB:begins 和 FB:ends 和两种免疫细胞 Macrophage 和 Dendritic Cell 的通讯通路差异。
+这些通路包括：CD99, COLLAGEN, MIF, MK (COLLAGEN 的通讯见 Fig. \ref{fig:MAIN-Fig-5}e，其余可见 \ref{diff-chat})。
+
+由于 APCDD1 为 Fibroblast 显著差异表达基因 (Top 2) ，这里推测在 Scar 中上调的 APCDD1 所抑制的 Wnt 通路
+会对 Fibroblast 与 免疫细胞之间的通讯带来调控效果。
+因此，我们将 CD99, COLLAGEN, MIF, MK 所涉及的受体配体的基因，与 Wnt 通路的基因 (Curcumin 可调控的)
+创建功能关联的 PPI 网络，并且将 Curcumin RNA-seq 数据集中，这些基因的表达量变化映射为 Log\textsubscript{2}(FC)。
+随后发现，Wnt 通路基因与上述这些受体配体蛋白存在诸多互作关系，且其中 CD44 可能受姜黄素调控影响。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fig2 \textless{}{-}}\StringTok{ }\KeywordTok{cl}\NormalTok{(}
+  \KeywordTok{rw}\NormalTok{(}\StringTok{"./Figure+Table/SCSA{-}Cell{-}type{-}annotation.pdf"}\NormalTok{,}
+    \StringTok{"./Figure+Table/Violing{-}plot{-}of{-}expression{-}level{-}of{-}the{-}HNRNPH1.pdf"}\NormalTok{),}
+  \KeywordTok{rw}\NormalTok{(}\StringTok{"./Figure+Table/Violing{-}plot{-}of{-}Wnt{-}DEGs{-}of{-}Curcumin{-}affected.pdf"}\NormalTok{)}
+\NormalTok{)}
+\KeywordTok{render}\NormalTok{(fig2)}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:MAIN-Fig-2} (下方图) 为图MAIN Fig 2概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig2.pdf}
+\caption{MAIN Fig 2}\label{fig:MAIN-Fig-2}
+\end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fig3 \textless{}{-}}\StringTok{ }\KeywordTok{cls}\NormalTok{(}
+  \KeywordTok{cl}\NormalTok{(}\StringTok{"./Figure+Table/Dimension{-}plot{-}of{-}expression{-}level{-}of{-}the{-}Wnt{-}Degs.pdf"}\NormalTok{),}
+  \KeywordTok{cl}\NormalTok{(}\StringTok{"./Figure+Table/Pseudotime.pdf"}\NormalTok{,}
+    \StringTok{"./Figure+Table/APCDD1{-}pseudotime{-}curve.pdf"}\NormalTok{,}
+    \StringTok{"./Figure+Table/APCDD1{-}pseudotime{-}density.pdf"}\NormalTok{)}
+\NormalTok{)}
+\KeywordTok{render}\NormalTok{(fig3)}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:MAIN-Fig-3} (下方图) 为图MAIN Fig 3概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig3.pdf}
+\caption{MAIN Fig 3}\label{fig:MAIN-Fig-3}
+\end{center}
+
+Figure \ref{fig:MAIN-Fig-4} (下方图) 为图MAIN Fig 4概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/Pseudotime-heatmap-of-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/Pseudotime-heatmap-of-genes.pdf}
+\caption{MAIN Fig 4}\label{fig:MAIN-Fig-4}
+\end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fig5 \textless{}{-}}\StringTok{ }\KeywordTok{cl}\NormalTok{(}
+  \CommentTok{\# rw(),}
+  \KeywordTok{rw}\NormalTok{(}\StringTok{"./Figure+Table/Overall{-}communication{-}count.pdf"}\NormalTok{,}
+    \StringTok{"./Figure+Table/Overall{-}communication{-}weight.pdf"}\NormalTok{),}
+  \KeywordTok{rw}\NormalTok{(}\StringTok{"./Figure+Table/ligand{-}receptor{-}roles/2\_incoming.pdf"}\NormalTok{,}
+    \StringTok{"./Figure+Table/ligand{-}receptor{-}roles/1\_outgoing.pdf"}\NormalTok{),}
+  \KeywordTok{rw}\NormalTok{(}\StringTok{"./Figure+Table/Diff{-}path{-}COLLAGEN.pdf"}\NormalTok{,}
+    \StringTok{"./Figure+Table/PPI{-}Wnt{-}LR.pdf"}\NormalTok{)}
+\NormalTok{)}
+\KeywordTok{render}\NormalTok{(fig5)}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:MAIN-Fig-5} (下方图) 为图MAIN Fig 5概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig5.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig5.pdf}
+\caption{MAIN Fig 5}\label{fig:MAIN-Fig-5}
+\end{center}
+
+\hypertarget{hnrnph1wnt-ux4e0eux59dcux9ec4ux7d20}{%
+\subsection{HNRNPH1、Wnt 与姜黄素}\label{hnrnph1wnt-ux4e0eux59dcux9ec4ux7d20}}
+
+结合上述发现，Curcumin 可能作用 APCDD1 发挥改善瘢痕增生作用。
+这种作用既可能是直接结合，也可能是间接作用。分子对接可以用以探究药物直接结合蛋白的可能性。
+这里，我们将 Curcumin 与包括 APCDD1 在内的诸多 Wnt 通路的蛋白，以及 HNRNPH1 蛋白做分子对接。
+对接亲和能见 Fig. \ref{fig:MAIN-Fig-6}a 所示，APCDD1 有着与 Curcumin 优异的亲和性，且在
+对接结果中排名最高 (对接图见 Fig. \ref{fig:MAIN-Fig-6}b 和 c)。因此，Curcumin 将可能通过
+直接结合 APCDD1 蛋白发挥其表达量调控作用，进而改善斑痕增生。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fig6 \textless{}{-}}\StringTok{ }\KeywordTok{cls}\NormalTok{(}
+  \CommentTok{\# rw(),}
+  \KeywordTok{cl}\NormalTok{(}\StringTok{"./Figure+Table/Overall{-}combining{-}Affinity.pdf"}\NormalTok{),}
+  \KeywordTok{cl}\NormalTok{(}\StringTok{"./Figure+Table/Docking{-}969516{-}into{-}APCDD1.png"}\NormalTok{,}
+    \StringTok{"./Figure+Table/Docking{-}969516{-}into{-}APCDD1{-}detail.png"}\NormalTok{)}
+\NormalTok{)}
+\KeywordTok{render}\NormalTok{(fig6)}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:MAIN-Fig-6} (下方图) 为图MAIN Fig 6概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/fig6.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/fig6.pdf}
+\caption{MAIN Fig 6}\label{fig:MAIN-Fig-6}
+\end{center}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{code}{%
+\subsection{关于源代码的说明}\label{code}}
+
+\hypertarget{ux751fux6210ux8be5-pdf-ux6587ux6863ux7684ux6e90ux4ee3ux7801}{%
+\subsubsection{生成该 PDF 文档的源代码}\label{ux751fux6210ux8be5-pdf-ux6587ux6863ux7684ux6e90ux4ee3ux7801}}
+
+注：请忽略其中包含 \texttt{include\ =\ F}, 或者函数 \texttt{set\_cover}, \texttt{set\_index} 等的 R 代码块。
+
+`Output RMarkdown' 数据已提供。
+
+\textbf{(对应文件为 \texttt{output.Rmd})}
+
+`Output Tex' 数据已提供。
+
+\textbf{(对应文件为 \texttt{output.tex})}
+
+\hypertarget{ux73afux5883ux53d8ux91cfux914dux7f6e}{%
+\subsubsection{环境变量配置}\label{ux73afux5883ux53d8ux91cfux914dux7f6e}}
+
+大部分程序为 R 代码，但少数 (SCSA 注释、分子对接工具组) 等涉及了其它工具。
+如果需要使用本文档提供的代码复现这些分析，请确保使用的是 Linux 系统，
+且以下程序可运行
+(即，通过 R 的 \texttt{system} 命令可以成功运行它们，例如 \texttt{system("mk\_prepare\_ligand.py")},
+你需要做的是安装这些程序，并配置到环境变量，例如 export 到 \texttt{.bashrc} 中。
+)：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{list}\NormalTok{(}
+  \DataTypeTok{mk\_prepare\_ligand.py =} \StringTok{"mk\_prepare\_ligand.py"}\NormalTok{,}
+  \DataTypeTok{prepare\_gpf.py =} \StringTok{"prepare\_gpf.py"}\NormalTok{,}
+  \DataTypeTok{autogrid4 =} \StringTok{"autogrid4"}\NormalTok{,}
+  \DataTypeTok{scsa =} \StringTok{"python3 \textasciitilde{}/SCSA/SCSA.py"}\NormalTok{,}
+  \DataTypeTok{pymol =} \StringTok{"pymol"}\NormalTok{,}
+  \DataTypeTok{obgen =} \StringTok{"obgen"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{r-ux5305}{%
+\subsubsection{R 包}\label{r-ux5305}}
+
+本文档使用的代码均为重新封装后的代码，而不是对应软件的原始代码。
+因此，要复现本文档中的源代码，你需要加载这些代码的函数。
+所有的函数提供在了 \texttt{utils.tool} (如没有明确的理由，请不要修改移动其中的任意文件，否则会出错) 中。
+
+`R package files' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./utils.tool})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./utils.tool共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item DESCRIPTION
+\item LICENSE
+\item LICENSE.md
+\item NAMESPACE
+\item R
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+当有需要运行本文档的任意代码时，请先使用以下代码加载该 R 包：
+(若提示缺少依赖包，请自行安装它们，通过 \texttt{BiocManager::install} 或者 \texttt{devtools::install\_github})
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{load\_all}\NormalTok{(}\StringTok{"./utils.tool"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5173ux4e8eux672cux6587ux6863ux6e90ux4ee3ux7801ux4e2dux6d89ux53caux7684ux6587ux4ef6}{%
+\subsection{关于本文档源代码中涉及的文件}\label{ux5173ux4e8eux672cux6587ux6863ux6e90ux4ee3ux7801ux4e2dux6d89ux53caux7684ux6587ux4ef6}}
+
+`External files' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{./material})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./material共包含5个文件。
+
+\begin{enumerate}\tightlist
+\item APCDD1.pdb
+\item PLCB4.pdb
+\item PRICKLE1
+\item PRICKLE1.pdb
+\item quant\_hg38\_mrna
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{hnrnph1wnt-ux4e0e-ppi-ux7f51ux7edcux5206ux6790-1}{%
+\subsection{HNRNPH1、Wnt 与 PPI 网络分析}\label{hnrnph1wnt-ux4e0e-ppi-ux7f51ux7edcux5206ux6790-1}}
+
+\hypertarget{ux59dcux9ec4ux7d20ux7684-mrna-seq-ux6570ux636e}{%
+\subsubsection{姜黄素的 mRNA-seq 数据}\label{ux59dcux9ec4ux7d20ux7684-mrna-seq-ux6570ux636e}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# file.copy("\textasciitilde{}/outline/lixiao/2023\_07\_07\_eval/quant\_hg38\_mrna", "./material/", recursive = T)}
+\NormalTok{lst\_mrna \textless{}{-}}\StringTok{ }\KeywordTok{read\_kall\_quant}\NormalTok{(}\StringTok{"../material/quant\_hg38\_mrna"}\NormalTok{)}
+
+\NormalTok{lst\_mrna}\OperatorTok{$}\NormalTok{metadata \textless{}{-}}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate}\NormalTok{(lst\_mrna}\OperatorTok{$}\NormalTok{metadata,}
+  \DataTypeTok{group =} \KeywordTok{ifelse}\NormalTok{(}\KeywordTok{grpl}\NormalTok{(sample, }\StringTok{"\^{}CT"}\NormalTok{), }\StringTok{"control"}\NormalTok{, }\StringTok{"treat"}\NormalTok{)}
+\NormalTok{)}
+\NormalTok{lst\_mrna}\OperatorTok{$}\NormalTok{metadata}
+\NormalTok{lst\_mrna}\OperatorTok{$}\NormalTok{genes}
+
+\NormalTok{mart \textless{}{-}}\StringTok{ }\KeywordTok{new\_biomart}\NormalTok{()}
+\NormalTok{lst\_mrna}\OperatorTok{$}\NormalTok{genes \textless{}{-}}\StringTok{ }\KeywordTok{filter\_biomart}\NormalTok{(mart, }\KeywordTok{general\_attrs}\NormalTok{(F, T),}
+  \StringTok{"ensembl\_transcript\_id"}\NormalTok{, lst\_mrna}\OperatorTok{$}\NormalTok{counts}\OperatorTok{$}\NormalTok{target\_id}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{degs}{%
+\subsubsection{DEGs}\label{degs}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lm \textless{}{-}}\StringTok{ }\KeywordTok{job\_limma}\NormalTok{(}\KeywordTok{new\_dge}\NormalTok{(lst\_mrna}\OperatorTok{$}\NormalTok{metadata, lst\_mrna}\OperatorTok{$}\NormalTok{counts, lst\_mrna}\OperatorTok{$}\NormalTok{genes))}
+\NormalTok{lm \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(lm)}
+\NormalTok{lm \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(lm, treat }\OperatorTok{{-}}\StringTok{ }\NormalTok{control, }\DataTypeTok{use =} \StringTok{"P.Value"}\NormalTok{, }\DataTypeTok{use.cut =} \FloatTok{.05}\NormalTok{, }\DataTypeTok{cut.fc =} \DecValTok{1}\NormalTok{)}
+\NormalTok{Tops \textless{}{-}}\StringTok{ }\NormalTok{lm}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{tops}\OperatorTok{$}\StringTok{\textasciigrave{}}\DataTypeTok{treat {-} control}\StringTok{\textasciigrave{}}
+\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(Tops, hgnc\_symbol }\OperatorTok{==}\StringTok{ "HNRNPH1"}\NormalTok{)[, }\OperatorTok{{-}}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{)]}
+\NormalTok{Tops}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:Treat-vs-control-DEGs} (下方图) 为图Treat vs control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Treat-vs-control-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Treat-vs-control-DEGs.pdf}
+\caption{Treat vs control DEGs}\label{fig:Treat-vs-control-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+P.Value cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Treat-vs-control-DEGs-content})}
+
+Table \ref{tab:Data-treat-vs-control-DEGs} (下方表格) 为表格Data treat vs control DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Data-treat-vs-control-DEGs.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1598行16列，以下预览的表格可能省略部分数据；含有1598个唯一`rownames；含有1300个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Data-treat-vs-control-DEGs}Data treat vs control DEGs}\tabularnewline
+\toprule
+rownames & ensemb\ldots\ldots2 & ensemb\ldots\ldots3 & entrez\ldots{} & hgnc\_s\ldots{} & refseq\ldots{} & chromo\ldots{} & start\_\ldots{} & end\_po\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & ensemb\ldots\ldots2 & ensemb\ldots\ldots3 & entrez\ldots{} & hgnc\_s\ldots{} & refseq\ldots{} & chromo\ldots{} & start\_\ldots{} & end\_po\ldots{} & \ldots{}\tabularnewline
+\midrule
+\endhead
+36302 & ENST00\ldots{} & ENSG00\ldots{} & 23657 & SLC7A11 & NM\_014331 & 4 & 138164097 & 138242349 & \ldots{}\tabularnewline
+139079 & ENST00\ldots{} & ENSG00\ldots{} & 1728 & NQO1 & NM\_000903 & 16 & 69706996 & 69726668 & \ldots{}\tabularnewline
+109115 & ENST00\ldots{} & ENSG00\ldots{} & 3486 & IGFBP3 & & 7 & 45912245 & 45921874 & \ldots{}\tabularnewline
+138968 & ENST00\ldots{} & ENSG00\ldots{} & 3880 & KRT19 & NM\_002276 & 17 & 41523617 & 41528308 & \ldots{}\tabularnewline
+111841 & ENST00\ldots{} & ENSG00\ldots{} & 682 & BSG & NM\_198589 & 19 & 571277 & 583494 & \ldots{}\tabularnewline
+174056 & ENST00\ldots{} & ENSG00\ldots{} & 3488 & IGFBP5 & NM\_000599 & 2 & 216672105 & 216695549 & \ldots{}\tabularnewline
+139083 & ENST00\ldots{} & ENSG00\ldots{} & 1728 & NQO1 & & 16 & 69706996 & 69726668 & \ldots{}\tabularnewline
+161824 & ENST00\ldots{} & ENSG00\ldots{} & 4176 & MCM7 & NM\_005916 & 7 & 100092233 & 100101940 & \ldots{}\tabularnewline
+85389 & ENST00\ldots{} & ENSG00\ldots{} & 9537 & TP53I11 & NM\_001\ldots{} & 11 & 44885903 & 44951306 & \ldots{}\tabularnewline
+6443 & ENST00\ldots{} & ENSG00\ldots{} & 128239 & IQGAP3 & NM\_178229 & HG2515\ldots{} & 83962 & 131161 & \ldots{}\tabularnewline
+158307 & ENST00\ldots{} & ENSG00\ldots{} & 128239 & IQGAP3 & NM\_178229 & 1 & 156525405 & 156572604 & \ldots{}\tabularnewline
+94816 & ENST00\ldots{} & ENSG00\ldots{} & 3838 & KPNA2 & NM\_002266 & 17 & 68035636 & 68047364 & \ldots{}\tabularnewline
+66013 & ENST00\ldots{} & ENSG00\ldots{} & 899 & CCNF & NM\_001\ldots{} & 16 & 2429394 & 2458854 & \ldots{}\tabularnewline
+139080 & ENST00\ldots{} & ENSG00\ldots{} & 1728 & NQO1 & NM\_001\ldots{} & 16 & 69706996 & 69726668 & \ldots{}\tabularnewline
+68497 & ENST00\ldots{} & ENSG00\ldots{} & 2512 & FTL & NM\_000146 & 19 & 48965309 & 48966879 & \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{wnt-ux4fe1ux53f7ux901aux8def}{%
+\subsubsection{wnt 信号通路}\label{wnt-ux4fe1ux53f7ux901aux8def}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{en.deg \textless{}{-}}\StringTok{ }\KeywordTok{job\_enrich}\NormalTok{(Tops}\OperatorTok{$}\NormalTok{hgnc\_symbol)}
+\NormalTok{en.deg \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(en.deg)}
+\NormalTok{en.deg \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(en.deg, }\StringTok{"hsa04310"}\NormalTok{,}
+  \DataTypeTok{gene.level =}\NormalTok{ dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(Tops, hgnc\_symbol, logFC)}
+\NormalTok{)}
+\NormalTok{en.deg}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pathviews}\OperatorTok{$}\NormalTok{hsa04310}
+
+\NormalTok{genes.wnt \textless{}{-}}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(en.deg}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{res.kegg}\OperatorTok{$}\NormalTok{ids, ID }\OperatorTok{==}\StringTok{ "hsa04310"}\NormalTok{)}
+\NormalTok{genes.wnt \textless{}{-}}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(genes.wnt, ID, Description, geneName\_list)}
+\NormalTok{genes.wnt \textless{}{-}}\StringTok{ }\KeywordTok{reframe\_col}\NormalTok{(genes.wnt, }\StringTok{"geneName\_list"}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x) x[[}\DecValTok{1}\NormalTok{]])}
+\NormalTok{genes.wnt}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:DEG-hsa04310-visualization} (下方图) 为图DEG hsa04310 visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEG-hsa04310-visualization.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-04-24_15_53_05.50473/hsa04310.pathview.png}
+\caption{DEG hsa04310 visualization}\label{fig:DEG-hsa04310-visualization}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa04310}
+
+\vspace{2em}
+
+
+\textbf{
+Enriched genes
+:}
+
+\vspace{0.5em}
+
+    NFATC4, PPP3CA, CAMK2D, PLCB4, DAAM1, DVL2, PRICKLE1,
+EP300, CHD8, CUL1, SKP1, APC, TP53, CTNNB1, PSEN1, CSNK2A1,
+APCDD1, MCC
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table \ref{tab:Genes-Wnt-Curcumin-affected} (下方表格) 为表格Genes Wnt Curcumin affected概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Genes-Wnt-Curcumin-affected.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有20行3列，以下预览的表格可能省略部分数据；含有1个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:Genes-Wnt-Curcumin-affected}Genes Wnt Curcumin affected}\tabularnewline
+\toprule
+ID & Description & geneName\_list\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Description & geneName\_list\tabularnewline
+\midrule
+\endhead
+hsa04310 & Wnt signaling pathway & APC\tabularnewline
+hsa04310 & Wnt signaling pathway & APCDD1\tabularnewline
+hsa04310 & Wnt signaling pathway & CAMK2D\tabularnewline
+hsa04310 & Wnt signaling pathway & CAMK2G\tabularnewline
+hsa04310 & Wnt signaling pathway & CHD8\tabularnewline
+hsa04310 & Wnt signaling pathway & CSNK2A1\tabularnewline
+hsa04310 & Wnt signaling pathway & CSNK2B\tabularnewline
+hsa04310 & Wnt signaling pathway & CTNNB1\tabularnewline
+hsa04310 & Wnt signaling pathway & CUL1\tabularnewline
+hsa04310 & Wnt signaling pathway & DAAM1\tabularnewline
+hsa04310 & Wnt signaling pathway & DVL2\tabularnewline
+hsa04310 & Wnt signaling pathway & EP300\tabularnewline
+hsa04310 & Wnt signaling pathway & MCC\tabularnewline
+hsa04310 & Wnt signaling pathway & NFATC4\tabularnewline
+hsa04310 & Wnt signaling pathway & PLCB4\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux6784ux5efa-ppi-ux7f51ux7edc}{%
+\subsubsection{构建 PPI 网络}\label{ux6784ux5efa-ppi-ux7f51ux7edc}}
+
+\hypertarget{degs-ppi}{%
+\paragraph{DEGs PPI}\label{degs-ppi}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sdb.deg \textless{}{-}}\StringTok{ }\KeywordTok{job\_stringdb}\NormalTok{(Tops}\OperatorTok{$}\NormalTok{hgnc\_symbol)}
+\NormalTok{sdb.deg \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(sdb.deg)}
+\NormalTok{sdb.deg}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.ppi}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{hnrnph1-ux4e0e-wnt-ux901aux8def}{%
+\paragraph{HNRNPH1 与 Wnt 通路}\label{hnrnph1-ux4e0e-wnt-ux901aux8def}}
+
+注：这里的 PPI 网络为 physical, 即 HNRNPH1 与 Wnt 蛋白之间的直接结合性。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# filter the PPI network}
+\NormalTok{lstPPI \textless{}{-}}\StringTok{ }\KeywordTok{filter}\NormalTok{(sdb.deg, genes.wnt}\OperatorTok{$}\NormalTok{geneName\_list, }\StringTok{"HNRNPH1"}\NormalTok{,}
+  \DataTypeTok{level.x =}\NormalTok{ dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(Tops, hgnc\_symbol, logFC),}
+  \DataTypeTok{top =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{keep.ref =}\NormalTok{ T, }\DataTypeTok{arrow =}\NormalTok{ F, }\DataTypeTok{HLs =} \StringTok{"HNRNPH1"}\NormalTok{,}
+  \DataTypeTok{label.shape =} \KeywordTok{c}\NormalTok{(}\DataTypeTok{from =} \StringTok{"Curcumin\_Wnt"}\NormalTok{, }\DataTypeTok{to =} \StringTok{"HNRNPH1"}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{lstPPI}\OperatorTok{$}\NormalTok{p.mcc}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:PPI-HNRNPH1-and-Wnt} (下方图) 为图PPI HNRNPH1 and Wnt概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-HNRNPH1-and-Wnt.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPI-HNRNPH1-and-Wnt.pdf}
+\caption{PPI HNRNPH1 and Wnt}\label{fig:PPI-HNRNPH1-and-Wnt}
+\end{center}
+
+\hypertarget{hnrnph1wnt-ux4e0eux6591ux75d5ux7684-scrna-seq-ux5206ux6790-1}{%
+\subsection{HNRNPH1、Wnt 与斑痕的 scRNA-seq 分析}\label{hnrnph1wnt-ux4e0eux6591ux75d5ux7684-scrna-seq-ux5206ux6790-1}}
+
+\hypertarget{ux6570ux636eux6765ux6e90}{%
+\subsubsection{数据来源}\label{ux6570ux636eux6765ux6e90}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Dowload data from GEO}
+\NormalTok{geo.sc \textless{}{-}}\StringTok{ }\KeywordTok{job\_geo}\NormalTok{(}\StringTok{"GSE156326"}\NormalTok{)}
+\NormalTok{geo.sc \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(geo.sc)}
+\NormalTok{geo.sc}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{guess}
+\NormalTok{geo.sc \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(geo.sc)}
+\KeywordTok{untar}\NormalTok{(}\StringTok{"./GSE156326/GSE156326\_RAW.tar"}\NormalTok{, }\DataTypeTok{exdir =} \StringTok{"./GSE156326"}\NormalTok{)}
+\KeywordTok{prepare\_10x}\NormalTok{(}\StringTok{"./GSE156326/"}\NormalTok{, }\StringTok{"GSM4729097\_human\_skin\_1"}\NormalTok{)}
+\KeywordTok{prepare\_10x}\NormalTok{(}\StringTok{"./GSE156326/"}\NormalTok{, }\StringTok{"GSM4729100\_human\_scar\_1"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE156326
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Raw sequencing data were demultiplexed, aligned to a
+reference genome (GrCh38/mm10) and counted using Cell
+Ranger (version 3.0.2; 10x Genomics).
+    Raw sequencing data were demultiplexed, aligned to a
+reference genome (GrCh38/mm10) and counted using Cell
+Ranger (version 3.0.2; 10x Genomics).
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    Genome\_build: GrCh38/mm10
+    Genome\_build: Genome\_build: GrCh38/mm10
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    Supplementary\_files\_format\_and\_content: mtx (count
+matrix in sparse matrix format), barcodes.tsv (barcode
+ids), features.tsv: (gene ids)
+    Supplementary\_files\_format\_and\_content:
+Supplementary\_files\_format\_and\_content: mtx (count matrix
+in sparse matrix format), barcodes.tsv (barcode ids),
+features.tsv: (gene ids)
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/SC-GSE156326-content})}
+
+\hypertarget{ux7ec6ux80deux805aux7c7bux548cux9274ux5b9a}{%
+\subsubsection{细胞聚类和鉴定}\label{ux7ec6ux80deux805aux7c7bux548cux9274ux5b9a}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# sr.scar \textless{}{-} job\_seurat("./GSE156326/GSM4729100\_human\_scar\_1\_barcodes")}
+\CommentTok{\# sr.scar \textless{}{-} step1(sr.scar)}
+\CommentTok{\# sr.scar@plots$step1$p.qc}
+\CommentTok{\# sr.scar \textless{}{-} step2(sr.scar, 0, 5000, 20)}
+\CommentTok{\# }
+\CommentTok{\# sr.skin \textless{}{-} job\_seurat("./GSE156326/GSM4729097\_human\_skin\_1\_barcodes")}
+\CommentTok{\# sr.skin \textless{}{-} step1(sr.skin)}
+\CommentTok{\# sr.skin@plots$step1$p.qc}
+\CommentTok{\# rm(sr.skin, sr.scar)}
+
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{job\_seuratn}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"./GSE156326/GSM4729100\_human\_scar\_1\_barcodes"}\NormalTok{,}
+    \StringTok{"./GSE156326/GSM4729097\_human\_skin\_1\_barcodes"}\NormalTok{),}
+  \KeywordTok{c}\NormalTok{(}\StringTok{"Scar"}\NormalTok{, }\StringTok{"Skin"}\NormalTok{))}
+
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(sr, }\DecValTok{0}\NormalTok{, }\DecValTok{5000}\NormalTok{, }\DecValTok{20}\NormalTok{)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(sr)}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pca\_rank}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(sr, }\DecValTok{1}\OperatorTok{:}\DecValTok{15}\NormalTok{, }\FloatTok{1.2}\NormalTok{)}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{p.umap}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step4}\NormalTok{(sr, }\StringTok{""}\NormalTok{)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step5}\NormalTok{(sr)}
+\CommentTok{\# SCSA for cell type annotation}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{step6}\NormalTok{(sr, }\StringTok{"Skin"}\NormalTok{)}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{p.map\_scsa}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:UMAP-Clustering} (下方图) 为图UMAP Clustering概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/UMAP-Clustering.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/UMAP-Clustering.pdf}
+\caption{UMAP Clustering}\label{fig:UMAP-Clustering}
+\end{center}
+
+Figure \ref{fig:SCSA-Cell-type-annotation} (下方图) 为图SCSA Cell type annotation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCSA-Cell-type-annotation.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCSA-Cell-type-annotation.pdf}
+\caption{SCSA Cell type annotation}\label{fig:SCSA-Cell-type-annotation}
+\end{center}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{mutate}\NormalTok{(sr, }\DataTypeTok{group\_cellType =} \KeywordTok{paste0}\NormalTok{(orig.ident, }\StringTok{"\_"}\NormalTok{, }\KeywordTok{make.names}\NormalTok{(scsa\_cell)))}
+\NormalTok{contrasts.sr \textless{}{-}}\StringTok{ }\KeywordTok{lapply}\NormalTok{(}\KeywordTok{make.names}\NormalTok{(}\KeywordTok{ids}\NormalTok{(sr)), }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{paste0}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"Scar"}\NormalTok{, }\StringTok{"Skin"}\NormalTok{), }\StringTok{"\_"}\NormalTok{, x))}
+\NormalTok{contrasts.sr}
+
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{diff}\NormalTok{(sr, }\StringTok{"group\_cellType"}\NormalTok{, contrasts.sr, }\DataTypeTok{name =} \StringTok{"HN\_group"}\NormalTok{)}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{HN\_group}
+\end{Highlighting}
+\end{Shaded}
+
+Table \ref{tab:DEGs-of-the-contrasts} (下方表格) 为表格DEGs of the contrasts概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-the-contrasts.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4863行7列，以下预览的表格可能省略部分数据；含有9个唯一`contrast'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:DEGs-of-the-contrasts}DEGs of the contrasts}\tabularnewline
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj & gene\tabularnewline
+\midrule
+\endhead
+Scar\_Hemat\ldots{} & 3.26093311\ldots{} & -0.2786380\ldots{} & 0.002 & 1 & 0.00097827\ldots{} & ST6GALNAC6\tabularnewline
+Scar\_Hemat\ldots{} & 4.83497164\ldots{} & 2.72042542\ldots{} & 0.01 & 0.222 & 0.00145049\ldots{} & CCL19\tabularnewline
+Scar\_Hemat\ldots{} & 4.97701805\ldots{} & 2.36267982\ldots{} & 0.01 & 0.889 & 0.00149310\ldots{} & PPP1R12B\tabularnewline
+Scar\_Hemat\ldots{} & 6.54317478\ldots{} & -0.7858693\ldots{} & 0.015 & 0.111 & 0.00196295\ldots{} & HLA-DMB\tabularnewline
+Scar\_Hemat\ldots{} & 6.54317478\ldots{} & 7.81465650\ldots{} & 0.015 & 0.778 & 0.00196295\ldots{} & SNX10\tabularnewline
+Scar\_Hemat\ldots{} & 1.01658537\ldots{} & 3.50570583\ldots{} & 0.012 & 0.333 & 0.00304975\ldots{} & HHEX\tabularnewline
+Scar\_Hemat\ldots{} & 1.04560332\ldots{} & -0.3003328\ldots{} & 0.024 & 1 & 0.00313680\ldots{} & BCL9L\tabularnewline
+Scar\_Hemat\ldots{} & 1.04564108\ldots{} & 1.40598233\ldots{} & 0.024 & 1 & 0.00313692\ldots{} & CHSY1\tabularnewline
+Scar\_Hemat\ldots{} & 1.10616882\ldots{} & 8.49062033\ldots{} & 0.022 & 0.667 & 0.00331850\ldots{} & NTRK2\tabularnewline
+Scar\_Hemat\ldots{} & 1.32705918\ldots{} & 2.57196817\ldots{} & 0.012 & 0.778 & 0.00398117\ldots{} & TRIM25\tabularnewline
+Scar\_Hemat\ldots{} & 1.34570508\ldots{} & 2.90265755\ldots{} & 0.022 & 0.556 & 0.00403711\ldots{} & SLC40A1\tabularnewline
+Scar\_Hemat\ldots{} & 1.56816847\ldots{} & 8.08654102\ldots{} & 0.032 & 0.889 & 0.00470450\ldots{} & ITPR1\tabularnewline
+Scar\_Hemat\ldots{} & 1.63472658\ldots{} & 4.54715445\ldots{} & 0.027 & 0.222 & 0.00490417\ldots{} & TSPAN5\tabularnewline
+Scar\_Hemat\ldots{} & 1.72770803\ldots{} & 8.32439693\ldots{} & 0.039 & 0.889 & 0.00518312\ldots{} & CD70\tabularnewline
+Scar\_Hemat\ldots{} & 1.72770803\ldots{} & 5.75361787\ldots{} & 0.034 & 1 & 0.00518312\ldots{} & MTSS1\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{hnrnph1-ux7684ux8868ux8fbe}{%
+\paragraph{HNRNPH1 的表达}\label{hnrnph1-ux7684ux8868ux8fbe}}
+
+HNRNPH1 在这批单细胞数据中，为非差异表达基因。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p.mapHn\_cell \textless{}{-}}\StringTok{ }\KeywordTok{focus}\NormalTok{(sr, }\StringTok{"HNRNPH1"}\NormalTok{)}
+\NormalTok{p.mapHn\_group \textless{}{-}}\StringTok{ }\KeywordTok{focus}\NormalTok{(sr, }\StringTok{"HNRNPH1"}\NormalTok{, }\StringTok{"orig.ident"}\NormalTok{)}
+\KeywordTok{wrap}\NormalTok{(p.mapHn\_group}\OperatorTok{$}\NormalTok{p.vln, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+
+\CommentTok{\# No results}
+\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(sr}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{HN\_group, gene }\OperatorTok{==}\StringTok{ "HNRNPH1"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:Violing-plot-of-expression-level-of-the-HNRNPH1} (下方图) 为图Violing plot of expression level of the HNRNPH1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Violing-plot-of-expression-level-of-the-HNRNPH1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Violing-plot-of-expression-level-of-the-HNRNPH1.pdf}
+\caption{Violing plot of expression level of the HNRNPH1}\label{fig:Violing-plot-of-expression-level-of-the-HNRNPH1}
+\end{center}
+
+\hypertarget{wnt-ux901aux8defux57faux56e0ux7684ux8868ux8fbe}{%
+\paragraph{Wnt 通路基因的表达}\label{wnt-ux901aux8defux57faux56e0ux7684ux8868ux8fbe}}
+
+\begin{itemize}
+\tightlist
+\item
+  scRNA-seq, Scar vs Skin (Fibroblast, Pericyte), TP53 \(\downarrow\), APCDD1 \(\uparrow\)
+\item
+  RNA-seq, 姜黄素给药, TP53 \(\uparrow\), APCDD1 \(\downarrow\)
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{scDegs.wnt \textless{}{-}}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(sr}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{HN\_group, gene }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{genes.wnt}\OperatorTok{$}\NormalTok{geneName\_list)}
+\NormalTok{scDegs.wnt}
+
+\NormalTok{scCell.degWnt \textless{}{-}}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{ids}\NormalTok{(sr, }\StringTok{"scsa\_cell"}\NormalTok{, F) }\OperatorTok{\%in\%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Fibroblast"}\NormalTok{, }\StringTok{"Pericyte"}\NormalTok{))}
+\NormalTok{scCell.degWnt}
+
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{mutate}\NormalTok{(sr, }\DataTypeTok{cellType\_group =} \KeywordTok{gs}\NormalTok{(group\_cellType, }\StringTok{"\^{}([\^{}\_]+)\_(.*)"}\NormalTok{, }\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{2\_}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{1"}\NormalTok{))}
+\NormalTok{p.hpWnt \textless{}{-}}\StringTok{ }\KeywordTok{map}\NormalTok{(sr, scDegs.wnt}\OperatorTok{$}\NormalTok{gene, }\DataTypeTok{group.by =} \StringTok{"cellType\_group"}\NormalTok{, }\DataTypeTok{cells =}\NormalTok{ scCell.degWnt)}
+\NormalTok{p.hpWnt}
+
+\NormalTok{p.focScDegWnt \textless{}{-}}\StringTok{ }\KeywordTok{focus}\NormalTok{(}\KeywordTok{getsub}\NormalTok{(sr, }\DataTypeTok{cells =}\NormalTok{ scCell.degWnt),}
+\NormalTok{  scDegs.wnt}\OperatorTok{$}\NormalTok{gene, }\DataTypeTok{group.by =} \StringTok{"cellType\_group"}
+\NormalTok{)}
+\NormalTok{p.focScDegWnt}\OperatorTok{$}\NormalTok{p.vln}
+\end{Highlighting}
+\end{Shaded}
+
+Table \ref{tab:Wnt-DEGs-of-Curcumin-affected} (下方表格) 为表格Wnt DEGs of Curcumin affected概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Wnt-DEGs-of-Curcumin-affected.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有8行7列，以下预览的表格可能省略部分数据；含有2个唯一`contrast'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Wnt-DEGs-of-Curcumin-affected}Wnt DEGs of Curcumin affected}\tabularnewline
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj & gene\tabularnewline
+\midrule
+\endhead
+Scar\_Fibro\ldots{} & 8.27560595\ldots{} & 3.85702595\ldots{} & 0.157 & 0.584 & 2.48268178\ldots{} & NFATC4\tabularnewline
+Scar\_Fibro\ldots{} & 3.73579114\ldots{} & 1.64972906\ldots{} & 0.245 & 0.317 & 1.12073734\ldots{} & APCDD1\tabularnewline
+Scar\_Fibro\ldots{} & 2.83791959\ldots{} & 1.52983006\ldots{} & 0.31 & 0.362 & 8.51375879\ldots{} & CTNNB1\tabularnewline
+Scar\_Fibro\ldots{} & 2.54894125\ldots{} & 0.60325628\ldots{} & 0.112 & 0.288 & 7.64682377\ldots{} & CAMK2D\tabularnewline
+Scar\_Fibro\ldots{} & 4.69293478\ldots{} & -2.8547127\ldots{} & 0.382 & 0.133 & 1.40788043\ldots{} & SKP1\tabularnewline
+Scar\_Peric\ldots{} & 1.03782691\ldots{} & 2.97367652\ldots{} & 0.112 & 0.863 & 3.11348075\ldots{} & NFATC4\tabularnewline
+Scar\_Peric\ldots{} & 5.43911467\ldots{} & 2.00598608\ldots{} & 0.216 & 0.925 & 1.63173440\ldots{} & APCDD1\tabularnewline
+Scar\_Peric\ldots{} & 5.30098924\ldots{} & -2.3467874\ldots{} & 0.052 & 0.125 & 0.00015902\ldots{} & TP53\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:Heatmap-show-the-Wnt-DEGs-of-Curcumin-affected} (下方图) 为图Heatmap show the Wnt DEGs of Curcumin affected概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Heatmap-show-the-Wnt-DEGs-of-Curcumin-affected.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Heatmap-show-the-Wnt-DEGs-of-Curcumin-affected.pdf}
+\caption{Heatmap show the Wnt DEGs of Curcumin affected}\label{fig:Heatmap-show-the-Wnt-DEGs-of-Curcumin-affected}
+\end{center}
+
+Figure \ref{fig:Violing-plot-of-Wnt-DEGs-of-Curcumin-affected} (下方图) 为图Violing plot of Wnt DEGs of Curcumin affected概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Violing-plot-of-Wnt-DEGs-of-Curcumin-affected.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Violing-plot-of-Wnt-DEGs-of-Curcumin-affected.pdf}
+\caption{Violing plot of Wnt DEGs of Curcumin affected}\label{fig:Violing-plot-of-Wnt-DEGs-of-Curcumin-affected}
+\end{center}
+
+\hypertarget{ux62dfux65f6ux5206ux6790}{%
+\subsubsection{拟时分析}\label{ux62dfux65f6ux5206ux6790}}
+
+\hypertarget{ux62dfux65f6ux7ec8ux70b9ux4e0e-apcdd1}{%
+\paragraph{拟时终点与 APCDD1}\label{ux62dfux65f6ux7ec8ux70b9ux4e0e-apcdd1}}
+
+这里发现 Fig. \ref{fig:Dimension-plot-of-expression-level-of-the-Wnt-Degs}
+APCDD1 集中表达于一个区域，因此这里尝试将该区域选定为拟时终点。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{do\_monocle}\NormalTok{(sr, }\StringTok{"Fibroblast"}\NormalTok{)}
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(mn, }\StringTok{"cellType\_group"}\NormalTok{, }\DataTypeTok{pre =}\NormalTok{ T)}
+\KeywordTok{wrap}\NormalTok{(mn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.prin, }\DecValTok{5}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+
+\NormalTok{p.srSub\_wnt \textless{}{-}}\StringTok{ }\KeywordTok{focus}\NormalTok{(mn}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{sr\_sub, scDegs.wnt}\OperatorTok{$}\NormalTok{gene)}
+\NormalTok{p.srSub\_wnt}\OperatorTok{$}\NormalTok{p.dim}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:Principal-points} (下方图) 为图Principal points概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Principal-points.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Principal-points.pdf}
+\caption{Principal points}\label{fig:Principal-points}
+\end{center}
+
+Figure \ref{fig:Dimension-plot-of-expression-level-of-the-Wnt-Degs} (下方图) 为图Dimension plot of expression level of the Wnt Degs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Dimension-plot-of-expression-level-of-the-Wnt-Degs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Dimension-plot-of-expression-level-of-the-Wnt-Degs.pdf}
+\caption{Dimension plot of expression level of the Wnt Degs}\label{fig:Dimension-plot-of-expression-level-of-the-Wnt-Degs}
+\end{center}
+
+\hypertarget{apcdd1-ux4e3bux8981ux5728-scar-ux4e2dux9ad8ux8868ux8fbe}{%
+\paragraph{APCDD1 主要在 Scar 中高表达}\label{apcdd1-ux4e3bux8981ux5728-scar-ux4e2dux9ad8ux8868ux8fbe}}
+
+随后发现，APCDD1 的确在拟时末期高表达，而且是主要在 Scar 组织中高表达，见
+Fig. \ref{fig:APCDD1-pseudotime-density}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(mn, }\KeywordTok{c}\NormalTok{(}\StringTok{"Y\_3"}\NormalTok{, }\StringTok{"Y\_6"}\NormalTok{))}
+\NormalTok{mn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.pseu}
+
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(mn, }\DataTypeTok{group.by =} \StringTok{"seurat\_clusters"}\NormalTok{)}
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{step4}\NormalTok{(mn, }\KeywordTok{ids}\NormalTok{(mn), }\StringTok{"APCDD1"}\NormalTok{, }\StringTok{"cellType\_group"}\NormalTok{)}
+
+\NormalTok{mn}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{graph\_test.sig}
+\NormalTok{mn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step4}\OperatorTok{$}\NormalTok{genes\_in\_pseudotime}\OperatorTok{$}\NormalTok{pseudo1}
+\NormalTok{mn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step4}\OperatorTok{$}\NormalTok{plot\_density}\OperatorTok{$}\NormalTok{pseudo1}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:Pseudotime} (下方图) 为图Pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Pseudotime.pdf}
+\caption{Pseudotime}\label{fig:Pseudotime}
+\end{center}
+
+Table \ref{tab:graph-test-significant-results} (下方表格) 为表格graph test significant results概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/graph-test-significant-results.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有5090行6列，以下预览的表格可能省略部分数据；含有5090个唯一`gene\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item gene\_id:  GENCODE/Ensembl gene ID
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:graph-test-significant-results}Graph test significant results}\tabularnewline
+\toprule
+gene\_id & status & p\_value & morans\_tes\ldots{} & morans\_I & q\_value\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+gene\_id & status & p\_value & morans\_tes\ldots{} & morans\_I & q\_value\tabularnewline
+\midrule
+\endhead
+CTHRC1 & OK & 0 & 82.0068307\ldots{} & 0.49377906\ldots{} & 0\tabularnewline
+APCDD1 & OK & 0 & 81.8052541\ldots{} & 0.49183724\ldots{} & 0\tabularnewline
+PI16 & OK & 0 & 79.1167758\ldots{} & 0.47634067\ldots{} & 0\tabularnewline
+IGFBP7 & OK & 0 & 78.4677201\ldots{} & 0.47238376\ldots{} & 0\tabularnewline
+FOS & OK & 0 & 78.0245837\ldots{} & 0.46974828\ldots{} & 0\tabularnewline
+WISP2 & OK & 0 & 77.1253098\ldots{} & 0.46433708\ldots{} & 0\tabularnewline
+PDGFRL & OK & 0 & 74.1245797\ldots{} & 0.44626545\ldots{} & 0\tabularnewline
+C1QTNF3 & OK & 0 & 72.9964250\ldots{} & 0.43937764\ldots{} & 0\tabularnewline
+FBLN1 & OK & 0 & 69.0651449\ldots{} & 0.41554895\ldots{} & 0\tabularnewline
+ELN & OK & 0 & 68.4719775\ldots{} & 0.41216524\ldots{} & 0\tabularnewline
+MFAP5 & OK & 0 & 68.3194338\ldots{} & 0.41124414\ldots{} & 0\tabularnewline
+MMP2 & OK & 0 & 68.3131206\ldots{} & 0.41117358\ldots{} & 0\tabularnewline
+SEMA3B & OK & 0 & 64.3202720\ldots{} & 0.38704468\ldots{} & 0\tabularnewline
+SOD2 & OK & 0 & 64.0519950\ldots{} & 0.38551658\ldots{} & 0\tabularnewline
+APOE & OK & 0 & 64.0171412\ldots{} & 0.38530148\ldots{} & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:APCDD1-pseudotime-curve} (下方图) 为图APCDD1 pseudotime curve概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/APCDD1-pseudotime-curve.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/APCDD1-pseudotime-curve.pdf}
+\caption{APCDD1 pseudotime curve}\label{fig:APCDD1-pseudotime-curve}
+\end{center}
+
+Figure \ref{fig:APCDD1-pseudotime-density} (下方图) 为图APCDD1 pseudotime density概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/APCDD1-pseudotime-density.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/APCDD1-pseudotime-density.pdf}
+\caption{APCDD1 pseudotime density}\label{fig:APCDD1-pseudotime-density}
+\end{center}
+
+\hypertarget{fibroblast-ux62dfux65f6ux8f68ux8ff9ux4e0bux7684ux5deeux5f02ux57faux56e0}{%
+\paragraph{Fibroblast 拟时轨迹下的差异基因}\label{fibroblast-ux62dfux65f6ux8f68ux8ff9ux4e0bux7684ux5deeux5f02ux57faux56e0}}
+
+\begin{itemize}
+\tightlist
+\item
+  GO 富集表明，差异基因主要富集于和 Collagen 相关的通路。
+\item
+  APCDD1 为排名第 2 的差异基因。
+\item
+  在两个主要的拟时分支中，APCDD1 均呈表达量上升趋势。
+\item
+  APCDD1 是 Top 50 的差异基因中，唯一和 Wnt 相关且姜黄素对其有调控作用的基因
+  见 Fig. \ref{fig:Pseudotime-heatmap-of-genes}。
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{scDegs.pseu \textless{}{-}}\StringTok{ }\KeywordTok{head}\NormalTok{(dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(mn}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{graph\_test.sig, q\_value }\OperatorTok{\textless{}}\StringTok{ }\FloatTok{.000001}\NormalTok{), }\DecValTok{500}\NormalTok{)}
+
+\NormalTok{en.pseu \textless{}{-}}\StringTok{ }\KeywordTok{job\_enrich}\NormalTok{(scDegs.pseu}\OperatorTok{$}\NormalTok{gene\_id)}
+\NormalTok{en.pseu \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(en.pseu)}
+\NormalTok{en.pseu}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.go}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:PSEU-GO-enrichment} (下方图) 为图PSEU GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PSEU-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PSEU-GO-enrichment.pdf}
+\caption{PSEU GO enrichment}\label{fig:PSEU-GO-enrichment}
+\end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{genes.allWnt \textless{}{-}}\StringTok{ }\KeywordTok{get\_genes.keggPath}\NormalTok{(}\StringTok{"hsa04310"}\NormalTok{)}
+
+\NormalTok{p.hpPseu \textless{}{-}}\StringTok{ }\KeywordTok{map}\NormalTok{(mn, }\KeywordTok{head}\NormalTok{(scDegs.pseu}\OperatorTok{$}\NormalTok{gene\_id, }\DecValTok{50}\NormalTok{), }\DataTypeTok{enrich =}\NormalTok{ en.pseu,}
+  \DataTypeTok{branches =} \KeywordTok{list}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"Y\_6"}\NormalTok{, }\StringTok{"Y\_24"}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\StringTok{"Y\_3"}\NormalTok{, }\StringTok{"Y\_24"}\NormalTok{)),}
+  \DataTypeTok{HLs =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{Wnt =}\NormalTok{ genes.allWnt, }\DataTypeTok{Curcumin\_Wnt =}\NormalTok{ genes.wnt}\OperatorTok{$}\NormalTok{geneName\_list,}
+    \DataTypeTok{Curcumin\_alls =}\NormalTok{ Tops}\OperatorTok{$}\NormalTok{hgnc\_symbol)}
+\NormalTok{)}
+
+\NormalTok{p.hpPseu}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:Pseudotime-heatmap-of-genes} (下方图) 为图Pseudotime heatmap of genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Pseudotime-heatmap-of-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Pseudotime-heatmap-of-genes.pdf}
+\caption{Pseudotime heatmap of genes}\label{fig:Pseudotime-heatmap-of-genes}
+\end{center}
+
+\hypertarget{ux59dcux9ec4ux7d20ux6709ux8c03ux63a7ux4f5cux7528ux7684ux9776ux70b9-ux6240ux6709ux7684ux5deeux5f02ux57faux56e0ux4e2d}{%
+\paragraph{姜黄素有调控作用的靶点 (所有的差异基因中)}\label{ux59dcux9ec4ux7d20ux6709ux8c03ux63a7ux4f5cux7528ux7684ux9776ux70b9-ux6240ux6709ux7684ux5deeux5f02ux57faux56e0ux4e2d}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p.vennTreatPseu \textless{}{-}}\StringTok{ }\KeywordTok{new\_venn}\NormalTok{(}
+  \DataTypeTok{FB\_pseu\_DEGs =}\NormalTok{ scDegs.pseu}\OperatorTok{$}\NormalTok{gene\_id,}
+  \DataTypeTok{Treat\_DEGs =}\NormalTok{ Tops}\OperatorTok{$}\NormalTok{hgnc\_symbol}
+\NormalTok{)}
+\NormalTok{p.vennTreatPseu}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:Intersection-of-FB-pseu-DEGs-with-Treat-DEGs} (下方图) 为图Intersection of FB pseu DEGs with Treat DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-FB-pseu-DEGs-with-Treat-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-FB-pseu-DEGs-with-Treat-DEGs.pdf}
+\caption{Intersection of FB pseu DEGs with Treat DEGs}\label{fig:Intersection-of-FB-pseu-DEGs-with-Treat-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    APCDD1, ELN, CRYAB, DCN, CTSK, RGCC, CCL2, IGFBP5,
+CRABP2, AEBP1, PPIB, PLD3, POSTN, CTSC, ZFP36, BSG, BIRC3,
+TMEM258, FTL, ID3, FN1, NFE2L2, FKBP7, TNFAIP3, PYCR1,
+TIMP1, S100A10, CES1, OLFM2, KPNA2, FTH1, TMED10, DDX5,
+IL6, COL13A1, DPP7, RPL28, HTRA3, PDIA3, TNXB, C1QTNF2,
+CTSB, ASAH1, GLT8D1,...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-FB-pseu-DEGs-with-Treat-DEGs-content})}
+
+\hypertarget{ux7ec6ux80deux901aux8baf}{%
+\subsubsection{细胞通讯}\label{ux7ec6ux80deux901aux8baf}}
+
+\hypertarget{ux603bux4f53ux901aux8baf}{%
+\paragraph{总体通讯}\label{ux603bux4f53ux901aux8baf}}
+
+因为 Fig. \ref{fig:Pseudotime-heatmap-of-genes} 所示，末期的 APCDD1 表达量升高，
+这里尝试将 Fibroblast 细胞分为 Begins 和 Ends 两组，作为两种亚型，和其它细胞
+做细胞通讯分析。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mn \textless{}{-}}\StringTok{ }\KeywordTok{add\_anno}\NormalTok{(mn, }\DataTypeTok{branches =} \KeywordTok{list}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"Y\_6"}\NormalTok{, }\StringTok{"Y\_24"}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\StringTok{"Y\_3"}\NormalTok{, }\StringTok{"Y\_24"}\NormalTok{)))}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{map}\NormalTok{(sr, mn)}
+\NormalTok{sr \textless{}{-}}\StringTok{ }\KeywordTok{mutate}\NormalTok{(sr,}
+  \DataTypeTok{branch\_time =} \KeywordTok{paste0}\NormalTok{(}\StringTok{"B:"}\NormalTok{, }\KeywordTok{ifelse}\NormalTok{(pseudotime }\OperatorTok{\textgreater{}}\StringTok{ }\DecValTok{10}\NormalTok{, }\StringTok{"Ends"}\NormalTok{, }\StringTok{"Begins"}\NormalTok{)),}
+  \DataTypeTok{cellType\_sub =} \KeywordTok{as.character}\NormalTok{(scsa\_cell),}
+  \DataTypeTok{cellType\_sub =} \KeywordTok{ifelse}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(pseudotime), cellType\_sub, }\KeywordTok{paste0}\NormalTok{(cellType\_sub, }\StringTok{":"}\NormalTok{, branch\_time)),}
+  \DataTypeTok{cellType\_sub =} \KeywordTok{as.factor}\NormalTok{(cellType\_sub)}
+\NormalTok{)}
+\NormalTok{sr}\OperatorTok{@}\NormalTok{object}\OperatorTok{@}\NormalTok{meta.data}\OperatorTok{$}\NormalTok{cellType\_sub }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{table}
+
+\NormalTok{cc \textless{}{-}}\StringTok{ }\KeywordTok{asjob\_cellchat}\NormalTok{(sr, }\StringTok{"cellType\_sub"}\NormalTok{)}
+\NormalTok{cc \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(cc)}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{p.aggre\_count}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:Overall-communication-count} (下方图) 为图Overall communication count概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-communication-count.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-communication-count.pdf}
+\caption{Overall communication count}\label{fig:Overall-communication-count}
+\end{center}
+
+Figure \ref{fig:Overall-communication-weight} (下方图) 为图Overall communication weight概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-communication-weight.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-communication-weight.pdf}
+\caption{Overall communication weight}\label{fig:Overall-communication-weight}
+\end{center}
+
+\hypertarget{fibroblast-ux5206ux652fux4e0eux514dux75abux7ec6ux80de}{%
+\paragraph{Fibroblast 分支与免疫细胞}\label{fibroblast-ux5206ux652fux4e0eux514dux75abux7ec6ux80de}}
+
+这里比较了 FB:ends 和 FB:begins 与两种免疫细胞 Microphage、dendritic cells 的通讯 (pathway) 的不同之处。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fun\_diff \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(data, use) \{}
+\NormalTok{  pair \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"source"}\NormalTok{, }\StringTok{"target"}\NormalTok{)}
+\NormalTok{  pair \textless{}{-}}\StringTok{ }\NormalTok{pair[ pair }\OperatorTok{!=}\StringTok{ }\NormalTok{use ]}
+  \KeywordTok{lapply}\NormalTok{(}\KeywordTok{split}\NormalTok{(data, data[[ use ]]),}
+    \ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{      fun \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(pat) \{}
+        \KeywordTok{unique}\NormalTok{(dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(x, }\KeywordTok{grpl}\NormalTok{(}\OperatorTok{!!}\NormalTok{rlang}\OperatorTok{::}\KeywordTok{sym}\NormalTok{(pair), }\OperatorTok{!!}\NormalTok{pat))}\OperatorTok{$}\NormalTok{pathway\_name)}
+\NormalTok{      \}}
+\NormalTok{      ends \textless{}{-}}\StringTok{ }\KeywordTok{fun}\NormalTok{(}\StringTok{"Ends"}\NormalTok{)}
+\NormalTok{      begins \textless{}{-}}\StringTok{ }\KeywordTok{fun}\NormalTok{(}\StringTok{"Begin"}\NormalTok{)}
+      \KeywordTok{unique}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{setdiff}\NormalTok{(ends, begins), }\KeywordTok{setdiff}\NormalTok{(begins, ends)))}
+\NormalTok{    \})}
+\NormalTok{\}}
+
+\NormalTok{chat.alltarget \textless{}{-}}\StringTok{ }\KeywordTok{select\_pathway}\NormalTok{(cc, }\StringTok{"Begins|Ends"}\NormalTok{, }\StringTok{"\^{}[\^{}:]+$"}\NormalTok{, }\StringTok{"path"}\NormalTok{)}
+\NormalTok{diff.tar \textless{}{-}}\StringTok{ }\KeywordTok{fun\_diff}\NormalTok{(chat.alltarget, }\StringTok{"target"}\NormalTok{)}
+
+\NormalTok{chat.allsource \textless{}{-}}\StringTok{ }\KeywordTok{select\_pathway}\NormalTok{(cc, }\StringTok{"\^{}[\^{}:]+$"}\NormalTok{, }\StringTok{"Begins|Ends"}\NormalTok{, }\StringTok{"path"}\NormalTok{)}
+\NormalTok{diff.sour \textless{}{-}}\StringTok{ }\KeywordTok{fun\_diff}\NormalTok{(chat.allsource, }\StringTok{"source"}\NormalTok{)}
+
+\NormalTok{diff.imm \textless{}{-}}\StringTok{ }\KeywordTok{unique}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{lapply}\NormalTok{(}\KeywordTok{list}\NormalTok{(diff.sour, diff.tar),}
+      \ControlFlowTok{function}\NormalTok{(x) x[ }\KeywordTok{grpl}\NormalTok{(}\KeywordTok{names}\NormalTok{(x), }\StringTok{"Dendri|Macro"}\NormalTok{) ])))}
+\NormalTok{diff.imm}
+\CommentTok{\# [1] "CD99"     "COLLAGEN" "MIF"      "MK"      }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{diff-chat}{%
+\paragraph{差异通讯}\label{diff-chat}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cc \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(cc, diff.imm)}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{cell\_comm\_heatmap}\OperatorTok{$}\NormalTok{COLLAGEN}
+\NormalTok{cc}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{cell\_comm\_heatmap}\OperatorTok{$}\NormalTok{ALL}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:Diff-path-COLLAGEN} (下方图) 为图Diff path COLLAGEN概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Diff-path-COLLAGEN.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Diff-path-COLLAGEN.pdf}
+\caption{Diff path COLLAGEN}\label{fig:Diff-path-COLLAGEN}
+\end{center}
+
+`Diff path others' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Diff-path-others})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Diff-path-others共包含5个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_ALL.pdf
+\item 2\_COLLAGEN.pdf
+\item 3\_MIF.pdf
+\item 4\_MK.pdf
+\item 5\_CD99.pdf
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{others}{%
+\paragraph{Others}\label{others}}
+
+`Ligand receptor roles' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/ligand-receptor-roles})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/ligand-receptor-roles共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_outgoing.pdf
+\item 2\_incoming.pdf
+\item 3\_all.pdf
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\hypertarget{ux86cbux767dux4e92ux4f5c-ppi}{%
+\paragraph{蛋白互作 (PPI)}\label{ux86cbux767dux4e92ux4f5c-ppi}}
+
+推测，Wnt 通路的表达变化可能影响到 FB:begins 和 FB:ends 与免疫细胞的通讯差异，
+因此这里试着构建 PPI 网络 (Functional, 功能网络) ，首要查看姜黄素有调控作用的 Wnt 通路基因
+以及有调控作用的通讯的受体配体基因，两者之间是否存在可能的相互作用。
+
+\begin{itemize}
+\tightlist
+\item
+  Fig. \ref{fig:PPI-Wnt-LR}, CD44 主要位于 COLLAGEN pathway, Tab. \ref{tab:LR-information}
+\item
+  联系 Fig. \ref{fig:Diff-path-COLLAGEN} 可知，是 Macrophage 对 FB:begins 和 FB:ends 的 COLLAGEN 通讯有所不同。
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lp.imm \textless{}{-}}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(cc}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{lp\_net, pathway\_name }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{diff.imm)}
+\NormalTok{lp.imm \textless{}{-}}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{distinct}\NormalTok{(lp.imm[, }\OperatorTok{{-}}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{)], pathway\_name, }\DataTypeTok{.keep\_all =}\NormalTok{ T)}
+\NormalTok{genes.lp.imm \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(lp.imm}\OperatorTok{$}\NormalTok{ligand, lp.imm}\OperatorTok{$}\NormalTok{receptor)}
+\NormalTok{genes.lp.imm \textless{}{-}}\StringTok{ }\KeywordTok{unlist}\NormalTok{(}\KeywordTok{strsplit}\NormalTok{(genes.lp.imm, }\StringTok{"\_"}\NormalTok{))}
+\NormalTok{genes.lp.imm}
+
+\NormalTok{sdb.imm \textless{}{-}}\StringTok{ }\KeywordTok{job\_stringdb}\NormalTok{(}\KeywordTok{c}\NormalTok{(genes.lp.imm, genes.allWnt))}
+\NormalTok{sdb.imm \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(sdb.imm, }\DecValTok{50}\NormalTok{, }\DataTypeTok{network\_type =} \StringTok{"full"}\NormalTok{)}
+
+\NormalTok{lstPPI.imm \textless{}{-}}\StringTok{ }\KeywordTok{filter}\NormalTok{(sdb.imm,}
+\NormalTok{  genes.wnt}\OperatorTok{$}\NormalTok{geneName\_list, genes.lp.imm,}
+  \DataTypeTok{level.x =}\NormalTok{ dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(Tops, hgnc\_symbol, logFC),}
+  \DataTypeTok{top =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{keep.ref =}\NormalTok{ F, }\DataTypeTok{arrow =}\NormalTok{ F, }\DataTypeTok{HLs =} \StringTok{"CD44"}\NormalTok{,}
+  \DataTypeTok{label.shape =} \KeywordTok{c}\NormalTok{(}\DataTypeTok{from =} \StringTok{"Wnt"}\NormalTok{, }\DataTypeTok{to =} \StringTok{"Immune\_LR"}\NormalTok{)}
+\NormalTok{)}
+\NormalTok{lstPPI.imm}\OperatorTok{$}\NormalTok{p.mcc}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:PPI-Wnt-LR} (下方图) 为图PPI Wnt LR概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-Wnt-LR.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPI-Wnt-LR.pdf}
+\caption{PPI Wnt LR}\label{fig:PPI-Wnt-LR}
+\end{center}
+
+Table \ref{tab:LR-information} (下方表格) 为表格LR information概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LR-information.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4行9列，以下预览的表格可能省略部分数据；含有4个唯一`ligand'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item evidence:  证据，相关文献中的描述。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:LR-information}LR information}\tabularnewline
+\toprule
+ligand & receptor & prob & pval & intera\ldots{} & intera\ldots{} & pathwa\ldots{} & annota\ldots{} & evidence\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ligand & receptor & prob & pval & intera\ldots{} & intera\ldots{} & pathwa\ldots{} & annota\ldots{} & evidence\tabularnewline
+\midrule
+\endhead
+MIF & CD74\_C\ldots{} & 0.0088\ldots{} & 0 & MIF\_CD\ldots{} & MIF - \ldots{} & MIF & Secret\ldots{} & PMID: \ldots{}\tabularnewline
+MDK & SDC1 & 0.0013\ldots{} & 0 & MDK\_SDC1 & MDK - \ldots{} & MK & Secret\ldots{} & PMID: \ldots{}\tabularnewline
+COL1A1 & CD44 & 0.1542\ldots{} & 0 & COL1A1\ldots{} & COL1A1\ldots{} & COLLAGEN & ECM-Re\ldots{} & KEGG: \ldots{}\tabularnewline
+CD99 & CD99 & 0.0712\ldots{} & 0 & CD99\_CD99 & CD99 -\ldots{} & CD99 & Cell-C\ldots{} & KEGG: \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{hnrnph1wnt-ux4e0eux59dcux9ec4ux7d20-1}{%
+\subsection{HNRNPH1、Wnt 与姜黄素}\label{hnrnph1wnt-ux4e0eux59dcux9ec4ux7d20-1}}
+
+\hypertarget{ux5206ux5b50ux5bf9ux63a5ux7ed3ux679c}{%
+\subsubsection{分子对接结果}\label{ux5206ux5b50ux5bf9ux63a5ux7ed3ux679c}}
+
+注：以下蛋白的 PDB 获取于 alphaFold。
+
+\begin{itemize}
+\tightlist
+\item
+  APCDD1 = ``./material/APCDD1.pdb'',
+\item
+  PLCB4 = ``./material/PLCB4.pdb'',
+\item
+  PRICKLE1 = ``./material/PRICKLE1.pdb''
+\end{itemize}
+
+其余 PDB 文件获取于 PDB 数据库
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{job\_vina}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DataTypeTok{Curcumin =} \DecValTok{969516}\NormalTok{), }\KeywordTok{c}\NormalTok{(genes.wnt}\OperatorTok{$}\NormalTok{geneName\_list, }\StringTok{"HNRNPH1"}\NormalTok{))}
+\CommentTok{\# file.copy("\textasciitilde{}/Downloads/AF{-}Q8J025{-}F1{-}model\_v4.pdb", "./material/APCDD1.pdb")}
+\CommentTok{\# file.copy("\textasciitilde{}/Downloads/AF{-}Q15147{-}F1{-}model\_v4.pdb", "./material/PLCB4.pdb")}
+\CommentTok{\# file.copy("\textasciitilde{}/Downloads/AF{-}Q96MT3{-}F1{-}model\_v4.pdb", "./material/PRICKLE1.pdb")}
+
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(vn, }\DataTypeTok{pdbs =} \KeywordTok{c}\NormalTok{(}\DataTypeTok{CAMK2G =} \StringTok{"2V7O"}\NormalTok{))}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(vn)}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(vn, }\DataTypeTok{extra\_pdb.files =} \KeywordTok{c}\NormalTok{(}
+    \DataTypeTok{APCDD1 =} \StringTok{"./material/APCDD1.pdb"}\NormalTok{,}
+    \DataTypeTok{PLCB4 =} \StringTok{"./material/PLCB4.pdb"}\NormalTok{,}
+    \DataTypeTok{PRICKLE1 =} \StringTok{"./material/PRICKLE1.pdb"}\NormalTok{)}
+\NormalTok{)}
+\CommentTok{\# vn \textless{}{-} set\_remote(vn)}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step4}\NormalTok{(vn)}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step5}\NormalTok{(vn, }\DataTypeTok{cutoff.af =} \DecValTok{0}\NormalTok{)}
+\KeywordTok{wrap}\NormalTok{(vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step5}\OperatorTok{$}\NormalTok{p.res\_vina, }\DecValTok{7}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+APCDD1 的对接取得了优异的亲和度能量。
+
+Figure \ref{fig:Overall-combining-Affinity} (下方图) 为图Overall combining Affinity概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-combining-Affinity.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-combining-Affinity.pdf}
+\caption{Overall combining Affinity}\label{fig:Overall-combining-Affinity}
+\end{center}
+
+\hypertarget{ux53efux89c6ux5316}{%
+\subsubsection{可视化}\label{ux53efux89c6ux5316}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step6}\NormalTok{(vn, }\DataTypeTok{top =} \DecValTok{3}\NormalTok{)}
+\NormalTok{vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{Top1\_}\DecValTok{969516}\NormalTok{\_into\_APCDD1}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step7}\NormalTok{(vn)}
+\NormalTok{vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step7}\OperatorTok{$}\NormalTok{Top1\_}\DecValTok{969516}\NormalTok{\_into\_APCDD1}
+\end{Highlighting}
+\end{Shaded}
+
+Figure \ref{fig:Docking-969516-into-APCDD1} (下方图) 为图Docking 969516 into APCDD1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Docking-969516-into-APCDD1.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/969516_into_APCDD1/969516_into_APCDD1.png}
+\caption{Docking 969516 into APCDD1}\label{fig:Docking-969516-into-APCDD1}
+\end{center}
+
+Figure \ref{fig:Docking-969516-into-APCDD1-detail} (下方图) 为图Docking 969516 into APCDD1 detail概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Docking-969516-into-APCDD1-detail.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/969516_into_APCDD1/detail_969516_into_APCDD1.png}
+\caption{Docking 969516 into APCDD1 detail}\label{fig:Docking-969516-into-APCDD1-detail}
+\end{center}
+
+\hypertarget{session}{%
+\subsection{Session Info}\label{session}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sessionInfo}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## R version 4.4.0 (2024-04-24)
+## Platform: x86_64-pc-linux-gnu
+## Running under: Pop!_OS 22.04 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## time zone: Asia/Shanghai
+## tzcode source: system (glibc)
+## 
+## attached base packages:
+## [1] stats4    grid      stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] Seurat_4.9.9.9067           SeuratObject_4.9.9.9091     utils.tool_0.0.0.9000       sp_2.0-0                   
+##  [5] monocle3_1.3.4              SummarizedExperiment_1.30.2 GenomicRanges_1.52.0        GenomeInfoDb_1.36.1        
+##  [9] IRanges_2.34.1              S4Vectors_0.38.1            MatrixGenerics_1.12.3       matrixStats_1.0.0          
+## [13] tidyHeatmap_1.10.1          MCnebula2_0.0.9000          ggplot2_3.4.2               biomaRt_2.56.1             
+## [17] Biobase_2.60.0              BiocGenerics_0.46.0         nvimcom_0.9-146            
+## 
+## loaded via a namespace (and not attached):
+##   [1] DBI_1.1.3                 httr_1.4.6                registry_0.5-1            BiocParallel_1.34.2      
+##   [5] prettyunits_1.1.1         yulab.utils_0.0.7         ggplotify_0.1.2           sparseMatrixStats_1.12.2 
+##   [9] brio_1.1.3                spatstat.geom_3.2-4       celldex_1.10.1            pillar_1.9.0             
+##  [13] Rgraphviz_2.44.0          R6_2.5.1                  boot_1.3-30               mime_0.12                
+##  [17] lmom_2.9                  sysfonts_0.8.8            reticulate_1.31           uwot_0.1.16              
+##  [21] gridtext_0.1.5            viridis_0.6.4             Rhdf5lib_1.22.0           polspline_1.1.23         
+##  [25] ROCR_1.0-11               Hmisc_5.1-0               ggpubr_0.6.0              rprojroot_2.0.3          
+##  [29] downloader_0.4            parallelly_1.36.0         GlobalOptions_0.1.2       FNN_1.1.3.2              
+##  [33] caTools_1.18.2            polyclip_1.10-4           rms_6.7-0                 NMF_0.26                 
+##  [37] beachmat_2.16.0           htmltools_0.5.6           fansi_1.0.4               ropls_1.32.0             
+##  [41] showtext_0.9-6            e1071_1.7-13              remotes_2.4.2.1           ggrepel_0.9.3            
+##  [45] qqman_0.1.8               classInt_0.4-9            car_3.1-2                 ComplexHeatmap_2.16.0    
+##  [49] fgsea_1.26.0              forcats_1.0.0             scuttle_1.10.2            spatstat.utils_3.0-3     
+##  [53] HDO.db_0.99.1             clusterProfiler_4.9.0.002 rpart_4.1.23              clue_0.3-64              
+##  [57] scatterpie_0.2.1          fitdistrplus_1.1-11       goftest_1.2-3             tidyselect_1.2.0         
+##  [61] RSQLite_2.3.1             cowplot_1.1.1             GenomeInfoDbData_1.2.10   utf8_1.2.3               
+##  [65] ScaledMatrix_1.8.1        scattermore_1.2           rvest_1.0.3               spatstat.data_3.0-1      
+##  [69] gridExtra_2.3             fs_1.6.3                  sctransform_0.4.0         RColorBrewer_1.1-3       
+##  [73] future.apply_1.11.0       ggVennDiagram_1.2.2       graph_1.78.0              R.oo_1.25.0              
+##  [77] RcppHNSW_0.4.1            uuid_1.1-0                tinytex_0.46              Rtsne_0.16               
+##  [81] DelayedMatrixStats_1.22.5 lazyeval_0.2.2            scales_1.2.1              carData_3.0-5            
+##  [85] munsell_0.5.0             openai_0.4.1              gsubfn_0.7                treeio_1.24.3            
+##  [89] R.utils_2.12.2            KEGGgraph_1.60.0          bitops_1.0-7              R.methodsS3_1.8.2        
+##  [93] labeling_0.4.2            agricolae_1.3-6           proto_1.0.0               KEGGREST_1.40.0          
+##  [97] promises_1.2.1            shape_1.4.6               rhdf5filters_1.12.1       terra_1.7-39             
+##  [ reached getOption("max.print") -- omitted 248 entries ]
+\end{verbatim}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-InferenceAndAJinS2021}{}%
+1. Jin, S. \emph{et al.} Inference and analysis of cell-cell communication using cellchat. \emph{Nature Communications} \textbf{12}, (2021).
+
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+2. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+3. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+4. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+5. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+6. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-ReversedGraphQiuX2017}{}%
+7. Qiu, X. \emph{et al.} Reversed graph embedding resolves complex single-cell trajectories. \emph{Nature Methods} \textbf{14}, (2017).
+
+\leavevmode\hypertarget{ref-TheDynamicsAnTrapne2014}{}%
+8. Trapnell, C. \emph{et al.} The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. \emph{Nature Biotechnology} \textbf{32}, (2014).
+
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+9. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
+10. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-AutodockVina1Eberha2021}{}%
+11. Eberhardt, J., Santos-Martins, D., Tillack, A. F. \& Forli, S. AutoDock vina 1.2.0: New docking methods, expanded force field, and python bindings. \emph{Journal of Chemical Information and Modeling} \textbf{61}, 3891--3898 (2021).
+
+\leavevmode\hypertarget{ref-AutogridfrImpZhang2019}{}%
+12. Zhang, Y., Forli, S., Omelchenko, A. \& Sanner, M. F. AutoGridFR: Improvements on autodock affinity maps and associated software tools. \emph{Journal of computational chemistry} \textbf{40}, 2882--2886 (2019).
+
+\leavevmode\hypertarget{ref-AutodockCrankpZhang2019}{}%
+13. Zhang, Y. \& Sanner, M. F. AutoDock crankpep: Combining folding and docking to predict protein-peptide complexes. \emph{Bioinformatics (Oxford, England)} \textbf{35}, 5121--5127 (2019).
+
+\leavevmode\hypertarget{ref-AutositeAnAuRavind2016}{}%
+14. Ravindranath, P. A. \& Sanner, M. F. AutoSite: An automated approach for pseudo-ligands prediction-from ligand-binding sites identification to predicting key ligand atoms. \emph{Bioinformatics (Oxford, England)} \textbf{32}, 3142--3149 (2016).
+
+\leavevmode\hypertarget{ref-AutodockfrAdvRavind2015}{}%
+15. Ravindranath, P. A., Forli, S., Goodsell, D. S., Olson, A. J. \& Sanner, M. F. AutoDockFR: Advances in protein-ligand docking with explicitly specified binding site flexibility. \emph{PLoS computational biology} \textbf{11}, (2015).
+
+\leavevmode\hypertarget{ref-PathviewAnRLuoW2013}{}%
+16. Luo, W. \& Brouwer, C. Pathview: An r/bioconductor package for pathway-based data integration and visualization. \emph{Bioinformatics (Oxford, England)} \textbf{29}, 1830--1831 (2013).
+
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+17. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+\end{cslreferences}
+
+\end{document}

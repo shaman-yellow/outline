@@ -1,0 +1,891 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    keep_md: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \definecolor{shadecolor}{RGB}{230,230,230}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
+  \tcbuselibrary{breakable}
+  \renewenvironment{Shaded}
+  {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
+    arc = 1mm, auto outer arc, title = {R input}]}
+  {\end{tcolorbox}}
+  \usepackage{titlesec}
+  \titleformat{\paragraph}
+  {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
+---
+
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(5), eval = ic(2, 3, 2, 0, 3), lock = F)
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset(echo = T)
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r, echo = F}
+# "../2023_07_07_eval"
+```
+
+## 需求
+
+1. 客户的 RNA-seq 数据集，以 DEGs 建立 PPI 网络，试分析 HNRNPH1 的作用，以及 wnt 通路。
+2. scRNA-seq (可能需要两组数据，瘢痕增生 (SH) 和正常组织), HNRNPH1 的作用，免疫细胞的行为，免疫细胞的 DEGs。
+  - 拟时分析，HNRNPH1 的拟时表达变化等
+  - 细胞通讯，巨噬细胞等的通讯，Wnt 通路相关基因的表达和通讯
+3. 姜黄素对 HNRNPH1 的作用 (直接作用还是间接，是否可以结合，可以尝试分子对接，或者从转录因子角度出发)
+4. 视结果整理，可做一些新的分析，或探究一些新的方法。
+5. 提供分析源代码
+
+```{r, echo = F}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("瘢痕增生")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# SH: scar hyperplasia 瘢痕增生
+```
+
+## 结果
+
+1. 差异分析和 PPI 发现，姜黄素可对 HNRNPH1 和 Wnt 通路的基因具调控作用，且 HNRNPH1 和 Wnt 以 TP53 存在直接互作联系。
+2. scRNA-seq 数据分析，未发现 HNRNPH1 的差异表达；发现了以 APCDD1 为代表的 Wnt 通路基因的表达量变化，且关联斑痕增生。
+   拟时分析表明，拟时末期 APCDD1 在 Fibroblast 中表达量显著上升 (Top 2) 。而姜黄素的 RNA-seq 数据集中，APCDD1 表达量
+   下调。APCDD1 表现为经典 Wnt 通路抑制作用。以上表明，Curcumin 可通过下调 APCDD1，激活经典 Wnt 通路，改善斑痕增生。
+3. 分子对接进一步发现了，Curcumin 与 APCDD1 蛋白的优异结合能，说明 Curcumin 可能通过直接结合 APCDD1 发挥调控作用。
+4. 额外的分析已包含在上述各部分中。
+5. 本文档提供了与图表一一对应的分析源代码。
+   如果客户需要根据源代码重现分析，请注意，所有的源代码和分析均实现于 Linux 系统 (Pop!\_OS 22.04 LTS)。
+   更多系统和 R 配置信息请参考 \@ref(session)。
+   此外，本分析涉及的软件和代码的简要说明见 \@ref(code)
+
+详见 \@ref(results)
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+## HNRNPH1、Wnt 与 PPI 网络分析
+
+对姜黄素 (Curcumin) 的 mRNA 数据集进行差异分析， Fig. \@ref(fig:MAIN-Fig-1)a，
+Wnt 通路为 Fig. \@ref(fig:MAIN-Fig-1)c，所示，Curcumin 可以调控 Wnt 中的多个基因。
+将 HNRNPH1 与 Wnt 的各个调控基因建立 PPI 网络 (Phisical 网络) 。发现 HNRNPH1 与 TP53 存在直接作用。
+而 TP53 与其它 Wnt 蛋白存在互作。
+
+
+```{r}
+fig1 <- cls(
+  cl("./Figure+Table/Treat-vs-control-DEGs.pdf",
+    "./Figure+Table/PPI-HNRNPH1-and-Wnt.pdf"),
+  cl("./Figure+Table/DEG-hsa04310-visualization.png")
+)
+render(fig1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-1
+autor("./Figure+Table/fig1.pdf")
+```
+
+## HNRNPH1、Wnt 与斑痕的 scRNA-seq 分析
+
+分析 GSE156326 的两组数据 (Scar 和 Skin) ，以 Seurat 初步分析，细胞聚类后注释如 Fig. \@ref(fig:SCSA-Cell-type-annotation)a 所示。
+对 Scar 和 Skin 的各类细胞进行差异分析，见 Tab. \@ref(tab:DEGs-of-the-contrasts)，探究 HNRNPH1 和 Wnt 通路
+各个基因的表达，发现 HNRNPH1 为非差异表达基因  (Fig. \@ref(fig:MAIN-Fig-2)b 。
+而在 Fibroblast 细胞和 pericyte 细胞中，共有 6 个差异表达基因  (Fig. \@ref(fig:MAIN-Fig-2)c) 。
+再对这 6 个基因的进一步考察中 (Fibroblast 细胞) ，发现 APCDD1 集中表达于特定区域 (Fig. \@ref(fig:MAIN-Fig-3)a) ，而其它
+基因不具备此特点。
+
+提取 Fibroblast 细胞并重聚类，以 Monocle3 进行拟时分析。这里将 APCDD1 高表达的区域定为拟时终点，随后我们发现
+Fibroblast 可以主要分为 2 大 Branch，向拟时终点变化 (Fig. \@ref(fig:MAIN-Fig-3)b) 。
+绘制 APCDD1 沿拟时轨迹的表达量变化可以发现，APCDD1 在拟时末期时呈上升趋势。进一步探究其来源可以发现，
+APCDD1 在拟时末期时，主要在 Scar 中表达量增加。而结合 Fig. \@ref(fig:MAIN-Fig-1)c 可以知道，Curcumin 是可以
+下调 APCDD1 的表达量。可以推测，Curcumin 对 Fibroblast 细胞 APCDD1 的下调作用，可能改善瘢痕增生。
+
+随后，根据 Fibroblast 拟时图  (Fig. \@ref(fig:MAIN-Fig-3)b) 进行差异分析 (Graph test) 。
+结果见 Tab. \@ref(tab:graph-test-significant-results)。其中，APCDD1 为 Top 2 的差异基因。
+将 Top 50 的差异基因分 2 个分支 (根据 Fig. \@ref(fig:MAIN-Fig-2)) 绘制拟时热图 (Fig. \@ref(fig:MAIN-Fig-4)) ，
+并结合了这些基因在 GO 的富集和是否存在于 Wnt 通路以及 Curcumin 是否对其有调控作用。
+在这些基因中，APCDD1 和 JUN 基因属于 Wnt 通路，在 Curcumin 的数据中，仅 APCDD1 表现出被
+Curcumin 调控表达量变化，为下调趋势。而其余差异基因与 Collagen、ECM 等相关。这些都可能是
+与瘢痕增生密切关联的通路。
+
+结合 Fig. \@ref(fig:MAIN-Fig-3)c，将 Fibroblast Pseudotime &gt; 10 的细胞分为 FB:ends, &lt; 10 的细胞分为
+FB:begins, 和其他细胞做 CellChat 细胞通讯分析，以发现两部分细胞的差异点 (见 Fig. \@ref(fig:MAIN-Fig-5)a 和 b，
+代表通讯数量和权重 (count，weight)) 。
+在这些细胞中，COLLAGEN 通路在输入和输出通路都为强度最高的通路 (Fig. \@ref(fig:MAIN-Fig-5)c、d)。 
+随后，我们对比了 FB:begins 和 FB:ends 和两种免疫细胞 Macrophage 和 Dendritic Cell 的通讯通路差异。
+这些通路包括：`r paste0(diff.imm, collapse = ", ")` (COLLAGEN 的通讯见 Fig. \@ref(fig:MAIN-Fig-5)e，其余可见 \@ref(diff-chat))。
+
+由于 APCDD1 为 Fibroblast 显著差异表达基因 (Top 2) ，这里推测在 Scar 中上调的 APCDD1 所抑制的 Wnt 通路
+会对 Fibroblast 与 免疫细胞之间的通讯带来调控效果。
+因此，我们将 `r paste0(diff.imm, collapse = ", ")` 所涉及的受体配体的基因，与 Wnt 通路的基因 (Curcumin 可调控的) 
+创建功能关联的 PPI 网络，并且将 Curcumin RNA-seq 数据集中，这些基因的表达量变化映射为 Log~2~(FC)。
+随后发现，Wnt 通路基因与上述这些受体配体蛋白存在诸多互作关系，且其中 CD44 可能受姜黄素调控影响。
+
+
+
+```{r}
+fig2 <- cl(
+  rw("./Figure+Table/SCSA-Cell-type-annotation.pdf",
+    "./Figure+Table/Violing-plot-of-expression-level-of-the-HNRNPH1.pdf"),
+  rw("./Figure+Table/Violing-plot-of-Wnt-DEGs-of-Curcumin-affected.pdf")
+)
+render(fig2)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-2
+autor("./Figure+Table/fig2.pdf")
+```
+
+```{r}
+fig3 <- cls(
+  cl("./Figure+Table/Dimension-plot-of-expression-level-of-the-Wnt-Degs.pdf"),
+  cl("./Figure+Table/Pseudotime.pdf",
+    "./Figure+Table/APCDD1-pseudotime-curve.pdf",
+    "./Figure+Table/APCDD1-pseudotime-density.pdf")
+)
+render(fig3)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-3
+autor("./Figure+Table/fig3.pdf")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-4
+autor("./Figure+Table/Pseudotime-heatmap-of-genes.pdf")
+```
+
+```{r}
+fig5 <- cl(
+  # rw(),
+  rw("./Figure+Table/Overall-communication-count.pdf",
+    "./Figure+Table/Overall-communication-weight.pdf"),
+  rw("./Figure+Table/ligand-receptor-roles/2_incoming.pdf",
+    "./Figure+Table/ligand-receptor-roles/1_outgoing.pdf"),
+  rw("./Figure+Table/Diff-path-COLLAGEN.pdf",
+    "./Figure+Table/PPI-Wnt-LR.pdf")
+)
+render(fig5)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-5
+autor("./Figure+Table/fig5.pdf")
+```
+
+
+## HNRNPH1、Wnt 与姜黄素
+
+结合上述发现，Curcumin 可能作用 APCDD1 发挥改善瘢痕增生作用。
+这种作用既可能是直接结合，也可能是间接作用。分子对接可以用以探究药物直接结合蛋白的可能性。
+这里，我们将 Curcumin 与包括 APCDD1 在内的诸多 Wnt 通路的蛋白，以及 HNRNPH1 蛋白做分子对接。
+对接亲和能见 Fig. \@ref(fig:MAIN-Fig-6)a 所示，APCDD1 有着与 Curcumin 优异的亲和性，且在
+对接结果中排名最高 (对接图见 Fig. \@ref(fig:MAIN-Fig-6)b 和 c)。因此，Curcumin 将可能通过
+直接结合 APCDD1 蛋白发挥其表达量调控作用，进而改善斑痕增生。
+
+
+```{r}
+fig6 <- cls(
+  # rw(),
+  cl("./Figure+Table/Overall-combining-Affinity.pdf"),
+  cl("./Figure+Table/Docking-969516-into-APCDD1.png",
+    "./Figure+Table/Docking-969516-into-APCDD1-detail.png")
+)
+render(fig6)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-6
+autor("./Figure+Table/fig6.pdf")
+```
+
+
+```{r, echo = F}
+dir.create(dir_tiff <- "./Figure+Table/TIFF")
+lapply(list.files("./Figure+Table/", "fig.*\\.pdf", full.names = T),
+  function(x) {
+    newfile <- paste0(dir_tiff, "/", gs(get_filename(x), "\\.pdf$", ".tiff"))
+    pdf_convert(x, "tiff", filenames = newfile, dpi = 300)
+  })
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Tiff-figures
+autor("./Figure+Table/TIFF")
+```
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 关于源代码的说明 {#code}
+
+### 生成该 PDF 文档的源代码 
+
+注：请忽略其中包含 `include = F`, 或者函数 `set_cover`, `set_index` 等的 R 代码块。 
+
+```{r eval = T, echo = F, results = "asis"}
+#| Output-RMarkdown
+autor(files("output.Rmd"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Output-Tex
+autor(files("output.tex"))
+```
+
+### 环境变量配置
+
+大部分程序为 R 代码，但少数 (SCSA 注释、分子对接工具组) 等涉及了其它工具。
+如果需要使用本文档提供的代码复现这些分析，请确保使用的是 Linux 系统，
+且以下程序可运行
+(即，通过 R 的 `system` 命令可以成功运行它们，例如 `system("mk_prepare_ligand.py")`,
+你需要做的是安装这些程序，并配置到环境变量，例如 export 到 `.bashrc` 中。
+)：
+
+```{r}
+list(
+  mk_prepare_ligand.py = "mk_prepare_ligand.py",
+  prepare_gpf.py = "prepare_gpf.py",
+  autogrid4 = "autogrid4",
+  scsa = "python3 ~/SCSA/SCSA.py",
+  pymol = "pymol",
+  obgen = "obgen"
+)
+```
+
+### R 包
+
+本文档使用的代码均为重新封装后的代码，而不是对应软件的原始代码。
+因此，要复现本文档中的源代码，你需要加载这些代码的函数。
+所有的函数提供在了 `utils.tool` (如没有明确的理由，请不要修改移动其中的任意文件，否则会出错) 中。
+
+```{r eval = T, echo = F, results = "asis"}
+#| R-package-files
+autor("./utils.tool")
+```
+
+当有需要运行本文档的任意代码时，请先使用以下代码加载该 R 包：
+(若提示缺少依赖包，请自行安装它们，通过 `BiocManager::install` 或者 `devtools::install_github`) 
+
+```{r}
+devtools::load_all("./utils.tool")
+```
+
+## 关于本文档源代码中涉及的文件
+
+```{r eval = T, echo = F, results = "asis"}
+#| External-files
+autor("./material")
+```
+
+## HNRNPH1、Wnt 与 PPI 网络分析
+
+### 姜黄素的 mRNA-seq 数据
+
+```{r}
+## file.copy("~/outline/lixiao/2023_07_07_eval/quant_hg38_mrna", "./material/", recursive = T)
+lst_mrna <- read_kall_quant("../material/quant_hg38_mrna")
+
+lst_mrna$metadata <- dplyr::mutate(lst_mrna$metadata,
+  group = ifelse(grpl(sample, "^CT"), "control", "treat")
+)
+lst_mrna$metadata
+lst_mrna$genes
+
+mart <- new_biomart()
+lst_mrna$genes <- filter_biomart(mart, general_attrs(F, T),
+  "ensembl_transcript_id", lst_mrna$counts$target_id
+)
+```
+
+### DEGs
+
+```{r}
+lm <- job_limma(new_dge(lst_mrna$metadata, lst_mrna$counts, lst_mrna$genes))
+lm <- step1(lm)
+lm <- step2(lm, treat - control, use = "P.Value", use.cut = .05, cut.fc = 1)
+Tops <- lm@tables$step2$tops$`treat - control`
+dplyr::filter(Tops, hgnc_symbol == "HNRNPH1")[, -(1:4)]
+Tops
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Treat-vs-control-DEGs
+autor(lm@plots$step2$p.valcano$`treat - control`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Data-treat-vs-control-DEGs
+autor(Tops)
+```
+
+### wnt 信号通路
+
+```{r}
+en.deg <- job_enrich(Tops$hgnc_symbol)
+en.deg <- step1(en.deg)
+en.deg <- step2(en.deg, "hsa04310",
+  gene.level = dplyr::select(Tops, hgnc_symbol, logFC)
+)
+en.deg@plots$step2$p.pathviews$hsa04310
+
+genes.wnt <- dplyr::filter(en.deg@tables$step1$res.kegg$ids, ID == "hsa04310")
+genes.wnt <- dplyr::select(genes.wnt, ID, Description, geneName_list)
+genes.wnt <- reframe_col(genes.wnt, "geneName_list", function(x) x[[1]])
+genes.wnt
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEG-hsa04310-visualization
+autor(en.deg@plots$step2$p.pathviews$hsa04310)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Genes-Wnt-Curcumin-affected
+autor(genes.wnt)
+```
+
+### 构建 PPI 网络
+
+#### DEGs PPI
+
+```{r}
+sdb.deg <- job_stringdb(Tops$hgnc_symbol)
+sdb.deg <- step1(sdb.deg)
+sdb.deg@plots$step1$p.ppi
+```
+
+#### HNRNPH1 与 Wnt 通路
+
+注：这里的 PPI 网络为 physical, 即 HNRNPH1 与 Wnt 蛋白之间的直接结合性。
+
+```{r}
+# filter the PPI network
+lstPPI <- filter(sdb.deg, genes.wnt$geneName_list, "HNRNPH1",
+  level.x = dplyr::select(Tops, hgnc_symbol, logFC),
+  top = NULL, keep.ref = T, arrow = F, HLs = "HNRNPH1",
+  label.shape = c(from = "Curcumin_Wnt", to = "HNRNPH1")
+)
+
+lstPPI$p.mcc
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPI-HNRNPH1-and-Wnt
+autor(lstPPI$p.mcc)
+```
+
+## HNRNPH1、Wnt 与斑痕的 scRNA-seq 分析
+
+### 数据来源
+
+```{r}
+# Dowload data from GEO
+geo.sc <- job_geo("GSE156326")
+geo.sc <- step1(geo.sc)
+geo.sc@params$guess
+geo.sc <- step2(geo.sc)
+untar("./GSE156326/GSE156326_RAW.tar", exdir = "./GSE156326")
+prepare_10x("./GSE156326/", "GSM4729097_human_skin_1")
+prepare_10x("./GSE156326/", "GSM4729100_human_scar_1")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SC-GSE156326
+autor(geo.sc@params$prods)
+```
+
+### 细胞聚类和鉴定
+
+```{r}
+# sr.scar <- job_seurat("./GSE156326/GSM4729100_human_scar_1_barcodes")
+# sr.scar <- step1(sr.scar)
+# sr.scar@plots$step1$p.qc
+# sr.scar <- step2(sr.scar, 0, 5000, 20)
+# 
+# sr.skin <- job_seurat("./GSE156326/GSM4729097_human_skin_1_barcodes")
+# sr.skin <- step1(sr.skin)
+# sr.skin@plots$step1$p.qc
+# rm(sr.skin, sr.scar)
+
+sr <- job_seuratn(c("./GSE156326/GSM4729100_human_scar_1_barcodes",
+    "./GSE156326/GSM4729097_human_skin_1_barcodes"),
+  c("Scar", "Skin"))
+
+sr <- step1(sr, 0, 5000, 20)
+sr <- step2(sr)
+sr@plots$step2$p.pca_rank
+sr <- step3(sr, 1:15, 1.2)
+sr@plots$step3$p.umap
+sr <- step4(sr, "")
+sr <- step5(sr)
+# SCSA for cell type annotation
+sr <- step6(sr, "Skin")
+sr@plots$step6$p.map_scsa
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| UMAP-Clustering
+autor(sr@plots$step3$p.umap)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SCSA-Cell-type-annotation
+autor(sr@plots$step6$p.map_scsa)
+```
+
+### 差异分析
+
+```{r}
+sr <- mutate(sr, group_cellType = paste0(orig.ident, "_", make.names(scsa_cell)))
+contrasts.sr <- lapply(make.names(ids(sr)), function(x) paste0(c("Scar", "Skin"), "_", x))
+contrasts.sr
+
+sr <- diff(sr, "group_cellType", contrasts.sr, name = "HN_group")
+sr@params$HN_group
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-the-contrasts
+autor(sr@params$HN_group)
+```
+
+#### HNRNPH1 的表达
+
+HNRNPH1 在这批单细胞数据中，为非差异表达基因。
+
+```{r}
+p.mapHn_cell <- focus(sr, "HNRNPH1")
+p.mapHn_group <- focus(sr, "HNRNPH1", "orig.ident")
+wrap(p.mapHn_group$p.vln, 3, 4)
+
+# No results
+dplyr::filter(sr@params$HN_group, gene == "HNRNPH1")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Violing-plot-of-expression-level-of-the-HNRNPH1
+autor(wrap(p.mapHn_group$p.vln, 3, 4))
+```
+
+#### Wnt 通路基因的表达
+
+- scRNA-seq, Scar vs Skin (Fibroblast, Pericyte), TP53 $\downarrow$, APCDD1 $\uparrow$
+- RNA-seq, 姜黄素给药, TP53 $\uparrow$, APCDD1 $\downarrow$
+
+```{r}
+scDegs.wnt <- dplyr::filter(sr@params$HN_group, gene %in% genes.wnt$geneName_list)
+scDegs.wnt
+
+scCell.degWnt <- which(ids(sr, "scsa_cell", F) %in% c("Fibroblast", "Pericyte"))
+scCell.degWnt
+
+sr <- mutate(sr, cellType_group = gs(group_cellType, "^([^_]+)_(.*)", "\\2_\\1"))
+p.hpWnt <- map(sr, scDegs.wnt$gene, group.by = "cellType_group", cells = scCell.degWnt)
+p.hpWnt
+
+p.focScDegWnt <- focus(getsub(sr, cells = scCell.degWnt),
+  scDegs.wnt$gene, group.by = "cellType_group"
+)
+p.focScDegWnt$p.vln
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Wnt-DEGs-of-Curcumin-affected
+autor(scDegs.wnt)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Heatmap-show-the-Wnt-DEGs-of-Curcumin-affected
+autor(p.hpWnt)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Violing-plot-of-Wnt-DEGs-of-Curcumin-affected
+autor(p.focScDegWnt$p.vln)
+```
+
+### 拟时分析
+
+#### 拟时终点与 APCDD1
+
+这里发现 Fig. \@ref(fig:Dimension-plot-of-expression-level-of-the-Wnt-Degs)
+APCDD1 集中表达于一个区域，因此这里尝试将该区域选定为拟时终点。
+
+```{r}
+mn <- do_monocle(sr, "Fibroblast")
+mn <- step1(mn, "cellType_group", pre = T)
+wrap(mn@plots$step1$p.prin, 5, 4)
+
+p.srSub_wnt <- focus(mn@params$sr_sub, scDegs.wnt$gene)
+p.srSub_wnt$p.dim
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Principal-points
+autor(wrap(mn@plots$step1$p.prin, 5, 4))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Dimension-plot-of-expression-level-of-the-Wnt-Degs
+autor(z7(p.srSub_wnt$p.dim, .7, 1))
+```
+
+#### APCDD1 主要在 Scar 中高表达
+
+随后发现，APCDD1 的确在拟时末期高表达，而且是主要在 Scar 组织中高表达，见
+Fig. \@ref(fig:APCDD1-pseudotime-density)
+
+```{r}
+mn <- step2(mn, c("Y_3", "Y_6"))
+mn@plots$step2$p.pseu
+
+mn <- step3(mn, group.by = "seurat_clusters")
+mn <- step4(mn, ids(mn), "APCDD1", "cellType_group")
+
+mn@tables$step3$graph_test.sig
+mn@plots$step4$genes_in_pseudotime$pseudo1
+mn@plots$step4$plot_density$pseudo1
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Pseudotime
+autor(mn@plots$step2$p.pseu)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| graph-test-significant-results
+autor(mn@tables$step3$graph_test.sig)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| APCDD1-pseudotime-curve
+autor(mn@plots$step4$genes_in_pseudotime$pseudo1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| APCDD1-pseudotime-density
+autor(mn@plots$step4$plot_density$pseudo1)
+```
+
+#### Fibroblast 拟时轨迹下的差异基因
+
+- GO 富集表明，差异基因主要富集于和 Collagen 相关的通路。
+- APCDD1 为排名第 2 的差异基因。
+- 在两个主要的拟时分支中，APCDD1 均呈表达量上升趋势。
+- APCDD1 是 Top 50 的差异基因中，唯一和 Wnt 相关且姜黄素对其有调控作用的基因
+  见 Fig. \@ref(fig:Pseudotime-heatmap-of-genes)。
+
+```{r}
+scDegs.pseu <- head(dplyr::filter(mn@tables$step3$graph_test.sig, q_value < .000001), 500)
+
+en.pseu <- job_enrich(scDegs.pseu$gene_id)
+en.pseu <- step1(en.pseu)
+en.pseu@plots$step1$p.go
+
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PSEU-GO-enrichment
+autor(en.pseu@plots$step1$p.go$ids)
+```
+
+```{r}
+genes.allWnt <- get_genes.keggPath("hsa04310")
+
+p.hpPseu <- map(mn, head(scDegs.pseu$gene_id, 50), enrich = en.pseu,
+  branches = list(c("Y_6", "Y_24"), c("Y_3", "Y_24")),
+  HLs = list(Wnt = genes.allWnt, Curcumin_Wnt = genes.wnt$geneName_list,
+    Curcumin_alls = Tops$hgnc_symbol)
+)
+
+p.hpPseu
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Pseudotime-heatmap-of-genes
+autor(p.hpPseu)
+```
+
+
+#### 姜黄素有调控作用的靶点 (所有的差异基因中)
+
+```{r}
+p.vennTreatPseu <- new_venn(
+  FB_pseu_DEGs = scDegs.pseu$gene_id,
+  Treat_DEGs = Tops$hgnc_symbol
+)
+p.vennTreatPseu
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-FB-pseu-DEGs-with-Treat-DEGs
+autor(p.vennTreatPseu)
+```
+
+### 细胞通讯
+
+#### 总体通讯
+
+因为 Fig. \@ref(fig:Pseudotime-heatmap-of-genes) 所示，末期的 APCDD1 表达量升高，
+这里尝试将 Fibroblast 细胞分为 Begins 和 Ends 两组，作为两种亚型，和其它细胞
+做细胞通讯分析。
+
+```{r}
+mn <- add_anno(mn, branches = list(c("Y_6", "Y_24"), c("Y_3", "Y_24")))
+sr <- map(sr, mn)
+sr <- mutate(sr,
+  branch_time = paste0("B:", ifelse(pseudotime > 10, "Ends", "Begins")),
+  cellType_sub = as.character(scsa_cell),
+  cellType_sub = ifelse(is.na(pseudotime), cellType_sub, paste0(cellType_sub, ":", branch_time)),
+  cellType_sub = as.factor(cellType_sub)
+)
+sr@object@meta.data$cellType_sub %>% table
+
+cc <- asjob_cellchat(sr, "cellType_sub")
+cc <- step1(cc)
+cc@plots$step1$p.aggre_count
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-communication-count
+autor(cc@plots$step1$p.aggre_count)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-communication-weight
+autor(cc@plots$step1$p.aggre_weight)
+```
+
+#### Fibroblast 分支与免疫细胞
+
+这里比较了 FB:ends 和 FB:begins 与两种免疫细胞 Microphage、dendritic cells 的通讯 (pathway) 的不同之处。
+
+```{r}
+fun_diff <- function(data, use) {
+  pair <- c("source", "target")
+  pair <- pair[ pair != use ]
+  lapply(split(data, data[[ use ]]),
+    function(x) {
+      fun <- function(pat) {
+        unique(dplyr::filter(x, grpl(!!rlang::sym(pair), !!pat))$pathway_name)
+      }
+      ends <- fun("Ends")
+      begins <- fun("Begin")
+      unique(c(setdiff(ends, begins), setdiff(begins, ends)))
+    })
+}
+
+chat.alltarget <- select_pathway(cc, "Begins|Ends", "^[^:]+$", "path")
+diff.tar <- fun_diff(chat.alltarget, "target")
+
+chat.allsource <- select_pathway(cc, "^[^:]+$", "Begins|Ends", "path")
+diff.sour <- fun_diff(chat.allsource, "source")
+
+diff.imm <- unique(unlist(lapply(list(diff.sour, diff.tar),
+      function(x) x[ grpl(names(x), "Dendri|Macro") ])))
+diff.imm
+# [1] "CD99"     "COLLAGEN" "MIF"      "MK"      
+```
+
+#### 差异通讯 {#diff-chat}
+
+```{r}
+cc <- step2(cc, diff.imm)
+cc@plots$step2$cell_comm_heatmap$COLLAGEN
+cc@plots$step2$cell_comm_heatmap$ALL
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Diff-path-COLLAGEN
+autor(wrap(cc@plots$step2$cell_comm_heatmap$COLLAGEN$main))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Diff-path-others
+autor(lapply(cc@plots$step2$cell_comm_heatmap, function(x) wrap(x$main)))
+```
+
+#### Others
+
+```{r eval = T, echo = F, results = "asis"}
+#| ligand-receptor-roles
+autor(cc@plots$step2$lr_role_heatmap)
+```
+
+#### 蛋白互作 (PPI)
+
+推测，Wnt 通路的表达变化可能影响到 FB:begins 和 FB:ends 与免疫细胞的通讯差异，
+因此这里试着构建 PPI 网络 (Functional, 功能网络) ，首要查看姜黄素有调控作用的 Wnt 通路基因
+以及有调控作用的通讯的受体配体基因，两者之间是否存在可能的相互作用。
+
+- Fig. \@ref(fig:PPI-Wnt-LR), CD44 主要位于 COLLAGEN pathway, Tab. \@ref(tab:LR-information)
+- 联系 Fig. \@ref(fig:Diff-path-COLLAGEN) 可知，是 Macrophage 对 FB:begins 和 FB:ends 的 COLLAGEN 通讯有所不同。
+
+```{r}
+lp.imm <- dplyr::filter(cc@tables$step1$lp_net, pathway_name %in% diff.imm)
+lp.imm <- dplyr::distinct(lp.imm[, -(1:2)], pathway_name, .keep_all = T)
+genes.lp.imm <- c(lp.imm$ligand, lp.imm$receptor)
+genes.lp.imm <- unlist(strsplit(genes.lp.imm, "_"))
+genes.lp.imm
+
+sdb.imm <- job_stringdb(c(genes.lp.imm, genes.allWnt))
+sdb.imm <- step1(sdb.imm, 50, network_type = "full")
+
+lstPPI.imm <- filter(sdb.imm,
+  genes.wnt$geneName_list, genes.lp.imm,
+  level.x = dplyr::select(Tops, hgnc_symbol, logFC),
+  top = NULL, keep.ref = F, arrow = F, HLs = "CD44",
+  label.shape = c(from = "Wnt", to = "Immune_LR")
+)
+lstPPI.imm$p.mcc
+
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PPI-Wnt-LR
+autor(lstPPI.imm$p.mcc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LR-information
+autor(lp.imm)
+```
+
+## HNRNPH1、Wnt 与姜黄素
+
+### 分子对接结果
+
+注：以下蛋白的 PDB 获取于 alphaFold。
+
+- APCDD1 = "./material/APCDD1.pdb",
+- PLCB4 = "./material/PLCB4.pdb",
+- PRICKLE1 = "./material/PRICKLE1.pdb"
+
+其余 PDB 文件获取于 PDB 数据库
+
+```{r}
+vn <- job_vina(c(Curcumin = 969516), c(genes.wnt$geneName_list, "HNRNPH1"))
+# file.copy("~/Downloads/AF-Q8J025-F1-model_v4.pdb", "./material/APCDD1.pdb")
+# file.copy("~/Downloads/AF-Q15147-F1-model_v4.pdb", "./material/PLCB4.pdb")
+# file.copy("~/Downloads/AF-Q96MT3-F1-model_v4.pdb", "./material/PRICKLE1.pdb")
+
+vn <- step1(vn, pdbs = c(CAMK2G = "2V7O"))
+vn <- step2(vn)
+vn <- step3(vn, extra_pdb.files = c(
+    APCDD1 = "./material/APCDD1.pdb",
+    PLCB4 = "./material/PLCB4.pdb",
+    PRICKLE1 = "./material/PRICKLE1.pdb")
+)
+# vn <- set_remote(vn)
+vn <- step4(vn)
+vn <- step5(vn, cutoff.af = 0)
+wrap(vn@plots$step5$p.res_vina, 7, 5)
+```
+
+APCDD1 的对接取得了优异的亲和度能量。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-combining-Affinity
+autor(wrap(vn@plots$step5$p.res_vina, 4, 5))
+```
+
+### 可视化
+
+```{r}
+vn <- step6(vn, top = 3)
+vn@plots$step6$Top1_969516_into_APCDD1
+vn <- step7(vn)
+vn@plots$step7$Top1_969516_into_APCDD1
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-969516-into-APCDD1
+autor(vn@plots$step6$Top1_969516_into_APCDD1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-969516-into-APCDD1-detail
+autor(vn@plots$step7$Top1_969516_into_APCDD1)
+```
+
+## Session Info {#session}
+
+```{r, eval = T}
+sessionInfo()
+```
+
