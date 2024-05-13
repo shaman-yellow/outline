@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge HNRNPH1、Wnt
 与瘢痕增生的关联性挖掘} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-05-10}}
+\textbf{\textcolor{white}{2024-05-13}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -314,7 +314,20 @@ Figure \@ref(fig:MAIN-Fig-6) (下方图) 为图MAIN Fig 6概览。
 
 
 
+ 
+`Tiff figures' 数据已全部提供。
 
+**(对应文件为 `./Figure+Table/TIFF`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹./Figure+Table/TIFF共包含5个文件。
+
+\begin{enumerate}\tightlist
+\item fig1.tiff
+\item fig2.tiff
+\item fig3.tiff
+\item fig5.tiff
+\item fig6.tiff
+\end{enumerate}\end{tcolorbox}
+\end{center}
 
 # 结论 {#dis}
 
@@ -385,6 +398,10 @@ list(
 
 ```r
 devtools::load_all("./utils.tool")
+# 以下是某些文件设定的存储位置，请修改到需要的位置
+options(wd_prefix = "~/outline/lixiao/",
+  db_prefix = "~/disk_sdb5/job_internal_data",
+  op_prefix = "~/operation/")
 ```
 
 ## 关于本文档源代码中涉及的文件
@@ -1371,38 +1388,38 @@ sessionInfo()
 ## [1] stats4    grid      stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] Seurat_4.9.9.9067           SeuratObject_4.9.9.9091     utils.tool_0.0.0.9000       sp_2.0-0                   
-##  [5] monocle3_1.3.4              SummarizedExperiment_1.30.2 GenomicRanges_1.52.0        GenomeInfoDb_1.36.1        
-##  [9] IRanges_2.34.1              S4Vectors_0.38.1            MatrixGenerics_1.12.3       matrixStats_1.0.0          
-## [13] tidyHeatmap_1.10.1          MCnebula2_0.0.9000          ggplot2_3.4.2               biomaRt_2.56.1             
+##  [1] Seurat_4.9.9.9067           SeuratObject_4.9.9.9091     sp_2.0-0                    utils.tool_0.0.0.9000      
+##  [5] MCnebula2_0.0.9000          ggplot2_3.4.2               tidyHeatmap_1.10.1          monocle3_1.3.4             
+##  [9] SummarizedExperiment_1.30.2 GenomicRanges_1.52.0        GenomeInfoDb_1.36.1         IRanges_2.34.1             
+## [13] S4Vectors_0.38.1            MatrixGenerics_1.12.3       matrixStats_1.0.0           biomaRt_2.56.1             
 ## [17] Biobase_2.60.0              BiocGenerics_0.46.0         nvimcom_0.9-146            
 ## 
 ## loaded via a namespace (and not attached):
-##   [1] DBI_1.1.3                 httr_1.4.6                registry_0.5-1            BiocParallel_1.34.2      
-##   [5] prettyunits_1.1.1         yulab.utils_0.0.7         ggplotify_0.1.2           sparseMatrixStats_1.12.2 
-##   [9] brio_1.1.3                spatstat.geom_3.2-4       celldex_1.10.1            pillar_1.9.0             
-##  [13] Rgraphviz_2.44.0          R6_2.5.1                  boot_1.3-30               mime_0.12                
-##  [17] lmom_2.9                  sysfonts_0.8.8            reticulate_1.31           uwot_0.1.16              
-##  [21] gridtext_0.1.5            viridis_0.6.4             Rhdf5lib_1.22.0           polspline_1.1.23         
-##  [25] ROCR_1.0-11               Hmisc_5.1-0               ggpubr_0.6.0              rprojroot_2.0.3          
-##  [29] downloader_0.4            parallelly_1.36.0         GlobalOptions_0.1.2       FNN_1.1.3.2              
-##  [33] caTools_1.18.2            polyclip_1.10-4           rms_6.7-0                 NMF_0.26                 
-##  [37] beachmat_2.16.0           htmltools_0.5.6           fansi_1.0.4               ropls_1.32.0             
-##  [41] showtext_0.9-6            e1071_1.7-13              remotes_2.4.2.1           ggrepel_0.9.3            
-##  [45] qqman_0.1.8               classInt_0.4-9            car_3.1-2                 ComplexHeatmap_2.16.0    
-##  [49] fgsea_1.26.0              forcats_1.0.0             scuttle_1.10.2            spatstat.utils_3.0-3     
-##  [53] HDO.db_0.99.1             clusterProfiler_4.9.0.002 rpart_4.1.23              clue_0.3-64              
-##  [57] scatterpie_0.2.1          fitdistrplus_1.1-11       goftest_1.2-3             tidyselect_1.2.0         
-##  [61] RSQLite_2.3.1             cowplot_1.1.1             GenomeInfoDbData_1.2.10   utf8_1.2.3               
-##  [65] ScaledMatrix_1.8.1        scattermore_1.2           rvest_1.0.3               spatstat.data_3.0-1      
-##  [69] gridExtra_2.3             fs_1.6.3                  sctransform_0.4.0         RColorBrewer_1.1-3       
-##  [73] future.apply_1.11.0       ggVennDiagram_1.2.2       graph_1.78.0              R.oo_1.25.0              
-##  [77] RcppHNSW_0.4.1            uuid_1.1-0                tinytex_0.46              Rtsne_0.16               
-##  [81] DelayedMatrixStats_1.22.5 lazyeval_0.2.2            scales_1.2.1              carData_3.0-5            
-##  [85] munsell_0.5.0             openai_0.4.1              gsubfn_0.7                treeio_1.24.3            
-##  [89] R.utils_2.12.2            KEGGgraph_1.60.0          bitops_1.0-7              R.methodsS3_1.8.2        
-##  [93] labeling_0.4.2            agricolae_1.3-6           proto_1.0.0               KEGGREST_1.40.0          
-##  [97] promises_1.2.1            shape_1.4.6               rhdf5filters_1.12.1       terra_1.7-39             
-##  [ reached getOption("max.print") -- omitted 248 entries ]
+##   [1] igraph_1.5.1              hash_2.2.6.2              ica_1.0-3                 plotly_4.10.2            
+##   [5] Formula_1.2-5             zlibbioc_1.46.0           tidyselect_1.2.0          bit_4.0.5                
+##   [9] doParallel_1.0.17         clue_0.3-64               lattice_0.22-6            rjson_0.2.21             
+##  [13] blob_1.2.4                stringr_1.5.0             rngtools_1.5.2            S4Arrays_1.0.5           
+##  [17] parallel_4.4.0            png_0.1-8                 plotrix_3.8-2             cli_3.6.1                
+##  [21] ggplotify_0.1.2           registry_0.5-1            askpass_1.1               openssl_2.1.0            
+##  [25] goftest_1.2-3             textshaping_0.3.6         purrr_1.0.2               officer_0.6.2            
+##  [29] BiocNeighbors_1.18.0      ggnetwork_0.5.12          uwot_0.1.16               dendextend_1.17.1        
+##  [33] shadowtext_0.1.2          curl_5.0.1                mime_0.12                 evaluate_0.21            
+##  [37] tidytree_0.4.5            leiden_0.4.3              gsubfn_0.7                ComplexHeatmap_2.16.0    
+##  [41] stringi_1.7.12            backports_1.4.1           desc_1.4.2                XML_3.99-0.14            
+##  [45] ggVennDiagram_1.2.2       httpuv_1.6.11             AnnotationDbi_1.62.2      magrittr_2.0.3           
+##  [49] clusterProfiler_4.9.0.002 rappdirs_0.3.3            splines_4.4.0             CellChat_1.6.1           
+##  [53] jpeg_0.1-10               ggraph_2.1.0              dplyr_1.1.2               sctransform_0.4.0        
+##  [57] DBI_1.1.3                 terra_1.7-39              withr_2.5.0               systemfonts_1.0.4        
+##  [61] rprojroot_2.0.3           enrichplot_1.20.0         lmtest_0.9-40             brio_1.1.3               
+##  [65] tidygraph_1.2.3           BiocManager_1.30.22       htmlwidgets_1.6.2         fs_1.6.3                 
+##  [69] ggrepel_0.9.3             statnet.common_4.9.0      BPCells_0.1.0             reticulate_1.31          
+##  [73] zoo_1.8-12                XVector_0.40.0            knitr_1.43                network_1.18.1           
+##  [77] foreach_1.5.2             fansi_1.0.4               patchwork_1.1.2           caTools_1.18.2           
+##  [81] data.table_1.14.8         RSpectra_0.16-1           irlba_2.3.5.1             fastDummies_1.7.3        
+##  [85] gridGraphics_0.5-1        ellipsis_0.3.2            lazyeval_0.2.2            yaml_2.3.7               
+##  [89] survival_3.5-7            scattermore_1.2           crayon_1.5.2              RcppAnnoy_0.0.21         
+##  [93] RColorBrewer_1.1-3        tidyr_1.3.0               progressr_0.14.0          tweenr_2.0.2             
+##  [97] later_1.3.1               ggridges_0.5.4            codetools_0.2-20          base64enc_0.1-3          
+##  [ reached getOption("max.print") -- omitted 149 entries ]
 ```
 

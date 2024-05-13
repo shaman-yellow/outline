@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.21)  10 MAY 2024 17:09
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.21)  13 MAY 2024 08:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1401,26 +1401,34 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 435.
 See the caption package documentation for explanation.
 
-[9] [10] [11]
+[9] [10]
+
+LaTeX Font Warning: Font shape `TU/FandolFang-Regular(0)/m/it' undefined
+(Font)              using `TU/FandolFang-Regular(0)/m/n' instead on input line 
+527.
+
+LaTeX Font Info:    Font shape `TU/FandolFang-Regular(0)/m/n' will be
+(Font)              scaled to size 9.4104pt on input line 527.
+[11]
 File: Figure+Table/Treat-vs-control-DEGs.pdf Graphic file (type pdf)
 <use Figure+Table/Treat-vs-control-DEGs.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 578.
+(caption)                particular \caption on input line 597.
 See the caption package documentation for explanation.
 
 [12] [13]
-Overfull \hbox (49.71513pt too wide) in alignment at lines 623--628
+Overfull \hbox (49.71513pt too wide) in alignment at lines 642--647
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (49.71513pt too wide) in alignment at lines 628--632
+Overfull \hbox (49.71513pt too wide) in alignment at lines 647--651
  [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (49.71513pt too wide) in alignment at lines 632--650
+Overfull \hbox (49.71513pt too wide) in alignment at lines 651--669
  [] [] [] [] [] [] [] [] [] [] 
  []
 
@@ -1430,7 +1438,7 @@ e bmp)
 <pathview2024-04-24_15_53_05.50473/hsa04310.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 678.
+(caption)                particular \caption on input line 697.
 See the caption package documentation for explanation.
 
 [15] [16]
@@ -1438,23 +1446,23 @@ File: Figure+Table/PPI-HNRNPH1-and-Wnt.pdf Graphic file (type pdf)
 <use Figure+Table/PPI-HNRNPH1-and-Wnt.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 782.
+(caption)                particular \caption on input line 801.
 See the caption package documentation for explanation.
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 850--857
+Underfull \hbox (badness 10000) in paragraph at lines 869--876
 []\TU/lmr/m/n/10 Supplementary_files_format_and_content: mtx (count matrix in s
 parse ma-
  []
 
 
-Underfull \hbox (badness 5696) in paragraph at lines 850--857
+Underfull \hbox (badness 5696) in paragraph at lines 869--876
 \TU/lmr/m/n/10 trix format), barcodes.tsv (barcode ids), features.tsv: (gene id
 s) Supplemen-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 850--857
+Underfull \hbox (badness 10000) in paragraph at lines 869--876
 \TU/lmr/m/n/10 tary_files_format_and_content: Supplementary_files_format_and_co
 ntent: mtx
  []
@@ -1464,7 +1472,7 @@ File: Figure+Table/UMAP-Clustering.pdf Graphic file (type pdf)
 <use Figure+Table/UMAP-Clustering.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 903.
+(caption)                particular \caption on input line 922.
 See the caption package documentation for explanation.
 
 [19]
@@ -1472,7 +1480,7 @@ File: Figure+Table/SCSA-Cell-type-annotation.pdf Graphic file (type pdf)
 <use Figure+Table/SCSA-Cell-type-annotation.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 913.
+(caption)                particular \caption on input line 932.
 See the caption package documentation for explanation.
 
 [20] [21]
@@ -1481,7 +1489,7 @@ file (type pdf)
 <use Figure+Table/Violing-plot-of-expression-level-of-the-HNRNPH1.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 990.
+(caption)                particular \caption on input line 1009.
 See the caption package documentation for explanation.
 
 [22] [23]
@@ -1490,7 +1498,7 @@ ile (type pdf)
 <use Figure+Table/Heatmap-show-the-Wnt-DEGs-of-Curcumin-affected.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1059.
+(caption)                particular \caption on input line 1078.
 See the caption package documentation for explanation.
 
 [24]
@@ -1499,14 +1507,14 @@ le (type pdf)
 <use Figure+Table/Violing-plot-of-Wnt-DEGs-of-Curcumin-affected.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1069.
+(caption)                particular \caption on input line 1088.
 See the caption package documentation for explanation.
 
 File: Figure+Table/Principal-points.pdf Graphic file (type pdf)
 <use Figure+Table/Principal-points.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1099.
+(caption)                particular \caption on input line 1118.
 See the caption package documentation for explanation.
 
 [25]
@@ -1515,7 +1523,7 @@ ic file (type pdf)
 <use Figure+Table/Dimension-plot-of-expression-level-of-the-Wnt-Degs.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1109.
+(caption)                particular \caption on input line 1128.
 See the caption package documentation for explanation.
 
 [26] [27]
@@ -1523,7 +1531,7 @@ File: Figure+Table/Pseudotime.pdf Graphic file (type pdf)
 <use Figure+Table/Pseudotime.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1139.
+(caption)                particular \caption on input line 1158.
 See the caption package documentation for explanation.
 
 [28]
@@ -1531,14 +1539,14 @@ File: Figure+Table/APCDD1-pseudotime-curve.pdf Graphic file (type pdf)
 <use Figure+Table/APCDD1-pseudotime-curve.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1190.
+(caption)                particular \caption on input line 1209.
 See the caption package documentation for explanation.
 
 File: Figure+Table/APCDD1-pseudotime-density.pdf Graphic file (type pdf)
 <use Figure+Table/APCDD1-pseudotime-density.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1200.
+(caption)                particular \caption on input line 1219.
 See the caption package documentation for explanation.
 
 [29]
@@ -1546,7 +1554,7 @@ File: Figure+Table/PSEU-GO-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/PSEU-GO-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1236.
+(caption)                particular \caption on input line 1255.
 See the caption package documentation for explanation.
 
 [30]
@@ -1554,7 +1562,7 @@ File: Figure+Table/Pseudotime-heatmap-of-genes.pdf Graphic file (type pdf)
 <use Figure+Table/Pseudotime-heatmap-of-genes.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1260.
+(caption)                particular \caption on input line 1279.
 See the caption package documentation for explanation.
 
 [31]
@@ -1563,7 +1571,7 @@ e (type pdf)
 <use Figure+Table/Intersection-of-FB-pseu-DEGs-with-Treat-DEGs.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1283.
+(caption)                particular \caption on input line 1302.
 See the caption package documentation for explanation.
 
 [32] [33]
@@ -1571,7 +1579,7 @@ File: Figure+Table/Overall-communication-count.pdf Graphic file (type pdf)
 <use Figure+Table/Overall-communication-count.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1340.
+(caption)                particular \caption on input line 1359.
 See the caption package documentation for explanation.
 
 [34]
@@ -1579,7 +1587,7 @@ File: Figure+Table/Overall-communication-weight.pdf Graphic file (type pdf)
 <use Figure+Table/Overall-communication-weight.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1350.
+(caption)                particular \caption on input line 1369.
 See the caption package documentation for explanation.
 
 [35] [36]
@@ -1587,7 +1595,7 @@ File: Figure+Table/Diff-path-COLLAGEN.pdf Graphic file (type pdf)
 <use Figure+Table/Diff-path-COLLAGEN.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1405.
+(caption)                particular \caption on input line 1424.
 See the caption package documentation for explanation.
 
 [37] [38]
@@ -1595,21 +1603,21 @@ File: Figure+Table/PPI-Wnt-LR.pdf Graphic file (type pdf)
 <use Figure+Table/PPI-Wnt-LR.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1482.
+(caption)                particular \caption on input line 1501.
 See the caption package documentation for explanation.
 
 [39]
-Overfull \hbox (11.50511pt too wide) in alignment at lines 1497--1502
+Overfull \hbox (11.50511pt too wide) in alignment at lines 1516--1521
  [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (11.50511pt too wide) in alignment at lines 1502--1506
+Overfull \hbox (11.50511pt too wide) in alignment at lines 1521--1525
  [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (11.50511pt too wide) in alignment at lines 1506--1512
+Overfull \hbox (11.50511pt too wide) in alignment at lines 1525--1531
  [] [] [] [] [] [] [] [] [] 
  []
 
@@ -1618,7 +1626,7 @@ File: Figure+Table/Overall-combining-Affinity.pdf Graphic file (type pdf)
 <use Figure+Table/Overall-combining-Affinity.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1564.
+(caption)                particular \caption on input line 1583.
 See the caption package documentation for explanation.
 
 [41]
@@ -1627,7 +1635,7 @@ mp)
 <vina_space/969516_into_APCDD1/969516_into_APCDD1.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1586.
+(caption)                particular \caption on input line 1605.
 See the caption package documentation for explanation.
 
 [42]
@@ -1636,216 +1644,217 @@ File: vina_space/969516_into_APCDD1/detail_969516_into_APCDD1.png Graphic file
 <vina_space/969516_into_APCDD1/detail_969516_into_APCDD1.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1596.
+(caption)                particular \caption on input line 1615.
 See the caption package documentation for explanation.
 
 [43]
-LaTeX Font Info:    Font shape `TU/FandolFang-Regular(0)/m/n' will be
-(Font)              scaled to size 9.4104pt on input line 1608.
-
-Overfull \hbox (112.99498pt too wide) in paragraph at lines 1618--1618
+Overfull \hbox (112.99498pt too wide) in paragraph at lines 1637--1637
 []\TU/lmtt/m/n/10 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
  LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8[] 
  []
 
 
-Overfull \hbox (44.74498pt too wide) in paragraph at lines 1619--1619
+Overfull \hbox (44.74498pt too wide) in paragraph at lines 1638--1638
 []\TU/lmtt/m/n/10 ##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
  LC_PAPER=en_US.UTF-8       LC_NAME=C[] 
  []
 
 
-Overfull \hbox (97.24498pt too wide) in paragraph at lines 1620--1620
+Overfull \hbox (97.24498pt too wide) in paragraph at lines 1639--1639
 []\TU/lmtt/m/n/10 ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
  LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C[] 
  []
 
 [44]
-Overfull \hbox (7.99498pt too wide) in paragraph at lines 1626--1626
+Overfull \hbox (7.99498pt too wide) in paragraph at lines 1645--1645
 []\TU/lmtt/m/n/10 ## [1] stats4    grid      stats     graphics  grDevices util
 s     datasets  methods   base[] 
  []
 
 
-Overfull \hbox (55.24498pt too wide) in paragraph at lines 1629--1629
+Overfull \hbox (123.49498pt too wide) in paragraph at lines 1648--1648
 []\TU/lmtt/m/n/10 ##  [1] Seurat_4.9.9.9067           SeuratObject_4.9.9.9091  
-   utils.tool_0.0.0.9000       sp_2.0-0[] 
+   sp_2.0-0                    utils.tool_0.0.0.9000[] 
  []
 
 
-Overfull \hbox (112.99498pt too wide) in paragraph at lines 1630--1630
-[]\TU/lmtt/m/n/10 ##  [5] monocle3_1.3.4              SummarizedExperiment_1.30
-.2 GenomicRanges_1.52.0        GenomeInfoDb_1.36.1[] 
+Overfull \hbox (86.74498pt too wide) in paragraph at lines 1649--1649
+[]\TU/lmtt/m/n/10 ##  [5] MCnebula2_0.0.9000          ggplot2_3.4.2            
+   tidyHeatmap_1.10.1          monocle3_1.3.4[] 
  []
 
 
-Overfull \hbox (102.49498pt too wide) in paragraph at lines 1631--1631
-[]\TU/lmtt/m/n/10 ##  [9] IRanges_2.34.1              S4Vectors_0.38.1         
-   MatrixGenerics_1.12.3       matrixStats_1.0.0[] 
+Overfull \hbox (86.74498pt too wide) in paragraph at lines 1650--1650
+[]\TU/lmtt/m/n/10 ##  [9] SummarizedExperiment_1.30.2 GenomicRanges_1.52.0     
+   GenomeInfoDb_1.36.1         IRanges_2.34.1[] 
  []
 
 
-Overfull \hbox (86.74498pt too wide) in paragraph at lines 1632--1632
-[]\TU/lmtt/m/n/10 ## [13] tidyHeatmap_1.10.1          MCnebula2_0.0.9000       
-   ggplot2_3.4.2               biomaRt_2.56.1[] 
+Overfull \hbox (86.74498pt too wide) in paragraph at lines 1651--1651
+[]\TU/lmtt/m/n/10 ## [13] S4Vectors_0.38.1            MatrixGenerics_1.12.3    
+   matrixStats_1.0.0           biomaRt_2.56.1[] 
  []
 
 
-Overfull \hbox (86.74498pt too wide) in paragraph at lines 1636--1636
-[]\TU/lmtt/m/n/10 ##   [1] DBI_1.1.3                 httr_1.4.6                
-registry_0.5-1            BiocParallel_1.34.2[] 
+Overfull \hbox (55.24498pt too wide) in paragraph at lines 1655--1655
+[]\TU/lmtt/m/n/10 ##   [1] igraph_1.5.1              hash_2.2.6.2              
+ica_1.0-3                 plotly_4.10.2[] 
  []
 
 
-Overfull \hbox (112.99498pt too wide) in paragraph at lines 1637--1637
-[]\TU/lmtt/m/n/10 ##   [5] prettyunits_1.1.1         yulab.utils_0.0.7         
-ggplotify_0.1.2           sparseMatrixStats_1.12.2[] 
+Overfull \hbox (34.24498pt too wide) in paragraph at lines 1656--1656
+[]\TU/lmtt/m/n/10 ##   [5] Formula_1.2-5             zlibbioc_1.46.0           
+tidyselect_1.2.0          bit_4.0.5[] 
  []
 
 
-Overfull \hbox (49.99498pt too wide) in paragraph at lines 1638--1638
-[]\TU/lmtt/m/n/10 ##   [9] brio_1.1.3                spatstat.geom_3.2-4       
-celldex_1.10.1            pillar_1.9.0[] 
+Overfull \hbox (49.99498pt too wide) in paragraph at lines 1657--1657
+[]\TU/lmtt/m/n/10 ##   [9] doParallel_1.0.17         clue_0.3-64               
+lattice_0.22-6            rjson_0.2.21[] 
  []
 
 
-Overfull \hbox (34.24498pt too wide) in paragraph at lines 1639--1639
-[]\TU/lmtt/m/n/10 ##  [13] Rgraphviz_2.44.0          R6_2.5.1                  
-boot_1.3-30               mime_0.12[] 
+Overfull \hbox (60.49498pt too wide) in paragraph at lines 1658--1658
+[]\TU/lmtt/m/n/10 ##  [13] blob_1.2.4                stringr_1.5.0             
+rngtools_1.5.2            S4Arrays_1.0.5[] 
  []
 
 
-Overfull \hbox (44.74498pt too wide) in paragraph at lines 1640--1640
-[]\TU/lmtt/m/n/10 ##  [17] lmom_2.9                  sysfonts_0.8.8            
-reticulate_1.31           uwot_0.1.16[] 
+Overfull \hbox (34.24498pt too wide) in paragraph at lines 1659--1659
+[]\TU/lmtt/m/n/10 ##  [17] parallel_4.4.0            png_0.1-8                 
+plotrix_3.8-2             cli_3.6.1[] 
  []
 
 
-Overfull \hbox (70.99498pt too wide) in paragraph at lines 1641--1641
-[]\TU/lmtt/m/n/10 ##  [21] gridtext_0.1.5            viridis_0.6.4             
-Rhdf5lib_1.22.0           polspline_1.1.23[] 
+Overfull \hbox (55.24498pt too wide) in paragraph at lines 1660--1660
+[]\TU/lmtt/m/n/10 ##  [21] ggplotify_0.1.2           registry_0.5-1            
+askpass_1.1               openssl_2.1.0[] 
  []
 
 
-Overfull \hbox (65.74498pt too wide) in paragraph at lines 1642--1642
-[]\TU/lmtt/m/n/10 ##  [25] ROCR_1.0-11               Hmisc_5.1-0               
-ggpubr_0.6.0              rprojroot_2.0.3[] 
+Overfull \hbox (55.24498pt too wide) in paragraph at lines 1661--1661
+[]\TU/lmtt/m/n/10 ##  [25] goftest_1.2-3             textshaping_0.3.6         
+purrr_1.0.2               officer_0.6.2[] 
  []
 
 
-Overfull \hbox (44.74498pt too wide) in paragraph at lines 1643--1643
-[]\TU/lmtt/m/n/10 ##  [29] downloader_0.4            parallelly_1.36.0         
-GlobalOptions_0.1.2       FNN_1.1.3.2[] 
+Overfull \hbox (76.24498pt too wide) in paragraph at lines 1662--1662
+[]\TU/lmtt/m/n/10 ##  [29] BiocNeighbors_1.18.0      ggnetwork_0.5.12          
+uwot_0.1.16               dendextend_1.17.1[] 
  []
 
 
-Overfull \hbox (28.99498pt too wide) in paragraph at lines 1644--1644
-[]\TU/lmtt/m/n/10 ##  [33] caTools_1.18.2            polyclip_1.10-4           
-rms_6.7-0                 NMF_0.26[] 
+Overfull \hbox (55.24498pt too wide) in paragraph at lines 1663--1663
+[]\TU/lmtt/m/n/10 ##  [33] shadowtext_0.1.2          curl_5.0.1                
+mime_0.12                 evaluate_0.21[] 
  []
 
 
-Overfull \hbox (49.99498pt too wide) in paragraph at lines 1645--1645
-[]\TU/lmtt/m/n/10 ##  [37] beachmat_2.16.0           htmltools_0.5.6           
-fansi_1.0.4               ropls_1.32.0[] 
+Overfull \hbox (97.24498pt too wide) in paragraph at lines 1664--1664
+[]\TU/lmtt/m/n/10 ##  [37] tidytree_0.4.5            leiden_0.4.3              
+gsubfn_0.7                ComplexHeatmap_2.16.0[] 
  []
 
 
-Overfull \hbox (55.24498pt too wide) in paragraph at lines 1646--1646
-[]\TU/lmtt/m/n/10 ##  [41] showtext_0.9-6            e1071_1.7-13              
-remotes_2.4.2.1           ggrepel_0.9.3[] 
+Overfull \hbox (55.24498pt too wide) in paragraph at lines 1665--1665
+[]\TU/lmtt/m/n/10 ##  [41] stringi_1.7.12            backports_1.4.1           
+desc_1.4.2                XML_3.99-0.14[] 
  []
 
 
-Overfull \hbox (97.24498pt too wide) in paragraph at lines 1647--1647
-[]\TU/lmtt/m/n/10 ##  [45] qqman_0.1.8               classInt_0.4-9            
-car_3.1-2                 ComplexHeatmap_2.16.0[] 
+Overfull \hbox (60.49498pt too wide) in paragraph at lines 1666--1666
+[]\TU/lmtt/m/n/10 ##  [45] ggVennDiagram_1.2.2       httpuv_1.6.11             
+AnnotationDbi_1.62.2      magrittr_2.0.3[] 
  []
 
 
-Overfull \hbox (91.99498pt too wide) in paragraph at lines 1648--1648
-[]\TU/lmtt/m/n/10 ##  [49] fgsea_1.26.0              forcats_1.0.0             
-scuttle_1.10.2            spatstat.utils_3.0-3[] 
+Overfull \hbox (60.49498pt too wide) in paragraph at lines 1667--1667
+[]\TU/lmtt/m/n/10 ##  [49] clusterProfiler_4.9.0.002 rappdirs_0.3.3            
+splines_4.4.0             CellChat_1.6.1[] 
  []
 
 
-Overfull \hbox (44.74498pt too wide) in paragraph at lines 1649--1649
-[]\TU/lmtt/m/n/10 ##  [53] HDO.db_0.99.1             clusterProfiler_4.9.0.002 
-rpart_4.1.23              clue_0.3-64[] 
+Overfull \hbox (76.24498pt too wide) in paragraph at lines 1668--1668
+[]\TU/lmtt/m/n/10 ##  [53] jpeg_0.1-10               ggraph_2.1.0              
+dplyr_1.1.2               sctransform_0.4.0[] 
  []
 
 
-Overfull \hbox (70.99498pt too wide) in paragraph at lines 1650--1650
-[]\TU/lmtt/m/n/10 ##  [57] scatterpie_0.2.1          fitdistrplus_1.1-11       
-goftest_1.2-3             tidyselect_1.2.0[] 
+Overfull \hbox (76.24498pt too wide) in paragraph at lines 1669--1669
+[]\TU/lmtt/m/n/10 ##  [57] DBI_1.1.3                 terra_1.7-39              
+withr_2.5.0               systemfonts_1.0.4[] 
  []
 
 
-Overfull \hbox (39.49498pt too wide) in paragraph at lines 1651--1651
-[]\TU/lmtt/m/n/10 ##  [61] RSQLite_2.3.1             cowplot_1.1.1             
-GenomeInfoDbData_1.2.10   utf8_1.2.3[] 
+Overfull \hbox (39.49498pt too wide) in paragraph at lines 1670--1670
+[]\TU/lmtt/m/n/10 ##  [61] rprojroot_2.0.3           enrichplot_1.20.0         
+lmtest_0.9-40             brio_1.1.3[] 
  []
 
 
-Overfull \hbox (86.74498pt too wide) in paragraph at lines 1652--1652
-[]\TU/lmtt/m/n/10 ##  [65] ScaledMatrix_1.8.1        scattermore_1.2           
-rvest_1.0.3               spatstat.data_3.0-1[] 
+Overfull \hbox (28.99498pt too wide) in paragraph at lines 1671--1671
+[]\TU/lmtt/m/n/10 ##  [65] tidygraph_1.2.3           BiocManager_1.30.22       
+htmlwidgets_1.6.2         fs_1.6.3[] 
  []
 
 
-Overfull \hbox (81.49498pt too wide) in paragraph at lines 1653--1653
-[]\TU/lmtt/m/n/10 ##  [69] gridExtra_2.3             fs_1.6.3                  
-sctransform_0.4.0         RColorBrewer_1.1-3[] 
+Overfull \hbox (65.74498pt too wide) in paragraph at lines 1672--1672
+[]\TU/lmtt/m/n/10 ##  [69] ggrepel_0.9.3             statnet.common_4.9.0      
+BPCells_0.1.0             reticulate_1.31[] 
  []
 
 
-Overfull \hbox (44.74498pt too wide) in paragraph at lines 1654--1654
-[]\TU/lmtt/m/n/10 ##  [73] future.apply_1.11.0       ggVennDiagram_1.2.2       
-graph_1.78.0              R.oo_1.25.0[] 
+Overfull \hbox (60.49498pt too wide) in paragraph at lines 1673--1673
+[]\TU/lmtt/m/n/10 ##  [73] zoo_1.8-12                XVector_0.40.0            
+knitr_1.43                network_1.18.1[] 
  []
 
 
-Overfull \hbox (39.49498pt too wide) in paragraph at lines 1655--1655
-[]\TU/lmtt/m/n/10 ##  [77] RcppHNSW_0.4.1            uuid_1.1-0                
-tinytex_0.46              Rtsne_0.16[] 
+Overfull \hbox (60.49498pt too wide) in paragraph at lines 1674--1674
+[]\TU/lmtt/m/n/10 ##  [77] foreach_1.5.2             fansi_1.0.4               
+patchwork_1.1.2           caTools_1.18.2[] 
  []
 
 
-Overfull \hbox (55.24498pt too wide) in paragraph at lines 1656--1656
-[]\TU/lmtt/m/n/10 ##  [81] DelayedMatrixStats_1.22.5 lazyeval_0.2.2            
-scales_1.2.1              carData_3.0-5[] 
+Overfull \hbox (76.24498pt too wide) in paragraph at lines 1675--1675
+[]\TU/lmtt/m/n/10 ##  [81] data.table_1.14.8         RSpectra_0.16-1           
+irlba_2.3.5.1             fastDummies_1.7.3[] 
  []
 
 
-Overfull \hbox (55.24498pt too wide) in paragraph at lines 1657--1657
-[]\TU/lmtt/m/n/10 ##  [85] munsell_0.5.0             openai_0.4.1              
-gsubfn_0.7                treeio_1.24.3[] 
+Overfull \hbox (39.49498pt too wide) in paragraph at lines 1676--1676
+[]\TU/lmtt/m/n/10 ##  [85] gridGraphics_0.5-1        ellipsis_0.3.2            
+lazyeval_0.2.2            yaml_2.3.7[] 
  []
 
 
-Overfull \hbox (76.24498pt too wide) in paragraph at lines 1658--1658
-[]\TU/lmtt/m/n/10 ##  [89] R.utils_2.12.2            KEGGgraph_1.60.0          
-bitops_1.0-7              R.methodsS3_1.8.2[] 
+Overfull \hbox (70.99498pt too wide) in paragraph at lines 1677--1677
+[]\TU/lmtt/m/n/10 ##  [89] survival_3.5-7            scattermore_1.2           
+crayon_1.5.2              RcppAnnoy_0.0.21[] 
  []
 
 
-Overfull \hbox (65.74498pt too wide) in paragraph at lines 1659--1659
-[]\TU/lmtt/m/n/10 ##  [93] labeling_0.4.2            agricolae_1.3-6           
-proto_1.0.0               KEGGREST_1.40.0[] 
+Overfull \hbox (49.99498pt too wide) in paragraph at lines 1678--1678
+[]\TU/lmtt/m/n/10 ##  [93] RColorBrewer_1.1-3        tidyr_1.3.0               
+progressr_0.14.0          tweenr_2.0.2[] 
  []
 
 
-Overfull \hbox (49.99498pt too wide) in paragraph at lines 1660--1660
-[]\TU/lmtt/m/n/10 ##  [97] promises_1.2.1            shape_1.4.6               
-rhdf5filters_1.12.1       terra_1.7-39[] 
+Overfull \hbox (65.74498pt too wide) in paragraph at lines 1679--1679
+[]\TU/lmtt/m/n/10 ##  [97] later_1.3.1               ggridges_0.5.4            
+codetools_0.2-20          base64enc_0.1-3[] 
  []
 
-[45] [46] [47] (./output.aux) ) 
+[45] [46] [47] (./output.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
 Here is how much of TeX's memory you used:
- 32971 strings out of 476191
- 675713 string characters out of 5812072
+ 32986 strings out of 476191
+ 676637 string characters out of 5812072
  1119656 words of memory out of 5000000
- 53132 multiletter control sequences out of 15000+600000
+ 53147 multiletter control sequences out of 15000+600000
  473506 words of font info for 81 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1365b,900s stack positions out of 5000i,500n,10000p,200000b,80000s

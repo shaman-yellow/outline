@@ -1,0 +1,31 @@
+
+
+```{r}
+geo.ich <- job_geo("GSE167593")
+geo.ich <- step1(geo.ich)
+geo.ich@params$guess
+```
+
+```{r}
+x <- ftibble("~/scFEA/input/mouse_example_data.csv")
+x <- ftibble("~/scFEA/data/module_gene_iron_m15.csv")
+
+fun_test <- function(file) {
+  x <- readLines(file)[-1]
+  x <- lapply(strsplit(x, ","), function(x) x[-1])
+  unique(unlist(x))
+}
+x <- fun_test()
+```
+
+```{r}
+gn.mm <- job_genecard("microglial metabolism")
+gn.mm <- step1(gn.mm, restrict = T)
+gn.mm@tables$step1
+```
+
+```{r}
+je <- job_esearch("scRNA-seq metabolism")
+vis(je)
+```
+

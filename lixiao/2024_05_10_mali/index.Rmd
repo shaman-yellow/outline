@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(05), eval = ic())
+info <- items(belong = odate(05), eval = ic(3, 2, 1, 0, 0))
 show.ic(info)
 
 order_publish()
@@ -33,14 +33,21 @@ set_index()
 # 摘要 {#abstract}
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("自发性脑出血", "intracerebral hemorrhage", "ICH"),
+  di("小胶质细胞代谢"),
+  di("星形细胞胶质瘢痕")
+)
 
+# DEGs: Differential Expressed Genes 差异表达基因
+# ICH: intracerebral hemorrhage 自发性脑出血
+# MM: microglial metabolism 小胶质细胞代谢
+# AS: astrocytic scar 星形细胞胶质瘢痕
 ```
 
+自发性脑出血（ICH）（人或动物）后调控 小胶质细胞代谢 的关键基因XXX，并且该基因可能也调控 星形细胞胶质瘢痕 成。
 
-麻烦生信部门的同事分析一下脑出血（人或动物）后调控小胶质细胞代谢的关键基因XXX，并且该基因可能也调控星形细胞胶质瘢痕成。
-
-再补充一点需求，客户马力前期发表的文章有做过盐诱导激酶 2（SIK-2）这个分子（PMID: 29018127），所以分析的时候可以看看XXX是否可以是SIK-2，或者XXX能否富集在SIK-2相关通路或其他分子机制上
+客户马力前期发表的文章有做过盐诱导激酶 2（SIK-2）这个分子（PMID: 29018127），所以分析的时候可以看看XXX是否可以是SIK-2，或者XXX能否富集在SIK-2相关通路或其他分子机制上
 
 数据库分析或测序筛选脑出血后调控小胶质细胞代谢的关键基因XXX
 
@@ -67,4 +74,48 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
+```{r}
+geo <- job_geo("GSE227033")
+geo <- step1(geo)
+geo@params$guess
+geo <- step2(geo)
+untar("./GSE227033/GSE227033_RAW.tar", exdir = "./GSE227033")
+lapply(list.files("./GSE227033/", "cloupe|filtered", full.names = T), file.remove)
 
+prepare_10x("./GSE227033/GSM7090268_C1.expression.txt.gz", single = T, col.gene = 2:1)
+prepare_10x("./GSE227033/GSM7090270_M1.expression.txt.gz", single = T, col.gene = 2:1)
+```
+
+```{r}
+# sr.ctrl <- job_seurat("./GSE227033/GSM7090268_C1")
+# sr.ctrl <- step1(sr.ctrl)
+# sr.ctrl@plots$step1$p.qc
+# sr.ctrl <- step2(sr.ctrl, 1000, 9000)
+```
+
+```{r}
+sr <- job_seuratn(c("./GSE227033/GSM7090268_C1", "./GSE227033/GSM7090270_M1"), c("Control", "Model"))
+sr <- step1(sr, 1000, 9000)
+sr <- step2(sr)
+sr <- step3(sr, 1:15, 1.2)
+sr@plots$step3$p.umap
+sr <- step4(sr, "")
+sr <- step5(sr)
+sr <- step6(sr, "Brain")
+sr@plots$step6$p.map_scsa
+
+```
+
+```{r}
+sr <- mutate(sr, cellType_group = paste0(scsa_cell, "_", orig.ident))
+vis(sr, "cellType_group")
+
+sr <- diff(sr, "cellType_group", list(c("Microglial cell_Model", "Microglial cell_Control")))
+sr@params$contrasts
+```
+
+```{r}
+scf <- asjob_scfea(sr, "m")
+scf <- set_remote(scf)
+scf <- step1(scf)
+```

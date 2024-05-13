@@ -297,7 +297,7 @@ autor("./utils.tool")
 
 ```{r}
 devtools::load_all("./utils.tool")
-# 以下是需要某些文件需要设定的存储位置
+# 以下是某些文件设定的存储位置，请修改到需要的位置
 options(wd_prefix = "~/outline/lixiao/",
   db_prefix = "~/disk_sdb5/job_internal_data",
   op_prefix = "~/operation/")
