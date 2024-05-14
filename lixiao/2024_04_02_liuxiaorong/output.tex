@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 三阴乳腺癌的多药耐药的靶点分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-07}}
+\textbf{\textcolor{white}{2024-05-14}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -131,6 +131,17 @@
   ``MicroRNAs in cancer'' 可能是良好的候选通路，见 Fig. \ref{fig:Hsa05206-visualization} 中的 ``breast cancer'' 部分。
 \end{itemize}
 
+\hypertarget{ux5176ux4ed6ux8981ux6c42}{%
+\subsection{其他要求}\label{ux5176ux4ed6ux8981ux6c42}}
+
+在对MDR和TNBC基因预测并且取交集获得靶点基因的基础上，需要找到本课题所研究的ABCB1/YBX1/BCL2轴
+即关注ABCB1和YBX1基因的下游信号通路，通过GO富集分析以及KEGG富集分析预测ABCB1/YBX1和BCL2之间的关联
+
+\hypertarget{ux5176ux4ed6ux8981ux6c42ux7684ux7ed3ux679c}{%
+\subsection{其他要求的结果}\label{ux5176ux4ed6ux8981ux6c42ux7684ux7ed3ux679c}}
+
+见 \ref{others}。
+
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
 
@@ -152,9 +163,13 @@ Mainly used method:
 \item
   The Human Gene Database \texttt{GeneCards} used for disease related genes prediction\textsuperscript{\protect\hyperlink{ref-TheGenecardsSStelze2016}{2}}.
 \item
-  R package \texttt{pathview} used for KEGG pathways visualization\textsuperscript{\protect\hyperlink{ref-PathviewAnRLuoW2013}{3}}.
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{3},\protect\hyperlink{ref-CytohubbaIdenChin2014}{4}}.
 \item
-  R version 4.3.2 (2023-10-31); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+  R package \texttt{pathview} used for KEGG pathways visualization\textsuperscript{\protect\hyperlink{ref-PathviewAnRLuoW2013}{5}}.
+\item
+  The MCC score was calculated referring to algorithm of \texttt{CytoHubba}\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{4}}.
+\item
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
 
 \hypertarget{results}{%
@@ -169,7 +184,13 @@ Mainly used method:
 \hypertarget{ux4e09ux9634ux4e73ux817aux764c}{%
 \subsection{三阴乳腺癌}\label{ux4e09ux9634ux4e73ux817aux764c}}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \ref{tab:TNBC-related-targets-from-GeneCards} (下方表格) 为表格TNBC related targets from GeneCards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TNBC-related-targets-from-GeneCards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有491行7列，以下预览的表格可能省略部分数据；含有491个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 The GeneCards data was obtained by querying
 :}
@@ -201,14 +222,6 @@ Filtering by Score:
     Score > 3
 
 \vspace{2em}
-\end{tcolorbox}
-\end{center}
-
-Table \ref{tab:TNBC-related-targets-from-GeneCards} (下方表格) 为表格TNBC related targets from GeneCards概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/TNBC-related-targets-from-GeneCards.xlsx})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有491行7列，以下预览的表格可能省略部分数据；表格含有491个唯一`Symbol'。
 \end{tcolorbox}
 \end{center}
 
@@ -244,7 +257,13 @@ STAT3 & Signal Tra\ldots{} & Protein Co\ldots{} & P40763 & 62 & GC17M042313 & 10
 \hypertarget{ux591aux836fux8010ux836f}{%
 \subsection{多药耐药}\label{ux591aux836fux8010ux836f}}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \ref{tab:MDR-related-targets-from-GeneCards} (下方表格) 为表格MDR related targets from GeneCards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MDR-related-targets-from-GeneCards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有722行7列，以下预览的表格可能省略部分数据；含有722个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 The GeneCards data was obtained by querying
 :}
@@ -276,14 +295,6 @@ Filtering by Score:
     Score > 1
 
 \vspace{2em}
-\end{tcolorbox}
-\end{center}
-
-Table \ref{tab:MDR-related-targets-from-GeneCards} (下方表格) 为表格MDR related targets from GeneCards概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/MDR-related-targets-from-GeneCards.xlsx})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有722行7列，以下预览的表格可能省略部分数据；表格含有722个唯一`Symbol'。
 \end{tcolorbox}
 \end{center}
 
@@ -370,7 +381,7 @@ Figure \ref{fig:GO-enrichment} (下方图) 为图GO enrichment概览。
 
 Figure \ref{fig:Hsa05206-visualization} (下方图) 为图Hsa05206 visualization概览。
 
-\textbf{(对应文件为 \texttt{Figure+Table/hsa05206.pathview.png})}
+\textbf{(对应文件为 \texttt{Figure+Table/Hsa05206-visualization.png})}
 
 \def\@captype{figure}
 \begin{center}
@@ -390,6 +401,63 @@ Interactive figure
 \end{tcolorbox}
 \end{center}
 
+\hypertarget{others}{%
+\subsection{三个所选基因的联系}\label{others}}
+
+\hypertarget{stringdb}{%
+\subsubsection{StringDB}\label{stringdb}}
+
+以 STRINGdb 对 Fig. \ref{fig:Intersection-of-MDR-with-TNBC} 构建 PPI 网络 (physical, 可直接相互作用的网络) ,
+获取 MCC top 10 的蛋白，重新构建这些蛋白和 ABCB1, YBX1, BCL2 的 PPI 网络，见
+Fig. \ref{fig:Selected-genes-Top20-interaction}。
+
+Figure \ref{fig:Selected-genes-Top10-interaction} (下方图) 为图Selected genes Top10 interaction概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Selected-genes-Top10-interaction.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Selected-genes-Top10-interaction.pdf}
+\caption{Selected genes Top10 interaction}\label{fig:Selected-genes-Top10-interaction}
+\end{center}
+
+Table \ref{tab:Selected-genes-Top20-interaction-data} (下方表格) 为表格Selected genes Top20 interaction data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Selected-genes-Top20-interaction-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有54行2列，以下预览的表格可能省略部分数据；含有12个唯一`Source'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:Selected-genes-Top20-interaction-data}Selected genes Top20 interaction data}\tabularnewline
+\toprule
+Source & Target\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Source & Target\tabularnewline
+\midrule
+\endhead
+EP300 & SIRT1\tabularnewline
+STAT3 & SIRT1\tabularnewline
+STAT3 & EP300\tabularnewline
+EZH2 & SIRT1\tabularnewline
+EZH2 & EP300\tabularnewline
+EZH2 & STAT3\tabularnewline
+HSP90AA1 & SIRT1\tabularnewline
+HSP90AA1 & EP300\tabularnewline
+HSP90AA1 & STAT3\tabularnewline
+HSP90AA1 & EZH2\tabularnewline
+YBX1 & EP300\tabularnewline
+HDAC1 & SIRT1\tabularnewline
+HDAC1 & EP300\tabularnewline
+HDAC1 & STAT3\tabularnewline
+HDAC1 & EZH2\tabularnewline
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
 \addcontentsline{toc}{section}{Reference}
@@ -402,8 +470,14 @@ Interactive figure
 \leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
 2. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
 
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+3. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+4. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+
 \leavevmode\hypertarget{ref-PathviewAnRLuoW2013}{}%
-3. Luo, W. \& Brouwer, C. Pathview: An r/bioconductor package for pathway-based data integration and visualization. \emph{Bioinformatics (Oxford, England)} \textbf{29}, 1830--1831 (2013).
+5. Luo, W. \& Brouwer, C. Pathview: An r/bioconductor package for pathway-based data integration and visualization. \emph{Bioinformatics (Oxford, England)} \textbf{29}, 1830--1831 (2013).
 \end{cslreferences}
 
 \end{document}

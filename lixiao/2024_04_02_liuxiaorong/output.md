@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 三阴乳腺癌的多药耐药的靶点分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-04-07}}
+\textbf{\textcolor{white}{2024-05-14}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -94,6 +94,15 @@ header-includes:
 - 对交集基因做富集分析见 Fig. \@ref(fig:KEGG-enrichment) 和 Fig. \@ref(fig:GO-enrichment)。
 - "MicroRNAs in cancer" 可能是良好的候选通路，见 Fig. \@ref(fig:Hsa05206-visualization) 中的 "breast cancer" 部分。
 
+## 其他要求
+
+在对MDR和TNBC基因预测并且取交集获得靶点基因的基础上，需要找到本课题所研究的ABCB1/YBX1/BCL2轴
+即关注ABCB1和YBX1基因的下游信号通路，通过GO富集分析以及KEGG富集分析预测ABCB1/YBX1和BCL2之间的关联
+
+## 其他要求的结果
+
+见 \@ref(others)。
+
 
 
 # 前言 {#introduction}
@@ -110,8 +119,10 @@ Mainly used method:
 
 - R package `ClusterProfiler` used for gene enrichment analysis[@ClusterprofilerWuTi2021].
 - The Human Gene Database `GeneCards` used for disease related genes prediction[@TheGenecardsSStelze2016].
+- R package `STEINGdb` used for PPI network construction[@TheStringDataSzklar2021; @CytohubbaIdenChin2014].
 - R package `pathview` used for KEGG pathways visualization[@PathviewAnRLuoW2013].
-- R version 4.3.2 (2023-10-31); Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
+- The MCC score was calculated referring to algorithm of `CytoHubba`[@CytohubbaIdenChin2014].
+- R version 4.4.0 (2024-04-24); Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
 # 分析结果 {#results}
 
@@ -121,7 +132,12 @@ Mainly used method:
 
 ## 三阴乳腺癌
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \@ref(tab:TNBC-related-targets-from-GeneCards) (下方表格) 为表格TNBC related targets from GeneCards概览。
+
+**(对应文件为 `Figure+Table/TNBC-related-targets-from-GeneCards.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有491行7列，以下预览的表格可能省略部分数据；含有491个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 The GeneCards data was obtained by querying
 :}
@@ -154,11 +170,6 @@ Filtering by Score:
 
 \vspace{2em}
 \end{tcolorbox}
-\end{center}Table \@ref(tab:TNBC-related-targets-from-GeneCards) (下方表格) 为表格TNBC related targets from GeneCards概览。
-
-**(对应文件为 `Figure+Table/TNBC-related-targets-from-GeneCards.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有491行7列，以下预览的表格可能省略部分数据；表格含有491个唯一`Symbol'。
-\end{tcolorbox}
 \end{center}
 
 Table: (\#tab:TNBC-related-targets-from-GeneCards)TNBC related targets from GeneCards
@@ -184,7 +195,12 @@ Table: (\#tab:TNBC-related-targets-from-GeneCards)TNBC related targets from Gene
 
 ## 多药耐药
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+Table \@ref(tab:MDR-related-targets-from-GeneCards) (下方表格) 为表格MDR related targets from GeneCards概览。
+
+**(对应文件为 `Figure+Table/MDR-related-targets-from-GeneCards.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有722行7列，以下预览的表格可能省略部分数据；含有722个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 The GeneCards data was obtained by querying
 :}
@@ -216,11 +232,6 @@ Filtering by Score:
     Score > 1
 
 \vspace{2em}
-\end{tcolorbox}
-\end{center}Table \@ref(tab:MDR-related-targets-from-GeneCards) (下方表格) 为表格MDR related targets from GeneCards概览。
-
-**(对应文件为 `Figure+Table/MDR-related-targets-from-GeneCards.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有722行7列，以下预览的表格可能省略部分数据；表格含有722个唯一`Symbol'。
 \end{tcolorbox}
 \end{center}
 
@@ -299,7 +310,7 @@ Figure \@ref(fig:GO-enrichment) (下方图) 为图GO enrichment概览。
 
 Figure \@ref(fig:Hsa05206-visualization) (下方图) 为图Hsa05206 visualization概览。
 
-**(对应文件为 `Figure+Table/hsa05206.pathview.png`)**
+**(对应文件为 `Figure+Table/Hsa05206-visualization.png`)**
 
 \def\@captype{figure}
 \begin{center}
@@ -323,4 +334,52 @@ Interactive figure
 
 
 
+## 三个所选基因的联系 {#others}
+
+### StringDB
+
+
+
+以 STRINGdb 对 Fig. \@ref(fig:Intersection-of-MDR-with-TNBC) 构建 PPI 网络 (physical, 可直接相互作用的网络) ,
+获取 MCC top 10 的蛋白，重新构建这些蛋白和 ABCB1, YBX1, BCL2 的 PPI 网络，见 
+Fig. \@ref(fig:Selected-genes-Top20-interaction)。
+
+
+Figure \@ref(fig:Selected-genes-Top10-interaction) (下方图) 为图Selected genes Top10 interaction概览。
+
+**(对应文件为 `Figure+Table/Selected-genes-Top10-interaction.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Selected-genes-Top10-interaction.pdf}
+\caption{Selected genes Top10 interaction}\label{fig:Selected-genes-Top10-interaction}
+\end{center}
+
+Table \@ref(tab:Selected-genes-Top20-interaction-data) (下方表格) 为表格Selected genes Top20 interaction data概览。
+
+**(对应文件为 `Figure+Table/Selected-genes-Top20-interaction-data.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有54行2列，以下预览的表格可能省略部分数据；含有12个唯一`Source'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Selected-genes-Top20-interaction-data)Selected genes Top20 interaction data
+
+|Source   |Target |
+|:--------|:------|
+|EP300    |SIRT1  |
+|STAT3    |SIRT1  |
+|STAT3    |EP300  |
+|EZH2     |SIRT1  |
+|EZH2     |EP300  |
+|EZH2     |STAT3  |
+|HSP90AA1 |SIRT1  |
+|HSP90AA1 |EP300  |
+|HSP90AA1 |STAT3  |
+|HSP90AA1 |EZH2   |
+|YBX1     |EP300  |
+|HDAC1    |SIRT1  |
+|HDAC1    |EP300  |
+|HDAC1    |STAT3  |
+|HDAC1    |EZH2   |
+|...      |...    |
 

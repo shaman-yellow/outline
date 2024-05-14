@@ -63,3 +63,15 @@ en.epi@plots$step2$p.pathviews$hsa05206
       and genetic factors (gene mutations, amplifications, and epigenetic
       alterations)
 
+
+### KEGG、GO
+
+```{r}
+en.cus <- job_enrich(genes.custom, annotation = en@params$annotation)
+en.cus <- step1(en.cus)
+en.cus@plots$step1$p.kegg
+en.cus@plots$step1$p.go
+en.cus@tables$step1$res.kegg
+en.cus@tables$step1$res.go
+```
+

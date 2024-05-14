@@ -49,7 +49,7 @@ header-includes:
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic(1, 0, 1, 0, 0))
+info <- items(belong = c(odate(4), odate(5)), eval = list(ic(1, 0, 1, 0, 0), ic(0, 1, 0, 0, 0)))
 show.ic(info)
 
 order_publish()
@@ -93,6 +93,15 @@ set_index()
 - 取交集基因 Fig. \@ref(fig:Intersection-of-MDR-with-TNBC)
 - 对交集基因做富集分析见 Fig. \@ref(fig:KEGG-enrichment) 和 Fig. \@ref(fig:GO-enrichment)。
 - "MicroRNAs in cancer" 可能是良好的候选通路，见 Fig. \@ref(fig:Hsa05206-visualization) 中的 "breast cancer" 部分。
+
+## 其他要求
+
+在对MDR和TNBC基因预测并且取交集获得靶点基因的基础上，需要找到本课题所研究的ABCB1/YBX1/BCL2轴
+即关注ABCB1和YBX1基因的下游信号通路，通过GO富集分析以及KEGG富集分析预测ABCB1/YBX1和BCL2之间的关联
+
+## 其他要求的结果
+
+见 \@ref(others)。
 
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
@@ -190,4 +199,35 @@ en@plots$step2$p.pathviews$hsa05206
 
 ```
 
+## 三个所选基因的联系 {#others}
+
+### StringDB
+
+```{r}
+genes.custom <- c("ABCB1", "YBX1", "BCL2")
+
+sdb <- job_stringdb(p.venn_mdr2tnbc$ins)
+sdb <- step1(sdb)
+
+ppi.cus <- filter(sdb, genes.custom, head(sdb@tables$step1$hub_genes$hgnc_symbol, 10),
+  arrow = F, keep.ref = T, HLs = genes.custom,
+  lab.fill = "MCC score", label.shape = c("Hightlight", "Others"))
+ppi.cus$p.mcc
+ppi.cus$edges_mcc
+```
+
+以 STRINGdb 对 Fig. \@ref(fig:Intersection-of-MDR-with-TNBC) 构建 PPI 网络 (physical, 可直接相互作用的网络) ,
+获取 MCC top 10 的蛋白，重新构建这些蛋白和 `r paste0(genes.custom, collapse = ", ")` 的 PPI 网络，见 
+Fig. \@ref(fig:Selected-genes-Top20-interaction)。
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Selected-genes-Top10-interaction
+autor(ppi.cus$p.mcc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Selected-genes-Top20-interaction-data
+autor(ppi.cus$edges_mcc)
+```
 

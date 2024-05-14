@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  7 APR 2024 15:38
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.21)  14 MAY 2024 14:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1338,20 +1338,20 @@ guage=dflt;"
 
 [1]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 209.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 189.
 [2] [3]
 File: Figure+Table/Intersection-of-MDR-with-TNBC.pdf Graphic file (type pdf)
 <use Figure+Table/Intersection-of-MDR-with-TNBC.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 329.
+(caption)                particular \caption on input line 340.
 See the caption package documentation for explanation.
 
 File: Figure+Table/KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 358.
+(caption)                particular \caption on input line 369.
 See the caption package documentation for explanation.
 
 [4]
@@ -1359,7 +1359,7 @@ File: Figure+Table/GO-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/GO-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 368.
+(caption)                particular \caption on input line 379.
 See the caption package documentation for explanation.
 
 [5]
@@ -1368,17 +1368,34 @@ e bmp)
 <pathview2024-04-07_14_43_17.00905/hsa05206.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 378.
+(caption)                particular \caption on input line 389.
 See the caption package documentation for explanation.
 
-[6] [7] (./output.aux) ) 
+
+LaTeX Warning: Reference `fig:Selected-genes-Top20-interaction' on page 6 undef
+ined on input line 412.
+
+[6]
+File: Figure+Table/Selected-genes-Top10-interaction.pdf Graphic file (type pdf)
+
+<use Figure+Table/Selected-genes-Top10-interaction.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 421.
+See the caption package documentation for explanation.
+
+[7] [8] (./output.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 32058 strings out of 476191
- 651013 string characters out of 5812072
- 1102284 words of memory out of 5000000
- 52256 multiletter control sequences out of 15000+600000
+ 32082 strings out of 476191
+ 651757 string characters out of 5812072
+ 1102563 words of memory out of 5000000
+ 52279 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1365b,642s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (9 pages).
+Output written on output.pdf (10 pages).

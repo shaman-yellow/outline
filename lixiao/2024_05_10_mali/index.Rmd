@@ -45,7 +45,7 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
 # AS: astrocytic scar 星形细胞胶质瘢痕
 ```
 
-自发性脑出血（ICH）（人或动物）后调控 小胶质细胞代谢 的关键基因XXX，并且该基因可能也调控 星形细胞胶质瘢痕 成。
+自发性脑出血（ICH）（人或动物）后调控 小胶质细胞代谢 的关键基因XXX，并且该基因可能也调控 星形细胞胶质瘢痕生成。
 
 客户马力前期发表的文章有做过盐诱导激酶 2（SIK-2）这个分子（PMID: 29018127），所以分析的时候可以看看XXX是否可以是SIK-2，或者XXX能否富集在SIK-2相关通路或其他分子机制上
 
@@ -115,7 +115,11 @@ sr@params$contrasts
 ```
 
 ```{r}
-scf <- asjob_scfea(sr, "m")
+scf <- asjob_scfea(sr, meta(sr)$scsa_cell == "Microglial cell", "m")
 scf <- set_remote(scf)
 scf <- step1(scf)
+
+ftibble("./scfea/balance.csv")
+ftibble("./scfea/flux.csv")
+readLines("~/scFEA/data/module_gene_complete_mouse_m168.csv")
 ```
