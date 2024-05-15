@@ -29,3 +29,23 @@ je <- job_esearch("scRNA-seq metabolism")
 vis(je)
 ```
 
+
+ftibble("./scfea/balance.csv")
+ftibble("./scfea/flux.csv")
+readLines("~/scFEA/data/module_gene_complete_mouse_m168.csv")
+
+x <- ftibble("~/scFEA/data/scFEA.M171.mouse.moduleinfo.csv")
+y <- ftibble("~/scFEA/data/Human_M168_information.symbols.csv")
+
+fun <- function(x, y) {
+  xname <- data.frame(a = x[[1]], b = x[[2]])
+  yname <- data.frame(a = y[[1]], b = paste0(y[[3]], "_", y[[5]]))
+  dat <- merge(xname, yname, by = "a")
+  identical(dat$b.x, dat$b.y)
+}
+fun(x, y)
+
+mn.mi <- step3(mn.mi, group.by = "seurat_clusters")
+mn.mi@plots$step3$gene_module_heatdata$graph_test.sig
+sr_sub.mi <- asjob_seurat(mn.mi, 5, rename = )
+vis(sr_sub.mi, "regroup.hclust")

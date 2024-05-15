@@ -83,7 +83,9 @@ untar("./GSE227033/GSE227033_RAW.tar", exdir = "./GSE227033")
 lapply(list.files("./GSE227033/", "cloupe|filtered", full.names = T), file.remove)
 
 prepare_10x("./GSE227033/GSM7090268_C1.expression.txt.gz", single = T, col.gene = 2:1)
+prepare_10x("./GSE227033/GSM7090269_C2.expression.txt.gz", single = T, col.gene = 2:1)
 prepare_10x("./GSE227033/GSM7090270_M1.expression.txt.gz", single = T, col.gene = 2:1)
+prepare_10x("./GSE227033/GSM7090271_M2.expression.txt.gz", single = T, col.gene = 2:1)
 ```
 
 ```{r}
@@ -94,10 +96,14 @@ prepare_10x("./GSE227033/GSM7090270_M1.expression.txt.gz", single = T, col.gene 
 ```
 
 ```{r}
-sr <- job_seuratn(c("./GSE227033/GSM7090268_C1", "./GSE227033/GSM7090270_M1"), c("Control", "Model"))
+sr <- job_seuratn(
+  c("./GSE227033/GSM7090268_C1", "./GSE227033/GSM7090269_C2",
+    "./GSE227033/GSM7090270_M1", "./GSE227033/GSM7090271_M2"),
+  c("Control_1", "Control_2", "Model_1", "Model_2"))
 sr <- step1(sr, 1000, 9000)
 sr <- step2(sr)
 sr <- step3(sr, 1:15, 1.2)
+
 sr@plots$step3$p.umap
 sr <- step4(sr, "")
 sr <- step5(sr)
@@ -115,11 +121,34 @@ sr@params$contrasts
 ```
 
 ```{r}
+mn.mi <- do_monocle(sr, "Microglial")
+mn.mi <- step1(mn.mi, "cellType_group", pre = T)
+mn.mi@plots$step1$p.prin
+mn.mi <- step2(mn.mi, "Y_11")
+mn.mi@plots$step2$p.pseu
+mn.mi <- step3(mn.mi)
+mn.mi@tables$step3$graph_test.sig
+
+```
+
+```{r}
 scf <- asjob_scfea(sr, meta(sr)$scsa_cell == "Microglial cell", "m")
 scf <- set_remote(scf)
 scf <- step1(scf)
+scf@step <- 1L
+scf <- step2(scf)
 
-ftibble("./scfea/balance.csv")
-ftibble("./scfea/flux.csv")
-readLines("~/scFEA/data/module_gene_complete_mouse_m168.csv")
+lm.scf <- asjob_limma(scf, meta(sr), "orig.ident")
+lm.scf <- step1(lm.scf)
+lm.scf <- step2(lm.scf, Model - Control, label = "name", cut.fc = .3)
+lm.scf@plots$step2$p.valcano$`Model - Control`
+lm.scf@tables$step2$tops$`Model - Control`
+
+Tops.flux <- lm.scf@tables$step2$tops$`Model - Control`
+
+genes.topFlux <- unique(unlist(Tops.flux$gene))
+dplyr::filter(mn.mi@tables$step3$graph_test.sig, gene_id %in% genes.topFlux)
+
+pb.SigFluxGene <- map(mn.mi, genes.topFlux, list(c("Y_11", "Y_2")))
+pb.SigFluxGene
 ```
