@@ -308,6 +308,9 @@ tops.ileum
 res.ileum <- map(lm.ileum, gm.micro, tops.ileum)
 res.ileum$data
 res.ileum$p.venn
+
+loads("~/disk_sdb1/2024_01_21_dongzhixia3/workflow.rds")
+autosv(res.ileum$data, "ileum-all-relation-data")
 ```
 
 ## 进一步验证代谢物的存在

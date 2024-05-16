@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(05), eval = ic(3, 2, 1, 0, 0))
+info <- items(belong = odate(05), eval = ic(3, 2, 1, 1, 0))
 show.ic(info)
 
 order_publish()
@@ -103,31 +103,32 @@ sr <- job_seuratn(
 sr <- step1(sr, 1000, 9000)
 sr <- step2(sr)
 sr <- step3(sr, 1:15, 1.2)
-
-sr@plots$step3$p.umap
 sr <- step4(sr, "")
 sr <- step5(sr)
-sr <- step6(sr, "Brain")
+sr <- step6(sr, "Brain", org = "M")
 sr@plots$step6$p.map_scsa
 
 ```
 
 ```{r}
-sr <- mutate(sr, cellType_group = paste0(scsa_cell, "_", orig.ident))
-vis(sr, "cellType_group")
+sr <- mutate(sr, group = strx(orig.ident, "[A-Za-z]+"),
+  cellType_group = paste0(scsa_cell, "_", group))
+p.srCellType <- wrap(vis(sr, "cellType_group"), 12, 6)
+p.srCellType
 
-sr <- diff(sr, "cellType_group", list(c("Microglial cell_Model", "Microglial cell_Control")))
-sr@params$contrasts
+sr <- diff(sr, "cellType_group", list(c("Microglial cell_Model", "Microglial cell_Control")), name = "micro")
+sr@params$micro
 ```
 
 ```{r}
 mn.mi <- do_monocle(sr, "Microglial")
 mn.mi <- step1(mn.mi, "cellType_group", pre = T)
 mn.mi@plots$step1$p.prin
-mn.mi <- step2(mn.mi, "Y_11")
+mn.mi <- step2(mn.mi, "Y_9")
 mn.mi@plots$step2$p.pseu
 mn.mi <- step3(mn.mi)
 mn.mi@tables$step3$graph_test.sig
+mn.mi@plots$step3$gene_module_heatdata
 
 ```
 
@@ -135,20 +136,82 @@ mn.mi@tables$step3$graph_test.sig
 scf <- asjob_scfea(sr, meta(sr)$scsa_cell == "Microglial cell", "m")
 scf <- set_remote(scf)
 scf <- step1(scf)
-scf@step <- 1L
 scf <- step2(scf)
+scf@plots$step2$p.loss
 
-lm.scf <- asjob_limma(scf, meta(sr), "orig.ident")
+lm.scf <- asjob_limma(scf, meta(sr), "group")
 lm.scf <- step1(lm.scf)
 lm.scf <- step2(lm.scf, Model - Control, label = "name", cut.fc = .3)
 lm.scf@plots$step2$p.valcano$`Model - Control`
 lm.scf@tables$step2$tops$`Model - Control`
+```
 
+```{r}
 Tops.flux <- lm.scf@tables$step2$tops$`Model - Control`
+Tops.flux
+
+belong.flux <- reframe_col(dplyr::select(Tops.flux, gene, name), "gene", function(x) unlist(x))
+belong.flux <- dplyr::relocate(belong.flux, gene, Metabolic_flux = name)
+belong.flux
 
 genes.topFlux <- unique(unlist(Tops.flux$gene))
 dplyr::filter(mn.mi@tables$step3$graph_test.sig, gene_id %in% genes.topFlux)
-
-pb.SigFluxGene <- map(mn.mi, genes.topFlux, list(c("Y_11", "Y_2")))
-pb.SigFluxGene
+genes.topFlux
 ```
+
+```{r}
+bm <- job_biomart("mmu", F)
+bm <- step1(bm, genes.topFlux, "mgi_symbol")
+en.topflux <- job_enrich(genes.topFlux, bm$anno, "mgi_symbol")
+en.topflux <- step1(en.topflux, "mmu", "org.Mm.eg.db")
+en.topflux@plots$step1$p.kegg$ids
+en.topflux@plots$step1$p.go$ids
+```
+
+
+```{r}
+pb.SigFluxGene <- map(mn.mi, genes.topFlux, list(c("Y_9", "Y_19"), c("Y_9", "Y_5")),
+  enrich = en.topflux, assay = "SCT",
+  enrichExtra = belong.flux,
+  HLs = list(Variable_features = Seurat::VariableFeatures(sr@object)),
+  group_by = "Variable_features",
+  split = NULL
+)
+wrap(pb.SigFluxGene, 13, 8)
+
+genes.VarTopFlux <- intersect(genes.topFlux, Seurat::VariableFeatures(sr@object))
+genes.VarTopFlux
+```
+
+```{r}
+bm2.topFlux <- job_biomart2(genes.topFlux, "mmu", "hsa")
+bm2.topFlux <- step1(bm2.topFlux)
+bm2.topFlux@params$mapped
+```
+
+
+```{r}
+bm2.sik <- job_biomart2("SIK2", "hsa", "mmu")
+bm2.sik <- step1(bm2.sik)
+bm2.sik@params$mapped
+
+dplyr::filter(mn.mi@tables$step3$graph_test.sig, gene_id == "Sik2")
+dplyr::filter(sr@params$micro, gene == "Sik2")
+```
+
+```{r}
+sdb.topFlux <- job_stringdb(bm2.topFlux@params$mapped$hgnc_symbol)
+sdb.topFlux <- step1(sdb.topFlux)
+sdb.topFlux <- readRDS("./sdb.rds")
+sdb.topFlux@plots$step1$p.mcc
+
+fun_human <- function(x) {
+  bm2.topFlux$mapped$hgnc_symbol[ match(bm2.topFlux$mapped$mgi_symbol, x) ]
+}
+ppi.topFlux <- filter(sdb.topFlux, fun_human(genes.VarTopFlux), fun_human(genes.topFlux),
+  arrow = F, label.shape = c("Variable feature", "Others")
+)
+ppi.topFlux$p.mcc
+```
+
+
