@@ -1,0 +1,878 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+调控小胶质细胞代谢的关键基因XXX} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-05-17}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\hypertarget{ux9700ux6c42}{%
+\subsection{需求}\label{ux9700ux6c42}}
+
+\begin{itemize}
+\tightlist
+\item
+  自发性脑出血（ICH）（人或动物）后调控 小胶质细胞代谢 的关键基因XXX，并且该基因可能也调控 星形细胞胶质瘢痕生成。
+\item
+  客户前期发表的文章有做过盐诱导激酶 2（SIK-2）（\url{PMID:29018127}），
+  XXX是否可以是SIK-2，或者XXX能否富集在SIK-2相关通路或其他分子机制上
+\end{itemize}
+
+\hypertarget{ux7ed3ux679c}{%
+\subsection{结果}\label{ux7ed3ux679c}}
+
+\begin{itemize}
+\tightlist
+\item
+  以小鼠丘脑出血模型 (GSE227033) 的单细胞数据集分析 Microglial cell, 见 Fig. \ref{fig:The-cellType-group}。
+  (该模型大体上应该是合适的, 以 collagenase IV 造模 (像 \url{PMID:38433011} 也是这种 ICH 造模)。
+  ICH 的单细胞数据很少，基本没有其他合适的数据了)
+\item
+  以 Microglial Cell 预测代谢通量，并差异分析， 见 Fig. \ref{fig:SCF-Model-vs-Control}
+\item
+  与差异代谢相关的基因，在拟时轨迹 (Control -\textgreater{} Model) 中的表达见 Fig. \ref{fig:MI-Pseudotime-heatmap-of-genes}
+\item
+  将这些基因映射到人类的基因 (hgnc symbol) 后，获取上游的转录因子。在这些基因和转录因子中，尝试寻找 SIK-2。无结果。
+  此外，SIK-2 为非差异表达基因 (Model vs Control)。
+\item
+  为筛选 Astrocyte 胶质瘢痕相关基因，首先获取了 Astrocyte 的差异基因 (Model vs Control) ，见
+  Tab. \ref{tab:DEGs-of-the-contrasts-Astrocyte}。
+  随后，获取 GeneCards 的胶质瘢痕相关基因，见 Tab. \ref{tab:GLIALSCAR-disease-related-targets-from-GeneCards}。
+  尝试取交集，见 Fig. \ref{fig:Intersection-of-DB-GlialScar-with-Astrocyte-DEGs}，有 11 个基因。
+\item
+  最后，调控小胶质细胞代谢且与星形细胞胶质瘢痕相关基因，Fig. \ref{fig:UpSet-plot-of-Genes-sources}，
+  由于 Fig. \ref{fig:Intersection-of-DB-GlialScar-with-Astrocyte-DEGs} 的基因与 Microglial
+  代谢相关基因及上游转录因子无交集，因此，筛选时直接用了 Tab. \ref{tab:GLIALSCAR-disease-related-targets-from-GeneCards}
+  的基因。获得结果：XYLT1 (即, Xylt1)。
+\item
+  Xylt1 的表达见 Fig. \ref{fig:Dimension-plot-of-expression-level-of-the-genes}。
+  Xylt1 主要集中表达于模型组的 Microglial 中，符合条件。
+  Xylt1 相关代谢通路见 Tab. \ref{tab:Xylt1-related-metabolic-flux}。
+  Xylt1 的其余信息可参考 Fig. \ref{fig:MI-Pseudotime-heatmap-of-genes}。
+\end{itemize}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+All used GEO expression data and their design:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GSE227033}: we sequenced the transcriptomes of 32332 single brain cells, revealing a total of four major cell types within the four thalamus sample from mice.
+\end{itemize}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R package \texttt{biomaRt} used for gene annotation\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{1}}.
+\item
+  The \texttt{biomart} was used for mapping genes between organism (e.g., mgi\_symbol to hgnc\_symbol)\textsuperscript{\protect\hyperlink{ref-MappingIdentifDurinc2009}{1}}.
+\item
+  The \texttt{scFEA} (python) was used to estimate cell-wise metabolic via single cell RNA-seq data\textsuperscript{\protect\hyperlink{ref-AGraphNeuralAlgham2021}{2}}.
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{3}}.
+\item
+  GEO \url{https://www.ncbi.nlm.nih.gov/geo/} used for expression dataset aquisition.
+\item
+  The Human Gene Database \texttt{GeneCards} used for disease related genes prediction\textsuperscript{\protect\hyperlink{ref-TheGenecardsSStelze2016}{4}}.
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{5},\protect\hyperlink{ref-EdgerDifferenChen}{6}}.
+\item
+  R package \texttt{Monocle3} used for cell pseudotime analysis\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{7},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{8}}.
+\item
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{9},\protect\hyperlink{ref-CytohubbaIdenChin2014}{10}}.
+\item
+  The R package \texttt{Seurat} used for scRNA-seq processing\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{11},\protect\hyperlink{ref-ComprehensiveIStuart2019}{12}}.
+\item
+  The \texttt{Transcription\ Factor\ Target\ Gene\ Database} (\url{https://tfbsdb.systemsbiology.net/}) was used for discovering relationship between transcription factors and genes..\textsuperscript{\protect\hyperlink{ref-CausalMechanisPlaisi2016}{13}}
+\item
+  \texttt{SCSA} (python) used for cell type annotation\textsuperscript{\protect\hyperlink{ref-ScsaACellTyCaoY2020}{14}}.
+\item
+  The MCC score was calculated referring to algorithm of \texttt{CytoHubba}\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{10}}.
+\item
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux5355ux7ec6ux80deux6570ux636eux5206ux6790}{%
+\subsection{单细胞数据分析}\label{ux5355ux7ec6ux80deux6570ux636eux5206ux6790}}
+
+\hypertarget{ux6570ux636eux6765ux6e90}{%
+\subsubsection{数据来源}\label{ux6570ux636eux6765ux6e90}}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE227033
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Postprocessing and quality control were performed using
+a 10× Cell Ranger package (v1.2.0; 10 × Genomics). Reads
+were aligned to the mm10 reference assembly (v1.2.0; 10 ×
+Genomics). sn-RNA seq data (Cellranger\_result) contains 4
+samples (C1, C2, M1, M2).
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    Assembly: mm10
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    Supplementary files format and content: Tab-separated
+values files and matrix files
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/GSE227033-content})}
+
+\hypertarget{ux7ec6ux80deux805aux7c7bux4e0eux9274ux5b9a}{%
+\subsubsection{细胞聚类与鉴定}\label{ux7ec6ux80deux805aux7c7bux4e0eux9274ux5b9a}}
+
+Figure \ref{fig:UMAP-Clustering} (下方图) 为图UMAP Clustering概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/UMAP-Clustering.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/UMAP-Clustering.pdf}
+\caption{UMAP Clustering}\label{fig:UMAP-Clustering}
+\end{center}
+
+Figure \ref{fig:The-cellType-group} (下方图) 为图The cellType group概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/The-cellType-group.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/The-cellType-group.pdf}
+\caption{The cellType group}\label{fig:The-cellType-group}
+\end{center}
+
+\hypertarget{ux5c0fux80f6ux8d28ux7ec6ux80deux5206ux6790}{%
+\subsubsection{小胶质细胞分析}\label{ux5c0fux80f6ux8d28ux7ec6ux80deux5206ux6790}}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\paragraph{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+Table \ref{tab:DEGs-of-the-contrasts-Microglial} (下方表格) 为表格DEGs of the contrasts Microglial概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-the-contrasts-Microglial.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1546行7列，以下预览的表格可能省略部分数据；含有1个唯一`contrast'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:DEGs-of-the-contrasts-Microglial}DEGs of the contrasts Microglial}\tabularnewline
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj & gene\tabularnewline
+\midrule
+\endhead
+Microglial\ldots{} & 1.83518861\ldots{} & 2.92401237\ldots{} & 0.09 & 0.36 & 5.50556584\ldots{} & Cenpe\tabularnewline
+Microglial\ldots{} & 4.48315517\ldots{} & 9.81893833\ldots{} & 0.111 & 0.374 & 1.34494655\ldots{} & Cdkn1a\tabularnewline
+Microglial\ldots{} & 1.73323788\ldots{} & -4.0813517\ldots{} & 0.013 & 0.103 & 5.19971364\ldots{} & Qrfpr\tabularnewline
+Microglial\ldots{} & 9.12205066\ldots{} & -2.4590397\ldots{} & 0.103 & 0.217 & 2.73661519\ldots{} & Dock6\tabularnewline
+Microglial\ldots{} & 2.54749154\ldots{} & 0.28706360\ldots{} & 0.077 & 0.288 & 7.64247464\ldots{} & Gm26870\tabularnewline
+Microglial\ldots{} & 2.93243498\ldots{} & 5.68612318\ldots{} & 0.269 & 0.059 & 8.79730495\ldots{} & Pantr2\tabularnewline
+Microglial\ldots{} & 8.30783340\ldots{} & -6.9973674\ldots{} & 0.91 & 0.207 & 2.49235002\ldots{} & Agt\tabularnewline
+Microglial\ldots{} & 4.69847504\ldots{} & 2.60879746\ldots{} & 0.612 & 0.092 & 1.40954251\ldots{} & Penk\tabularnewline
+Microglial\ldots{} & 1.07440758\ldots{} & -1.7746631\ldots{} & 0.104 & 0.087 & 3.22322274\ldots{} & D7Ertd443e\tabularnewline
+Microglial\ldots{} & 1.67179273\ldots{} & 8.88979035\ldots{} & 0.136 & 0.499 & 5.01537820\ldots{} & Ndc80\tabularnewline
+Microglial\ldots{} & 6.93761245\ldots{} & 5.36162953\ldots{} & 0.125 & 0.34 & 2.08128373\ldots{} & Tmem123\tabularnewline
+Microglial\ldots{} & 1.41432503\ldots{} & 12.6809064\ldots{} & 0.124 & 0.184 & 4.24297509\ldots{} & Egln3\tabularnewline
+Microglial\ldots{} & 1.97677667\ldots{} & 2.11642957\ldots{} & 0.334 & 0.072 & 5.93033003\ldots{} & Car14\tabularnewline
+Microglial\ldots{} & 1.05458751\ldots{} & 9.33084014\ldots{} & 0.089 & 0.178 & 3.16376254\ldots{} & Gadd45b\tabularnewline
+Microglial\ldots{} & 3.04118215\ldots{} & 1.46565262\ldots{} & 0.126 & 0.277 & 9.12354645\ldots{} & Parp3\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux62dfux65f6ux5206ux6790}{%
+\paragraph{拟时分析}\label{ux62dfux65f6ux5206ux6790}}
+
+选择 Control 集中区域作为拟时起点。
+
+Figure \ref{fig:MI-principal-points} (下方图) 为图MI principal points概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MI-principal-points.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MI-principal-points.pdf}
+\caption{MI principal points}\label{fig:MI-principal-points}
+\end{center}
+
+Figure \ref{fig:MI-pseudotime} (下方图) 为图MI pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MI-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MI-pseudotime.pdf}
+\caption{MI pseudotime}\label{fig:MI-pseudotime}
+\end{center}
+
+\hypertarget{ux4ee3ux8c22ux901aux91cfux9884ux6d4b}{%
+\paragraph{代谢通量预测}\label{ux4ee3ux8c22ux901aux91cfux9884ux6d4b}}
+
+使用 scFEA 预测 Microglial cell 代谢通量。
+
+Figure \ref{fig:Convergency-of-the-loss-terms-during-training} (下方图) 为图Convergency of the loss terms during training概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Convergency-of-the-loss-terms-during-training.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{scfea/loss_20240516-014752.png}
+\caption{Convergency of the loss terms during training}\label{fig:Convergency-of-the-loss-terms-during-training}
+\end{center}
+
+\hypertarget{ux4ee3ux8c22ux901aux91cfux5deeux5f02ux5206ux6790}{%
+\paragraph{代谢通量差异分析}\label{ux4ee3ux8c22ux901aux91cfux5deeux5f02ux5206ux6790}}
+
+Table \ref{tab:SCF-data-Model-vs-Control} (下方表格) 为表格SCF data Model vs Control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCF-data-Model-vs-Control.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有13行8列，以下预览的表格可能省略部分数据；含有13个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:SCF-data-Model-vs-Control}SCF data Model vs Control}\tabularnewline
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P.Val & B & name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P.Val & B & name\tabularnewline
+\midrule
+\endhead
+M\_121 & 0.6117\ldots{} & -3.117\ldots{} & 14.506\ldots{} & 1.1338\ldots{} & 1.9048\ldots{} & 97.444\ldots{} & (Glc)3\ldots{}\tabularnewline
+M\_122 & 0.5732\ldots{} & 4.8626\ldots{} & 13.592\ldots{} & 4.5332\ldots{} & 3.8079\ldots{} & 84.670\ldots{} & (GlcNA\ldots{}\tabularnewline
+M\_132 & 0.5265\ldots{} & -7.310\ldots{} & 12.485\ldots{} & 9.0708\ldots{} & 5.0796\ldots{} & 70.314\ldots{} & (Gal)2\ldots{}\tabularnewline
+M\_89 & 0.4437\ldots{} & -1.982\ldots{} & 10.521\ldots{} & 6.9549\ldots{} & 2.9210\ldots{} & 47.832\ldots{} & B-Alan\ldots{}\tabularnewline
+M\_129 & 0.4401\ldots{} & 1.6913\ldots{} & 10.436\ldots{} & 1.7032\ldots{} & 5.7227\ldots{} & 46.948\ldots{} & Protei\ldots{}\tabularnewline
+M\_119 & 0.4297\ldots{} & 1.0094\ldots{} & 10.190\ldots{} & 2.2013\ldots{} & 6.1638\ldots{} & 44.425\ldots{} & Dolich\ldots{}\tabularnewline
+M\_80 & 0.4095\ldots{} & -5.647\ldots{} & 9.7110\ldots{} & 2.7185\ldots{} & 6.5245\ldots{} & 39.680\ldots{} & Cystei\ldots{}\tabularnewline
+M\_125 & 0.3755\ldots{} & -3.824\ldots{} & 8.9058\ldots{} & 5.3173\ldots{} & 1.1166\ldots{} & 32.223\ldots{} & Dolich\ldots{}\tabularnewline
+M\_95 & 0.3329\ldots{} & -2.699\ldots{} & 7.8944\ldots{} & 2.9235\ldots{} & 5.4572\ldots{} & 23.771\ldots{} & phenyl\ldots{}\tabularnewline
+M\_120 & 0.3083\ldots{} & -8.293\ldots{} & 7.3119\ldots{} & 2.6374\ldots{} & 4.4308\ldots{} & 19.365\ldots{} & (Glc)3\ldots{}\tabularnewline
+M\_109 & 0.3038\ldots{} & -1.520\ldots{} & 7.2056\ldots{} & 5.7847\ldots{} & 8.8348\ldots{} & 18.598\ldots{} & Glucos\ldots{}\tabularnewline
+M\_94 & 0.3028\ldots{} & 1.1379\ldots{} & 7.1816\ldots{} & 6.8961\ldots{} & 9.6546\ldots{} & 18.426\ldots{} & Tyrosi\ldots{}\tabularnewline
+M\_146 & 0.3015\ldots{} & 1.8703\ldots{} & 7.1498\ldots{} & 8.6992\ldots{} & 1.1242\ldots{} & 18.199\ldots{} & Xanthi\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+{[}1{]} ``Figure+Table/test1.csv''
+
+Figure \ref{fig:SCF-Model-vs-Control} (下方图) 为图SCF Model vs Control概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/SCF-Model-vs-Control.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SCF-Model-vs-Control.pdf}
+\caption{SCF Model vs Control}\label{fig:SCF-Model-vs-Control}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+adj.P.Val cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    0.3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/SCF-Model-vs-Control-content})}
+
+\hypertarget{ux5deeux5f02ux4ee3ux8c22ux76f8ux5173ux7684ux57faux56e0}{%
+\paragraph{差异代谢相关的基因}\label{ux5deeux5f02ux4ee3ux8c22ux76f8ux5173ux7684ux57faux56e0}}
+
+Figure \ref{fig:TOPFLUX-GO-enrichment} (下方图) 为图TOPFLUX GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TOPFLUX-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TOPFLUX-GO-enrichment.pdf}
+\caption{TOPFLUX GO enrichment}\label{fig:TOPFLUX-GO-enrichment}
+\end{center}
+
+Figure \ref{fig:MI-Pseudotime-heatmap-of-genes} (下方图) 为图MI Pseudotime heatmap of genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MI-Pseudotime-heatmap-of-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MI-Pseudotime-heatmap-of-genes.pdf}
+\caption{MI Pseudotime heatmap of genes}\label{fig:MI-Pseudotime-heatmap-of-genes}
+\end{center}
+
+\hypertarget{ppi-ux7f51ux7edc}{%
+\paragraph{PPI 网络}\label{ppi-ux7f51ux7edc}}
+
+根据 Fig. \ref{fig:MI-Pseudotime-heatmap-of-genes} 中的基因，
+将小鼠的基因 mgi symbol 映射为人类的基因 hgnc symbol,
+构建 PPI 网络。
+
+Figure \ref{fig:TOPFLUX-MCC-score} (下方图) 为图TOPFLUX MCC score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TOPFLUX-MCC-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TOPFLUX-MCC-score.pdf}
+\caption{TOPFLUX MCC score}\label{fig:TOPFLUX-MCC-score}
+\end{center}
+
+关注高变基因 (variable features, 差异水平更高) 与其它基因对应的蛋白的互作。
+
+Figure \ref{fig:TOPFLUX-Top-MCC-score} (下方图) 为图TOPFLUX Top MCC score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TOPFLUX-Top-MCC-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TOPFLUX-Top-MCC-score.pdf}
+\caption{TOPFLUX Top MCC score}\label{fig:TOPFLUX-Top-MCC-score}
+\end{center}
+
+\hypertarget{ux4e0aux6e38ux7684ux8f6cux5f55ux56e0ux5b50}{%
+\paragraph{上游的转录因子}\label{ux4e0aux6e38ux7684ux8f6cux5f55ux56e0ux5b50}}
+
+寻找 Fig. \ref{fig:MI-Pseudotime-heatmap-of-genes} 中的基因的上游转录因子。
+
+Table \ref{tab:Transcription-Factor-binding-sites} (下方表格) 为表格Transcription Factor binding sites概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Transcription-Factor-binding-sites.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有15113行10列，以下预览的表格可能省略部分数据；含有56个唯一`target'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item Start:  起始点
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Transcription-Factor-binding-sites}Transcription Factor binding sites}\tabularnewline
+\toprule
+target & TF\_symbol & Motif & Source & Strand & Start & Stop & PValue & MatchS\ldots{} & Overla\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+target & TF\_symbol & Motif & Source & Strand & Start & Stop & PValue & MatchS\ldots{} & Overla\ldots{}\tabularnewline
+\midrule
+\endhead
+XDH & FOXB1 & FOXB1\_\ldots{} & SELEX & + & 31634777 & 31634794 & 2.0E-06 & TTGATA\ldots{} & 18\tabularnewline
+XDH & FOXB1 & FOXB1\_\ldots{} & SELEX & - & 31634777 & 31634794 & 4.0E-06 & ATAGTC\ldots{} & 18\tabularnewline
+XDH & POU4F2 & POU4F2\ldots{} & SELEX & + & 31635992 & 31636007 & 4.0E-06 & TTTAAT\ldots{} & 16\tabularnewline
+XDH & HOXD12 & HOXD12\ldots{} & SELEX & + & 31636000 & 31636008 & 5.0E-06 & ATAATAAAA & 9\tabularnewline
+XDH & HOXD12 & HOXD12\ldots{} & SELEX & + & 31636072 & 31636080 & 2.0E-06 & CTAATAAAA & 9\tabularnewline
+XDH & FOXJ2 & FOXJ2\_\ldots{} & SELEX & + & 31635996 & 31636008 & 2.0E-06 & ATAAAT\ldots{} & 13\tabularnewline
+XDH & FOXJ2 & FOXJ2\_\ldots{} & SELEX & + & 31637732 & 31637744 & 9.0E-06 & GCAAAC\ldots{} & 13\tabularnewline
+XDH & HOXC10 & Hoxc10\ldots{} & SELEX & + & 31636000 & 31636009 & 6.0E-06 & ATAATA\ldots{} & 10\tabularnewline
+XDH & HOXC10 & Hoxc10\ldots{} & SELEX & + & 31636072 & 31636081 & 3.0E-06 & CTAATA\ldots{} & 10\tabularnewline
+XDH & HOXC10 & Hoxc10\ldots{} & SELEX & - & 31639392 & 31639401 & 7.0E-06 & ACAATA\ldots{} & 10\tabularnewline
+XDH & SOX21 & SOX21\_\ldots{} & SELEX & - & 31636149 & 31636163 & 0.0E+00 & AGCAAT\ldots{} & 15\tabularnewline
+XDH & SOX4 & SOX4\_H\ldots{} & SELEX & - & 31636149 & 31636164 & 1.0E-06 & CAGCAA\ldots{} & 16\tabularnewline
+XDH & HOXD9 & Hoxd9\_\ldots{} & SELEX & - & 31639392 & 31639401 & 3.0E-06 & ACAATA\ldots{} & 10\tabularnewline
+XDH & POU2F1 & POU2F1\ldots{} & SELEX & + & 31635995 & 31636008 & 5.0E-06 & AATAAA\ldots{} & 14\tabularnewline
+XDH & POU2F1 & POU2F1\ldots{} & SELEX & + & 31637713 & 31637726 & 6.0E-06 & TTTACA\ldots{} & 14\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux661fux5f62ux7ec6ux80deux80f6ux8d28ux7622ux75d5-ux76f8ux5173ux57faux56e0}{%
+\subsubsection{星形细胞胶质瘢痕 相关基因}\label{ux661fux5f62ux7ec6ux80deux80f6ux8d28ux7622ux75d5-ux76f8ux5173ux57faux56e0}}
+
+\hypertarget{ux5deeux5f02ux5206ux6790-1}{%
+\paragraph{差异分析}\label{ux5deeux5f02ux5206ux6790-1}}
+
+Table \ref{tab:DEGs-of-the-contrasts-Astrocyte} (下方表格) 为表格DEGs of the contrasts Astrocyte概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/DEGs-of-the-contrasts-Astrocyte.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1058行7列，以下预览的表格可能省略部分数据；含有1个唯一`contrast'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:DEGs-of-the-contrasts-Astrocyte}DEGs of the contrasts Astrocyte}\tabularnewline
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj & gene\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+contrast & p\_val & avg\_log2FC & pct.1 & pct.2 & p\_val\_adj & gene\tabularnewline
+\midrule
+\endhead
+Astrocyte\_\ldots{} & 4.37264108\ldots{} & 8.78114541\ldots{} & 0.024 & 0.107 & 1.31179232\ldots{} & Dnah11\tabularnewline
+Astrocyte\_\ldots{} & 3.64754326\ldots{} & 2.65537976\ldots{} & 0.093 & 0.243 & 1.09426297\ldots{} & H2-Aa\tabularnewline
+Astrocyte\_\ldots{} & 2.70284056\ldots{} & 2.40818618\ldots{} & 0.056 & 0.148 & 8.10852170\ldots{} & Cd53\tabularnewline
+Astrocyte\_\ldots{} & 6.14268687\ldots{} & 8.30800266\ldots{} & 0.08 & 0.147 & 1.84280606\ldots{} & Thbs1\tabularnewline
+Astrocyte\_\ldots{} & 9.59253467\ldots{} & 2.25479722\ldots{} & 0.062 & 0.198 & 2.87776040\ldots{} & Mpeg1\tabularnewline
+Astrocyte\_\ldots{} & 1.90263565\ldots{} & 14.3762318\ldots{} & 0.073 & 0.274 & 5.70790697\ldots{} & Top2a\tabularnewline
+Astrocyte\_\ldots{} & 3.92239217\ldots{} & 4.31264893\ldots{} & 0.071 & 0.192 & 1.17671765\ldots{} & Cebpb\tabularnewline
+Astrocyte\_\ldots{} & 7.06233131\ldots{} & 7.35551440\ldots{} & 0.058 & 0.21 & 2.11869939\ldots{} & Grap2\tabularnewline
+Astrocyte\_\ldots{} & 4.42147374\ldots{} & 2.20926332\ldots{} & 0.069 & 0.205 & 1.32644212\ldots{} & A630001G21Rik\tabularnewline
+Astrocyte\_\ldots{} & 1.77494299\ldots{} & 0.93300639\ldots{} & 0.106 & 0.063 & 5.32482897\ldots{} & Stab1\tabularnewline
+Astrocyte\_\ldots{} & 6.62357870\ldots{} & -1.2610776\ldots{} & 0.075 & 0.165 & 1.98707361\ldots{} & Cd247\tabularnewline
+Astrocyte\_\ldots{} & 1.03473035\ldots{} & -1.9719507\ldots{} & 0.136 & 0.196 & 3.10419105\ldots{} & Gpnmb\tabularnewline
+Astrocyte\_\ldots{} & 3.73638612\ldots{} & 12.9129020\ldots{} & 0.14 & 0.225 & 1.12091583\ldots{} & Bcl3\tabularnewline
+Astrocyte\_\ldots{} & 3.00567566\ldots{} & 4.02484698\ldots{} & 0.14 & 0.248 & 9.01702698\ldots{} & Ifitm3\tabularnewline
+Astrocyte\_\ldots{} & 1.91228260\ldots{} & 5.32650753\ldots{} & 0.047 & 0.244 & 5.73684782\ldots{} & Rnf17\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+将这些差异基因映射到人类的基因 hgnc\_symbol
+
+Table \ref{tab:mapped-genes-Astrocyte-DEGs} (下方表格) 为表格mapped genes Astrocyte DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/mapped-genes-Astrocyte-DEGs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有921行2列，以下预览的表格可能省略部分数据；含有892个唯一`mgi\_symbol；含有914个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\item mgi\_symbol:  基因名 (Mice)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:mapped-genes-Astrocyte-DEGs}Mapped genes Astrocyte DEGs}\tabularnewline
+\toprule
+mgi\_symbol & hgnc\_symbol\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+mgi\_symbol & hgnc\_symbol\tabularnewline
+\midrule
+\endhead
+Man1a & MAN1A1\tabularnewline
+Slc7a7 & SLC7A7\tabularnewline
+B4galt1 & B4GALT1\tabularnewline
+Xdh & XDH\tabularnewline
+St6gal1 & ST6GAL1\tabularnewline
+mt-Atp8 & MT-ATP8\tabularnewline
+Egln3 & EGLN3\tabularnewline
+Mis18bp1 & MIS18BP1\tabularnewline
+Cdc42ep1 & CDC42EP1\tabularnewline
+Sdc4 & SDC4\tabularnewline
+Cd93 & CD93\tabularnewline
+Shroom2 & SHROOM2\tabularnewline
+Jag1 & JAG1\tabularnewline
+Fbxo7 & FBXO7\tabularnewline
+Parp4 & PARP4\tabularnewline
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux80f6ux8d28ux7622ux75d5}{%
+\paragraph{胶质瘢痕}\label{ux80f6ux8d28ux7622ux75d5}}
+
+从 genecards 获取 胶质瘢痕 相关基因。
+
+Table \ref{tab:GLIALSCAR-disease-related-targets-from-GeneCards} (下方表格) 为表格GLIALSCAR disease related targets from GeneCards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GLIALSCAR-disease-related-targets-from-GeneCards.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有90行7列，以下预览的表格可能省略部分数据；含有90个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    Glial scar
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    TRUE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 0
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:GLIALSCAR-disease-related-targets-from-GeneCards}GLIALSCAR disease related targets from GeneCards}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+BDNF-AS & BDNF Antis\ldots{} & RNA Gene (\ldots{} & & 29 & GC11P027466 & 4.85\tabularnewline
+TRA-TGC7-1 & TRNA-Ala (\ldots{} & RNA Gene (\ldots{} & & 14 & GC06M093612 & 2.82\tabularnewline
+CSPG4 & Chondroiti\ldots{} & Protein Co\ldots{} & Q6UVK1 & 54 & GC15M075674 & 2.4\tabularnewline
+GFAP & Glial Fibr\ldots{} & Protein Co\ldots{} & P14136 & 57 & GC17M077883 & 1.91\tabularnewline
+MAG & Myelin Ass\ldots{} & Protein Co\ldots{} & P20916 & 55 & GC19P035292 & 1.78\tabularnewline
+TNR & Tenascin R & Protein Co\ldots{} & Q92752 & 51 & GC01M175291 & 1.78\tabularnewline
+MYOC & Myocilin & Protein Co\ldots{} & Q99972 & 50 & GC01M171604 & 1.78\tabularnewline
+MMP9 & Matrix Met\ldots{} & Protein Co\ldots{} & P14780 & 62 & GC20P046008 & 1.7\tabularnewline
+S100B & S100 Calci\ldots{} & Protein Co\ldots{} & P04271 & 53 & GC21M053599 & 1.7\tabularnewline
+PDGFRB & Platelet D\ldots{} & Protein Co\ldots{} & P09619 & 62 & GC05M150113 & 1.59\tabularnewline
+CST3 & Cystatin C & Protein Co\ldots{} & P01034 & 53 & GC20M023930 & 1.59\tabularnewline
+NES & Nestin & Protein Co\ldots{} & P48681 & 50 & GC01M156668 & 1.59\tabularnewline
+FGFR4 & Fibroblast\ldots{} & Protein Co\ldots{} & P22455 & 60 & GC05P177086 & 1.32\tabularnewline
+FGF2 & Fibroblast\ldots{} & Protein Co\ldots{} & P09038 & 54 & GC04P122826 & 1.32\tabularnewline
+GALNS & Galactosam\ldots{} & Protein Co\ldots{} & P34059 & 56 & GC16M088813 & 0.7\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:Intersection-of-DB-GlialScar-with-Astrocyte-DEGs} (下方图) 为图Intersection of DB GlialScar with Astrocyte DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-DB-GlialScar-with-Astrocyte-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-DB-GlialScar-with-Astrocyte-DEGs.pdf}
+\caption{Intersection of DB GlialScar with Astrocyte DEGs}\label{fig:Intersection-of-DB-GlialScar-with-Astrocyte-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Intersection
+:}
+
+\vspace{0.5em}
+
+    GFAP, PDGFRB, CST3, VIM, BDNF, DCN, TGM2, VCAN, TNC,
+MRC1, CCL15-CCL14
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-DB-GlialScar-with-Astrocyte-DEGs-content})}
+
+\hypertarget{ux8c03ux63a7ux5c0fux80f6ux8d28ux7ec6ux80deux4ee3ux8c22ux4e14ux4e0eux661fux5f62ux7ec6ux80deux80f6ux8d28ux7622ux75d5ux76f8ux5173ux57faux56e0}{%
+\subsubsection{调控小胶质细胞代谢且与星形细胞胶质瘢痕相关基因}\label{ux8c03ux63a7ux5c0fux80f6ux8d28ux7ec6ux80deux4ee3ux8c22ux4e14ux4e0eux661fux5f62ux7ec6ux80deux80f6ux8d28ux7622ux75d5ux76f8ux5173ux57faux56e0}}
+
+\hypertarget{ux4ea4ux96c6ux57faux56e0}{%
+\paragraph{交集基因}\label{ux4ea4ux96c6ux57faux56e0}}
+
+Figure \ref{fig:UpSet-plot-of-Genes-sources} (下方图) 为图UpSet plot of Genes sources概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/UpSet-plot-of-Genes-sources.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/UpSet-plot-of-Genes-sources.pdf}
+\caption{UpSet plot of Genes sources}\label{fig:UpSet-plot-of-Genes-sources}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+
+
+\vspace{2em}
+
+
+\textbf{
+Other intersection
+:}
+
+\vspace{0.5em}
+
+    "FluxRelated\_DEGs" WITH "DB\_GlialScarRelated": XYLT1
+\newline "FluxRelated\_TFs\_DEGs" WITH "DB\_GlialScarRelated":
+STAT3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/UpSet-plot-of-Genes-sources-content})}
+
+\hypertarget{ux5728ux5c0fux80f6ux8d28ux7ec6ux80deux4e2dux7684ux8868ux8fbe}{%
+\paragraph{在小胶质细胞中的表达}\label{ux5728ux5c0fux80f6ux8d28ux7ec6ux80deux4e2dux7684ux8868ux8fbe}}
+
+可以发现，`Xylt1' 主要集中表达于模型组的 Microglial 中。
+
+Figure \ref{fig:Dimension-plot-of-expression-level-of-the-genes} (下方图) 为图Dimension plot of expression level of the genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Dimension-plot-of-expression-level-of-the-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Dimension-plot-of-expression-level-of-the-genes.pdf}
+\caption{Dimension plot of expression level of the genes}\label{fig:Dimension-plot-of-expression-level-of-the-genes}
+\end{center}
+
+Table \ref{tab:Xylt1-related-metabolic-flux} (下方表格) 为表格Xylt1 related metabolic flux概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Xylt1-related-metabolic-flux.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行2列，以下预览的表格可能省略部分数据；含有1个唯一`gene'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:Xylt1-related-metabolic-flux}Xylt1 related metabolic flux}\tabularnewline
+\toprule
+gene & Metabolic\_flux\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+gene & Metabolic\_flux\tabularnewline
+\midrule
+\endhead
+Xylt1 & Protein serine -\textgreater{} (Gal)2 (G\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-MappingIdentifDurinc2009}{}%
+1. Durinck, S., Spellman, P. T., Birney, E. \& Huber, W. Mapping identifiers for the integration of genomic datasets with the r/bioconductor package biomaRt. \emph{Nature protocols} \textbf{4}, 1184--1191 (2009).
+
+\leavevmode\hypertarget{ref-AGraphNeuralAlgham2021}{}%
+2. Alghamdi, N. \emph{et al.} A graph neural network model to estimate cell-wise metabolic flux using single-cell rna-seq data. \emph{Genome research} \textbf{31}, 1867--1884 (2021).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+3. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+4. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+5. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+6. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-ReversedGraphQiuX2017}{}%
+7. Qiu, X. \emph{et al.} Reversed graph embedding resolves complex single-cell trajectories. \emph{Nature Methods} \textbf{14}, (2017).
+
+\leavevmode\hypertarget{ref-TheDynamicsAnTrapne2014}{}%
+8. Trapnell, C. \emph{et al.} The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. \emph{Nature Biotechnology} \textbf{32}, (2014).
+
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+9. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+10. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+11. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
+12. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-CausalMechanisPlaisi2016}{}%
+13. Plaisier, C. L. \emph{et al.} Causal mechanistic regulatory network for glioblastoma deciphered using systems genetics network analysis. \emph{Cell systems} \textbf{3}, 172--186 (2016).
+
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+14. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+\end{cslreferences}
+
+\end{document}

@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(05), eval = ic())
+info <- items(belong = odate(05), eval = ic(), lock = T)
 show.ic(info)
 
 order_publish()
@@ -33,9 +33,24 @@ set_index()
 # 摘要 {#abstract}
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("糖尿病蛋白尿")
+)
 
+# DEGs: Differential Expressed Genes 差异表达基因
+# DP: diabetic proteinuria 糖尿病蛋白尿
 ```
+
+现客户有2个方向，（1）社区常见慢性病诊疗，双向转诊，全科教学；（2）糖尿病蛋白尿
+
+看一下能不能做生信文章？
+
+1. 慢性病。建议缩小范围，这个范围过大，没法提供建议。
+2. 糖尿病蛋白尿。基本思路是，收集该疾病相关的基因表达数据 (RNA-seq，scRNA-seq 是有的，其它类型数据比较少，难获取) ，
+   做一些泛性的分析 (差异分析，富集分析，scRNA-seq 的细胞注释、拟时分析、通讯分析等)，
+   也寻找一些新发布的方法，做一些方法上的创新分析。这些分析完后，尝试整理线索，形成文章脉络。
+   如果客户有其他方面的想法或限制，会更容易得到有针对性的分析，分析的结果也更容易有创新性。
+   目前该方向 (糖尿病蛋白尿) 主题较大，不容易有创新性。
 
 
 
@@ -61,4 +76,8 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
+```{r}
+je <- job_esearch("Diabetic")
+vis(je)
 
+```

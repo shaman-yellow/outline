@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(05), eval = ic(3, 2, 1, 1, 0))
+info <- items(belong = odate(05), eval = ic(3, 3, 1, 1, 0))
 show.ic(info)
 
 order_publish()
@@ -45,12 +45,33 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
 # AS: astrocytic scar 星形细胞胶质瘢痕
 ```
 
-自发性脑出血（ICH）（人或动物）后调控 小胶质细胞代谢 的关键基因XXX，并且该基因可能也调控 星形细胞胶质瘢痕生成。
+## 需求
 
-客户马力前期发表的文章有做过盐诱导激酶 2（SIK-2）这个分子（PMID: 29018127），所以分析的时候可以看看XXX是否可以是SIK-2，或者XXX能否富集在SIK-2相关通路或其他分子机制上
+- 自发性脑出血（ICH）（人或动物）后调控 小胶质细胞代谢 的关键基因XXX，并且该基因可能也调控 星形细胞胶质瘢痕生成。
+- 客户前期发表的文章有做过盐诱导激酶 2（SIK-2）（PMID:29018127），
+  XXX是否可以是SIK-2，或者XXX能否富集在SIK-2相关通路或其他分子机制上
 
-数据库分析或测序筛选脑出血后调控小胶质细胞代谢的关键基因XXX
+## 结果
 
+- 以小鼠丘脑出血模型 (GSE227033) 的单细胞数据集分析 Microglial cell, 见 Fig. \@ref(fig:The-cellType-group)。
+  (该模型大体上应该是合适的, 以 collagenase IV 造模 (像 PMID:38433011 也是这种 ICH 造模)。
+  ICH 的单细胞数据很少，基本没有其他合适的数据了)
+- 以 Microglial Cell 预测代谢通量，并差异分析， 见 Fig. \@ref(fig:SCF-Model-vs-Control)
+- 与差异代谢相关的基因，在拟时轨迹 (Control -> Model) 中的表达见 Fig. \@ref(fig:MI-Pseudotime-heatmap-of-genes)
+- 将这些基因映射到人类的基因 (hgnc symbol) 后，获取上游的转录因子。在这些基因和转录因子中，尝试寻找 SIK-2。无结果。
+  此外，SIK-2 为非差异表达基因 (Model vs Control)。
+- 为筛选 Astrocyte 胶质瘢痕相关基因，首先获取了 Astrocyte 的差异基因 (Model vs Control) ，见
+  Tab. \@ref(tab:DEGs-of-the-contrasts-Astrocyte)。
+  随后，获取 GeneCards 的胶质瘢痕相关基因，见 Tab. \@ref(tab:GLIALSCAR-disease-related-targets-from-GeneCards)。
+  尝试取交集，见 Fig. \@ref(fig:Intersection-of-DB-GlialScar-with-Astrocyte-DEGs)，有 11 个基因。
+- 最后，调控小胶质细胞代谢且与星形细胞胶质瘢痕相关基因，Fig. \@ref(fig:UpSet-plot-of-Genes-sources)，
+  由于 Fig. \@ref(fig:Intersection-of-DB-GlialScar-with-Astrocyte-DEGs) 的基因与 Microglial 
+  代谢相关基因及上游转录因子无交集，因此，筛选时直接用了 Tab. \@ref(tab:GLIALSCAR-disease-related-targets-from-GeneCards) 
+  的基因。获得结果：XYLT1 (即, Xylt1)。
+- Xylt1 的表达见 Fig. \@ref(fig:Dimension-plot-of-expression-level-of-the-genes)。
+  Xylt1 主要集中表达于模型组的 Microglial 中，符合条件。
+  Xylt1 相关代谢通路见 Tab. \@ref(tab:Xylt1-related-metabolic-flux)。
+  Xylt1 的其余信息可参考 Fig. \@ref(fig:MI-Pseudotime-heatmap-of-genes)。
 
 # 前言 {#introduction}
 
@@ -74,6 +95,10 @@ auto_method()
 
 # 附：分析流程 {#workflow}
 
+## 单细胞数据分析
+
+### 数据来源
+
 ```{r}
 geo <- job_geo("GSE227033")
 geo <- step1(geo)
@@ -88,12 +113,19 @@ prepare_10x("./GSE227033/GSM7090270_M1.expression.txt.gz", single = T, col.gene 
 prepare_10x("./GSE227033/GSM7090271_M2.expression.txt.gz", single = T, col.gene = 2:1)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| GSE227033
+autor(geo$prods)
+```
+
 ```{r}
 # sr.ctrl <- job_seurat("./GSE227033/GSM7090268_C1")
 # sr.ctrl <- step1(sr.ctrl)
 # sr.ctrl@plots$step1$p.qc
 # sr.ctrl <- step2(sr.ctrl, 1000, 9000)
 ```
+
+### 细胞聚类与鉴定
 
 ```{r}
 sr <- job_seuratn(
@@ -115,10 +147,39 @@ sr <- mutate(sr, group = strx(orig.ident, "[A-Za-z]+"),
   cellType_group = paste0(scsa_cell, "_", group))
 p.srCellType <- wrap(vis(sr, "cellType_group"), 12, 6)
 p.srCellType
+```
 
+```{r eval = T, echo = F, results = "asis"}
+#| UMAP-Clustering
+autor(wrap(sr@plots$step3$p.umap, 8, 5))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| The-cellType-group
+autor(p.srCellType)
+```
+
+### 小胶质细胞分析
+
+#### 差异分析
+
+```{r}
 sr <- diff(sr, "cellType_group", list(c("Microglial cell_Model", "Microglial cell_Control")), name = "micro")
 sr@params$micro
 ```
+
+```{r}
+bm2.diff <- job_biomart2(sr@params$micro$gene, "mmu", "hsa")
+bm2.diff <- step1(bm2.diff)
+fun_diffHuman <- function(x) map(bm2.diff, x, "f")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-the-contrasts-Microglial
+autor(sr@params$micro)
+```
+
+#### 拟时分析
 
 ```{r}
 mn.mi <- do_monocle(sr, "Microglial")
@@ -129,8 +190,23 @@ mn.mi@plots$step2$p.pseu
 mn.mi <- step3(mn.mi)
 mn.mi@tables$step3$graph_test.sig
 mn.mi@plots$step3$gene_module_heatdata
-
 ```
+
+选择 Control 集中区域作为拟时起点。
+
+```{r eval = T, echo = F, results = "asis"}
+#| MI-principal-points
+autor(mn.mi@plots$step1$p.prin)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MI-pseudotime
+autor(mn.mi@plots$step2$p.pseu)
+```
+
+#### 代谢通量预测
+
+使用 scFEA 预测 Microglial cell 代谢通量。
 
 ```{r}
 scf <- asjob_scfea(sr, meta(sr)$scsa_cell == "Microglial cell", "m")
@@ -138,6 +214,17 @@ scf <- set_remote(scf)
 scf <- step1(scf)
 scf <- step2(scf)
 scf@plots$step2$p.loss
+scf@tables$step2$t.flux
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Convergency-of-the-loss-terms-during-training
+autor(scf@plots$step2$p.loss)
+```
+
+#### 代谢通量差异分析
+
+```{r}
 
 lm.scf <- asjob_limma(scf, meta(sr), "group")
 lm.scf <- step1(lm.scf)
@@ -150,14 +237,24 @@ lm.scf@tables$step2$tops$`Model - Control`
 Tops.flux <- lm.scf@tables$step2$tops$`Model - Control`
 Tops.flux
 
-belong.flux <- reframe_col(dplyr::select(Tops.flux, gene, name), "gene", function(x) unlist(x))
-belong.flux <- dplyr::relocate(belong.flux, gene, Metabolic_flux = name)
-belong.flux
+belong.flux <- lm.scf@tables$step2$belong.flux
 
 genes.topFlux <- unique(unlist(Tops.flux$gene))
-dplyr::filter(mn.mi@tables$step3$graph_test.sig, gene_id %in% genes.topFlux)
 genes.topFlux
 ```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SCF-data-Model-vs-Control
+autor(Tops.flux)
+autosv(Tops.flux, "test1")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SCF-Model-vs-Control
+autor(lm.scf@plots$step2$p.valcano$`Model - Control`)
+```
+
+#### 差异代谢相关的基因
 
 ```{r}
 bm <- job_biomart("mmu", F)
@@ -167,7 +264,6 @@ en.topflux <- step1(en.topflux, "mmu", "org.Mm.eg.db")
 en.topflux@plots$step1$p.kegg$ids
 en.topflux@plots$step1$p.go$ids
 ```
-
 
 ```{r}
 pb.SigFluxGene <- map(mn.mi, genes.topFlux, list(c("Y_9", "Y_19"), c("Y_9", "Y_5")),
@@ -183,35 +279,190 @@ genes.VarTopFlux <- intersect(genes.topFlux, Seurat::VariableFeatures(sr@object)
 genes.VarTopFlux
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| TOPFLUX-GO-enrichment
+autor(en.topflux@plots$step1$p.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MI-Pseudotime-heatmap-of-genes
+autor(wrap(pb.SigFluxGene, 13, 8))
+```
+
+#### PPI 网络
+
+
 ```{r}
 bm2.topFlux <- job_biomart2(genes.topFlux, "mmu", "hsa")
 bm2.topFlux <- step1(bm2.topFlux)
 bm2.topFlux@params$mapped
 ```
 
-
 ```{r}
 bm2.sik <- job_biomart2("SIK2", "hsa", "mmu")
 bm2.sik <- step1(bm2.sik)
 bm2.sik@params$mapped
 
-dplyr::filter(mn.mi@tables$step3$graph_test.sig, gene_id == "Sik2")
 dplyr::filter(sr@params$micro, gene == "Sik2")
 ```
 
 ```{r}
 sdb.topFlux <- job_stringdb(bm2.topFlux@params$mapped$hgnc_symbol)
-sdb.topFlux <- step1(sdb.topFlux)
+sdb.topFlux <- step1(sdb.topFlux, 100)
 sdb.topFlux <- readRDS("./sdb.rds")
 sdb.topFlux@plots$step1$p.mcc
 
-fun_human <- function(x) {
-  bm2.topFlux$mapped$hgnc_symbol[ match(bm2.topFlux$mapped$mgi_symbol, x) ]
-}
-ppi.topFlux <- filter(sdb.topFlux, fun_human(genes.VarTopFlux), fun_human(genes.topFlux),
-  arrow = F, label.shape = c("Variable feature", "Others")
+fun_fluxHuman <- function(x) map(bm2.topFlux, x, "f")
+ppi.topFlux <- filter(sdb.topFlux, fun_fluxHuman(genes.VarTopFlux), fun_fluxHuman(genes.topFlux),
+  arrow = F, label.shape = c("Variable feature", "Others"), top = NULL
 )
 ppi.topFlux$p.mcc
 ```
 
+根据 Fig. \@ref(fig:MI-Pseudotime-heatmap-of-genes) 中的基因，
+将小鼠的基因 mgi symbol 映射为人类的基因 hgnc symbol,
+构建 PPI 网络。
 
+```{r eval = T, echo = F, results = "asis"}
+#| TOPFLUX-MCC-score
+autor(sdb.topFlux@plots$step1$p.mcc)
+```
+
+关注高变基因  (variable features, 差异水平更高) 与其它基因对应的蛋白的互作。
+
+```{r eval = T, echo = F, results = "asis"}
+#| TOPFLUX-Top-MCC-score
+autor(ppi.topFlux$p.mcc)
+```
+
+#### 上游的转录因子
+
+寻找 Fig. \@ref(fig:MI-Pseudotime-heatmap-of-genes) 中的基因的上游转录因子。
+
+```{r}
+tf <- job_tfbs(fun_fluxHuman(genes.topFlux))
+tf <- step1(tf)
+tf@tables
+
+tf <- map(tf, bm2.diff$mapped$hgnc_symbol, 1:2, label.auto = T)
+tf@params$mapped$p.allu
+
+dat.alluTF <- dplyr::distinct(tf@params$mapped$data, target, TF_symbol)
+dat.alluTF
+p.alluTF <- new_allu(dat.alluTF, axes = 1:2, label.auto = T)
+p.alluTF
+
+grpf(dat.alluTF$TF_symbol, "SIK")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Transcription-Factor-binding-sites
+autor(tf@tables$step1$res)
+```
+
+### 星形细胞胶质瘢痕 相关基因
+
+#### 差异分析
+
+```{r}
+meta(sr)$scsa_cell
+sr <- diff(sr, "cellType_group", list(c("Astrocyte_Model", "Astrocyte_Control")), name = "Astro")
+sr@params$Astro
+
+bm.astro <- job_biomart("mmu", F)
+bm.astro <- step1(bm.astro, sr@params$Astro$gene, "mgi_symbol")
+
+en.astro <- job_enrich(sr@params$Astro$gene, bm.astro$anno, "mgi_symbol")
+en.astro <- step1(en.astro, "mmu", "org.Mm")
+en.astro@plots$step1$p.kegg
+```
+
+```{r}
+bm2.astro <- job_biomart2(sr@params$Astro$gene, "mmu", "hsa")
+bm2.astro <- step1(bm2.astro)
+bm2.astro$mapped
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-the-contrasts-Astrocyte
+autor(sr@params$Astro)
+```
+
+将这些差异基因映射到人类的基因 hgnc_symbol
+
+```{r eval = T, echo = F, results = "asis"}
+#| mapped-genes-Astrocyte-DEGs
+autor(bm2.astro$mapped)
+```
+
+#### 胶质瘢痕
+
+```{r}
+gn.glialScar <- job_genecard("Glial scar")
+gn.glialScar <- step1(gn.glialScar, 0, restrict = T)
+gn.glialScar@tables$step1$t.genecards
+
+p.vennGs <- new_venn(DB_GlialScar = gn.glialScar@tables$step1$t.genecards$Symbol,
+  Astrocyte_DEGs = bm2.astro$mapped$hgnc_symbol)
+p.vennGs
+```
+
+从 genecards 获取 胶质瘢痕 相关基因。
+
+```{r eval = T, echo = F, results = "asis"}
+#| GLIALSCAR-disease-related-targets-from-GeneCards
+autor(gn.glialScar@tables$step1$t.genecards)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-DB-GlialScar-with-Astrocyte-DEGs
+autor(p.vennGs)
+```
+
+### 调控小胶质细胞代谢且与星形细胞胶质瘢痕相关基因
+
+#### 交集基因
+
+```{r}
+p.upsetBoth <- new_upset(FluxRelated_DEGs = fun_fluxHuman(genes.topFlux),
+  FluxRelated_TFs_DEGs = dat.alluTF$TF_symbol,
+  GlialScarRelated_DEGs = p.vennGs$ins,
+  DB_GlialScarRelated = gn.glialScar@tables$step1$t.genecards$Symbol,
+  ins = list(c(1, 4), c(2, 4))
+)
+p.upsetBoth
+
+intersect(p.upsetBoth$raw$FluxRelated_TFs_DEGs, p.upsetBoth$raw$DB_GlialScarRelated)
+# [1] "STAT3"
+intersect(p.upsetBoth$raw$FluxRelated_DEGs, p.upsetBoth$raw$DB_GlialScarRelated)
+# [1] "XYLT1"
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| UpSet-plot-of-Genes-sources
+autor(p.upsetBoth)
+```
+
+#### 在小胶质细胞中的表达
+
+```{r}
+genes.Ins <- c("XYLT1", "STAT3")
+
+bm2.ins <- job_biomart2(genes.Ins, "hsa", "mmu")
+bm2.ins <- step1(bm2.ins)
+
+p.focusIns <- focus(mn.mi$sr_sub, bm2.ins$mapped$mgi_symbol, "cellType_group")
+wrap(p.focusIns$p.dim, 8, 4)
+```
+
+可以发现，'Xylt1' 主要集中表达于模型组的 Microglial 中。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Dimension-plot-of-expression-level-of-the-genes
+autor(wrap(p.focusIns$p.dim, 8, 4))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Xylt1-related-metabolic-flux
+autor(dplyr::filter(belong.flux, gene == "Xylt1"))
+```

@@ -35,7 +35,7 @@ ftibble("./scfea/flux.csv")
 readLines("~/scFEA/data/module_gene_complete_mouse_m168.csv")
 
 x <- ftibble("~/scFEA/data/scFEA.M171.mouse.moduleinfo.csv")
-y <- ftibble("~/scFEA/data/Human_M168_information.symbols.csv")
+a <- ftibble("~/scFEA/data/Human_M168_information.symbols.csv")
 
 fun <- function(x, y) {
   xname <- data.frame(a = x[[1]], b = x[[2]])
@@ -49,3 +49,25 @@ mn.mi <- step3(mn.mi, group.by = "seurat_clusters")
 mn.mi@plots$step3$gene_module_heatdata$graph_test.sig
 sr_sub.mi <- asjob_seurat(mn.mi, 5, rename = )
 vis(sr_sub.mi, "regroup.hclust")
+
+```{r}
+mn.ast <- do_monocle(sr, "Astrocyte")
+mn.ast <- step1(mn.ast, "cellType_group", pre = T)
+mn.ast@plots$step1$p.prin
+mn.ast <- step2(mn.ast, "Y_2")
+mn.ast@plots$step2$p.pseu
+mn.ast <- step3(mn.ast, group.by = "seurat_clusters")
+mn.ast@plots$step3$gene_module_heatdata$graph_test.sig
+```
+
+#### 拟时分析
+
+```{r}
+mn.ast <- do_monocle(sr, "Astrocyte")
+mn.ast <- step1(mn.ast, "cellType_group", pre = T)
+mn.ast@plots$step1$p.prin
+mn.ast <- step2(mn.ast, "Y_2")
+mn.ast@plots$step2$p.pseu
+mn.ast <- step3(mn.ast, group.by = "seurat_clusters")
+mn.ast@plots$step3$gene_module_heatdata$graph_test.sig
+```
