@@ -32,6 +32,8 @@ set_index()
 
 # 摘要 {#abstract}
 
+## 首次分析
+
 需求：以客户提供的数据 (RNA-seq + 肠道菌宏基因组数据) ，筛选 DEGs、代谢物、肠道菌群关系链。
 
 结果：
@@ -52,10 +54,17 @@ set_index()
 - 最后，试着对上一步的最终基因筛选结果做进一步富集分析：
     - 结果见 \@ref(en1), \@ref(en2)
 
+## 补充分析
+
+见 \@ref(liver2) 和 \@ref(ileum2)
+
 ```{r}
-dic(di("胆结石"))
+dic(di("胆结石"),
+  di("胆汁酸代谢")
+)
 
 # G: gallstones 胆结石
+# BAM: Bile acid metabolism 胆汁酸代谢
 ```
 
 
@@ -260,6 +269,7 @@ tops.liver
 
 res.liver <- map(lm.liver, gm.micro, tops.liver)
 res.liver$p.network
+res.liver$data
 
 loads("~/disk_sdb1/2024_01_21_dongzhixia3/workflow.rds")
 dplyr::filter(res.liver$data, .id == 222528)
@@ -390,10 +400,58 @@ en.ileum <- job_enrich(unique(valid.ileum$Target_Gene))
 en.ileum <- step1(en.ileum)
 ```
 
-```{r}
-loads()
+# 附：分析流程2 {#workflow2}
 
-saves()
+## 胆汁酸代谢
+
+```{r}
+gn <- job_genecard("Bile acid metabolism")
+gn <- step1(gn, 0, restrict = T)
+```
+
+获取与胆汁酸代谢相关基因。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Disease-related-targets-from-GeneCards
+autor(gn@tables$step1$t.genecards)
+```
+
+## Liver {#liver2}
+
+```{r}
+bile.liver <- dplyr::filter(res.liver$data, Target_Gene %in% gn@tables$step1$t.genecards$Symbol)
+```
+
+以 Tab. \@ref(tab:Disease-related-targets-from-GeneCards) 过滤
+Tab. \@ref(tab:Liver-Microbiota-associated-Genes-filtered-by-DEGs)
+得到：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-relationship-bile-acids
+autor(bile.liver)
+```
+
+## Ileum {#ileum2}
+
+以 Tab. \@ref(tab:Disease-related-targets-from-GeneCards) 过滤
+Tab. \@ref(tab:Ileum-Microbiota-associated-Genes-filtered-by-DEGs)
+得到：
+
+```{r}
+bile.ileum <- dplyr::filter(res.ileum$data, Target_Gene %in% gn@tables$step1$t.genecards$Symbol)
+bile.ileum
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-relationship-bile-acids
+autor(bile.ileum)
+```
+
+
+```{r}
+loads("~/disk_sdb1/2024_01_21_dongzhixia3/workflow.rds")
+
+saves("~/disk_sdb1/2024_01_21_dongzhixia3/workflow.rds")
 ```
 
 ```{r}

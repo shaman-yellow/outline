@@ -23,7 +23,9 @@ header-includes:
   \renewenvironment{figure}
   {\def\@captype{figure}}
   \makeatother
-  \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
   \definecolor{shadecolor}{RGB}{230,230,230}
   \usepackage{xeCJK}
   \usepackage{setspace}
@@ -36,7 +38,7 @@ header-includes:
   \tcbuselibrary{breakable}
   \renewenvironment{Shaded}
   {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
-    arc = 1mm, auto outer arc, title = {Input}]}
+    arc = 1mm, auto outer arc, title = {R input}]}
   {\end{tcolorbox}}
   \usepackage{titlesec}
   \titleformat{\paragraph}
@@ -47,7 +49,8 @@ header-includes:
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(1), coef = .25)
+info <- items(belong = c(odate(1), odate(5)), coef = c(.25, NA), list(ic(), ic(0, 1, 0, 0, 0)))
+show.ic(info)
 
 order_publish()
 idname <- order_packaging()
@@ -75,6 +78,8 @@ set_index()
 
 # 摘要 {#abstract}
 
+## 首次分析
+
 需求：以客户提供的数据 (RNA-seq + 肠道菌宏基因组数据) ，筛选 DEGs、代谢物、肠道菌群关系链。
 
 结果：
@@ -95,10 +100,17 @@ set_index()
 - 最后，试着对上一步的最终基因筛选结果做进一步富集分析：
     - 结果见 \@ref(en1), \@ref(en2)
 
+## 补充分析
+
+见 \@ref(liver2) 和 \@ref(ileum2)
+
 ```{r}
-dic(di("胆结石"))
+dic(di("胆结石"),
+  di("胆汁酸代谢")
+)
 
 # G: gallstones 胆结石
+# BAM: Bile acid metabolism 胆汁酸代谢
 ```
 
 
@@ -303,6 +315,12 @@ tops.liver
 
 res.liver <- map(lm.liver, gm.micro, tops.liver)
 res.liver$p.network
+res.liver$data
+
+loads("~/disk_sdb1/2024_01_21_dongzhixia3/workflow.rds")
+dplyr::filter(res.liver$data, .id == 222528)
+
+autosv(res.liver$data, "all-relation-data")
 
 ```
 
@@ -347,6 +365,9 @@ tops.ileum
 res.ileum <- map(lm.ileum, gm.micro, tops.ileum)
 res.ileum$data
 res.ileum$p.venn
+
+loads("~/disk_sdb1/2024_01_21_dongzhixia3/workflow.rds")
+autosv(res.ileum$data, "ileum-all-relation-data")
 ```
 
 ## 进一步验证代谢物的存在
@@ -424,6 +445,54 @@ autor(en.ileum@plots$step1$p.kegg$ids)
 en.ileum <- job_enrich(unique(valid.ileum$Target_Gene))
 en.ileum <- step1(en.ileum)
 ```
+
+# 附：分析流程2 {#workflow2}
+
+## 胆汁酸代谢
+
+```{r}
+gn <- job_genecard("Bile acid metabolism")
+gn <- step1(gn, 0, restrict = T)
+```
+
+获取与胆汁酸代谢相关基因。
+
+```{r eval = T, echo = F, results = "asis"}
+#| Disease-related-targets-from-GeneCards
+autor(gn@tables$step1$t.genecards)
+```
+
+## Liver {#liver2}
+
+```{r}
+bile.liver <- dplyr::filter(res.liver$data, Target_Gene %in% gn@tables$step1$t.genecards$Symbol)
+```
+
+以 Tab. \@ref(tab:Disease-related-targets-from-GeneCards) 过滤
+Tab. \@ref(tab:Liver-Microbiota-associated-Genes-filtered-by-DEGs)
+得到：
+
+```{r eval = T, echo = F, results = "asis"}
+#| Liver-relationship-bile-acids
+autor(bile.liver)
+```
+
+## Ileum {#ileum2}
+
+以 Tab. \@ref(tab:Disease-related-targets-from-GeneCards) 过滤
+Tab. \@ref(tab:Ileum-Microbiota-associated-Genes-filtered-by-DEGs)
+得到：
+
+```{r}
+bile.ileum <- dplyr::filter(res.ileum$data, Target_Gene %in% gn@tables$step1$t.genecards$Symbol)
+bile.ileum
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Ileum-relationship-bile-acids
+autor(bile.ileum)
+```
+
 
 ```{r}
 loads()

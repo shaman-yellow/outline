@@ -23,7 +23,9 @@ header-includes:
   \renewenvironment{figure}
   {\def\@captype{figure}}
   \makeatother
-  \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
   \definecolor{shadecolor}{RGB}{230,230,230}
   \usepackage{xeCJK}
   \usepackage{setspace}
@@ -36,7 +38,7 @@ header-includes:
   \tcbuselibrary{breakable}
   \renewenvironment{Shaded}
   {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
-    arc = 1mm, auto outer arc, title = {Input}]}
+    arc = 1mm, auto outer arc, title = {R input}]}
   {\end{tcolorbox}}
   \usepackage{titlesec}
   \titleformat{\paragraph}
@@ -50,11 +52,11 @@ header-includes:
 
 
 \begin{titlepage} \newgeometry{top=7.5cm}
-\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
 \begin{center} \textbf{\Huge
 肠道菌群宏基因组群落分析联合RNA-seq} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-30}}
+\textbf{\textcolor{white}{2024-05-20}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -76,6 +78,8 @@ header-includes:
 
 # 摘要 {#abstract}
 
+## 首次分析
+
 需求：以客户提供的数据 (RNA-seq + 肠道菌宏基因组数据) ，筛选 DEGs、代谢物、肠道菌群关系链。
 
 结果：
@@ -96,6 +100,10 @@ header-includes:
 - 最后，试着对上一步的最终基因筛选结果做进一步富集分析：
     - 结果见 \@ref(en1), \@ref(en2)
 
+## 补充分析
+
+见 \@ref(liver2) 和 \@ref(ileum2)
+
 
 
 
@@ -107,8 +115,8 @@ header-includes:
 
 Other data obtained from published article (e.g., supplementary tables):
 
-- Supplementary file from article refer to[@ChangesAndCorChen2021].
-- Supplementary file from article refer to[@ProteinMetabolBenson2023].
+- Supplementary file from article refer to ChangesAndCorChen2021[@ChangesAndCorChen2021].
+- Supplementary file from article refer to ProteinMetabolBenson2023[@ProteinMetabolBenson2023].
 
 ## 方法
 
@@ -118,10 +126,11 @@ Mainly used method:
 - R package `ClusterProfiler` used for gene enrichment analysis[@ClusterprofilerWuTi2021].
 - `Fastp` used for Fastq data preprocessing[@UltrafastOnePChen2023].
 - Database `gutMDisorder` used for finding associations between gut microbiota and metabolites[@GutmdisorderACheng2019].
+- The Human Gene Database `GeneCards` used for disease related genes prediction[@TheGenecardsSStelze2016].
 - R package `Limma` and `edgeR` used for differential expression analysis[@LimmaPowersDiRitchi2015; @EdgerDifferenChen].
 - R package `MicrobiotaProcess` used for microbiome data visualization[@MicrobiotaproceXuSh2023].
 - `MetaPhlAn` used for profiling the composition of microbial communities from metagenomic data[@ExtendingAndIBlanco2023].
-- Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
+- R version 4.4.0 (2024-04-24); Other R packages (eg., `dplyr` and `ggplot2`) used for statistic analysis or data visualization.
 
 # 分析结果 {#results}
 
@@ -158,7 +167,7 @@ Mainly used method:
 Table \@ref(tab:Merged-abundance-table) (下方表格) 为表格Merged abundance table概览。
 
 **(对应文件为 `Figure+Table/Merged-abundance-table.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1590行13列，以下预览的表格可能省略部分数据；表格含有1590个唯一`clade\_name'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1590行13列，以下预览的表格可能省略部分数据；含有1590个唯一`clade\_name'。
 \end{tcolorbox}
 \end{center}
 
@@ -264,7 +273,7 @@ Figure \@ref(fig:Species-hierarchy) (下方图) 为图Species hierarchy概览。
 Table \@ref(tab:Statistic-of-all-difference-microbiota) (下方表格) 为表格Statistic of all difference microbiota概览。
 
 **(对应文件为 `Figure+Table/Statistic-of-all-difference-microbiota.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1693行8列，以下预览的表格可能省略部分数据；表格含有1693个唯一`label'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1693行8列，以下预览的表格可能省略部分数据；含有1693个唯一`label'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -320,7 +329,7 @@ Figure \@ref(fig:MICRO-alluvium-plot-of-Matched-data-in-gutMDisorder) (下方图
 Table \@ref(tab:MICRO-Matched-data-in-gutMDisorder) (下方表格) 为表格MICRO Matched data in gutMDisorder概览。
 
 **(对应文件为 `Figure+Table/MICRO-Matched-data-in-gutMDisorder.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有198行13列，以下预览的表格可能省略部分数据；表格含有13个唯一`Query'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有198行13列，以下预览的表格可能省略部分数据；含有13个唯一`Query'。
 \end{tcolorbox}
 \end{center}
 
@@ -355,7 +364,7 @@ Table: (\#tab:MICRO-Matched-data-in-gutMDisorder)MICRO Matched data in gutMDisor
 Table \@ref(tab:MICRO-Discover-relationship-between-Microbiota-with-Host-genes-by-matching-metabolites) (下方表格) 为表格MICRO Discover relationship between Microbiota with Host genes by matching metabolites概览。
 
 **(对应文件为 `Figure+Table/MICRO-Discover-relationship-between-Microbiota-with-Host-genes-by-matching-metabolites.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有52210行10列，以下预览的表格可能省略部分数据；表格含有22个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有52210行10列，以下预览的表格可能省略部分数据；含有22个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -395,7 +404,7 @@ Table: (\#tab:MICRO-Discover-relationship-between-Microbiota-with-Host-genes-by-
 Table \@ref(tab:Liver-DEGs) (下方表格) 为表格Liver DEGs概览。
 
 **(对应文件为 `Figure+Table/Liver-DEGs.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2998行11列，以下预览的表格可能省略部分数据；表格含有2998个唯一`hgnc\_symbol'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2998行11列，以下预览的表格可能省略部分数据；含有2998个唯一`hgnc\_symbol'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -461,7 +470,7 @@ DDR2, APOM, KYNU,...
 Table \@ref(tab:Liver-Microbiota-associated-Genes-filtered-by-DEGs) (下方表格) 为表格Liver Microbiota associated Genes filtered by DEGs概览。
 
 **(对应文件为 `Figure+Table/Liver-Microbiota-associated-Genes-filtered-by-DEGs.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10454行10列，以下预览的表格可能省略部分数据；表格含有22个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10454行10列，以下预览的表格可能省略部分数据；含有22个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -505,7 +514,7 @@ Figure \@ref(fig:Liver-Top-1000-relationship-network) (下方图) 为图Liver To
 Table \@ref(tab:Liver-Top-1000-relationship-data) (下方表格) 为表格Liver Top 1000 relationship data概览。
 
 **(对应文件为 `Figure+Table/Liver-Top-1000-relationship-data.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1000行3列，以下预览的表格可能省略部分数据；表格含有26个唯一`Gut.Microbiota'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1000行3列，以下预览的表格可能省略部分数据；含有26个唯一`Gut.Microbiota'。
 \end{tcolorbox}
 \end{center}
 
@@ -537,7 +546,7 @@ Table: (\#tab:Liver-Top-1000-relationship-data)Liver Top 1000 relationship data
 Table \@ref(tab:Ileum-DEGs) (下方表格) 为表格Ileum DEGs概览。
 
 **(对应文件为 `Figure+Table/Ileum-DEGs.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2554行11列，以下预览的表格可能省略部分数据；表格含有2554个唯一`hgnc\_symbol'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2554行11列，以下预览的表格可能省略部分数据；含有2554个唯一`hgnc\_symbol'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -603,7 +612,7 @@ RAC1, A...
 Table \@ref(tab:Ileum-Microbiota-associated-Genes-filtered-by-DEGs) (下方表格) 为表格Ileum Microbiota associated Genes filtered by DEGs概览。
 
 **(对应文件为 `Figure+Table/Ileum-Microbiota-associated-Genes-filtered-by-DEGs.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有9208行10列，以下预览的表格可能省略部分数据；表格含有22个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有9208行10列，以下预览的表格可能省略部分数据；含有22个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -647,7 +656,7 @@ Figure \@ref(fig:Ileum-Top-1000-relationship-network) (下方图) 为图Ileum To
 Table \@ref(tab:Ileum-Top-1000-relationship-data) (下方表格) 为表格Ileum Top 1000 relationship data概览。
 
 **(对应文件为 `Figure+Table/Ileum-Top-1000-relationship-data.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1000行3列，以下预览的表格可能省略部分数据；表格含有26个唯一`Gut.Microbiota'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1000行3列，以下预览的表格可能省略部分数据；含有26个唯一`Gut.Microbiota'。
 \end{tcolorbox}
 \end{center}
 
@@ -683,7 +692,7 @@ Table: (\#tab:Ileum-Top-1000-relationship-data)Ileum Top 1000 relationship data
 Table \@ref(tab:unnamed-chunk-38) (下方表格) 为表格unnamed chunk 38概览。
 
 **(对应文件为 `Figure+Table/unnamed-chunk-38.xlsx`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3104行9列，以下预览的表格可能省略部分数据；表格含有100个唯一`metabolite'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3104行9列，以下预览的表格可能省略部分数据；含有100个唯一`metabolite'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -723,7 +732,7 @@ Table: (\#tab:unnamed-chunk-38)Unnamed chunk 38
 Table \@ref(tab:Liver-results-filtered-by-validation) (下方表格) 为表格Liver results filtered by validation概览。
 
 **(对应文件为 `Figure+Table/Liver-results-filtered-by-validation.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有148行10列，以下预览的表格可能省略部分数据；表格含有1个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有148行10列，以下预览的表格可能省略部分数据；含有1个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -783,7 +792,7 @@ Figure \@ref(fig:LIVER-ids-GO-enrichment) (下方图) 为图LIVER ids GO enrichm
 Table \@ref(tab:Ileum-results-filtered-by-validation) (下方表格) 为表格Ileum results filtered by validation概览。
 
 **(对应文件为 `Figure+Table/Ileum-results-filtered-by-validation.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有104行10列，以下预览的表格可能省略部分数据；表格含有1个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有104行10列，以下预览的表格可能省略部分数据；含有1个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -838,6 +847,160 @@ Figure \@ref(fig:ILEUM-ids-KEGG-enrichment) (下方图) 为图ILEUM ids KEGG enr
 \caption{ILEUM ids KEGG enrichment}\label{fig:ILEUM-ids-KEGG-enrichment}
 \end{center}
 
+
+
+# 附：分析流程2 {#workflow2}
+
+## 胆汁酸代谢
+
+
+
+获取与胆汁酸代谢相关基因。
+
+Table \@ref(tab:Disease-related-targets-from-GeneCards) (下方表格) 为表格Disease related targets from GeneCards概览。
+
+**(对应文件为 `Figure+Table/Disease-related-targets-from-GeneCards.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有160行7列，以下预览的表格可能省略部分数据；含有160个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    Bile acid metabolism
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    TRUE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 0
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Disease-related-targets-from-GeneCards)Disease related targets from GeneCards
+
+|Symbol  |Description   |Category      |UniProt_ID |GIFtS |GC_id       |Score |
+|:-------|:-------------|:-------------|:----------|:-----|:-----------|:-----|
+|CYP7A1  |Cytochrome... |Protein Co... |P22680     |51    |GC08M058490 |5.11  |
+|NR1H2   |Nuclear Re... |Protein Co... |P55055     |54    |GC19P050329 |4.34  |
+|NR1H4   |Nuclear Re... |Protein Co... |Q96RI1     |56    |GC12P100473 |4.31  |
+|NR1I2   |Nuclear Re... |Protein Co... |O75469     |52    |GC03P119780 |4     |
+|FDX1    |Ferredoxin 1  |Protein Co... |P10109     |49    |GC11P110429 |3.58  |
+|FABP6   |Fatty Acid... |Protein Co... |P51161     |50    |GC05P160187 |3.49  |
+|MALRD1  |MAM And LD... |Protein Co... |Q5VYJ5     |38    |GC10P019048 |3.47  |
+|BAAT    |Bile Acid-... |Protein Co... |Q14032     |50    |GC09M101354 |3.35  |
+|SLC27A5 |Solute Car... |Protein Co... |Q9Y2P5     |45    |GC19M058479 |3.26  |
+|HSD11B1 |Hydroxyste... |Protein Co... |P28845     |59    |GC01P209686 |3.26  |
+|SULT2A1 |Sulfotrans... |Protein Co... |Q06520     |52    |GC19M047870 |3.14  |
+|ARV1    |ARV1 Homol... |Protein Co... |Q9H2C2     |43    |GC01P230978 |3     |
+|NR1D1   |Nuclear Re... |Protein Co... |P20393     |54    |GC17M040092 |2.86  |
+|FGF19   |Fibroblast... |Protein Co... |O95750     |52    |GC11M125583 |2.85  |
+|NR0B2   |Nuclear Re... |Protein Co... |Q15466     |49    |GC01M031090 |2.54  |
+|...     |...           |...           |...        |...   |...         |...   |
+
+## Liver {#liver2}
+
+
+
+以 Tab. \@ref(tab:Disease-related-targets-from-GeneCards) 过滤
+Tab. \@ref(tab:Liver-Microbiota-associated-Genes-filtered-by-DEGs)
+得到：
+
+Table \@ref(tab:Liver-relationship-bile-acids) (下方表格) 为表格Liver relationship bile acids概览。
+
+**(对应文件为 `Figure+Table/Liver-relationship-bile-acids.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有500行10列，以下预览的表格可能省略部分数据；含有21个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item META\_Rho:  关联分析结果的关联系数，绝对值越大，说明关联性越强 (源自文献的分析)
+\item META\_Q:  关联分析结果 P 的校正值 (源自文献的分析)
+\item META\_P:  关联分析结果 P 的值 (源自文献的分析)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Liver-relationship-bile-acids)Liver relationship bile acids
+
+|.id  |.id_from  |Substrate |Metabo......4 |Gut.Mi... |Target... |Metabo......7 |META_Rho  |META_Q    |META_P    |... |
+|:----|:---------|:---------|:-------------|:---------|:---------|:-------------|:---------|:---------|:---------|:---|
+|750  |Substrate |Glycine   |Acetyl...     |Clostr... |APOM      |glycine       |0.3059... |2.5379... |4.7629... |... |
+|750  |Metabo... |          |Glycine       |Blautia   |APOM      |glycine       |0.3059... |2.5379... |4.7629... |... |
+|750  |Metabo... |          |Glycine       |Lactob... |APOM      |glycine       |0.3059... |2.5379... |4.7629... |... |
+|6306 |Metabo... |          |l-Isol...     |Blautia   |APOM      |isoleu...     |-0.266... |3.0969... |1.4945... |... |
+|750  |Substrate |Glycine   |Acetyl...     |Clostr... |SPP1      |glycine       |0.2265... |1.5545... |4.1676... |... |
+|750  |Metabo... |          |Glycine       |Blautia   |SPP1      |glycine       |0.2265... |1.5545... |4.1676... |... |
+|750  |Metabo... |          |Glycine       |Lactob... |SPP1      |glycine       |0.2265... |1.5545... |4.1676... |... |
+|6306 |Metabo... |          |l-Isol...     |Blautia   |EHMT2     |isoleu...     |-0.219... |6.8050... |2.1892... |... |
+|6106 |Metabo... |          |Leucine       |Blautia   |APOM      |leucine       |-0.205... |1.8215... |1.5626... |... |
+|5951 |Metabo... |          |Serine        |Blautia   |APOM      |serine        |0.1931... |7.2469... |7.1886... |... |
+|6140 |Substrate |Phenyl... |3-Phen...     |Clostr... |APOM      |phenyl...     |-0.179... |3.0935... |3.4833... |... |
+|750  |Substrate |Glycine   |Acetyl...     |Clostr... |EHMT2     |glycine       |0.1769... |3.2423... |1.9993... |... |
+|750  |Metabo... |          |Glycine       |Blautia   |EHMT2     |glycine       |0.1769... |3.2423... |1.9993... |... |
+|750  |Metabo... |          |Glycine       |Lactob... |EHMT2     |glycine       |0.1769... |3.2423... |1.9993... |... |
+|6106 |Metabo... |          |Leucine       |Blautia   |EHMT2     |leucine       |-0.176... |5.7475... |3.8522... |... |
+|...  |...       |...       |...           |...       |...       |...           |...       |...       |...       |... |
+
+## Ileum {#ileum2}
+
+以 Tab. \@ref(tab:Disease-related-targets-from-GeneCards) 过滤
+Tab. \@ref(tab:Ileum-Microbiota-associated-Genes-filtered-by-DEGs)
+得到：
+
+
+
+Table \@ref(tab:Ileum-relationship-bile-acids) (下方表格) 为表格Ileum relationship bile acids概览。
+
+**(对应文件为 `Figure+Table/Ileum-relationship-bile-acids.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有247行10列，以下预览的表格可能省略部分数据；含有21个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item META\_Rho:  关联分析结果的关联系数，绝对值越大，说明关联性越强 (源自文献的分析)
+\item META\_Q:  关联分析结果 P 的校正值 (源自文献的分析)
+\item META\_P:  关联分析结果 P 的值 (源自文献的分析)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:Ileum-relationship-bile-acids)Ileum relationship bile acids
+
+|.id    |.id_from  |Substrate |Metabo......4 |Gut.Mi... |Target... |Metabo......7 |META_Rho  |META_Q    |META_P    |... |
+|:------|:---------|:---------|:-------------|:---------|:---------|:-------------|:---------|:---------|:---------|:---|
+|10140  |Metabo... |          |Glycoc...     |Escher... |FGF19     |glycoc...     |0.2302... |7.2715... |5.8484... |... |
+|10140  |Metabo... |          |Glycoc...     |Akkerm... |FGF19     |glycoc...     |0.2302... |7.2715... |5.8484... |... |
+|6306   |Metabo... |          |l-Isol...     |Blautia   |EHMT2     |isoleu...     |-0.219... |6.8050... |2.1892... |... |
+|588    |Metabo... |          |2-Imin...     |Clostr... |FABP1     |creati...     |0.2038... |3.5774... |8.6320... |... |
+|750    |Substrate |Glycine   |Acetyl...     |Clostr... |EHMT2     |glycine       |0.1769... |3.2423... |1.9993... |... |
+|750    |Metabo... |          |Glycine       |Blautia   |EHMT2     |glycine       |0.1769... |3.2423... |1.9993... |... |
+|750    |Metabo... |          |Glycine       |Lactob... |EHMT2     |glycine       |0.1769... |3.2423... |1.9993... |... |
+|6106   |Metabo... |          |Leucine       |Blautia   |EHMT2     |leucine       |-0.176... |5.7475... |3.8522... |... |
+|6106   |Metabo... |          |Leucine       |Blautia   |SERPINA1  |leucine       |-0.165... |5.1176... |8.2320... |... |
+|5950   |Metabo... |          |Alanine       |Blautia   |EHMT2     |alanine       |-0.158... |7.1761... |6.5412... |... |
+|6140   |Substrate |Phenyl... |3-Phen...     |Clostr... |EHMT2     |phenyl...     |-0.143... |5.8047... |7.0031... |... |
+|145742 |Metabo... |          |Proline       |Blautia   |EHMT2     |proline       |-0.142... |7.3748... |9.0950... |... |
+|5950   |Metabo... |          |Alanine       |Blautia   |SERPINA1  |alanine       |-0.138... |2.3620... |7.5990... |... |
+|5793   |Substrate |D-Glucose |Acetate       |Christ... |EHMT2     |glucose       |-0.136... |2.0860... |2.9081... |... |
+|5793   |Substrate |D-Glucose |Butyrate      |Christ... |EHMT2     |glucose       |-0.136... |2.0860... |2.9081... |... |
+|...    |...       |...       |...           |...       |...       |...           |...       |...       |...       |... |
 
 
 

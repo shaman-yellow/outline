@@ -66,7 +66,7 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {Input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newenvironment{cslreferences}%
@@ -79,11 +79,11 @@
 \begin{document}
 
 \begin{titlepage} \newgeometry{top=7.5cm}
-\ThisCenterWallPaper{1.12}{../cover_page.pdf}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
 \begin{center} \textbf{\Huge
 肠道菌群宏基因组群落分析联合RNA-seq} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-01-30}}
+\textbf{\textcolor{white}{2024-05-20}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -105,6 +105,9 @@
 
 \hypertarget{abstract}{%
 \section{摘要}\label{abstract}}
+
+\hypertarget{ux9996ux6b21ux5206ux6790}{%
+\subsection{首次分析}\label{ux9996ux6b21ux5206ux6790}}
 
 需求：以客户提供的数据 (RNA-seq + 肠道菌宏基因组数据) ，筛选 DEGs、代谢物、肠道菌群关系链。
 
@@ -168,6 +171,11 @@
   \end{itemize}
 \end{itemize}
 
+\hypertarget{ux8865ux5145ux5206ux6790}{%
+\subsection{补充分析}\label{ux8865ux5145ux5206ux6790}}
+
+见 \ref{liver2} 和 \ref{ileum2}
+
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
 
@@ -182,9 +190,9 @@ Other data obtained from published article (e.g., supplementary tables):
 \begin{itemize}
 \tightlist
 \item
-  Supplementary file from article refer to\textsuperscript{\protect\hyperlink{ref-ChangesAndCorChen2021}{2}}.
+  Supplementary file from article refer to ChangesAndCorChen2021\textsuperscript{\protect\hyperlink{ref-ChangesAndCorChen2021}{2}}.
 \item
-  Supplementary file from article refer to\textsuperscript{\protect\hyperlink{ref-ProteinMetabolBenson2023}{1}}.
+  Supplementary file from article refer to ProteinMetabolBenson2023\textsuperscript{\protect\hyperlink{ref-ProteinMetabolBenson2023}{1}}.
 \end{itemize}
 
 \hypertarget{ux65b9ux6cd5}{%
@@ -203,13 +211,15 @@ Mainly used method:
 \item
   Database \texttt{gutMDisorder} used for finding associations between gut microbiota and metabolites\textsuperscript{\protect\hyperlink{ref-GutmdisorderACheng2019}{6}}.
 \item
-  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{7},\protect\hyperlink{ref-EdgerDifferenChen}{8}}.
+  The Human Gene Database \texttt{GeneCards} used for disease related genes prediction\textsuperscript{\protect\hyperlink{ref-TheGenecardsSStelze2016}{7}}.
 \item
-  R package \texttt{MicrobiotaProcess} used for microbiome data visualization\textsuperscript{\protect\hyperlink{ref-MicrobiotaproceXuSh2023}{9}}.
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{8},\protect\hyperlink{ref-EdgerDifferenChen}{9}}.
 \item
-  \texttt{MetaPhlAn} used for profiling the composition of microbial communities from metagenomic data\textsuperscript{\protect\hyperlink{ref-ExtendingAndIBlanco2023}{10}}.
+  R package \texttt{MicrobiotaProcess} used for microbiome data visualization\textsuperscript{\protect\hyperlink{ref-MicrobiotaproceXuSh2023}{10}}.
 \item
-  Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+  \texttt{MetaPhlAn} used for profiling the composition of microbial communities from metagenomic data\textsuperscript{\protect\hyperlink{ref-ExtendingAndIBlanco2023}{11}}.
+\item
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
 
 \hypertarget{results}{%
@@ -252,7 +262,7 @@ Table \ref{tab:Merged-abundance-table} (下方表格) 为表格Merged abundance 
 
 \textbf{(对应文件为 \texttt{Figure+Table/Merged-abundance-table.csv})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1590行13列，以下预览的表格可能省略部分数据；表格含有1590个唯一`clade\_name'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1590行13列，以下预览的表格可能省略部分数据；含有1590个唯一`clade\_name'。
 \end{tcolorbox}
 \end{center}
 
@@ -369,7 +379,7 @@ Table \ref{tab:Statistic-of-all-difference-microbiota} (下方表格) 为表格S
 
 \textbf{(对应文件为 \texttt{Figure+Table/Statistic-of-all-difference-microbiota.csv})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1693行8列，以下预览的表格可能省略部分数据；表格含有1693个唯一`label'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1693行8列，以下预览的表格可能省略部分数据；含有1693个唯一`label'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -433,7 +443,7 @@ Table \ref{tab:MICRO-Matched-data-in-gutMDisorder} (下方表格) 为表格MICRO
 
 \textbf{(对应文件为 \texttt{Figure+Table/MICRO-Matched-data-in-gutMDisorder.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有198行13列，以下预览的表格可能省略部分数据；表格含有13个唯一`Query'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有198行13列，以下预览的表格可能省略部分数据；含有13个唯一`Query'。
 \end{tcolorbox}
 \end{center}
 
@@ -476,7 +486,7 @@ Table \ref{tab:MICRO-Discover-relationship-between-Microbiota-with-Host-genes-by
 
 \textbf{(对应文件为 \texttt{Figure+Table/MICRO-Discover-relationship-between-Microbiota-with-Host-genes-by-matching-metabolites.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有52210行10列，以下预览的表格可能省略部分数据；表格含有22个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有52210行10列，以下预览的表格可能省略部分数据；含有22个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -921,7 +931,7 @@ Table \ref{tab:Liver-DEGs} (下方表格) 为表格Liver DEGs概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/Liver-DEGs.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2998行11列，以下预览的表格可能省略部分数据；表格含有2998个唯一`hgnc\_symbol'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2998行11列，以下预览的表格可能省略部分数据；含有2998个唯一`hgnc\_symbol'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -997,7 +1007,7 @@ Table \ref{tab:Liver-Microbiota-associated-Genes-filtered-by-DEGs} (下方表格
 
 \textbf{(对应文件为 \texttt{Figure+Table/Liver-Microbiota-associated-Genes-filtered-by-DEGs.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10454行10列，以下预览的表格可能省略部分数据；表格含有22个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有10454行10列，以下预览的表格可能省略部分数据；含有22个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -1446,7 +1456,7 @@ Table \ref{tab:Liver-Top-1000-relationship-data} (下方表格) 为表格Liver T
 
 \textbf{(对应文件为 \texttt{Figure+Table/Liver-Top-1000-relationship-data.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1000行3列，以下预览的表格可能省略部分数据；表格含有26个唯一`Gut.Microbiota'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1000行3列，以下预览的表格可能省略部分数据；含有26个唯一`Gut.Microbiota'。
 \end{tcolorbox}
 \end{center}
 
@@ -1486,7 +1496,7 @@ Table \ref{tab:Ileum-DEGs} (下方表格) 为表格Ileum DEGs概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/Ileum-DEGs.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2554行11列，以下预览的表格可能省略部分数据；表格含有2554个唯一`hgnc\_symbol'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2554行11列，以下预览的表格可能省略部分数据；含有2554个唯一`hgnc\_symbol'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -1562,7 +1572,7 @@ Table \ref{tab:Ileum-Microbiota-associated-Genes-filtered-by-DEGs} (下方表格
 
 \textbf{(对应文件为 \texttt{Figure+Table/Ileum-Microbiota-associated-Genes-filtered-by-DEGs.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有9208行10列，以下预览的表格可能省略部分数据；表格含有22个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有9208行10列，以下预览的表格可能省略部分数据；含有22个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -2011,7 +2021,7 @@ Table \ref{tab:Ileum-Top-1000-relationship-data} (下方表格) 为表格Ileum T
 
 \textbf{(对应文件为 \texttt{Figure+Table/Ileum-Top-1000-relationship-data.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1000行3列，以下预览的表格可能省略部分数据；表格含有26个唯一`Gut.Microbiota'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1000行3列，以下预览的表格可能省略部分数据；含有26个唯一`Gut.Microbiota'。
 \end{tcolorbox}
 \end{center}
 
@@ -2055,7 +2065,7 @@ Table \ref{tab:unnamed-chunk-38} (下方表格) 为表格unnamed chunk 38概览�
 
 \textbf{(对应文件为 \texttt{Figure+Table/unnamed-chunk-38.xlsx})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3104行9列，以下预览的表格可能省略部分数据；表格含有100个唯一`metabolite'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3104行9列，以下预览的表格可能省略部分数据；含有100个唯一`metabolite'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -2103,7 +2113,7 @@ Table \ref{tab:Liver-results-filtered-by-validation} (下方表格) 为表格Liv
 
 \textbf{(对应文件为 \texttt{Figure+Table/Liver-results-filtered-by-validation.csv})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有148行10列，以下预览的表格可能省略部分数据；表格含有1个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有148行10列，以下预览的表格可能省略部分数据；含有1个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -2568,7 +2578,7 @@ Table \ref{tab:Ileum-results-filtered-by-validation} (下方表格) 为表格Ile
 
 \textbf{(对应文件为 \texttt{Figure+Table/Ileum-results-filtered-by-validation.csv})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有104行10列，以下预览的表格可能省略部分数据；表格含有1个唯一`.id'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有104行10列，以下预览的表格可能省略部分数据；含有1个唯一`.id'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -3026,6 +3036,976 @@ Figure \ref{fig:ILEUM-ids-KEGG-enrichment} (下方图) 为图ILEUM ids KEGG enri
 \caption{ILEUM ids KEGG enrichment}\label{fig:ILEUM-ids-KEGG-enrichment}
 \end{center}
 
+\hypertarget{workflow2}{%
+\section{附：分析流程2}\label{workflow2}}
+
+\hypertarget{ux80c6ux6c41ux9178ux4ee3ux8c22}{%
+\subsection{胆汁酸代谢}\label{ux80c6ux6c41ux9178ux4ee3ux8c22}}
+
+获取与胆汁酸代谢相关基因。
+
+Table \ref{tab:Disease-related-targets-from-GeneCards} (下方表格) 为表格Disease related targets from GeneCards概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Disease-related-targets-from-GeneCards.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有160行7列，以下预览的表格可能省略部分数据；含有160个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    Bile acid metabolism
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    TRUE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 0
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Disease-related-targets-from-GeneCards}Disease related targets from GeneCards}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+CYP7A1 & Cytochrome\ldots{} & Protein Co\ldots{} & P22680 & 51 & GC08M058490 & 5.11\tabularnewline
+NR1H2 & Nuclear Re\ldots{} & Protein Co\ldots{} & P55055 & 54 & GC19P050329 & 4.34\tabularnewline
+NR1H4 & Nuclear Re\ldots{} & Protein Co\ldots{} & Q96RI1 & 56 & GC12P100473 & 4.31\tabularnewline
+NR1I2 & Nuclear Re\ldots{} & Protein Co\ldots{} & O75469 & 52 & GC03P119780 & 4\tabularnewline
+FDX1 & Ferredoxin 1 & Protein Co\ldots{} & P10109 & 49 & GC11P110429 & 3.58\tabularnewline
+FABP6 & Fatty Acid\ldots{} & Protein Co\ldots{} & P51161 & 50 & GC05P160187 & 3.49\tabularnewline
+MALRD1 & MAM And LD\ldots{} & Protein Co\ldots{} & Q5VYJ5 & 38 & GC10P019048 & 3.47\tabularnewline
+BAAT & Bile Acid-\ldots{} & Protein Co\ldots{} & Q14032 & 50 & GC09M101354 & 3.35\tabularnewline
+SLC27A5 & Solute Car\ldots{} & Protein Co\ldots{} & Q9Y2P5 & 45 & GC19M058479 & 3.26\tabularnewline
+HSD11B1 & Hydroxyste\ldots{} & Protein Co\ldots{} & P28845 & 59 & GC01P209686 & 3.26\tabularnewline
+SULT2A1 & Sulfotrans\ldots{} & Protein Co\ldots{} & Q06520 & 52 & GC19M047870 & 3.14\tabularnewline
+ARV1 & ARV1 Homol\ldots{} & Protein Co\ldots{} & Q9H2C2 & 43 & GC01P230978 & 3\tabularnewline
+NR1D1 & Nuclear Re\ldots{} & Protein Co\ldots{} & P20393 & 54 & GC17M040092 & 2.86\tabularnewline
+FGF19 & Fibroblast\ldots{} & Protein Co\ldots{} & O95750 & 52 & GC11M125583 & 2.85\tabularnewline
+NR0B2 & Nuclear Re\ldots{} & Protein Co\ldots{} & Q15466 & 49 & GC01M031090 & 2.54\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{liver2}{%
+\subsection{Liver}\label{liver2}}
+
+以 Tab. \ref{tab:Disease-related-targets-from-GeneCards} 过滤
+Tab. \ref{tab:Liver-Microbiota-associated-Genes-filtered-by-DEGs}
+得到：
+
+Table \ref{tab:Liver-relationship-bile-acids} (下方表格) 为表格Liver relationship bile acids概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Liver-relationship-bile-acids.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有500行10列，以下预览的表格可能省略部分数据；含有21个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item META\_Rho:  关联分析结果的关联系数，绝对值越大，说明关联性越强 (源自文献的分析)
+\item META\_Q:  关联分析结果 P 的校正值 (源自文献的分析)
+\item META\_P:  关联分析结果 P 的值 (源自文献的分析)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:Liver-relationship-bile-acids}Liver relationship bile acids}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.03\columnwidth}\raggedright
+.id\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+.id\_from\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Metabo\ldots\ldots4\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Gut.Mi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Target\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Metabo\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_Rho\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_Q\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_P\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.03\columnwidth}\raggedright
+.id\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+.id\_from\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Metabo\ldots\ldots4\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Gut.Mi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Target\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Metabo\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_Rho\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_Q\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_P\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Acetyl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Clostr\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+APOM\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.3059\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.5379\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+4.7629\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+APOM\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.3059\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.5379\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+4.7629\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Lactob\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+APOM\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.3059\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.5379\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+4.7629\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+6306\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+l-Isol\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+APOM\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+isoleu\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.266\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.0969\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.4945\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Acetyl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Clostr\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+SPP1\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.2265\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.5545\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+4.1676\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+SPP1\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.2265\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.5545\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+4.1676\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Lactob\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+SPP1\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.2265\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.5545\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+4.1676\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+6306\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+l-Isol\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+isoleu\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.219\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+6.8050\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.1892\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+6106\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Leucine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+APOM\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+leucine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.205\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.8215\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.5626\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+5951\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Serine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+APOM\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+serine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.1931\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+7.2469\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+7.1886\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+6140\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Phenyl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+3-Phen\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Clostr\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+APOM\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+phenyl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.179\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.0935\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.4833\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Acetyl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Clostr\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.1769\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.2423\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.9993\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.1769\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.2423\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.9993\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Lactob\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.1769\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.2423\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.9993\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+6106\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Leucine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+leucine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.176\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+5.7475\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.8522\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ileum2}{%
+\subsection{Ileum}\label{ileum2}}
+
+以 Tab. \ref{tab:Disease-related-targets-from-GeneCards} 过滤
+Tab. \ref{tab:Ileum-Microbiota-associated-Genes-filtered-by-DEGs}
+得到：
+
+Table \ref{tab:Ileum-relationship-bile-acids} (下方表格) 为表格Ileum relationship bile acids概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Ileum-relationship-bile-acids.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有247行10列，以下预览的表格可能省略部分数据；含有21个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item META\_Rho:  关联分析结果的关联系数，绝对值越大，说明关联性越强 (源自文献的分析)
+\item META\_Q:  关联分析结果 P 的校正值 (源自文献的分析)
+\item META\_P:  关联分析结果 P 的值 (源自文献的分析)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:Ileum-relationship-bile-acids}Ileum relationship bile acids}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+.id\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+.id\_from\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Metabo\ldots\ldots4\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Gut.Mi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Target\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Metabo\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_Rho\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_Q\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_P\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.05\columnwidth}\raggedright
+.id\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+.id\_from\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Metabo\ldots\ldots4\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Gut.Mi\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Target\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Metabo\ldots\ldots7\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_Rho\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_Q\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+META\_P\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+10140\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycoc\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Escher\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+FGF19\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycoc\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.2302\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+7.2715\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+5.8484\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+10140\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycoc\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Akkerm\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+FGF19\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycoc\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.2302\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+7.2715\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+5.8484\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+6306\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+l-Isol\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+isoleu\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.219\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+6.8050\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.1892\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+588\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+2-Imin\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Clostr\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+FABP1\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+creati\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.2038\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.5774\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+8.6320\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Acetyl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Clostr\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.1769\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.2423\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.9993\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.1769\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.2423\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.9993\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+750\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Lactob\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glycine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0.1769\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.2423\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1.9993\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+6106\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Leucine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+leucine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.176\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+5.7475\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+3.8522\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+6106\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Leucine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+SERPINA1\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+leucine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.165\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+5.1176\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+8.2320\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+5950\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Alanine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+alanine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.158\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+7.1761\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+6.5412\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+6140\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Phenyl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+3-Phen\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Clostr\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+phenyl\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.143\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+5.8047\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+7.0031\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+145742\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Proline\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+proline\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.142\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+7.3748\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+9.0950\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+5950\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Metabo\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Alanine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Blautia\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+SERPINA1\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+alanine\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.138\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.3620\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+7.5990\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+5793\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+D-Glucose\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Acetate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Christ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glucose\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.136\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.0860\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.9081\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+5793\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Substrate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+D-Glucose\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+Butyrate\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Christ\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+EHMT2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+glucose\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+-0.136\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.0860\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+2.9081\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.05\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
 \addcontentsline{toc}{section}{Reference}
@@ -3050,17 +4030,20 @@ Figure \ref{fig:ILEUM-ids-KEGG-enrichment} (下方图) 为图ILEUM ids KEGG enri
 \leavevmode\hypertarget{ref-GutmdisorderACheng2019}{}%
 6. Cheng, L., Qi, C., Zhuang, H., Fu, T. \& Zhang, X. GutMDisorder: A comprehensive database for dysbiosis of the gut microbiota in disorders and interventions. \emph{Nucleic Acids Research} \textbf{48}, (2019).
 
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+7. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
 \leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
-7. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+8. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
 
 \leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
-8. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+9. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
 
 \leavevmode\hypertarget{ref-MicrobiotaproceXuSh2023}{}%
-9. Xu, S. \emph{et al.} MicrobiotaProcess: A comprehensive r package for deep mining microbiome. \emph{The Innovation} \textbf{4}, 100388 (2023).
+10. Xu, S. \emph{et al.} MicrobiotaProcess: A comprehensive r package for deep mining microbiome. \emph{The Innovation} \textbf{4}, 100388 (2023).
 
 \leavevmode\hypertarget{ref-ExtendingAndIBlanco2023}{}%
-10. Blanco-Mı́guez, A. \emph{et al.} Extending and improving metagenomic taxonomic profiling with uncharacterized species using metaphlan 4. \emph{Nature Biotechnology} \textbf{41}, 1633--1644 (2023).
+11. Blanco-Mı́guez, A. \emph{et al.} Extending and improving metagenomic taxonomic profiling with uncharacterized species using metaphlan 4. \emph{Nature Biotechnology} \textbf{41}, 1633--1644 (2023).
 \end{cslreferences}
 
 \end{document}

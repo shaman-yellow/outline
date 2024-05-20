@@ -392,6 +392,7 @@ autor(dat.cor)
 ```
 
 ```{r}
+# /home/echo/outline/lixiao/2024_04_10_jiangliangfeng
 bm2$mapped$hgnc_symbol
 
 cor.m2fac <- cal_corp(lm.human, NULL, bm2$mapped$hgnc_symbol, dat.fac$name, use = "Symbol")

@@ -6,3 +6,14 @@ gm <- step1(gm)
 gm@params$lst_dis
 ```
 
+
+genes.fac <- lapply(list(gn.mp, gn.gl),
+  function(x) nl(x@object, list(head(x@tables$step1$t.genecards$Symbol, n = 1000))))
+genes.fac <- unlist(genes.fac, recursive = F)
+genes.fac
+dat.fac <- dat.fat0 <- as_df.lst(genes.fac)
+dat.fac <- dplyr::distinct(dat.fac, name, .keep_all = T)
+dat.fac
+
+cor.bc2fac <- cal_corp(lm.bc, NULL, genes.sito$symbols, dat.fac$name, use = "gene_name", HLs = "FGFR4")
+cor.bc2fac$hp
