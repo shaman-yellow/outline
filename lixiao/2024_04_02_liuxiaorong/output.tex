@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 三阴乳腺癌的多药耐药的靶点分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-05-14}}
+\textbf{\textcolor{white}{2024-05-21}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -142,6 +142,18 @@
 
 见 \ref{others}。
 
+\hypertarget{ux8865ux5145ux5206ux6790}{%
+\subsection{补充分析}\label{ux8865ux5145ux5206ux6790}}
+
+使用临床数据，通过对三阴乳腺癌和癌旁组织进行生信分析，找到其中的关于紫杉类药物耐药的差异基因ABCB1（此为需要的目的基因）
+
+\hypertarget{ux8865ux5145ux5206ux6790ux7ed3ux679c}{%
+\subsection{补充分析结果}\label{ux8865ux5145ux5206ux6790ux7ed3ux679c}}
+
+成功筛选到 ABCB1，见 Tab. \ref{tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1}。
+
+其余信息见 \ref{workflow2}
+
 \hypertarget{introduction}{%
 \section{前言}\label{introduction}}
 
@@ -163,11 +175,13 @@ Mainly used method:
 \item
   The Human Gene Database \texttt{GeneCards} used for disease related genes prediction\textsuperscript{\protect\hyperlink{ref-TheGenecardsSStelze2016}{2}}.
 \item
-  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{3},\protect\hyperlink{ref-CytohubbaIdenChin2014}{4}}.
+  R Package \texttt{pRRophetic} was used for Prediction of Clinical Chemotherapeutic Response\textsuperscript{\protect\hyperlink{ref-PrropheticAnGeeleh2014}{3}}.
 \item
-  R package \texttt{pathview} used for KEGG pathways visualization\textsuperscript{\protect\hyperlink{ref-PathviewAnRLuoW2013}{5}}.
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{4},\protect\hyperlink{ref-CytohubbaIdenChin2014}{5}}.
 \item
-  The MCC score was calculated referring to algorithm of \texttt{CytoHubba}\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{4}}.
+  R package \texttt{pathview} used for KEGG pathways visualization\textsuperscript{\protect\hyperlink{ref-PathviewAnRLuoW2013}{6}}.
+\item
+  The MCC score was calculated referring to algorithm of \texttt{CytoHubba}\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{5}}.
 \item
   R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
 \end{itemize}
@@ -458,6 +472,296 @@ HDAC1 & EZH2\tabularnewline
 \bottomrule
 \end{longtable}
 
+\hypertarget{workflow2}{%
+\section{附：分析流程}\label{workflow2}}
+
+\hypertarget{tcga-brca}{%
+\subsection{TCGA-BRCA}\label{tcga-brca}}
+
+数据来源于 TCGA-BRCA
+
+\hypertarget{tnbc}{%
+\subsubsection{TNBC}\label{tnbc}}
+
+获取 TCGA-BRCA 的标释，取 TNBC 子集。
+
+Table \ref{tab:TNBC-annotation} (下方表格) 为表格TNBC annotation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TNBC-annotation.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1059行45列，以下预览的表格可能省略部分数据；含有1059个唯一`TCGA\_SAMPLE'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:TNBC-annotation}TNBC annotation}\tabularnewline
+\toprule
+TCGA\_S\ldots{} & BARCODE & TNBC & PAM50 & PAM50lite & TNBCtype & TNBCty\ldots{} & IM\_cen\ldots{} & MSL\_ce\ldots{} & BL1\_ce\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+TCGA\_S\ldots{} & BARCODE & TNBC & PAM50 & PAM50lite & TNBCtype & TNBCty\ldots{} & IM\_cen\ldots{} & MSL\_ce\ldots{} & BL1\_ce\ldots{}\tabularnewline
+\midrule
+\endhead
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & UNC & BL1 & -0.067\ldots{} & -0.204\ldots{} & 0.0901\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & 0.0890\ldots{} & -0.409\ldots{} & 0.6770\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & IM & BL1 & 0.5766\ldots{} & -0.304\ldots{} & 0.3889\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & UNC & BL1 & 0.0583\ldots{} & -0.299\ldots{} & 0.1577\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & -0.036\ldots{} & -0.184\ldots{} & 0.2627\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & 0.1164\ldots{} & -0.415\ldots{} & 0.5891\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & -0.282\ldots{} & -0.016\ldots{} & 0.4580\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & 0.3572\ldots{} & -0.209\ldots{} & 0.4447\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & -0.273\ldots{} & -0.280\ldots{} & 0.6290\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & 0.0485\ldots{} & -0.160\ldots{} & 0.2680\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & -0.099\ldots{} & -0.368\ldots{} & 0.5270\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & -0.299\ldots{} & -0.358\ldots{} & 0.5655\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & BL1 & BL1 & 0.1769526 & -0.267\ldots{} & 0.6534\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & IM & BL1 & 0.6529\ldots{} & -0.285\ldots{} & 0.4433\ldots{}\tabularnewline
+TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & MSL & BL1 & 0.1206\ldots{} & 0.2856\ldots{} & 0.0313\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{tnbc-ux7d2bux6749ux9187ux8010ux836fux6027ux5206ux6790}{%
+\subsubsection{TNBC 紫杉醇耐药性分析}\label{tnbc-ux7d2bux6749ux9187ux8010ux836fux6027ux5206ux6790}}
+
+使用 pRRophetic 预测 紫杉醇 Paclitaxel 耐药性 (IC50) ，并根据 IC50 分值分组。
+
+Figure \ref{fig:QQ-plot-for-distribution-of-the-transformed-IC50-data} (下方图) 为图QQ plot for distribution of the transformed IC50 data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/QQ-plot-for-distribution-of-the-transformed-IC50-data.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/QQ-plot-for-distribution-of-the-transformed-IC50-data.pdf}
+\caption{QQ plot for distribution of the transformed IC50 data}\label{fig:QQ-plot-for-distribution-of-the-transformed-IC50-data}
+\end{center}
+
+Figure \ref{fig:BR-estimate-prediction-accuracy} (下方图) 为图BR estimate prediction accuracy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/BR-estimate-prediction-accuracy.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/BR-estimate-prediction-accuracy.pdf}
+\caption{BR estimate prediction accuracy}\label{fig:BR-estimate-prediction-accuracy}
+\end{center}
+
+Table \ref{tab:BR-predicted-drug-sensitivity} (下方表格) 为表格BR predicted drug sensitivity概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/BR-predicted-drug-sensitivity.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有229行3列，以下预览的表格可能省略部分数据；含有229个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample:  样品名称
+\end{enumerate}\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+k-means clustering
+:}
+
+\vspace{0.5em}
+
+    Centers = 3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:BR-predicted-drug-sensitivity}BR predicted drug sensitivity}\tabularnewline
+\toprule
+sample & sensitivity & kmeans\_group\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sample & sensitivity & kmeans\_group\tabularnewline
+\midrule
+\endhead
+TCGA-A1-A0SK-01A & -2.10842613469246 & 2\tabularnewline
+TCGA-A1-A0SO-01A & -2.09562910762259 & 2\tabularnewline
+TCGA-A1-A0SP-01A & -3.25995181471472 & 3\tabularnewline
+TCGA-A2-A04P-01A & -3.23445178824064 & 3\tabularnewline
+TCGA-A2-A04T-01A & -2.35183449260819 & 1\tabularnewline
+TCGA-A2-A04U-01A & -3.69008335272504 & 3\tabularnewline
+TCGA-A2-A0CM-01A & -3.52641697655325 & 3\tabularnewline
+TCGA-A2-A0D0-01A & -3.99448786955298 & 3\tabularnewline
+TCGA-A2-A0D2-01A & -3.5154928620097 & 3\tabularnewline
+TCGA-A2-A0EQ-01A & -2.44757901693141 & 1\tabularnewline
+TCGA-A2-A0ST-01A & -3.07631191508686 & 1\tabularnewline
+TCGA-A2-A0SX-01A & -3.29857199124933 & 3\tabularnewline
+TCGA-A2-A0T0-01A & -2.62869725258927 & 1\tabularnewline
+TCGA-A2-A0T2-01A & -2.86966880241339 & 1\tabularnewline
+TCGA-A2-A0YE-01A & -2.80843853558055 & 1\tabularnewline
+\ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+成功筛选到 ABCB1，见 Tab. \ref{tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1}
+
+Table \ref{tab:metadata} (下方表格) 为表格metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/metadata.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有229行98列，以下预览的表格可能省略部分数据；含有229个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample:  样品名称
+\item group:  分组名称
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:metadata}Metadata}\tabularnewline
+\toprule
+rownames & group & lib.size & norm.f\ldots{} & sample & barcode & patient & shortL\ldots{} & defini\ldots{} & sample\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & group & lib.size & norm.f\ldots{} & sample & barcode & patient & shortL\ldots{} & defini\ldots{} & sample\ldots{}\tabularnewline
+\midrule
+\endhead
+TCGA-A\ldots{} & Resist\ldots{} & 671449\ldots{} & 1.0768\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Resist\ldots{} & 701385\ldots{} & 1.0274\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Non\_re\ldots{} & 569427\ldots{} & 0.9859\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Non\_re\ldots{} & 442163\ldots{} & 0.8182\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Others & 615423\ldots{} & 0.9621\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Non\_re\ldots{} & 384309\ldots{} & 0.9349\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Non\_re\ldots{} & 455529\ldots{} & 1.0497\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Non\_re\ldots{} & 437885\ldots{} & 0.8295\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Non\_re\ldots{} & 510092\ldots{} & 0.9319\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Others & 507124\ldots{} & 0.9101\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Others & 520602\ldots{} & 0.9950\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Non\_re\ldots{} & 701598\ldots{} & 1.0795\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Others & 581753\ldots{} & 0.9089\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Others & 452328\ldots{} & 0.8451\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+TCGA-A\ldots{} & Others & 622011\ldots{} & 1.0001\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TCGA-A\ldots{} & TP & Primar\ldots{} & TCGA-A\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Figure \ref{fig:BR-Resistance-vs-Non-resistance-DEGs} (下方图) 为图BR Resistance vs Non resistance DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf}
+\caption{BR Resistance vs Non resistance DEGs}\label{fig:BR-Resistance-vs-Non-resistance-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+adj.P.Val cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    0.5
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/BR-Resistance-vs-Non-resistance-DEGs-content})}
+
+Table \ref{tab:BR-data-Resistance-vs-Non-resistance-DEGs} (下方表格) 为表格BR data Resistance vs Non resistance DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/BR-data-Resistance-vs-Non-resistance-DEGs.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有13607行22列，以下预览的表格可能省略部分数据；含有13607个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item gene\_name:  GENCODE gene name
+\item strand:  genomic strand
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:BR-data-Resistance-vs-Non-resistance-DEGs}BR data Resistance vs Non resistance DEGs}\tabularnewline
+\toprule
+rownames & gene\_id & seqnames & start & end & width & strand & source & type & score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & gene\_id & seqnames & start & end & width & strand & source & type & score\tabularnewline
+\midrule
+\endhead
+ENSG00\ldots{} & ENSG00\ldots{} & chr15 & 42412823 & 42491141 & 78319 & - & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr4 & 84669597 & 84966690 & 297094 & - & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr8 & 29055935 & 29056685 & 751 & + & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr5 & 75511756 & 75601144 & 89389 & + & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr17 & 46983287 & 47100323 & 117037 & - & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr5 & 119037772 & 119249138 & 211367 & + & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr7 & 131110096 & 131496632 & 386537 & + & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr19 & 48954815 & 48961798 & 6984 & + & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr10 & 116671192 & 116850251 & 179060 & - & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr10 & 94402541 & 94536332 & 133792 & + & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr11 & 392614 & 404908 & 12295 & + & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr10 & 118004916 & 118046941 & 42026 & - & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr4 & 107863473 & 107989679 & 126207 & - & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr2 & 169827454 & 170084131 & 256678 & + & HAVANA & gene & NA\tabularnewline
+ENSG00\ldots{} & ENSG00\ldots{} & chr11 & 9778667 & 10294219 & 515553 & - & HAVANA & gene & NA\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1} (下方表格) 为表格BR data Resistance vs Non resistance DEGs ABCB1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行22列，以下预览的表格可能省略部分数据；含有1个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item gene\_name:  GENCODE gene name
+\item strand:  genomic strand
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1}BR data Resistance vs Non resistance DEGs ABCB1}\tabularnewline
+\toprule
+rownames & gene\_id & seqnames & start & end & width & strand & source & type & score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & gene\_id & seqnames & start & end & width & strand & source & type & score\tabularnewline
+\midrule
+\endhead
+ENSG00\ldots{} & ENSG00\ldots{} & chr7 & 87503017 & 87713323 & 210307 & - & HAVANA & gene & NA\tabularnewline
+\bottomrule
+\end{longtable}
+
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}
 \addcontentsline{toc}{section}{Reference}
@@ -470,14 +774,17 @@ HDAC1 & EZH2\tabularnewline
 \leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
 2. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
 
+\leavevmode\hypertarget{ref-PrropheticAnGeeleh2014}{}%
+3. Geeleher, P., Cox, N. \& Huang, R. S. PRRophetic: An r package for prediction of clinical chemotherapeutic response from tumor gene expression levels. \emph{PloS one} \textbf{9}, (2014).
+
 \leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
-3. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+4. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
 
 \leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
-4. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+5. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
 
 \leavevmode\hypertarget{ref-PathviewAnRLuoW2013}{}%
-5. Luo, W. \& Brouwer, C. Pathview: An r/bioconductor package for pathway-based data integration and visualization. \emph{Bioinformatics (Oxford, England)} \textbf{29}, 1830--1831 (2013).
+6. Luo, W. \& Brouwer, C. Pathview: An r/bioconductor package for pathway-based data integration and visualization. \emph{Bioinformatics (Oxford, England)} \textbf{29}, 1830--1831 (2013).
 \end{cslreferences}
 
 \end{document}

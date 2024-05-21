@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.21)  14 MAY 2024 14:50
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.21)  21 MAY 2024 16:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1302,13 +1302,13 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
-(./output.lot)
+[1
+
+] (./output.lot)
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
-[1
-
-]
+[2]
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 107.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
@@ -1338,28 +1338,28 @@ guage=dflt;"
 
 [1]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 189.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 203.
 [2] [3]
 File: Figure+Table/Intersection-of-MDR-with-TNBC.pdf Graphic file (type pdf)
 <use Figure+Table/Intersection-of-MDR-with-TNBC.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 340.
+(caption)                particular \caption on input line 354.
 See the caption package documentation for explanation.
 
+[4]
 File: Figure+Table/KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 369.
+(caption)                particular \caption on input line 383.
 See the caption package documentation for explanation.
 
-[4]
 File: Figure+Table/GO-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/GO-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 379.
+(caption)                particular \caption on input line 393.
 See the caption package documentation for explanation.
 
 [5]
@@ -1368,34 +1368,90 @@ e bmp)
 <pathview2024-04-07_14_43_17.00905/hsa05206.pathview.png>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 389.
+(caption)                particular \caption on input line 403.
 See the caption package documentation for explanation.
 
-
-LaTeX Warning: Reference `fig:Selected-genes-Top20-interaction' on page 6 undef
-ined on input line 412.
-
 [6]
+
+LaTeX Warning: Reference `fig:Selected-genes-Top20-interaction' on page 7 undef
+ined on input line 426.
+
+[7]
 File: Figure+Table/Selected-genes-Top10-interaction.pdf Graphic file (type pdf)
 
 <use Figure+Table/Selected-genes-Top10-interaction.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 421.
+(caption)                particular \caption on input line 435.
 See the caption package documentation for explanation.
 
-[7] [8] (./output.aux)
+[8]
+Overfull \hbox (68.16516pt too wide) in alignment at lines 496--501
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (68.16516pt too wide) in alignment at lines 501--505
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (68.16516pt too wide) in alignment at lines 505--523
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[9]
+File: Figure+Table/QQ-plot-for-distribution-of-the-transformed-IC50-data.pdf Gr
+aphic file (type pdf)
+<use Figure+Table/QQ-plot-for-distribution-of-the-transformed-IC50-data.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 537.
+See the caption package documentation for explanation.
+
+File: Figure+Table/BR-estimate-prediction-accuracy.pdf Graphic file (type pdf)
+<use Figure+Table/BR-estimate-prediction-accuracy.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 547.
+See the caption package documentation for explanation.
+
+[10] [11]
+Overfull \hbox (60.23506pt too wide) in alignment at lines 620--625
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (60.23506pt too wide) in alignment at lines 625--629
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (60.23506pt too wide) in alignment at lines 629--647
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[12]
+File: Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf Graphic file (type 
+pdf)
+<use Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 656.
+See the caption package documentation for explanation.
+
+[13] [14] [15] (./output.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 32082 strings out of 476191
- 651757 string characters out of 5812072
- 1102563 words of memory out of 5000000
- 52279 multiletter control sequences out of 15000+600000
+ 32190 strings out of 476191
+ 657191 string characters out of 5812072
+ 1109844 words of memory out of 5000000
+ 52384 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1365b,642s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (10 pages).
+Output written on output.pdf (18 pages).

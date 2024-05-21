@@ -56,7 +56,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 三阴乳腺癌的多药耐药的靶点分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-05-14}}
+\textbf{\textcolor{white}{2024-05-21}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -105,6 +105,16 @@ header-includes:
 
 
 
+## 补充分析
+
+使用临床数据，通过对三阴乳腺癌和癌旁组织进行生信分析，找到其中的关于紫杉类药物耐药的差异基因ABCB1（此为需要的目的基因）
+
+## 补充分析结果
+
+成功筛选到 ABCB1，见 Tab. \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)。
+
+其余信息见 \@ref(workflow2)
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -119,6 +129,7 @@ Mainly used method:
 
 - R package `ClusterProfiler` used for gene enrichment analysis[@ClusterprofilerWuTi2021].
 - The Human Gene Database `GeneCards` used for disease related genes prediction[@TheGenecardsSStelze2016].
+- R Package `pRRophetic` was used for Prediction of Clinical Chemotherapeutic Response[@PrropheticAnGeeleh2014].
 - R package `STEINGdb` used for PPI network construction[@TheStringDataSzklar2021; @CytohubbaIdenChin2014].
 - R package `pathview` used for KEGG pathways visualization[@PathviewAnRLuoW2013].
 - The MCC score was calculated referring to algorithm of `CytoHubba`[@CytohubbaIdenChin2014].
@@ -382,4 +393,252 @@ Table: (\#tab:Selected-genes-Top20-interaction-data)Selected genes Top20 interac
 |HDAC1    |STAT3  |
 |HDAC1    |EZH2   |
 |...      |...    |
+
+# 附：分析流程 {#workflow2}
+
+## TCGA-BRCA
+
+数据来源于 TCGA-BRCA
+
+
+
+### TNBC
+
+获取 TCGA-BRCA 的标释，取 TNBC 子集。
+
+
+
+Table \@ref(tab:TNBC-annotation) (下方表格) 为表格TNBC annotation概览。
+
+**(对应文件为 `Figure+Table/TNBC-annotation.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1059行45列，以下预览的表格可能省略部分数据；含有1059个唯一`TCGA\_SAMPLE'。
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:TNBC-annotation)TNBC annotation
+
+|TCGA_S... |BARCODE   |TNBC |PAM50 |PAM50lite |TNBCtype |TNBCty... |IM_cen... |MSL_ce... |BL1_ce... |
+|:---------|:---------|:----|:-----|:---------|:--------|:---------|:---------|:---------|:---------|
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |UNC      |BL1       |-0.067... |-0.204... |0.0901... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |0.0890... |-0.409... |0.6770... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |IM       |BL1       |0.5766... |-0.304... |0.3889... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |UNC      |BL1       |0.0583... |-0.299... |0.1577... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |-0.036... |-0.184... |0.2627... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |0.1164... |-0.415... |0.5891... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |-0.282... |-0.016... |0.4580... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |0.3572... |-0.209... |0.4447... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |-0.273... |-0.280... |0.6290... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |0.0485... |-0.160... |0.2680... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |-0.099... |-0.368... |0.5270... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |-0.299... |-0.358... |0.5655... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |BL1      |BL1       |0.1769526 |-0.267... |0.6534... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |IM       |BL1       |0.6529... |-0.285... |0.4433... |
+|TCGA-A... |TCGA-A... |YES  |Basal |Basal     |MSL      |BL1       |0.1206... |0.2856... |0.0313... |
+|...       |...       |...  |...   |...       |...      |...       |...       |...       |...       |
+
+### TNBC 紫杉醇耐药性分析
+
+使用 pRRophetic 预测 紫杉醇 Paclitaxel 耐药性 (IC50) ，并根据 IC50 分值分组。
+
+
+
+Figure \@ref(fig:QQ-plot-for-distribution-of-the-transformed-IC50-data) (下方图) 为图QQ plot for distribution of the transformed IC50 data概览。
+
+**(对应文件为 `Figure+Table/QQ-plot-for-distribution-of-the-transformed-IC50-data.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/QQ-plot-for-distribution-of-the-transformed-IC50-data.pdf}
+\caption{QQ plot for distribution of the transformed IC50 data}\label{fig:QQ-plot-for-distribution-of-the-transformed-IC50-data}
+\end{center}
+
+Figure \@ref(fig:BR-estimate-prediction-accuracy) (下方图) 为图BR estimate prediction accuracy概览。
+
+**(对应文件为 `Figure+Table/BR-estimate-prediction-accuracy.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/BR-estimate-prediction-accuracy.pdf}
+\caption{BR estimate prediction accuracy}\label{fig:BR-estimate-prediction-accuracy}
+\end{center}
+
+Table \@ref(tab:BR-predicted-drug-sensitivity) (下方表格) 为表格BR predicted drug sensitivity概览。
+
+**(对应文件为 `Figure+Table/BR-predicted-drug-sensitivity.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有229行3列，以下预览的表格可能省略部分数据；含有229个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample:  样品名称
+\end{enumerate}\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+k-means clustering
+:}
+
+\vspace{0.5em}
+
+    Centers = 3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:BR-predicted-drug-sensitivity)BR predicted drug sensitivity
+
+|sample           |sensitivity       |kmeans_group |
+|:----------------|:-----------------|:------------|
+|TCGA-A1-A0SK-01A |-2.10842613469246 |2            |
+|TCGA-A1-A0SO-01A |-2.09562910762259 |2            |
+|TCGA-A1-A0SP-01A |-3.25995181471472 |3            |
+|TCGA-A2-A04P-01A |-3.23445178824064 |3            |
+|TCGA-A2-A04T-01A |-2.35183449260819 |1            |
+|TCGA-A2-A04U-01A |-3.69008335272504 |3            |
+|TCGA-A2-A0CM-01A |-3.52641697655325 |3            |
+|TCGA-A2-A0D0-01A |-3.99448786955298 |3            |
+|TCGA-A2-A0D2-01A |-3.5154928620097  |3            |
+|TCGA-A2-A0EQ-01A |-2.44757901693141 |1            |
+|TCGA-A2-A0ST-01A |-3.07631191508686 |1            |
+|TCGA-A2-A0SX-01A |-3.29857199124933 |3            |
+|TCGA-A2-A0T0-01A |-2.62869725258927 |1            |
+|TCGA-A2-A0T2-01A |-2.86966880241339 |1            |
+|TCGA-A2-A0YE-01A |-2.80843853558055 |1            |
+|...              |...               |...          |
+
+### 差异分析
+
+成功筛选到 ABCB1，见 Tab. \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)
+
+
+
+
+Table \@ref(tab:metadata) (下方表格) 为表格metadata概览。
+
+**(对应文件为 `Figure+Table/metadata.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有229行98列，以下预览的表格可能省略部分数据；含有229个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item sample:  样品名称
+\item group:  分组名称
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:metadata)Metadata
+
+|rownames  |group     |lib.size  |norm.f... |sample    |barcode   |patient   |shortL... |defini... |sample... |
+|:---------|:---------|:---------|:---------|:---------|:---------|:---------|:---------|:---------|:---------|
+|TCGA-A... |Resist... |671449... |1.0768... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Resist... |701385... |1.0274... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Non_re... |569427... |0.9859... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Non_re... |442163... |0.8182... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Others    |615423... |0.9621... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Non_re... |384309... |0.9349... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Non_re... |455529... |1.0497... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Non_re... |437885... |0.8295... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Non_re... |510092... |0.9319... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Others    |507124... |0.9101... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Others    |520602... |0.9950... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Non_re... |701598... |1.0795... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Others    |581753... |0.9089... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Others    |452328... |0.8451... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|TCGA-A... |Others    |622011... |1.0001... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
+|...       |...       |...       |...       |...       |...       |...       |...       |...       |...       |
+
+Figure \@ref(fig:BR-Resistance-vs-Non-resistance-DEGs) (下方图) 为图BR Resistance vs Non resistance DEGs概览。
+
+**(对应文件为 `Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf}
+\caption{BR Resistance vs Non resistance DEGs}\label{fig:BR-Resistance-vs-Non-resistance-DEGs}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+adj.P.Val cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    0.5
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+**(上述信息框内容已保存至 `Figure+Table/BR-Resistance-vs-Non-resistance-DEGs-content`)**
+
+Table \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs) (下方表格) 为表格BR data Resistance vs Non resistance DEGs概览。
+
+**(对应文件为 `Figure+Table/BR-data-Resistance-vs-Non-resistance-DEGs.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有13607行22列，以下预览的表格可能省略部分数据；含有13607个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item gene\_name:  GENCODE gene name
+\item strand:  genomic strand
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:BR-data-Resistance-vs-Non-resistance-DEGs)BR data Resistance vs Non resistance DEGs
+
+|rownames  |gene_id   |seqnames |start     |end       |width  |strand |source |type |score |
+|:---------|:---------|:--------|:---------|:---------|:------|:------|:------|:----|:-----|
+|ENSG00... |ENSG00... |chr15    |42412823  |42491141  |78319  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr4     |84669597  |84966690  |297094 |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr8     |29055935  |29056685  |751    |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr5     |75511756  |75601144  |89389  |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr17    |46983287  |47100323  |117037 |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr5     |119037772 |119249138 |211367 |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr7     |131110096 |131496632 |386537 |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr19    |48954815  |48961798  |6984   |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr10    |116671192 |116850251 |179060 |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr10    |94402541  |94536332  |133792 |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr11    |392614    |404908    |12295  |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr10    |118004916 |118046941 |42026  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr4     |107863473 |107989679 |126207 |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr2     |169827454 |170084131 |256678 |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr11    |9778667   |10294219  |515553 |-      |HAVANA |gene |NA    |
+|...       |...       |...      |...       |...       |...    |...    |...    |...  |...   |
+
+Table \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1) (下方表格) 为表格BR data Resistance vs Non resistance DEGs ABCB1概览。
+
+**(对应文件为 `Figure+Table/BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行22列，以下预览的表格可能省略部分数据；含有1个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item gene\_name:  GENCODE gene name
+\item strand:  genomic strand
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)BR data Resistance vs Non resistance DEGs ABCB1
+
+|rownames  |gene_id   |seqnames |start    |end      |width  |strand |source |type |score |
+|:---------|:---------|:--------|:--------|:--------|:------|:------|:------|:----|:-----|
+|ENSG00... |ENSG00... |chr7     |87503017 |87713323 |210307 |-      |HAVANA |gene |NA    |
 

@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = c(odate(4), odate(5)), eval = list(ic(1, 0, 1, 0, 0), ic(0, 1, 0, 0, 0)))
+info <- items(belong = c(odate(4), odate(5)), eval = list(ic(1, 0, 1, 0, 0), ic(0, 2, 2, 0, 0)))
 show.ic(info)
 
 order_publish()
@@ -60,13 +60,25 @@ set_index()
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
   di("三阴乳腺癌"),
-  di("多药耐药")
+  di("多药耐药"),
+  di("紫杉醇")
 )
 
 # DEGs: Differential Expressed Genes 差异表达基因
 # TNBC: triple negative breast cancer 三阴乳腺癌
 # MR: multidrug resistance 多药耐药
+# P: Paclitaxel 紫杉醇
 ```
+
+## 补充分析
+
+使用临床数据，通过对三阴乳腺癌和癌旁组织进行生信分析，找到其中的关于紫杉类药物耐药的差异基因ABCB1（此为需要的目的基因）
+
+## 补充分析结果
+
+成功筛选到 ABCB1，见 Tab. \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)。
+
+其余信息见 \@ref(workflow2)
 
 # 前言 {#introduction}
 
@@ -183,4 +195,96 @@ autor(ppi.cus$p.mcc)
 ```{r eval = T, echo = F, results = "asis"}
 #| Selected-genes-Top20-interaction-data
 autor(ppi.cus$edges_mcc)
+```
+
+# 附：分析流程 {#workflow2}
+
+## TCGA-BRCA
+
+数据来源于 TCGA-BRCA
+
+```{r}
+tcga.br <- job_tcga("TCGA-BRCA")
+tcga.br <- step1(tcga.br)
+cdRun("rm -r ./GDCdata")
+cdRun("mv ../2024_04_10_jiangliangfeng/GDCdata -t .")
+tcga.br <- step2(tcga.br)
+tcga.br <- step3(tcga.br)
+tcga.br <- clear(tcga.br, save = F)
+```
+
+### TNBC
+
+获取 TCGA-BRCA 的标释，取 TNBC 子集。
+
+```{r}
+lm.br <- asjob_limma(tcga.br)
+lm.br <- getsub(lm.br, tnbc = T)
+lm.br@params$pb
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TNBC-annotation
+autor(lm.br@params$pb@object)
+```
+
+### TNBC 紫杉醇耐药性分析
+
+使用 pRRophetic 预测 紫杉醇 Paclitaxel 耐药性 (IC50) ，并根据 IC50 分值分组。
+
+```{r}
+lm.br <- step1(lm.br)
+prr.br <- asjob_prr(lm.br, "Paclitaxel")
+prr.br <- step1(prr.br)
+prr.br <- step2(prr.br)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| QQ-plot-for-distribution-of-the-transformed-IC50-data
+autor(prr.br@params$p.drugQQ)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| BR-estimate-prediction-accuracy
+autor(prr.br@plots$step1$p.cvOut)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| BR-predicted-drug-sensitivity
+autor(prr.br@tables$step2$t.predict)
+```
+
+### 差异分析
+
+成功筛选到 ABCB1，见 Tab. \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)
+
+
+```{r}
+lm.br <- map(lm.br, prr.br)
+metadata.br <- as_tibble(lm.br@object$targets)
+lm.br <- step2(lm.br, Resistance - Non_resistance, cut.fc = 1)
+lm.br@plots$step2$p.valcano$`Resistance - Non_resistance`
+Tops <- lm.br@tables$step2$tops$`Resistance - Non_resistance`
+
+dplyr::filter(Tops, gene_name == "ABCB1")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| metadata
+autor(metadata.br)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| BR-Resistance-vs-Non-resistance-DEGs
+autor(lm.br@plots$step2$p.valcano$`Resistance - Non_resistance`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| BR-data-Resistance-vs-Non-resistance-DEGs
+autor(Tops)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1
+autor(dplyr::filter(Tops, gene_name == "ABCB1"))
 ```

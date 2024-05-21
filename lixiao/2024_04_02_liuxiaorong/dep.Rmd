@@ -75,3 +75,14 @@ en.cus@tables$step1$res.kegg
 en.cus@tables$step1$res.go
 ```
 
+
+dat <- dplyr::filter(lm.br@object$samples, gs(sample, "[A-Z]$", "") %in% pb.rot@object$TCGA_SAMPLE)
+dat$isTumor
+
+
+```{r}
+geo.tnbc <- job_geo("GSE264252")
+geo.tnbc <- step1(geo.tnbc)
+geo.tnbc@params$guess
+```
+

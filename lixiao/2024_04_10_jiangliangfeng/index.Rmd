@@ -62,6 +62,14 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
 下一步请对 beta-sitosterol  的60个靶点做富集分析，并作这些靶点与糖酵解、巨噬细胞极化相关性分析。意向靶点为JTK2（即FGFR4），请重点关注
 另外需要提供一个韦恩图表明beta-sitosterol 就是三种药共有的唯一成分
 
+- 巨噬细胞极化 (糖酵解), 巨噬细胞极化，上移，
+- 基因名称
+- 关联分析热图，调整
+
+## 结果2
+
+见 \@ref(res2)
+
 # 前言 {#introduction}
 
 # 材料和方法 {#methods}
@@ -190,7 +198,7 @@ tc2@params$p.pharm2enrich
 tc2@params$p.pharm2enrich$.path
 ```
 
-## beta-sitosterol
+## beta-sitosterol {#res2}
 
 ### 富集分析
 
@@ -202,6 +210,9 @@ tc2.sito@tables$step2$compounds_targets
 
 genes.sito <- tc2.sito@tables$step2$compounds_targets
 genes.sito$symbols
+
+genes.sito$symbols %in% gn.gl@tables$step1$t.genecards$Symbol
+genes.sito$symbols %in% gn.mp@tables$step1$t.genecards$Symbol
 ```
 
 ```{r}
@@ -209,6 +220,12 @@ en.sito <- job_enrich(genes.sito$symbols)
 en.sito <- step1(en.sito)
 en.sito@plots$step1$p.kegg
 en.sito@plots$step1$p.go
+
+en.sito@tables$step1$res.go$ids %>% dplyr::filter(grpl(Description, "macropha", T))
+en.sito@tables$step1$res.kegg$ids %>% dplyr::filter(grpl(Description, "polar|macro|diff", T))
+
+plot_go(en.sito@tables$step1$res.go$ids, facet = "ont")
+
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -252,6 +269,16 @@ autor(lm.bc@params$.metadata)
 
 ### 糖酵解、巨噬细胞极化相关基因
 
+```{r eval = T, echo = F, results = "asis"}
+#| MP-related-targets-from-GeneCards
+autor(gn.mp@tables$step1$t.genecards)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GL-related-targets-from-GeneCards
+autor(gn.gl@tables$step1$t.genecards)
+```
+
 ```{r}
 gn.mp <- job_genecard("Macrophage polarization")
 gn.mp <- step1(gn.mp, 2, T)
@@ -262,6 +289,8 @@ gn.gl <- step1(gn.gl, 3, restrict = T)
 gn.gl@tables$step1$t.genecards
 ```
 
+### 关联分析
+
 ```{r}
 gns <- job_genecardn(gn.mp, gn.gl)
 lst.cor <- cal_corp(lm.bc, gns, genes.sito$symbols, HLs = "FGFR4", linear = T)
@@ -269,4 +298,25 @@ lst.cor$lp.cor
 wrap(lst.cor$tihp.cor, 16, 7)
 ```
 
-enrich
+```{r eval = T, echo = F, results = "asis"}
+#| Correlation-heatmap
+autor(wrap(lst.cor$tihp.cor, 16, 7))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Linear-curve
+autor(lst.cor$lp.cor)
+```
+
+### 韦恩图
+
+```{r}
+cpds.venn <- split(tc2@tables$step3$t.ob_dl_filtered$`Molecule Name`, tc2@tables$step3$t.ob_dl_filtered$Herb_pinyin_name)
+p.venn <- new_venn(lst = cpds.venn)
+p.venn
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu
+autor(p.venn)
+```

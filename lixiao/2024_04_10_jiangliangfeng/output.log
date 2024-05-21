@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.6.29)  17 APR 2024 16:08
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.21)  21 MAY 2024 11:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1298,7 +1298,9 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@toc=\write4
 \openout4 = `output.toc'.
 
-(./output.lof)
+(./output.lof [1
+
+])
 \tf@lof=\write5
 \openout5 = `output.lof'.
 
@@ -1306,9 +1308,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@lot=\write6
 \openout6 = `output.lot'.
 
-[1
-
-]
+[2]
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 13.97833pt on input line 107.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
@@ -1338,39 +1338,38 @@ guage=dflt;"
 
 [1]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 185.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 208.
 [2]
 File: Figure+Table/intersection-of-all-compounds.pdf Graphic file (type pdf)
 <use Figure+Table/intersection-of-all-compounds.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 262.
+(caption)                particular \caption on input line 285.
 See the caption package documentation for explanation.
 
-[3] [4]
+[3] [4] [5]
 File: Figure+Table/Network-pharmacology-with-disease.pdf Graphic file (type pdf
 )
 <use Figure+Table/Network-pharmacology-with-disease.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 402.
+(caption)                particular \caption on input line 425.
 See the caption package documentation for explanation.
 
-[5]
+[6]
 File: Figure+Table/Targets-intersect-with-targets-of-diseases.pdf Graphic file 
 (type pdf)
 <use Figure+Table/Targets-intersect-with-targets-of-diseases.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 412.
+(caption)                particular \caption on input line 435.
 See the caption package documentation for explanation.
 
-[6]
 File: Figure+Table/KEGG-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/KEGG-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 444.
+(caption)                particular \caption on input line 467.
 See the caption package documentation for explanation.
 
 [7]
@@ -1378,7 +1377,7 @@ File: Figure+Table/GO-enrichment.pdf Graphic file (type pdf)
 <use Figure+Table/GO-enrichment.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 454.
+(caption)                particular \caption on input line 477.
 See the caption package documentation for explanation.
 
 [8]
@@ -1387,37 +1386,386 @@ le (type pdf)
 <use Figure+Table/Network-pharmacology-with-disease-and-pathway.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 467.
+(caption)                particular \caption on input line 490.
 See the caption package documentation for explanation.
 
 [9]
-Overfull \hbox (7.13252pt too wide) in paragraph at lines 482--483
+Overfull \hbox (7.13252pt too wide) in paragraph at lines 505--506
 []\TU/lmr/m/n/10 Herb_pinyin_name|  
  []
 
 
-Overfull \hbox (9.6754pt too wide) in paragraph at lines 488--489
+Overfull \hbox (9.6754pt too wide) in paragraph at lines 511--512
 []\TU/lmr/m/n/10 Hit_pathway_number|  
  []
 
 
-Overfull \hbox (7.13252pt too wide) in paragraph at lines 496--497
+Overfull \hbox (7.13252pt too wide) in paragraph at lines 519--520
 []\TU/lmr/m/n/10 Herb_pinyin_name|  
  []
 
 
-Overfull \hbox (9.6754pt too wide) in paragraph at lines 502--503
+Overfull \hbox (9.6754pt too wide) in paragraph at lines 525--526
 []\TU/lmr/m/n/10 Hit_pathway_number|  
  []
 
-[10] [11] (./output.aux) ) 
+[10]
+File: Figure+Table/SITO-KEGG-enrichment.pdf Graphic file (type pdf)
+<use Figure+Table/SITO-KEGG-enrichment.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 723.
+See the caption package documentation for explanation.
+
+File: Figure+Table/SITO-GO-enrichment.pdf Graphic file (type pdf)
+<use Figure+Table/SITO-GO-enrichment.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 733.
+See the caption package documentation for explanation.
+
+[11]
+Overfull \hbox (8.90514pt too wide) in alignment at lines 748--753
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (8.90514pt too wide) in alignment at lines 753--757
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (8.90514pt too wide) in alignment at lines 757--775
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[12] [13]
+Overfull \hbox (6.25298pt too wide) in paragraph at lines 843--844
+[]\TU/lmr/m/n/10 group|  
+ []
+
+
+Overfull \hbox (1.31586pt too wide) in paragraph at lines 845--846
+[]\TU/lmr/m/n/10 lib.size|  
+ []
+
+
+Overfull \hbox (2.4637pt too wide) in paragraph at lines 847--848
+[]\TU/lmr/m/n/10 norm.f…|  
+ []
+
+
+Overfull \hbox (1.3137pt too wide) in paragraph at lines 849--850
+[]\TU/lmr/m/n/10 barcode|  
+ []
+
+
+Overfull \hbox (2.3737pt too wide) in paragraph at lines 853--854
+[]\TU/lmr/m/n/10 shortL…|  
+ []
+
+
+Overfull \hbox (6.17377pt too wide) in paragraph at lines 857--858
+[]\TU/lmr/m/n/10 sample……9|  
+ []
+
+
+Overfull \hbox (6.47163pt too wide) in paragraph at lines 859--860
+[]\TU/lmr/m/n/10 sample……10|  
+ []
+
+
+Overfull \hbox (6.25298pt too wide) in paragraph at lines 869--870
+[]\TU/lmr/m/n/10 group|  
+ []
+
+
+Overfull \hbox (1.31586pt too wide) in paragraph at lines 871--872
+[]\TU/lmr/m/n/10 lib.size|  
+ []
+
+
+Overfull \hbox (2.4637pt too wide) in paragraph at lines 873--874
+[]\TU/lmr/m/n/10 norm.f…|  
+ []
+
+
+Overfull \hbox (1.3137pt too wide) in paragraph at lines 875--876
+[]\TU/lmr/m/n/10 barcode|  
+ []
+
+
+Overfull \hbox (2.3737pt too wide) in paragraph at lines 879--880
+[]\TU/lmr/m/n/10 shortL…|  
+ []
+
+
+Overfull \hbox (6.17377pt too wide) in paragraph at lines 883--884
+[]\TU/lmr/m/n/10 sample……9|  
+ []
+
+
+Overfull \hbox (6.47163pt too wide) in paragraph at lines 885--886
+[]\TU/lmr/m/n/10 sample……10|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 894--895
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.81586pt too wide) in paragraph at lines 896--897
+[]\TU/lmr/m/n/10 56714504|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 906--907
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 917--918
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.56586pt too wide) in paragraph at lines 919--920
+[]\TU/lmr/m/n/10 37595179|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 929--930
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 940--941
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.56586pt too wide) in paragraph at lines 942--943
+[]\TU/lmr/m/n/10 22598154|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 952--953
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 963--964
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.81586pt too wide) in paragraph at lines 965--966
+[]\TU/lmr/m/n/10 52725445|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 975--976
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 986--987
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.46585pt too wide) in paragraph at lines 988--989
+[]\TU/lmr/m/n/10 47412261|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 998--999
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1009--1010
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.56586pt too wide) in paragraph at lines 1011--1012
+[]\TU/lmr/m/n/10 34214129|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1021--1022
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1032--1033
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.56586pt too wide) in paragraph at lines 1034--1035
+[]\TU/lmr/m/n/10 24260663|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1044--1045
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1055--1056
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.56586pt too wide) in paragraph at lines 1057--1058
+[]\TU/lmr/m/n/10 33575287|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1067--1068
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1078--1079
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.46585pt too wide) in paragraph at lines 1080--1081
+[]\TU/lmr/m/n/10 47572949|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1090--1091
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1101--1102
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.81586pt too wide) in paragraph at lines 1103--1104
+[]\TU/lmr/m/n/10 60545003|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1113--1114
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1124--1125
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.81586pt too wide) in paragraph at lines 1126--1127
+[]\TU/lmr/m/n/10 61032351|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1136--1137
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1147--1148
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.46585pt too wide) in paragraph at lines 1149--1150
+[]\TU/lmr/m/n/10 48818918|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1159--1160
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1170--1171
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.81586pt too wide) in paragraph at lines 1172--1173
+[]\TU/lmr/m/n/10 56402921|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1182--1183
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1193--1194
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.81586pt too wide) in paragraph at lines 1195--1196
+[]\TU/lmr/m/n/10 68534939|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1205--1206
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+
+Overfull \hbox (3.33296pt too wide) in paragraph at lines 1216--1217
+[]\TU/lmr/m/n/10 Alive|  
+ []
+
+
+Overfull \hbox (11.56586pt too wide) in paragraph at lines 1218--1219
+[]\TU/lmr/m/n/10 73332059|  
+ []
+
+
+Overfull \hbox (4.5737pt too wide) in paragraph at lines 1228--1229
+[]\TU/lmr/m/n/10 Primar…|  
+ []
+
+[14] [15] [16]
+File: Figure+Table/Correlation-heatmap.pdf Graphic file (type pdf)
+<use Figure+Table/Correlation-heatmap.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1415.
+See the caption package documentation for explanation.
+
+File: Figure+Table/Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeim
+u.pdf Graphic file (type pdf)
+<use Figure+Table/Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu
+.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1440.
+See the caption package documentation for explanation.
+
+[17]
+Overfull \hbox (79.01735pt too wide) in paragraph at lines 1455--1456
+[]\TU/lmr/bx/n/10 (\TU/FandolSong-Regular(0)/b/n/10 上 述 信 息 框 内 容 已 保 存 至 \TU/l
+mtt/b/n/10 Figure+Table/Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zh
+ebeimu-content\TU/lmr/bx/n/10 ) 
+ []
+
+[18] (./output.aux) ) 
 Here is how much of TeX's memory you used:
- 32107 strings out of 476191
- 653360 string characters out of 5812072
- 1104931 words of memory out of 5000000
- 52305 multiletter control sequences out of 15000+600000
+ 32223 strings out of 476191
+ 658843 string characters out of 5812072
+ 1125369 words of memory out of 5000000
+ 52417 multiletter control sequences out of 15000+600000
  473490 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,12n,121p,1365b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output.pdf (13 pages).
+Output written on output.pdf (21 pages).

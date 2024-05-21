@@ -3,7 +3,8 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(05), eval = ic(2, 2, 0, 1, 0), lock = T)
+# info <- items(belong = odate(05), eval = ic(2, 2, 0, 1, 0), lock = T)
+info <- items(belong = odate(05), eval = ic(1, 2, 0, 0, 0), lock = T)
 show.ic(info)
 
 order_publish()
