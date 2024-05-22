@@ -16,6 +16,7 @@ output:
     # toc_depth: 4
     latex_engine: xelatex
 header-includes:
+  \usepackage{pgfornament}
   \usepackage{caption}
   \captionsetup{font={footnotesize},width=6in}
   \renewcommand{\dblfloatpagefraction}{.9}
@@ -56,7 +57,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 中药-有效成分-乳腺癌相关靶点的网药分析}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-05-21}}
+\textbf{\textcolor{white}{2024-05-22}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -101,9 +102,9 @@ header-includes:
 下一步请对 beta-sitosterol  的60个靶点做富集分析，并作这些靶点与糖酵解、巨噬细胞极化相关性分析。意向靶点为JTK2（即FGFR4），请重点关注
 另外需要提供一个韦恩图表明beta-sitosterol 就是三种药共有的唯一成分
 
-- 巨噬细胞极化 (糖酵解), 巨噬细胞极化，上移，
-- 基因名称
-- 关联分析热图，调整
+- 巨噬细胞极化, 富集上移 (无糖酵解富集)
+- 表格中提供基因名称
+- 关联分析热图，调整, 去除无关基因
 
 ## 结果2
 
@@ -138,7 +139,7 @@ Mainly used method:
 
 ### 成分
 
-Table \@ref(tab:Herbs-information) (下方表格) 为表格Herbs information概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:Herbs-information) (下方表格) 为表格Herbs information概览。
 
 **(对应文件为 `Figure+Table/Herbs-information.csv`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有3行2列，以下预览的表格可能省略部分数据；含有3个唯一`Herb\_pinyin\_name'。
@@ -153,7 +154,10 @@ Table: (\#tab:Herbs-information)Herbs information
 |Banzhilian       |半枝莲       |
 |Zhebeimu         |浙贝母       |
 
-Table \@ref(tab:Compounds-filtered-by-OB-and-DL) (下方表格) 为表格Compounds filtered by OB and DL概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:Compounds-filtered-by-OB-and-DL) (下方表格) 为表格Compounds filtered by OB and DL概览。
 
 **(对应文件为 `Figure+Table/Compounds-filtered-by-OB-and-DL.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有43行15列，以下预览的表格可能省略部分数据；含有39个唯一`Mol ID；含有3个唯一`Herb\_pinyin\_name'。
@@ -192,7 +196,10 @@ Table: (\#tab:Compounds-filtered-by-OB-and-DL)Compounds filtered by OB and DL
 |MOL002776 |Baicalin  |446.390 |0.639 |6    |11   |40.123... |-0.84777 |-1.74426 |0.75264 |
 |...       |...       |...     |...   |...  |...  |...       |...      |...      |...     |
 
-Figure \@ref(fig:intersection-of-all-compounds) (下方图) 为图intersection of all compounds概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:intersection-of-all-compounds) (下方图) 为图intersection of all compounds概览。
 
 **(对应文件为 `Figure+Table/intersection-of-all-compounds.pdf`)**
 
@@ -201,7 +208,9 @@ Figure \@ref(fig:intersection-of-all-compounds) (下方图) 为图intersection o
 \includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-all-compounds.pdf}
 \caption{Intersection of all compounds}\label{fig:intersection-of-all-compounds}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 All\_intersection
 :}
@@ -217,7 +226,7 @@ All\_intersection
 
 ### 成分靶点
 
-Table \@ref(tab:tables-of-Herbs-compounds-and-targets) (下方表格) 为表格tables of Herbs compounds and targets概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:tables-of-Herbs-compounds-and-targets) (下方表格) 为表格tables of Herbs compounds and targets概览。
 
 **(对应文件为 `Figure+Table/tables-of-Herbs-compounds-and-targets.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1846行4列，以下预览的表格可能省略部分数据；含有3个唯一`Herb\_pinyin\_name'。
@@ -246,10 +255,13 @@ Table: (\#tab:tables-of-Herbs-compounds-and-targets)Tables of Herbs compounds an
 |...              |...           |...      |...                  |
 
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+
 
 ### 疾病靶点
 
-Table \@ref(tab:Disease-related-targets-from-GeneCards) (下方表格) 为表格Disease related targets from GeneCards概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:Disease-related-targets-from-GeneCards) (下方表格) 为表格Disease related targets from GeneCards概览。
 
 **(对应文件为 `Figure+Table/Disease-related-targets-from-GeneCards.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1746行7列，以下预览的表格可能省略部分数据；含有1746个唯一`Symbol'。
@@ -311,10 +323,13 @@ Table: (\#tab:Disease-related-targets-from-GeneCards)Disease related targets fro
 |...          |...           |...           |...        |...   |...         |...    |
 
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+
 
 ### 疾病-成分-靶点网络图
 
-Figure \@ref(fig:Network-pharmacology-with-disease) (下方图) 为图Network pharmacology with disease概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Network-pharmacology-with-disease) (下方图) 为图Network pharmacology with disease概览。
 
 **(对应文件为 `Figure+Table/Network-pharmacology-with-disease.pdf`)**
 
@@ -324,7 +339,10 @@ Figure \@ref(fig:Network-pharmacology-with-disease) (下方图) 为图Network ph
 \caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
 \end{center}
 
-Figure \@ref(fig:Targets-intersect-with-targets-of-diseases) (下方图) 为图Targets intersect with targets of diseases概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Targets-intersect-with-targets-of-diseases) (下方图) 为图Targets intersect with targets of diseases概览。
 
 **(对应文件为 `Figure+Table/Targets-intersect-with-targets-of-diseases.pdf`)**
 
@@ -333,7 +351,9 @@ Figure \@ref(fig:Targets-intersect-with-targets-of-diseases) (下方图) 为图T
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf}
 \caption{Targets intersect with targets of diseases}\label{fig:Targets-intersect-with-targets-of-diseases}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 Intersection
 :}
@@ -356,7 +376,7 @@ CASP9, CAV1,...
 
 ### 富集分析
 
-Figure \@ref(fig:KEGG-enrichment) (下方图) 为图KEGG enrichment概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:KEGG-enrichment) (下方图) 为图KEGG enrichment概览。
 
 **(对应文件为 `Figure+Table/KEGG-enrichment.pdf`)**
 
@@ -366,7 +386,10 @@ Figure \@ref(fig:KEGG-enrichment) (下方图) 为图KEGG enrichment概览。
 \caption{KEGG enrichment}\label{fig:KEGG-enrichment}
 \end{center}
 
-Figure \@ref(fig:GO-enrichment) (下方图) 为图GO enrichment概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:GO-enrichment) (下方图) 为图GO enrichment概览。
 
 **(对应文件为 `Figure+Table/GO-enrichment.pdf`)**
 
@@ -377,10 +400,13 @@ Figure \@ref(fig:GO-enrichment) (下方图) 为图GO enrichment概览。
 \end{center}
 
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+
 
 ### 疾病-成分-靶点-通路网络图
 
-Figure \@ref(fig:Network-pharmacology-with-disease-and-pathway) (下方图) 为图Network pharmacology with disease and pathway概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Network-pharmacology-with-disease-and-pathway) (下方图) 为图Network pharmacology with disease and pathway概览。
 
 **(对应文件为 `Figure+Table/Network-pharmacology-with-disease-and-pathway.pdf`)**
 
@@ -390,7 +416,10 @@ Figure \@ref(fig:Network-pharmacology-with-disease-and-pathway) (下方图) 为�
 \caption{Network pharmacology with disease and pathway}\label{fig:Network-pharmacology-with-disease-and-pathway}
 \end{center}
 
-Table \@ref(tab:Network-pharmacology-with-disease-and-pathway-data) (下方表格) 为表格Network pharmacology with disease and pathway data概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:Network-pharmacology-with-disease-and-pathway-data) (下方表格) 为表格Network pharmacology with disease and pathway data概览。
 
 **(对应文件为 `Figure+Table/Network-pharmacology-with-disease-and-pathway-data.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有431行5列，以下预览的表格可能省略部分数据；含有3个唯一`Herb\_pinyin\_name；含有24个唯一`Ingredient.name；含有101个唯一`Target.name'。
@@ -419,6 +448,9 @@ Table: (\#tab:Network-pharmacology-with-disease-and-pathway-data)Network pharmac
 |...              |...             |...         |...                |...                  |
 
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+
 
 ## beta-sitosterol {#res2}
 
@@ -428,7 +460,7 @@ Table: (\#tab:Network-pharmacology-with-disease-and-pathway-data)Network pharmac
 
 
 
-Figure \@ref(fig:SITO-KEGG-enrichment) (下方图) 为图SITO KEGG enrichment概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:SITO-KEGG-enrichment) (下方图) 为图SITO KEGG enrichment概览。
 
 **(对应文件为 `Figure+Table/SITO-KEGG-enrichment.pdf`)**
 
@@ -438,7 +470,10 @@ Figure \@ref(fig:SITO-KEGG-enrichment) (下方图) 为图SITO KEGG enrichment概
 \caption{SITO KEGG enrichment}\label{fig:SITO-KEGG-enrichment}
 \end{center}
 
-Figure \@ref(fig:SITO-GO-enrichment) (下方图) 为图SITO GO enrichment概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:SITO-GO-enrichment) (下方图) 为图SITO GO enrichment概览。
 
 **(对应文件为 `Figure+Table/SITO-GO-enrichment.pdf`)**
 
@@ -448,7 +483,10 @@ Figure \@ref(fig:SITO-GO-enrichment) (下方图) 为图SITO GO enrichment概览�
 \caption{SITO GO enrichment}\label{fig:SITO-GO-enrichment}
 \end{center}
 
-Table \@ref(tab:SITO-KEGG-enrichment-data) (下方表格) 为表格SITO KEGG enrichment data概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:SITO-KEGG-enrichment-data) (下方表格) 为表格SITO KEGG enrichment data概览。
 
 **(对应文件为 `Figure+Table/SITO-KEGG-enrichment-data.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有181行11列，以下预览的表格可能省略部分数据；含有181个唯一`ID'。
@@ -480,7 +518,10 @@ Table: (\#tab:SITO-KEGG-enrichment-data)SITO KEGG enrichment data
 |hsa01524 |Platin... |5/34      |73/8753  |8.0960... |9.3555... |4.9511... |581/59... |5     |581 &#124; ... |
 |...      |...       |...       |...      |...       |...       |...       |...       |...   |...            |
 
-Table \@ref(tab:SITO-GO-enrichment-data) (下方表格) 为表格SITO GO enrichment data概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:SITO-GO-enrichment-data) (下方表格) 为表格SITO GO enrichment data概览。
 
 **(对应文件为 `Figure+Table/SITO-GO-enrichment-data.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2405行12列，以下预览的表格可能省略部分数据；含有3个唯一`ont'。
@@ -513,13 +554,16 @@ Table: (\#tab:SITO-GO-enrichment-data)SITO GO enrichment data
 |BP  |GO:009... |postsy... |6/37      |39/18614  |1.2534... |1.7046... |9.4734... |1128/1... |6     |
 |... |...       |...       |...       |...       |...       |...       |...       |...       |...   |
 
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 ### TCGA-BRCA
 
 
 
 获取 TCGA-BRCA (RNA-seq) 数据，以备关联分析
 
-Table \@ref(tab:BC-metadata) (下方表格) 为表格BC metadata概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:BC-metadata) (下方表格) 为表格BC metadata概览。
 
 **(对应文件为 `Figure+Table/BC-metadata.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1094行92列，以下预览的表格可能省略部分数据；含有1094个唯一`sample'。
@@ -552,9 +596,12 @@ Table: (\#tab:BC-metadata)BC metadata
 |TCGA-A... |Alive |73332059 |1         |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A...     |01             |... |
 |...       |...   |...      |...       |...       |...       |...       |...       |...           |...            |... |
 
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 ### 糖酵解、巨噬细胞极化相关基因
 
-Table \@ref(tab:MP-related-targets-from-GeneCards) (下方表格) 为表格MP related targets from GeneCards概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:MP-related-targets-from-GeneCards) (下方表格) 为表格MP related targets from GeneCards概览。
 
 **(对应文件为 `Figure+Table/MP-related-targets-from-GeneCards.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有72行7列，以下预览的表格可能省略部分数据；含有72个唯一`Symbol'。
@@ -615,7 +662,10 @@ Table: (\#tab:MP-related-targets-from-GeneCards)MP related targets from GeneCard
 |IRF5        |Interferon... |Protein Co... |Q13568     |55    |GC07P128937 |3.14  |
 |...         |...           |...           |...        |...   |...         |...   |
 
-Table \@ref(tab:GL-related-targets-from-GeneCards) (下方表格) 为表格GL related targets from GeneCards概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:GL-related-targets-from-GeneCards) (下方表格) 为表格GL related targets from GeneCards概览。
 
 **(对应文件为 `Figure+Table/GL-related-targets-from-GeneCards.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有118行7列，以下预览的表格可能省略部分数据；含有118个唯一`Symbol'。
@@ -677,12 +727,41 @@ Table: (\#tab:GL-related-targets-from-GeneCards)GL related targets from GeneCard
 |...    |...           |...           |...        |...   |...         |...   |
 
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+
 
 ### 关联分析
 
 
 
-Figure \@ref(fig:Correlation-heatmap) (下方图) 为图Correlation heatmap概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:GL-Correlation-heatmap) (下方图) 为图GL Correlation heatmap概览。
+
+**(对应文件为 `Figure+Table/GL-Correlation-heatmap.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GL-Correlation-heatmap.pdf}
+\caption{GL Correlation heatmap}\label{fig:GL-Correlation-heatmap}
+\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:MP-Correlation-heatmap) (下方图) 为图MP Correlation heatmap概览。
+
+**(对应文件为 `Figure+Table/MP-Correlation-heatmap.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MP-Correlation-heatmap.pdf}
+\caption{MP Correlation heatmap}\label{fig:MP-Correlation-heatmap}
+\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Correlation-heatmap) (下方图) 为图Correlation heatmap概览。
 
 **(对应文件为 `Figure+Table/Correlation-heatmap.pdf`)**
 
@@ -692,7 +771,11 @@ Figure \@ref(fig:Correlation-heatmap) (下方图) 为图Correlation heatmap概�
 \caption{Correlation heatmap}\label{fig:Correlation-heatmap}
 \end{center}
 
- 
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center} 
 `Linear curve' 数据已全部提供。
 
 **(对应文件为 `Figure+Table/Linear-curve`)**
@@ -704,11 +787,13 @@ Figure \@ref(fig:Correlation-heatmap) (下方图) 为图Correlation heatmap概�
 \end{enumerate}\end{tcolorbox}
 \end{center}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
 ### 韦恩图
 
 
 
-Figure \@ref(fig:Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu) (下方图) 为图Intersection of Baihuasheshecao with Banzhilian with Zhebeimu概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu) (下方图) 为图Intersection of Baihuasheshecao with Banzhilian with Zhebeimu概览。
 
 **(对应文件为 `Figure+Table/Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu.pdf`)**
 
@@ -717,7 +802,9 @@ Figure \@ref(fig:Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu) 
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu.pdf}
 \caption{Intersection of Baihuasheshecao with Banzhilian with Zhebeimu}\label{fig:Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 All\_intersection
 :}

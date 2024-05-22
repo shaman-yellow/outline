@@ -262,11 +262,16 @@ autor(prr.br@tables$step2$t.predict)
 ```{r}
 lm.br <- map(lm.br, prr.br)
 metadata.br <- as_tibble(lm.br@object$targets)
-lm.br <- step2(lm.br, Resistance - Non_resistance, cut.fc = 1)
-lm.br@plots$step2$p.valcano$`Resistance - Non_resistance`
+
+lm.br <- step2(lm.br, Resistance - Non_resistance, cut.fc = 1, HLs = "ABCB1")
+
+lm.br@plots$step2$p.volcano$`Resistance - Non_resistance`
 Tops <- lm.br@tables$step2$tops$`Resistance - Non_resistance`
 
 dplyr::filter(Tops, gene_name == "ABCB1")
+
+p.boxAbc <- map(lm.br, "ABCB1", "gene_name", group = c("Resistance", "Non_resistance"))
+wrap(p.boxAbc, 2.5, 3.5)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -276,7 +281,7 @@ autor(metadata.br)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| BR-Resistance-vs-Non-resistance-DEGs
-autor(lm.br@plots$step2$p.valcano$`Resistance - Non_resistance`)
+autor(lm.br@plots$step2$p.volcano$`Resistance - Non_resistance`)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -287,4 +292,9 @@ autor(Tops)
 ```{r eval = T, echo = F, results = "asis"}
 #| BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1
 autor(dplyr::filter(Tops, gene_name == "ABCB1"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ABCB1-boxplot
+autor(wrap(p.boxAbc, 2.5, 3.5))
 ```

@@ -33,9 +33,20 @@ set_index()
 # 摘要 {#abstract}
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("糖代谢紊乱", "Glycometabolic disturbance")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# GD: Glycometabolic disturbance 糖代谢紊乱
 
 ```
+
+whole-genome DNA methylation analysis in liver
+tissue of offspring of Zuogui pill (ZGP)-intervened GD rats, trying to find evidence
+for ZGP effect on epigenetics and potential pathways
+
+- differentially methylated regions (DMRs) identification
 
 # 前言 {#introduction}
 

@@ -66,7 +66,7 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\usepackage{pgfornament} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newenvironment{cslreferences}%
@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 中药-有效成分-乳腺癌相关靶点的网药分析}
 \vspace{4em} \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-05-21}}
+\textbf{\textcolor{white}{2024-05-22}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -146,11 +146,11 @@
 \begin{itemize}
 \tightlist
 \item
-  巨噬细胞极化 (糖酵解), 巨噬细胞极化，上移，
+  巨噬细胞极化, 富集上移 (无糖酵解富集)
 \item
-  基因名称
+  表格中提供基因名称
 \item
-  关联分析热图，调整
+  关联分析热图，调整, 去除无关基因
 \end{itemize}
 
 \hypertarget{ux7ed3ux679c2}{%
@@ -203,6 +203,8 @@ Mainly used method:
 \hypertarget{ux6210ux5206}{%
 \subsubsection{成分}\label{ux6210ux5206}}
 
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
 Table \ref{tab:Herbs-information} (下方表格) 为表格Herbs information概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/Herbs-information.csv})}
@@ -226,6 +228,10 @@ Banzhilian & 半枝莲\tabularnewline
 Zhebeimu & 浙贝母\tabularnewline
 \bottomrule
 \end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:Compounds-filtered-by-OB-and-DL} (下方表格) 为表格Compounds filtered by OB and DL概览。
 
@@ -275,6 +281,10 @@ MOL002776 & Baicalin & 446.390 & 0.639 & 6 & 11 & 40.123\ldots{} & -0.84777 & -1
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
 Figure \ref{fig:intersection-of-all-compounds} (下方图) 为图intersection of all compounds概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/intersection-of-all-compounds.pdf})}
@@ -284,7 +294,8 @@ Figure \ref{fig:intersection-of-all-compounds} (下方图) 为图intersection of
 \includegraphics[width = 0.9\linewidth]{Figure+Table/intersection-of-all-compounds.pdf}
 \caption{Intersection of all compounds}\label{fig:intersection-of-all-compounds}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 All\_intersection
 :}
@@ -301,6 +312,8 @@ All\_intersection
 
 \hypertarget{ux6210ux5206ux9776ux70b9}{%
 \subsubsection{成分靶点}\label{ux6210ux5206ux9776ux70b9}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:tables-of-Herbs-compounds-and-targets} (下方表格) 为表格tables of Herbs compounds and targets概览。
 
@@ -339,8 +352,12 @@ Banzhilian & luteolin & IAP3 & E3 ubiquitin-prot\ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{ux75beux75c5ux9776ux70b9}{%
 \subsubsection{疾病靶点}\label{ux75beux75c5ux9776ux70b9}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:Disease-related-targets-from-GeneCards} (下方表格) 为表格Disease related targets from GeneCards概览。
 
@@ -412,8 +429,12 @@ APC & APC Regula\ldots{} & Protein Co\ldots{} & P25054 & 58 & GC05P112707 & 199.
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{ux75beux75c5-ux6210ux5206-ux9776ux70b9ux7f51ux7edcux56fe}{%
 \subsubsection{疾病-成分-靶点网络图}\label{ux75beux75c5-ux6210ux5206-ux9776ux70b9ux7f51ux7edcux56fe}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
 Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pharmacology with disease概览。
 
@@ -425,6 +446,10 @@ Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pha
 \caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
 \end{center}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
 Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Targets intersect with targets of diseases概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf})}
@@ -434,7 +459,8 @@ Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Ta
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf}
 \caption{Targets intersect with targets of diseases}\label{fig:Targets-intersect-with-targets-of-diseases}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 Intersection
 :}
@@ -457,6 +483,8 @@ CASP9, CAV1,...
 \hypertarget{ux5bccux96c6ux5206ux6790}{%
 \subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790}}
 
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
 Figure \ref{fig:KEGG-enrichment} (下方图) 为图KEGG enrichment概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment.pdf})}
@@ -466,6 +494,10 @@ Figure \ref{fig:KEGG-enrichment} (下方图) 为图KEGG enrichment概览。
 \includegraphics[width = 0.9\linewidth]{Figure+Table/KEGG-enrichment.pdf}
 \caption{KEGG enrichment}\label{fig:KEGG-enrichment}
 \end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
 Figure \ref{fig:GO-enrichment} (下方图) 为图GO enrichment概览。
 
@@ -477,8 +509,12 @@ Figure \ref{fig:GO-enrichment} (下方图) 为图GO enrichment概览。
 \caption{GO enrichment}\label{fig:GO-enrichment}
 \end{center}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
 \hypertarget{ux75beux75c5-ux6210ux5206-ux9776ux70b9-ux901aux8defux7f51ux7edcux56fe}{%
 \subsubsection{疾病-成分-靶点-通路网络图}\label{ux75beux75c5-ux6210ux5206-ux9776ux70b9-ux901aux8defux7f51ux7edcux56fe}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
 Figure \ref{fig:Network-pharmacology-with-disease-and-pathway} (下方图) 为图Network pharmacology with disease and pathway概览。
 
@@ -489,6 +525,10 @@ Figure \ref{fig:Network-pharmacology-with-disease-and-pathway} (下方图) 为�
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-with-disease-and-pathway.pdf}
 \caption{Network pharmacology with disease and pathway}\label{fig:Network-pharmacology-with-disease-and-pathway}
 \end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:Network-pharmacology-with-disease-and-pathway-data} (下方表格) 为表格Network pharmacology with disease and pathway data概览。
 
@@ -707,11 +747,15 @@ Cellular senescen\ldots{}\strut
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{res2}{%
 \subsection{beta-sitosterol}\label{res2}}
 
 \hypertarget{ux5bccux96c6ux5206ux6790-1}{%
 \subsubsection{富集分析}\label{ux5bccux96c6ux5206ux6790-1}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
 Figure \ref{fig:SITO-KEGG-enrichment} (下方图) 为图SITO KEGG enrichment概览。
 
@@ -723,6 +767,10 @@ Figure \ref{fig:SITO-KEGG-enrichment} (下方图) 为图SITO KEGG enrichment概�
 \caption{SITO KEGG enrichment}\label{fig:SITO-KEGG-enrichment}
 \end{center}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
 Figure \ref{fig:SITO-GO-enrichment} (下方图) 为图SITO GO enrichment概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/SITO-GO-enrichment.pdf})}
@@ -732,6 +780,10 @@ Figure \ref{fig:SITO-GO-enrichment} (下方图) 为图SITO GO enrichment概览�
 \includegraphics[width = 0.9\linewidth]{Figure+Table/SITO-GO-enrichment.pdf}
 \caption{SITO GO enrichment}\label{fig:SITO-GO-enrichment}
 \end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:SITO-KEGG-enrichment-data} (下方表格) 为表格SITO KEGG enrichment data概览。
 
@@ -773,6 +825,10 @@ hsa01524 & Platin\ldots{} & 5/34 & 73/8753 & 8.0960\ldots{} & 9.3555\ldots{} & 4
 \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
 \bottomrule
 \end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:SITO-GO-enrichment-data} (下方表格) 为表格SITO GO enrichment data概览。
 
@@ -816,10 +872,14 @@ BP & \url{GO:009}\ldots{} & postsy\ldots{} & 6/37 & 39/18614 & 1.2534\ldots{} & 
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{tcga-brca}{%
 \subsubsection{TCGA-BRCA}\label{tcga-brca}}
 
 获取 TCGA-BRCA (RNA-seq) 数据，以备关联分析
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:BC-metadata} (下方表格) 为表格BC metadata概览。
 
@@ -1259,8 +1319,12 @@ TCGA-A\ldots{}\strut
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{ux7cd6ux9175ux89e3ux5de8ux566cux7ec6ux80deux6781ux5316ux76f8ux5173ux57faux56e0}{%
 \subsubsection{糖酵解、巨噬细胞极化相关基因}\label{ux7cd6ux9175ux89e3ux5de8ux566cux7ec6ux80deux6781ux5316ux76f8ux5173ux57faux56e0}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:MP-related-targets-from-GeneCards} (下方表格) 为表格MP related targets from GeneCards概览。
 
@@ -1332,6 +1396,10 @@ IRF5 & Interferon\ldots{} & Protein Co\ldots{} & Q13568 & 55 & GC07P128937 & 3.1
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
 Table \ref{tab:GL-related-targets-from-GeneCards} (下方表格) 为表格GL related targets from GeneCards概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/GL-related-targets-from-GeneCards.xlsx})}
@@ -1402,8 +1470,40 @@ PGK1 & Phosphogly\ldots{} & Protein Co\ldots{} & P00558 & 57 & GC0XP078166 & 12.
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{ux5173ux8054ux5206ux6790}{%
 \subsubsection{关联分析}\label{ux5173ux8054ux5206ux6790}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:GL-Correlation-heatmap} (下方图) 为图GL Correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GL-Correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GL-Correlation-heatmap.pdf}
+\caption{GL Correlation heatmap}\label{fig:GL-Correlation-heatmap}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MP-Correlation-heatmap} (下方图) 为图MP Correlation heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MP-Correlation-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MP-Correlation-heatmap.pdf}
+\caption{MP Correlation heatmap}\label{fig:MP-Correlation-heatmap}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
 Figure \ref{fig:Correlation-heatmap} (下方图) 为图Correlation heatmap概览。
 
@@ -1414,6 +1514,10 @@ Figure \ref{fig:Correlation-heatmap} (下方图) 为图Correlation heatmap概览
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Correlation-heatmap.pdf}
 \caption{Correlation heatmap}\label{fig:Correlation-heatmap}
 \end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
 
 `Linear curve' 数据已全部提供。
 
@@ -1427,8 +1531,12 @@ Figure \ref{fig:Correlation-heatmap} (下方图) 为图Correlation heatmap概览
 \end{enumerate}\end{tcolorbox}
 \end{center}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
 \hypertarget{ux97e6ux6069ux56fe}{%
 \subsubsection{韦恩图}\label{ux97e6ux6069ux56fe}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
 Figure \ref{fig:Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu} (下方图) 为图Intersection of Baihuasheshecao with Banzhilian with Zhebeimu概览。
 
@@ -1439,7 +1547,8 @@ Figure \ref{fig:Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu} (
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu.pdf}
 \caption{Intersection of Baihuasheshecao with Banzhilian with Zhebeimu}\label{fig:Intersection-of-Baihuasheshecao-with-Banzhilian-with-Zhebeimu}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 All\_intersection
 :}

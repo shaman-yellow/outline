@@ -16,6 +16,7 @@ output:
     # toc_depth: 4
     latex_engine: xelatex
 header-includes:
+  \usepackage{pgfornament}
   \usepackage{caption}
   \captionsetup{font={footnotesize},width=6in}
   \renewcommand{\dblfloatpagefraction}{.9}
@@ -108,9 +109,9 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
 下一步请对 beta-sitosterol  的60个靶点做富集分析，并作这些靶点与糖酵解、巨噬细胞极化相关性分析。意向靶点为JTK2（即FGFR4），请重点关注
 另外需要提供一个韦恩图表明beta-sitosterol 就是三种药共有的唯一成分
 
-- 巨噬细胞极化 (糖酵解), 巨噬细胞极化，上移，
-- 基因名称
-- 关联分析热图，调整
+- 巨噬细胞极化, 富集上移 (无糖酵解富集)
+- 表格中提供基因名称
+- 关联分析热图，调整, 去除无关基因
 
 ## 结果2
 
@@ -256,6 +257,9 @@ tc2.sito@tables$step2$compounds_targets
 
 genes.sito <- tc2.sito@tables$step2$compounds_targets
 genes.sito$symbols
+
+genes.sito$symbols %in% gn.gl@tables$step1$t.genecards$Symbol
+genes.sito$symbols %in% gn.mp@tables$step1$t.genecards$Symbol
 ```
 
 ```{r}
@@ -263,6 +267,14 @@ en.sito <- job_enrich(genes.sito$symbols)
 en.sito <- step1(en.sito)
 en.sito@plots$step1$p.kegg
 en.sito@plots$step1$p.go
+
+en.sito@tables$step1$res.go$ids %>% dplyr::filter(grpl(Description, "macropha", T))
+en.sito@tables$step1$res.kegg$ids %>% dplyr::filter(grpl(Description, "polar|macro|diff", T))
+
+p.goSito <- plot_go(en.sito@tables$step1$res.go$ids, facet = "ont", pattern = "macropha")
+p.goSito
+
+plot_kegg(en.sito@tables$step1$res.kegg$ids)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -272,7 +284,7 @@ autor(en.sito@plots$step1$p.kegg$ids)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| SITO-GO-enrichment
-autor(en.sito@plots$step1$p.go$ids)
+autor(p.goSito)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -333,6 +345,22 @@ gns <- job_genecardn(gn.mp, gn.gl)
 lst.cor <- cal_corp(lm.bc, gns, genes.sito$symbols, HLs = "FGFR4", linear = T)
 lst.cor$lp.cor
 wrap(lst.cor$tihp.cor, 16, 7)
+
+lst.corFgr4.mp <- cal_corp(lm.bc, job_genecardn(gn.mp), "FGFR4", HLs = "FGFR4")
+lst.corFgr4.mp
+
+lst.corFgr4.gl <- cal_corp(lm.bc, job_genecardn(gn.gl), "FGFR4", HLs = "FGFR4")
+lst.corFgr4.gl
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GL-Correlation-heatmap
+autor(lst.corFgr4.gl$tihp.cor)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MP-Correlation-heatmap
+autor(lst.corFgr4.mp$tihp.cor)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}

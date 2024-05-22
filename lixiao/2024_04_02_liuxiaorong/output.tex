@@ -66,7 +66,7 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\usepackage{pgfornament} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newenvironment{cslreferences}%
@@ -83,7 +83,7 @@
 \begin{center} \textbf{\Huge
 三阴乳腺癌的多药耐药的靶点分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-05-21}}
+\textbf{\textcolor{white}{2024-05-22}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -198,6 +198,8 @@ Mainly used method:
 \hypertarget{ux4e09ux9634ux4e73ux817aux764c}{%
 \subsection{三阴乳腺癌}\label{ux4e09ux9634ux4e73ux817aux764c}}
 
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
 Table \ref{tab:TNBC-related-targets-from-GeneCards} (下方表格) 为表格TNBC related targets from GeneCards概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/TNBC-related-targets-from-GeneCards.xlsx})}
@@ -268,8 +270,12 @@ STAT3 & Signal Tra\ldots{} & Protein Co\ldots{} & P40763 & 62 & GC17M042313 & 10
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{ux591aux836fux8010ux836f}{%
 \subsection{多药耐药}\label{ux591aux836fux8010ux836f}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:MDR-related-targets-from-GeneCards} (下方表格) 为表格MDR related targets from GeneCards概览。
 
@@ -341,8 +347,12 @@ RPSA & Ribosomal \ldots{} & Protein Co\ldots{} & P08865 & 55 & GC03P039406 & 10.
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{ux4ea4ux96c6ux57faux56e0ux7684ux5bccux96c6ux5206ux6790}{%
 \subsection{交集基因的富集分析}\label{ux4ea4ux96c6ux57faux56e0ux7684ux5bccux96c6ux5206ux6790}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
 Figure \ref{fig:Intersection-of-MDR-with-TNBC} (下方图) 为图Intersection of MDR with TNBC概览。
 
@@ -353,7 +363,8 @@ Figure \ref{fig:Intersection-of-MDR-with-TNBC} (下方图) 为图Intersection of
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-MDR-with-TNBC.pdf}
 \caption{Intersection of MDR with TNBC}\label{fig:Intersection-of-MDR-with-TNBC}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 Intersection
 :}
@@ -373,6 +384,8 @@ CDH1, VIM, ANXA5, ALDH...
 
 \textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-MDR-with-TNBC-content})}
 
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
 Figure \ref{fig:KEGG-enrichment} (下方图) 为图KEGG enrichment概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/KEGG-enrichment.pdf})}
@@ -383,6 +396,10 @@ Figure \ref{fig:KEGG-enrichment} (下方图) 为图KEGG enrichment概览。
 \caption{KEGG enrichment}\label{fig:KEGG-enrichment}
 \end{center}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
 Figure \ref{fig:GO-enrichment} (下方图) 为图GO enrichment概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/GO-enrichment.pdf})}
@@ -392,6 +409,10 @@ Figure \ref{fig:GO-enrichment} (下方图) 为图GO enrichment概览。
 \includegraphics[width = 0.9\linewidth]{Figure+Table/GO-enrichment.pdf}
 \caption{GO enrichment}\label{fig:GO-enrichment}
 \end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
 Figure \ref{fig:Hsa05206-visualization} (下方图) 为图Hsa05206 visualization概览。
 
@@ -415,6 +436,8 @@ Interactive figure
 \end{tcolorbox}
 \end{center}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
 \hypertarget{others}{%
 \subsection{三个所选基因的联系}\label{others}}
 
@@ -425,6 +448,8 @@ Interactive figure
 获取 MCC top 10 的蛋白，重新构建这些蛋白和 ABCB1, YBX1, BCL2 的 PPI 网络，见
 Fig. \ref{fig:Selected-genes-Top20-interaction}。
 
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
 Figure \ref{fig:Selected-genes-Top10-interaction} (下方图) 为图Selected genes Top10 interaction概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/Selected-genes-Top10-interaction.pdf})}
@@ -434,6 +459,10 @@ Figure \ref{fig:Selected-genes-Top10-interaction} (下方图) 为图Selected gen
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Selected-genes-Top10-interaction.pdf}
 \caption{Selected genes Top10 interaction}\label{fig:Selected-genes-Top10-interaction}
 \end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:Selected-genes-Top20-interaction-data} (下方表格) 为表格Selected genes Top20 interaction data概览。
 
@@ -472,6 +501,8 @@ HDAC1 & EZH2\tabularnewline
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{workflow2}{%
 \section{附：分析流程}\label{workflow2}}
 
@@ -484,6 +515,8 @@ HDAC1 & EZH2\tabularnewline
 \subsubsection{TNBC}\label{tnbc}}
 
 获取 TCGA-BRCA 的标释，取 TNBC 子集。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:TNBC-annotation} (下方表格) 为表格TNBC annotation概览。
 
@@ -522,10 +555,14 @@ TCGA-A\ldots{} & TCGA-A\ldots{} & YES & Basal & Basal & MSL & BL1 & 0.1206\ldots
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{tnbc-ux7d2bux6749ux9187ux8010ux836fux6027ux5206ux6790}{%
 \subsubsection{TNBC 紫杉醇耐药性分析}\label{tnbc-ux7d2bux6749ux9187ux8010ux836fux6027ux5206ux6790}}
 
 使用 pRRophetic 预测 紫杉醇 Paclitaxel 耐药性 (IC50) ，并根据 IC50 分值分组。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
 Figure \ref{fig:QQ-plot-for-distribution-of-the-transformed-IC50-data} (下方图) 为图QQ plot for distribution of the transformed IC50 data概览。
 
@@ -537,6 +574,10 @@ Figure \ref{fig:QQ-plot-for-distribution-of-the-transformed-IC50-data} (下方�
 \caption{QQ plot for distribution of the transformed IC50 data}\label{fig:QQ-plot-for-distribution-of-the-transformed-IC50-data}
 \end{center}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
 Figure \ref{fig:BR-estimate-prediction-accuracy} (下方图) 为图BR estimate prediction accuracy概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/BR-estimate-prediction-accuracy.pdf})}
@@ -546,6 +587,10 @@ Figure \ref{fig:BR-estimate-prediction-accuracy} (下方图) 为图BR estimate p
 \includegraphics[width = 0.9\linewidth]{Figure+Table/BR-estimate-prediction-accuracy.pdf}
 \caption{BR estimate prediction accuracy}\label{fig:BR-estimate-prediction-accuracy}
 \end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:BR-predicted-drug-sensitivity} (下方表格) 为表格BR predicted drug sensitivity概览。
 
@@ -599,10 +644,14 @@ TCGA-A2-A0YE-01A & -2.80843853558055 & 1\tabularnewline
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 \hypertarget{ux5deeux5f02ux5206ux6790}{%
 \subsubsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
 
 成功筛选到 ABCB1，见 Tab. \ref{tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
 Table \ref{tab:metadata} (下方表格) 为表格metadata概览。
 
@@ -646,6 +695,10 @@ TCGA-A\ldots{} & Others & 622011\ldots{} & 1.0001\ldots{} & TCGA-A\ldots{} & TCG
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
 Figure \ref{fig:BR-Resistance-vs-Non-resistance-DEGs} (下方图) 为图BR Resistance vs Non resistance DEGs概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf})}
@@ -655,7 +708,8 @@ Figure \ref{fig:BR-Resistance-vs-Non-resistance-DEGs} (下方图) 为图BR Resis
 \includegraphics[width = 0.9\linewidth]{Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf}
 \caption{BR Resistance vs Non resistance DEGs}\label{fig:BR-Resistance-vs-Non-resistance-DEGs}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 adj.P.Val cut-off
 :}
@@ -673,7 +727,7 @@ Log2(FC) cut-off
 
 \vspace{0.5em}
 
-    0.5
+    1
 
 \vspace{2em}
 \end{tcolorbox}
@@ -681,11 +735,13 @@ Log2(FC) cut-off
 
 \textbf{(上述信息框内容已保存至 \texttt{Figure+Table/BR-Resistance-vs-Non-resistance-DEGs-content})}
 
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
 Table \ref{tab:BR-data-Resistance-vs-Non-resistance-DEGs} (下方表格) 为表格BR data Resistance vs Non resistance DEGs概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/BR-data-Resistance-vs-Non-resistance-DEGs.csv})}
 
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有13607行22列，以下预览的表格可能省略部分数据；含有13607个唯一`rownames'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有7924行22列，以下预览的表格可能省略部分数据；含有7924个唯一`rownames'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -729,6 +785,10 @@ ENSG00\ldots{} & ENSG00\ldots{} & chr11 & 9778667 & 10294219 & 515553 & - & HAVA
 \bottomrule
 \end{longtable}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
 Table \ref{tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1} (下方表格) 为表格BR data Resistance vs Non resistance DEGs ABCB1概览。
 
 \textbf{(对应文件为 \texttt{Figure+Table/BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1.csv})}
@@ -761,6 +821,22 @@ rownames & gene\_id & seqnames & start & end & width & strand & source & type & 
 ENSG00\ldots{} & ENSG00\ldots{} & chr7 & 87503017 & 87713323 & 210307 & - & HAVANA & gene & NA\tabularnewline
 \bottomrule
 \end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:ABCB1-boxplot} (下方图) 为图ABCB1 boxplot概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/ABCB1-boxplot.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/ABCB1-boxplot.pdf}
+\caption{ABCB1 boxplot}\label{fig:ABCB1-boxplot}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
 \hypertarget{bibliography}{%
 \section*{Reference}\label{bibliography}}

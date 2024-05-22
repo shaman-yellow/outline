@@ -16,6 +16,7 @@ output:
     # toc_depth: 4
     latex_engine: xelatex
 header-includes:
+  \usepackage{pgfornament}
   \usepackage{caption}
   \captionsetup{font={footnotesize},width=6in}
   \renewcommand{\dblfloatpagefraction}{.9}
@@ -56,7 +57,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 三阴乳腺癌的多药耐药的靶点分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-05-21}}
+\textbf{\textcolor{white}{2024-05-22}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -143,7 +144,7 @@ Mainly used method:
 
 ## 三阴乳腺癌
 
-Table \@ref(tab:TNBC-related-targets-from-GeneCards) (下方表格) 为表格TNBC related targets from GeneCards概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:TNBC-related-targets-from-GeneCards) (下方表格) 为表格TNBC related targets from GeneCards概览。
 
 **(对应文件为 `Figure+Table/TNBC-related-targets-from-GeneCards.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有491行7列，以下预览的表格可能省略部分数据；含有491个唯一`Symbol'。
@@ -204,9 +205,12 @@ Table: (\#tab:TNBC-related-targets-from-GeneCards)TNBC related targets from Gene
 |STAT3        |Signal Tra... |Protein Co... |P40763     |62    |GC17M042313 |10.6  |
 |...          |...           |...           |...        |...   |...         |...   |
 
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 ## 多药耐药
 
-Table \@ref(tab:MDR-related-targets-from-GeneCards) (下方表格) 为表格MDR related targets from GeneCards概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:MDR-related-targets-from-GeneCards) (下方表格) 为表格MDR related targets from GeneCards概览。
 
 **(对应文件为 `Figure+Table/MDR-related-targets-from-GeneCards.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有722行7列，以下预览的表格可能省略部分数据；含有722个唯一`Symbol'。
@@ -268,10 +272,13 @@ Table: (\#tab:MDR-related-targets-from-GeneCards)MDR related targets from GeneCa
 |...       |...           |...           |...        |...   |...         |...   |
 
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+
 
 ## 交集基因的富集分析
 
-Figure \@ref(fig:Intersection-of-MDR-with-TNBC) (下方图) 为图Intersection of MDR with TNBC概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Intersection-of-MDR-with-TNBC) (下方图) 为图Intersection of MDR with TNBC概览。
 
 **(对应文件为 `Figure+Table/Intersection-of-MDR-with-TNBC.pdf`)**
 
@@ -280,7 +287,9 @@ Figure \@ref(fig:Intersection-of-MDR-with-TNBC) (下方图) 为图Intersection o
 \includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-MDR-with-TNBC.pdf}
 \caption{Intersection of MDR with TNBC}\label{fig:Intersection-of-MDR-with-TNBC}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 Intersection
 :}
@@ -299,7 +308,7 @@ CDH1, VIM, ANXA5, ALDH...
 \end{center}
 **(上述信息框内容已保存至 `Figure+Table/Intersection-of-MDR-with-TNBC-content`)**
 
-Figure \@ref(fig:KEGG-enrichment) (下方图) 为图KEGG enrichment概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:KEGG-enrichment) (下方图) 为图KEGG enrichment概览。
 
 **(对应文件为 `Figure+Table/KEGG-enrichment.pdf`)**
 
@@ -309,7 +318,10 @@ Figure \@ref(fig:KEGG-enrichment) (下方图) 为图KEGG enrichment概览。
 \caption{KEGG enrichment}\label{fig:KEGG-enrichment}
 \end{center}
 
-Figure \@ref(fig:GO-enrichment) (下方图) 为图GO enrichment概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:GO-enrichment) (下方图) 为图GO enrichment概览。
 
 **(对应文件为 `Figure+Table/GO-enrichment.pdf`)**
 
@@ -319,7 +331,10 @@ Figure \@ref(fig:GO-enrichment) (下方图) 为图GO enrichment概览。
 \caption{GO enrichment}\label{fig:GO-enrichment}
 \end{center}
 
-Figure \@ref(fig:Hsa05206-visualization) (下方图) 为图Hsa05206 visualization概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Hsa05206-visualization) (下方图) 为图Hsa05206 visualization概览。
 
 **(对应文件为 `Figure+Table/Hsa05206-visualization.png`)**
 
@@ -341,6 +356,8 @@ Interactive figure
 \end{tcolorbox}
 \end{center}
 
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
 
 
 
@@ -356,7 +373,7 @@ Interactive figure
 Fig. \@ref(fig:Selected-genes-Top20-interaction)。
 
 
-Figure \@ref(fig:Selected-genes-Top10-interaction) (下方图) 为图Selected genes Top10 interaction概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Selected-genes-Top10-interaction) (下方图) 为图Selected genes Top10 interaction概览。
 
 **(对应文件为 `Figure+Table/Selected-genes-Top10-interaction.pdf`)**
 
@@ -366,7 +383,10 @@ Figure \@ref(fig:Selected-genes-Top10-interaction) (下方图) 为图Selected ge
 \caption{Selected genes Top10 interaction}\label{fig:Selected-genes-Top10-interaction}
 \end{center}
 
-Table \@ref(tab:Selected-genes-Top20-interaction-data) (下方表格) 为表格Selected genes Top20 interaction data概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:Selected-genes-Top20-interaction-data) (下方表格) 为表格Selected genes Top20 interaction data概览。
 
 **(对应文件为 `Figure+Table/Selected-genes-Top20-interaction-data.csv`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有54行2列，以下预览的表格可能省略部分数据；含有12个唯一`Source'。
@@ -394,6 +414,9 @@ Table: (\#tab:Selected-genes-Top20-interaction-data)Selected genes Top20 interac
 |HDAC1    |EZH2   |
 |...      |...    |
 
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 # 附：分析流程 {#workflow2}
 
 ## TCGA-BRCA
@@ -408,7 +431,7 @@ Table: (\#tab:Selected-genes-Top20-interaction-data)Selected genes Top20 interac
 
 
 
-Table \@ref(tab:TNBC-annotation) (下方表格) 为表格TNBC annotation概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:TNBC-annotation) (下方表格) 为表格TNBC annotation概览。
 
 **(对应文件为 `Figure+Table/TNBC-annotation.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1059行45列，以下预览的表格可能省略部分数据；含有1059个唯一`TCGA\_SAMPLE'。
@@ -436,13 +459,16 @@ Table: (\#tab:TNBC-annotation)TNBC annotation
 |TCGA-A... |TCGA-A... |YES  |Basal |Basal     |MSL      |BL1       |0.1206... |0.2856... |0.0313... |
 |...       |...       |...  |...   |...       |...      |...       |...       |...       |...       |
 
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 ### TNBC 紫杉醇耐药性分析
 
 使用 pRRophetic 预测 紫杉醇 Paclitaxel 耐药性 (IC50) ，并根据 IC50 分值分组。
 
 
 
-Figure \@ref(fig:QQ-plot-for-distribution-of-the-transformed-IC50-data) (下方图) 为图QQ plot for distribution of the transformed IC50 data概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:QQ-plot-for-distribution-of-the-transformed-IC50-data) (下方图) 为图QQ plot for distribution of the transformed IC50 data概览。
 
 **(对应文件为 `Figure+Table/QQ-plot-for-distribution-of-the-transformed-IC50-data.pdf`)**
 
@@ -452,7 +478,10 @@ Figure \@ref(fig:QQ-plot-for-distribution-of-the-transformed-IC50-data) (下方�
 \caption{QQ plot for distribution of the transformed IC50 data}\label{fig:QQ-plot-for-distribution-of-the-transformed-IC50-data}
 \end{center}
 
-Figure \@ref(fig:BR-estimate-prediction-accuracy) (下方图) 为图BR estimate prediction accuracy概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:BR-estimate-prediction-accuracy) (下方图) 为图BR estimate prediction accuracy概览。
 
 **(对应文件为 `Figure+Table/BR-estimate-prediction-accuracy.pdf`)**
 
@@ -462,7 +491,10 @@ Figure \@ref(fig:BR-estimate-prediction-accuracy) (下方图) 为图BR estimate 
 \caption{BR estimate prediction accuracy}\label{fig:BR-estimate-prediction-accuracy}
 \end{center}
 
-Table \@ref(tab:BR-predicted-drug-sensitivity) (下方表格) 为表格BR predicted drug sensitivity概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:BR-predicted-drug-sensitivity) (下方表格) 为表格BR predicted drug sensitivity概览。
 
 **(对应文件为 `Figure+Table/BR-predicted-drug-sensitivity.csv`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有229行3列，以下预览的表格可能省略部分数据；含有229个唯一`sample'。
@@ -505,6 +537,9 @@ Table: (\#tab:BR-predicted-drug-sensitivity)BR predicted drug sensitivity
 |TCGA-A2-A0YE-01A |-2.80843853558055 |1            |
 |...              |...               |...          |
 
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
 ### 差异分析
 
 成功筛选到 ABCB1，见 Tab. \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)
@@ -512,7 +547,7 @@ Table: (\#tab:BR-predicted-drug-sensitivity)BR predicted drug sensitivity
 
 
 
-Table \@ref(tab:metadata) (下方表格) 为表格metadata概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:metadata) (下方表格) 为表格metadata概览。
 
 **(对应文件为 `Figure+Table/metadata.xlsx`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有229行98列，以下预览的表格可能省略部分数据；含有229个唯一`rownames'。
@@ -545,7 +580,10 @@ Table: (\#tab:metadata)Metadata
 |TCGA-A... |Others    |622011... |1.0001... |TCGA-A... |TCGA-A... |TCGA-A... |TP        |Primar... |TCGA-A... |
 |...       |...       |...       |...       |...       |...       |...       |...       |...       |...       |
 
-Figure \@ref(fig:BR-Resistance-vs-Non-resistance-DEGs) (下方图) 为图BR Resistance vs Non resistance DEGs概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:BR-Resistance-vs-Non-resistance-DEGs) (下方图) 为图BR Resistance vs Non resistance DEGs概览。
 
 **(对应文件为 `Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf`)**
 
@@ -554,7 +592,9 @@ Figure \@ref(fig:BR-Resistance-vs-Non-resistance-DEGs) (下方图) 为图BR Resi
 \includegraphics[width = 0.9\linewidth]{Figure+Table/BR-Resistance-vs-Non-resistance-DEGs.pdf}
 \caption{BR Resistance vs Non resistance DEGs}\label{fig:BR-Resistance-vs-Non-resistance-DEGs}
 \end{center}
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
 adj.P.Val cut-off
 :}
@@ -572,17 +612,17 @@ Log2(FC) cut-off
 
 \vspace{0.5em}
 
-    0.5
+    1
 
 \vspace{2em}
 \end{tcolorbox}
 \end{center}
 **(上述信息框内容已保存至 `Figure+Table/BR-Resistance-vs-Non-resistance-DEGs-content`)**
 
-Table \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs) (下方表格) 为表格BR data Resistance vs Non resistance DEGs概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs) (下方表格) 为表格BR data Resistance vs Non resistance DEGs概览。
 
 **(对应文件为 `Figure+Table/BR-data-Resistance-vs-Non-resistance-DEGs.csv`)**
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有13607行22列，以下预览的表格可能省略部分数据；含有13607个唯一`rownames'。
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有7924行22列，以下预览的表格可能省略部分数据；含有7924个唯一`rownames'。
 \end{tcolorbox}
 \end{center}
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
@@ -618,7 +658,10 @@ Table: (\#tab:BR-data-Resistance-vs-Non-resistance-DEGs)BR data Resistance vs No
 |ENSG00... |ENSG00... |chr11    |9778667   |10294219  |515553 |-      |HAVANA |gene |NA    |
 |...       |...       |...      |...       |...       |...    |...    |...    |...  |...   |
 
-Table \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1) (下方表格) 为表格BR data Resistance vs Non resistance DEGs ABCB1概览。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1) (下方表格) 为表格BR data Resistance vs Non resistance DEGs ABCB1概览。
 
 **(对应文件为 `Figure+Table/BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1.csv`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行22列，以下预览的表格可能省略部分数据；含有1个唯一`rownames'。
@@ -641,4 +684,20 @@ Table: (\#tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)BR data Resistance
 |rownames  |gene_id   |seqnames |start    |end      |width  |strand |source |type |score |
 |:---------|:---------|:--------|:--------|:--------|:------|:------|:------|:----|:-----|
 |ENSG00... |ENSG00... |chr7     |87503017 |87713323 |210307 |-      |HAVANA |gene |NA    |
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:ABCB1-boxplot) (下方图) 为图ABCB1 boxplot概览。
+
+**(对应文件为 `Figure+Table/ABCB1-boxplot.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/ABCB1-boxplot.pdf}
+\caption{ABCB1 boxplot}\label{fig:ABCB1-boxplot}
+\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
