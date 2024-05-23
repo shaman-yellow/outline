@@ -1,0 +1,15 @@
+
+
+```{r}
+tc2 <- job_tcmsp2(c("白芍"))
+tc2 <- step1(tc2)
+tc2 <- step2(tc2)
+```
+
+```{r}
+je <- job_esearch("DNA methylation")
+
+vis(je)
+
+```
+

@@ -151,6 +151,12 @@ auto_method(c("job_limma", "job_tcga", "job_epifactor", "[@ProteomicsProfShao202
 
 ## 三阴乳腺癌
 
+```{r}
+ge.tnbc <- job_genecard("Triple negative breast cancer")
+ge.tnbc <- step1(ge.tnbc, 3, restrict = T)
+ge.tnbc@tables$step1$t.genecards
+```
+
 ```{r eval = T, echo = F, results = "asis"}
 #| TNBC-related-targets-from-GeneCards
 autor(ge.tnbc@tables$step1$t.genecards)
@@ -163,9 +169,33 @@ autor(ge.tnbc@tables$step1$t.genecards)
 autor(ge.mdr@tables$step1$t.genecards)
 ```
 
+## Paclitaxel resistance
 
+```{r eval = T, echo = F, results = "asis"}
+#| PDR-related-targets-from-GeneCards
+autor(ge.pr@tables$step1$t.genecards)
+```
 
-## 交集基因的富集分析
+## MDR + TNBC 交集基因的富集分析
+
+```{r}
+ge.mdr <- job_genecard("Multidrug Resistance")
+ge.mdr <- step1(ge.mdr, 1, restrict = T)
+ge.mdr@tables$step1$t.genecards
+
+p.venn_mdr2tnbc <- map(ge.mdr, ge.tnbc, c("MDR", "TNBC"))
+p.venn_mdr2tnbc
+
+en <- job_enrich(p.venn_mdr2tnbc$ins)
+en <- step1(en)
+en@plots$step1$p.kegg
+en@plots$step1$p.go
+en@tables$step1$res.kegg$ids
+
+en <- step2(en, "hsa05206")
+en@plots$step2$p.pathviews$hsa05206
+
+```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Intersection-of-MDR-with-TNBC
@@ -187,29 +217,57 @@ autor(en@plots$step1$p.go$ids)
 autor(en@plots$step2$p.pathviews$hsa05206)
 ```
 
-
+## PR + TNBC 交集基因的富集分析
 
 ```{r}
-ge.mdr <- job_genecard("Multidrug Resistance")
-ge.mdr <- step1(ge.mdr, 1, restrict = T)
-ge.mdr@tables$step1$t.genecards
+ge.pr <- job_genecard("Paclitaxel resistance")
+ge.pr <- step1(ge.pdr, 1, restrict = T)
+ge.pr@tables$step1$t.genecards
+```
 
-ge.tnbc <- job_genecard("Triple negative breast cancer")
-ge.tnbc <- step1(ge.tnbc, 3, restrict = T)
-ge.tnbc@tables$step1$t.genecards
+```{r}
+p.venn_pr2tnbc <- map(ge.pr, ge.tnbc, c("PR", "TNBC"))
+p.venn_pr2tnbc
 
-p.venn_mdr2tnbc <- map(ge.mdr, ge.tnbc, c("MDR", "TNBC"))
-p.venn_mdr2tnbc
+dat.gnVenn <- dplyr::filter(ge.pr@tables$step1$t.genecards, Symbol %in% ge.tnbc@tables$step1$t.genecards$Symbol)
+dat.gnVenn
+p.dat.gnVenn <- plot_col.genecard(dat.gnVenn, facet = F)
+p.dat.gnVenn
 
-en <- job_enrich(p.venn_mdr2tnbc$ins)
-en <- step1(en)
-en@plots$step1$p.kegg
-en@plots$step1$p.go
-en@tables$step1$res.kegg$ids
+en.pr <- job_enrich(p.venn_pr2tnbc$ins)
+en.pr <- step1(en.pr)
+en.pr@plots$step1$p.kegg
+en.pr@plots$step1$p.go
+en.pr@tables$step1$res.kegg$ids
 
-en <- step2(en, "hsa05206")
-en@plots$step2$p.pathviews$hsa05206
+en.pr <- step2(en.pr, "hsa05206")
+en.pr@plots$step2$p.pathviews$hsa05206
 
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-PR-with-TNBC
+autor(p.venn_pr2tnbc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PR-KEGG-enrichment
+autor(en.pr@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PR-GO-enrichment
+autor(en.pr@plots$step1$p.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| PR-hsa05206-visualization
+autor(en.pr@plots$step2$p.pathviews$hsa05206)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-genes-Genecard-Score-visualization-top10
+autor(p.dat.gnVenn)
 ```
 
 ## 三个所选基因的联系 {#others}
@@ -240,7 +298,7 @@ autor(ppi.cus$p.mcc)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Selected-genes-Top20-interaction-data
+#| Selected-genes-Top10-interaction-data
 autor(ppi.cus$edges_mcc)
 ```
 
@@ -303,6 +361,8 @@ autor(prr.br@tables$step2$t.predict)
 
 ### 差异分析
 
+#### Resistance vs Non_resistance
+
 成功筛选到 ABCB1，见 Tab. \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)
 
 
@@ -344,5 +404,33 @@ autor(dplyr::filter(Tops, gene_name == "ABCB1"))
 ```{r eval = T, echo = F, results = "asis"}
 #| ABCB1-boxplot
 autor(wrap(p.boxAbc, 2.5, 3.5))
+```
+
+#### Cancer vs Normal
+
+```{r}
+lm.brCancer <- group(lm.br, "isTumor")
+lm.brCancer@object$targets$group
+lm.brCancer <- step2(lm.brCancer, tumor - normal, cut.fc = 1, HLs = "ABCB1")
+lm.brCancer@tables$step2$tops$`tumor - normal`
+lm.brCancer@plots$step2$p.volcano$`tumor - normal`
+
+p.boxAbcTum <- map(lm.brCancer, "ABCB1", "gene_name")
+wrap(p.boxAbcTum, 2.5, 3.5)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| BR-tumor-vs-normal-DEGs
+autor(lm.brCancer@plots$step2$p.volcano$`tumor - normal`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| BR-data-tumor-vs-normal-DEGs
+autor(lm.brCancer@tables$step2$tops$`tumor - normal`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ABCB1-boxplot-tumor-vs-normal
+autor(wrap(p.boxAbcTum, 2.5, 3.5))
 ```
 

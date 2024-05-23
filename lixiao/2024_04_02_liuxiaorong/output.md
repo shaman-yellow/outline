@@ -57,7 +57,7 @@ header-includes:
 \begin{center} \textbf{\Huge
 三阴乳腺癌的多药耐药的靶点分析} \vspace{4em}
 \begin{textblock}{10}(3,5.9) \huge
-\textbf{\textcolor{white}{2024-05-22}}
+\textbf{\textcolor{white}{2024-05-23}}
 \end{textblock} \begin{textblock}{10}(3,7.3)
 \Large \textcolor{black}{LiChuang Huang}
 \end{textblock} \begin{textblock}{10}(3,11.3)
@@ -143,6 +143,8 @@ Mainly used method:
 # 附：分析流程 {#workflow}
 
 ## 三阴乳腺癌
+
+
 
 \begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:TNBC-related-targets-from-GeneCards) (下方表格) 为表格TNBC related targets from GeneCards概览。
 
@@ -274,9 +276,75 @@ Table: (\#tab:MDR-related-targets-from-GeneCards)MDR related targets from GeneCa
 
 \begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
 
+## Paclitaxel resistance
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:PDR-related-targets-from-GeneCards) (下方表格) 为表格PDR related targets from GeneCards概览。
+
+**(对应文件为 `Figure+Table/PDR-related-targets-from-GeneCards.xlsx`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有261行7列，以下预览的表格可能省略部分数据；含有261个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    Paclitaxel resistance
+
+\vspace{2em}
 
 
-## 交集基因的富集分析
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    TRUE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:PDR-related-targets-from-GeneCards)PDR related targets from GeneCards
+
+|Symbol   |Description   |Category      |UniProt_ID |GIFtS |GC_id       |Score |
+|:--------|:-------------|:-------------|:----------|:-----|:-----------|:-----|
+|ABCB1    |ATP Bindin... |Protein Co... |P08183     |60    |GC07M087504 |5.69  |
+|TUBB     |Tubulin Be... |Protein Co... |P07437     |58    |GC06P134798 |4.19  |
+|FOXM1    |Forkhead B... |Protein Co... |Q08050     |52    |GC12M002857 |3.01  |
+|TP53     |Tumor Prot... |Protein Co... |P04637     |62    |GC17M007661 |2.89  |
+|ESR1     |Estrogen R... |Protein Co... |P03372     |62    |GC06P151656 |2.64  |
+|MEG3     |Maternally... |RNA Gene (... |           |34    |GC14P116735 |2.64  |
+|BCL2     |BCL2 Apopt... |Protein Co... |P10415     |59    |GC18M063123 |2.56  |
+|ERBB2    |Erb-B2 Rec... |Protein Co... |P04626     |63    |GC17P039687 |2.53  |
+|TUBB3    |Tubulin Be... |Protein Co... |Q13509     |59    |GC16P095438 |2.5   |
+|PVT1     |Pvt1 Oncogene |RNA Gene (... |           |32    |GC08P128109 |2.46  |
+|MAPK14   |Mitogen-Ac... |Protein Co... |Q16539     |60    |GC06P134977 |2.37  |
+|CLU      |Clusterin     |Protein Co... |P10909     |56    |GC08M027596 |2.37  |
+|IL6      |Interleukin 6 |Protein Co... |P05231     |60    |GC07P022725 |2.33  |
+|MIR7-3HG |MIR7-3 Hos... |RNA Gene (... |Q8N6C7     |34    |GC19P112015 |2.28  |
+|MYD88    |MYD88 Inna... |Protein Co... |Q99836     |57    |GC03P038290 |2.24  |
+|...      |...           |...           |...        |...   |...         |...   |
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+## MDR + TNBC 交集基因的富集分析
+
+
 
 \begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Intersection-of-MDR-with-TNBC) (下方图) 为图Intersection of MDR with TNBC概览。
 
@@ -358,9 +426,118 @@ Interactive figure
 
 \begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
+## PR + TNBC 交集基因的富集分析
 
 
 
+
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Intersection-of-PR-with-TNBC) (下方图) 为图Intersection of PR with TNBC概览。
+
+**(对应文件为 `Figure+Table/Intersection-of-PR-with-TNBC.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-PR-with-TNBC.pdf}
+\caption{Intersection of PR with TNBC}\label{fig:Intersection-of-PR-with-TNBC}
+\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    ABCB1, FOXM1, TP53, ESR1, MEG3, BCL2, ERBB2, PVT1, IL6,
+MIR7-3HG, SOX2, H19, MAPK1, JAK2, CDK1, NEAT1, MIR522,
+EGR1, AKT1, BRCA1, USP7, HIF1A, XIST, MYC, STAT3, MIR200C,
+MIR17, USP9X, KLF4, PPP1CA, KRT6A, GAS5, HOTAIR, MIR98,
+PLK1, ZEB1, MIAT, AURKA, BRCA2, MIR133B, MIR155, MIRLET7C,
+MIR200B, MIR...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+**(上述信息框内容已保存至 `Figure+Table/Intersection-of-PR-with-TNBC-content`)**
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:PR-KEGG-enrichment) (下方图) 为图PR KEGG enrichment概览。
+
+**(对应文件为 `Figure+Table/PR-KEGG-enrichment.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PR-KEGG-enrichment.pdf}
+\caption{PR KEGG enrichment}\label{fig:PR-KEGG-enrichment}
+\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:PR-GO-enrichment) (下方图) 为图PR GO enrichment概览。
+
+**(对应文件为 `Figure+Table/PR-GO-enrichment.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PR-GO-enrichment.pdf}
+\caption{PR GO enrichment}\label{fig:PR-GO-enrichment}
+\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:PR-hsa05206-visualization) (下方图) 为图PR hsa05206 visualization概览。
+
+**(对应文件为 `Figure+Table/PR-hsa05206-visualization.png`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-05-23_16_47_36.37883/hsa05206.pathview.png}
+\caption{PR hsa05206 visualization}\label{fig:PR-hsa05206-visualization}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa05206}
+
+\vspace{2em}
+
+
+\textbf{
+Enriched genes
+:}
+
+\vspace{0.5em}
+
+    MIR133B, MIR17, MIR21, MCL1, MIR200C, ZEB1, MIR27A,
+EP300, MIRLET7C, MIR155, MIR494, MIR34A, ERBB2, BCL2,
+STAT3, MYC, MIR18A, MIR200A, PIK3CA, NOTCH1, CD44, MIR335,
+ABCB1, MIR34C, BRCA1, MIR199A1, PTGS2, MAPK1, TP53
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:Intersection-genes-Genecard-Score-visualization-top10) (下方图) 为图Intersection genes Genecard Score visualization top10概览。
+
+**(对应文件为 `Figure+Table/Intersection-genes-Genecard-Score-visualization-top10.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-genes-Genecard-Score-visualization-top10.pdf}
+\caption{Intersection genes Genecard Score visualization top10}\label{fig:Intersection-genes-Genecard-Score-visualization-top10}
+\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
 ## 三个所选基因的联系 {#others}
 
@@ -386,14 +563,14 @@ Fig. \@ref(fig:Selected-genes-Top20-interaction)。
 
 \begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
-\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:Selected-genes-Top20-interaction-data) (下方表格) 为表格Selected genes Top20 interaction data概览。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:Selected-genes-Top10-interaction-data) (下方表格) 为表格Selected genes Top10 interaction data概览。
 
-**(对应文件为 `Figure+Table/Selected-genes-Top20-interaction-data.csv`)**
+**(对应文件为 `Figure+Table/Selected-genes-Top10-interaction-data.csv`)**
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有54行2列，以下预览的表格可能省略部分数据；含有12个唯一`Source'。
 \end{tcolorbox}
 \end{center}
 
-Table: (\#tab:Selected-genes-Top20-interaction-data)Selected genes Top20 interaction data
+Table: (\#tab:Selected-genes-Top10-interaction-data)Selected genes Top10 interaction data
 
 |Source   |Target |
 |:--------|:------|
@@ -541,6 +718,8 @@ Table: (\#tab:BR-predicted-drug-sensitivity)BR predicted drug sensitivity
 \begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
 
 ### 差异分析
+
+#### Resistance vs Non_resistance
 
 成功筛选到 ABCB1，见 Tab. \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)
 
@@ -696,6 +875,101 @@ Table: (\#tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)BR data Resistance
 \begin{center}
 \includegraphics[width = 0.9\linewidth]{Figure+Table/ABCB1-boxplot.pdf}
 \caption{ABCB1 boxplot}\label{fig:ABCB1-boxplot}
+\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+#### Cancer vs Normal
+
+
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:BR-tumor-vs-normal-DEGs) (下方图) 为图BR tumor vs normal DEGs概览。
+
+**(对应文件为 `Figure+Table/BR-tumor-vs-normal-DEGs.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/BR-tumor-vs-normal-DEGs.pdf}
+\caption{BR tumor vs normal DEGs}\label{fig:BR-tumor-vs-normal-DEGs}
+\end{center}
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+adj.P.Val cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+**(上述信息框内容已保存至 `Figure+Table/BR-tumor-vs-normal-DEGs-content`)**
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}Table \@ref(tab:BR-data-tumor-vs-normal-DEGs) (下方表格) 为表格BR data tumor vs normal DEGs概览。
+
+**(对应文件为 `Figure+Table/BR-data-tumor-vs-normal-DEGs.csv`)**
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有7555行22列，以下预览的表格可能省略部分数据；含有7555个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\item gene\_id:  GENCODE/Ensembl gene ID
+\item gene\_name:  GENCODE gene name
+\item strand:  genomic strand
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+Table: (\#tab:BR-data-tumor-vs-normal-DEGs)BR data tumor vs normal DEGs
+
+|rownames  |gene_id   |seqnames |start     |end       |width  |strand |source |type |score |
+|:---------|:---------|:--------|:---------|:---------|:------|:------|:------|:----|:-----|
+|ENSG00... |ENSG00... |chrX     |15345596  |15384413  |38818  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr2     |191834310 |191847088 |12779  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr17    |60149942  |60170899  |20958  |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr11    |35431823  |35530300  |98478  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr17    |43847148  |43863639  |16492  |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr17    |69147214  |69244846  |97633  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr14    |26443090  |26598033  |154944 |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr1     |160115759 |160143591 |27833  |+      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr11    |72576141  |72674591  |98451  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr6     |32041153  |32115334  |74182  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr8     |27869883  |27992673  |122791 |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr17    |68974488  |69060949  |86462  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr5     |154818492 |154859252 |40761  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr18    |23598926  |23662911  |63986  |-      |HAVANA |gene |NA    |
+|ENSG00... |ENSG00... |chr7     |130380339 |130388114 |7776   |+      |HAVANA |gene |NA    |
+|...       |...       |...      |...       |...       |...    |...    |...    |...  |...   |
+
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}Figure \@ref(fig:ABCB1-boxplot-tumor-vs-normal) (下方图) 为图ABCB1 boxplot tumor vs normal概览。
+
+**(对应文件为 `Figure+Table/ABCB1-boxplot-tumor-vs-normal.pdf`)**
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/ABCB1-boxplot-tumor-vs-normal.pdf}
+\caption{ABCB1 boxplot tumor vs normal}\label{fig:ABCB1-boxplot-tumor-vs-normal}
 \end{center}
 
 
