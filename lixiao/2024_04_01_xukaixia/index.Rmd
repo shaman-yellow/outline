@@ -93,7 +93,7 @@ filesAlign <- list.files("/media/echo/My Passport/浙江百越4例WGBS信息采�
   "all_lanes", full.names = T, recursive = T)
 t.align <- ftibble(filesAlign)
 t.align
-vis(t.align[[1]])
+vis(t.align[[1]], 100, 400)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -110,11 +110,27 @@ t.genes
 ```
 
 ```{r}
-dataDirectory <- system.file("extdata", package = "methylationArrayAnalysis")
-dataDirectory
-list.files(dataDirectory, recursive = TRUE, full.names = T)
+GenomicRanges::GRanges
+BiocGenerics::strand
+S4Vectors::Rle
 
-minfi::read.metharray.exp
-bsseq::read.bismark
-methylKit::methRead
+Gviz::DataTrack
+
+data(cpgIslands, package = "GenomicRanges")
+data(cpgIslands, package = "Gviz")
+
+dat <- get_cpgIsland_data("rn")
+```
+
+
+
+
+```{r}
+
+dat <- rtracklayer::ucscTableQuery("hg38", table = "wgEncodeRegDnaseClustered")
+alls <- rtracklayer::tableNames(dat)
+"wgEncodeRegDnaseClustered"
+
+datSet <- rtracklayer::getTable(dat)
+
 ```

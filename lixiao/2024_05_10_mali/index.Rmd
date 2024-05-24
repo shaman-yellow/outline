@@ -118,6 +118,8 @@ prepare_10x("./GSE227033/GSM7090271_M2.expression.txt.gz", single = T, col.gene 
 autor(geo$prods)
 ```
 
+
+
 ```{r}
 # sr.ctrl <- job_seurat("./GSE227033/GSM7090268_C1")
 # sr.ctrl <- step1(sr.ctrl)
@@ -466,3 +468,4 @@ autor(wrap(p.focusIns$p.dim, 8, 4))
 #| Xylt1-related-metabolic-flux
 autor(dplyr::filter(belong.flux, gene == "Xylt1"))
 ```
+
