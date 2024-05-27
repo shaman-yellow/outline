@@ -1,0 +1,193 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{frame}
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+生信文章修改甲基化测序} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-05-27}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+
+
+\pagenumbering{arabic}
+\end{frame}
+
+\begin{frame}{摘要}
+\protect\hypertarget{abstract}{}
+Whole-genome DNA methylation analysis in liver tissue of offspring of
+Zuogui pill (ZGP)-intervened GD rats, trying to find evidence for ZGP
+effect on epigenetics and potential pathways
+
+Then, 92 DM-related differentially methylated genes were identified.
+They were mainly enriched in glycometabolism, receptors on the membrane,
+and protein kinases and their regulators by GO analysis as well as in
+MAPK pathway by KEGG analysis.
+
+A core \textbf{network involved in PI3K/AKT signaling was obtained.} The
+effect of ZGP on eugenics in the offspring of GD rats may be achieved by
+affecting the liver methylation of the offspring, with \textbf{PI3K/AKT
+pathway as one of targets.}
+
+\begin{itemize}
+\tightlist
+\item
+  differentially methylated regions (DMRs) identification
+\item
+  Bismark was used for aligning clean reads to reference genome
+\item
+  profiles of extracted methylation sites were analyzed by
+  \textbf{methylKit} to perform calling DMR between Model and Model-Cure
+  group, with \textbar delta\textbar{} \textgreater{} 0.3, FDR
+  \textless{} 0.05, and annotate DMRs-related genes by Rattus norvegicus
+  genome
+\end{itemize}
+\end{frame}
+
+\begin{frame}{前言}
+\protect\hypertarget{introduction}{}
+\end{frame}
+
+\begin{frame}[fragile]{材料和方法}
+\protect\hypertarget{methods}{}
+\begin{block}{材料}
+\protect\hypertarget{ux6750ux6599}{}
+\end{block}
+
+\begin{block}{方法}
+\protect\hypertarget{ux65b9ux6cd5}{}
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr}
+  and \texttt{ggplot2}) used for statistic analysis or data
+  visualization.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{分析结果}
+\protect\hypertarget{results}{}
+\end{frame}
+
+\begin{frame}{结论}
+\protect\hypertarget{dis}{}
+\end{frame}
+
+\begin{frame}{附：分析流程}
+\protect\hypertarget{workflow}{}
+\begin{itemize}
+\tightlist
+\item
+  许凯霞需求
+\item
+  浙江百越4例WGBS信息采集与分析
+\end{itemize}
+\end{frame}
+
+\end{document}

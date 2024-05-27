@@ -237,6 +237,27 @@ alls <- get_orders()
 backup_jobs(alls, time <- "2024-04-01")
 ```
 
+### 2024-05
+
+```{r}
+x <- thismonth()
+summary_month()
+
+send_eval("sunhui")
+send_prin("sunhui")
+
+summary_month()
+send_summary("sunhui")
+
+update_registers()
+send_registers("sunhui")
+
+alls <- get_orders()
+backup_jobs(alls, time <- "2024-05-01")
+```
+
+
+
 ## Disk clear
 
 ```{r}

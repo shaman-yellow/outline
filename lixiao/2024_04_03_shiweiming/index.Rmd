@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = c(odate(4), odate(5)), eval = list(ic(1, 2, 1, 0, 0), ic(0, 2, 1, 0, 0)))
+info <- items(belong = c(odate(4), odate(5)), eval = list(ic(1, 2, 1, 0, 0), ic(0, 2, 1, 0, 0)), score = "市厅级标书")
 show.ic(info)
 
 order_publish()
@@ -48,7 +48,6 @@ dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
 # MP: Macrophage polarization 巨噬细胞极化
 # G: Glycolysis 糖酵解
 ```
-
 
 ## 生信需求
 
@@ -176,7 +175,6 @@ sr.mc@plots$step3$p.umap
 sr.mc@tables$step5$all_markers
 ```
 
-
 ### 巨噬细胞表型 M0、M1、M2 鉴定 Markers
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -246,7 +244,6 @@ p.vennDiff <- new_venn(lst = genes.diff)
 p.vennDiff$ins
 
 ```
-
 
 ## 小鼠基因映射到人类基因
 
@@ -359,7 +356,6 @@ gn.mp@tables$step1$t.genecards
 
 gn@tables$step1$t.genecards
 
-
 genes.fac <- lapply(list(gn.if, gn.mi, gn.mp, gn),
   function(x) nl(x@object, list(head(x@tables$step1$t.genecards$Symbol, n = 50))))
 genes.fac <- unlist(genes.fac, recursive = F)
@@ -413,7 +409,6 @@ dat.corVWF
 tihp.corVWF <- new_hp.cor(dat.corVWF, sig = F, fontsize = 10)
 
 wrap(tihp.corVWF, 10, 1.8)
-
 
 ```
 

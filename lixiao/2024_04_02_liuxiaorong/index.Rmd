@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = c(odate(4), odate(5)), eval = list(ic(1, 0, 1, 0, 0), ic(0, 2, 2, 0, 0)))
+info <- items(belong = c(odate(4), odate(5)), eval = list(ic(1, 0, 1, 0, 0), ic(0, 2, 2, 0, 0)), class = "-")
 show.ic(info)
 
 order_publish()
@@ -244,7 +244,6 @@ ppi.cus$edges_mcc
 获取 MCC top 10 的蛋白，重新构建这些蛋白和 `r paste0(genes.custom, collapse = ", ")` 的 PPI 网络，见 
 Fig. \@ref(fig:Selected-genes-Top20-interaction)。
 
-
 ```{r eval = T, echo = F, results = "asis"}
 #| Selected-genes-Top10-interaction
 autor(ppi.cus$p.mcc)
@@ -317,7 +316,6 @@ autor(prr.br@tables$step2$t.predict)
 #### Resistance vs Non_resistance
 
 成功筛选到 ABCB1，见 Tab. \@ref(tab:BR-data-Resistance-vs-Non-resistance-DEGs-ABCB1)
-
 
 ```{r}
 lm.br <- map(lm.br, prr.br)

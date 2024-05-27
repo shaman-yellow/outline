@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(05), eval = ic(3, 3, 1, 1, 0))
+info <- items(belong = odate(05), eval = ic(3, 3, 1, 1, 0), score = "10分sci")
 show.ic(info)
 
 order_publish()
@@ -117,8 +117,6 @@ prepare_10x("./GSE227033/GSM7090271_M2.expression.txt.gz", single = T, col.gene 
 #| GSE227033
 autor(geo$prods)
 ```
-
-
 
 ```{r}
 # sr.ctrl <- job_seurat("./GSE227033/GSM7090268_C1")
@@ -292,7 +290,6 @@ autor(wrap(pb.SigFluxGene, 13, 8))
 ```
 
 #### PPI 网络
-
 
 ```{r}
 bm2.topFlux <- job_biomart2(genes.topFlux, "mmu", "hsa")
@@ -468,4 +465,5 @@ autor(wrap(p.focusIns$p.dim, 8, 4))
 #| Xylt1-related-metabolic-flux
 autor(dplyr::filter(belong.flux, gene == "Xylt1"))
 ```
+
 

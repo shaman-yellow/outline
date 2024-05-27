@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = c(odate(4), odate(5)), eval = list(ic(0, 1, 0, 1, 0), ic(0, 1, 1, 0, 0)))
+info <- items(belong = c(odate(4), odate(5)), eval = list(ic(0, 1, 0, 1, 0), ic(0, 1, 1, 0, 0)), score = "卫生厅标书+实验")
 show.ic(info)
 
 order_publish()

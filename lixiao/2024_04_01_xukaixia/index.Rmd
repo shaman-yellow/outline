@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(5), eval = ic(2, 2, 0, 0, 1))
+info <- items(belong = odate(5), eval = ic(3, 2, 0, 0, 2))
 show.ic(info)
 
 order_publish()
@@ -88,49 +88,36 @@ auto_method()
 - 许凯霞需求
 - 浙江百越4例WGBS信息采集与分析
 
-```{r}
-filesAlign <- list.files("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/Alignment",
-  "all_lanes", full.names = T, recursive = T)
-t.align <- ftibble(filesAlign)
-t.align
-vis(t.align[[1]], 100, 400)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-autor(t.align[[1]])
-```
+## DMR data
 
 ```{r}
-t.diff <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/结果/01_甲基化差异表达DMR.csv")
-t.diff
-
 t.genes <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/结果/01_甲基化差异表达基因.tsv")
 t.genes
 
+t.diff <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/结果/01_甲基化差异表达DMR.csv")
+t.diff <- dplyr::select(t.diff, dmr_id, dplyr::ends_with("Model-vs-Model-Cure"))
+t.diff <- dplyr::mutate(t.diff,
+  chr = strx(dmr_id, "chr[0-9]+"),
+  start = strx(dmr_id, "(?<=_)[0-9]+(?=_)"),
+  end = strx(dmr_id, "[0-9]+$"),
+  DMR_Treatment_vs_Model = -`dmr_diff_cg_Model-vs-Model-Cure`,
+  DMR_Qvalue = `dmr_qvalue_cg_Model-vs-Model-Cure`
+)
+dmrDat <- dplyr::select(t.diff, chr, start, end, tidyselect::starts_with("DMR", F), dmr_id)
+dmrDat <- dplyr::arrange(dmrDat, DMR_Qvalue)
+dmrDat
+
 ```
 
+### DMR distribution
+
 ```{r}
-GenomicRanges::GRanges
-BiocGenerics::strand
-S4Vectors::Rle
-
-Gviz::DataTrack
-
-data(cpgIslands, package = "GenomicRanges")
-data(cpgIslands, package = "Gviz")
-
-dat <- get_cpgIsland_data("rn")
+p.distri <- new_pie(dmrDat$chr, title = "DMR distribution")
+wrap(p.distri, 7, 5)
 ```
 
-
-
+### DMR plot
 
 ```{r}
-
-dat <- rtracklayer::ucscTableQuery("hg38", table = "wgEncodeRegDnaseClustered")
-alls <- rtracklayer::tableNames(dat)
-"wgEncodeRegDnaseClustered"
-
-datSet <- rtracklayer::getTable(dat)
-
+plot_dmr(dmrDat, "chr10", "rn6", use.qvalue = "DMR_Qvalue", use.delta = "DMR_Treatment_vs_Model")
 ```

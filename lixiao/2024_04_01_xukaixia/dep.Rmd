@@ -13,8 +13,86 @@ vis(je)
 
 ```
 
-
 minfi::read.metharray.exp
 bsseq::read.bismark
 methylKit::methRead
+
+```{r}
+filesAlign <- list.files("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/Alignment",
+  "all_lanes", full.names = T, recursive = T)
+t.align <- ftibble(filesAlign)
+t.align
+vis(t.align[[1]], 100, 400)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+autor(t.align[[1]])
+```
+
+```{r}
+GenomicRanges::GRanges
+IRanges::IRanges
+BiocGenerics::strand
+S4Vectors::Rle
+
+Gviz::DataTrack
+
+data(cpgIslands, package = "GenomicRanges")
+data(cpgIslands, package = "Gviz")
+
+dat <- get_cpgIsland_data("rn")
+```
+
+dat <- rtracklayer::ucscTableQuery("hg38", table = "wgEncodeRegDnaseClustered",
+  rtracklayer::GRangesForUCSCGenome("hg38", "chr12", IRanges(57795963, 57815592))
+)
+datSet <- rtracklayer::getTable(dat)
+
+y <- rtracklayer::tableNames(dat)
+
+```{r}
+
+alls <- rtracklayer::tableNames(dat)
+"wgEncodeRegDnaseClustered"
+
+datSet <- rtracklayer::getTable(dat)
+
+Gviz::DataTrack
+GenomicRanges::GRanges()
+
+data(twoGroups, package = "Gviz")
+```
+
+x <- get_data.ucsc("rn6", "all_mrna")
+
+y <- Gviz::UcscTrack(
+  genome = "rn6", chromosome = "chr11", track = "Rat mRNAs",
+  from = min(IRanges::start(Terror$dmrRanges@ranges[1:2])),
+  to = max(IRanges::end(Terror$dmrRanges@ranges[1:2])), trackType = "GeneRegionTrack",
+  rstarts = "exonStarts", rends = "exonEnds", gene = "name",
+  symbol = "name2", transcript = "name", strand = "*",
+  fill = "darkblue", stacking = "squish", name = "RefSeq",
+  showId = TRUE, geneSymbol = TRUE
+)
+
+rtracklayer::ucscTableQuery()
+
+x <- get_cpgIsland_data.ucsc("rn6")
+
+genome <- "rn6"
+query <- rtracklayer::ucscTableQuery(genome, table = "cpgIslandExt")
+x <- rtracklayer::getTable(query)
+
+IRanges::subsetByOverlaps(Terror$cpgIsland, Terror$dmrRanges, type = "any")
+
+x <- get_cpgIsland_data("rn6")
+Terror$dmrRanges
+
+ucsc <- job_ucscTable("rn6")
+ucsc@params$alls
+
+Gviz::UcscTrack
+
+Terror$dmrRanges
+
 
