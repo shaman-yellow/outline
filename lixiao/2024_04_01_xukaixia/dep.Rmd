@@ -95,4 +95,12 @@ Gviz::UcscTrack
 
 Terror$dmrRanges
 
+```{r}
+library(methylKit)
+meth_data <- methylKit::methRead(
+  "/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/CXInfo/Model-Cure-2/Model-Cure-2.chrfak01.CX_report.txt.gz",
+  sample.id = "fak01", assembly = "rn6", pipeline = "bismark")
 
+meth_data <- unite(meth_data, destrand = TRUE)
+plotMethylation(meth_data)
+```

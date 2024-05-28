@@ -107,17 +107,39 @@ dmrDat <- dplyr::select(t.diff, chr, start, end, tidyselect::starts_with("DMR", 
 dmrDat <- dplyr::arrange(dmrDat, DMR_Qvalue)
 dmrDat
 
+dmrDat.genes <- map(dmrDat, "dmr_id", t.genes, "dmr_id", "gene", col = "symbol")
+dmrDat.genes
+
+dmr <- job_dmr(dmrDat.genes, "rn6")
 ```
 
-### DMR distribution
+## DMR distribution
 
 ```{r}
 p.distri <- new_pie(dmrDat$chr, title = "DMR distribution")
 wrap(p.distri, 7, 5)
+
+p.distriGene <- new_pie(dmrDat.genes$chr, title = "DMR in Genes")
+wrap(p.distriGene, 7, 5)
 ```
 
-### DMR plot
+## CpG Island
 
 ```{r}
-plot_dmr(dmrDat, "chr10", "rn6", use.qvalue = "DMR_Qvalue", use.delta = "DMR_Treatment_vs_Model")
+cpgi <- get_cpgisland_GRranges("rn6")
+cpgi
+
+dmrDat.gr <- as_GRanges(dmrDat, "chr7")
+dmrDat.gr
+
 ```
+
+## DMR plot
+
+```{r}
+# job_ucscTable
+x <- plot_dmr(dmrDat, "chr1", "rn6", subset.cpgIsland = 2)
+y <- plot_dmr(dplyr::filter(dmrDat, dmr_id %in% t.genes$dmr_id), "chr1", "rn6")
+```
+
+
