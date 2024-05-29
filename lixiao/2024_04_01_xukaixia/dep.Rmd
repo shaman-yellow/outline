@@ -104,3 +104,56 @@ meth_data <- methylKit::methRead(
 meth_data <- unite(meth_data, destrand = TRUE)
 plotMethylation(meth_data)
 ```
+
+```{r}
+p.distri <- new_pie(dmrDat$chr, title = "DMR distribution")
+wrap(p.distri, 7, 5)
+
+p.distriGene <- new_pie(dmrDat.genes$chr, title = "DMR in Genes")
+wrap(p.distriGene, 7, 5)
+```
+
+
+sortCh <- function(x, decreasing = F, as.factor = F) {
+  num <- as.integer(strx(x, "[0-9]+"))
+  x <- x[ order(num, decreasing = decreasing) ]
+  if ( as.factor ) {
+    x <- factor(x, levels = unique(x))
+  }
+  x
+}
+
+
+
+dat <- data.frame(chr = sortCh(unique(as.character(x@seqnames)), F, T))
+rangelist <- split(x, as.character(x@seqnames))
+ranges <- lapply(rangelist, function(x) floor(zoRange(range.IRanges(x), 1.2)))
+
+lattice::xyplot(1 ~ chr | chr, dat,
+  scales = list(draw = FALSE), xlab = NULL, ylab = NULL,
+  panel = function(x) {
+    x <- as.character(x)
+    itrack <- Gviz::IdeogramTrack(genome = "rn6", chromosome = x)
+    gtrack <- Gviz::GenomeAxisTrack(scale = 100, labelPos = "below", exponent = 3)
+    atrack <- Gviz::AnnotationTrack(range = rangelist[[ x ]], genome = "rn6", chromosome = x)
+    Gviz::plotTracks(list(itrack, atrack, gtrack),
+      chromosome = x, add = TRUE, showId = FALSE,
+      from = ranges[[ x ]][1], to = ranges[[ x ]][2]
+    )
+  }
+)
+
+
+cpgi <- get_cpgisland_GRranges("rn6")
+
+x <- IRanges::subsetByOverlaps(dmr@object, cpgi)
+x
+
+plot_multiChr(x, "rn6", "cpgIsland")
+
+IRanges::countOverlaps(dmr@object, cpgi)
+IRanges::findOverlaps(dmr@object, cpgi)
+
+dmrDat.gr <- as_GRanges(dmrDat, "chr7")
+dmrDat.gr
+

@@ -109,36 +109,38 @@ dmrDat
 
 dmrDat.genes <- map(dmrDat, "dmr_id", t.genes, "dmr_id", "gene", col = "symbol")
 dmrDat.genes
+```
 
+```{r}
 dmr <- job_dmr(dmrDat.genes, "rn6")
+dmr <- step1(dmr)
+dmr@step <- 1L
+dmr <- step2(dmr)
+dmr@plots$step2$p.dmrs$chr10
+p.cpg10_1 <- vis(dmr, "chr10", 1, T, 50)
+p.cpg10_2 <- vis(dmr, "chr10", 2, T, 50)
+p.cpg10_2
+
 ```
 
 ## DMR distribution
 
 ```{r}
-p.distri <- new_pie(dmrDat$chr, title = "DMR distribution")
-wrap(p.distri, 7, 5)
-
-p.distriGene <- new_pie(dmrDat.genes$chr, title = "DMR in Genes")
-wrap(p.distriGene, 7, 5)
+dmr@plots$step1$p.distri
+dmr@plots$step1$p.distriGene
 ```
 
 ## CpG Island
 
 ```{r}
-cpgi <- get_cpgisland_GRranges("rn6")
-cpgi
-
-dmrDat.gr <- as_GRanges(dmrDat, "chr7")
-dmrDat.gr
-
+dmr@plots$step1$p.cpgIsland
 ```
 
 ## DMR plot
 
 ```{r}
 # job_ucscTable
-x <- plot_dmr(dmrDat, "chr1", "rn6", subset.cpgIsland = 2)
+x <- plot_dmr(dmrDat, "chr20", "rn6", subset.cpgIsland = 2)
 y <- plot_dmr(dplyr::filter(dmrDat, dmr_id %in% t.genes$dmr_id), "chr1", "rn6")
 ```
 
