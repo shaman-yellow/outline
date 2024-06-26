@@ -1,6 +1,11 @@
 
-poetry new findSimilar
-cd findSimilar
+new_python findsimilar
 
-# poetry add numpy
-# poetry build
+# cd findsimilar
+# poetry add fastdup
+# poetry add PyQt5
+nvim pyproject.toml
+
+poetry install findsimilar
+
+poetry run python scripts/run_tool.py

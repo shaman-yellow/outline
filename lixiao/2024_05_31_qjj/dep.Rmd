@@ -1,0 +1,6 @@
+
+
+```{r}
+db <- get_batman_data()
+infoCpds$CID %in% unique(unlist(lapply(db[2:3], function(x) x$PubChem_CID)))
+```

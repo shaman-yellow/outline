@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(4), eval = ic())
+info <- items(belong = odate(6), eval = ic(), coef = 0, id = "image", title = "图片查重程序")
 show.ic(info)
 
 order_publish()
@@ -60,5 +60,5 @@ auto_method()
 # 附：分析流程 {#workflow}
 
 ```{r}
-list.files()
+"~/disk_sda1/Downloads/C2022092003-l/C2022092003-l-细胞染色/C2022092003-l-2-1-1-TMRM细胞染色观察线粒体膜电位（MMP）的变化/200x/"
 ```

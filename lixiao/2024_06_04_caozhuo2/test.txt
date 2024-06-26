@@ -1,0 +1,26 @@
+
+请根据以下标题，构建分析方法的总体思路的描述性文字，以供我将各部分分析结果套入其中，让我不必一一撰写引入、衔接、收尾的句子。
+
+# 附：分析流程 {#workflow}
+## 空间代谢组数据分析
+### Cardinal 空间代谢组数据分析 (INTEGRATE)
+### FELLA 代谢物富集分析 (TOPS)
+## 空间转录组分析
+### Seurat 空间转录组分析 (CANCER)
+### Seurat 空间转录组分析 (PERI)
+### 集成单细胞数据分析
+#### Seurat 集成单细胞数据分析
+#### ClusterProfiler 富集分析 (STNCANCER)
+#### scFEA 单细胞数据的代谢通量预测 (INTEGRATED)
+#### Limma 代谢通量差异分析 (FLUX)
+## 联合空间代谢和空间转录组分析
+### 交集：差异代谢物+单细胞差异代谢通量相关代谢物
+### FELLA 代谢物富集分析 (INTERSECT)
+### ClusterProfiler 富集分析 (FLUX)
+### 代谢物与基因共同富集的 KEGG 通路
+### 拟时分析 (发现拟时变化中的差异基因)
+#### Monocle3 拟时分析 (INTEGRATED)
+#### ClusterProfiler 富集分析 (GRAPHTOPS)
+#### Pseudotime Heatmap
+#### STRINGdb PPI 分析 (PPI)
+

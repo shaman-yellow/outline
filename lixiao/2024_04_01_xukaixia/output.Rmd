@@ -50,7 +50,7 @@ header-includes:
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(5), eval = ic(1, 2, 0, 0, 1))
+info <- items(belong = odate(5), eval = ic(3, 2, 0, 0, 2), class = "-")
 show.ic(info)
 
 order_publish()
@@ -79,36 +79,27 @@ set_index()
 
 # 摘要 {#abstract}
 
+原文中，对 DMR 的总体统计未修改，增补了一部分图片和 CpG Island 的统计。
+后续富集分析和 StringDB 的PPI 网络等内容都重做了。
+详细见 \@ref(results)
+
+**重要说明：**
+
+目前，对于原数据表格中，'Model-vs-Model-Cure'，是按照 Model 比 Treatment 来认定的，
+而重新分析时，判定的是 Treatment vs Model，也就是，这里将 原先的 Delta 值乘以  (-1) 实现转换。
+详情见 \@ref(data)
+
 ```{r}
 dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
-  di("糖代谢紊乱", "Glycometabolic disturbance")
+  di("糖代谢紊乱", "Glycometabolic disturbance"),
+  di(en = "diabetes mellitus")
 )
 
 # DEGs: Differential Expressed Genes 差异表达基因
 # GD: Glycometabolic disturbance 糖代谢紊乱
+# DM: diabetes mellitus 糖尿病
 
 ```
-
-Whole-genome DNA methylation analysis in liver
-tissue of offspring of Zuogui pill (ZGP)-intervened GD rats, trying to find evidence
-for ZGP effect on epigenetics and potential pathways
-
-Then, 92 DM-related differentially
-methylated genes were identified. They were mainly enriched in
-glycometabolism, receptors on the membrane, and protein kinases and
-their regulators by GO analysis as well as in MAPK pathway by KEGG
-analysis.
-
-A core **network involved in PI3K/AKT signaling was
-obtained.** The effect of ZGP on eugenics in the offspring of GD rats
-may be achieved by affecting the liver methylation of the offspring,
-with **PI3K/AKT pathway as one of targets.**
-
-- differentially methylated regions (DMRs) identification
-- Bismark was used for aligning clean reads to reference genome 
-- profiles of extracted methylation sites were analyzed by **methylKit** to perform
-  calling DMR between Model and Model-Cure group, with \|delta\| \> 0.3, FDR \<
-  0.05, and annotate DMRs-related genes by Rattus norvegicus genome
 
 # 前言 {#introduction}
 
@@ -123,36 +114,370 @@ auto_material()
 ## 方法
 
 ```{r eval = T, echo = F, results = "asis"}
-auto_method()
+auto_method(c("job_limma", "job_geo"))
 ```
 
 # 分析结果 {#results}
 
+## Methyl-seq DMR 分析
+
+这部分的 DMR 数据和原先的内容是一样的，只是补充或替换了以下图：
+
+- DMR 分布见 Fig. \@ref(fig:MAIN-Fig-1)a，DMR 存在于 基因的分布见 Fig. \@ref(fig:MAIN-Fig-1)b。
+- DMR 的筛选 with |delta| &gt; 0.3, FDR &lt; 0.05  (与原先相同) ，见 Fig. \@ref(fig:MAIN-Fig-1)c。
+- 补充了 DMR 存在于 CpG Island 的注释，在各个染色体的分布见 Fig. \@ref(fig:MAIN-Fig-1)d，Fig. \@ref(fig:MAIN-Fig-1)e。
+
+```{r}
+fig1 <- cl(
+  # rw(),
+  rw("./Figure+Table/DMR-distribution.pdf",
+    "./Figure+Table/DMR-in-Genes.pdf",
+    "./Figure+Table/All-DMR-volcano-plot.pdf"
+  ),
+  rw("./Figure+Table/Specific-methylation.pdf",
+    "./Figure+Table/CpG-Island-methylation.pdf"
+  )
+)
+render(fig1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-1
+autor("./Figure+Table/fig1.pdf")
+```
+
+## 富集分析
+
+对所有的 DMR 基因做了 KEGG 富集分析和 GO 富集分析，见 Fig. \@ref(fig:MAIN-Fig-2)a，c。
+KEGG 富集分析发现 DMR 富集于 ‘Type II diabetes mellitus’  (T2DM) 通路。
+见 Fig. \@ref(fig:MAIN-Fig-2)b，其中，Ins2 基因甲基化程度升高，而 Pik3cb 甲基化程度
+下降。Pik3cb 在 染色体 8  (chr8) 中，甲基化位置出于基因的中段
+(Fig. \@ref(fig:MAIN-Fig-3)a，b) 。
+Ins2 基因处于染色体 1  (chr1)  (见 Fig. \@ref(fig:MAIN-Fig-3)c，d) 。胰岛素信号通路 PI3K/Akt/mTOR 通路被认为与胰岛素抵抗 insulin resistance 相关密切 [@ImpairmentOfIRamasu2023]。DNA 甲基化改变影响 T2DM 发展中的胰岛素分泌和胰岛素抵抗[@DnaMethylationZhou2018]。
+Zuogui pill 给药后，改变了 Pik3cb (PI3K 的亚基) 的甲基化，可能进一步影响到了 PI3K 的活性，以及
+下游的信号通路，从而对胰岛素抵抗发挥调控作用。
+
+```{r}
+fig2 <- cls(
+  cl("./Figure+Table/DMR-KEGG-enrichment.pdf",
+    "./Figure+Table/DMR-rno04930-visualization.png"),
+  cl("./Figure+Table/DMR-GO-enrichment.pdf")
+)
+render(fig2)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-2
+autor("./Figure+Table/fig2.pdf")
+```
+
+```{r}
+fig3 <- cls(
+  # rw(),
+  cl("./Figure+Table/Chr8-DMR-annotation.pdf",
+    "./Figure+Table/Chr8-Pik3cb-DMR-annotation.pdf"),
+  cl("./Figure+Table/Chr1-DMR-annotation.pdf",
+    "./Figure+Table/Chr1-Ins2-DMR-annotation.pdf")
+)
+render(fig3)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-3
+autor("./Figure+Table/fig3.pdf")
+```
+
+## StringDB PPI
+
+获取了 DM 相关的基因集，来源于 Fig. \@ref(fig:MAIN-Fig-4)a 所示数据库
+(这些数据库主要为人类的基因集，这里，使用 Biomart 将这些基因从 hgnc symbol 映射到 rgd symbol, 大鼠的基因) ，
+取合集，与 DMR 取交集，发现有 201 个重叠基因，Fig. \@ref(fig:MAIN-Fig-4)b。
+以重叠基因构建 PPI 网络，Fig. \@ref(fig:MAIN-Fig-4)c。随后，筛选 TOP 30 的Hub 基因，发现 Pik3cb、Ins2 在列。此外还有 Ikbkb。
+这些基因与 Fig. \@ref(fig:MAIN-Fig-4)e 所示的其它基因存在互作关系，这可能涉及这些基因的上游或下游机制，与 T2DM 的发展机制
+以及甲基化在其中发挥的作用相关。
+
+```{r}
+fig4 <- cl(
+  rw("./Figure+Table/Overall-targets-number-of-datasets.pdf",
+    "./Figure+Table/Intersection-of-Me-seq-with-DM.pdf",
+    "./Figure+Table/Raw-PPI-network.pdf"),
+  rw("./Figure+Table/Top30-MCC-score.pdf",
+    "./Figure+Table/DME-DM-genes-to-other-genes.pdf")
+)
+render(fig4)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-4
+autor("./Figure+Table/fig4.pdf")
+```
+
 # 结论 {#dis}
+
+Zuogui pill 给药涉及了分布于各染色体的 DMR，部分 DMR 处于 CpG Island。
+富集分析表明，总体 DMRs 与 T2DM 相关。
+对 Pik3cb 和 Ins2 基因的甲基化改变可能是 Zuogui pill 发挥药效的重要机制。
+
+
+```{r, echo = F}
+dir.create(dir_tiff <- "./Figure+Table/TIFF")
+lapply(list.files("./Figure+Table/", "fig.*\\.pdf", full.names = T),
+  function(x) {
+    newfile <- paste0(dir_tiff, "/", gs(get_filename(x), "\\.pdf$", ".tiff"))
+    pdf_convert(x, "tiff", filenames = newfile, dpi = 300)
+  })
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Tiff-figures
+autor("./Figure+Table/TIFF")
+```
 
 # 附：分析流程 {#workflow}
 
 - 许凯霞需求
 - 浙江百越4例WGBS信息采集与分析
 
-```{r}
-filesAlign <- list.files("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/Alignment",
-  "all_lanes", full.names = T, recursive = T)
-t.align <- ftibble(filesAlign)
-t.align
-vis(t.align[[1]])
-```
+## Methyl-seq
 
-```{r}
-t.diff <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/结果/01_甲基化差异表达DMR.csv")
-t.diff
+### DMR data {#data}
 
+- 数据来源： '浙江百越4例WGBS信息采集与分析/结果/01_甲基化差异表达DMR.csv'
+- 注释来源 (基因) ： '浙江百越4例WGBS信息采集与分析/结果/01_甲基化差异表达基因.tsv'
+
+
+**重要说明:**
+
+目前，对于数据表格中，'Model-vs-Model-Cure'，是按照 Model 比 Treatment 来认定的。
+而 Treatment vs Model, 则需要对原来的数据乘以 -1 转换。
+(如果测序公司或客户那边，实际上是相反的话，就要重新调整所有的分析了；
+不过，一般情况下应该是如此，只是在分析的过程中，发现结果与预期好像不是特别相符，因此这里有疑惑)
+为了说明这一点, 这部分的数据处理提供了源代码：
+
+```{r, echo = T}
+# ftibble <- function(x) tibble::as_tibble(data.table::fread(x))
 t.genes <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/结果/01_甲基化差异表达基因.tsv")
-t.genes
+t.diff <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/结果/01_甲基化差异表达DMR.csv")
+t.diff <- dplyr::select(t.diff, dmr_id, dplyr::ends_with("Model-vs-Model-Cure"))
+t.diff <- dplyr::mutate(t.diff,
+  chr = strx(dmr_id, "chr[0-9]+"),
+  start = strx(dmr_id, "(?<=_)[0-9]+(?=_)"),
+  end = strx(dmr_id, "[0-9]+$"),
+  ## 以下为转换得到 Treatment vs Model：
+  DMR_Treatment_vs_Model = -`dmr_diff_cg_Model-vs-Model-Cure`,
+  DMR_Qvalue = `dmr_qvalue_cg_Model-vs-Model-Cure`
+)
+dmrDat <- dplyr::select(t.diff, chr, start, end, tidyselect::starts_with("DMR", F), dmr_id)
+dmrDat <- dplyr::arrange(dmrDat, DMR_Qvalue)
 
+dmrDat.genes <- map(dmrDat, "dmr_id", t.genes, "dmr_id", "gene", col = "symbol")
+dmrDat.genes
+# dplyr::filter(dmrDat.genes, symbol == "Ins2")
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-autor(t.align[[1]])
+#| RAW-DMR-data
+autor(dmrDat.genes)
 ```
+
+### DMR distribution
+
+```{r}
+dmr <- job_dmr(dmrDat.genes, "rn6")
+dmr <- step1(dmr)
+dmr@plots$step1$p.cpgIsland
+dmr@plots$step1$p.distri
+dmr <- step2(dmr)
+dmr@plots$step2$p.dmrs$chr1
+p.cpg10_1 <- vis(dmr, "chr10", 1, T, 50)
+p.cpg10_1
+p.cpg10_2 <- vis(dmr, "chr10", 2, T, 50)
+p.cpg10_2
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-DMR-volcano-plot
+autor(dmr@plots$step1$p.volcano)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DMR-distribution
+autor(dmr@plots$step1$p.distri)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DMR-in-Genes
+autor(dmr@plots$step1$p.distriGene)
+```
+
+```{r}
+dmr@plots$step1$p.distri
+dmr@plots$step1$p.distriGene
+```
+
+### CpG Island
+
+```{r}
+dmr@plots$step1$p.cpgIsland
+dmr@plots$step1$p.viewOverlap
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Specific-methylation
+# 16, 7
+autor(dmr@plots$step1$p.viewOverlap)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| CpG-Island-methylation
+autor(wrap(dmr@plots$step1$p.cpgIsland, 7, 7))
+```
+
+### DMR plot
+
+### 富集分析
+
+### Enrichment
+
+```{r}
+dat.genesDmr <- data.frame(rgd_symbol = dmr@object$symbol, logFC = dmr@object$delta)
+dat.genesDmr <- dplyr::filter(dat.genesDmr, !is.na(rgd_symbol))
+dat.genesDmr
+```
+
+```{r}
+genes.dmr <- rm.no(dmr@object$symbol)
+bm <- job_biomart("rno", F)
+bm <- step1(bm, genes.dmr, "rgd")
+bm$anno
+
+en.dmr <- job_enrich(genes.dmr, bm$anno, "rgd_symbol")
+en.dmr <- step1(en.dmr, "rno")
+en.dmr@tables$step1$res.kegg$ids
+en.dmr@step <- 1L
+en.dmr <- step2(en.dmr, c("rno04010", "rno04930"), gene.level = dat.genesDmr, gene.level.name = "rgd_symbol")
+en.dmr@plots$step2$p.pathviews$rno04930
+
+en.dmr@plots$step1$p.go
+en.dmr@plots$step1$p.kegg
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DMR-GO-enrichment
+autor(en.dmr@plots$step1$p.go$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DMR-KEGG-enrichment
+autor(en.dmr@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DMR-rno04930-visualization
+autor(en.dmr@plots$step2$p.pathviews$rno04930)
+```
+
+### Ins2 和 Pik3cb
+
+```{r}
+p.Pik3cb <- vis(dmr, symbol = "Pik3cb", zo = 400)
+p.Pik3cb
+p.chr8 <- vis(dmr, "chr8")
+p.chr8
+
+p.Ins2 <- vis(dmr, symbol = "Ins2", zo = 400)
+p.Ins2
+p.chr1 <- vis(dmr, "chr1")
+p.chr1
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Chr8-Pik3cb-DMR-annotation
+autor(p.Pik3cb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Chr8-DMR-annotation
+autor(p.chr8)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Chr1-Ins2-DMR-annotation
+autor(p.Ins2)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Chr1-DMR-annotation
+autor(p.chr1)
+```
+
+## Diabetes mellitus
+
+```{r}
+gm <- job_gmix("Diabetes mellitus", "diabetes")
+gm <- step1(gm)
+gm <- step2(gm, 3, 4, 5, restrict = T)
+gm@plots$step2$p.cols
+gm@params$lst.genes
+
+bm2 <- job_biomart2(unlist(gm@params$lst.genes), "hsa", "rno")
+bm2 <- step1(bm2)
+bm2$mapped[ bm2$mapped$rgd_symbol == "Pik3cb", ]
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-targets-number-of-datasets
+autor(gm@plots$step2$p.cols)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| mapped-from-human-to-rat
+autor(bm2$mapped)
+```
+
+## Methyl-seq 与 DM
+
+### Intersection
+
+```{r}
+p.venn <- new_venn(Me_seq = genes.dmr, DM = bm2$mapped$rgd_symbol)
+p.venn
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-Me-seq-with-DM
+autor(p.venn)
+```
+
+### StringDB
+
+```{r}
+genes.dm2dmr <- attr(en.dmr@plots$step2$p.pathviews$rno04930, "genes")
+genes.dm2dmr
+
+sdb <- job_stringdb(p.venn$ins)
+sdb <- step1(sdb, species = 10116, HLs = genes.dm2dmr)
+wrap(sdb@plots$step1$p.ppi, 4.5, 3)
+sdb@plots$step1$p.mcc
+genes.hub <- head(sdb@tables$step1$hub_genes, 30)$Symbol
+
+plst.mcc <- filter(sdb, intersect(genes.hub, genes.dm2dmr), p.venn$ins, label.shape = c("DMR_DM", "Others"), arrow = F)
+plst.mcc$p.mcc
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Raw-PPI-network
+autor(wrap(sdb@plots$step1$p.ppi, 4.5, 3))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Top30-MCC-score
+autor(sdb@plots$step1$p.mcc)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| DME-DM-genes-to-other-genes
+autor(plst.mcc$p.mcc)
+```
+
 

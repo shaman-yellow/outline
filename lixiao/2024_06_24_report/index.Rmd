@@ -1,0 +1,126 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(06), eval = ic(), coef = 0, lock = F, id = "report", title = "报告呈现优化")
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F, needTex = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index(F, F)
+```
+
+
+# 摘要
+
+使用 Rmarkdown + Latex + 自定义的 R 程序，在分析的同时，生成美观、规范的报告文档。
+
+# 具体优化
+
+## 目录
+
+- 除了内容目录，还提供图片索引、表格索引。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-00-24.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-01-26.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-01-32.png")
+```
+
+## Figure
+
+### 组图
+
+- 图片所在定位。
+- 组图所用材料定位。
+- 自动化 figure 标记。
+- 注释分界线 (避免内容混淆) 
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-03-13.png")
+```
+
+### 分图
+
+在组图的特点的基础上：
+
+- 特定 Figure，将自动触发类似如下参数注释
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-06-22.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-08-49.png")
+```
+
+## Table
+
+- 类似 Figure 的文件定位。
+- 所有提供的表格，都将在报告中提供概览。
+- 必要内容，可触发自动列名称注释。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-09-51.png")
+```
+
+## 附加文件
+
+包含附加文件时，触发对文件注释说明。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-12-39.png")
+```
+
+## 分析流程
+
+### 自动化生成标题
+
+- 标题格式为：分级+方法+分析内容+标记
+- 分析与标题生成同步，分析结束后，可借程序生成如下内容，发送 AI 获取注释 (见 \@ref(ai)) 
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-22-04.png")
+```
+
+### AI 注释 (ChatGPT 4 分析流程说明) {#ai}
+
+结合自动标题，可对分析流程进行 AI 注释，嵌入文档。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-18-25.png")
+```
+
+## 原代码 (如必要) 
+
+- 如必要，可生成代码块，与分析内容一一对应。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-06-24 16-26-21.png")
+```

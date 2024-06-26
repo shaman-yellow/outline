@@ -1,0 +1,1487 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz} \usepackage{auto-pst-pdf} \usepackage{pgfornament} \usepackage{pstricks-add} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge
+空代+空转+单细胞的联合分析} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-06-19}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{84}\end{center}\tableofcontents
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{88}\end{center}\listoffigures
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{89}\end{center}\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+在本研究中，我们通过空间代谢组学和空间转录组学方法分析了肺癌患者样本，以探讨癌细胞和癌周组织之间的代谢和基因表达差异。发现了癌细胞与癌周组织的转化途径。进一步的差异分析揭示了多个差异代谢物，通过scFEA工具预测细胞水平的代谢通量变化，结合单细胞数据和空间代谢组数据验证了 3 个共同的差异代谢物，Glutamic acid (C00025), Uridine 5'-monophosphate (C00105), Adenosine 5'-monophosphate (C00020)。拟时分析进一步揭示了癌变过程中的关键基因，并通过PPI网络构建发现了这些基因与代谢变化相关的直接物理作用，有 4 个基因被筛选为可进一步分析验证: SOX2, A2M, CD74, DSP。
+
+曹卓订单，空代+空转+单细胞的联合分析
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  The R package \texttt{Cardinal} used for analyzing mass spectrometry imaging datasets\textsuperscript{\protect\hyperlink{ref-CardinalV3ABemis2023}{1}}.
+\item
+  R package \texttt{ClusterProfiler} used for gene enrichment analysis\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{2}}.
+\item
+  R package \texttt{Seurat} used for multiple dataset integration\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{3},\protect\hyperlink{ref-ComprehensiveIStuart2019}{4}}.
+\item
+  R package \texttt{FELLA} used for metabolite enrichment analysis\textsuperscript{\protect\hyperlink{ref-FellaAnRPacPicart2018}{5}}.
+\item
+  The \texttt{scFEA} (python) was used to estimate cell-wise metabolic via single cell RNA-seq data\textsuperscript{\protect\hyperlink{ref-AGraphNeuralAlgham2021}{6}}.
+\item
+  R package \texttt{Limma} and \texttt{edgeR} used for differential expression analysis\textsuperscript{\protect\hyperlink{ref-LimmaPowersDiRitchi2015}{7},\protect\hyperlink{ref-EdgerDifferenChen}{8}}.
+\item
+  R package \texttt{Monocle3} used for cell pseudotime analysis\textsuperscript{\protect\hyperlink{ref-ReversedGraphQiuX2017}{9},\protect\hyperlink{ref-TheDynamicsAnTrapne2014}{10}}.
+\item
+  R package \texttt{STEINGdb} used for PPI network construction\textsuperscript{\protect\hyperlink{ref-TheStringDataSzklar2021}{11},\protect\hyperlink{ref-CytohubbaIdenChin2014}{12}}.
+\item
+  R package \texttt{Seurat} used for spatial scRNA-seq analysis\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{3},\protect\hyperlink{ref-ComprehensiveIStuart2019}{4}}.
+\item
+  The R package \texttt{Seurat} used for scRNA-seq processing\textsuperscript{\protect\hyperlink{ref-IntegratedAnalHaoY2021}{3},\protect\hyperlink{ref-ComprehensiveIStuart2019}{4}}.
+\item
+  \texttt{SCSA} (python) used for cell type annotation\textsuperscript{\protect\hyperlink{ref-ScsaACellTyCaoY2020}{13}}.
+\item
+  The MCC score was calculated referring to algorithm of \texttt{CytoHubba}\textsuperscript{\protect\hyperlink{ref-CytohubbaIdenChin2014}{12}}.
+\item
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{ux7a7aux95f4ux4ee3ux8c22ux7ec4ux5206ux6790}{%
+\subsection{空间代谢组分析}\label{ux7a7aux95f4ux4ee3ux8c22ux7ec4ux5206ux6790}}
+
+在空间代谢组分析部分，对数据集预处理后，首先对样本进行 PCA 聚类，见 Fig. \ref{fig:MAIN-Fig-1}a，
+Tumor 和 Peritumor 的聚类结果呈现了同一性和异同性，提示两者之间的转化途经。
+随后，我们对两组数据进行差异分析，差异代谢物见 Tab. \ref{tab:INTEGRATE-Significant-differences-features}，
+Fig. \ref{fig:MAIN-Fig-1}b 展示了 Top 10 的代谢物的峰强度。
+将差异代谢物以 FELLA 包提供的 PageRank (Fig. \ref{fig:MAIN-Fig-1}c) 和 Hypergeom (Fig. \ref{fig:MAIN-Fig-1}d)
+算法进行 KEGG 富集分析。PageRank 提供的富集网络可以帮助理解差异代谢物彼此之间关联以及与通路、模块、酶反应之间
+的联系。一共有 12 个差异代谢物被富集。
+Fig. \ref{fig:MAIN-Fig-1}d, ``Nucleotide metabolism'' 等通路的富集，揭示了癌变后细胞代谢的变化
+(癌细胞快速增殖，需要大量的核苷酸来支持DNA和RNA的合成) 。
+值得注意的是，``bile secretion'' 等通路，在单细胞数据集的拟时分析中得到印证 (Fig. \ref{fig:MAIN-Fig-5}c)。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MAIN-Fig-1} (下方图) 为图MAIN Fig 1概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-1.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/fig1.pdf}
+\caption{MAIN Fig 1}\label{fig:MAIN-Fig-1}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Composition
+:}
+
+\vspace{0.5em}
+
+    ./Figure+Table/INTEGRATE-PCA-plot.pdf \newline
+./Figure+Table/INTEGRATE-boxplot-of-top-features.pdf
+\newline
+./Figure+Table/TOPS-enrichment-with-algorithm-PageRank.pdf
+\newline
+./Figure+Table/Tops-Compounds-hypergeom-KEGG-enrichment.pdf
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790}{%
+\subsection{空间转录组分析}\label{ux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790}}
+
+以癌组织切片和癌周组织切片进行空间转录组数据分析。我们首先分别对两组数据进行细胞聚类、注释，
+Fig. \ref{fig:MAIN-Fig-2}a、b。其中，癌组织以 copyKAT 预测非整倍体 (Fig. \ref{fig:MAIN-Fig-2}c)，判断为癌细胞。
+(注，这部分内容取自前一次该客户的分析结果，没有重新分析。)
+随后，将两部分的单细胞数据集成，以备后续分析 (Fig. \ref{fig:MAIN-Fig-2}d)。
+随后，我们将主要关注于 Epithelial\_cell\_Peritumoral\_cell, Cancer\_cell。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MAIN-Fig-2} (下方图) 为图MAIN Fig 2概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-2.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/fig2.pdf}
+\caption{MAIN Fig 2}\label{fig:MAIN-Fig-2}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Composition
+:}
+
+\vspace{0.5em}
+
+    ./Figure+Table/CANCER-The-scsa-cell.pdf \newline
+./Figure+Table/PERI-The-scsa-cell.pdf \newline
+./Figure+Table/copyKAT-prediction-of-aneuploidy.png
+\newline ./Figure+Table/The-Integrated-cells.pdf
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux5355ux7ec6ux80deux6570ux636eux96c6ux9884ux6d4bux4ee3ux8c22ux901aux91cf}{%
+\subsection{单细胞数据集预测代谢通量}\label{ux5355ux7ec6ux80deux6570ux636eux96c6ux9884ux6d4bux4ee3ux8c22ux901aux91cf}}
+
+空间转录组和空间代谢组的样本数据都来自于肺癌患者的样本数据，那么它们的本质将揭示相同的病机。
+应该认为，代谢变化与单细胞水平的基因表达变化是相互反映的。
+这里，通过借用 scFEA 工具，以单细胞数据 (取 Epithelial\_cell\_Peritumoral\_cell, Cancer\_cell)
+预测细胞水平的代谢通量变化，随后和我们的空间代谢组分析结果
+相互印证。Fig. \ref{fig:MAIN-Fig-3}a 为 scFEA 训练数据时的收敛曲线。
+预测细胞水平的代谢通量变化，随后进行差异分析 Fig. \ref{fig:MAIN-Fig-3}b。
+差异分析结果表格见 Tab. \ref{tab:FLUX-data-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs}。
+之后，将这里代谢通量变化的对应代谢物，与空间转录组的差异代谢物，取交集，Fig. \ref{fig:MAIN-Fig-3}c。
+我们发现了三个同时在空间转录组水平和空间代谢组水平反映的差异代谢物：
+Glutamic acid (C00025), Uridine 5'-monophosphate (C00105), Adenosine 5'-monophosphate (C00020)。
+回到空间代谢组数据考察三个代谢物在癌症组织和癌周组织的含量水平。
+一共有 4 个 Feature 被鉴定为这三个代谢物 (可能是不同的加合离子型)，
+Fig. \ref{fig:MAIN-Fig-3}d、e、f、g。
+
+针对这三个代谢物，我们重新进行了富集分析，Fig. \ref{fig:MAIN-Fig-4}a、b。
+富集结果与此前的富集分析结果一致，体现了癌变后细胞内的特征性代谢变化。
+此外，Fig. \ref{fig:MAIN-Fig-4}b 的网络图体现了三个代谢物在机体内的密切关联。
+随后，我们通过获取 scFEA 反映代谢通量变化的基因，对其进行 KEGG 富集分析，
+Fig. \ref{fig:MAIN-Fig-4}d。
+Fig. \ref{fig:MAIN-Fig-4}a 和 Fig. \ref{fig:MAIN-Fig-4}d 共同揭示了一些通路，
+我们将其汇总于 Fig. \ref{fig:MAIN-Fig-4}c。
+``Nicotinate and nicotinamide metabolism'' 的发现，与文献报道的相一致\textsuperscript{\protect\hyperlink{ref-IntegratedMetaFahrma2017}{14}}。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MAIN-Fig-3} (下方图) 为图MAIN Fig 3概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-3.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/fig3.pdf}
+\caption{MAIN Fig 3}\label{fig:MAIN-Fig-3}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Composition
+:}
+
+\vspace{0.5em}
+
+    ./Figure+Table/INTEGRATED-Convergency-of-the-loss-terms-during-training.png
+\newline
+./Figure+Table/FLUX-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs.pdf
+\newline
+./Figure+Table/Intersection-of-Diff-flux-with-Diff-meta.pdf
+\newline
+./Figure+Table/Feature-image-visualizations/1\_Feature\_13\_C00025.pdf
+\newline
+./Figure+Table/Feature-image-visualizations/2\_Feature\_25\_C00025.pdf
+\newline
+./Figure+Table/Feature-image-visualizations/3\_Feature\_123\_C00105.pdf
+\newline
+./Figure+Table/Feature-image-visualizations/4\_Feature\_131\_C00020.pdf
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MAIN-Fig-4} (下方图) 为图MAIN Fig 4概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-4.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/fig4.pdf}
+\caption{MAIN Fig 4}\label{fig:MAIN-Fig-4}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Composition
+:}
+
+\vspace{0.5em}
+
+    ./Figure+Table/INTERSECT-Compounds-hypergeom-KEGG-enrichment.pdf
+\newline
+./Figure+Table/INTERSECT-enrichment-with-algorithm-PageRank.pdf
+\newline ./Figure+Table/FLUX-Co-enriched-KEGG-pathway.pdf
+\newline ./Figure+Table/FLUX-KEGG-enrichment.pdf
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790}{%
+\subsection{癌细胞拟时分析}\label{ux764cux7ec6ux80deux62dfux65f6ux5206ux6790}}
+
+对 Epithelial\_cell\_Peritumoral\_cell, Cancer\_cell 进行拟时分析。
+拟时分析结果揭示了明确的癌变过程，Fig. \ref{fig:MAIN-Fig-5}a、b。
+随后，根据拟时分析图像，以 ``Graph test'' 筛选拟时变化过程中的关键基因。
+对 Top 50 的基因进行了富集分析，以及拟时热图注释。
+
+随后，为了发现拟时变化过程中的关键基因与此前揭示的代谢物之间 (控制代谢变化相关的基因，即 scFEA 与代谢通量相关的基因)
+的关联，我们将这些对应基因以 STRINGdb 构建 PPI 网络 Fig. \ref{fig:MAIN-Fig-6}a。
+通过深入挖掘这些蛋白质 (基因) 之间的关联，获取 Fig. \ref{fig:MAIN-Fig-6}b，
+可以发现，一共有 4 个拟时变化过程中的关键基因 (蛋白质) ，与代谢变化对应的基因 (蛋白质) 有直接物理作用 (physical) 。
+这些基因为：SOX2, A2M, CD74, DSP。
+其中，SOX2 是与其它蛋白质关联最为密切的对象 (MCC 得分) 。
+它们在单细胞数据集中的表达见 Fig. \ref{fig:MAIN-Fig-6}c。
+其中，SOX2 主要在癌细胞中高表达，而 A2M 在癌细胞中的表达量下降了 (结合 Fig. \ref{fig:MAIN-Fig-5}a、b) 。
+这些基因在空间转录组的组织切片中的表达见 Fig. \ref{fig:MAIN-Fig-6}d。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MAIN-Fig-5} (下方图) 为图MAIN Fig 5概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-5.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/fig5.pdf}
+\caption{MAIN Fig 5}\label{fig:MAIN-Fig-5}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Composition
+:}
+
+\vspace{0.5em}
+
+    ./Figure+Table/INTEGRATED-principal-points.pdf \newline
+./Figure+Table/INTEGRATED-pseudotime.pdf \newline
+./Figure+Table/GRAPHTOPS-KEGG-enrichment.pdf \newline
+./Figure+Table/INTEGRATED-Pseudotime-heatmap-of-genes.pdf
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MAIN-Fig-6} (下方图) 为图MAIN Fig 6概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-6.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/fig6.pdf}
+\caption{MAIN Fig 6}\label{fig:MAIN-Fig-6}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Composition
+:}
+
+\vspace{0.5em}
+
+    ./Figure+Table/PPI-raw-PPI-network.pdf \newline
+./Figure+Table/PPI-Top-MCC-score.pdf \newline
+./Figure+Table/Dimension-plot-of-expression-level-of-the-genes.pdf
+\newline ./Figure+Table/Spatial-feature-plot.pdf
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+`Tiff figures' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TIFF})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/TIFF共包含6个文件。
+
+\begin{enumerate}\tightlist
+\item MAIN-Fig-1.tiff
+\item MAIN-Fig-2.tiff
+\item MAIN-Fig-3.tiff
+\item MAIN-Fig-4.tiff
+\item MAIN-Fig-5.tiff
+\item ...
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+见 \ref{abstract} 和 \ref{results}
+
+\newpage
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux7a7aux95f4ux4ee3ux8c22ux7ec4ux6570ux636eux5206ux6790}{%
+\subsection{空间代谢组数据分析}\label{ux7a7aux95f4ux4ee3ux8c22ux7ec4ux6570ux636eux5206ux6790}}
+
+空间代谢组数据分析包括数据收集、预处理和分析。使用不同的分析工具和方法，我们可以揭示样本中代谢物的空间分布和变化情况。这部分的重点是数据的整合和分析流程的描述，以确保结果的准确性和可重复性。
+
+\hypertarget{cardinal-ux7a7aux95f4ux4ee3ux8c22ux7ec4ux6570ux636eux5206ux6790-integrate}{%
+\subsubsection{Cardinal 空间代谢组数据分析 (INTEGRATE)}\label{cardinal-ux7a7aux95f4ux4ee3ux8c22ux7ec4ux6570ux636eux5206ux6790-integrate}}
+
+Cardinal 是一种用于空间代谢组数据分析的强大工具，能够处理和分析高维数据。通过对数据进行整合和分析，我们可以揭示样本中代谢物的空间分布和动态变化，从而为进一步的生物学研究提供线索。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:INTEGRATE-all-features} (下方表格) 为表格INTEGRATE all features概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATE-all-features.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有218行15列，以下预览的表格可能省略部分数据；含有218个唯一`i'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:INTEGRATE-all-features}INTEGRATE all features}\tabularnewline
+\toprule
+i & mz & count & freq & mz.sub & m.z & Name & Notation & Formula & KEGG\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+i & mz & count & freq & mz.sub & m.z & Name & Notation & Formula & KEGG\tabularnewline
+\midrule
+\endhead
+1 & 96.000\ldots{} & 118 & 0.0005\ldots{} & 96.0007 & 96.000\ldots{} & NA & {[}M-H{]}- & NA & NA\tabularnewline
+2 & 96.960\ldots{} & 230943 & 0.9866\ldots{} & 96.9603 & 96.960\ldots{} & sulfate & {[}M-H{]}- & H2O4S & NA\tabularnewline
+3 & 98.956\ldots{} & 1 & 4.2722\ldots{} & 98.956 & 98.956\ldots{} & NA & {[}M-H-H{]}2- & NA & NA\tabularnewline
+4 & 99.925\ldots{} & 7 & 2.9905\ldots{} & 99.926 & 99.926\ldots{} & NA & {[}M-H{]}- & NA & NA\tabularnewline
+5 & 102.05\ldots{} & 2 & 8.5444\ldots{} & 102.0562 & 102.05\ldots{} & Dimeth\ldots{} & {[}M-H{]}- & C4H9NO2 & C01026\tabularnewline
+6 & 108.00\ldots{} & 379 & 0.0016\ldots{} & 108.0006 & 108.00\ldots{} & NA & {[}M-H{]}- & NA & NA\tabularnewline
+7 & 111.00\ldots{} & 26 & 0.0001\ldots{} & 111.0089 & 111.00\ldots{} & Glutac\ldots{} & {[}M-H-H\ldots{} & C5H6O4 & C02214\tabularnewline
+8 & 115.92\ldots{} & 1 & 4.2722\ldots{} & 115.9207 & 115.92\ldots{} & NA & {[}M-H{]}- & NA & NA\tabularnewline
+9 & 118.89\ldots{} & 9 & 3.8449\ldots{} & 118.8996 & 118.89\ldots{} & NA & {[}M-H{]}- & NA & NA\tabularnewline
+10 & 120.00\ldots{} & 135 & 0.0005\ldots{} & 120.0006 & 120.00\ldots{} & NA & {[}M-H-H{]}2- & NA & NA\tabularnewline
+11 & 121.00\ldots{} & 26 & 0.0001\ldots{} & 121.0083 & 121.00\ldots{} & NA & {[}M-H{]}- & NA & NA\tabularnewline
+12 & 124.00\ldots{} & 233542 & 0.9977\ldots{} & 124.0074 & 124.00\ldots{} & Taurine & {[}M-H{]}- & C2H7NO3S & C00245\tabularnewline
+13 & 128.03\ldots{} & 2469 & 0.0105\ldots{} & 128.0354 & 128.03\ldots{} & Glutam\ldots{} & {[}M-H-H\ldots{} & C5H9NO4 & C00025\tabularnewline
+14 & 128.89\ldots{} & 170277 & 0.7274\ldots{} & 128.8922 & 128.89\ldots{} & NA & {[}M-H{]}- & NA & NA\tabularnewline
+15 & 132.00\ldots{} & 321 & 0.0013\ldots{} & 132.0006 & 132.00\ldots{} & NA & {[}M-H{]}- & NA & NA\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:INTEGRATE-PCA-plot} (下方图) 为图INTEGRATE PCA plot概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATE-PCA-plot.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTEGRATE-PCA-plot.pdf}
+\caption{INTEGRATE PCA plot}\label{fig:INTEGRATE-PCA-plot}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:INTEGRATE-Significant-differences-features} (下方表格) 为表格INTEGRATE Significant differences features概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATE-Significant-differences-features.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有97行16列，以下预览的表格可能省略部分数据；含有97个唯一`i'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:INTEGRATE-Significant-differences-features}INTEGRATE Significant differences features}\tabularnewline
+\toprule
+i & mz & statistic & pvalue & fdr & mz.sub & m.z & Name & Notation & Formula\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+i & mz & statistic & pvalue & fdr & mz.sub & m.z & Name & Notation & Formula\tabularnewline
+\midrule
+\endhead
+2 & 96.960\ldots{} & 15.186\ldots{} & 9.7420\ldots{} & 0.0005\ldots{} & 96.9603 & 96.960\ldots{} & sulfate & {[}M-H{]}- & H2O4S\tabularnewline
+11 & 121.00\ldots{} & 8.3623\ldots{} & 0.0038\ldots{} & 0.0104\ldots{} & 121.0083 & 121.00\ldots{} & NA & {[}M-H{]}- & NA\tabularnewline
+12 & 124.00\ldots{} & 20.761\ldots{} & 5.2004\ldots{} & 8.0979\ldots{} & 124.0074 & 124.00\ldots{} & Taurine & {[}M-H{]}- & C2H7NO3S\tabularnewline
+13 & 128.03\ldots{} & 19.401\ldots{} & 1.0590\ldots{} & 0.0001\ldots{} & 128.0354 & 128.03\ldots{} & Glutam\ldots{} & {[}M-H-H\ldots{} & C5H9NO4\tabularnewline
+21 & 140.02\ldots{} & 15.018\ldots{} & 0.0001\ldots{} & 0.0006\ldots{} & 140.0119 & 140.01\ldots{} & O-Phos\ldots{} & {[}M-H{]}- & C2H8NO4P\tabularnewline
+24 & 144.86\ldots{} & 11.260\ldots{} & 0.0007\ldots{} & 0.0029\ldots{} & 144.8697 & 144.86\ldots{} & NA & {[}M-H{]}- & NA\tabularnewline
+25 & 146.04\ldots{} & 17.324\ldots{} & 3.1515\ldots{} & 0.0002\ldots{} & 146.0459 & 146.04\ldots{} & Glutam\ldots{} & {[}M-H{]}- & C5H9NO4\tabularnewline
+26 & 146.86\ldots{} & 9.0877\ldots{} & 0.0025\ldots{} & 0.0073\ldots{} & 146.8668 & 146.86\ldots{} & NA & {[}M-H{]}- & NA\tabularnewline
+28 & 151.89\ldots{} & 9.8327\ldots{} & 0.0017\ldots{} & 0.0054\ldots{} & NA & NA & NA & NA & NA\tabularnewline
+29 & 152.99\ldots{} & 6.5953\ldots{} & 0.0102\ldots{} & 0.0254\ldots{} & 152.9958 & 152.99\ldots{} & 3-phos\ldots{} & {[}M-H{]}- & C3H7O5P\tabularnewline
+31 & 154.91\ldots{} & 11.696\ldots{} & 0.0006\ldots{} & 0.0024\ldots{} & 154.9168 & 154.91\ldots{} & NA & {[}M-H{]}- & NA\tabularnewline
+36 & 160.00\ldots{} & 6.5840\ldots{} & 0.0102\ldots{} & 0.0254\ldots{} & 160.0074 & 160.00\ldots{} & NA & {[}M-H{]}- & NA\tabularnewline
+37 & 160.84\ldots{} & 17.149\ldots{} & 3.4541\ldots{} & 0.0002\ldots{} & 160.8421 & 160.84\ldots{} & NA & {[}M-H{]}- & NA\tabularnewline
+41 & 168.04\ldots{} & 9.6952\ldots{} & 0.0018\ldots{} & 0.0057\ldots{} & 168.0432 & 168.04\ldots{} & Phosph\ldots{} & {[}M-H{]}- & C4H12NO4P\tabularnewline
+43 & 169.90\ldots{} & 8.7556\ldots{} & 0.0030\ldots{} & 0.0087\ldots{} & NA & NA & NA & NA & NA\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:INTEGRATE-boxplot-of-top-features} (下方图) 为图INTEGRATE boxplot of top features概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATE-boxplot-of-top-features.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTEGRATE-boxplot-of-top-features.pdf}
+\caption{INTEGRATE boxplot of top features}\label{fig:INTEGRATE-boxplot-of-top-features}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{fella-ux4ee3ux8c22ux7269ux5bccux96c6ux5206ux6790-tops}{%
+\subsubsection{FELLA 代谢物富集分析 (TOPS)}\label{fella-ux4ee3ux8c22ux7269ux5bccux96c6ux5206ux6790-tops}}
+
+FELLA 工具用于代谢物富集分析，通过将代谢物与已知的代谢通路进行比对，可以识别出富集的代谢通路。这有助于我们理解代谢物的功能和其在生物过程中的角色。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:TOPS-enrichment-with-algorithm-PageRank} (下方图) 为图TOPS enrichment with algorithm PageRank概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TOPS-enrichment-with-algorithm-PageRank.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TOPS-enrichment-with-algorithm-PageRank.pdf}
+\caption{TOPS enrichment with algorithm PageRank}\label{fig:TOPS-enrichment-with-algorithm-PageRank}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Tops-Compounds-hypergeom-KEGG-enrichment} (下方图) 为图Tops Compounds hypergeom KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Tops-Compounds-hypergeom-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Tops-Compounds-hypergeom-KEGG-enrichment.pdf}
+\caption{Tops Compounds hypergeom KEGG enrichment}\label{fig:Tops-Compounds-hypergeom-KEGG-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:TOPS-data-of-enrichment-with-algorithm-PageRank} (下方表格) 为表格TOPS data of enrichment with algorithm PageRank概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TOPS-data-of-enrichment-with-algorithm-PageRank.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有249行7列，以下预览的表格可能省略部分数据；含有249个唯一`name'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:TOPS-data-of-enrichment-with-algorithm-PageRank}TOPS data of enrichment with algorithm PageRank}\tabularnewline
+\toprule
+name & com & NAME & label & input & abbrev.name & type\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+name & com & NAME & label & input & abbrev.name & type\tabularnewline
+\midrule
+\endhead
+hsa00061 & 1 & Fatty acid\ldots{} & Fatty acid\ldots{} & Others & Fatty acid\ldots{} & Pathway\tabularnewline
+hsa00062 & 1 & Fatty acid\ldots{} & Fatty acid\ldots{} & Others & Fatty acid\ldots{} & Pathway\tabularnewline
+hsa00120 & 1 & Primary bi\ldots{} & Primary bi\ldots{} & Others & Primary bi\ldots{} & Pathway\tabularnewline
+hsa00230 & 1 & Purine met\ldots{} & Purine met\ldots{} & Others & Purine met\ldots{} & Pathway\tabularnewline
+hsa00430 & 1 & Taurine an\ldots{} & Taurine an\ldots{} & Others & Taurine an\ldots{} & Pathway\tabularnewline
+hsa00563 & 1 & Glycosylph\ldots{} & Glycosylph\ldots{} & Others & Glycosylph\ldots{} & Pathway\tabularnewline
+hsa00564 & 1 & Glyceropho\ldots{} & Glyceropho\ldots{} & Others & Glyceropho\ldots{} & Pathway\tabularnewline
+hsa00590 & 1 & Arachidoni\ldots{} & Arachidoni\ldots{} & Others & Arachidoni\ldots{} & Pathway\tabularnewline
+hsa01040 & 1 & Biosynthes\ldots{} & Biosynthes\ldots{} & Others & Biosynthes\ldots{} & Pathway\tabularnewline
+hsa01232 & 1 & Nucleotide\ldots{} & Nucleotide\ldots{} & Others & Nucleotide\ldots{} & Pathway\tabularnewline
+hsa04071 & 1 & Sphingolip\ldots{} & Sphingolip\ldots{} & Others & Sphingolip\ldots{} & Pathway\tabularnewline
+hsa04080 & 1 & Neuroactiv\ldots{} & Neuroactiv\ldots{} & Others & Neuroactiv\ldots{} & Pathway\tabularnewline
+hsa04146 & 1 & Peroxisome\ldots{} & Peroxisome\ldots{} & Others & Peroxisome\ldots{} & Pathway\tabularnewline
+hsa04151 & 1 & PI3K-Akt s\ldots{} & PI3K-Akt s\ldots{} & Others & PI3K-Akt s\ldots{} & Pathway\tabularnewline
+hsa04216 & 1 & Ferroptosi\ldots{} & Ferroptosi\ldots{} & Others & Ferroptosi\ldots{} & Pathway\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:TOPS-data-of-enrichment-with-algorithm-Hypergeom} (下方表格) 为表格TOPS data of enrichment with algorithm Hypergeom概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/TOPS-data-of-enrichment-with-algorithm-Hypergeom.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有15行6列，以下预览的表格可能省略部分数据；含有15个唯一`KEGG.id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:TOPS-data-of-enrichment-with-algorithm-Hypergeom}TOPS data of enrichment with algorithm Hypergeom}\tabularnewline
+\toprule
+KEGG.id & Description & Count & CompoundsI\ldots{} & pvalue & Compound\_R\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+KEGG.id & Description & Count & CompoundsI\ldots{} & pvalue & Compound\_R\ldots{}\tabularnewline
+\midrule
+\endhead
+hsa00430 & Taurine an\ldots{} & 6 & 93 & 1.26333822\ldots{} & 0.5\tabularnewline
+hsa04976 & Bile secre\ldots{} & 7 & 161 & 1.26333822\ldots{} & 0.58333333\ldots{}\tabularnewline
+hsa04151 & PI3K-Akt s\ldots{} & 5 & 57 & 2.94176160\ldots{} & 0.41666666\ldots{}\tabularnewline
+hsa04146 & Peroxisome\ldots{} & 7 & 279 & 0.00023384\ldots{} & 0.58333333\ldots{}\tabularnewline
+hsa00120 & Primary bi\ldots{} & 5 & 130 & 0.00090942\ldots{} & 0.41666666\ldots{}\tabularnewline
+hsa04216 & Ferroptosi\ldots{} & 4 & 59 & 0.00090942\ldots{} & 0.33333333\ldots{}\tabularnewline
+hsa01040 & Biosynthes\ldots{} & 5 & 157 & 0.00171085\ldots{} & 0.41666666\ldots{}\tabularnewline
+hsa01232 & Nucleotide\ldots{} & 5 & 154 & 0.00171085\ldots{} & 0.41666666\ldots{}\tabularnewline
+hsa04727 & GABAergic \ldots{} & 3 & 35 & 0.00394520\ldots{} & 0.25\tabularnewline
+hsa05169 & Epstein-Ba\ldots{} & 3 & 36 & 0.00394520\ldots{} & 0.25\tabularnewline
+hsa04723 & Retrograde\ldots{} & 3 & 39 & 0.00456905\ldots{} & 0.25\tabularnewline
+hsa04080 & Neuroactiv\ldots{} & 3 & 41 & 0.00487000\ldots{} & 0.25\tabularnewline
+hsa00230 & Purine met\ldots{} & 5 & 218 & 0.00508159\ldots{} & 0.41666666\ldots{}\tabularnewline
+hsa01523 & Antifolate\ldots{} & 3 & 45 & 0.00552169\ldots{} & 0.25\tabularnewline
+hsa00770 & Pantothena\ldots{} & 4 & 125 & 0.00655730\ldots{} & 0.33333333\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790-1}{%
+\subsection{空间转录组分析}\label{ux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790-1}}
+
+空间转录组分析通过整合空间信息和基因表达数据，揭示细胞在空间上的异质性和基因表达的空间分布。这部分的重点在于数据的获取、处理及分析方法的选择，以确保结果的准确性和生物学意义。
+
+\hypertarget{seurat-ux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790-cancer}{%
+\subsubsection{Seurat 空间转录组分析 (CANCER)}\label{seurat-ux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790-cancer}}
+
+Seurat 是一种广泛使用的单细胞数据分析工具，适用于空间转录组数据。通过 Seurat，我们可以分析癌症样本中的基因表达和细胞异质性，揭示其在空间上的分布和功能。
+
+注：这部分内容取自上一回该客户业务的结果。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:copyKAT-prediction-of-aneuploidy} (下方图) 为图copyKAT prediction of aneuploidy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/copyKAT-prediction-of-aneuploidy.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{/home/echo/outline/lixiao/2023_10_06_lunST/Figure+Table/copykat_heatmap.png}
+\caption{CopyKAT prediction of aneuploidy}\label{fig:copyKAT-prediction-of-aneuploidy}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:CANCER-The-scsa-cell} (下方图) 为图CANCER The scsa cell概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/CANCER-The-scsa-cell.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/CANCER-The-scsa-cell.pdf}
+\caption{CANCER The scsa cell}\label{fig:CANCER-The-scsa-cell}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{seurat-ux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790-peri}{%
+\subsubsection{Seurat 空间转录组分析 (PERI)}\label{seurat-ux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790-peri}}
+
+使用 Seurat 工具对空间转录组数据进行分析，可以揭示样本中基因表达的空间模式。PERI 分析特别关注特定区域的基因表达情况，帮助我们理解这些区域的功能和其在生物过程中的角色。
+
+注：这部分内容取自上一回该客户业务的结果。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:PERI-The-scsa-cell} (下方图) 为图PERI The scsa cell概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PERI-The-scsa-cell.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PERI-The-scsa-cell.pdf}
+\caption{PERI The scsa cell}\label{fig:PERI-The-scsa-cell}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux96c6ux6210ux5355ux7ec6ux80deux6570ux636eux5206ux6790}{%
+\subsubsection{集成单细胞数据分析}\label{ux96c6ux6210ux5355ux7ec6ux80deux6570ux636eux5206ux6790}}
+
+集成单细胞数据分析通过整合来自不同来源的单细胞数据，揭示细胞异质性和基因表达的多样性。这部分的重点在于数据的整合和分析方法的选择，以确保结果的准确性和生物学意义。
+
+\hypertarget{seurat-ux96c6ux6210ux5355ux7ec6ux80deux6570ux636eux5206ux6790}{%
+\paragraph{Seurat 集成单细胞数据分析}\label{seurat-ux96c6ux6210ux5355ux7ec6ux80deux6570ux636eux5206ux6790}}
+
+Seurat 工具适用于集成不同单细胞数据集，通过整合分析，我们可以揭示不同样本或条件下细胞的异质性和基因表达差异。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:The-Integrated-cells} (下方图) 为图The Integrated cells概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/The-Integrated-cells.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/The-Integrated-cells.pdf}
+\caption{The Integrated cells}\label{fig:The-Integrated-cells}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{clusterprofiler-ux5bccux96c6ux5206ux6790-stncancer}{%
+\paragraph{ClusterProfiler 富集分析 (STNCANCER)}\label{clusterprofiler-ux5bccux96c6ux5206ux6790-stncancer}}
+
+ClusterProfiler 是一种用于基因富集分析的工具，通过识别出富集的基因集，可以帮助我们理解基因在生物过程中的功能及其在癌症研究中的角色。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:STNCANCER-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-KEGG-enrichment} (下方图) 为图STNCANCER Cancer cell vs Epithelial cell Peritumoral cell KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/STNCANCER-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/STNCANCER-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-KEGG-enrichment.pdf}
+\caption{STNCANCER Cancer cell vs Epithelial cell Peritumoral cell KEGG enrichment}\label{fig:STNCANCER-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-KEGG-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{scfea-ux5355ux7ec6ux80deux6570ux636eux7684ux4ee3ux8c22ux901aux91cfux9884ux6d4b-integrated}{%
+\paragraph{scFEA 单细胞数据的代谢通量预测 (INTEGRATED)}\label{scfea-ux5355ux7ec6ux80deux6570ux636eux7684ux4ee3ux8c22ux901aux91cfux9884ux6d4b-integrated}}
+
+scFEA 工具用于单细胞数据的代谢通量预测，通过分析单细胞数据，可以预测细胞在不同条件下的代谢活动，揭示其代谢特征和变化。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:INTEGRATED-Convergency-of-the-loss-terms-during-training} (下方图) 为图INTEGRATED Convergency of the loss terms during training概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATED-Convergency-of-the-loss-terms-during-training.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{scfea/loss_20240614-080259.png}
+\caption{INTEGRATED Convergency of the loss terms during training}\label{fig:INTEGRATED-Convergency-of-the-loss-terms-during-training}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{limma-ux4ee3ux8c22ux901aux91cfux5deeux5f02ux5206ux6790-flux}{%
+\paragraph{Limma 代谢通量差异分析 (FLUX)}\label{limma-ux4ee3ux8c22ux901aux91cfux5deeux5f02ux5206ux6790-flux}}
+
+Limma 工具用于代谢通量的差异分析，通过比较不同条件下的代谢通量，可以揭示其在生物过程中的变化和作用。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:FLUX-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs} (下方图) 为图FLUX Cancer cell vs Epithelial cell Peritumoral cell DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FLUX-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FLUX-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs.pdf}
+\caption{FLUX Cancer cell vs Epithelial cell Peritumoral cell DEGs}\label{fig:FLUX-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+adj.P.Val cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    0.3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/FLUX-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs-content})}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:FLUX-data-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs} (下方表格) 为表格FLUX data Cancer cell vs Epithelial cell Peritumoral cell DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FLUX-data-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有122行11列，以下预览的表格可能省略部分数据；含有122个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:FLUX-data-Cancer-cell-vs-Epithelial-cell-Peritumoral-cell-DEGs}FLUX data Cancer cell vs Epithelial cell Peritumoral cell DEGs}\tabularnewline
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P.Val & B & name & gene & compounds\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P.Val & B & name & gene & compounds\tabularnewline
+\midrule
+\endhead
+M\_3 & 1.9518\ldots{} & 1.1240\ldots{} & 104.99\ldots{} & 0 & 0 & 1169.3\ldots{} & G3P -\textgreater\ldots{} & BPGM \textbar\ldots{} & G3P \textbar{} 3PD\tabularnewline
+M\_153 & -1.841\ldots{} & 1.0340\ldots{} & -65.06\ldots{} & 0 & 0 & 783.55\ldots{} & UMP -\textgreater\ldots{} & CANT1 \ldots{} & UMP \textbar{} CDP\tabularnewline
+M\_6 & 1.8399\ldots{} & -9.576\ldots{} & 64.736\ldots{} & 0 & 0 & 779.68\ldots{} & Pyruva\ldots{} & LDHA \textbar\ldots{} & Pyruva\ldots{}\tabularnewline
+M\_2 & 1.8075\ldots{} & -9.279\ldots{} & 59.080\ldots{} & 4.0796\ldots{} & 1.7032\ldots{} & 711.97\ldots{} & G6P -\textgreater\ldots{} & ALDOA \ldots{} & G6P \textbar{} G3P\tabularnewline
+M\_155 & 1.7719\ldots{} & -4.982\ldots{} & 54.039\ldots{} & 1.7285\ldots{} & 5.7733\ldots{} & 648.36\ldots{} & UTP -\textgreater\ldots{} & CTPS1 \ldots{} & UTP \textbar{} CDP\tabularnewline
+M\_25 & 1.6541\ldots{} & -1.192\ldots{} & 42.502\ldots{} & 4.1359\ldots{} & 1.1511\ldots{} & 490.93\ldots{} & Glutat\ldots{} & GGCT \textbar\ldots{} & Glutat\ldots{}\tabularnewline
+M\_135 & -1.632\ldots{} & 1.4551\ldots{} & -40.88\ldots{} & 5.5177\ldots{} & 1.3163\ldots{} & 467.61\ldots{} & AICAR \ldots{} & ATIC \textbar\ldots{} & AICAR \ldots{}\tabularnewline
+M\_133 & 1.6248\ldots{} & 6.1442\ldots{} & 40.382\ldots{} & 8.2789\ldots{} & 1.7282\ldots{} & 460.30\ldots{} & PRPP+G\ldots{} & ADSL \textbar\ldots{} & PRPP+G\ldots{}\tabularnewline
+M\_158 & 1.6239\ldots{} & 1.3231\ldots{} & 40.322\ldots{} & 1.9993\ldots{} & 3.7098\ldots{} & 459.42\ldots{} & dCDP -\ldots{} & CMPK1 \ldots{} & dCDP \textbar\ldots{}\tabularnewline
+M\_33 & -1.541\ldots{} & -1.347\ldots{} & -35.28\ldots{} & 4.3329\ldots{} & 7.2359\ldots{} & 384.97\ldots{} & G3P -\textgreater\ldots{} & ALDOA \ldots{} & G3P \textbar{} \ldots{}\tabularnewline
+M\_30 & 1.5272\ldots{} & -1.458\ldots{} & 34.550\ldots{} & 2.8313\ldots{} & 4.2984\ldots{} & 373.89\ldots{} & Methio\ldots{} & AHCY \textbar\ldots{} & Methio\ldots{}\tabularnewline
+M\_4 & 1.5080\ldots{} & 7.6787\ldots{} & 33.574\ldots{} & 6.8791\ldots{} & 9.5734\ldots{} & 359.19\ldots{} & 3PD -\textgreater\ldots{} & BPGM \textbar\ldots{} & 3PD \textbar{} \ldots{}\tabularnewline
+M\_54 & -1.464\ldots{} & 8.1183\ldots{} & -31.50\ldots{} & 2.8664\ldots{} & 3.6823\ldots{} & 327.84\ldots{} & Valine\ldots{} & ABAT \textbar\ldots{} & Valine\ldots{}\tabularnewline
+M\_161 & 1.4624\ldots{} & 1.9116\ldots{} & 31.429\ldots{} & 8.4922\ldots{} & 1.0130\ldots{} & 326.75\ldots{} & dCDP -\ldots{} & NME1 \textbar\ldots{} & dCDP \textbar\ldots{}\tabularnewline
+M\_71 & 1.4416\ldots{} & 2.5366\ldots{} & 30.525\ldots{} & 7.6516\ldots{} & 8.5188\ldots{} & 313.05\ldots{} & Glucos\ldots{} & SLC2A1\ldots{} & Glucos\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux8054ux5408ux7a7aux95f4ux4ee3ux8c22ux548cux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790}{%
+\subsection{联合空间代谢和空间转录组分析}\label{ux8054ux5408ux7a7aux95f4ux4ee3ux8c22ux548cux7a7aux95f4ux8f6cux5f55ux7ec4ux5206ux6790}}
+
+联合空间代谢和空间转录组分析通过整合这两种数据类型，揭示基因表达和代谢活动在空间上的相互关系。这部分的重点在于数据的整合和分析方法的选择，以确保结果的准确性和生物学意义。
+
+\hypertarget{ux4ea4ux96c6ux5deeux5f02ux4ee3ux8c22ux7269ux5355ux7ec6ux80deux5deeux5f02ux4ee3ux8c22ux901aux91cfux76f8ux5173ux4ee3ux8c22ux7269}{%
+\subsubsection{交集：差异代谢物+单细胞差异代谢通量相关代谢物}\label{ux4ea4ux96c6ux5deeux5f02ux4ee3ux8c22ux7269ux5355ux7ec6ux80deux5deeux5f02ux4ee3ux8c22ux901aux91cfux76f8ux5173ux4ee3ux8c22ux7269}}
+
+通过识别差异代谢物和单细胞差异代谢通量相关的代谢物，我们可以揭示它们在生物过程中的相互作用和关系。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Intersection-of-Diff-flux-with-Diff-meta} (下方图) 为图Intersection of Diff flux with Diff meta概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Intersection-of-Diff-flux-with-Diff-meta.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-Diff-flux-with-Diff-meta.pdf}
+\caption{Intersection of Diff flux with Diff meta}\label{fig:Intersection-of-Diff-flux-with-Diff-meta}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    C00105, C00025, C00020
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Intersection-of-Diff-flux-with-Diff-meta-content})}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:FLUX-intersection-flux-data} (下方表格) 为表格FLUX intersection flux data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FLUX-intersection-flux-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有11行12列，以下预览的表格可能省略部分数据；含有11个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:FLUX-intersection-flux-data}FLUX intersection flux data}\tabularnewline
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P.Val & B & name & gene & compounds\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & logFC & AveExpr & t & P.Value & adj.P.Val & B & name & gene & compounds\tabularnewline
+\midrule
+\endhead
+M\_153 & -1.841\ldots{} & 1.0340\ldots{} & -65.06\ldots{} & 0 & 0 & 783.55\ldots{} & UMP -\textgreater\ldots{} & CANT1 \ldots{} & UMP \textbar{} CDP\tabularnewline
+M\_25 & 1.6541\ldots{} & -1.192\ldots{} & 42.502\ldots{} & 4.1359\ldots{} & 1.1511\ldots{} & 490.93\ldots{} & Glutat\ldots{} & GGCT \textbar\ldots{} & Glutat\ldots{}\tabularnewline
+M\_138 & -1.403\ldots{} & 3.0980\ldots{} & -28.95\ldots{} & 1.6973\ldots{} & 1.4918\ldots{} & 289.23\ldots{} & AMP -\textgreater\ldots{} & AK1 \textbar{} \ldots{} & AMP \textbar{} \ldots{}\tabularnewline
+M\_48 & 1.3245\ldots{} & 8.1225\ldots{} & 26.060\ldots{} & 1.5888\ldots{} & 1.0613\ldots{} & 245.58\ldots{} & Glutam\ldots{} & GLS \textbar{} \ldots{} & Glutam\ldots{}\tabularnewline
+M\_136 & 1.0740\ldots{} & 2.0540\ldots{} & 18.875\ldots{} & 2.0959\ldots{} & 8.9750\ldots{} & 141.81\ldots{} & IMP -\textgreater\ldots{} & ADSL \textbar\ldots{} & IMP \textbar{} AMP\tabularnewline
+M\_151 & 1.0350\ldots{} & -1.063\ldots{} & 17.944\ldots{} & 5.9310\ldots{} & 2.2511\ldots{} & 129.29\ldots{} & Orotid\ldots{} & UMPS & Orotid\ldots{}\tabularnewline
+M\_150 & 0.9279\ldots{} & -6.182\ldots{} & 15.560\ldots{} & 1.2410\ldots{} & 3.9857\ldots{} & 98.702\ldots{} & PRPP -\ldots{} & UMPS & PRPP \textbar\ldots{}\tabularnewline
+M\_139 & 0.9134\ldots{} & -1.242\ldots{} & 15.256\ldots{} & 5.2227\ldots{} & 1.5858\ldots{} & 94.975\ldots{} & AMP -\textgreater\ldots{} & ADK \textbar{} \ldots{} & AMP \textbar{} \ldots{}\tabularnewline
+M\_26 & 0.8463\ldots{} & 4.3980\ldots{} & 13.888\ldots{} & 5.9781\ldots{} & 1.6921\ldots{} & 78.784\ldots{} & Glutam\ldots{} & GCLC \textbar\ldots{} & Glutam\ldots{}\tabularnewline
+M\_51 & 0.6412\ldots{} & 3.5247\ldots{} & 10.081\ldots{} & 9.6264\ldots{} & 2.0349\ldots{} & 39.403\ldots{} & Glutam\ldots{} & GLUD1 \ldots{} & Glutam\ldots{}\tabularnewline
+M\_152 & 0.5810\ldots{} & 2.7901\ldots{} & 9.0453\ldots{} & 8.6957\ldots{} & 1.6885\ldots{} & 30.383\ldots{} & UMP -\textgreater\ldots{} & DPYD \textbar\ldots{} & UMP \textbar{} \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:INTEGRATE-metadata-of-visualized-metabolites} (下方表格) 为表格INTEGRATE metadata of visualized metabolites概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATE-metadata-of-visualized-metabolites.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4行15列，以下预览的表格可能省略部分数据；含有4个唯一`i'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:INTEGRATE-metadata-of-visualized-metabolites}INTEGRATE metadata of visualized metabolites}\tabularnewline
+\toprule
+i & mz & count & freq & mz.sub & m.z & Name & Notation & Formula & KEGG\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+i & mz & count & freq & mz.sub & m.z & Name & Notation & Formula & KEGG\tabularnewline
+\midrule
+\endhead
+13 & 128.03\ldots{} & 2469 & 0.0105\ldots{} & 128.0354 & 128.03\ldots{} & Glutam\ldots{} & {[}M-H-H\ldots{} & C5H9NO4 & C00025\tabularnewline
+25 & 146.04\ldots{} & 53307 & 0.2277\ldots{} & 146.0459 & 146.04\ldots{} & Glutam\ldots{} & {[}M-H{]}- & C5H9NO4 & C00025\tabularnewline
+123 & 323.02\ldots{} & 19079 & 0.0815\ldots{} & 323.0284 & 323.02\ldots{} & Uridin\ldots{} & {[}M-H{]}- & C9H13N\ldots{} & C00105\tabularnewline
+131 & 346.05\ldots{} & 112118 & 0.4789\ldots{} & 346.0561 & 346.05\ldots{} & Adenos\ldots{} & {[}M-H{]}- & C10H14\ldots{} & C00020\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:INTEGRATE-Feature-25-C00025-image-visualization} (下方图) 为图INTEGRATE Feature 25 C00025 image visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATE-Feature-25-C00025-image-visualization.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTEGRATE-Feature-25-C00025-image-visualization.pdf}
+\caption{INTEGRATE Feature 25 C00025 image visualization}\label{fig:INTEGRATE-Feature-25-C00025-image-visualization}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+`Feature image visualizations' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Feature-image-visualizations})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/Feature-image-visualizations共包含4个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Feature\_13\_C00025.pdf
+\item 2\_Feature\_25\_C00025.pdf
+\item 3\_Feature\_123\_C00105.pdf
+\item 4\_Feature\_131\_C00020.pdf
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\hypertarget{fella-ux4ee3ux8c22ux7269ux5bccux96c6ux5206ux6790-intersect}{%
+\subsubsection{FELLA 代谢物富集分析 (INTERSECT)}\label{fella-ux4ee3ux8c22ux7269ux5bccux96c6ux5206ux6790-intersect}}
+
+FELLA 工具用于富集分析，通过识别出富集的代谢通路，可以帮助我们理解代谢物在生物过程中的功能及其相互关系。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:INTERSECT-data-of-enrichment-with-algorithm-Hypergeom} (下方表格) 为表格INTERSECT data of enrichment with algorithm Hypergeom概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTERSECT-data-of-enrichment-with-algorithm-Hypergeom.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有15行6列，以下预览的表格可能省略部分数据；含有15个唯一`KEGG.id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:INTERSECT-data-of-enrichment-with-algorithm-Hypergeom}INTERSECT data of enrichment with algorithm Hypergeom}\tabularnewline
+\toprule
+KEGG.id & Description & Count & CompoundsI\ldots{} & pvalue & Compound\_R\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+KEGG.id & Description & Count & CompoundsI\ldots{} & pvalue & Compound\_R\ldots{}\tabularnewline
+\midrule
+\endhead
+hsa00240 & Pyrimidine\ldots{} & 3 & 173 & 0.00448664\ldots{} & 1\tabularnewline
+hsa00630 & Glyoxylate\ldots{} & 3 & 147 & 0.00448664\ldots{} & 1\tabularnewline
+hsa00760 & Nicotinate\ldots{} & 3 & 169 & 0.00448664\ldots{} & 1\tabularnewline
+hsa00770 & Pantothena\ldots{} & 3 & 125 & 0.00448664\ldots{} & 1\tabularnewline
+hsa01232 & Nucleotide\ldots{} & 3 & 154 & 0.00448664\ldots{} & 1\tabularnewline
+hsa00230 & Purine met\ldots{} & 3 & 218 & 0.00748364\ldots{} & 1\tabularnewline
+hsa00983 & Drug metab\ldots{} & 3 & 258 & 0.00748364\ldots{} & 1\tabularnewline
+hsa04727 & GABAergic \ldots{} & 2 & 35 & 0.00748364\ldots{} & 0.66666666\ldots{}\tabularnewline
+hsa04742 & Taste tran\ldots{} & 2 & 36 & 0.00748364\ldots{} & 0.66666666\ldots{}\tabularnewline
+hsa05169 & Epstein-Ba\ldots{} & 2 & 36 & 0.00748364\ldots{} & 0.66666666\ldots{}\tabularnewline
+hsa04068 & FoxO signa\ldots{} & 2 & 42 & 0.00885843\ldots{} & 0.66666666\ldots{}\tabularnewline
+hsa01523 & Antifolate\ldots{} & 2 & 45 & 0.00933248\ldots{} & 0.66666666\ldots{}\tabularnewline
+hsa04216 & Ferroptosi\ldots{} & 2 & 59 & 0.01485597\ldots{} & 0.66666666\ldots{}\tabularnewline
+hsa00740 & Riboflavin\ldots{} & 2 & 65 & 0.01675415\ldots{} & 0.66666666\ldots{}\tabularnewline
+hsa00220 & Arginine b\ldots{} & 2 & 70 & 0.01700766\ldots{} & 0.66666666\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:INTERSECT-Compounds-hypergeom-KEGG-enrichment} (下方图) 为图INTERSECT Compounds hypergeom KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTERSECT-Compounds-hypergeom-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTERSECT-Compounds-hypergeom-KEGG-enrichment.pdf}
+\caption{INTERSECT Compounds hypergeom KEGG enrichment}\label{fig:INTERSECT-Compounds-hypergeom-KEGG-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:INTERSECT-enrichment-with-algorithm-PageRank} (下方图) 为图INTERSECT enrichment with algorithm PageRank概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTERSECT-enrichment-with-algorithm-PageRank.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTERSECT-enrichment-with-algorithm-PageRank.pdf}
+\caption{INTERSECT enrichment with algorithm PageRank}\label{fig:INTERSECT-enrichment-with-algorithm-PageRank}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{clusterprofiler-ux5bccux96c6ux5206ux6790-flux}{%
+\subsubsection{ClusterProfiler 富集分析 (FLUX)}\label{clusterprofiler-ux5bccux96c6ux5206ux6790-flux}}
+
+ClusterProfiler 工具用于基因富集分析，通过识别出富集的基因集，可以帮助我们理解基因在生物过程中的功能及其在代谢研究中的角色。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:FLUX-GO-enrichment} (下方图) 为图FLUX GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FLUX-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FLUX-GO-enrichment.pdf}
+\caption{FLUX GO enrichment}\label{fig:FLUX-GO-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:FLUX-KEGG-enrichment} (下方图) 为图FLUX KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FLUX-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FLUX-KEGG-enrichment.pdf}
+\caption{FLUX KEGG enrichment}\label{fig:FLUX-KEGG-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux4ee3ux8c22ux7269ux4e0eux57faux56e0ux5171ux540cux5bccux96c6ux7684-kegg-ux901aux8def}{%
+\subsubsection{代谢物与基因共同富集的 KEGG 通路}\label{ux4ee3ux8c22ux7269ux4e0eux57faux56e0ux5171ux540cux5bccux96c6ux7684-kegg-ux901aux8def}}
+
+通过分析代谢物与基因在 KEGG 通路中的共同富集情况，我们可以揭示其在生物过程中的相互作用和功能。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:FLUX-Co-enriched-KEGG-pathway} (下方图) 为图FLUX Co enriched KEGG pathway概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FLUX-Co-enriched-KEGG-pathway.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/FLUX-Co-enriched-KEGG-pathway.pdf}
+\caption{FLUX Co enriched KEGG pathway}\label{fig:FLUX-Co-enriched-KEGG-pathway}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:FLUX-Co-enriched-KEGG-pathway-data} (下方表格) 为表格FLUX Co enriched KEGG pathway data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/FLUX-Co-enriched-KEGG-pathway-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有11行11列，以下预览的表格可能省略部分数据；含有11个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:FLUX-Co-enriched-KEGG-pathway-data}FLUX Co enriched KEGG pathway data}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count & geneID\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count & geneID\ldots{}\tabularnewline
+\midrule
+\endhead
+hsa01232 & Nucleo\ldots{} & 48/87 & 85/8840 & 6.1247\ldots{} & 3.1235\ldots{} & 1.6117\ldots{} & 132/15\ldots{} & 48 & 132 \textbar{} \ldots{}\tabularnewline
+hsa00240 & Pyrimi\ldots{} & 38/87 & 58/8840 & 6.7352\ldots{} & 1.7174\ldots{} & 8.8621\ldots{} & 124583\ldots{} & 38 & 124583\ldots{}\tabularnewline
+hsa00983 & Drug m\ldots{} & 37/87 & 81/8840 & 8.8804\ldots{} & 1.5096\ldots{} & 7.7898\ldots{} & 51727/\ldots{} & 37 & 51727 \ldots{}\tabularnewline
+hsa00230 & Purine\ldots{} & 37/87 & 128/8840 & 8.9327\ldots{} & 9.1114\ldots{} & 4.7014\ldots{} & 132/15\ldots{} & 37 & 132 \textbar{} \ldots{}\tabularnewline
+hsa00760 & Nicoti\ldots{} & 7/87 & 38/8840 & 6.9016\ldots{} & 2.1999\ldots{} & 1.1351\ldots{} & 30833/\ldots{} & 7 & 30833 \ldots{}\tabularnewline
+hsa00220 & Argini\ldots{} & 5/87 & 23/8840 & 2.4063\ldots{} & 6.8180\ldots{} & 3.5181\ldots{} & 2744/2\ldots{} & 5 & 2744 \textbar\ldots{}\tabularnewline
+hsa00770 & Pantot\ldots{} & 3/87 & 21/8840 & 0.0010\ldots{} & 0.0024\ldots{} & 0.0012\ldots{} & 1806/1\ldots{} & 3 & 1806 \textbar\ldots{}\tabularnewline
+hsa04727 & GABAer\ldots{} & 3/87 & 89/8840 & 0.0571\ldots{} & 0.1079\ldots{} & 0.0556\ldots{} & 2744/2\ldots{} & 3 & 2744 \textbar\ldots{}\tabularnewline
+hsa04216 & Ferrop\ldots{} & 2/87 & 42/8840 & 0.0639\ldots{} & 0.1165\ldots{} & 0.0601\ldots{} & 2729/2937 & 2 & 2729 \textbar\ldots{}\tabularnewline
+hsa00630 & Glyoxy\ldots{} & 1/87 & 31/8840 & 0.2644\ldots{} & 0.3549\ldots{} & 0.1831\ldots{} & 2752 & 1 & 2752\tabularnewline
+hsa05169 & Epstei\ldots{} & 3/87 & 203/8840 & 0.3226\ldots{} & 0.4219\ldots{} & 0.2177\ldots{} & 953/95\ldots{} & 3 & 953 \textbar{} \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux62dfux65f6ux5206ux6790-ux53d1ux73b0ux62dfux65f6ux53d8ux5316ux4e2dux7684ux5deeux5f02ux57faux56e0}{%
+\subsubsection{拟时分析 (发现拟时变化中的差异基因)}\label{ux62dfux65f6ux5206ux6790-ux53d1ux73b0ux62dfux65f6ux53d8ux5316ux4e2dux7684ux5deeux5f02ux57faux56e0}}
+
+拟时分析用于揭示基因表达随时间变化的模式，通过识别差异基因，可以帮助我们理解这些基因在生物过程中的动态变化。
+
+\hypertarget{monocle3-ux62dfux65f6ux5206ux6790-integrated}{%
+\paragraph{Monocle3 拟时分析 (INTEGRATED)}\label{monocle3-ux62dfux65f6ux5206ux6790-integrated}}
+
+Monocle3 是一种用于拟时分析的工具，通过分析基因表达随时间的变化，揭示其动态变化模式和生物学意义。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:INTEGRATED-principal-points} (下方图) 为图INTEGRATED principal points概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATED-principal-points.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTEGRATED-principal-points.pdf}
+\caption{INTEGRATED principal points}\label{fig:INTEGRATED-principal-points}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:INTEGRATED-pseudotime} (下方图) 为图INTEGRATED pseudotime概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATED-pseudotime.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTEGRATED-pseudotime.pdf}
+\caption{INTEGRATED pseudotime}\label{fig:INTEGRATED-pseudotime}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:Graph-Test-Significant-genes-Top50} (下方表格) 为表格Graph Test Significant genes Top50概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Graph-Test-Significant-genes-Top50.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有50行6列，以下预览的表格可能省略部分数据；含有50个唯一`gene\_id'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item gene\_id:  GENCODE/Ensembl gene ID
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:Graph-Test-Significant-genes-Top50}Graph Test Significant genes Top50}\tabularnewline
+\toprule
+gene\_id & status & p\_value & morans\_tes\ldots{} & morans\_I & q\_value\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+gene\_id & status & p\_value & morans\_tes\ldots{} & morans\_I & q\_value\tabularnewline
+\midrule
+\endhead
+IGKC & OK & 0 & 75.8062198\ldots{} & 0.67942383\ldots{} & 0\tabularnewline
+SFTPC & OK & 0 & 69.5950802\ldots{} & 0.62419283\ldots{} & 0\tabularnewline
+IQCH & OK & 0 & 68.4928396\ldots{} & 0.61428628\ldots{} & 0\tabularnewline
+MIR205HG & OK & 0 & 68.3310378\ldots{} & 0.61282346\ldots{} & 0\tabularnewline
+NTRK2 & OK & 0 & 68.1731853\ldots{} & 0.61140579\ldots{} & 0\tabularnewline
+FDCSP & OK & 0 & 68.0735909\ldots{} & 0.61049602\ldots{} & 0\tabularnewline
+AC019117.2 & OK & 0 & 67.3543910\ldots{} & 0.60403901\ldots{} & 0\tabularnewline
+NAPSA & OK & 0 & 67.3373767\ldots{} & 0.60388367\ldots{} & 0\tabularnewline
+KRT15 & OK & 0 & 67.3218228\ldots{} & 0.60374698\ldots{} & 0\tabularnewline
+DSG3 & OK & 0 & 66.5485380\ldots{} & 0.59678432\ldots{} & 0\tabularnewline
+ADAM23 & OK & 0 & 66.2024864\ldots{} & 0.59369367\ldots{} & 0\tabularnewline
+PKP1 & OK & 0 & 66.1815915\ldots{} & 0.59350259\ldots{} & 0\tabularnewline
+DSP & OK & 0 & 66.1350653\ldots{} & 0.59304932\ldots{} & 0\tabularnewline
+SFTPD & OK & 0 & 66.0821697\ldots{} & 0.59261178\ldots{} & 0\tabularnewline
+SLC34A2 & OK & 0 & 65.7432638\ldots{} & 0.58956078\ldots{} & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{clusterprofiler-ux5bccux96c6ux5206ux6790-graphtops}{%
+\paragraph{ClusterProfiler 富集分析 (GRAPHTOPS)}\label{clusterprofiler-ux5bccux96c6ux5206ux6790-graphtops}}
+
+ClusterProfiler 工具用于基因富集分析，通过识别出富集的基因集，可以帮助我们理解基因在拟时分析中的功能及其在生物过程中的角色。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:GRAPHTOPS-KEGG-enrichment} (下方图) 为图GRAPHTOPS KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GRAPHTOPS-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GRAPHTOPS-KEGG-enrichment.pdf}
+\caption{GRAPHTOPS KEGG enrichment}\label{fig:GRAPHTOPS-KEGG-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:GRAPHTOPS-KEGG-enrichment-data} (下方表格) 为表格GRAPHTOPS KEGG enrichment data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GRAPHTOPS-KEGG-enrichment-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有102行11列，以下预览的表格可能省略部分数据；含有102个唯一`ID'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item pvalue:  显著性 P。
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:GRAPHTOPS-KEGG-enrichment-data}GRAPHTOPS KEGG enrichment data}\tabularnewline
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count & geneID\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust & qvalue & geneID & Count & geneID\ldots{}\tabularnewline
+\midrule
+\endhead
+hsa04915 & Estrog\ldots{} & 4/30 & 139/8840 & 0.0011\ldots{} & 0.1191\ldots{} & 0.1057\ldots{} & 596/15\ldots{} & 4 & 596 \textbar{} \ldots{}\tabularnewline
+hsa04976 & Bile s\ldots{} & 3/30 & 90/8840 & 0.0033\ldots{} & 0.1732\ldots{} & 0.1537\ldots{} & 358/36\ldots{} & 3 & 358 \textbar{} \ldots{}\tabularnewline
+hsa04215 & Apopto\ldots{} & 2/30 & 32/8840 & 0.0051\ldots{} & 0.1762\ldots{} & 0.1564\ldots{} & 596/5366 & 2 & 596 \textbar{} \ldots{}\tabularnewline
+hsa05171 & Corona\ldots{} & 4/30 & 238/8840 & 0.0080\ldots{} & 0.2065\ldots{} & 0.1832\ldots{} & 3627/6\ldots{} & 4 & 3627 \textbar\ldots{}\tabularnewline
+hsa04210 & Apoptosis & 3/30 & 136/8840 & 0.0106\ldots{} & 0.2177\ldots{} & 0.1932\ldots{} & 596/15\ldots{} & 3 & 596 \textbar{} \ldots{}\tabularnewline
+hsa04145 & Phagosome & 3/30 & 157/8840 & 0.0157\ldots{} & 0.2622\ldots{} & 0.2327\ldots{} & 653509\ldots{} & 3 & 653509\ldots{}\tabularnewline
+hsa04978 & Minera\ldots{} & 2/30 & 61/8840 & 0.0179\ldots{} & 0.2622\ldots{} & 0.2327\ldots{} & 2512/1\ldots{} & 2 & 2512 \textbar\ldots{}\tabularnewline
+hsa05152 & Tuberc\ldots{} & 3/30 & 180/8840 & 0.0225\ldots{} & 0.2643\ldots{} & 0.2345\ldots{} & 596/97\ldots{} & 3 & 596 \textbar{} \ldots{}\tabularnewline
+hsa01524 & Platin\ldots{} & 2/30 & 75/8840 & 0.0265\ldots{} & 0.2643\ldots{} & 0.2345\ldots{} & 596/5366 & 2 & 596 \textbar{} \ldots{}\tabularnewline
+hsa04115 & p53 si\ldots{} & 2/30 & 75/8840 & 0.0265\ldots{} & 0.2643\ldots{} & 0.2345\ldots{} & 596/5366 & 2 & 596 \textbar{} \ldots{}\tabularnewline
+hsa05133 & Pertussis & 2/30 & 78/8840 & 0.0285\ldots{} & 0.2643\ldots{} & 0.2345\ldots{} & 653509\ldots{} & 2 & 653509\ldots{}\tabularnewline
+hsa05210 & Colore\ldots{} & 2/30 & 87/8840 & 0.0348\ldots{} & 0.2792\ldots{} & 0.2478\ldots{} & 596/5366 & 2 & 596 \textbar{} \ldots{}\tabularnewline
+hsa04610 & Comple\ldots{} & 2/30 & 88/8840 & 0.0355\ldots{} & 0.2792\ldots{} & 0.2478\ldots{} & 2/7450 & 2 & 2 \textbar{} 7450\tabularnewline
+hsa05150 & Staphy\ldots{} & 2/30 & 100/8840 & 0.0448\ldots{} & 0.3106\ldots{} & 0.2756\ldots{} & 3866/3872 & 2 & 3866 \textbar\ldots{}\tabularnewline
+hsa04933 & AGE-RA\ldots{} & 2/30 & 101/8840 & 0.0456\ldots{} & 0.3106\ldots{} & 0.2756\ldots{} & 596/7412 & 2 & 596 \textbar{} \ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{pseudotime-heatmap}{%
+\paragraph{Pseudotime Heatmap}\label{pseudotime-heatmap}}
+
+通过拟时分析的热图，我们可以直观地展示基因表达随时间的变化模式，帮助我们理解这些基因在生物过程中的动态变化。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:INTEGRATED-Pseudotime-heatmap-of-genes} (下方图) 为图INTEGRATED Pseudotime heatmap of genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/INTEGRATED-Pseudotime-heatmap-of-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/INTEGRATED-Pseudotime-heatmap-of-genes.pdf}
+\caption{INTEGRATED Pseudotime heatmap of genes}\label{fig:INTEGRATED-Pseudotime-heatmap-of-genes}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{stringdb-ppi-ux5206ux6790-ppi}{%
+\paragraph{STRINGdb PPI 分析 (PPI)}\label{stringdb-ppi-ux5206ux6790-ppi}}
+
+STRINGdb 工具用于蛋白质-蛋白质相互作用 (PPI) 分析，通过识别蛋白质之间的相互作用，可以帮助我们理解这些蛋白质在生物过程中的功能及其相互关系。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:PPI-raw-PPI-network} (下方图) 为图PPI raw PPI network概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-raw-PPI-network.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPI-raw-PPI-network.pdf}
+\caption{PPI raw PPI network}\label{fig:PPI-raw-PPI-network}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:PPI-Top-MCC-score} (下方图) 为图PPI Top MCC score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/PPI-Top-MCC-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PPI-Top-MCC-score.pdf}
+\caption{PPI Top MCC score}\label{fig:PPI-Top-MCC-score}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Dimension-plot-of-expression-level-of-the-genes} (下方图) 为图Dimension plot of expression level of the genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Dimension-plot-of-expression-level-of-the-genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Dimension-plot-of-expression-level-of-the-genes.pdf}
+\caption{Dimension plot of expression level of the genes}\label{fig:Dimension-plot-of-expression-level-of-the-genes}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Spatial-feature-plot} (下方图) 为图Spatial feature plot概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Spatial-feature-plot.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Spatial-feature-plot.pdf}
+\caption{Spatial feature plot}\label{fig:Spatial-feature-plot}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-CardinalV3ABemis2023}{}%
+1. Bemis, K. A., Föll, M. C., Guo, D., Lakkimsetty, S. S. \& Vitek, O. Cardinal v.3: A versatile open-source software for mass spectrometry imaging analysis. \emph{Nature Methods} \textbf{20}, 1883--1886 (2023).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+2. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-IntegratedAnalHaoY2021}{}%
+3. Hao, Y. \emph{et al.} Integrated analysis of multimodal single-cell data. \emph{Cell} \textbf{184}, (2021).
+
+\leavevmode\hypertarget{ref-ComprehensiveIStuart2019}{}%
+4. Stuart, T. \emph{et al.} Comprehensive integration of single-cell data. \emph{Cell} \textbf{177}, (2019).
+
+\leavevmode\hypertarget{ref-FellaAnRPacPicart2018}{}%
+5. Picart-Armada, S., Fernandez-Albert, F., Vinaixa, M., Yanes, O. \& Perera-Lluna, A. FELLA: An r package to enrich metabolomics data. \emph{BMC Bioinformatics} \textbf{19}, 538 (2018).
+
+\leavevmode\hypertarget{ref-AGraphNeuralAlgham2021}{}%
+6. Alghamdi, N. \emph{et al.} A graph neural network model to estimate cell-wise metabolic flux using single-cell rna-seq data. \emph{Genome research} \textbf{31}, 1867--1884 (2021).
+
+\leavevmode\hypertarget{ref-LimmaPowersDiRitchi2015}{}%
+7. Ritchie, M. E. \emph{et al.} Limma powers differential expression analyses for rna-sequencing and microarray studies. \emph{Nucleic Acids Research} \textbf{43}, e47 (2015).
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+8. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data user's guide. 119.
+
+\leavevmode\hypertarget{ref-ReversedGraphQiuX2017}{}%
+9. Qiu, X. \emph{et al.} Reversed graph embedding resolves complex single-cell trajectories. \emph{Nature Methods} \textbf{14}, (2017).
+
+\leavevmode\hypertarget{ref-TheDynamicsAnTrapne2014}{}%
+10. Trapnell, C. \emph{et al.} The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. \emph{Nature Biotechnology} \textbf{32}, (2014).
+
+\leavevmode\hypertarget{ref-TheStringDataSzklar2021}{}%
+11. Szklarczyk, D. \emph{et al.} The string database in 2021: Customizable proteinprotein networks, and functional characterization of user-uploaded gene/measurement sets. \emph{Nucleic Acids Research} \textbf{49}, D605--D612 (2021).
+
+\leavevmode\hypertarget{ref-CytohubbaIdenChin2014}{}%
+12. Chin, C.-H. \emph{et al.} CytoHubba: Identifying hub objects and sub-networks from complex interactome. \emph{BMC Systems Biology} \textbf{8}, S11 (2014).
+
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+13. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+
+\leavevmode\hypertarget{ref-IntegratedMetaFahrma2017}{}%
+14. Fahrmann, J. F. \emph{et al.} Integrated metabolomics and proteomics highlight altered nicotinamide- and polyamine pathways in lung adenocarcinoma. \emph{Carcinogenesis} \textbf{38}, 271--280 (2017).
+\end{cslreferences}
+
+\end{document}

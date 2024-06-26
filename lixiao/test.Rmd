@@ -1,3 +1,33 @@
 
-```{r}
-```
+let g:monitor_dir = "my_dir"
+let g:main_buffer = "my_index"
+当条件1：g:monitor_dir 的任意文件被写入，或者被修改，或创建；
+条件2：切换到 buffer g:main_buffer 时，
+条件1 和条件2 同时满足
+在 g:main_buffer 自动执行 call My_fun()
+
+
+" Define the monitoring directory and main buffer
+let g:monitor_dir = "my_dir"
+let g:main_buffer = "my_index"
+let g:dir_changed = 0
+
+" Create an autocmd group to avoid duplicate autocmds
+augroup MonitorDir
+  autocmd!
+  
+  " Watch for changes in the specified directory
+  autocmd BufWritePost,BufReadPost,BufNewFile my_dir/* let g:dir_changed = 1
+
+  " Check when switching to the main buffer
+  autocmd BufEnter * if bufname('%') == g:main_buffer && g:dir_changed == 1 | call My_fun() | let g:dir_changed = 0 | endif
+augroup END
+
+" Example function to be called
+function! My_fun()
+  echo "My_fun() called due to changes in the directory and buffer switch"
+endfunction
+
+我想实现，vim normal 模式下，]t 切换到下一个标签 (tab page) ， [t 切换到上一个tab。
+并且，当我按数字，如 3]t, 可以切换到当前标签之后的第三个标签页
+

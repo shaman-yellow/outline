@@ -157,3 +157,204 @@ IRanges::findOverlaps(dmr@object, cpgi)
 dmrDat.gr <- as_GRanges(dmrDat, "chr7")
 dmrDat.gr
 
+
+```{r}
+p <- ggplot(Terror$res, aes(x = sortCh(type, T, T), y = 1, fill = name)) +
+  ggchicklet::geom_chicklet(width = 0.7, radius = grid::unit(5, "pt")) + 
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Chromosome", y = "Number", fill = "Type") +
+  theme_minimal() +
+  coord_flip()
+wrap(p, 6, colSum(Terror$res$type) * .3 + .5)
+```
+
+
+```{r}
+# job_ucscTable
+x <- plot_dmr(dmrDat, "chr20", "rn6", subset.cpgIsland = 2)
+y <- plot_dmr(dplyr::filter(dmrDat, dmr_id %in% t.genes$dmr_id), "chr1", "rn6")
+```
+
+
+
+### GSEA
+
+```{r}
+dat.genesDmr <- data.frame(rgd_symbol = dmr@object$symbol, logFC = dmr@object$delta)
+dat.genesDmr <- dplyr::filter(dat.genesDmr, !is.na(rgd_symbol))
+dat.genesDmr
+gse <- job_gsea(dat.genesDmr, bm$anno, use = "rgd_symbol")
+gse <- step1(gse, org.Rn.eg.db::org.Rn.eg.db, "rno")
+gse@plots$step1$p.go
+```
+
+
+
+```{r}
+treat1 <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/BGI_F21FTSECKF10674_RATeugcH/Tools/SW/Model-Cure-1_cg_sw.csv")
+model1 <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/BGI_F21FTSECKF10674_RATeugcH/Tools/SW/Model-1_cg_sw.csv")
+
+entz.Pik3cb <- dplyr::filter(bm$anno, rgd_symbol == "Pik3cb")$entrezgene_id
+entz.Pik3cb
+
+```
+
+## RNA-seq
+
+### 数据来源
+
+```{r}
+geo <- job_geo("GSE227165")
+geo <- step1(geo)
+geo@params$guess
+geo <- step2(geo)
+utils::untar("./GSE227165/GSE227165_RAW.tar", exdir = "./GSE227165")
+```
+
+### 差异分析
+
+```{r}
+counts <- sapply(list.files("./GSE227165/", "^GSM", full.names = T), simplify = F,
+  function(x) {
+    dplyr::select(ftibble(x), gene_id, gene_name, dplyr::starts_with("count"))
+  })
+samples <- strx(get_filename(names(counts)), "GSM[0-9]+")
+counts <- do.call(dplyr::bind_cols, c(list(counts[[1]][, 1:2]), lapply(counts, dplyr::select, 3)))
+colnames(counts)[-(1:2)] <- samples
+counts
+
+metadata <- dplyr::mutate(geo@params$guess, group = genotype.ch1)
+metadata <- dplyr::relocate(metadata, sample = rownames, group)
+metadata
+
+genes <- counts[, 1:2]
+counts <- counts[, -2]
+
+lm.rna <- job_limma(new_dge(metadata, counts, genes))
+lm.rna <- step1(lm.rna)
+lm.rna <- step2(lm.rna, Diabetic - Normal, label = "gene_name", use = "P")
+lm.rna@plots$step2$p.volcano$`Diabetic - Normal`
+Tops.rna <- lm.rna@tables$step2$tops$`Diabetic - Normal`
+any(Tops.rna$gene_name == "Pik3cb")
+any(Tops.rna$gene_name == "Pik3cd")
+
+p.boxRna <- map(lm.rna, "Pik3cb", "gene_name")
+p.boxRna
+
+```
+
+### 富集分析
+
+```{r}
+bm.rna <- job_biomart("rno", F)
+bm.rna <- step1(bm.rna, rm.no(Tops.rna$gene_name), "rgd")
+bm.rna
+
+en.rna <- job_enrich(rm.no(Tops.rna$gene_name), bm.rna$anno, "rgd_symbol")
+en.rna <- step1(en.rna, "rno")
+en.rna@plots$step1$p.kegg
+en.rna@tables$step1$res.kegg
+en.rna@step <- 1L
+en.rna <- step2(en.rna, c("rno04930", "rno04151"),
+  gene.level = dplyr::select(Tops.rna, gene_name, logFC), gene.level.name = "rgd_symbol")
+en.rna@plots$step2$p.pathviews$rno04151
+dplyr::filter(Tops.rna, gene_name == "Pik3cd")
+```
+
+
+## RNA-seq
+
+### 数据来源
+
+```{r}
+geo <- job_geo("GSE227165")
+geo <- step1(geo)
+geo@params$guess
+geo <- step2(geo)
+utils::untar("./GSE227165/GSE227165_RAW.tar", exdir = "./GSE227165")
+```
+
+### 差异分析
+
+```{r}
+counts <- sapply(list.files("./GSE227165/", "^GSM", full.names = T), simplify = F,
+  function(x) {
+    dplyr::select(ftibble(x), gene_id, gene_name, dplyr::starts_with("count"))
+  })
+samples <- strx(get_filename(names(counts)), "GSM[0-9]+")
+counts <- do.call(dplyr::bind_cols, c(list(counts[[1]][, 1:2]), lapply(counts, dplyr::select, 3)))
+colnames(counts)[-(1:2)] <- samples
+counts
+
+metadata <- dplyr::mutate(geo@params$guess, group = genotype.ch1)
+metadata <- dplyr::relocate(metadata, sample = rownames, group)
+metadata
+
+genes <- counts[, 1:2]
+counts <- counts[, -2]
+
+lm.rna <- job_limma(new_dge(metadata, counts, genes))
+lm.rna <- step1(lm.rna)
+lm.rna <- step2(lm.rna, Diabetic - Normal, label = "gene_name", use = "P")
+lm.rna@plots$step2$p.volcano$`Diabetic - Normal`
+Tops.rna <- lm.rna@tables$step2$tops$`Diabetic - Normal`
+any(Tops.rna$gene_name == "Pik3cb")
+any(Tops.rna$gene_name == "Pik3cd")
+
+p.boxRna <- map(lm.rna, "Pik3cb", "gene_name")
+p.boxRna
+
+```
+
+### 富集分析
+
+```{r}
+bm.rna <- job_biomart("rno", F)
+bm.rna <- step1(bm.rna, rm.no(Tops.rna$gene_name), "rgd")
+bm.rna
+
+en.rna <- job_enrich(rm.no(Tops.rna$gene_name), bm.rna$anno, "rgd_symbol")
+en.rna <- step1(en.rna, "rno")
+en.rna@plots$step1$p.kegg
+en.rna@tables$step1$res.kegg
+en.rna@step <- 1L
+en.rna <- step2(en.rna, c("rno04930", "rno04151"),
+  gene.level = dplyr::select(Tops.rna, gene_name, logFC), gene.level.name = "rgd_symbol")
+en.rna@plots$step2$p.pathviews$rno04151
+dplyr::filter(Tops.rna, gene_name == "Pik3cd")
+```
+
+
+```{r}
+treat1 <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/BGI_F21FTSECKF10674_RATeugcH/Tools/SW/Model-Cure-1_cg_sw.csv")
+model1 <- ftibble("/media/echo/My Passport/浙江百越4例WGBS信息采集与分析/BGI_F21FTSECKF10674_RATeugcH/Tools/SW/Model-1_cg_sw.csv")
+```
+
+Whole-genome DNA methylation analysis in liver
+tissue of offspring of Zuogui pill (ZGP)-intervened GD rats, trying to find evidence
+for ZGP effect on epigenetics and potential pathways
+
+Then, 92 DM-related differentially
+methylated genes were identified. They were mainly enriched in
+glycometabolism, receptors on the membrane, and protein kinases and
+their regulators by GO analysis as well as in MAPK pathway by KEGG
+analysis.
+
+A core **network involved in PI3K/AKT signaling was
+obtained.** The effect of ZGP on eugenics in the offspring of GD rats
+may be achieved by affecting the liver methylation of the offspring,
+with **PI3K/AKT pathway as one of targets.**
+
+- differentially methylated regions (DMRs) identification
+- Bismark was used for aligning clean reads to reference genome 
+- profiles of extracted methylation sites were analyzed by **methylKit** to perform
+  calling DMR between Model and Model-Cure group, with \|delta\| \> 0.3, FDR \<
+  0.05, and annotate DMRs-related genes by Rattus norvegicus genome
+
+- glycometabolism
+
+
+  ## 首要疑问在下方，'Model-vs-Model-Cure', 到底是谁比谁？
+  ## 以下是否需要反过来，即, 修改为
+  ## DMR_Treatment_vs_Model = `dmr_diff_cg_Model-vs-Model-Cure` * (-1),
+  ## 目前是按照以下来计算的, 因为这样，最后的 Pik3cb, Ins2 的表达才是说的通的

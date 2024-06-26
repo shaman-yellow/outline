@@ -1,0 +1,159 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(06), eval = ic(), lock = T)
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("多系统萎缩"),
+  di("磁共振成像")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# MSA: Multiple system atrophy 多系统萎缩
+# MRI: Magnetic resonance imaging 磁共振成像
+```
+
+
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+利用机器学习建立磁共振成像（MRI）图像的多系统萎缩（MSA）诊断模型
+
+的方法涉及机器学习和深度学习技术的多个步骤。以下是一个大致的流程：
+
+1. 数据收集和准备
+数据收集：收集大量的MRI图像数据集，包括MSA患者和健康对照组的图像。数据可以来源于公共数据库、医院或医学研究机构。
+数据标注：确保每张图像都经过专家标注，明确诊断为MSA或非MSA。
+数据预处理：
+图像标准化（如调整大小、灰度归一化）。
+去除噪声和伪影（如使用图像滤波技术）。
+数据增强（如旋转、平移、缩放）以增加模型的鲁棒性。
+2. 特征提取
+传统方法：
+使用手工设计的特征提取方法，如形态学特征（如体积、面积）、统计特征（如灰度共生矩阵）等。
+深度学习方法：
+使用卷积神经网络（CNN）自动提取高层次特征。常用的网络架构包括ResNet、VGG、Inception等。
+3. 模型构建
+模型选择：
+传统机器学习模型：支持向量机（SVM）、随机森林、k-近邻（k-NN）等。
+深度学习模型：卷积神经网络（CNN）是处理图像数据的首选。
+模型训练：
+划分数据集为训练集、验证集和测试集。
+使用训练集训练模型，验证集进行超参数调优，测试集评估模型性能。
+选择适当的损失函数和优化算法（如Adam、SGD）。
+4. 模型评估
+评价指标：
+精度（Accuracy）、灵敏度（Sensitivity）、特异性（Specificity）、受试者工作特征曲线（ROC）及其曲线下面积（AUC）。
+交叉验证：
+使用k折交叉验证来评估模型的泛化能力。
+混淆矩阵：
+生成混淆矩阵来详细了解模型的分类性能。
+5. 模型优化和调优
+超参数调优：
+使用网格搜索或随机搜索方法优化模型的超参数。
+正则化：
+使用L1或L2正则化防止过拟合。
+数据增强：
+进一步增加数据增强策略，提高模型的鲁棒性。
+6. 部署和应用
+模型部署：
+将训练好的模型部署到临床系统中，集成到医院的影像诊断流程中。
+实时推理：
+通过API或其他接口提供实时的MRI图像诊断服务。
+持续学习：
+收集新数据不断更新和优化模型。
+
+```{python}
+import tensorflow as tf
+from tensorflow.keras import layers, models
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, confusion_matrix
+
+# 加载和预处理数据
+def load_data():
+    # 这里应该加载MRI图像和标签
+    # images, labels = ...
+    return train_test_split(images, labels, test_size=0.2, random_state=42)
+
+train_images, test_images, train_labels, test_labels = load_data()
+
+# 构建卷积神经网络模型
+model = models.Sequential([
+    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(128, 128, 1)),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(128, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dense(1, activation='sigmoid')
+])
+
+# 编译模型
+model.compile(optimizer='adam',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
+
+# 训练模型
+model.fit(train_images, train_labels, epochs=10, validation_split=0.2)
+
+# 评估模型
+test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)
+print(f'\nTest accuracy: {test_acc}')
+
+# 预测和评估结果
+predictions = model.predict(test_images)
+print(confusion_matrix(test_labels, predictions.round()))
+print(classification_report(test_labels, predictions.round()))
+```

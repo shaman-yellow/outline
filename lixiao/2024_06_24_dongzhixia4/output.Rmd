@@ -1,0 +1,295 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+link-citations: true
+output:
+  bookdown::pdf_document2:
+    # pandoc_args: [
+      # "--filter", "pandoc-fignos",
+      # "--filter", "pandoc-tablenos"
+    # ]
+    keep_tex: true
+    keep_md: true
+    toc: false
+    # toc_depth: 4
+    latex_engine: xelatex
+header-includes:
+  \usepackage{tikz}
+  \usepackage{auto-pst-pdf}
+  \usepackage{pgfornament}
+  \usepackage{pstricks-add}
+  \usepackage{caption}
+  \captionsetup{font={footnotesize},width=6in}
+  \renewcommand{\dblfloatpagefraction}{.9}
+  \makeatletter
+  \renewenvironment{figure}
+  {\def\@captype{figure}}
+  \makeatother
+  \@ifundefined{Shaded}{\newenvironment{Shaded}}
+  \@ifundefined{snugshade}{\newenvironment{snugshade}}
+  \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \definecolor{shadecolor}{RGB}{230,230,230}
+  \usepackage{xeCJK}
+  \usepackage{setspace}
+  \setstretch{1.3} 
+  \usepackage{tcolorbox}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \usepackage{wallpaper}
+  \usepackage[absolute]{textpos}
+  \tcbuselibrary{breakable}
+  \renewenvironment{Shaded}
+  {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm,
+    arc = 1mm, auto outer arc, title = {R input}]}
+  {\end{tcolorbox}}
+  \usepackage{titlesec}
+  \titleformat{\paragraph}
+  {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
+---
+
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(06), eval = ic(0, 1, 1, 0, 0))
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"), di("胆固醇胆结石"))
+# DEGs: Differential Expressed Genes 差异表达基因
+# CG: Cholesterol Gallstones 胆固醇胆结石
+NULL
+
+```
+
+## 要求
+
+肠道菌-代谢物-基因关联数据为此前分析数据。
+选择差异最大的基因前5，寻找关联代谢物和菌。
+
+## 结果
+
+主要思路，结合此前分析得到的数据，再以 RNA-seq  (胆结石) 差异分析，根据显著性排序基因。
+
+- 肝脏见 Tab. \@ref(tab:Res-liver)。
+- 回肠见 Tab. \@ref(tab:Res-ileum)。
+
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+
+```{r eval = T, echo = F, results = "asis"}
+set_appendix()
+```
+
+# 附：分析流程 {#workflow}
+
+## GEO 数据获取 (GALLSTONE)
+
+我们首先从GEO数据库中获取了与胆结石相关的数据。通过查询并筛选相关的实验，我们下载了数据集并进行了预处理。预处理步骤包括数据标准化和质量控制，以确保后续分析的准确性。
+
+
+```{r}
+geo.gallstone <- job_geo("GSE66430")
+geo.gallstone <- step1(geo.gallstone)
+geo.gallstone@params$prods
+geo.gallstone@params$guess
+geo.gallstone <- step2(geo.gallstone)
+
+utils::untar("./GSE66430/GSE66430_RAW.tar", exdir = "./GSE66430")
+counts <- sapply(list.files("./GSE66430/", "count", full.names = T), simplify = F,
+  function(x) {
+    ftibble(x)
+  })
+x <- lapply(counts, function(x) x$accession)
+for (i in seq_along(x)[-1]) {
+  print(identical(x[[1]], x[[i]]))
+}
+
+refseq <- dplyr::select(counts[[1]], 1:6)
+refseq <- dplyr::mutate(refseq, refseq = strx(accession, "NM_[0-9]+"),
+  location = strx(accession, "[a-z]+_[0-9]+$"),
+  isIntron = grpl(location, "^intron")
+)
+unique(refseq$refseq[ refseq$isIntron ])
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GALLSTONE-GSE66430
+autor(geo.gallstone@params$prods)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GALLSTONE-GSE66430-metadata
+autor(geo.gallstone@params$guess)
+```
+
+## Biomart 基因注释 (REFSEQ)
+
+接下来，我们使用 Biomart 工具对基因进行了注释。通过链接REFSEQ数据库，我们将基因表达数据与基因注释信息进行匹配。
+
+
+```{r}
+bm.refseq <- job_biomart("hsa")
+bm.refseq <- step1(bm.refseq, unique(refseq$refseq[ refseq$isIntron ]), "refseq_mrna", c("refseq_mrna", "hgnc_symbol"))
+bm.refseq@params$anno
+
+refseq <- map(refseq, "refseq", bm.refseq$anno, "refseq_mrna", "hgnc_symbol", col = "hgnc_symbol")
+refseq
+```
+
+## Limma 差异分析 (GALLSTONE)
+
+使用Limma软件包，我们进行了胆结石相关样本的差异表达分析。通过对比正常和疾病状态下的基因表达数据，我们识别出显著差异表达的基因。
+
+
+```{r}
+names <- strx(basename(names(counts)), "GSM[0-9]+")
+names
+counts <- lapply(counts, function(x) dplyr::filter(x, !!refseq$isIntron))
+counts <- do.call(dplyr::bind_cols, lapply(counts, function(x) dplyr::select(x, tag_count)))
+colnames(counts) <- names
+counts <- dplyr::mutate(counts, gene = 1:nrow(counts), .before = 1)
+counts
+metadata <- geo.gallstone@params$guess
+metadata <- dplyr::filter(metadata, tissue.ch1 == "gall bladder")
+metadata <- dplyr::mutate(metadata, group = ifelse(disease.state.ch1 == "healthy", "Control", "Disease"))
+metadata <- dplyr::relocate(metadata, sample = rownames, group)
+metadata
+refseq <- dplyr::filter(refseq, isIntron)
+genes <- dplyr::select(refseq, accession, hgnc_symbol, isIntron)
+genes <- dplyr::mutate(genes, gene = 1:nrow(counts), .before = 1)
+
+lm.gallstone <- job_limma(new_dge(metadata, counts, genes))
+lm.gallstone
+lm.gallstone <- step1(lm.gallstone)
+lm.gallstone <- step2(lm.gallstone, Disease - Control, label = "accession")
+lm.gallstone@plots$step2$p.volcano$`Disease - Control`
+lm.gallstone@tables$step2$tops$`Disease - Control`
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GALLSTONE-Disease-vs-Control
+autor(lm.gallstone@plots$step2$p.volcano$`Disease - Control`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GALLSTONE-data-Disease-vs-Control
+autor(lm.gallstone@tables$step2$tops$`Disease - Control`)
+```
+
+## 肠道菌-代谢物-基因关联数据
+
+```{r}
+res.liver <- fxlsx("~/outline/lixiao/2024_01_21_dongzhixia3/tabs/all-relation-data.xlsx")
+res.ileum <- fxlsx("~/outline/lixiao/2024_01_21_dongzhixia3/tabs/ileum-all-relation-data.xlsx")
+Tops <- lm.gallstone@tables$step2$tops$`Disease - Control`
+
+fun_rank <- function(x) {
+  lapply(x,
+    function(x) {
+      x <- dplyr::select(x, related_metabolite = Metabolite, related_microbiota = Gut.Microbiota, Target_Gene, META_Q)
+      tops <- dplyr::filter(Tops, !is.na(hgnc_symbol))
+      tops <- dplyr::select(tops, hgnc_symbol, logFC, adj.P.Val)
+      tbmerge(tops, x, by.x = "hgnc_symbol", by.y = "Target_Gene", sort = F)
+    })
+}
+
+res.all <- fun_rank(namel(res.liver, res.ileum))
+res.all
+
+res.all5 <- lapply(res.all,
+  function(x) {
+    tops <- head(unique(x$hgnc_symbol), 5)
+    x <- dplyr::filter(x, hgnc_symbol %in% !!tops)
+    split_lapply_rbind(x, x$hgnc_symbol, head, n = 5)
+  })
+res.all5
+```
+
+### 前一次的分析数据
+
+在这部分中，我们引用了之前的分析数据。
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| liver-data
+autor(res.liver)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ileum-data
+autor(res.ileum)
+```
+
+### 结合 GALLSTONE RNA-seq 差异分析筛选
+
+我们将胆结石RNA-seq差异分析的结果与肠道菌-代谢物-基因关联数据相结合。
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Res-liver
+autor(res.all5$res.liver)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Res-ileum
+autor(res.all5$res.ileum)
+```
+
+```{r}
+ass <- assist_anno()
+ass <- step1(ass)
+ass <- step2(ass)
+```
+

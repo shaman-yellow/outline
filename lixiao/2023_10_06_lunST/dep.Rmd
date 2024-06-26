@@ -113,3 +113,20 @@ fun_cancerSig <- function() {
 ```
 
 
+
+```{r}
+fig5 <- cls(
+  # rw(),
+  cl("./Figure+Table/group-1-communication-related-genes-in-pseudotime.pdf"),
+  cl("./Figure+Table/group-2-communication-related-genes-in-pseudotime.pdf"),
+  cl("./Figure+Table/group-3-communication-related-genes-in-pseudotime.pdf")
+)
+fig5 <- render(fig5)
+fig5
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MAIN-Fig-5
+autor(fig5)
+```
+

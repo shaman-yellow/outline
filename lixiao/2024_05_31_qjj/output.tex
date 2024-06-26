@@ -1,0 +1,701 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz} \usepackage{auto-pst-pdf} \usepackage{pgfornament} \usepackage{pstricks-add} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\pagenumbering{roman}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{84}\end{center}\tableofcontents
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{88}\end{center}\listoffigures
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{89}\end{center}\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{摘要}\label{abstract}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dic}\NormalTok{(}\KeywordTok{di}\NormalTok{(}\StringTok{"差异表达基因"}\NormalTok{, }\StringTok{"Differential Expressed Genes"}\NormalTok{, }\StringTok{"DEGs"}\NormalTok{),}
+  \KeywordTok{di}\NormalTok{(}\StringTok{"非酒精性脂肪肝"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# DEGs: Differential Expressed Genes 差异表达基因}
+\CommentTok{\# NFLD: Nonalcoholic fatty liver disease 非酒精性脂肪肝}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{introduction}{%
+\section{前言}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{材料和方法}\label{methods}}
+
+\hypertarget{ux6750ux6599}{%
+\subsection{材料}\label{ux6750ux6599}}
+
+\hypertarget{ux65b9ux6cd5}{%
+\subsection{方法}\label{ux65b9ux6cd5}}
+
+Mainly used method:
+
+\begin{itemize}
+\tightlist
+\item
+  Databses of \texttt{DisGeNet}, \texttt{GeneCards}, \texttt{PharmGKB} used for collating disease related targets\textsuperscript{\protect\hyperlink{ref-TheDisgenetKnPinero2019}{1}--\protect\hyperlink{ref-PharmgkbAWorBarbar2018}{3}}.
+\item
+  Website \texttt{HERB} \url{http://herb.ac.cn/} used for TCM data source\textsuperscript{\protect\hyperlink{ref-HerbAHighThFang2021}{4}}.
+\item
+  R package \texttt{PubChemR} used for querying compounds information.
+\item
+  Web tool of \texttt{Super-PRED} used for drug-targets relationship prediction\textsuperscript{\protect\hyperlink{ref-SuperpredUpdaNickel2014}{5}}.
+\item
+  The CLI tools of \texttt{AutoDock\ vina} and \texttt{ADFR} software used for auto molecular docking\textsuperscript{\protect\hyperlink{ref-AutodockVina1Eberha2021}{6}--\protect\hyperlink{ref-AutodockfrAdvRavind2015}{10}}.
+\item
+  R package \texttt{ChemmineR} used for similar chemical compounds clustering\textsuperscript{\protect\hyperlink{ref-ChemminerACoCaoY2008}{11}}.
+\item
+  R version 4.4.0 (2024-04-24); Other R packages (eg., \texttt{dplyr} and \texttt{ggplot2}) used for statistic analysis or data visualization.
+\end{itemize}
+
+\hypertarget{results}{%
+\section{分析结果}\label{results}}
+
+\hypertarget{dis}{%
+\section{结论}\label{dis}}
+
+\hypertarget{workflow}{%
+\section{附：分析流程}\label{workflow}}
+
+\hypertarget{ux6210ux5206}{%
+\subsection{成分}\label{ux6210ux5206}}
+
+\begin{itemize}
+\tightlist
+\item
+  Aconitic acid
+\item
+  Dianthoside
+\item
+  Allo Maltol
+\item
+  6-Hydroxycoumarin
+\item
+  Homovanillyl alcohol 4-O-glucoside
+\item
+  Epicatechin
+\item
+  Isoquercetin
+\item
+  Berberine
+\item
+  Quinic acid
+\item
+  2-Furoic acid
+\item
+  Adoxosidic acid
+\item
+  Neochlorogenic acid
+\item
+  3-O-Feruloylquinic acid
+\item
+  Rutin
+\item
+  Quercetin
+\item
+  Isorhamnetin
+\item
+  Gingerol
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cpds \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Aconitic acid"}\NormalTok{, }\StringTok{"Dianthoside"}\NormalTok{, }\StringTok{"Allo Maltol"}\NormalTok{, }\StringTok{"6{-}Hydroxycoumarin"}\NormalTok{, }\StringTok{"Homovanillyl alcohol 4{-}O{-}glucoside"}\NormalTok{,}
+  \StringTok{"Epicatechin"}\NormalTok{, }\StringTok{"Isoquercetin"}\NormalTok{, }\StringTok{"Berberine"}\NormalTok{, }\StringTok{"Quinic acid"}\NormalTok{, }\StringTok{"2{-}Furoic acid"}\NormalTok{, }\StringTok{"Adoxosidic acid"}\NormalTok{,}
+  \StringTok{"Neochlorogenic acid"}\NormalTok{, }\StringTok{"3{-}O{-}Feruloylquinic acid"}\NormalTok{, }\StringTok{"Rutin"}\NormalTok{, }\StringTok{"Quercetin"}\NormalTok{,}
+  \StringTok{"Isorhamnetin"}\NormalTok{, }\StringTok{"Gingerol"}\NormalTok{)}
+\NormalTok{infoCpds \textless{}{-}}\StringTok{ }\NormalTok{PubChemR}\OperatorTok{::}\KeywordTok{get\_cids}\NormalTok{(cpds)}
+\NormalTok{infoCpds \textless{}{-}}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{distinct}\NormalTok{(infoCpds, Identifier, }\DataTypeTok{.keep\_all =}\NormalTok{ T)}
+\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{identical}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(infoCpds), }\KeywordTok{length}\NormalTok{(cpds))) \{}
+  \KeywordTok{message}\NormalTok{(}\StringTok{"Not Found some compounds."}\NormalTok{)}
+\NormalTok{\}}
+\NormalTok{infoCpds \textless{}{-}}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate}\NormalTok{(infoCpds, }\DataTypeTok{CID =} \KeywordTok{as.integer}\NormalTok{(CID))}
+\NormalTok{infoCpds}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pub \textless{}{-}}\StringTok{ }\KeywordTok{job\_pubchemr}\NormalTok{(}\KeywordTok{nl}\NormalTok{(infoCpds}\OperatorTok{$}\NormalTok{Identifier, infoCpds}\OperatorTok{$}\NormalTok{CID, F))}
+\NormalTok{pub \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(pub)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux6210ux5206ux9776ux70b9}{%
+\subsection{成分靶点}\label{ux6210ux5206ux9776ux70b9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sup \textless{}{-}}\StringTok{ }\KeywordTok{asjob\_superpred}\NormalTok{(pub)}
+\NormalTok{sup \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(sup)}
+\NormalTok{sup}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step1}\OperatorTok{$}\NormalTok{targets}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:Targets-predicted-by-Super-Pred} (下方表格) 为表格Targets predicted by Super Pred概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-predicted-by-Super-Pred.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有827行9列，以下预览的表格可能省略部分数据；含有17个唯一`.id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllll@{}}
+\caption{\label{tab:Targets-predicted-by-Super-Pred}Targets predicted by Super Pred}\tabularnewline
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+.id & Target\ldots{} & ChEMBL-ID & UniPro\ldots{} & PDB Vi\ldots{} & TTD ID & Probab\ldots{} & Model \ldots{} & symbols\tabularnewline
+\midrule
+\endhead
+C1=CC(\ldots{} & Tyrosy\ldots{} & CHEMBL\ldots{} & Q9NUW8 & 6N0D & Not Av\ldots{} & 99.49\% & 71.22\% & TDP1\tabularnewline
+C1=CC(\ldots{} & DNA-(a\ldots{} & CHEMBL\ldots{} & P27695 & 6BOW & T13348 & 99.11\% & 91.11\% & APEX1\tabularnewline
+C1=CC(\ldots{} & Monoam\ldots{} & CHEMBL\ldots{} & P21397 & 2Z5Y & Not Av\ldots{} & 97.49\% & 91.49\% & MAOA\tabularnewline
+C1=CC(\ldots{} & DNA to\ldots{} & CHEMBL\ldots{} & P11388 & 6ZY5 & T17048 & 95.68\% & 89\% & TOP2A\tabularnewline
+C1=CC(\ldots{} & Arachi\ldots{} & CHEMBL\ldots{} & P18054 & 3D3L & Not Av\ldots{} & 95.66\% & 75.57\% & ALOX12\tabularnewline
+C1=CC(\ldots{} & Transt\ldots{} & CHEMBL\ldots{} & P02766 & 6SUG & T86462 & 93.11\% & 90.71\% & TTR\tabularnewline
+C1=CC(\ldots{} & Thyroi\ldots{} & CHEMBL\ldots{} & P10827 & 3ILZ & T79591 & 93.02\% & 99.15\% & THRA\tabularnewline
+C1=CC(\ldots{} & Cathep\ldots{} & CHEMBL\ldots{} & P07339 & 4OD9 & T67102 & 92.28\% & 98.95\% & CTSD\tabularnewline
+C1=CC(\ldots{} & Riboso\ldots{} & CHEMBL\ldots{} & P51812 & 4D9T & Not Av\ldots{} & 90.31\% & 95.64\% & RPS6KA3\tabularnewline
+C1=CC(\ldots{} & Kruppe\ldots{} & CHEMBL\ldots{} & Q13887 & Not Av\ldots{} & Not Av\ldots{} & 88.96\% & 86.33\% & KLF5\tabularnewline
+C1=CC(\ldots{} & Pregna\ldots{} & CHEMBL\ldots{} & O75469 & 6TFI & T82702 & 87.7\% & 94.73\% & NR1I2\tabularnewline
+C1=CC(\ldots{} & Dual s\ldots{} & CHEMBL\ldots{} & P51452 & 3F81 & Not Av\ldots{} & 87.51\% & 94\% & DUSP3\tabularnewline
+C1=CC(\ldots{} & Transc\ldots{} & CHEMBL\ldots{} & O15164 & 4YBM & Not Av\ldots{} & 86.89\% & 95.56\% & TRIM24\tabularnewline
+C1=CC(\ldots{} & Dual s\ldots{} & CHEMBL\ldots{} & Q9HAZ1 & 6FYV & Not Av\ldots{} & 85.69\% & 94.45\% & CLK4\tabularnewline
+C1=CC(\ldots{} & Serine\ldots{} & CHEMBL\ldots{} & O75460 & 6W39 & Not Av\ldots{} & 84.58\% & 98.11\% & ERN1\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux6210ux5206ux9776ux70b9ux7f51ux7edc}{%
+\subsection{成分靶点网络}\label{ux6210ux5206ux9776ux70b9ux7f51ux7edc}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hb \textless{}{-}}\StringTok{ }\KeywordTok{do\_herb}\NormalTok{(pub, sup)}
+\NormalTok{hb}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step3}\OperatorTok{$}\NormalTok{p.pharm}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Network-pharmacology-visualization} (下方图) 为图Network pharmacology visualization概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-visualization.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-visualization.pdf}
+\caption{Network pharmacology visualization}\label{fig:Network-pharmacology-visualization}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux75beux75c5ux9776ux70b9}{%
+\subsection{疾病靶点}\label{ux75beux75c5ux9776ux70b9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gm \textless{}{-}}\StringTok{ }\KeywordTok{job\_gmix}\NormalTok{(}\StringTok{"Nonalcoholic fatty liver disease"}\NormalTok{, }\StringTok{"nonalcoholic"}\NormalTok{)}
+\NormalTok{gm \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(gm)}
+\NormalTok{gm \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(gm, }\OtherTok{NULL}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DataTypeTok{restrict =}\NormalTok{ T)}
+\NormalTok{gm}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{t.genecard}
+\NormalTok{gm}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step2}\OperatorTok{$}\NormalTok{p.cols}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:GeneCards-used-data} (下方表格) 为表格GeneCards used data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GeneCards-used-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有289行7列，以下预览的表格可能省略部分数据；含有289个唯一`Symbol'。
+\end{tcolorbox}
+\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+The GeneCards data was obtained by querying
+:}
+
+\vspace{0.5em}
+
+    Nonalcoholic fatty liver disease
+
+\vspace{2em}
+
+
+\textbf{
+Restrict (with quotes)
+:}
+
+\vspace{0.5em}
+
+    TRUE
+
+\vspace{2em}
+
+
+\textbf{
+Filtering by Score:
+:}
+
+\vspace{0.5em}
+
+    Score > 3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:GeneCards-used-data}GeneCards used data}\tabularnewline
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Symbol & Description & Category & UniProt\_ID & GIFtS & GC\_id & Score\tabularnewline
+\midrule
+\endhead
+PNPLA3 & Patatin Li\ldots{} & Protein Co\ldots{} & Q9NST1 & 51 & GC22P043923 & 36.37\tabularnewline
+ADIPOQ & Adiponecti\ldots{} & Protein Co\ldots{} & Q15848 & 55 & GC03P186842 & 23.53\tabularnewline
+INS & Insulin & Protein Co\ldots{} & P01308 & 56 & GC11M002159 & 22.46\tabularnewline
+LEP & Leptin & Protein Co\ldots{} & P41159 & 55 & GC07P128241 & 18.65\tabularnewline
+TNF & Tumor Necr\ldots{} & Protein Co\ldots{} & P01375 & 61 & GC06P134820 & 17.83\tabularnewline
+PPARA & Peroxisome\ldots{} & Protein Co\ldots{} & Q07869 & 53 & GC22P046150 & 17.77\tabularnewline
+MIR122 & MicroRNA 122 & RNA Gene (\ldots{} & & 29 & GC18P058451 & 17.58\tabularnewline
+GPT & Glutamic--\ldots{} & Protein Co\ldots{} & P24298 & 51 & GC08P144502 & 16.73\tabularnewline
+CYP2E1 & Cytochrome\ldots{} & Protein Co\ldots{} & P05181 & 55 & GC10P133520 & 16.28\tabularnewline
+APOB & Apolipopro\ldots{} & Protein Co\ldots{} & P04114 & 55 & GC02M020956 & 16.1\tabularnewline
+SREBF1 & Sterol Reg\ldots{} & Protein Co\ldots{} & P36956 & 58 & GC17M017810 & 15.94\tabularnewline
+LIVAR & Liver Cell\ldots{} & RNA Gene (\ldots{} & & 16 & GC18M070336 & 15.32\tabularnewline
+MIR27A & MicroRNA 27a & RNA Gene (\ldots{} & & 30 & GC19M092209 & 14.96\tabularnewline
+MIR34A & MicroRNA 34a & RNA Gene (\ldots{} & & 29 & GC01M014460 & 14.76\tabularnewline
+NR1H4 & Nuclear Re\ldots{} & Protein Co\ldots{} & Q96RI1 & 56 & GC12P100473 & 14.17\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Overall-targets-number-of-datasets} (下方图) 为图Overall targets number of datasets概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-targets-number-of-datasets.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-targets-number-of-datasets.pdf}
+\caption{Overall targets number of datasets}\label{fig:Overall-targets-number-of-datasets}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux6210ux5206-ux75beux75c5-ux9776ux70b9}{%
+\subsection{成分-疾病-靶点}\label{ux6210ux5206-ux75beux75c5-ux9776ux70b9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hb \textless{}{-}}\StringTok{ }\KeywordTok{map}\NormalTok{(hb, gm}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{lst.genes, }\DataTypeTok{name =} \StringTok{"dis"}\NormalTok{, }\DataTypeTok{less.label =}\NormalTok{ F)}
+\NormalTok{hb}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{p.pharm2dis}
+\NormalTok{hb}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{p.venn2dis}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Network-pharmacology-with-disease} (下方图) 为图Network pharmacology with disease概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Network-pharmacology-with-disease.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Network-pharmacology-with-disease.pdf}
+\caption{Network pharmacology with disease}\label{fig:Network-pharmacology-with-disease}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Targets-intersect-with-targets-of-diseases} (下方图) 为图Targets intersect with targets of diseases概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Targets-intersect-with-targets-of-diseases.pdf}
+\caption{Targets intersect with targets of diseases}\label{fig:Targets-intersect-with-targets-of-diseases}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    TLR4, NFE2L2, CASP8, ACACA, SERPINE1, ERN1, NR1I2,
+RXRA, MAP3K11, SCD, ACACB, CYP3A4, CNR1, CETP, CHUK, HIF1A,
+MIF, STING1, HSP90AA1, GSTP1, CYP2A6
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/Targets-intersect-with-targets-of-diseases-content})}
+
+\hypertarget{ux5206ux5b50ux5bf9ux63a5}{%
+\subsection{分子对接}\label{ux5206ux5b50ux5bf9ux63a5}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dockLayout \textless{}{-}}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(hb}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{p.pharm2dis}\OperatorTok{$}\NormalTok{.data, }\DecValTok{{-}1}\NormalTok{)}
+\NormalTok{dockLayout \textless{}{-}}\StringTok{ }\KeywordTok{map}\NormalTok{(dockLayout, }\StringTok{"Ingredient.name"}\NormalTok{, infoCpds, }\StringTok{"Identifier"}\NormalTok{, }\StringTok{"CID"}\NormalTok{, }\DataTypeTok{col =} \StringTok{"CID"}\NormalTok{)}
+\NormalTok{dockLayout}
+
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{job\_vina}\NormalTok{(}\DataTypeTok{.layout =}\NormalTok{ dockLayout)}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(vn)}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(vn)}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step3}\NormalTok{(vn)}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{set\_remote}\NormalTok{(vn)}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step4}\NormalTok{(vn)}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step5}\NormalTok{(vn)}
+\KeywordTok{wrap}\NormalTok{(vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step5}\OperatorTok{$}\NormalTok{p.res\_vina, }\DecValTok{7}\NormalTok{, }\FloatTok{9.5}\NormalTok{)}
+\NormalTok{vn}\OperatorTok{@}\NormalTok{tables}\OperatorTok{$}\NormalTok{step5}\OperatorTok{$}\NormalTok{res\_dock}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step6}\NormalTok{(vn, }\DataTypeTok{top =} \DecValTok{3}\NormalTok{)}
+\NormalTok{vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{Top1\_}\DecValTok{643757}\NormalTok{\_into\_1tqn}
+\NormalTok{vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{Top2\_}\DecValTok{99477}\NormalTok{\_into\_2dn8}
+\NormalTok{vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step6}\OperatorTok{$}\NormalTok{Top3\_}\DecValTok{5316639}\NormalTok{\_into\_4cgv}
+\NormalTok{vn \textless{}{-}}\StringTok{ }\KeywordTok{step7}\NormalTok{(vn)}
+\NormalTok{vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step7}\OperatorTok{$}\NormalTok{Top1\_}\DecValTok{643757}\NormalTok{\_into\_1tqn}
+\NormalTok{vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step7}\OperatorTok{$}\NormalTok{Top2\_}\DecValTok{99477}\NormalTok{\_into\_2dn8}
+\NormalTok{vn}\OperatorTok{@}\NormalTok{plots}\OperatorTok{$}\NormalTok{step7}\OperatorTok{$}\NormalTok{Top3\_}\DecValTok{5316639}\NormalTok{\_into\_4cgv}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Overall-combining-Affinity} (下方图) 为图Overall combining Affinity概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Overall-combining-Affinity.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Overall-combining-Affinity.pdf}
+\caption{Overall combining Affinity}\label{fig:Overall-combining-Affinity}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:Affinity-data} (下方表格) 为表格Affinity data概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Affinity-data.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有36行8列，以下预览的表格可能省略部分数据；含有9个唯一`PubChem\_id；含有13个唯一`hgnc\_symbol'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item hgnc\_symbol:  基因名 (Human)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:Affinity-data}Affinity data}\tabularnewline
+\toprule
+PubChe\ldots{} & PDB\_ID & Affinity & dir & file & Combn & hgnc\_s\ldots{} & Ingred\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+PubChe\ldots{} & PDB\_ID & Affinity & dir & file & Combn & hgnc\_s\ldots{} & Ingred\ldots{}\tabularnewline
+\midrule
+\endhead
+643757 & 1tqn & -5.949 & vina\_s\ldots{} & vina\_s\ldots{} & 643757\ldots{} & CYP3A4 & Aconit\ldots{}\tabularnewline
+99477 & 2dn8 & -4.804 & vina\_s\ldots{} & vina\_s\ldots{} & 99477\_\ldots{} & ACACB & 6-Hydr\ldots{}\tabularnewline
+5316639 & 4cgv & -4.559 & vina\_s\ldots{} & vina\_s\ldots{} & 531663\ldots{} & HSP90AA1 & Dianth\ldots{}\tabularnewline
+5280805 & 2dn8 & -3.473 & vina\_s\ldots{} & vina\_s\ldots{} & 528080\ldots{} & ACACB & Rutin\tabularnewline
+6919 & 1tqn & -3.464 & vina\_s\ldots{} & vina\_s\ldots{} & 6919\_i\ldots{} & CYP3A4 & 2-Furo\ldots{}\tabularnewline
+69521 & 2dn8 & -3.435 & vina\_s\ldots{} & vina\_s\ldots{} & 69521\_\ldots{} & ACACB & Allo M\ldots{}\tabularnewline
+643757 & 4h6j & -3.338 & vina\_s\ldots{} & vina\_s\ldots{} & 643757\ldots{} & HIF1A & Aconit\ldots{}\tabularnewline
+5280343 & 5brr & -3.087 & vina\_s\ldots{} & vina\_s\ldots{} & 528034\ldots{} & SERPINE1 & Quercetin\tabularnewline
+72276 & 1tqn & -2.828 & vina\_s\ldots{} & vina\_s\ldots{} & 72276\_\ldots{} & CYP3A4 & Epicat\ldots{}\tabularnewline
+6919 & 5brr & -2.814 & vina\_s\ldots{} & vina\_s\ldots{} & 6919\_i\ldots{} & SERPINE1 & 2-Furo\ldots{}\tabularnewline
+72276 & 5brr & -2.762 & vina\_s\ldots{} & vina\_s\ldots{} & 72276\_\ldots{} & SERPINE1 & Epicat\ldots{}\tabularnewline
+5280805 & 5brr & -2.624 & vina\_s\ldots{} & vina\_s\ldots{} & 528080\ldots{} & SERPINE1 & Rutin\tabularnewline
+69521 & 1tqn & -2.508 & vina\_s\ldots{} & vina\_s\ldots{} & 69521\_\ldots{} & CYP3A4 & Allo M\ldots{}\tabularnewline
+168436832 & 4cgv & -2.398 & vina\_s\ldots{} & vina\_s\ldots{} & 168436\ldots{} & HSP90AA1 & Homova\ldots{}\tabularnewline
+5316639 & 4h6j & -1.74 & vina\_s\ldots{} & vina\_s\ldots{} & 531663\ldots{} & HIF1A & Dianth\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux5bf9ux63a5ux53efux89c6ux5316}{%
+\subsubsection{对接可视化}\label{ux5bf9ux63a5ux53efux89c6ux5316}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Docking-643757-into-1tqn} (下方图) 为图Docking 643757 into 1tqn概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Docking-643757-into-1tqn.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/643757_into_1tqn/643757_into_1tqn.png}
+\caption{Docking 643757 into 1tqn}\label{fig:Docking-643757-into-1tqn}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Docking-99477-into-2dn8} (下方图) 为图Docking 99477 into 2dn8概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Docking-99477-into-2dn8.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/99477_into_2dn8/99477_into_2dn8.png}
+\caption{Docking 99477 into 2dn8}\label{fig:Docking-99477-into-2dn8}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Docking-5316639-into-4cgv} (下方图) 为图Docking 5316639 into 4cgv概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Docking-5316639-into-4cgv.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/5316639_into_4cgv/5316639_into_4cgv.png}
+\caption{Docking 5316639 into 4cgv}\label{fig:Docking-5316639-into-4cgv}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux5bf9ux63a5ux7ec6ux8282ux53efux89c6ux5316}{%
+\subsubsection{对接细节可视化}\label{ux5bf9ux63a5ux7ec6ux8282ux53efux89c6ux5316}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Docking-643757-into-1tqn-detail} (下方图) 为图Docking 643757 into 1tqn detail概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Docking-643757-into-1tqn-detail.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/643757_into_1tqn/detail_643757_into_1tqn.png}
+\caption{Docking 643757 into 1tqn detail}\label{fig:Docking-643757-into-1tqn-detail}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Docking-99477-into-2dn8-detail} (下方图) 为图Docking 99477 into 2dn8 detail概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Docking-99477-into-2dn8-detail.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/99477_into_2dn8/detail_99477_into_2dn8.png}
+\caption{Docking 99477 into 2dn8 detail}\label{fig:Docking-99477-into-2dn8-detail}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Docking-5316639-into-4cgv-detail} (下方图) 为图Docking 5316639 into 4cgv detail概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Docking-5316639-into-4cgv-detail.png})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{vina_space/5316639_into_4cgv/detail_5316639_into_4cgv.png}
+\caption{Docking 5316639 into 4cgv detail}\label{fig:Docking-5316639-into-4cgv-detail}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-TheDisgenetKnPinero2019}{}%
+1. Piñero, J. \emph{et al.} The disgenet knowledge platform for disease genomics: 2019 update. \emph{Nucleic Acids Research} (2019) doi:\href{https://doi.org/10.1093/nar/gkz1021}{10.1093/nar/gkz1021}.
+
+\leavevmode\hypertarget{ref-TheGenecardsSStelze2016}{}%
+2. Stelzer, G. \emph{et al.} The genecards suite: From gene data mining to disease genome sequence analyses. \emph{Current protocols in bioinformatics} \textbf{54}, 1.30.1--1.30.33 (2016).
+
+\leavevmode\hypertarget{ref-PharmgkbAWorBarbar2018}{}%
+3. Barbarino, J. M., Whirl-Carrillo, M., Altman, R. B. \& Klein, T. E. PharmGKB: A worldwide resource for pharmacogenomic information. \emph{Wiley interdisciplinary reviews. Systems biology and medicine} \textbf{10}, (2018).
+
+\leavevmode\hypertarget{ref-HerbAHighThFang2021}{}%
+4. Fang, S. \emph{et al.} HERB: A high-throughput experiment- and reference-guided database of traditional chinese medicine. \emph{Nucleic Acids Research} \textbf{49}, D1197--D1206 (2021).
+
+\leavevmode\hypertarget{ref-SuperpredUpdaNickel2014}{}%
+5. Nickel, J. \emph{et al.} SuperPred: Update on drug classification and target prediction. \emph{Nucleic acids research} \textbf{42}, W26--W31 (2014).
+
+\leavevmode\hypertarget{ref-AutodockVina1Eberha2021}{}%
+6. Eberhardt, J., Santos-Martins, D., Tillack, A. F. \& Forli, S. AutoDock vina 1.2.0: New docking methods, expanded force field, and python bindings. \emph{Journal of Chemical Information and Modeling} \textbf{61}, 3891--3898 (2021).
+
+\leavevmode\hypertarget{ref-AutogridfrImpZhang2019}{}%
+7. Zhang, Y., Forli, S., Omelchenko, A. \& Sanner, M. F. AutoGridFR: Improvements on autodock affinity maps and associated software tools. \emph{Journal of computational chemistry} \textbf{40}, 2882--2886 (2019).
+
+\leavevmode\hypertarget{ref-AutodockCrankpZhang2019}{}%
+8. Zhang, Y. \& Sanner, M. F. AutoDock crankpep: Combining folding and docking to predict protein-peptide complexes. \emph{Bioinformatics (Oxford, England)} \textbf{35}, 5121--5127 (2019).
+
+\leavevmode\hypertarget{ref-AutositeAnAuRavind2016}{}%
+9. Ravindranath, P. A. \& Sanner, M. F. AutoSite: An automated approach for pseudo-ligands prediction-from ligand-binding sites identification to predicting key ligand atoms. \emph{Bioinformatics (Oxford, England)} \textbf{32}, 3142--3149 (2016).
+
+\leavevmode\hypertarget{ref-AutodockfrAdvRavind2015}{}%
+10. Ravindranath, P. A., Forli, S., Goodsell, D. S., Olson, A. J. \& Sanner, M. F. AutoDockFR: Advances in protein-ligand docking with explicitly specified binding site flexibility. \emph{PLoS computational biology} \textbf{11}, (2015).
+
+\leavevmode\hypertarget{ref-ChemminerACoCaoY2008}{}%
+11. Cao, Y., Charisi, A., Cheng, L.-C., Jiang, T. \& Girke, T. ChemmineR: A compound mining framework for r. \emph{Bioinformatics (Oxford, England)} \textbf{24}, 1733--1734 (2008).
+\end{cslreferences}
+
+\end{document}

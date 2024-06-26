@@ -240,7 +240,7 @@ backup_jobs(alls, time <- "2024-04-01")
 ### 2024-05
 
 ```{r}
-x <- thismonth()
+x <- thismonth(month = 5)
 summary_month()
 
 send_eval("sunhui")
@@ -250,11 +250,35 @@ summary_month()
 send_summary("sunhui")
 
 update_registers()
+update_tagsTable()
 send_registers("sunhui")
 
 alls <- get_orders()
 backup_jobs(alls, time <- "2024-05-01")
 ```
+
+### 2024-06
+
+```{r}
+x <- thismonth(month = 6)
+summary_month()
+
+send_eval("sunhui")
+send_prin("sunhui")
+
+summary_month()
+send_summary("sunhui")
+
+update_registers()
+update_tagsTable()
+send_registers("sunhui")
+
+alls <- get_orders()
+backup_jobs(alls, time <- "2024-05-01")
+```
+
+
+
 
 ## Disk clear
 

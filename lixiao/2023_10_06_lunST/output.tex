@@ -36,8 +36,6 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Analysis},
-  pdfauthor={Huang LiChuang of Wie-Biotech},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -68,878 +66,231 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \definecolor{shadecolor}{RGB}{242,242,242} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox}
-\newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
-\newenvironment{cslreferences}%
-  {}%
-  {\par}
+\usepackage{tikz} \usepackage{auto-pst-pdf} \usepackage{pgfornament} \usepackage{pstricks-add} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
 
-\title{Analysis}
-\author{Huang LiChuang of Wie-Biotech}
-\date{}
+\author{}
+\date{\vspace{-2.5em}}
 
 \begin{document}
-\maketitle
 
-{
-\setcounter{tocdepth}{3}
-\tableofcontents
-}
-\listoffigures
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/lixiao//cover_page.pdf}
+\begin{center} \textbf{\Huge re-map} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{white}{2024-06-24}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \begin{textblock}{10}(3,11.3)
+\Large \textcolor{black}{@立效研究院}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
 
-\listoftables
+\pagenumbering{roman}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{84}\end{center}\tableofcontents
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{88}\end{center}\listoffigures
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{89}\end{center}\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
 
 \hypertarget{abstract}{%
-\section{摘要}\label{abstract}}
+\section{主图}\label{abstract}}
 
-空间转录组分析：
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
-\begin{itemize}
-\tightlist
-\item
-  鉴定肿瘤细胞
-\item
-  肿瘤细胞亚群分析
-\item
-  肿瘤细胞和正常细胞之间的差异分析
-\item
-  细胞通讯分析
-\item
-  肿瘤细胞和正常细胞（巨噬细胞）之间的通讯分析。
-\end{itemize}
+Figure \ref{fig:MAIN-Fig-1} (下方图) 为图MAIN Fig 1概览。
 
-\hypertarget{route}{%
-\section{研究设计流程图}\label{route}}
-
-\hypertarget{methods}{%
-\section{材料和方法}\label{methods}}
-
-\begin{itemize}
-\tightlist
-\item
-  Seurat
-\item
-  copyKAT\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{1}}
-\item
-  monocle3
-\item
-  cellchat
-\item
-  clusterProfiler
-\item
-  \ldots{}
-\end{itemize}
-
-\hypertarget{results}{%
-\section{分析结果}\label{results}}
-
-\begin{itemize}
-\tightlist
-\item
-  以 copykat 鉴定了肿瘤细胞，主要为上皮细胞 (epithelial cells, EC) 或 基底细胞（basal cells, BC）。
-\item
-  以拟时分析将肿瘤细胞分为三个亚型（cancer 1，cancer 2，cancer 3），表现出时间（拟时）递进变化。
-\item
-  肿瘤细胞亚型之间的差异分析，肿瘤细胞和正常细胞（EC, BC）之间的差异分析，主要聚焦的通路有 `Phagosome'、'Antigen processing and presentation'、`Focal adhesion' 等。
-\item
-  细胞通讯分析的整体情况见 Fig. \ref{fig:all-cells-communication-significance}。
-\item
-  巨噬细胞和肿瘤细胞的通讯，突出表现为 ITGA 受体配体相关通路，共 27 个基因（其中多数为近似的亚型），首要富集于 PI3K-Akt 相关通路，并且和 `Focal adhesion' 等上述分析的结果相一致。
-\end{itemize}
-
-\hypertarget{dis}{%
-\section{结论}\label{dis}}
-
-见 \ref{results}。
-
-\hypertarget{workflow1}{%
-\section{\texorpdfstring{附：分析流程（癌组织切片 \texttt{Cancer\_1}）}{附：分析流程（癌组织切片 Cancer\_1）}}\label{workflow1}}
-
-\hypertarget{st-ux6570ux636eux9884ux5904ux7406}{%
-\subsection{ST 数据预处理}\label{st-ux6570ux636eux9884ux5904ux7406}}
-
-Figure \ref{fig:spatial-sample-QC}为图spatial sample QC概览。
-选择基因数 2500 - 9000 作为过滤指标。
-
-\textbf{(对应文件为 \texttt{Figure+Table/spatial-sample-QC.pdf})}
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-1.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/spatial-sample-QC.pdf}
-\caption{Spatial sample QC}\label{fig:spatial-sample-QC}
+\includegraphics[width = 0.9\linewidth]{figs/fig1.pdf}
+\caption{MAIN Fig 1}\label{fig:MAIN-Fig-1}
 \end{center}
-
-Figure \ref{fig:PCA-ranking}为图PCA ranking概览。
-选择主成份 1-15 用于后续聚类。
-
-\textbf{(对应文件为 \texttt{Figure+Table/PCA-ranking.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/PCA-ranking.pdf}
-\caption{PCA ranking}\label{fig:PCA-ranking}
-\end{center}
-
-\hypertarget{ux7ec6ux80deux6ce8ux91ca}{%
-\subsection{细胞注释}\label{ux7ec6ux80deux6ce8ux91ca}}
-
-\hypertarget{ux6240ux6709ux7ec6ux80deux7c7bseurat-clustersux7684-marker}{%
-\subsubsection{所有细胞类（Seurat clusters）的 marker}\label{ux6240ux6709ux7ec6ux80deux7c7bseurat-clustersux7684-marker}}
-
-Table \ref{tab:all-markers-of-Seurat-clusters}为表格all markers of Seurat clusters概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/all-markers-of-Seurat-clusters.csv})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4370行8列，以下预览的表格可能省略部分数据；表格含有15个唯一`cluster'。
-\end{tcolorbox}
-\end{center}
-
-\begin{longtable}[]{@{}llllllll@{}}
-\caption{\label{tab:all-markers-of-Seurat-clusters}All markers of Seurat clusters}\tabularnewline
-\toprule
-rownames & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & cluster & gene\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-rownames & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & cluster & gene\tabularnewline
-\midrule
-\endhead
-ISLR & 1.244\ldots{} & 2.772\ldots{} & 0.97 & 0.385 & 2.437\ldots{} & 0 & ISLR\tabularnewline
-FN1 & 2.313\ldots{} & 2.726\ldots{} & 1 & 0.971 & 4.533\ldots{} & 0 & FN1\tabularnewline
-COMP & 4.009\ldots{} & 3.497\ldots{} & 0.827 & 0.192 & 7.857\ldots{} & 0 & COMP\tabularnewline
-COL1A1 & 1.812\ldots{} & 2.682\ldots{} & 1 & 0.978 & 3.551\ldots{} & 0 & COL1A1\tabularnewline
-TAGLN & 4.759\ldots{} & 2.643\ldots{} & 1 & 0.877 & 9.326\ldots{} & 0 & TAGLN\tabularnewline
-BGN & 5.201\ldots{} & 2.540\ldots{} & 1 & 0.76 & 1.019\ldots{} & 0 & BGN\tabularnewline
-COL1A2 & 1.085\ldots{} & 2.444\ldots{} & 1 & 0.988 & 2.126\ldots{} & 0 & COL1A2\tabularnewline
-AEBP1 & 3.097\ldots{} & 2.326\ldots{} & 1 & 0.893 & 6.069\ldots{} & 0 & AEBP1\tabularnewline
-RARRES2 & 1.383\ldots{} & 3.100\ldots{} & 1 & 0.716 & 2.711\ldots{} & 0 & RARRES2\tabularnewline
-COL5A1 & 1.498\ldots{} & 2.494\ldots{} & 0.992 & 0.671 & 2.937\ldots{} & 0 & COL5A1\tabularnewline
-SPARC & 7.275\ldots{} & 2.190\ldots{} & 1 & 0.951 & 1.425\ldots{} & 0 & SPARC\tabularnewline
-LUM & 1.446\ldots{} & 2.464\ldots{} & 1 & 0.886 & 2.834\ldots{} & 0 & LUM\tabularnewline
-MYL9 & 3.618\ldots{} & 2.054\ldots{} & 1 & 0.915 & 7.089\ldots{} & 0 & MYL9\tabularnewline
-NNMT & 3.777\ldots{} & 2.486\ldots{} & 1 & 0.675 & 7.401\ldots{} & 0 & NNMT\tabularnewline
-POSTN & 4.428\ldots{} & 2.680\ldots{} & 1 & 0.765 & 8.676\ldots{} & 0 & POSTN\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
-\end{longtable}
-
-\hypertarget{scsa-ux6ce8ux91ca}{%
-\subsubsection{SCSA 注释}\label{scsa-ux6ce8ux91ca}}
-
-以肺脏组织的数据集注释。
-
-Figure \ref{fig:SCSA-annotation}为图SCSA annotation概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/SCSA-annotation.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/SCSA-annotation.pdf}
-\caption{SCSA annotation}\label{fig:SCSA-annotation}
-\end{center}
-
-\hypertarget{ux4f9dux636eux53d8ux5f02ux62f7ux8d1dux6570ux9274ux5b9aux80bfux7624ux7ec6ux80de}{%
-\subsection{依据变异拷贝数鉴定肿瘤细胞}\label{ux4f9dux636eux53d8ux5f02ux62f7ux8d1dux6570ux9274ux5b9aux80bfux7624ux7ec6ux80de}}
-
-\hypertarget{copykat-ux89e3ux6790ux80bfux7624ux7ec6ux80de}{%
-\subsubsection{copyKAT 解析肿瘤细胞}\label{copykat-ux89e3ux6790ux80bfux7624ux7ec6ux80de}}
-
-copyKAT\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{1}}
-
-非整倍体是人类肿瘤细胞中最普遍的特征，约 90\% 的肿瘤的基因组是非整倍体，而正常细胞是二倍体\textsuperscript{\protect\hyperlink{ref-CausesAndConsGordon2012}{2}}
-
-Figure \ref{fig:copyKAT-prediction-of-aneuploidy}为图copyKAT prediction of aneuploidy概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/copykat\_heatmap.png})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{./Figure+Table/copykat_heatmap.png}
-\caption{CopyKAT prediction of aneuploidy}\label{fig:copyKAT-prediction-of-aneuploidy}
-\end{center}
-
-Figure \ref{fig:cell-mapped-of-copyKAT-prediction}为图cell mapped of copyKAT prediction概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/cell-mapped-of-copyKAT-prediction.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/cell-mapped-of-copyKAT-prediction.pdf}
-\caption{Cell mapped of copyKAT prediction}\label{fig:cell-mapped-of-copyKAT-prediction}
-\end{center}
-
-对比 Fig. \ref{fig:cell-mapped-of-copyKAT-prediction} 和 Fig. \ref{fig:SCSA-annotation} 可知，癌细胞主要为上皮细胞或基底细胞。
-
-\hypertarget{ux80bfux7624ux7ec6ux80deux91cdux805aux7c7b}{%
-\subsubsection{肿瘤细胞重聚类}\label{ux80bfux7624ux7ec6ux80deux91cdux805aux7c7b}}
-
-为了区分肿瘤细胞之间的亚型，这里首先将肿瘤细胞重新聚类。
-
-Figure \ref{fig:re-classify-of-cancer-cells}为图re classify of cancer cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/re-classify-of-cancer-cells.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/re-classify-of-cancer-cells.pdf}
-\caption{Re classify of cancer cells}\label{fig:re-classify-of-cancer-cells}
-\end{center}
-
-\hypertarget{ux62dfux65f6ux5206ux6790ux80bfux7624ux7ec6ux80de}{%
-\subsection{拟时分析肿瘤细胞}\label{ux62dfux65f6ux5206ux6790ux80bfux7624ux7ec6ux80de}}
-
-\hypertarget{ux6784ux5efaux62dfux65f6ux8f68ux8ff9}{%
-\subsubsection{构建拟时轨迹}\label{ux6784ux5efaux62dfux65f6ux8f68ux8ff9}}
-
-Figure \ref{fig:pseudotime-visualization-of-cancer-cells}为图pseudotime visualization of cancer cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/pseudotime-visualization-of-cancer-cells.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/pseudotime-visualization-of-cancer-cells.pdf}
-\caption{Pseudotime visualization of cancer cells}\label{fig:pseudotime-visualization-of-cancer-cells}
-\end{center}
-
-\hypertarget{ux6839ux636eux62dfux65f6ux5206ux6790ux533aux5206ux80bfux7624ux7ec6ux80deux4e9aux7c7b}{%
-\subsubsection{根据拟时分析区分肿瘤细胞亚类}\label{ux6839ux636eux62dfux65f6ux5206ux6790ux533aux5206ux80bfux7624ux7ec6ux80deux4e9aux7c7b}}
-
-Figure \ref{fig:gene-module-of-co-expression-analysis}为图gene module of co expression analysis概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/gene-module-of-co-expression-analysis.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/gene-module-of-co-expression-analysis.pdf}
-\caption{Gene module of co expression analysis}\label{fig:gene-module-of-co-expression-analysis}
-\end{center}
-
-Fig. \ref{fig:gene-module-of-co-expression-analysis}，根据细胞类的聚类树，可以将细胞类分为三个大类。
-
-为了选择拟时起点，这里，将 Fig. \ref{fig:copyKAT-prediction-of-aneuploidy} 所示的细胞聚类树切分为 15 个大类的细胞，然后映射到
-Fig. \ref{fig:pseudotime-visualization-of-cancer-cells} 对应的聚类图中。可以看到（Fig. \ref{fig:test-for-selecting-pseudotime-start-point}），细胞类类 11 首要分布在左侧区域（UMAP 图）（1 - 15，数目越小，代表越趋近于非整倍体，即肿瘤细胞），因此，左侧区域的细胞更接近于正常细胞。
-
-Figure \ref{fig:test-for-selecting-pseudotime-start-point}为图test for selecting pseudotime start point概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/test-for-selecting-pseudotime-start-point.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/test-for-selecting-pseudotime-start-point.pdf}
-\caption{Test for selecting pseudotime start point}\label{fig:test-for-selecting-pseudotime-start-point}
-\end{center}
-
-因此，选择左侧区域的细胞作为拟时起点。
-
-Figure \ref{fig:cancer-cells-subtypes}为图cancer cells subtypes概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/cancer-cells-subtypes.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/cancer-cells-subtypes.pdf}
-\caption{Cancer cells subtypes}\label{fig:cancer-cells-subtypes}
-\end{center}
-
-\hypertarget{en-cancer-sub}{%
-\subsubsection{肿瘤细胞亚类差异分析和富集分析}\label{en-cancer-sub}}
-
-以下分析，可关注的通路有：
-
-\begin{itemize}
-\tightlist
-\item
-  Phagosome
-\item
-  Antigen processing and presentati\ldots{}
-\item
-  Focal adhesion
-\item
-  \ldots{}
-\end{itemize}
-
-cancer 1 细胞的 marker 的富集分析有结果，但矫正 p 值均不显著。
-
-Table \ref{tab:tables-of-enrichment-of-markers-of-cancer-1-cells}为表格tables of enrichment of markers of cancer 1 cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/tables-of-enrichment-of-markers-of-cancer-1-cells.csv})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有66行9列，以下预览的表格可能省略部分数据；表格含有66个唯一`ID'。
-\end{tcolorbox}
-\end{center}
-
-\begin{longtable}[]{@{}lllllllll@{}}
-\caption{\label{tab:tables-of-enrichment-of-markers-of-cancer-1-cells}Tables of enrichment of markers of cancer 1 cells}\tabularnewline
-\toprule
-ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
-\midrule
-\endhead
-hsa04114 & Oocyt\ldots{} & 3/31 & 131/8622 & 0.011\ldots{} & 0.379\ldots{} & 0.369\ldots{} & 9133/\ldots{} & 3\tabularnewline
-hsa04218 & Cellu\ldots{} & 3/31 & 156/8622 & 0.018\ldots{} & 0.379\ldots{} & 0.369\ldots{} & 9133/\ldots{} & 3\tabularnewline
-hsa04110 & Cell \ldots{} & 3/31 & 157/8622 & 0.018\ldots{} & 0.379\ldots{} & 0.369\ldots{} & 9133/\ldots{} & 3\tabularnewline
-hsa01524 & Plati\ldots{} & 2/31 & 73/8622 & 0.028\ldots{} & 0.379\ldots{} & 0.369\ldots{} & 4257/\ldots{} & 2\tabularnewline
-hsa04115 & p53 s\ldots{} & 2/31 & 74/8622 & 0.028\ldots{} & 0.379\ldots{} & 0.369\ldots{} & 9133/983 & 2\tabularnewline
-hsa04914 & Proge\ldots{} & 2/31 & 102/8622 & 0.051\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 9133/983 & 2\tabularnewline
-hsa00100 & Stero\ldots{} & 1/31 & 20/8622 & 0.069\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 3930 & 1\tabularnewline
-hsa03060 & Prote\ldots{} & 1/31 & 23/8622 & 0.079\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 6726 & 1\tabularnewline
-hsa04514 & Cell \ldots{} & 2/31 & 158/8622 & 0.109\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 214/9076 & 2\tabularnewline
-hsa04216 & Ferro\ldots{} & 1/31 & 41/8622 & 0.137\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 7037 & 1\tabularnewline
-hsa05014 & Amyot\ldots{} & 3/31 & 364/8622 & 0.141\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 1345/\ldots{} & 3\tabularnewline
-hsa02010 & ABC t\ldots{} & 1/31 & 45/8622 & 0.149\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 154664 & 1\tabularnewline
-hsa05130 & Patho\ldots{} & 2/31 & 198/8622 & 0.158\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 9076/\ldots{} & 2\tabularnewline
-hsa00270 & Cyste\ldots{} & 1/31 & 52/8622 & 0.171\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 10768 & 1\tabularnewline
-hsa05170 & Human\ldots{} & 2/31 & 212/8622 & 0.176\ldots{} & 0.552\ldots{} & 0.537\ldots{} & 9133/983 & 2\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
-\end{longtable}
-
-Figure \ref{fig:enrichment-of-markers-of-cancer-2-cells}为图enrichment of markers of cancer 2 cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/enrichment-of-markers-of-cancer-2-cells.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/enrichment-of-markers-of-cancer-2-cells.pdf}
-\caption{Enrichment of markers of cancer 2 cells}\label{fig:enrichment-of-markers-of-cancer-2-cells}
-\end{center}
-
-Table \ref{tab:tables-of-enrichment-of-markers-of-cancer-2-cells}为表格tables of enrichment of markers of cancer 2 cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/tables-of-enrichment-of-markers-of-cancer-2-cells.csv})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有162行9列，以下预览的表格可能省略部分数据；表格含有162个唯一`ID'。
-\end{tcolorbox}
-\end{center}
-
-\begin{longtable}[]{@{}lllllllll@{}}
-\caption{\label{tab:tables-of-enrichment-of-markers-of-cancer-2-cells}Tables of enrichment of markers of cancer 2 cells}\tabularnewline
-\toprule
-ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
-\midrule
-\endhead
-hsa04612 & Antig\ldots{} & 17/101 & 78/8622 & 1.279\ldots{} & 2.072\ldots{} & 1.561\ldots{} & 567/9\ldots{} & 17\tabularnewline
-hsa04145 & Phago\ldots{} & 17/101 & 152/8622 & 1.400\ldots{} & 1.134\ldots{} & 8.550\ldots{} & 929/1\ldots{} & 17\tabularnewline
-hsa05330 & Allog\ldots{} & 10/101 & 38/8622 & 1.113\ldots{} & 6.013\ldots{} & 4.532\ldots{} & 3002/\ldots{} & 10\tabularnewline
-hsa05332 & Graft\ldots{} & 10/101 & 42/8622 & 3.334\ldots{} & 1.350\ldots{} & 1.018\ldots{} & 3002/\ldots{} & 10\tabularnewline
-hsa04940 & Type \ldots{} & 10/101 & 43/8622 & 4.303\ldots{} & 1.394\ldots{} & 1.051\ldots{} & 3002/\ldots{} & 10\tabularnewline
-hsa04512 & ECM-r\ldots{} & 12/101 & 89/8622 & 3.862\ldots{} & 9.196\ldots{} & 6.931\ldots{} & 961/1\ldots{} & 12\tabularnewline
-hsa05320 & Autoi\ldots{} & 10/101 & 53/8622 & 3.973\ldots{} & 9.196\ldots{} & 6.931\ldots{} & 3002/\ldots{} & 10\tabularnewline
-hsa05169 & Epste\ldots{} & 16/101 & 202/8622 & 1.262\ldots{} & 2.556\ldots{} & 1.927\ldots{} & 567/9\ldots{} & 16\tabularnewline
-hsa05416 & Viral\ldots{} & 9/101 & 60/8622 & 2.610\ldots{} & 4.340\ldots{} & 3.271\ldots{} & 3105/\ldots{} & 9\tabularnewline
-hsa04974 & Prote\ldots{} & 11/101 & 103/8622 & 2.679\ldots{} & 4.340\ldots{} & 3.271\ldots{} & 1306/\ldots{} & 11\tabularnewline
-hsa05165 & Human\ldots{} & 16/101 & 331/8622 & 1.273\ldots{} & 1.744\ldots{} & 1.315\ldots{} & 1277/\ldots{} & 16\tabularnewline
-hsa05310 & Asthma & 6/101 & 31/8622 & 1.292\ldots{} & 1.744\ldots{} & 1.315\ldots{} & 2207/\ldots{} & 6\tabularnewline
-hsa04640 & Hemat\ldots{} & 9/101 & 99/8622 & 2.097\ldots{} & 2.455\ldots{} & 1.850\ldots{} & 929/9\ldots{} & 9\tabularnewline
-hsa04514 & Cell \ldots{} & 11/101 & 158/8622 & 2.122\ldots{} & 2.455\ldots{} & 1.850\ldots{} & 914/3\ldots{} & 11\tabularnewline
-hsa04510 & Focal\ldots{} & 12/101 & 203/8622 & 3.977\ldots{} & 4.296\ldots{} & 3.238\ldots{} & 1277/\ldots{} & 12\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
-\end{longtable}
-
-Figure \ref{fig:enrichment-of-markers-of-cancer-3-cells}为图enrichment of markers of cancer 3 cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/enrichment-of-markers-of-cancer-3-cells.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/enrichment-of-markers-of-cancer-3-cells.pdf}
-\caption{Enrichment of markers of cancer 3 cells}\label{fig:enrichment-of-markers-of-cancer-3-cells}
-\end{center}
-
-Table \ref{tab:tables-of-enrichment-of-markers-of-cancer-3-cells}为表格tables of enrichment of markers of cancer 3 cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/tables-of-enrichment-of-markers-of-cancer-3-cells.xlsx})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有241行9列，以下预览的表格可能省略部分数据；表格含有241个唯一`ID'。
-\end{tcolorbox}
-\end{center}
-
-\begin{longtable}[]{@{}lllllllll@{}}
-\caption{\label{tab:tables-of-enrichment-of-markers-of-cancer-3-cells}Tables of enrichment of markers of cancer 3 cells}\tabularnewline
-\toprule
-ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
-\midrule
-\endhead
-hsa04510 & Focal\ldots{} & 18/151 & 203/8622 & 1.346\ldots{} & 3.245\ldots{} & 2.707\ldots{} & 71/33\ldots{} & 18\tabularnewline
-hsa00010 & Glyco\ldots{} & 10/151 & 67/8622 & 2.124\ldots{} & 2.559\ldots{} & 2.135\ldots{} & 226/2\ldots{} & 10\tabularnewline
-hsa05412 & Arrhy\ldots{} & 10/151 & 77/8622 & 8.090\ldots{} & 6.499\ldots{} & 5.422\ldots{} & 71/18\ldots{} & 10\tabularnewline
-hsa01230 & Biosy\ldots{} & 9/151 & 75/8622 & 5.726\ldots{} & 0.000\ldots{} & 0.000\ldots{} & 226/4\ldots{} & 9\tabularnewline
-hsa04066 & HIF-1\ldots{} & 10/151 & 109/8622 & 1.948\ldots{} & 0.000\ldots{} & 0.000\ldots{} & 226/1\ldots{} & 10\tabularnewline
-hsa05418 & Fluid\ldots{} & 11/151 & 139/8622 & 3.015\ldots{} & 0.001\ldots{} & 0.000\ldots{} & 71/44\ldots{} & 11\tabularnewline
-hsa01200 & Carbo\ldots{} & 10/151 & 115/8622 & 3.114\ldots{} & 0.001\ldots{} & 0.000\ldots{} & 226/2\ldots{} & 10\tabularnewline
-hsa05132 & Salmo\ldots{} & 14/151 & 249/8622 & 0.000\ldots{} & 0.003\ldots{} & 0.002\ldots{} & 10006\ldots{} & 14\tabularnewline
-hsa04512 & ECM-r\ldots{} & 8/151 & 89/8622 & 0.000\ldots{} & 0.004\ldots{} & 0.003\ldots{} & 3339/\ldots{} & 8\tabularnewline
-hsa05130 & Patho\ldots{} & 12/151 & 198/8622 & 0.000\ldots{} & 0.004\ldots{} & 0.003\ldots{} & 10006\ldots{} & 12\tabularnewline
-hsa05222 & Small\ldots{} & 8/151 & 92/8622 & 0.000\ldots{} & 0.004\ldots{} & 0.003\ldots{} & 330/1\ldots{} & 8\tabularnewline
-hsa04210 & Apopt\ldots{} & 9/151 & 136/8622 & 0.000\ldots{} & 0.012\ldots{} & 0.010\ldots{} & 71/33\ldots{} & 9\tabularnewline
-hsa05205 & Prote\ldots{} & 11/151 & 205/8622 & 0.000\ldots{} & 0.017\ldots{} & 0.014\ldots{} & 71/85\ldots{} & 11\tabularnewline
-hsa05165 & Human\ldots{} & 14/151 & 331/8622 & 0.001\ldots{} & 0.033\ldots{} & 0.027\ldots{} & 3133/\ldots{} & 14\tabularnewline
-hsa05100 & Bacte\ldots{} & 6/151 & 77/8622 & 0.002\ldots{} & 0.035\ldots{} & 0.029\ldots{} & 71/10\ldots{} & 6\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
-\end{longtable}
-
-\hypertarget{ux80bfux7624ux7ec6ux80deux6765ux6e90ux5206ux6790}{%
-\subsection{肿瘤细胞来源分析}\label{ux80bfux7624ux7ec6ux80deux6765ux6e90ux5206ux6790}}
-
-\hypertarget{ux80bfux7624ux4e0eux4e0aux76aeux7ec6ux80deux6216ux57faux5e95ux7ec6ux80deux5deeux5f02ux5206ux6790}{%
-\subsubsection{肿瘤与上皮细胞或基底细胞差异分析}\label{ux80bfux7624ux4e0eux4e0aux76aeux7ec6ux80deux6216ux57faux5e95ux7ec6ux80deux5deeux5f02ux5206ux6790}}
-
-接下来的分析回到 Fig. \ref{fig:SCSA-annotation} 图中，取出上皮细胞或基底细胞对应的细胞类（肿瘤细胞主要分布在这两类细胞中），并且将 Fig. \ref{fig:cancer-cells-subtypes} 对应的细胞亚型映射。
-
-Figure \ref{fig:cancer-cells-in-epithelial--or-basal-cells}为图cancer cells in epithelial or basal cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/cancer-cells-in-epithelial-\/-or-basal-cells.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/cancer-cells-in-epithelial--or-basal-cells.pdf}
-\caption{Cancer cells in epithelial  or basal cells}\label{fig:cancer-cells-in-epithelial--or-basal-cells}
-\end{center}
-
-\hypertarget{en-diff}{%
-\subsubsection{肿瘤与上皮细胞或基底细胞差异基因的富集分析}\label{en-diff}}
-
-以下富集与 \ref{en-cancer-sub} 相对应，``Phagosome''、``Antigen processing and presentati\ldots{}'' 等为差异基因的主要富集通路。
-
-Figure \ref{fig:enrichment-of-DEGs-of-Cancer-1-cells-vs-Basal-cells}为图enrichment of DEGs of Cancer 1 cells vs Basal cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/enrichment-of-DEGs-of-Cancer-1-cells-vs-Basal-cells.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/enrichment-of-DEGs-of-Cancer-1-cells-vs-Basal-cells.pdf}
-\caption{Enrichment of DEGs of Cancer 1 cells vs Basal cells}\label{fig:enrichment-of-DEGs-of-Cancer-1-cells-vs-Basal-cells}
-\end{center}
-
-Figure \ref{fig:enrichment-of-DEGs-of-Cancer-1-cells-vs-Epithelial-cells}为图enrichment of DEGs of Cancer 1 cells vs Epithelial cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/enrichment-of-DEGs-of-Cancer-1-cells-vs-Epithelial-cells.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/enrichment-of-DEGs-of-Cancer-1-cells-vs-Epithelial-cells.pdf}
-\caption{Enrichment of DEGs of Cancer 1 cells vs Epithelial cells}\label{fig:enrichment-of-DEGs-of-Cancer-1-cells-vs-Epithelial-cells}
-\end{center}
-
-`All enrichments of DEGs of cancer vs epithelial or basal cells' 数据已全部提供。
-
-\textbf{(对应文件为 \texttt{all-enrichments-of-DEGs-of-cancer-vs-epithelial-or-basal-cells})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹all-enrichments-of-DEGs-of-cancer-vs-epithelial-or-basal-cells共包含6个文件。
-
-\begin{enumerate}\tightlist
-\item 1\_cancer\_1\_vs\_Basal cell.pdf
-\item 2\_cancer\_1\_vs\_Epithelial cell.pdf
-\item 3\_cancer\_2\_vs\_Basal cell.pdf
-\item 4\_cancer\_2\_vs\_Epithelial cell.pdf
-\item 5\_cancer\_3\_vs\_Basal cell.pdf
-\item ...
-\end{enumerate}\end{tcolorbox}
-\end{center}
-
-`Tables of all enrichments of DEGs of cancer vs epithelial or basal cells' 数据已全部提供。
-
-\textbf{(对应文件为 \texttt{tables-of-all-enrichments-of-DEGs-of-cancer-vs-epithelial-or-basal-cells})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹tables-of-all-enrichments-of-DEGs-of-cancer-vs-epithelial-or-basal-cells共包含6个文件。
-
-\begin{enumerate}\tightlist
-\item 1\_cancer\_1\_vs\_Basal cell.csv
-\item 2\_cancer\_1\_vs\_Epithelial cell.csv
-\item 3\_cancer\_2\_vs\_Basal cell.csv
-\item 4\_cancer\_2\_vs\_Epithelial cell.csv
-\item 5\_cancer\_3\_vs\_Basal cell.csv
-\item ...
-\end{enumerate}\end{tcolorbox}
-\end{center}
-
-Table \ref{tab:tables-of-all-DEGs-of-cancer-vs-epithelial-or-basal-cells}为表格tables of all DEGs of cancer vs epithelial or basal cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/tables-of-all-DEGs-of-cancer-vs-epithelial-or-basal-cells.csv})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1502行7列，以下预览的表格可能省略部分数据；表格含有6个唯一`contrast'。
-\end{tcolorbox}
-\end{center}
-
-\begin{longtable}[]{@{}lllllll@{}}
-\caption{\label{tab:tables-of-all-DEGs-of-cancer-vs-epithelial-or-basal-cells}Tables of all DEGs of cancer vs epithelial or basal cells}\tabularnewline
-\toprule
-contrast & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & gene\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-contrast & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & gene\tabularnewline
-\midrule
-\endhead
-cance\ldots{} & 4.341\ldots{} & 0.369\ldots{} & 1 & 1 & 8.506\ldots{} & RPL9\tabularnewline
-cance\ldots{} & 1.782\ldots{} & 0.404\ldots{} & 1 & 1 & 3.492\ldots{} & RPL7\tabularnewline
-cance\ldots{} & 2.722\ldots{} & -0.97\ldots{} & 1 & 1 & 5.335\ldots{} & MT-ATP6\tabularnewline
-cance\ldots{} & 5.164\ldots{} & -1.17\ldots{} & 1 & 1 & 1.011\ldots{} & MT-ND2\tabularnewline
-cance\ldots{} & 5.763\ldots{} & -0.84\ldots{} & 1 & 1 & 1.129\ldots{} & MT-CO3\tabularnewline
-cance\ldots{} & 7.030\ldots{} & -0.98\ldots{} & 1 & 1 & 1.377\ldots{} & MT-ND1\tabularnewline
-cance\ldots{} & 7.923\ldots{} & -0.85\ldots{} & 1 & 1 & 1.552\ldots{} & MT-ND3\tabularnewline
-cance\ldots{} & 6.299\ldots{} & -0.71\ldots{} & 1 & 1 & 1.234\ldots{} & MT-CO2\tabularnewline
-cance\ldots{} & 6.455\ldots{} & -0.89\ldots{} & 1 & 1 & 1.264\ldots{} & MT-ND4\tabularnewline
-cance\ldots{} & 1.075\ldots{} & -0.73\ldots{} & 1 & 1 & 2.106\ldots{} & MT-CO1\tabularnewline
-cance\ldots{} & 2.747\ldots{} & -0.42\ldots{} & 1 & 1 & 5.383\ldots{} & HLA-B\tabularnewline
-cance\ldots{} & 3.005\ldots{} & 0.327\ldots{} & 1 & 1 & 5.888\ldots{} & RPS15A\tabularnewline
-cance\ldots{} & 5.993\ldots{} & 0.258\ldots{} & 1 & 1 & 1.174\ldots{} & RPL37A\tabularnewline
-cance\ldots{} & 7.982\ldots{} & 0.289\ldots{} & 1 & 1 & 1.564\ldots{} & RPL17\tabularnewline
-cance\ldots{} & 2.149\ldots{} & -0.78\ldots{} & 1 & 1 & 4.211\ldots{} & MT-CYB\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
-\end{longtable}
-
-\hypertarget{ux7ec6ux80deux901aux8baf}{%
-\subsection{细胞通讯}\label{ux7ec6ux80deux901aux8baf}}
-
-以下分析使用的为 Tab. \ref{tab:all-markers-of-Seurat-clusters} 中的基因。
-
-\hypertarget{ux6240ux6709ux7ec6ux80deux4e4bux95f4ux7684ux901aux8baf}{%
-\subsubsection{所有细胞之间的通讯}\label{ux6240ux6709ux7ec6ux80deux4e4bux95f4ux7684ux901aux8baf}}
-
-将肿瘤细胞亚型映射到 Fig. \ref{fig:SCSA-annotation} 中，得到 Fig. \ref{fig:cancer-subtypes-in-all-cells}。
-
-Figure \ref{fig:cancer-subtypes-in-all-cells}为图cancer subtypes in all cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/cancer-subtypes-in-all-cells.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/cancer-subtypes-in-all-cells.pdf}
-\caption{Cancer subtypes in all cells}\label{fig:cancer-subtypes-in-all-cells}
-\end{center}
-
-以 cellchat 计算所有这些细胞之间的通讯关系\textsuperscript{\protect\hyperlink{ref-InferenceAndAJinS2021}{3}}。
-
-Figure \ref{fig:overview-of-cells-communication}为图overview of cells communication概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/overview-of-cells-communication.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/overview-of-cells-communication.pdf}
-\caption{Overview of cells communication}\label{fig:overview-of-cells-communication}
-\end{center}
-
-Figure \ref{fig:all-cells-communication-significance}为图all cells communication significance概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/all-cells-communication-significance.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/all-cells-communication-significance.pdf}
-\caption{All cells communication significance}\label{fig:all-cells-communication-significance}
-\end{center}
-
-Figure \ref{fig:all-cells-communication-roles}为图all cells communication roles概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/all-cells-communication-roles.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/all-cells-communication-roles.pdf}
-\caption{All cells communication roles}\label{fig:all-cells-communication-roles}
-\end{center}
-
-\hypertarget{ux5de8ux566cux7ec6ux80deux548cux80bfux7624ux7ec6ux80deux4e4bux95f4ux7684ux4e92ux4f5c}{%
-\subsubsection{巨噬细胞和肿瘤细胞之间的互作}\label{ux5de8ux566cux7ec6ux80deux548cux80bfux7624ux7ec6ux80deux4e4bux95f4ux7684ux4e92ux4f5c}}
-
-以下，我们主要聚焦于巨噬细胞和癌细胞之间的通讯关系。
-
-Table \ref{tab:table-of-communication-between-macrophage-and-cancer-cells}为表格table of communication between macrophage and cancer cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/table-of-communication-between-macrophage-and-cancer-cells.csv})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有409行11列，以下预览的表格可能省略部分数据；表格含有4个唯一`source'。
-\end{tcolorbox}
-\end{center}
-
-\begin{longtable}[]{@{}llllllllllll@{}}
-\caption{\label{tab:table-of-communication-between-macrophage-and-cancer-cells}Table of communication between macrophage and cancer cells}\tabularnewline
-\toprule
-source & target & ligand & receptor & prob & pval & inter\ldots\ldots7 & inter\ldots\ldots8 & pathw\ldots{} & annot\ldots{} & evidence & \ldots{}\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-source & target & ligand & receptor & prob & pval & inter\ldots\ldots7 & inter\ldots\ldots8 & pathw\ldots{} & annot\ldots{} & evidence & \ldots{}\tabularnewline
-\midrule
-\endhead
-Macro\ldots{} & cancer\_2 & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0.01 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-Macro\ldots{} & cancer\_3 & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0.03 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-cancer\_2 & Macro\ldots{} & TGFB1 & ACVR1\ldots{} & 0.001\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-cancer\_3 & Macro\ldots{} & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-Macro\ldots{} & cancer\_1 & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0.04 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-Macro\ldots{} & cancer\_2 & TGFB1 & ACVR1\ldots{} & 0.000\ldots{} & 0 & TGFB1\ldots{} & TGFB1\ldots{} & TGFb & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-Macro\ldots{} & cancer\_1 & WNT5A & FZD10 & 0.001\ldots{} & 0 & WNT5A\ldots{} & WNT5A\ldots{} & ncWNT & Secre\ldots{} & KEGG:\ldots{} & \ldots{}\tabularnewline
-Macro\ldots{} & cancer\_2 & WNT5A & FZD10 & 0.001\ldots{} & 0.02 & WNT5A\ldots{} & WNT5A\ldots{} & ncWNT & Secre\ldots{} & KEGG:\ldots{} & \ldots{}\tabularnewline
-Macro\ldots{} & cancer\_3 & WNT5A & FZD10 & 0.001\ldots{} & 0.02 & WNT5A\ldots{} & WNT5A\ldots{} & ncWNT & Secre\ldots{} & KEGG:\ldots{} & \ldots{}\tabularnewline
-Macro\ldots{} & cancer\_1 & WNT5A & FZD6 & 0.011\ldots{} & 0.04 & WNT5A\ldots{} & WNT5A\ldots{} & ncWNT & Secre\ldots{} & KEGG:\ldots{} & \ldots{}\tabularnewline
-Macro\ldots{} & cancer\_2 & WNT5A & FZD6 & 0.011\ldots{} & 0.04 & WNT5A\ldots{} & WNT5A\ldots{} & ncWNT & Secre\ldots{} & KEGG:\ldots{} & \ldots{}\tabularnewline
-Macro\ldots{} & cancer\_2 & WNT5A & MCAM & 0.001\ldots{} & 0.04 & WNT5A\ldots{} & WNT5A\ldots{} & ncWNT & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-cancer\_2 & Macro\ldots{} & WNT5A & MCAM & 0.005\ldots{} & 0 & WNT5A\ldots{} & WNT5A\ldots{} & ncWNT & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-cancer\_3 & Macro\ldots{} & WNT5A & MCAM & 0.004\ldots{} & 0.04 & WNT5A\ldots{} & WNT5A\ldots{} & ncWNT & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-cancer\_1 & Macro\ldots{} & PDGFB & PDGFRA & 0.000\ldots{} & 0 & PDGFB\ldots{} & PDGFB\ldots{} & PDGF & Secre\ldots{} & PMID:\ldots{} & \ldots{}\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
-\end{longtable}
-
-Figure \ref{fig:visualization-of-communication-between-macrophage-and-cancer-cells}为图visualization of communication between macrophage and cancer cells概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/visualization-of-communication-between-macrophage-and-cancer-cells.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/visualization-of-communication-between-macrophage-and-cancer-cells.pdf}
-\caption{Visualization of communication between macrophage and cancer cells}\label{fig:visualization-of-communication-between-macrophage-and-cancer-cells}
-\end{center}
-
-根据 Fig. \ref{fig:visualization-of-communication-between-macrophage-and-cancer-cells}，
-可以关注到互作网络图中中心度 (centrality degree) 较高的 ITGA 相关受体或配体。
-
-\hypertarget{itga-ux76f8ux5173ux914dux4f53ux53d7ux4f53ux5bccux96c6ux5206ux6790}{%
-\subsubsection{ITGA 相关配体受体富集分析}\label{itga-ux76f8ux5173ux914dux4f53ux53d7ux4f53ux5bccux96c6ux5206ux6790}}
-
-根据 Fig. \ref{fig:visualization-of-communication-between-macrophage-and-cancer-cells}，以下将 ITGA 相关基因做富集分析。
-
-`Enrichment of ITGA related genes' 数据已全部提供。
-
-\textbf{(对应文件为 \texttt{enrichment-of-ITGA-related-genes})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹enrichment-of-ITGA-related-genes共包含1个文件。
-
-\begin{enumerate}\tightlist
-\item 1\_ids.pdf
-\end{enumerate}\end{tcolorbox}
-\end{center}
-
-Fig. \ref{fig:enrichment-of-ITGA-related-genes} 首要富集到 PI3K-AKT 通路。还可以发现，``Small cell lung cancer'' 也是显著富集结果之一。
-
-Table \ref{tab:tables-of-enrichment-of-ITGA-related-genes}为表格tables of enrichment of ITGA related genes概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/tables-of-enrichment-of-ITGA-related-genes.csv})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有65行9列，以下预览的表格可能省略部分数据；表格含有65个唯一`ID'。
-\end{tcolorbox}
-\end{center}
-
-\begin{longtable}[]{@{}lllllllll@{}}
-\caption{\label{tab:tables-of-enrichment-of-ITGA-related-genes}Tables of enrichment of ITGA related genes}\tabularnewline
-\toprule
-ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ID & Descr\ldots{} & GeneR\ldots{} & BgRatio & pvalue & p.adjust & qvalue & geneID & Count\tabularnewline
-\midrule
-\endhead
-hsa04512 & ECM-r\ldots{} & 27/36 & 89/8622 & 2.645\ldots{} & 1.719\ldots{} & 8.633\ldots{} & 1277/\ldots{} & 27\tabularnewline
-hsa04510 & Focal\ldots{} & 27/36 & 203/8622 & 1.474\ldots{} & 4.791\ldots{} & 2.405\ldots{} & 1277/\ldots{} & 27\tabularnewline
-hsa05165 & Human\ldots{} & 27/36 & 331/8622 & 1.433\ldots{} & 3.106\ldots{} & 1.559\ldots{} & 1277/\ldots{} & 27\tabularnewline
-hsa04151 & PI3K-\ldots{} & 27/36 & 359/8622 & 1.360\ldots{} & 2.211\ldots{} & 1.110\ldots{} & 1277/\ldots{} & 27\tabularnewline
-hsa05146 & Amoeb\ldots{} & 18/36 & 102/8622 & 3.269\ldots{} & 4.250\ldots{} & 2.133\ldots{} & 1277/\ldots{} & 18\tabularnewline
-hsa05222 & Small\ldots{} & 17/36 & 92/8622 & 4.653\ldots{} & 5.041\ldots{} & 2.530\ldots{} & 1282/\ldots{} & 17\tabularnewline
-hsa04974 & Prote\ldots{} & 11/36 & 103/8622 & 1.922\ldots{} & 1.785\ldots{} & 8.962\ldots{} & 1277/\ldots{} & 11\tabularnewline
-hsa05145 & Toxop\ldots{} & 10/36 & 111/8622 & 1.592\ldots{} & 1.294\ldots{} & 6.497\ldots{} & 3688/\ldots{} & 10\tabularnewline
-hsa04933 & AGE-R\ldots{} & 9/36 & 100/8622 & 1.914\ldots{} & 1.382\ldots{} & 6.942\ldots{} & 1277/\ldots{} & 9\tabularnewline
-hsa04810 & Regul\ldots{} & 9/36 & 229/8622 & 2.833\ldots{} & 1.841\ldots{} & 9.245\ldots{} & 2335/\ldots{} & 9\tabularnewline
-hsa05412 & Arrhy\ldots{} & 6/36 & 77/8622 & 6.555\ldots{} & 3.873\ldots{} & 1.944\ldots{} & 3672/\ldots{} & 6\tabularnewline
-hsa04926 & Relax\ldots{} & 7/36 & 129/8622 & 8.294\ldots{} & 4.492\ldots{} & 2.255\ldots{} & 1277/\ldots{} & 7\tabularnewline
-hsa05410 & Hyper\ldots{} & 6/36 & 90/8622 & 1.655\ldots{} & 8.278\ldots{} & 4.156\ldots{} & 3672/\ldots{} & 6\tabularnewline
-hsa05414 & Dilat\ldots{} & 6/36 & 96/8622 & 2.421\ldots{} & 1.124\ldots{} & 5.643\ldots{} & 3672/\ldots{} & 6\tabularnewline
-hsa04670 & Leuko\ldots{} & 6/36 & 115/8622 & 6.942\ldots{} & 3.008\ldots{} & 1.510\ldots{} & 50848\ldots{} & 6\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
-\end{longtable}
-
-\hypertarget{ux9996ux8981ux5bccux96c6ux7684-pi3k-ux901aux8def}{%
-\subsubsection{首要富集的 PI3K 通路}\label{ux9996ux8981ux5bccux96c6ux7684-pi3k-ux901aux8def}}
-
-以下结果可以和 \ref{en-cancer-sub} 和 \ref{en-diff} 相对应。
-
-Figure \ref{fig:view-of-enriched-genes-in-PI3K-pathway}为图view of enriched genes in PI3K pathway概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/hsa04151.pathview.png})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{pathview2023-10-17_12_31_52.147711/hsa04151.pathview.png}
-\caption{View of enriched genes in PI3K pathway}\label{fig:view-of-enriched-genes-in-PI3K-pathway}
-\end{center}
-
-\hypertarget{pi3k-ux901aux8defux548c-itga-ux76f8ux5173ux53d7ux4f53ux914dux4f53ux7684ux4ea4ux96c6}{%
-\subsubsection{PI3K 通路和 ITGA 相关受体配体的交集}\label{pi3k-ux901aux8defux548c-itga-ux76f8ux5173ux53d7ux4f53ux914dux4f53ux7684ux4ea4ux96c6}}
-
 \begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
-ITGA\_with\_PI3K
+Composition
 :}
 
 \vspace{0.5em}
 
-    COL1A1, COL1A2, COL2A1, COL4A1, COL4A2, COL4A4, COL4A5,
-COL4A6, COL6A1, COL6A2, COL6A3, FN1, ITGA1, ITGA11, ITGA2,
-ITGA5, ITGB1, LAMA1, LAMA3, LAMA4, LAMA5, LAMB1, LAMB2,
-LAMB3, LAMC1, LAMC2, SPP1
+    ./Figure+Table/SCSA-annotation.pdf \newline
+./Figure+Table/copykat\_heatmap.png \newline
+./Figure+Table/cell-mapped-of-copyKAT-prediction.pdf
 
 \vspace{2em}
 \end{tcolorbox}
 \end{center}
 
-\hypertarget{ux901aux8bafux57faux56e0ux7684ux8868ux8fbeux5728ux80bfux7624ux7ec6ux80deux4e2dux7684ux62dfux65f6ux53d8ux5316}{%
-\subsubsection{通讯基因的表达在肿瘤细胞中的拟时变化}\label{ux901aux8bafux57faux56e0ux7684ux8868ux8fbeux5728ux80bfux7624ux7ec6ux80deux4e2dux7684ux62dfux65f6ux53d8ux5316}}
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
-以下分析表现了 ITGA 和 PI3K 通路相关的 27 个基因在肿瘤细胞亚型之间的转化（拟时过程）过程中的表达变化。
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
-Figure \ref{fig:group-1-communication-related-genes-in-pseudotime}为图group 1 communication related genes in pseudotime概览。
+Figure \ref{fig:MAIN-Fig-2} (下方图) 为图MAIN Fig 2概览。
 
-\textbf{(对应文件为 \texttt{Figure+Table/group-1-communication-related-genes-in-pseudotime.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/group-1-communication-related-genes-in-pseudotime.pdf}
-\caption{Group 1 communication related genes in pseudotime}\label{fig:group-1-communication-related-genes-in-pseudotime}
-\end{center}
-
-Figure \ref{fig:group-2-communication-related-genes-in-pseudotime}为图group 2 communication related genes in pseudotime概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/group-2-communication-related-genes-in-pseudotime.pdf})}
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-2.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/group-2-communication-related-genes-in-pseudotime.pdf}
-\caption{Group 2 communication related genes in pseudotime}\label{fig:group-2-communication-related-genes-in-pseudotime}
+\includegraphics[width = 0.9\linewidth]{figs/fig2.pdf}
+\caption{MAIN Fig 2}\label{fig:MAIN-Fig-2}
 \end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Composition
+:}
 
-Figure \ref{fig:group-3-communication-related-genes-in-pseudotime}为图group 3 communication related genes in pseudotime概览。
+\vspace{0.5em}
 
-\textbf{(对应文件为 \texttt{Figure+Table/group-3-communication-related-genes-in-pseudotime.pdf})}
+    ./Figure+Table/re-classify-of-cancer-cells.pdf \newline
+./Figure+Table/gene-module-of-co-expression-analysis.pdf
+\newline ./Figure+Table/pseudotime-add.pdf \newline
+./Figure+Table/cancer-cells-subtypes.pdf
 
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/group-3-communication-related-genes-in-pseudotime.pdf}
-\caption{Group 3 communication related genes in pseudotime}\label{fig:group-3-communication-related-genes-in-pseudotime}
-\end{center}
-
-\hypertarget{workflow2}{%
-\section{\texorpdfstring{附：分析流程（癌组织切片 \texttt{Cancer\_2}）}{附：分析流程（癌组织切片 Cancer\_2）}}\label{workflow2}}
-
-Figure \ref{fig:Tissue-Cancer-2-cell-types-SCSA}为图Tissue Cancer 2 cell types SCSA概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/Tissue-Cancer-2-cell-types-SCSA.pdf})}
-
-\def\@captype{figure}
-\begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/Tissue-Cancer-2-cell-types-SCSA.pdf}
-\caption{Tissue Cancer 2 cell types SCSA}\label{fig:Tissue-Cancer-2-cell-types-SCSA}
-\end{center}
-
-Table \ref{tab:Tissue-Cancer-2-all-markers}为表格Tissue Cancer 2 all markers概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/Tissue-Cancer-2-all-markers.csv})}
-
-\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有2963行8列，以下预览的表格可能省略部分数据；表格含有2963个唯一`rownames'。
+\vspace{2em}
 \end{tcolorbox}
 \end{center}
 
-\begin{longtable}[]{@{}llllllll@{}}
-\caption{\label{tab:Tissue-Cancer-2-all-markers}Tissue Cancer 2 all markers}\tabularnewline
-\toprule
-rownames & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & scsa\_\ldots{} & gene\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-rownames & p\_val & avg\_l\ldots{} & pct.1 & pct.2 & p\_val\ldots{} & scsa\_\ldots{} & gene\tabularnewline
-\midrule
-\endhead
-MT-ATP6 & 1.291\ldots{} & 0.306\ldots{} & 1 & 1 & 1.932\ldots{} & SLC16\ldots{} & MT-ATP6\tabularnewline
-MYH11 & 6.067\ldots{} & 0.480\ldots{} & 1 & 0.991 & 9.079\ldots{} & SLC16\ldots{} & MYH11\tabularnewline
-CSRNP1 & 4.238\ldots{} & 0.355\ldots{} & 0.917 & 0.578 & 6.342\ldots{} & SLC16\ldots{} & CSRNP1\tabularnewline
-DES & 5.035\ldots{} & 0.309\ldots{} & 1 & 0.995 & 7.534\ldots{} & SLC16\ldots{} & DES\tabularnewline
-PPP1R12B & 1.762\ldots{} & 0.402\ldots{} & 0.928 & 0.61 & 2.637\ldots{} & SLC16\ldots{} & PPP1R12B\tabularnewline
-PLN & 2.973\ldots{} & 0.473\ldots{} & 0.894 & 0.584 & 4.448\ldots{} & SLC16\ldots{} & PLN\tabularnewline
-RTL8C & 3.055\ldots{} & 0.469\ldots{} & 0.894 & 0.599 & 4.571\ldots{} & SLC16\ldots{} & RTL8C\tabularnewline
-ALDOA & 8.420\ldots{} & 0.478\ldots{} & 0.912 & 0.625 & 1.260\ldots{} & SLC16\ldots{} & ALDOA\tabularnewline
-MRPL33 & 1.425\ldots{} & 0.383\ldots{} & 0.915 & 0.604 & 2.132\ldots{} & SLC16\ldots{} & MRPL33\tabularnewline
-SYNM & 3.301\ldots{} & 0.603\ldots{} & 0.995 & 0.877 & 4.939\ldots{} & SLC16\ldots{} & SYNM\tabularnewline
-EIF4B & 3.839\ldots{} & 0.397\ldots{} & 0.899 & 0.606 & 5.744\ldots{} & SLC16\ldots{} & EIF4B\tabularnewline
-MAP3K20 & 1.259\ldots{} & 0.372\ldots{} & 0.873 & 0.585 & 1.884\ldots{} & SLC16\ldots{} & MAP3K20\tabularnewline
-UQCRC1 & 1.438\ldots{} & 0.388\ldots{} & 0.894 & 0.594 & 2.151\ldots{} & SLC16\ldots{} & UQCRC1\tabularnewline
-ARPC2 & 1.791\ldots{} & 0.406\ldots{} & 0.886 & 0.594 & 2.681\ldots{} & SLC16\ldots{} & ARPC2\tabularnewline
-PALLD & 2.500\ldots{} & 0.449\ldots{} & 0.964 & 0.651 & 3.741\ldots{} & SLC16\ldots{} & PALLD\tabularnewline
-\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
-\bottomrule
-\end{longtable}
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
-\hypertarget{workflow3}{%
-\section{附：分析流程（癌旁组织切片）}\label{workflow3}}
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
-\hypertarget{clustering-and-annotation}{%
-\subsection{Clustering and annotation}\label{clustering-and-annotation}}
+Figure \ref{fig:MAIN-Fig-3} (下方图) 为图MAIN Fig 3概览。
 
-Figure \ref{fig:extra-QC}为图extra QC概览。
-
-\textbf{(对应文件为 \texttt{Figure+Table/extra-QC.pdf})}
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-3.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/extra-QC.pdf}
-\caption{Extra QC}\label{fig:extra-QC}
+\includegraphics[width = 0.9\linewidth]{figs/fig3.pdf}
+\caption{MAIN Fig 3}\label{fig:MAIN-Fig-3}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Composition
+:}
+
+\vspace{0.5em}
+
+    ./Figure+Table/cancer-cells-in-epithelial--or-basal-cells.pdf
+\newline
+./Figure+Table/enrichment-of-markers-of-cancer-2-cells.pdf
+\newline
+./Figure+Table/enrichment-of-markers-of-cancer-3-cells.pdf
+
+\vspace{2em}
+\end{tcolorbox}
 \end{center}
 
-Figure \ref{fig:extra-SCSA-annotation}为图extra SCSA annotation概览。
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
-\textbf{(对应文件为 \texttt{Figure+Table/extra-SCSA-annotation.pdf})}
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MAIN-Fig-4} (下方图) 为图MAIN Fig 4概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MAIN-Fig-4.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/extra-SCSA-annotation.pdf}
-\caption{Extra SCSA annotation}\label{fig:extra-SCSA-annotation}
+\includegraphics[width = 0.9\linewidth]{figs/fig4.pdf}
+\caption{MAIN Fig 4}\label{fig:MAIN-Fig-4}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Composition
+:}
+
+\vspace{0.5em}
+
+    ./Figure+Table/cell-communication-heatmap.pdf \newline
+./Figure+Table/visualization-of-communication-between-macrophage-and-cancer-cells.pdf
+\newline ./Figure+Table/hsa04151.pathview.png \newline
+./Figure+Table/selected-pseudo-genes.pdf
+
+\vspace{2em}
+\end{tcolorbox}
 \end{center}
 
-\hypertarget{copykat-prediction}{%
-\subsection{Copykat prediction}\label{copykat-prediction}}
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
-可以观察到，copyKAT 的细胞类型预测，癌旁组织 Fig. \ref{fig:extra-copyKAT-prediction} 的聚类不及 癌组织切片的 Fig. \ref{fig:copyKAT-prediction-of-aneuploidy} 明显。
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
 
-Figure \ref{fig:extra-copyKAT-prediction}为图extra copyKAT prediction概览。
+`Tiff figures' 数据已全部提供。
 
-\textbf{(对应文件为 \texttt{Figure+Table/copykat\_para\_cancer.png})}
+\textbf{(对应文件为 \texttt{Figure+Table/TIFF})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/TIFF共包含4个文件。
+
+\begin{enumerate}\tightlist
+\item MAIN-Fig-1.tiff
+\item MAIN-Fig-2.tiff
+\item MAIN-Fig-3.tiff
+\item MAIN-Fig-4.tiff
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux9644ux56fe-ux53efux9009}{%
+\section{附图 (可选)}\label{ux9644ux56fe-ux53efux9009}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:unnamed-chunk-16} (下方图) 为图unnamed chunk 16概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/spatial-sample-QC.pdf})}
 
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{figs/copykat_para_cancer.png}
-\caption{Extra copyKAT prediction}\label{fig:extra-copyKAT-prediction}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/spatial-sample-QC.pdf}
+\caption{Unnamed chunk 16}\label{fig:unnamed-chunk-16}
 \end{center}
 
-\hypertarget{bibliography}{%
-\section*{Reference}\label{bibliography}}
-\addcontentsline{toc}{section}{Reference}
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
-\hypertarget{refs}{}
-\begin{cslreferences}
-\leavevmode\hypertarget{ref-DelineatingCopGaoR2021}{}%
-1. Gao, R. \emph{et al.} Delineating copy number and clonal substructure in human tumors from single-cell transcriptomes. \emph{Nature Biotechnology} \textbf{39}, 599--608 (2021).
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 
-\leavevmode\hypertarget{ref-CausesAndConsGordon2012}{}%
-2. Gordon, D. J., Resio, B. \& Pellman, D. Causes and consequences of aneuploidy in cancer. \emph{Nature Reviews Genetics} \textbf{13}, 189--203 (2012).
+Figure \ref{fig:unnamed-chunk-17} (下方图) 为图unnamed chunk 17概览。
 
-\leavevmode\hypertarget{ref-InferenceAndAJinS2021}{}%
-3. Jin, S. \emph{et al.} Inference and analysis of cell-cell communication using cellchat. \emph{Nature Communications} \textbf{12}, (2021).
-\end{cslreferences}
+\textbf{(对应文件为 \texttt{./Figure+Table/PCA-ranking.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/PCA-ranking.pdf}
+\caption{Unnamed chunk 17}\label{fig:unnamed-chunk-17}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:unnamed-chunk-18} (下方图) 为图unnamed chunk 18概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/overview-of-cells-communication.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/overview-of-cells-communication.pdf}
+\caption{Unnamed chunk 18}\label{fig:unnamed-chunk-18}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:unnamed-chunk-19} (下方图) 为图unnamed chunk 19概览。
+
+\textbf{(对应文件为 \texttt{./Figure+Table/all-cells-communication-significance.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{./Figure+Table/all-cells-communication-significance.pdf}
+\caption{Unnamed chunk 19}\label{fig:unnamed-chunk-19}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
 
 \end{document}

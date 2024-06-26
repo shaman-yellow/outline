@@ -1,0 +1,251 @@
+---
+---
+
+```{r include = F, eval = F}
+deparse_mail()
+info <- items(belong = odate(06), eval = ic(), lock = T, id = "no", class = "-")
+show.ic(info)
+
+order_publish()
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset(T)
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+# set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 摘要 {#abstract}
+
+```{r}
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+  di("非酒精性脂肪肝")
+)
+
+# DEGs: Differential Expressed Genes 差异表达基因
+# NFLD: Nonalcoholic fatty liver disease 非酒精性脂肪肝
+```
+
+
+
+# 前言 {#introduction}
+
+# 材料和方法 {#methods}
+
+## 材料
+
+```{r eval = T, echo = F, results = "asis"}
+auto_material()
+```
+
+## 方法
+
+```{r eval = T, echo = F, results = "asis"}
+auto_method()
+```
+
+# 分析结果 {#results}
+
+# 结论 {#dis}
+
+# 附：分析流程 {#workflow}
+
+## 成分
+
+- Aconitic acid
+- Dianthoside
+- Allo Maltol
+- 6-Hydroxycoumarin
+- Homovanillyl alcohol 4-O-glucoside
+- Epicatechin
+- Isoquercetin
+- Berberine
+- Quinic acid
+- 2-Furoic acid
+- Adoxosidic acid
+- Neochlorogenic acid
+- 3-O-Feruloylquinic acid
+- Rutin
+- Quercetin
+- Isorhamnetin
+- Gingerol
+
+```{r}
+cpds <- c("Aconitic acid", "Dianthoside", "Allo Maltol", "6-Hydroxycoumarin", "Homovanillyl alcohol 4-O-glucoside",
+  "Epicatechin", "Isoquercetin", "Berberine", "Quinic acid", "2-Furoic acid", "Adoxosidic acid",
+  "Neochlorogenic acid", "3-O-Feruloylquinic acid", "Rutin", "Quercetin",
+  "Isorhamnetin", "Gingerol")
+infoCpds <- PubChemR::get_cids(cpds)
+infoCpds <- dplyr::distinct(infoCpds, Identifier, .keep_all = T)
+if (!identical(nrow(infoCpds), length(cpds))) {
+  message("Not Found some compounds.")
+}
+infoCpds <- dplyr::mutate(infoCpds, CID = as.integer(CID))
+infoCpds
+```
+
+```{r}
+pub <- job_pubchemr(nl(infoCpds$Identifier, infoCpds$CID, F))
+pub <- step1(pub)
+```
+
+## 成分靶点
+
+```{r}
+sup <- asjob_superpred(pub)
+sup <- step1(sup)
+sup@tables$step1$targets
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Targets-predicted-by-Super-Pred
+autor(sup@tables$step1$targets)
+```
+
+## 成分靶点网络
+
+```{r}
+hb <- do_herb(pub, sup)
+hb@plots$step3$p.pharm
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-visualization
+autor(hb@plots$step3$p.pharm)
+```
+
+## 疾病靶点
+
+```{r}
+gm <- job_gmix("Nonalcoholic fatty liver disease", "nonalcoholic")
+gm <- step1(gm)
+gm <- step2(gm, NULL, 1, 3, restrict = T)
+gm@tables$step2$t.genecard
+gm@plots$step2$p.cols
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GeneCards-used-data
+autor(gm@tables$step2$t.genecard)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-targets-number-of-datasets
+autor(gm@plots$step2$p.cols)
+```
+
+## 成分-疾病-靶点
+
+```{r}
+hb <- map(hb, gm@params$lst.genes, name = "dis", less.label = F)
+hb@params$p.pharm2dis
+hb@params$p.venn2dis
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-with-disease
+autor(hb@params$p.pharm2dis)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Targets-intersect-with-targets-of-diseases
+autor(hb@params$p.venn2dis)
+```
+
+## 分子对接
+
+```{r}
+dockLayout <- dplyr::select(hb@params$p.pharm2dis$.data, -1)
+dockLayout <- map(dockLayout, "Ingredient.name", infoCpds, "Identifier", "CID", col = "CID")
+dockLayout
+
+vn <- job_vina(.layout = dockLayout)
+vn <- step1(vn)
+vn <- step2(vn)
+vn <- step3(vn)
+vn <- set_remote(vn)
+vn <- step4(vn)
+vn <- step5(vn)
+wrap(vn@plots$step5$p.res_vina, 7, 9.5)
+vn@tables$step5$res_dock
+vn <- step6(vn, top = 3)
+vn@plots$step6$Top1_643757_into_1tqn
+vn@plots$step6$Top2_99477_into_2dn8
+vn@plots$step6$Top3_5316639_into_4cgv
+vn <- step7(vn)
+vn@plots$step7$Top1_643757_into_1tqn
+vn@plots$step7$Top2_99477_into_2dn8
+vn@plots$step7$Top3_5316639_into_4cgv
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Overall-combining-Affinity
+autor(wrap(vn@plots$step5$p.res_vina, 7, 9.5))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Affinity-data
+autor(vn@tables$step5$res_dock)
+```
+
+### 对接可视化
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-643757-into-1tqn
+autor(vn@plots$step6$Top1_643757_into_1tqn)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-99477-into-2dn8
+autor(vn@plots$step6$Top2_99477_into_2dn8)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-5316639-into-4cgv
+autor(vn@plots$step6$Top3_5316639_into_4cgv)
+```
+
+### 对接细节可视化
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-643757-into-1tqn-detail
+autor(vn@plots$step7$Top1_643757_into_1tqn)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-99477-into-2dn8-detail
+autor(vn@plots$step7$Top2_99477_into_2dn8)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-5316639-into-4cgv-detail
+autor(vn@plots$step7$Top3_5316639_into_4cgv)
+```
+
+```{r}
+loads("~/outline/lixiao/2024_06_04_caozhuo2/workflow.rds")
+```

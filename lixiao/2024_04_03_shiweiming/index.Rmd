@@ -124,8 +124,8 @@ autor(geo@params$prods)
 
 ```{r}
 geo <- job_geo("GSE184609")
+
 geo <- step1(geo)
-geo@params$guess
 geo <- step2(geo)
 untar("./GSE184609/GSE184609_RAW.tar", exdir = "./GSE184609")
 prepare_10x("./GSE184609", "./GSE184609/GSM5593453_A_D25_barcodes")
