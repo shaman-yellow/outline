@@ -8,7 +8,12 @@ import fastdup
 fd = fastdup.create("workdir2", "/home/echo/disk_sda1/Downloads/C2022092003-l/C2022092003-l-细胞染色/C2022092003-l-2-2-1-TMRM细胞染色观察线粒体膜电位（MMP）的变化/")
 fd.run(threshold = .95, cc_threshold = 0.95)
 fd.run
-fd.vis.similarity_gallery()
+
+m = fd.vis.similarity_gallery()
+fd.vis.duplicates_gallery()
+fd.vis.component_gallery()
+fd.vis.stats_gallery()
+
 
 # tkinter test
 
