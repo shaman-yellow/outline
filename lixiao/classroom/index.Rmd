@@ -1,0 +1,136 @@
+
+# QJJ Classroom
+
+## apply
+
+### apply, ...
+
+```{r}
+x <- list(list(list(list(1), list(1))), list(1, list(111)))
+fun1 <- function (x) {
+  rap <- function(x) {
+    if (is(x, "list")) {
+      lapply(x, rap)
+    } else if (is(x, "numeric")) {
+      return(x + 1)
+    }
+  }
+  rap(x)
+}
+
+setGeneric("fun", 
+  function(x, ...) standardGeneric("fun"))
+setMethod("fun", signature = c(x = "integer"),
+  function(x){
+    x + 1
+  })
+
+function(x) {
+
+rapply
+```
+
+### for loop
+
+```{r}
+n <- 1:1100
+fun()
+y <- list()
+length(y) <- length(n)
+for (i in n) {
+  y[[ i ]] <- paste0("test", i)
+}
+```
+
+```{r}
+x <- 100:999
+n <- 0L
+lapply(x,
+  function(i) {
+    ...
+    n <<- n + 1L
+    if (i == 1L) {
+      x + n
+    } else if (i == 2L) {
+      x + n
+    }
+    return(x)
+  })
+
+n <- data.frame(1:10)
+
+fun0 <- function(x) {
+  x == 1
+  x == 0
+  assign("n", 1:10, envir = .GlobalEnv)
+}
+
+```
+
+## string
+
+```{r}
+x <- c("sdfds934324324325fdsafdadsfsdf12343242343sdfds234324", "testgfds")
+stringr::str_extract(x, "[0-9]{1,100}(?=sdf)")
+stringr::str_extract_all()
+```
+
+### gsub
+
+### stringr
+
+## Function and Environment
+
+### Function
+
+### <<-
+
+### unlockBinding, assign
+
+## dplyr
+
+```{r}
+dplyr::select(iris, dplyr::ends_with("Sepal"))
+n <- "test"
+
+test <- "y"
+x <- "test"
+fun <- function(x, y = "test") {
+  ggplot(data.frame(x = 1:10, y = 1:10)) +
+    geom_point(aes(x = !!rlang::sym(test), y = y))
+}
+fun(y = "")
+```
+
+### !!, !!!
+
+## Package
+
+```{r}
+usethis::create_package("myPackage")
+roxygen2::roxygenize(".")
+setwd("../")
+
+devtools::build("./myPackage")
+install.packages("./myPackage_0.0.0.9000.tar.gz")
+library(myPackage)
+```
+
+- `usethis::create_package`
+- `usethis::use_mit_license`
+- add *.R
+- `roxygen2::roxygenize`
+  
+
+## S4
+
+### is
+
+### Class
+
+### Generic
+
+```{r}
+```
+
+## system
