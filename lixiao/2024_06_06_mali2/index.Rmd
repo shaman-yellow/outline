@@ -33,8 +33,14 @@ set_index()
 # 摘要 {#abstract}
 
 ```{r}
-dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"))
+dic(di("差异表达基因", "Differential Expressed Genes", "DEGs"),
+    di("缺血性脑卒中"),
+    di("出血性脑卒中")
+)
 
+# DEGs: Differential Expressed Genes 差异表达基因
+# IS: Ischemic stroke 缺血性脑卒中
+# HS: Hemorrhagic stroke 出血性脑卒中
 ```
 
 SIK2在脑卒中（分缺血性和出血性，都分析一下）疾病介导的上、下游信号通路情况，通路是否与小胶质细胞代谢或星形胶质细胞瘢痕相关都可，具有创新点能申请国自然即可
