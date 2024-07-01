@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "findsimilar"
+version = "0.1.0"
+description = ""
+authors = ["shaman-yellow <shaman.yellow@foxmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+fastdup = ">=2.4"
+ttkthemes = ">=3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+findsimilar = "findsimilar.main:main"
