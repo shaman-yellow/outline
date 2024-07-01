@@ -3,7 +3,7 @@
 
 ```{r include = F, eval = F}
 deparse_mail()
-info <- items(belong = odate(06), coef = cf(50), id = "审核业务", lock = T)
+info <- items(belong = odate(07), coef = cf(50), id = "审核业务", lock = T)
 show.ic(info)
 
 order_publish()

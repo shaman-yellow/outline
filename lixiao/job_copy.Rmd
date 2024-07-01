@@ -261,12 +261,12 @@ backup_jobs(alls, time <- "2024-05-01")
 
 ```{r}
 x <- thismonth(month = 6)
-summary_month()
+summary_month(month = 6)
 
 send_eval("sunhui")
 send_prin("sunhui")
 
-summary_month()
+summary_month(month = 6)
 send_summary("sunhui")
 
 update_registers()
@@ -274,7 +274,7 @@ update_tagsTable()
 send_registers("sunhui")
 
 alls <- get_orders()
-backup_jobs(alls, time <- "2024-05-01")
+backup_jobs(alls, time <- "2024-06-01")
 ```
 
 
