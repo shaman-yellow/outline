@@ -1,0 +1,118 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(belong = odate(11), eval = ic(), id = "BSHQ240941", title = "")
+show.ic(info)
+
+order_publish("idea.Rmd", "idea_out.Rmd")
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover(info$title)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("骨髓瘤")
+)
+
+# DEG: Differentially expressed genes 差异表达基因
+```
+
+## 相关研究
+
+Multiple myeloma (MM) 是一种基因复杂、异质性高的疾病，其发展是一个多步骤的过程，涉及肿瘤细胞基因改变的获得和骨髓微环境的变化 `r cite_show("MultipleMyelomMalard2024")`。
+
+## 相关概念
+
+因果基因 `r cite_show("CausalInferencPearl2009")`。
+
+TWAS 是一种结合基因表达数据和基因组数据的研究方法，用于识别与疾病或性状相关的基因`r cite_show("IntegrativeAppGusev2016")`
+
+PWAS 是一种通过整合蛋白质组学数据和基因组数据来研究蛋白质表达与疾病或性状之间关联的研究方法 `r cite_show("PwasProteomeBrande2020")`
+
+## 思路 {#introduction}
+
+Identifying causal genes for migraine by integrating the proteome and transcriptome 
+`r cite_show("IdentifyingCauLiSh2023")`
+
+骨髓瘤+因果基因筛选 (PWAS 和 TWAS) 
+
+涉及方法：
+- PWAS: GWAS + FUSION `r cite_show("IntegrativeAppGusev2016")` <http://gusevlab.org/projects/fusion/>
+- TWAS: GWAS + S-PrediXcan `r cite_show("ExploringThePBarbei2018")` <https://github.com/hakyimlab/MetaXcan>
+  + FOCUS `r cite_show("APowerfulFineWuCh2020")` <https://github.com/ChongWu-Biostat/FOGS>
+
+```{r eval = T, echo = F, results = "asis"}
+#| example-workflow
+autor("~/Pictures/causal_genes_selection.jpg")
+```
+
+# 可行性 {#methods}
+
+以 `"Multiple myeloma" AND "GWAS"` 搜索文献，得到系列研究。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-11-07 10-23-12.png")
+```
+
+# 创新性 {#results}
+
+以 `"Multiple myeloma" AND "causal genes"` 搜索 PubMed。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-11-07 10-14-53.png")
+```
+
+仅获得一篇文献，且不涉及 PWAS。
+
+# 参考文献和数据集 {#workflow}
+
+Identifying causal genes for migraine by integrating the proteome and transcriptome 
+`r cite_show("IdentifyingCauLiSh2023")`
+
+
+## GWAS 数据
+
+```{r}
+ogwas <- job_ogwas("Multiple myeloma")
+ogwas@object
+```
+
+```{r eval = T, echo = F, results = "asis"}
+autor(ogwas@object)
+```
+
+## MM 转录组
+
+```{r}
+tcga <- job_tcga("MMRF-COMMPASS")
+tcga <- step1(tcga, c("RNA", "protein"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+autor()
+```
+
+## MM 蛋白
+

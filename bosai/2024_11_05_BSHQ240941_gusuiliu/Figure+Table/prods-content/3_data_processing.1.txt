@@ -1,0 +1,1 @@
+The count table was loaded into R through Seurat version 4 package for further analysis. Cells that have gene numbers lesser than 200, greater than 7,000, and more than 10% of unique molecular identifiers stemming from mitochondrial genes were discarded from the analysis.

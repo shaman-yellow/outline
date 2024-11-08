@@ -1,0 +1,380 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz} \usepackage{auto-pst-pdf} \usepackage{pgfornament} \usepackage{pstricks-add} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/bosai//cover_page.pdf}
+\begin{center} \textbf{\huge 骨髓瘤思路设计}
+\vspace{4em} \begin{textblock}{10}(3.2,9.25)
+\huge \textbf{\textcolor{black}{2024-11-07}}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{84}\end{center}\tableofcontents
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{88}\end{center}\listoffigures
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{89}\end{center}\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{研究背景}\label{abstract}}
+
+Multiple myeloma (MM) 是一种基因复杂、异质性高的疾病，其发展是一个多步骤的过程，涉及肿瘤细胞基因改变的获得和骨髓微环境的变化 (2024, Nature reviews. Disease primers, \textbf{IF:76.9}, Q1)\textsuperscript{\protect\hyperlink{ref-MultipleMyelomMalard2024}{1}}。
+
+\hypertarget{introduction}{%
+\subsection{思路}\label{introduction}}
+
+结合 MM 的 GWAS 研究 (变异与疾病的关系) ，预测基因表达变化水平 (即TWAS，基因与疾病的关系) ；MM 的 scRNA-seq 肿瘤细胞分析，并进一步预测肿瘤细胞的代谢变化; 最后，聚焦于基因对肿瘤细胞的代谢改变，以及对应的功能基因。
+
+思路为： TWAS (GWAS + eQTL) + scRNA-seq + metabolic
+
+(TWAS 部分可能会相对耗时，因为该部分的方法为首次接触，需要配置程序)
+
+\hypertarget{methods}{%
+\section{可行性}\label{methods}}
+
+\hypertarget{ux4ee5-multiple-myeloma-and-metabolic-ux641cux7d22ux6587ux732eux53d1ux73b0-mm-ux4e0eux4ee3ux8c22ux5173ux8054ux5bc6ux5207}{%
+\subsection{\texorpdfstring{以 \texttt{"Multiple\ myeloma"\ AND\ "metabolic"} 搜索文献，发现 MM 与代谢关联密切。}{以 "Multiple myeloma" AND "metabolic" 搜索文献，发现 MM 与代谢关联密切。}}\label{ux4ee5-multiple-myeloma-and-metabolic-ux641cux7d22ux6587ux732eux53d1ux73b0-mm-ux4e0eux4ee3ux8c22ux5173ux8054ux5bc6ux5207}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-07 14-37-56.png}
+\caption{Unnamed chunk 6}\label{fig:unnamed-chunk-6}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux4ee5-multiple-myeloma-and-twas-ux641cux7d22ux6587ux732eux5df2ux6709ux501fux52a9-twas-ux7814ux7a76-mm-ux7684ux6587ux7ae0}{%
+\subsection{\texorpdfstring{以 \texttt{"Multiple\ myeloma"\ AND\ "TWAS"} 搜索文献，已有借助 TWAS 研究 MM 的文章。}{以 "Multiple myeloma" AND "TWAS" 搜索文献，已有借助 TWAS 研究 MM 的文章。}}\label{ux4ee5-multiple-myeloma-and-twas-ux641cux7d22ux6587ux732eux5df2ux6709ux501fux52a9-twas-ux7814ux7a76-mm-ux7684ux6587ux7ae0}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-07 14-36-52.png}
+\caption{Unnamed chunk 7}\label{fig:unnamed-chunk-7}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux4ee5-multiple-myeloma-and-metabolic-and-gwas-ux641cux7d22ux6587ux732eux53d1ux73b0ux4e00ux7bc7ux5b5fux5fb7ux5c14ux968fux673aux5316ux7814ux7a76mm-ux57faux56e0ux4e0eux4ee3ux8c22ux7684ux5173ux7cfb}{%
+\subsection{\texorpdfstring{以 \texttt{"Multiple\ myeloma"\ AND\ "metabolic"\ AND\ "GWAS"} 搜索文献，发现一篇孟德尔随机化研究，MM 基因与代谢的关系。}{以 "Multiple myeloma" AND "metabolic" AND "GWAS" 搜索文献，发现一篇孟德尔随机化研究，MM 基因与代谢的关系。}}\label{ux4ee5-multiple-myeloma-and-metabolic-and-gwas-ux641cux7d22ux6587ux732eux53d1ux73b0ux4e00ux7bc7ux5b5fux5fb7ux5c14ux968fux673aux5316ux7814ux7a76mm-ux57faux56e0ux4e0eux4ee3ux8c22ux7684ux5173ux7cfb}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-07 14-39-32.png}
+\caption{Unnamed chunk 8}\label{fig:unnamed-chunk-8}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{results}{%
+\section{创新性}\label{results}}
+
+\hypertarget{ux4ee5-multiple-myeloma-and-metabolic-and-twas-ux641cux7d22ux6587ux732eux672aux53d1ux73b0ux76f8ux5173ux7814ux7a76}{%
+\subsection{\texorpdfstring{以 \texttt{"Multiple\ myeloma"\ AND\ "metabolic"\ AND\ "TWAS"} 搜索文献，未发现相关研究。}{以 "Multiple myeloma" AND "metabolic" AND "TWAS" 搜索文献，未发现相关研究。}}\label{ux4ee5-multiple-myeloma-and-metabolic-and-twas-ux641cux7d22ux6587ux732eux672aux53d1ux73b0ux76f8ux5173ux7814ux7a76}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-07 14-40-57.png}
+\caption{Unnamed chunk 9}\label{fig:unnamed-chunk-9}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux4ee5-multiple-myeloma-and-scrna-seq-and-metabolic-and-gwas-ux641cux7d22-pubmedux672aux53d1ux73b0ux76f8ux5173ux7814ux7a76}{%
+\subsection{\texorpdfstring{以 \texttt{"Multiple\ myeloma"\ AND\ "scRNA-seq"\ AND\ "metabolic"\ AND\ "GWAS"} 搜索 PubMed，未发现相关研究。}{以 "Multiple myeloma" AND "scRNA-seq" AND "metabolic" AND "GWAS" 搜索 PubMed，未发现相关研究。}}\label{ux4ee5-multiple-myeloma-and-scrna-seq-and-metabolic-and-gwas-ux641cux7d22-pubmedux672aux53d1ux73b0ux76f8ux5173ux7814ux7a76}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-07 14-41-29.png}
+\caption{Unnamed chunk 10}\label{fig:unnamed-chunk-10}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{workflow}{%
+\section{参考文献和数据集}\label{workflow}}
+
+\hypertarget{twas-ux65b9ux6cd5}{%
+\subsection{TWAS 方法}\label{twas-ux65b9ux6cd5}}
+
+\begin{itemize}
+\tightlist
+\item
+  FUSION (2016, Nature Genetics, \textbf{IF:31.7}, Q1)\textsuperscript{\protect\hyperlink{ref-IntegrativeAppGusev2016}{2}}
+\item
+  FOCUS (2020, Human genetics, \textbf{IF:3.8}, Q2)\textsuperscript{\protect\hyperlink{ref-APowerfulFineWuCh2020}{3}}
+\end{itemize}
+
+\hypertarget{ux5355ux7ec6ux80deux6570ux636eux9884ux6d4bux4ee3ux8c22ux901aux91cfux7684ux65b9ux6cd5}{%
+\subsection{单细胞数据预测代谢通量的方法}\label{ux5355ux7ec6ux80deux6570ux636eux9884ux6d4bux4ee3ux8c22ux901aux91cfux7684ux65b9ux6cd5}}
+
+\begin{itemize}
+\tightlist
+\item
+  scFEA 通过scRNA-seq 预测代谢通量 (2021, Genome research, \textbf{IF:6.2}, Q1)\textsuperscript{\protect\hyperlink{ref-AGraphNeuralAlgham2021}{4}}
+\item
+  scFEA 的应用实例 (2023, Frontiers in endocrinology, \textbf{IF:3.9}, Q2)\textsuperscript{\protect\hyperlink{ref-SingleCellCorAgoro2023}{5}}
+\end{itemize}
+
+\hypertarget{gwas-ux6570ux636e}{%
+\subsection{GWAS 数据}\label{gwas-ux6570ux636e}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:GWAS}GWAS}\tabularnewline
+\toprule
+id & trait & ncase & group\_\ldots{} & year & author & consor\ldots{} & sex & pmid & popula\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+id & trait & ncase & group\_\ldots{} & year & author & consor\ldots{} & sex & pmid & popula\ldots{}\tabularnewline
+\midrule
+\endhead
+ieu-b-\ldots{} & Multip\ldots{} & 601 & public & 2021 & Burrows & UK Bio\ldots{} & Males \ldots{} & NA & European\tabularnewline
+finn-b\ldots{} & Multip\ldots{} & 598 & public & 2021 & NA & NA & Males \ldots{} & NA & European\tabularnewline
+finn-b\ldots{} & Multip\ldots{} & 598 & public & 2021 & NA & NA & Males \ldots{} & NA & European\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{scrna-seq}{%
+\subsection{scRNA-seq}\label{scrna-seq}}
+
+GEO 上有多数 MM 的 scRNA-seq 数据集，以下举一例。
+
+\begin{itemize}
+\tightlist
+\item
+  GSE271107
+\end{itemize}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE271107
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Raw scRNA-seq data were preprocessed using the Cell
+Ranger analysis pipelines (10x Genomics) version 6 with
+reference genome of human genome (GRCh38) to demultiplex
+for cell and transcript and generate count table.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    The count table was loaded into R through Seurat
+version 4 package for further analysis. Cells that have
+gene numbers lesser than 200, greater than 7,000, and more
+than 10% of unique molecular identifiers stemming from
+mitochondrial genes were discarded from the analysis.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    For individual sample, a principal component analysis
+(PCA) was performed on significantly variable genes for
+remained high-quality cells. Results of individual samples
+were used for data integration across samples using
+reciprocal PCA method to minimize technical differences
+between samples.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    The integration results were employed as input for
+clustering using Louvain algorithm with multilevel
+refinement and the Uniform Manifold Approximation and
+Projection for Dimension Reduction (UMAP).
+
+\vspace{2em}
+
+
+\textbf{
+(Others)
+:}
+
+\vspace{0.5em}
+
+    ...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/prods-content})}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:sample}Sample}\tabularnewline
+\toprule
+rownames & title & disease.state.ch1 & tissue.ch1\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & title & disease.state.ch1 & tissue.ch1\tabularnewline
+\midrule
+\endhead
+GSM8369863 & Healthy donor\_1 & Healthy & Bone marrow aspirate\tabularnewline
+GSM8369864 & Healthy donor\_2 & Healthy & Bone marrow aspirate\tabularnewline
+GSM8369865 & Healthy donor\_3 & Healthy & Bone marrow aspirate\tabularnewline
+GSM8369866 & Healthy donor\_4 & Healthy & Bone marrow aspirate\tabularnewline
+GSM8369867 & Healthy donor\_5 & Healthy & Bone marrow aspirate\tabularnewline
+GSM8369868 & MGUS\_1 & MGUS & Bone marrow aspirate\tabularnewline
+GSM8369869 & MGUS\_2 & MGUS & Bone marrow aspirate\tabularnewline
+GSM8369870 & MGUS\_3 & MGUS & Bone marrow aspirate\tabularnewline
+GSM8369871 & MGUS\_4 & MGUS & Bone marrow aspirate\tabularnewline
+GSM8369872 & MGUS\_5 & MGUS & Bone marrow aspirate\tabularnewline
+GSM8369873 & MGUS\_6 & MGUS & Bone marrow aspirate\tabularnewline
+GSM8369874 & SMM\_1 & SMM & Bone marrow aspirate\tabularnewline
+GSM8369875 & SMM\_2 & SMM & Bone marrow aspirate\tabularnewline
+GSM8369876 & SMM\_3 & SMM & Bone marrow aspirate\tabularnewline
+GSM8369877 & SMM\_4 & SMM & Bone marrow aspirate\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-MultipleMyelomMalard2024}{}%
+1. Malard, F. \emph{et al.} Multiple myeloma. \emph{Nature reviews. Disease primers} \textbf{10}, (2024).
+
+\leavevmode\hypertarget{ref-IntegrativeAppGusev2016}{}%
+2. Gusev, A. \emph{et al.} Integrative approaches for large-scale transcriptome-wide association studies. \emph{Nature Genetics} \textbf{48}, 245--252 (2016).
+
+\leavevmode\hypertarget{ref-APowerfulFineWuCh2020}{}%
+3. Wu, C. \& Pan, W. A powerful fine-mapping method for transcriptome-wide association studies. \emph{Human genetics} \textbf{139}, 199--213 (2020).
+
+\leavevmode\hypertarget{ref-AGraphNeuralAlgham2021}{}%
+4. Alghamdi, N. \emph{et al.} A graph neural network model to estimate cell-wise metabolic flux using single-cell rna-seq data. \emph{Genome research} \textbf{31}, 1867--1884 (2021).
+
+\leavevmode\hypertarget{ref-SingleCellCorAgoro2023}{}%
+5. Agoro, R. \emph{et al.} Single cell cortical bone transcriptomics define novel osteolineage gene sets altered in chronic kidney disease. \emph{Frontiers in endocrinology} \textbf{14}, (2023).
+\end{cslreferences}
+
+\end{document}
