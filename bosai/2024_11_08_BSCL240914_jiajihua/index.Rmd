@@ -2,9 +2,9 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20231124"), end = td("20241108"), finish = td(""),
-  id = "BSZD231122", client = "杨立宇", type = "分析优化", title = "骨肉瘤",
-  save = ".items_opt.rds"
+info <- items(start = td("20241016"), end = td("20241108"), finish = td(""),
+  id = "BSCL240914", client = "内部", type = "生信分析", title = "甲基化调控因子的靶基因预测",
+  save = ".items.rds"
 )
 show.ic(info)
 
