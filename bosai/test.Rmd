@@ -1,0 +1,29 @@
+---
+---
+
+# others
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("other")
+```
+
+# methods
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# results
+
+```{r}
+#| my-name
+#' @meth {get_meth(sr.mm)}
+#' @meth 
+#' @meth 这是一种时尚
+#' @other 测试一下
+sr.mm <- .job_seurat()
+sig(sr.mm) <- "mm"
+meth(sr.mm)$step0 <- glue::glue("Seurat {cite_show('@DictionaryLearHaoY2024')}")
+meth(sr.mm)$step1 <- glue::glue("Cell clustering")
+```
+
