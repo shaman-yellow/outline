@@ -26,7 +26,7 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-set_cover(info$title)
+set_cover.bosai(info)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}

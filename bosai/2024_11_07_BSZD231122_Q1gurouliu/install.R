@@ -8,18 +8,13 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c("BiocStyle", "ChemmineOB"))
 
 BiocManager::install(c("rvest"))
-
+remotes::install_github('Cao-lab-zcmu/MCnebula2')
 # install.packages(c("igraph", "ggraph"))
-
-if (!requireNamespace("remotes", quietly = TRUE))
-    install.packages("remotes")
-remotes::install_github("Cao-lab-zcmu/MCnebula2")
 
 BiocManager::install(c("FELLA", "xcms", "ggtree"))
 ## For tools query chemical classification via ClassyFire API
 remotes::install_github('aberHRML/classyfireR')
 ## For tools convert CID to KEGG ID
-remotes::install_github('xia-lab/MetaboAnalystR')
 
 metanr_packages <- function(){
   metr_pkgs <- c("impute", "pcaMethods", "globaltest", "GlobalAncova",
@@ -40,6 +35,7 @@ metanr_packages <- function(){
 }
 
 metanr_packages()
+remotes::install_github('xia-lab/MetaboAnalystR')
 
 install.packages(c("pdftools", "officedown"))
 
@@ -56,6 +52,16 @@ install.packages(c("pROC"))
 install.packages(c("DescTools"))
 BiocManager::install(c("meta"))
 BiocManager::install(c("GEOquery"))
+
+install.packages("lubridate")
+install.packages("openxlsx2")
+install.packages("gtranslate")
+install.packages("showtext")
+# https://jokergoo.github.io/ComplexHeatmap-reference/book/index.html
+install.packages("randomForestSRC")
+install.packages("ggthemes")
+devtools::install_github("jokergoo/ComplexHeatmap")
+devtools::install_github("stemangiola/tidyHeatmap")
 
 # BiocManager::install("GenomicAlignments")
 BiocManager::install("BSgenome.Hsapiens.UCSC.hg38")
@@ -103,8 +109,8 @@ BiocManager::install("rsample")
 # remotes::install_version("Matrix", version = "1.6-3")
 # install.packages('irlba', force = T)
 remotes::install_github('cole-trapnell-lab/monocle3')
-
 BiocManager::install(c("org.Mm.eg.db", "org.Hs.eg.db"))
+
 BiocManager::install("rly")
 remotes::install_github("cole-trapnell-lab/garnett", ref = "monocle3")
 
@@ -120,8 +126,6 @@ BiocManager::install("TCGAbiolinks")
 install.packages(c("grImport"))
 install.packages(c("EFS"))
 install.packages(c("lazyWeave"))
-
-system("pip3 install umap-learn")
 
 install.packages("spiralize")
 
@@ -148,7 +152,6 @@ BiocManager::install("UniProt.ws")
 install.packages("r3dmol")
 
 install.packages("ggpval")
-
 BiocManager::install("pathview")
 
 ## Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression
@@ -205,20 +208,10 @@ devtools::install_github("Hy4m/linkET")
 
 install.packages("bibliometrix")
 
-# https://cran.r-project.org/web/packages/PantaRhei/vignettes/panta-rhei.html
-install.packages("lubridate")
-install.packages("openxlsx2")
-# https://jokergoo.github.io/ComplexHeatmap-reference/book/index.html
-
-install.packages("randomForestSRC")
-install.packages("ggthemes")
-
 # install.packages("ecce")
-install.packages("gtranslate")
+
 
 remotes::install_github("omarwagih/ggseqlogo")
-
-install.packages("showtext")
 
 options(timeout = 100000)
 BiocManager::install("SNPlocs.Hsapiens.dbSNP155.GRCh38")
@@ -226,8 +219,8 @@ BiocManager::install("BSgenome.Hsapiens.NCBI.GRCh38")
 BiocManager::install("GenomicFiles")
 
 BiocManager::install("MungeSumstats")
-
 install.packages("PubChemR")
+
 # BiocManager::install("GEOmetadb")
 install.packages("rscopus")
 install.packages("foreign")
@@ -259,8 +252,7 @@ BiocManager::install("monocle")
 install.packages("codetools")
 install.packages("nlme")
 
-devtools::install_github("stemangiola/tidyHeatmap")
-devtools::install_github("jokergoo/ComplexHeatmap")
+# https://cran.r-project.org/web/packages/PantaRhei/vignettes/panta-rhei.html
 
 BiocManager::install(version = "3.19")
 BiocManager::install(c("STRINGdb"))

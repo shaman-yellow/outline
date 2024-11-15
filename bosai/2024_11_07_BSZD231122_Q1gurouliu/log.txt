@@ -1,0 +1,28 @@
+Matplotlib is building the font cache; this may take a moment.
+/tmp/tmp4y7yu99r: line 3: 297149 Killed                  python /public1/home/t0s000324/scFEA/src/scFEA.py --data_dir /public1/home/t0s000324/scFEA/data --input_dir . --test_file data.csv --res_dir . --moduleGene_file module_gene_m168.csv --stoichiometry_matrix cmMat_c70_m168.csv --cName_file cName_c70_m168.csv --output_flux_file flux.csv --output_balance_file balance.csv
+
+ERROR conda.cli.main_run:execute(125): `conda run python /public1/home/t0s000324/scFEA/src/scFEA.py --data_dir /public1/home/t0s000324/scFEA/data --input_dir . --test_file data.csv --res_dir . --moduleGene_file module_gene_m168.csv --stoichiometry_matrix cmMat_c70_m168.csv --cName_file cName_c70_m168.csv --output_flux_file flux.csv --output_balance_file balance.csv` failed. (See above for error)
+slurmstepd: error: Detected 1 oom_kill event in StepId=6551566.0. Some of the step tasks have been OOM Killed.
+srun: error: ce0305: task 12: Out Of Memory
+Matplotlib is building the font cache; this may take a moment.
+/tmp/tmpgece3m9c: line 3: 507777 Killed                  python /public1/home/t0s000324/scFEA/src/scFEA.py --data_dir /public1/home/t0s000324/scFEA/data --input_dir . --test_file data.csv --res_dir . --moduleGene_file module_gene_m168.csv --stoichiometry_matrix cmMat_c70_m168.csv --cName_file cName_c70_m168.csv --output_flux_file flux.csv --output_balance_file balance.csv
+
+ERROR conda.cli.main_run:execute(125): `conda run python /public1/home/t0s000324/scFEA/src/scFEA.py --data_dir /public1/home/t0s000324/scFEA/data --input_dir . --test_file data.csv --res_dir . --moduleGene_file module_gene_m168.csv --stoichiometry_matrix cmMat_c70_m168.csv --cName_file cName_c70_m168.csv --output_flux_file flux.csv --output_balance_file balance.csv` failed. (See above for error)
+slurmstepd: error: Detected 1 oom_kill event in StepId=6551566.0. Some of the step tasks have been OOM Killed.
+Matplotlib is building the font cache; this may take a moment.
+/tmp/tmp2wmabybp: line 3: 297148 Killed                  python /public1/home/t0s000324/scFEA/src/scFEA.py --data_dir /public1/home/t0s000324/scFEA/data --input_dir . --test_file data.csv --res_dir . --moduleGene_file module_gene_m168.csv --stoichiometry_matrix cmMat_c70_m168.csv --cName_file cName_c70_m168.csv --output_flux_file flux.csv --output_balance_file balance.csv
+
+ERROR conda.cli.main_run:execute(125): `conda run python /public1/home/t0s000324/scFEA/src/scFEA.py --data_dir /public1/home/t0s000324/scFEA/data --input_dir . --test_file data.csv --res_dir . --moduleGene_file module_gene_m168.csv --stoichiometry_matrix cmMat_c70_m168.csv --cName_file cName_c70_m168.csv --output_flux_file flux.csv --output_balance_file balance.csv` failed. (See above for error)
+Matplotlib is building the font cache; this may take a moment.
+/tmp/tmpv2ltop67: line 3: 507778 Killed                  python /public1/home/t0s000324/scFEA/src/scFEA.py --data_dir /public1/home/t0s000324/scFEA/data --input_dir . --test_file data.csv --res_dir . --moduleGene_file module_gene_m168.csv --stoichiometry_matrix cmMat_c70_m168.csv --cName_file cName_c70_m168.csv --output_flux_file flux.csv --output_balance_file balance.csv
+
+ERROR conda.cli.main_run:execute(125): `conda run python /public1/home/t0s000324/scFEA/src/scFEA.py --data_dir /public1/home/t0s000324/scFEA/data --input_dir . --test_file data.csv --res_dir . --moduleGene_file module_gene_m168.csv --stoichiometry_matrix cmMat_c70_m168.csv --cName_file cName_c70_m168.csv --output_flux_file flux.csv --output_balance_file balance.csv` failed. (See above for error)
+Matplotlib is building the font cache; this may take a moment.
+/tmp/tmpjkh7pw_4: line 3: 297151 Killed                  python /public1/home/t0s000324/scFEA/src/scFEA.py --data_dir /public1/home/t0s000324/scFEA/data --input_dir . --test_file data.csv --res_dir . --moduleGene_file module_gene_m168.csv --stoichiometry_matrix cmMat_c70_m168.csv --cName_file cName_c70_m168.csv --output_flux_file flux.csv --output_balance_file balance.csv
+
+ERROR conda.cli.main_run:execute(125): srun: First task exited 180s ago
+srun: StepId=6551566.0 tasks 7-9,11: running
+srun: StepId=6551566.0 tasks 0-6,10,12-15: exited abnormally
+srun: Terminating StepId=6551566.0
+srun: Job step aborted: Waiting up to 62 seconds for job step to finish.
+slurmstepd: error: Detected 7 oom_kill events in StepId=6551566.batch. Some of the step tasks have been OOM Killed.

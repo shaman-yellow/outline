@@ -1,0 +1,210 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20231124"), end = td("20241108"), finish = td(""),
+  id = "BSZD231122", client = "杨立宇", type = "分析优化", title = "骨肉瘤",
+  save = ".items_opt.rds"
+)
+show.ic(info)
+
+order_publish("opt.Rmd", "opt_out.Rmd")
+file.rename("./opt_out.pdf", paste0(info$id, "分析优化.pdf"))
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("骨肉瘤")
+)
+# Osteosarcoma
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+
+# 分析结果 {#workflow}
+
+```{r}
+geo.os <- job_geo("GSE152048")
+geo.os <- step1(geo.os)
+geo.os@params$guess
+# geo.os <- step2(geo.os)
+
+lapply(unique(gs(geo.os@params$guess$title, " .*$", "")),
+  function(x) {
+    url <- glue::glue("https://ftp.ncbi.nlm.nih.gov/geo/series/GSE152nnn/GSE152048/suppl//GSE152048_{x}.matrix.tar.gz")
+    cdRun("wget ", url, " -P ./GSE152048/")
+  })
+
+lapply(list.files("./GSE152048/", "tar.gz$"),
+  function(file) {
+    untar(file.path("GSE152048", file), exdir = "GSE152048")
+  })
+```
+
+## Seurat 集成单细胞数据分析 (OS)
+
+```{r}
+sr.os <- job_seurat("./GSE152048/BC2")
+sr.os <- step1(sr.os)
+sr.os@plots$step1$p.qc
+
+dirs <- list.files("./GSE152048", "^BC", full.names = T)
+# useWhich <- strx(dirs, "BC[0-9]+") %in% paste0("BC", 2:3)
+# srn.os <- job_seurat5n(dirs[useWhich], strx(dirs, "BC[0-9]+")[useWhich])
+
+srn.os <- job_seurat5n(dirs, strx(dirs, "BC[0-9]+"))
+srn.os@params$p.qc_pre
+
+srn.os <- step1(srn.os, 300, 8000, 10)
+srn.os@params$p.qc_pre
+srn.os@params$p.qc_aft
+srn.os <- step2(srn.os)
+srn.os@plots$step2$p.pca_rank
+srn.os <- step3(srn.os, 1:20, 2, use = "Har")
+srn.os@plots$step3$p.umapUint
+srn.os@plots$step3$p.umapInt
+srn.os <- step4(srn.os, "")
+srn.os <- step5(srn.os, 4)
+srn.os@step <- 5L
+srn.os@tables$step5$all_markers
+srn.os <- step6(srn.os, "Osteosarcoma")
+
+wrap(srn.os@plots$step6$p.map_gpt, 8, 6)
+srn.os@plots$step6$p.markers
+clear(srn.os)
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-Markers-in-cell-types
+autor(srn.os@plots$step6$p.markers)
+```
+
+```{r}
+srn.os@object@assays
+srn.os@object@meta.data
+katn.os <- asjob_katn(srn.os)
+katn.os <- step1(katn.os)
+```
+
+## CopyKAT 癌细胞鉴定 (BC2)
+
+```{r}
+sr.bc2 <- job_seurat("./GSE152048/BC2/", "BC2")
+kat.bc2 <- asjob_kat(sr.bc2)
+kat.bc2 <- step1(kat.bc2)
+kat.bc2 <- step2(kat.bc2)
+kat.bc2 <- step3(kat.bc2)
+kat.bc2@plots$step3$p.copykat
+clear(kat.bc2)
+# kat.bc2 <- readRDS("./kat.bc2.3.rds")
+```
+
+## CopyKAT 癌细胞鉴定 (BC3)
+
+```{r}
+sr.bc3 <- job_seurat("./GSE152048/BC3/", "BC3")
+kat.bc3 <- asjob_kat(sr.bc3)
+kat.bc3 <- step1(kat.bc3)
+kat.bc3 <- step2(kat.bc3)
+kat.bc3 <- step3(kat.bc3)
+kat.bc3@plots$step3$p.copykat
+clear(kat.bc3)
+# kat.bc3 <- readRDS("./kat.bc3.3.rds")
+```
+
+## Seurat 癌细胞注释 (OS)
+
+```{r}
+kat.bc2@tables$step2$res_copykat
+srn.os <- merge(srn.os, kat.bc2, "ChatGPT_cell")
+srn.os <- merge(srn.os, kat.bc3, "copykat_cell")
+srn.os <- mutate(srn.os, isCancer = ifelse(copykat_cell == "Cancer cell", "Cancer", "Normal"))
+wrap(srn.os$p.map_cancer, 8, 6)
+vis(srn.os, "isCancer")
+
+wrap(srn.os@plots$step6$p.map_gpt, 8, 6)
+```
+
+## CellChat 细胞通讯分析 (OS)
+
+```{r}
+ccn.os <- asjob_cellchat(srn.os, "copykat_cell")
+ccn.os <- step1(ccn.os)
+ccn.os@plots$step1
+ccn.os@plots$step1$p.aggre_count
+ccn.os@plots$step1$p.commHpAll
+ccn.os@plots$step1$p.showdb
+ccn.os@tables$step1$lp_net
+ccn.os <- step2(ccn.os)
+```
+
+## 富集分析 (CANCERSOURCE)
+
+```{r}
+cancerSourceGenes <- select_pathway(ccn.os, "Cancer", ".") %>% unique.lps
+en.cancerSource <- job_enrich(cancerSourceGenes)
+en.cancerSource <- step1(en.cancerSource)
+en.cancerSource@plots$step1$p.kegg
+en.cancerSource@plots$step1$p.go
+```
+
+## 富集分析 (CANCERTARGET)
+
+```{r}
+cancerTargetGenes <- select_pathway(ccn.os, ".", "Cancer") %>% unique.lps
+en.cancerTarget <- job_enrich(cancerTargetGenes)
+en.cancerTarget <- step1(en.cancerTarget)
+en.cancerTarget@plots$step1$p.go
+```
+
+
+## scFEA 单细胞数据的代谢通量预测 (OS)
+
+```{r}
+scf.os <- asjob_scfea(srn.os, org = "human")
+scf.os <- set_remote(scf.os)
+scf.os@step <- 0L
+set_remoteRun("sbatch -p v6_384 -N 1 -n 1 -c 16", "#!/bin/bash")
+scf.os <- step1(scf.os)
+scf.os <- step2(scf.os)
+scf.os@plots$step2$p.loss
+scf.os@tables$step2$t.anno
+
+```
+
+```{r}
+```
+
+# 总结 {#conclusion}
+
+

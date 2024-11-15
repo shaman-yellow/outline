@@ -52,7 +52,10 @@ header-includes:
 
 
 ```{r include = F, eval = F}
-info <- items(belong = odate(11), eval = ic(), id = "BSHQ240941", title = "骨髓瘤思路设计")
+info <- items(start = td("20241030"), end = td("20241107"), finish = td("20241107"),
+  id = "BSHQ240941", client = "梁东海", type = "思路设计", title = "骨髓瘤思路设计",
+  save = ".items_idea.rds"
+)
 show.ic(info)
 
 order_publish("idea.Rmd", "idea_out.Rmd")
@@ -73,7 +76,7 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-set_cover(info$title)
+set_cover.bosai_idea(info$title)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}

@@ -1,0 +1,16 @@
+cbind(srn.os@object[[ "RNA"]]$counts.BC2, srn.os@object[[ "RNA"]]$counts.BC3)
+CreateSeuratObject(counts = cbind(pbmc.stim, pbmc.ctrl), project = "PBMC", min.cells = 5)
+test <- srn.os@object[[ "RNA"]] %>% integrateLayers
+test <- Seurat::NormalizeData(test)
+test <- Seurat::FindVariableFeatures(test)
+test <- Seurat::ScaleData(test)
+test <- Seurat::RunPCA(test)
+test <- harmony::RunHarmony(test, ".layer")
+
+
+```{r}
+scflocal.os <- asjob_scfea(srn.os, org = "human", dir = "scfea_local")
+scflocal.os@step <- 0L
+scflocal.os <- step1(scflocal.os)
+```
+

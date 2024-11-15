@@ -8,8 +8,8 @@ info <- items(start = td("20240909"), end = td("20241108"), finish = td(""),
 )
 show.ic(info)
 
-order_publish("idea.Rmd", "idea_out.Rmd")
-file.rename("./idea_out.pdf", paste0(info$id, "思路设计.pdf"))
+order_publish("opt.Rmd", "opt_out.Rmd")
+file.rename("./opt_out.pdf", paste0(info$id, "分析优化.pdf"))
 idname <- order_packaging()
 ```
 
@@ -26,14 +26,14 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-set_cover(info$title)
+set_cover.bosai(info)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
 set_index()
 ```
 
-# 研究背景 {#abstract}
+# 分析流程 {#abstract}
 
 ```{r}
 dic(di("差异表达基因"),
@@ -42,10 +42,15 @@ dic(di("差异表达基因"),
 
 ```
 
-## 思路 {#introduction}
+# 材料和方法 {#introduction}
 
-# 可行性 {#methods}
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
 
-# 创新性 {#results}
+# 分析结果 {#workflow}
 
-# 参考文献和数据集 {#workflow}
+
+
+# 总结 {#conclusion}
+
