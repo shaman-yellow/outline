@@ -2,14 +2,14 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20240909"), end = td("20241108"), finish = td(""),
-  id = "BSXG240327", client = "陈立茂", type = "补充分析", title = "网药",
-  save = ".items_supp.rds"
+info <- items(start = td("20241119"), end = td("20241126"), finish = td(""),
+  id = "BSJF241107", client = "许冠华", type = "思路设计", title = "脓毒症发病标志物",
+  save = ".items_idea.rds"
 )
 show.ic(info)
 
-order_publish("opt.Rmd", "opt_out.Rmd")
-file.rename("./opt_out.pdf", paste0(info$id, "分析优化.pdf"))
+order_publish("idea.Rmd", "idea_out.Rmd")
+file.rename("./idea_out.pdf", paste0(info$id, "思路设计.pdf"))
 idname <- order_packaging()
 ```
 
@@ -33,24 +33,19 @@ set_cover.bosai(info)
 set_index()
 ```
 
-# 分析流程 {#abstract}
+# 研究背景 {#abstract}
 
 ```{r}
 dic(di("差异表达基因"),
-  di("骨髓瘤")
+  di("")
 )
 
 ```
 
-# 材料和方法 {#introduction}
+## 思路 {#introduction}
 
-```{r eval = T, echo = F, results = "asis"}
-collate_details("meth")
-```
+# 可行性 {#methods}
 
-# 分析结果 {#workflow}
+# 创新性 {#results}
 
-
-
-# 总结 {#conclusion}
-
+# 参考文献和数据集 {#workflow}

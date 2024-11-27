@@ -92,7 +92,7 @@ srn.os <- step3(srn.os, 1:20, 2, use = "Har")
 srn.os@plots$step3$p.umapUint
 srn.os@plots$step3$p.umapInt
 srn.os <- step4(srn.os, "")
-srn.os <- step5(srn.os, 4)
+srn.os <- step5(srn.os, NULL)
 srn.os@step <- 5L
 srn.os@tables$step5$all_markers
 srn.os <- step6(srn.os, "Osteosarcoma")
@@ -113,6 +113,7 @@ autor(srn.os@plots$step6$p.markers)
 srn.os@object@assays
 srn.os@object@meta.data
 katn.os <- asjob_katn(srn.os)
+katn.os@object$BC10
 katn.os <- step1(katn.os)
 ```
 

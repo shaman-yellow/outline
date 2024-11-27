@@ -1,0 +1,83 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20241114"), end = td("20241125"), finish = td(""),
+  id = "BSCL241113", client = "邓姝", type = "思路设计", title = "再生障碍性贫血",
+  save = ".items_idea.rds"
+)
+show.ic(info)
+
+order_publish("idea.Rmd", "idea_out.Rmd")
+file.rename("./idea_out.pdf", paste0(info$id, "思路设计.pdf"))
+idname <- order_packaging()
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("再生障碍性贫血")
+)
+# AA: Aplastic anemia 再生障碍性贫血
+
+```
+
+## 思路 {#introduction}
+
+# 可行性 {#methods}
+
+## 以 `"Aplastic anemia" AND "GWAS"` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-11-25 17-31-27.png")
+```
+
+## 以 `"Aplastic anemia" AND "metabolic"` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-11-25 17-37-00.png")
+```
+
+# 创新性 {#results}
+
+## 以 `"Aplastic anemia" AND "TWAS"` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-11-25 17-32-13.png")
+```
+
+# 参考文献和数据集 {#workflow}
+
+
+```{r}
+ogwas.aa <- job_ogwas("Aplastic anemia")
+ogwas.aa@object
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Traits-in-Open-GWAS
+autor(ogwas.aa@object)
+```
+
+

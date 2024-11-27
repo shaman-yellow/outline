@@ -1,0 +1,2571 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz} \usepackage{auto-pst-pdf} \usepackage{pgfornament} \usepackage{pstricks-add} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=6.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/bosai//cover_page_analysis.pdf}
+\begin{center} \textbf{\huge
+基于血小板RNA测序数据预测早期肺癌潜在生物标志物}
+\vspace{4em} \begin{textblock}{10}(3,4.85) \Large
+\textbf{\textcolor{black}{BSXG240327}}
+\end{textblock} \begin{textblock}{10}(3,5.8)
+\Large \textbf{\textcolor{black}{黄礼闯}}
+\end{textblock} \begin{textblock}{10}(3,6.75)
+\Large \textbf{\textcolor{black}{补充分析}}
+\end{textblock} \begin{textblock}{10}(3,7.7)
+\Large \textbf{\textcolor{black}{陈立茂}}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{84}\end{center}\tableofcontents
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{88}\end{center}\listoffigures
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{89}\end{center}\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{分析流程}\label{abstract}}
+
+该分析思路与 (2023, \textbf{IF:4.8}, Q1, Biomolecules)\textsuperscript{\protect\hyperlink{ref-HCC_RNA_Sequen_Wang_2023}{1}} 相似。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-26 17-47-48.png}
+\caption{Unnamed chunk 7}\label{fig:unnamed-chunk-7}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{introduction}{%
+\section{材料和方法}\label{introduction}}
+
+\hypertarget{ux6570ux636eux5206ux6790ux5e73ux53f0}{%
+\subsection{数据分析平台}\label{ux6570ux636eux5206ux6790ux5e73ux53f0}}
+
+在 Linux pop-os x86\_64 (6.9.3-76060903-generic) 上，使用 R version 4.4.2 (2024-10-31) (\url{https://www.r-project.org/}) 对数据统计分析与整合分析。
+
+\hypertarget{biomart-ux57faux56e0ux6ce8ux91ca-dataset-all}{%
+\subsection{Biomart 基因注释 (Dataset: ALL)}\label{biomart-ux57faux56e0ux6ce8ux91ca-dataset-all}}
+
+以 R 包 \texttt{biomaRt} (2.62.0) 对基因进行注释，获取各数据库 ID 或注释信息，以备后续分析。
+
+\hypertarget{limma-ux5deeux5f02ux5206ux6790-dataset-mrna}{%
+\subsection{Limma 差异分析 (Dataset: MRNA)}\label{limma-ux5deeux5f02ux5206ux6790-dataset-mrna}}
+
+以 R 包 \texttt{limma} (3.62.1) (2005, \textbf{IF:}, , )\textsuperscript{\protect\hyperlink{ref-LimmaLinearMSmyth2005}{2}} \texttt{edgeR} (4.4.0) (, \textbf{IF:}, , )\textsuperscript{\protect\hyperlink{ref-EdgerDifferenChen}{3}} 进行差异分析。以 \texttt{edgeR::filterByExpr} 过于 count 数量小于 10 的基因。以 \texttt{edgeR::calcNormFactors}，\texttt{limma::voom} 转化 count 数据为 log2 counts-per-million (logCPM)。分析方法参考 \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}。
+使用 \texttt{limma::lmFit}, \texttt{limma::contrasts.fit}, \texttt{limma::eBayes} 差异分析对比组：Early\_stage vs Healthy, Advanced\_stage vs Healthy, Advanced\_stage vs Early\_stage。以 \texttt{limma::topTable} 提取所有结果，并过滤得到 adj.P.Val 小于 0.05，\textbar Log2(FC)\textbar{} 大于 1 的统计结果。
+
+\hypertarget{mfuzz-ux805aux7c7bux5206ux6790-dataset-mrna}{%
+\subsection{Mfuzz 聚类分析 (Dataset: MRNA)}\label{mfuzz-ux805aux7c7bux5206ux6790-dataset-mrna}}
+
+以 R 包 \texttt{Mfuzz} (2.66.0) (, \textbf{IF:}, , )\textsuperscript{\protect\hyperlink{ref-Mfuzz_a_softwa_Kumar_2007}{4}} 对基因聚类分析，设定 fuzzification 参数为 3.73540696993324 (以 \texttt{Mfuzz::mestimate} 预估) ，得到 8 个聚类。
+
+\hypertarget{ux5bccux96c6ux5206ux6790-dataset-mrna}{%
+\subsection{富集分析 (Dataset: MRNA)}\label{ux5bccux96c6ux5206ux6790-dataset-mrna}}
+
+以 ClusterProfiler R 包 (4.15.0.2) (2021, \textbf{IF:33.2}, Q1, The Innovation)\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{5}}进行 KEGG 和 GO 富集分析。
+
+\hypertarget{tcga-ux6570ux636eux83b7ux53d6-dataset-lusc}{%
+\subsection{TCGA 数据获取 (Dataset: LUSC)}\label{tcga-ux6570ux636eux83b7ux53d6-dataset-lusc}}
+
+以 R 包 \texttt{TCGAbiolinks} (2.34.0) (2015, \textbf{IF:16.6}, Q1, Nucleic Acids Research)\textsuperscript{\protect\hyperlink{ref-TcgabiolinksAColapr2015}{6}} 获取 TCGA 数据集。
+
+以 R 包 \texttt{EFS} (1.0.3) (2017, \textbf{IF:4}, Q1, BioData Mining)\textsuperscript{\protect\hyperlink{ref-EfsAnEnsemblNeuman2017}{7}} 筛选关键基因。
+以 R 包 \texttt{survival} (3.7.0) 进行单因素 COX 回归 (\texttt{survival::coxph})。筛选 \texttt{Pr(\textgreater{}\textbar{}z\textbar{})} \textless{} .05` 的基因。
+
+数据源自 TCGA-LUSC，筛选 AJCC Stage (ajcc\_pathologic\_stage) 为 Stage I, Stage II 的病人，并且 days\_to\_last\_follow\_up 大于 10 天，且为肿瘤组织的样本。
+
+\hypertarget{survival-ux751fux5b58ux5206ux6790-dataset-lusc}{%
+\subsection{Survival 生存分析 (Dataset: LUSC)}\label{survival-ux751fux5b58ux5206ux6790-dataset-lusc}}
+
+将 Univariate COX 回归系数用于风险评分计算，根据中位风险评分 0.0797187407744678 将患者分为低危组和高危组。
+以 R 包 \texttt{survival} (3.7.0) 生存分析，以 R 包 \texttt{survminer} (0.5.0) 绘制生存曲线。以 R 包 \texttt{timeROC} (0.4) 绘制 1, 3, 5 年生存曲线。
+
+\hypertarget{cox-ux56deux5f52-dataset-prog}{%
+\subsection{COX 回归 (Dataset: PROG)}\label{cox-ux56deux5f52-dataset-prog}}
+
+以 R 包 \texttt{survival} (3.7.0) 做多因素 COX 回归 (\texttt{survival::coxph})。
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-dataset-lusc}{%
+\subsection{GEO 数据获取 (Dataset: LUSC)}\label{geo-ux6570ux636eux83b7ux53d6-dataset-lusc}}
+
+以 R 包 \texttt{GEOquery} (2.74.0) 获取 GSE157010 数据集。
+
+\hypertarget{survival-ux751fux5b58ux5206ux6790-dataset-geo_lusc}{%
+\subsection{Survival 生存分析 (Dataset: GEO\_LUSC)}\label{survival-ux751fux5b58ux5206ux6790-dataset-geo_lusc}}
+
+将 Univariate COX 回归系数用于风险评分计算，根据中位风险评分 0.0418674487761947 将患者分为低危组和高危组。
+以 R 包 \texttt{survival} (3.7.0) 生存分析，以 R 包 \texttt{survminer} (0.5.0) 绘制生存曲线。以 R 包 \texttt{timeROC} (0.4) 绘制 1, 3, 5 年生存曲线。
+
+\hypertarget{estimate-ux514dux75abux8bc4ux5206-dataset-lusc}{%
+\subsection{estimate 免疫评分 (Dataset: LUSC)}\label{estimate-ux514dux75abux8bc4ux5206-dataset-lusc}}
+
+以 R 包 \texttt{estimate} (1.0.13) (2013, \textbf{IF:14.7}, Q1, Nature communications)\textsuperscript{\protect\hyperlink{ref-Inferring_tumou_Yoshih_2013}{8}} 预测数据集的 stromal, immune, estimate 得分。
+从 TISIDB (, \textbf{IF:}, , )\textsuperscript{\protect\hyperlink{ref-TISIDB_an_inte_Ru_Be_2019}{9}} 数据库下载的 178 个基因 (genes encoding immunomodulators and chemokines) 比较表达量差异。
+
+\hypertarget{limma-ux5deeux5f02ux5206ux6790-dataset-lncrna}{%
+\subsection{Limma 差异分析 (Dataset: LNCRNA)}\label{limma-ux5deeux5f02ux5206ux6790-dataset-lncrna}}
+
+以 R 包 \texttt{limma} (3.62.1) (2005, \textbf{IF:}, , )\textsuperscript{\protect\hyperlink{ref-LimmaLinearMSmyth2005}{2}} \texttt{edgeR} (4.4.0) (, \textbf{IF:}, , )\textsuperscript{\protect\hyperlink{ref-EdgerDifferenChen}{3}} 进行差异分析。以 \texttt{edgeR::filterByExpr} 过于 count 数量小于 10 的基因。以 \texttt{edgeR::calcNormFactors}，\texttt{limma::voom} 转化 count 数据为 log2 counts-per-million (logCPM)。分析方法参考 \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}。随后，以 公式 \textasciitilde{} 0 + group + batch 创建设计矩阵 (design matrix) 用于线性分析。
+使用 \texttt{limma::lmFit}, \texttt{limma::contrasts.fit}, \texttt{limma::eBayes} 差异分析对比组：Early\_stage vs Healthy, Advanced\_stage vs Healthy, Advanced\_stage vs Early\_stage。以 \texttt{limma::topTable} 提取所有结果，并过滤得到 adj.P.Val 小于 0.05，\textbar Log2(FC)\textbar{} 大于 1 的统计结果。
+
+\hypertarget{workflow}{%
+\section{分析结果}\label{workflow}}
+
+\hypertarget{limma-ux5deeux5f02ux5206ux6790-mrna}{%
+\subsection{Limma 差异分析 (MRNA)}\label{limma-ux5deeux5f02ux5206ux6790-mrna}}
+
+肝癌 RNA-seq， 共 247 个样本，分 3 组，分别为 Advanced\_stage (65) , Early\_stage (101) , Healthy (81) 。
+元数据见 Tab. \ref{tab:MRNA-metadata} 。
+对基因注释后，获取 mRNA 数据差异分析。
+差异分析 Early\_stage vs Healthy, Advanced\_stage vs Healthy, Advanced\_stage vs Early\_stage (若 A vs B，则为前者比后者，LogFC 大于 0 时，A 表达量高于 B)
+得到的 DEGs 统计见 Fig. \ref{fig:MRNA-Difference-intersection}。
+所有 DEGs 表达特征见 Fig. \ref{fig:MRNA-Heatmap-of-DEGs}。
+所有上调 DEGs 有 539 个，下调共 781；一共 1278 个 (非重复)。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:MRNA-metadata} (下方表格) 为表格MRNA metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-metadata.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有247行6列，以下预览的表格可能省略部分数据；含有247个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllll@{}}
+\caption{\label{tab:MRNA-metadata}MRNA metadata}\tabularnewline
+\toprule
+sample & group & lib.size & norm.factors & rownames & batch\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sample & group & lib.size & norm.factors & rownames & batch\tabularnewline
+\midrule
+\endhead
+X180622CMQ\ldots{} & Early\_stage & 14419487 & 1 & 180622CMQ-907 & 1806\tabularnewline
+X180622HLQ\ldots{} & Early\_stage & 13558462 & 1 & 180622HLQ-908 & 1806\tabularnewline
+X180622LSF\ldots{} & Early\_stage & 16935778 & 1 & 180622LSF-902 & 1806\tabularnewline
+X180622SRD\ldots{} & Early\_stage & 16297826 & 1 & 180622SRD-906 & 1806\tabularnewline
+X180622YRQ\ldots{} & Early\_stage & 17343112 & 1 & 180622YRQ-903 & 1806\tabularnewline
+X180623WMC\ldots{} & Early\_stage & 16088883 & 1 & 180623WMC-911 & 1806\tabularnewline
+X180626XMH\ldots{} & Early\_stage & 20035739 & 1 & 180626XMH-915 & 1806\tabularnewline
+X180627CSY\ldots{} & Early\_stage & 17851721 & 1 & 180627CSY-918 & 1806\tabularnewline
+X180627XYJ\ldots{} & Early\_stage & 18398673 & 1 & 180627XYJ-917 & 1806\tabularnewline
+X180628LJH\ldots{} & Early\_stage & 11784847 & 1 & 180628LJH-902 & 1806\tabularnewline
+X180705LLF\ldots{} & Early\_stage & 18773735 & 1 & 180705LLF-915 & 1807\tabularnewline
+X180705WWP\ldots{} & Early\_stage & 14747138 & 1 & 180705WWP-912 & 1807\tabularnewline
+X180705ZQY\ldots{} & Early\_stage & 15490310 & 1 & 180705ZQY-911 & 1807\tabularnewline
+X180705ZZX\ldots{} & Early\_stage & 18523030 & 1 & 180705ZZX-913 & 1807\tabularnewline
+X180707CZM\ldots{} & Early\_stage & 21342554 & 1 & 180707CZM-917 & 1807\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-Heatmap-of-DEGs} (下方图) 为图MRNA Heatmap of DEGs概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-Heatmap-of-DEGs.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-Heatmap-of-DEGs.pdf}
+\caption{MRNA Heatmap of DEGs}\label{fig:MRNA-Heatmap-of-DEGs}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-Early-stage-vs-Healthy} (下方图) 为图MRNA Early stage vs Healthy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-Early-stage-vs-Healthy.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-Early-stage-vs-Healthy.pdf}
+\caption{MRNA Early stage vs Healthy}\label{fig:MRNA-Early-stage-vs-Healthy}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+adj.P.Val cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/MRNA-Early-stage-vs-Healthy-content})}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-Advanced-stage-vs-Healthy} (下方图) 为图MRNA Advanced stage vs Healthy概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-Advanced-stage-vs-Healthy.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-Advanced-stage-vs-Healthy.pdf}
+\caption{MRNA Advanced stage vs Healthy}\label{fig:MRNA-Advanced-stage-vs-Healthy}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+adj.P.Val cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/MRNA-Advanced-stage-vs-Healthy-content})}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-Advanced-stage-vs-Early-stage} (下方图) 为图MRNA Advanced stage vs Early stage概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-Advanced-stage-vs-Early-stage.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-Advanced-stage-vs-Early-stage.pdf}
+\caption{MRNA Advanced stage vs Early stage}\label{fig:MRNA-Advanced-stage-vs-Early-stage}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+adj.P.Val cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    1
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/MRNA-Advanced-stage-vs-Early-stage-content})}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-Difference-intersection} (下方图) 为图MRNA Difference intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-Difference-intersection.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-Difference-intersection.pdf}
+\caption{MRNA Difference intersection}\label{fig:MRNA-Difference-intersection}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/MRNA-Difference-intersection-content})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+`MRNA data DEGs' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-data-DEGs})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/MRNA-data-DEGs共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Early\_stage - Healthy.csv
+\item 2\_Advanced\_stage - Healthy.csv
+\item 3\_Advanced\_stage - Early\_stage.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\hypertarget{mfuzz-ux805aux7c7bux5206ux6790-mrna}{%
+\subsection{Mfuzz 聚类分析 (MRNA)}\label{mfuzz-ux805aux7c7bux5206ux6790-mrna}}
+
+将上述筛选得的 DEGs 以 Mfuzz 聚类分析。
+见 Fig. \ref{fig:MRNA-Mfuzz-clusters}。按照 Healthy, Early\_stage, Advanced\_stage 顺序, 在 Mfuzz 聚类中，1, 3, 4 为按时序上调，共 590 个，6, 8 为按时序下调，共 325 个。其他基因为离散变化。。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-Mfuzz-clusters} (下方图) 为图MRNA Mfuzz clusters概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-Mfuzz-clusters.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-Mfuzz-clusters.pdf}
+\caption{MRNA Mfuzz clusters}\label{fig:MRNA-Mfuzz-clusters}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux5bccux96c6ux5206ux6790-mrna}{%
+\subsection{富集分析 (MRNA)}\label{ux5bccux96c6ux5206ux6790-mrna}}
+
+将 MFuzz 上调聚类与下调聚类分别以 KEGG 富集分析。
+KEGG 见 Fig. \ref{fig:MRNA-up-KEGG-enrichment}, Fig. \ref{fig:MRNA-down-KEGG-enrichment}。
+GO 见 Fig. \ref{fig:MRNA-up-GO-enrichment}, Fig. \ref{fig:MRNA-down-GO-enrichment}。
+上调组主要富集于 Cellular Processes, Metabolism 相关。
+下调组富集于 Immune system 相关。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-up-KEGG-enrichment} (下方图) 为图MRNA up KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-up-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-up-KEGG-enrichment.pdf}
+\caption{MRNA up KEGG enrichment}\label{fig:MRNA-up-KEGG-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-up-GO-enrichment} (下方图) 为图MRNA up GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-up-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-up-GO-enrichment.pdf}
+\caption{MRNA up GO enrichment}\label{fig:MRNA-up-GO-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-down-KEGG-enrichment} (下方图) 为图MRNA down KEGG enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-down-KEGG-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-down-KEGG-enrichment.pdf}
+\caption{MRNA down KEGG enrichment}\label{fig:MRNA-down-KEGG-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:MRNA-down-GO-enrichment} (下方图) 为图MRNA down GO enrichment概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/MRNA-down-GO-enrichment.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/MRNA-down-GO-enrichment.pdf}
+\caption{MRNA down GO enrichment}\label{fig:MRNA-down-GO-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{tcga-ux6570ux636eux83b7ux53d6-lusc}{%
+\subsection{TCGA 数据获取 (LUSC)}\label{tcga-ux6570ux636eux83b7ux53d6-lusc}}
+
+获取 TCGA-LUSC 数据，用于临床数据分析和预后模型建立。
+
+\hypertarget{cox-ux56deux5f52-lusc}{%
+\subsection{COX 回归 (LUSC)}\label{cox-ux56deux5f52-lusc}}
+
+数据源自 TCGA-LUSC，筛选 AJCC Stage (ajcc\_pathologic\_stage) 为 Stage I, Stage II 的病人，并且 days\_to\_last\_follow\_up 大于 10 天，且为肿瘤组织的样本。所用样本的元数据见 Tab. \ref{tab:LUSC-metadata}。
+
+数据特征如下：
+
+Data Frame Summary\\
+Dimensions: 296 x 6\\
+Duplicates: 93
+
+\begin{longtable}[]{@{}lllllll@{}}
+\toprule
+\begin{minipage}[b]{0.03\columnwidth}\raggedright
+No\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Variable\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Stats / Values\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Freqs (\% of Valid)\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+Graph\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Valid\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Missing\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+age\_at\_index
+{[}integer{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Mean (sd) : 67.4 (8.5)
+min \textless{} med \textless{} max:
+39 \textless{} 69 \textless{} 84
+IQR (CV) : 12 (0.1)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+40 distinct values\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{verbatim}
+          :
+      : : :
+      : : : .
+  : : : : : :
+\end{verbatim}
+
+. . : : : : : : :\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+291
+(98.3\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+5
+(1.7\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+vital\_status
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Alive
+\item
+  Dead
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+228 (77.0\%)
+68 (23.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+IIIIIIIIIIIIIII
+IIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+296
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+gender
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  female
+\item
+  male
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+78 (26.4\%)
+218 (73.6\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+IIIII
+IIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+296
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+tumor\_grade
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Not Reported
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+296 (100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+IIIIIIIIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+296
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+5\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+ajcc\_pathologic\_stage
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Stage IA
+\item
+  Stage IB
+\item
+  Stage II
+\item
+  Stage IIA
+\item
+  Stage IIB
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+72 (24.3\%)
+107 (36.1\%)
+1 ( 0.3\%)
+53 (17.9\%)
+63 (21.3\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+IIII
+IIIIIII
+
+III
+IIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+296
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+6\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+classification\_of\_tumor
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  not reported
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+296 (100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+IIIIIIIIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+296
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+将 LUSC 数据 (count) 标准化后 (同 MRNA 的方法)，以生存状态为指标 (Fig. \ref{fig:LUSC-Group-distribution})，以 EFS 算法，进行 Feature selection, 得到 Top 30 基因, 统计得分见 Fig. \ref{fig:LUSC-Top-Features-Selected-By-EFS}。
+随后，以单因素 COX 回归，筛选能显著预测生存结局的基因。EFS 与单因素 COX 回归结果如 Tab. \ref{tab:LUSC-Uni-COX-cofficients-filtered-by-EFS}。共 9 个基因：。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:LUSC-metadata} (下方表格) 为表格LUSC metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-metadata.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有296行87列，以下预览的表格可能省略部分数据；含有296个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllllllll@{}}
+\caption{\label{tab:LUSC-metadata}LUSC metadata}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.07\columnwidth}\raggedright
+sample\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+group\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+lib.size\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+norm.f\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+barcode\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+patient\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+shortL\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+defini\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+sample\ldots\ldots9\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright
+sample\ldots\ldots10\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.07\columnwidth}\raggedright
+sample\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+group\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+lib.size\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+norm.f\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+barcode\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+patient\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+shortL\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+defini\ldots{}\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+sample\ldots\ldots9\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright
+sample\ldots\ldots10\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Dead\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+37255376\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Alive\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+43492507\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Dead\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+39714818\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Dead\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+39975834\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Alive\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+40747917\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Alive\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+44429215\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Alive\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+21735012\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Alive\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+61555320\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-1\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Dead\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+48526883\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Alive\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+60443027\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Alive\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+60226646\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Alive\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+58365924\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Dead\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+58631601\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Dead\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+54098835\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+Alive\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+54921696\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+TP\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+Primar\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+TCGA-2\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+01\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:LUSC-Group-distribution} (下方图) 为图LUSC Group distribution概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-Group-distribution.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUSC-Group-distribution.pdf}
+\caption{LUSC Group distribution}\label{fig:LUSC-Group-distribution}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:LUSC-Top-Features-Selected-By-EFS} (下方图) 为图LUSC Top Features Selected By EFS概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-Top-Features-Selected-By-EFS.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUSC-Top-Features-Selected-By-EFS.pdf}
+\caption{LUSC Top Features Selected By EFS}\label{fig:LUSC-Top-Features-Selected-By-EFS}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:LUSC-Uni-COX-cofficients-filtered-by-EFS} (下方表格) 为表格LUSC Uni COX cofficients filtered by EFS概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-Uni-COX-cofficients-filtered-by-EFS.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有9行7列，以下预览的表格可能省略部分数据；含有9个唯一`feature'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:LUSC-Uni-COX-cofficients-filtered-by-EFS}LUSC Uni COX cofficients filtered by EFS}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.08\columnwidth}\raggedright
+feature\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+coef\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+exp(coef)\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+se(coef)\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+z\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+pvalue\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+p.adjust\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.08\columnwidth}\raggedright
+feature\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+coef\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+exp(coef)\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+se(coef)\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+z\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+pvalue\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+p.adjust\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+SERPINE1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.24390416\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.27622202\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.11338208\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.15117024\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.03146276\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.83624230\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+BCL2L2\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.4283650\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.65157349\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.14369845\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.9809998\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00287308\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.83624230\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+SLC14A1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.45789329\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.58074031\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.09645783\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+4.74708263\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.06371657\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00184702\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+DYRK3\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.29492209\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.34302172\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.13055192\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.25904045\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.02388086\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.83624230\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+PDCD11\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.2666409\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.76594805\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.11389728\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.3410647\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.01922883\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.83624230\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+AGPAT3\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.27364386\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.31474648\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.12352324\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.21532281\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.02673791\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.83624230\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+COQ2\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-0.2876134\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.75005145\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.12333293\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+-2.3320085\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.01970024\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.83624230\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+TPK1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.31038423\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.36394908\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.13272344\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.33857877\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.01935724\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.83624230\ldots{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+MPZL1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.30363800\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+1.35477853\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.11695141\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+2.59627472\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.00942406\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+0.83624230\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{survival-ux751fux5b58ux5206ux6790-lusc}{%
+\subsection{Survival 生存分析 (LUSC)}\label{survival-ux751fux5b58ux5206ux6790-lusc}}
+
+这些基因表达特征如 Fig. \ref{fig:LUSC-risk-score-related-genes-heatmap} 热图所示。
+
+建立预后特征，构建风险评分：
+
+\[
+Score = \sum(expr(Gene) \times coef)
+\]
+
+按中位风险评分，将病例分为 Low 和 High 风险组，随后进行生存分析，
+见 Fig. \ref{fig:LUSC-survival-curve-of-risk-score}。
+AUC 见 Fig. \ref{fig:LUSC-time-ROC}。
+第 1，3，5 年存活的患者，风险评分显著较低。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:LUSC-risk-score-related-genes-heatmap} (下方图) 为图LUSC risk score related genes heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-risk-score-related-genes-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUSC-risk-score-related-genes-heatmap.pdf}
+\caption{LUSC risk score related genes heatmap}\label{fig:LUSC-risk-score-related-genes-heatmap}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:LUSC-survival-curve-of-risk-score} (下方图) 为图LUSC survival curve of risk score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-survival-curve-of-risk-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUSC-survival-curve-of-risk-score.pdf}
+\caption{LUSC survival curve of risk score}\label{fig:LUSC-survival-curve-of-risk-score}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:LUSC-time-ROC} (下方图) 为图LUSC time ROC概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-time-ROC.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUSC-time-ROC.pdf}
+\caption{LUSC time ROC}\label{fig:LUSC-time-ROC}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:LUSC-boxplot-of-risk-score} (下方图) 为图LUSC boxplot of risk score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-boxplot-of-risk-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUSC-boxplot-of-risk-score.pdf}
+\caption{LUSC boxplot of risk score}\label{fig:LUSC-boxplot-of-risk-score}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{cox-ux56deux5f52-prognosis}{%
+\subsection{COX 回归 (Prognosis)}\label{cox-ux56deux5f52-prognosis}}
+
+进一步通过单因素和多因素 COX 回归的方式评估了包括风险评分在内的4项预后特征 (smoking, treatment 等其他数据缺失值较多，不易处理) 。数据特征如下：
+
+Data Frame Summary\\
+Dimensions: 291 x 5\\
+Duplicates: 0
+
+\begin{longtable}[]{@{}lllllll@{}}
+\toprule
+\begin{minipage}[b]{0.03\columnwidth}\raggedright
+No\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Variable\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Stats / Values\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+Freqs (\% of Valid)\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+Graph\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Valid\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Missing\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+rownames
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  TCGA-18-3408-01A
+\item
+  TCGA-18-3409-01A
+\item
+  TCGA-18-3415-01A
+\item
+  TCGA-18-3416-01A
+\item
+  TCGA-18-3419-01A
+\item
+  TCGA-18-3421-01A
+\item
+  TCGA-18-4721-01A
+\item
+  TCGA-18-5592-01A
+\item
+  TCGA-21-1071-01A
+\item
+  TCGA-21-1072-01A
+  {[} 281 others {]}
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+1 ( 0.3\%)
+1 ( 0.3\%)
+1 ( 0.3\%)
+1 ( 0.3\%)
+1 ( 0.3\%)
+1 ( 0.3\%)
+1 ( 0.3\%)
+1 ( 0.3\%)
+1 ( 0.3\%)
+1 ( 0.3\%)
+281 (96.6\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+IIIIIIIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+291
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+age
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textless= 65
+\item
+  \begin{quote}
+  65
+  \end{quote}
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+111 (38.1\%)
+180 (61.9\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+IIIIIII
+IIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+291
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+gender
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  female
+\item
+  male
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+77 (26.5\%)
+214 (73.5\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+IIIII
+IIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+291
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+ajcc\_pathologic\_stage
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Stage I
+\item
+  Stage II
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+176 (60.5\%)
+115 (39.5\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+IIIIIIIIIIII
+IIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+291
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+5\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+risk\_score
+{[}numeric{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+Mean (sd) : 0 (1.4)
+min \textless{} med \textless{} max:
+-5.3 \textless{} 0.1 \textless{} 4.1
+IQR (CV) : 1.8 (122)\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+291 distinct values\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{verbatim}
+      :
+      : :
+    : : : .
+  : : : : :
+. : : : : : .
+\end{verbatim}
+\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+291
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+单因素和多因素分析结果，风险评分是诊断早期肺癌预后的独立风险指标，见 Tab. \ref{tab:META-Coefficients-Of-COX}。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:META-Coefficients-Of-COX} (下方表格) 为表格META Coefficients Of COX概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/META-Coefficients-Of-COX.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有4行5列，以下预览的表格可能省略部分数据；含有4个唯一`feature'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:META-Coefficients-Of-COX}META Coefficients Of COX}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.18\columnwidth}\raggedright
+feature\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Uni\_coefficients\strut
+\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\raggedright
+Uni\_p\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Multi\_coefficients\strut
+\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\raggedright
+Multi\_p\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.18\columnwidth}\raggedright
+feature\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Uni\_coefficients\strut
+\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\raggedright
+Uni\_p\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Multi\_coefficients\strut
+\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\raggedright
+Multi\_p\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+Age (\textgreater65/\textless=64)\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+0.215192027477178\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
+0.41311128570459\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+0.101704964279124\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
+0.709950395815607\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+gender (female/male)\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+0.183214670354876\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
+0.523084334023976\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+0.36615958534245\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
+0.209021149635656\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+AJCC stage (I/II)\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+0.0144776502394665\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
+0.954293406973733\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+0.295933974836866\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
+0.256805285385573\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+Risk score\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+0.54781086968627\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
+6.06868708145961e-09\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+0.565964036073118\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
+1.45743179043085e-09\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-geo_lusc}{%
+\subsection{GEO 数据获取 (GEO\_LUSC)}\label{geo-ux6570ux636eux83b7ux53d6-geo_lusc}}
+
+为了验证预后特征在不同数据平台上的性能，这里获取了 GEO 数据平台的早期肺癌数据 (GSE157010，微阵列数据)，并筛选了 Stage 为 I，II 阶段的病例。数据特征如下：
+
+Data Frame Summary\\
+Dimensions: 202 x 14\\
+Duplicates: 0
+
+\begin{longtable}[]{@{}lllllll@{}}
+\toprule
+\begin{minipage}[b]{0.03\columnwidth}\raggedright
+No\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright
+Variable\strut
+\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\raggedright
+Stats / Values\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Freqs (\% of Valid)\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+Graph\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Valid\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
+Missing\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+sample
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  GSM4750621
+\item
+  GSM4750622
+\item
+  GSM4750623
+\item
+  GSM4750624
+\item
+  GSM4750625
+\item
+  GSM4750626
+\item
+  GSM4750627
+\item
+  GSM4750628
+\item
+  GSM4750630
+\item
+  GSM4750631
+  {[} 192 others {]}
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+192 (95.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIIIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+vital\_status
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Alive
+\item
+  Dead
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+107 (53.0\%)
+95 (47.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIIIIII
+IIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+group
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Alive
+\item
+  Dead
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+107 (53.0\%)
+95 (47.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIIIIII
+IIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+days\_to\_last\_follow\_up
+{[}numeric{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+Mean (sd) : 1403 (697.3)
+min \textless{} med \textless{} max:
+4.9 \textless{} 1669.8 \textless{} 3062.5
+IQR (CV) : 1111.8 (0.5)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+186 distinct values\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\begin{verbatim}
+  :
+  :
+  :
+\end{verbatim}
+
+\begin{description}
+\tightlist
+\item[: : . : :]
+: : : : .
+\end{description}\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+5\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+stage
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  T1
+\item
+  T2
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+63 (31.2\%)
+139 (68.8\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIII
+IIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+6\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+rownames
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  GSM4750621
+\item
+  GSM4750622
+\item
+  GSM4750623
+\item
+  GSM4750624
+\item
+  GSM4750625
+\item
+  GSM4750626
+\item
+  GSM4750627
+\item
+  GSM4750628
+\item
+  GSM4750630
+\item
+  GSM4750631
+  {[} 192 others {]}
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+192 (95.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIIIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+7\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+title
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  CAD\_NA379PT\_RNA\_2115A\_F4
+\item
+  CAD\_NA380PT\_RNA\_2115A\_H1
+\item
+  CAD\_NA381PT\_RNA\_2115A\_C3
+\item
+  CAD\_NA382PT\_RNA\_2115A\_G4
+\item
+  CAD\_NA383PT\_RNA\_2115A\_E7
+\item
+  CAD\_NA384PT\_RNA\_2115A\_E4
+\item
+  CAD\_NA385PT\_RNA\_2115A\_G5
+\item
+  CAD\_NA386PT\_RNA\_2116A\_B1\_
+\item
+  CAD\_NA388PT\_RNA\_2116A\_D5
+\item
+  CAD\_NA389PT\_RNA\_2116A\_D12
+  {[} 192 others {]}
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+1 ( 0.5\%)
+192 (95.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIIIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+8\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+age.ch1
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  63
+\item
+  64
+\item
+  65
+\item
+  71
+\item
+  70
+\item
+  59
+\item
+  61
+\item
+  66
+\item
+  68
+\item
+  72
+  {[} 29 others {]}
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+12 ( 5.9\%)
+12 ( 5.9\%)
+12 ( 5.9\%)
+12 ( 5.9\%)
+10 ( 5.0\%)
+9 ( 4.5\%)
+9 ( 4.5\%)
+9 ( 4.5\%)
+9 ( 4.5\%)
+9 ( 4.5\%)
+99 (49.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+I
+I
+I
+I
+
+IIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+9\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+diagnosis.ch1
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Squamous Cell Carcinoma o
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+202 (100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIIIIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+10\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+os\_event.ch1
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  0
+\item
+  1
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+107 (53.0\%)
+95 (47.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIIIIII
+IIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+11\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+os\_mo.ch1
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  55.6931506849315
+\item
+  60.6904109589041
+\item
+  69.041095890411
+\item
+  15.0904109589041
+\item
+  60.1972602739726
+\item
+  60.2958904109589
+\item
+  60.7890410958904
+\item
+  61.0520547945205
+\item
+  61.0849315068493
+\item
+  61.7095890410959
+  {[} 176 others {]}
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+3 ( 1.5\%)
+3 ( 1.5\%)
+3 ( 1.5\%)
+2 ( 1.0\%)
+2 ( 1.0\%)
+2 ( 1.0\%)
+2 ( 1.0\%)
+2 ( 1.0\%)
+2 ( 1.0\%)
+2 ( 1.0\%)
+179 (88.6\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+12\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+Sex.ch1
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Female
+\item
+  Male
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+71 (35.1\%)
+131 (64.9\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIII
+IIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+13\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+Stage.ch1
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  T1a
+\item
+  T1b
+\item
+  T2a
+\item
+  T2b
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+23 (11.4\%)
+40 (19.8\%)
+74 (36.6\%)
+65 (32.2\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+II
+III
+IIIIIII
+IIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedright
+14\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright
+tissue.ch1
+{[}character{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  lung
+\end{enumerate}\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+202 (100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+IIIIIIIIIIIIIIIIIIII\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+202
+(100.0\%)\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
+0
+(0.0\%)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:LUSC-GSE157010-metadata} (下方表格) 为表格LUSC GSE157010 metadata概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-GSE157010-metadata.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有202行14列，以下预览的表格可能省略部分数据；含有202个唯一`sample'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:LUSC-GSE157010-metadata}LUSC GSE157010 metadata}\tabularnewline
+\toprule
+sample & vital\_\ldots{} & group & days\_t\ldots{} & stage & rownames & title & age.ch1 & diagno\ldots{} & os\_eve\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+sample & vital\_\ldots{} & group & days\_t\ldots{} & stage & rownames & title & age.ch1 & diagno\ldots{} & os\_eve\ldots{}\tabularnewline
+\midrule
+\endhead
+GSM475\ldots{} & Dead & Dead & 1259.5\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 63 & Squamo\ldots{} & 1\tabularnewline
+GSM475\ldots{} & Dead & Dead & 993.20\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 78 & Squamo\ldots{} & 1\tabularnewline
+GSM475\ldots{} & Alive & Alive & 2071.2\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 68 & Squamo\ldots{} & 0\tabularnewline
+GSM475\ldots{} & Alive & Alive & 2836.6\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 71 & Squamo\ldots{} & 0\tabularnewline
+GSM475\ldots{} & Dead & Dead & 452.71\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 83 & Squamo\ldots{} & 1\tabularnewline
+GSM475\ldots{} & Dead & Dead & 835.39\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 63 & Squamo\ldots{} & 1\tabularnewline
+GSM475\ldots{} & Alive & Alive & 1945.9\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 73 & Squamo\ldots{} & 0\tabularnewline
+GSM475\ldots{} & Dead & Dead & 234.73\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 71 & Squamo\ldots{} & 1\tabularnewline
+GSM475\ldots{} & Alive & Alive & 1045.4\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 76 & Squamo\ldots{} & 0\tabularnewline
+GSM475\ldots{} & Dead & Dead & 581.91\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 72 & Squamo\ldots{} & 1\tabularnewline
+GSM475\ldots{} & Alive & Alive & 1919.3\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 78 & Squamo\ldots{} & 0\tabularnewline
+GSM475\ldots{} & Dead & Dead & 982.35\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 72 & Squamo\ldots{} & 1\tabularnewline
+GSM475\ldots{} & Dead & Dead & 1091.8\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 71 & Squamo\ldots{} & 1\tabularnewline
+GSM475\ldots{} & Dead & Dead & 671.67\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 68 & Squamo\ldots{} & 1\tabularnewline
+GSM475\ldots{} & Alive & Alive & 1880.8\ldots{} & T2 & GSM475\ldots{} & CAD\_NA\ldots{} & 59 & Squamo\ldots{} & 0\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{survival-ux751fux5b58ux5206ux6790-geo_lusc}{%
+\subsection{Survival 生存分析 (GEO\_LUSC)}\label{survival-ux751fux5b58ux5206ux6790-geo_lusc}}
+
+GEO 数据集中，风险评分基因集表达特征见 Fig. \ref{fig:GEO-LUSC-risk-score-related-genes-heatmap}。
+将 GEO 数据集按相同的方式处理，并计算风险评分，
+生存结果见 Fig. \ref{fig:GEO-LUSC-survival-curve-of-risk-score}，高风险组与低风险组显著差异。
+ROC 曲线见 Fig. \ref{fig:GEO-LUSC-time-ROC}。
+第 1，3，5 年风险评分差异见 Fig. \ref{fig:GEO-LUSC-boxplot-of-risk-score} 。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:GEO-LUSC-risk-score-related-genes-heatmap} (下方图) 为图GEO LUSC risk score related genes heatmap概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GEO-LUSC-risk-score-related-genes-heatmap.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GEO-LUSC-risk-score-related-genes-heatmap.pdf}
+\caption{GEO LUSC risk score related genes heatmap}\label{fig:GEO-LUSC-risk-score-related-genes-heatmap}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:GEO-LUSC-boxplot-of-risk-score} (下方图) 为图GEO LUSC boxplot of risk score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GEO-LUSC-boxplot-of-risk-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GEO-LUSC-boxplot-of-risk-score.pdf}
+\caption{GEO LUSC boxplot of risk score}\label{fig:GEO-LUSC-boxplot-of-risk-score}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:GEO-LUSC-time-ROC} (下方图) 为图GEO LUSC time ROC概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GEO-LUSC-time-ROC.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GEO-LUSC-time-ROC.pdf}
+\caption{GEO LUSC time ROC}\label{fig:GEO-LUSC-time-ROC}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:GEO-LUSC-survival-curve-of-risk-score} (下方图) 为图GEO LUSC survival curve of risk score概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/GEO-LUSC-survival-curve-of-risk-score.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/GEO-LUSC-survival-curve-of-risk-score.pdf}
+\caption{GEO LUSC survival curve of risk score}\label{fig:GEO-LUSC-survival-curve-of-risk-score}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{estimate-ux514dux75abux8bc4ux5206-lusc}{%
+\subsection{estimate 免疫评分 (LUSC)}\label{estimate-ux514dux75abux8bc4ux5206-lusc}}
+
+为了探索标记与肿瘤免疫微环境之间的关系，我们对来自 TCGA LUSC 的数据进行了 ESTIMATE 计算免疫评分、ESTIMATE 评分和stromal 评分。根据评分结果，将病例分为 High 组和 Low 组，免疫评分和 ESTIMATE 评分较低的患者具有较高的风险评分，见 Fig. \ref{fig:LUSC-immune-Scores-Plot}。
+此外，还比较了高危组和低危组之间编码免疫调节剂和趋化因子的基因的表达情况。从 TISIDB 数据库下载的 178 个基因中，有 127 个可以在 TCGA 表达矩阵中找到，两组之间有 119 个表达存在差异 (p.value \textless{} 0.05)。
+前 10 个基因见 Fig. \ref{fig:LUSC-Top10-Immune-Related-Genes}。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:LUSC-immune-Scores-Plot} (下方图) 为图LUSC immune Scores Plot概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-immune-Scores-Plot.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUSC-immune-Scores-Plot.pdf}
+\caption{LUSC immune Scores Plot}\label{fig:LUSC-immune-Scores-Plot}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:LUSC-Top10-Immune-Related-Genes} (下方图) 为图LUSC Top10 Immune Related Genes概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LUSC-Top10-Immune-Related-Genes.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LUSC-Top10-Immune-Related-Genes.pdf}
+\caption{LUSC Top10 Immune Related Genes}\label{fig:LUSC-Top10-Immune-Related-Genes}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{limma-ux5deeux5f02ux5206ux6790-lncrna}{%
+\subsection{Limma 差异分析 (LNCRNA)}\label{limma-ux5deeux5f02ux5206ux6790-lncrna}}
+
+长链非编码RNA（lncRNA）在基因调控和癌症发展中起着重要作用。
+这里对 lncRNA 做了差异分析，并与 mRNA 关联分析。
+差异分析 Early\_stage vs Healthy, Advanced\_stage vs Healthy, Advanced\_stage vs Early\_stage (若 A vs B，则为前者比后者，LogFC 大于 0 时，A 表达量高于 B)。
+得到的 DEGs 统计见 Fig. \ref{fig:LNCRNA-Difference-intersection}。
+所有上调 DEGs 有 539 个，下调共 781；一共 1278 个 (非重复)。。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+`LNCRNA DEGs data' 数据已全部提供。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LNCRNA-DEGs-data})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：文件夹Figure+Table/LNCRNA-DEGs-data共包含3个文件。
+
+\begin{enumerate}\tightlist
+\item 1\_Early\_stage - Healthy.csv
+\item 2\_Advanced\_stage - Healthy.csv
+\item 3\_Advanced\_stage - Early\_stage.csv
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:LNCRNA-Difference-intersection} (下方图) 为图LNCRNA Difference intersection概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/LNCRNA-Difference-intersection.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/LNCRNA-Difference-intersection.pdf}
+\caption{LNCRNA Difference intersection}\label{fig:LNCRNA-Difference-intersection}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/LNCRNA-Difference-intersection-content})}
+
+\hypertarget{ux5173ux8054ux5206ux6790-mrna-lncrna}{%
+\subsection{关联分析 (MRNA, LNCRNA)}\label{ux5173ux8054ux5206ux6790-mrna-lncrna}}
+
+将相关系数 \textgreater{} 0.6 和 p \textless{} 0.001 设定为识别相关阈值，最终建立网络图见 Fig. \ref{fig:Significant-Correlation-mrna-lncRNA}。
+共包含 4 个 mRNA，4 个 lncRNA，52 对关联关系。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+
+Figure \ref{fig:Significant-Correlation-mrna-lncRNA} (下方图) 为图Significant Correlation mrna lncRNA概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Significant-Correlation-mrna-lncRNA.pdf})}
+
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Significant-Correlation-mrna-lncRNA.pdf}
+\caption{Significant Correlation mrna lncRNA}\label{fig:Significant-Correlation-mrna-lncRNA}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+Table \ref{tab:Significant-correlation} (下方表格) 为表格Significant correlation概览。
+
+\textbf{(对应文件为 \texttt{Figure+Table/Significant-correlation.csv})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有52行7列，以下预览的表格可能省略部分数据；含有4个唯一`mRNA'。
+\end{tcolorbox}
+\end{center}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\caption{\label{tab:Significant-correlation}Significant correlation}\tabularnewline
+\toprule
+mRNA & LncRNA & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+mRNA & LncRNA & cor & pvalue & -log2(P.va\ldots{} & significant & sign\tabularnewline
+\midrule
+\endhead
+SLC14A1 & HBB & 0.61 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+BCL2L2 & LTB & -0.63 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+AGPAT3 & NCKIPSD & 0.71 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+AGPAT3 & MAFG & 0.62 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+BCL2L2 & TMPPE & 0.65 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+BCL2L2 & PEAR1 & 0.61 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+BCL2L2 & PROS1 & 0.63 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+BCL2L2 & SYNM & 0.63 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+AGPAT3 & TOM1L2 & 0.61 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+BCL2L2 & TOM1L2 & 0.61 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+BCL2L2 & DPY19L1 & 0.62 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+SLC14A1 & GYPA & 0.66 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+BCL2L2 & SH3TC2 & 0.62 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+AGPAT3 & STIM1 & 0.61 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+BCL2L2 & STIM1 & 0.63 & 0 & 16.6096404\ldots{} & \textless{} 0.001 & **\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux5b9eux9a8cux9a8cux8bc1}{%
+\subsection{实验验证}\label{ux5b9eux9a8cux9a8cux8bc1}}
+
+请参考 (2023, \textbf{IF:4.8}, Q1, Biomolecules)\textsuperscript{\protect\hyperlink{ref-HCC_RNA_Sequen_Wang_2023}{1}}
+
+\hypertarget{conclusion}{%
+\section{总结}\label{conclusion}}
+
+本研究为肺癌早期诊断建立了预后的独立风险指标，这些基因是 ，
+可预测肺癌 LUSC 中，Sage I、II 的预后疗效。
+该风险评分对于 RNA-seq 可能有更敏感的评估，因为我们在 GEO 的微阵列数据集中，High 组与 Low 组
+的风险评分差异不如 TCGA 显著。由于 GEO 中，包含生存结局和详细临床数据记录的数据集不多，
+我们未能更多的验证。
+后续评估发现，该风险评分与免疫微环境 (根据 ESTIMATE 评分) 显著相关。
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-HCC_RNA_Sequen_Wang_2023}{}%
+1. Wang, H. \emph{et al.} HCC: RNA-sequencing in cirrhosis. \emph{Biomolecules} \textbf{13}, (2023).
+
+\leavevmode\hypertarget{ref-LimmaLinearMSmyth2005}{}%
+2. Smyth, G. K. Limma: Linear models for microarray data. in \emph{Bioinformatics and Computational Biology Solutions Using R and Bioconductor} (eds. Gentleman, R., Carey, V. J., Huber, W., Irizarry, R. A. \& Dudoit, S.) 397--420 (Springer-Verlag, 2005). doi:\href{https://doi.org/10.1007/0-387-29362-0_23}{10.1007/0-387-29362-0\_23}.
+
+\leavevmode\hypertarget{ref-EdgerDifferenChen}{}%
+3. Chen, Y., McCarthy, D., Ritchie, M., Robinson, M. \& Smyth, G. EdgeR: Differential analysis of sequence read count data users guide. 119.
+
+\leavevmode\hypertarget{ref-Mfuzz_a_softwa_Kumar_2007}{}%
+4. Kumar, L. \& E Futschik, M. Mfuzz: A software package for soft clustering of microarray data. \emph{Bioinformation} \textbf{2}, 5--7 (2007).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+5. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-TcgabiolinksAColapr2015}{}%
+6. Colaprico, A. \emph{et al.} TCGAbiolinks: An r/bioconductor package for integrative analysis of tcga data. \emph{Nucleic Acids Research} \textbf{44}, (2015).
+
+\leavevmode\hypertarget{ref-EfsAnEnsemblNeuman2017}{}%
+7. Neumann, U., Genze, N. \& Heider, D. EFS: An ensemble feature selection tool implemented as r-package and web-application. \emph{BioData Mining} \textbf{10}, 21 (2017).
+
+\leavevmode\hypertarget{ref-Inferring_tumou_Yoshih_2013}{}%
+8. Yoshihara, K. \emph{et al.} Inferring tumour purity and stromal and immune cell admixture from expression data. \emph{Nature communications} \textbf{4}, (2013).
+
+\leavevmode\hypertarget{ref-TISIDB_an_inte_Ru_Be_2019}{}%
+9. Ru, B. \emph{et al.} TISIDB: An integrated repository portal for tumorimmune system interactions. \emph{Bioinformatics} \textbf{35}, 4200--4202 (2019).
+\end{cslreferences}
+
+\end{document}

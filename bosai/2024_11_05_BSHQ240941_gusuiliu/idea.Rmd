@@ -51,8 +51,6 @@ Multiple myeloma (MM) 是一种基因复杂、异质性高的疾病，其发展�
 
 思路为： TWAS (GWAS + eQTL)  + scRNA-seq + metabolic
 
-(TWAS 部分可能会相对耗时，因为该部分的方法为首次接触，需要配置程序)
-
 # 可行性 {#methods}
 
 ## 以 `"Multiple myeloma" AND "metabolic"` 搜索文献，发现 MM 与代谢关联密切。

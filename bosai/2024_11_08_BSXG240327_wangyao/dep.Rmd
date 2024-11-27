@@ -1,0 +1,86 @@
+
+
+## WGCNA 分析 (MRNA)
+
+```{r}
+wg.mrna <- asjob_wgcna(lm.mrna, unlist(lm.mrna@plots$step3$p.sets_intersection$raw))
+wg.mrna <- step1(wg.mrna)
+wg.mrna@plots$step1
+wg.mrna <- step2(wg.mrna)
+wg.mrna <- step3(wg.mrna)
+wg.mrna@plots$step3
+wg.mrna <- step4(wg.mrna)
+wg.mrna@plots$step4$net
+wg.mrna <- step5(wg.mrna)
+```
+
+ 
+test <- function(...) {
+  expr <- rlang::enquos(...)
+  print(as.character(expr))
+  dplyr::filter(eg, !!!expr)
+}
+test(x > 5, y > 7)
+
+
+test <- survival::coxph(as.formula(paste0("Terror$target ~ ", colnames(Terror$data)[1])),
+  data.frame(Terror$data, check.names = F))
+plot(test)
+
+test <- glmnet::glmnet(Terror$data[, 1, drop = F], Terror$target, alpha = 1, family = "cox")
+plot(lasso.luad@params$model)
+
+## STRINGdb PPI 分析 (MRNA)
+
+```{r}
+sdb.mrna <- job_stringdb(unlist(en.mrna$raw))
+sdb.mrna <- step1(sdb.mrna)
+sdb.mrna@plots$step1$p.ppi
+sdb.mrna@plots$step1$p.mcc
+sdb.mrna@tables$step1$hub_genes
+```
+
+## 富集分析 (MRNA-TOPS)
+
+```{r}
+en.mrnaTops <- job_enrich(head(sdb.mrna@tables$step1$hub_genes$Symbol, 30))
+en.mrnaTops <- step1(en.mrnaTops)
+en.mrnaTops@plots$step1$p.kegg
+en.mrnaTops@plots$step1$p.go
+```
+
+surv.luscCross <- asjob_survival(lasso.lusc, sig.uni_cox = lasso.luad$sig.uni_cox, force = T)
+surv.luscCross@params$p.surv_genes_hp
+surv.luscCross <- step1(surv.luscCross)
+surv.luscCross@plots$step1$risk_score$p.surv
+
+
+## TCGA 数据获取 (LUSC)
+
+```{r}
+tc.lusc <- job_tcga("TCGA-LUSC")
+tc.lusc <- step1(tc.lusc)
+tc.lusc <- step2(tc.lusc)
+tc.lusc <- step3(tc.lusc)
+tc.lusc
+```
+
+## Survival 生存分析 (LUSC)
+
+```{r}
+lm.lusc <- asjob_limma(tc.lusc,
+  grpl(ajcc_pathologic_stage, "Stage [I]{1,2}[AB]?$"),
+  days_to_last_follow_up >= 10, isTumor == "tumor")
+lm.lusc@params$t.common
+lm.lusc <- step1(lm.lusc)
+lm.lusc@object$targets
+
+lasso.lusc <- asjob_lasso(lm.lusc, unlist(en.mrna$raw))
+lasso.lusc <- step1(lasso.lusc)
+lasso.lusc <- step2(lasso.lusc)
+lasso.lusc <- step3(lasso.lusc, use_data = "all", nfold = 3, multi_cox = T)
+
+surv.lusc <- asjob_survival(lasso.lusc)
+surv.lusc <- step1(surv.lusc)
+surv.lusc@plots$step1$risk_score$p.surv
+```

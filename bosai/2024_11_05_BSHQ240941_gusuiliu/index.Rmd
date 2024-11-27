@@ -1,0 +1,10 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20241030"), end = td("20241129"), finish = td(""),
+  id = "BSHQ240941", client = "梁东海", type = "生信分析", title = "骨髓瘤",
+  save = ".items.rds"
+)
+show.ic(info)
+```
