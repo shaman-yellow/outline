@@ -57,16 +57,17 @@ header-includes:
 
 \begin{titlepage} \newgeometry{top=6.5cm}
 \ThisCenterWallPaper{1.12}{~/outline/bosai//cover_page_analysis.pdf}
-\begin{center} \textbf{\huge
-基于血小板RNA测序数据预测早期肺癌潜在生物标志物}
+\begin{center} \textbf{\huge 基于血小板RNA测序数据预测早期肺癌潜在生物标志物}
 \vspace{4em} \begin{textblock}{10}(3,4.85) \Large
 \textbf{\textcolor{black}{BSXG240327}}
 \end{textblock} \begin{textblock}{10}(3,5.8)
 \Large \textbf{\textcolor{black}{黄礼闯}}
 \end{textblock} \begin{textblock}{10}(3,6.75)
-\Large \textbf{\textcolor{black}{补充分析}}
+\Large
+\textbf{\textcolor{black}{补充分析}}
 \end{textblock} \begin{textblock}{10}(3,7.7)
-\Large \textbf{\textcolor{black}{陈立茂}}
+\Large
+\textbf{\textcolor{black}{陈立茂}}
 \end{textblock} \end{center} \end{titlepage}
 \restoregeometry
 
@@ -384,7 +385,7 @@ All\_intersection
 ## Mfuzz 聚类分析 (MRNA)
 
 将上述筛选得的 DEGs 以 Mfuzz 聚类分析。
-见 Fig. \@ref(fig:MRNA-Mfuzz-clusters)。按照 Healthy, Early_stage, Advanced_stage 顺序, 在 Mfuzz 聚类中，1, 3, 4 为按时序上调，共 590 个，6, 8 为按时序下调，共 325 个。其他基因为离散变化。。
+见 Fig. \@ref(fig:MRNA-Mfuzz-clusters)。按照 Healthy, Early_stage, Advanced_stage 顺序, 在 Mfuzz 聚类中，6, 8 为按时序上调，共 325 个，1, 3, 4 为按时序下调，共 590 个。其他基因为离散变化。。
 
 
 

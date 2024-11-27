@@ -2,14 +2,14 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20240909"), end = td("20241115"), finish = td(""),
+info <- items(start = td("20240909"), end = td("20241115"), finish = td("20241126"),
   id = "BSXG240327", client = "陈立茂", type = "补充分析",
   title = "基于血小板RNA测序数据预测早期肺癌潜在生物标志物",
   save = ".items_supp.rds"
 )
 show.ic(info)
 
-order_publish("supp.Rmd", "supp_out.Rmd")
+order_publish.bosai("supp.Rmd", "supp_out.Rmd")
 idname <- paste0(info$id, "+", info$client, "+", info$title)
 file.rename("./supp_out.pdf", idname)
 order_packaging("./supp_out.pdf", idname = idname, external_file = NULL)
@@ -160,7 +160,7 @@ autor(lm.mrna@tables$step2$tops)
 ## Mfuzz 聚类分析 (MRNA)
 
 将上述筛选得的 DEGs 以 Mfuzz 聚类分析。
-见 Fig. \@ref(fig:MRNA-Mfuzz-clusters)。`r snap(mfuzz.mrna, c(1, 3, 4), c(6, 8))`。
+见 Fig. \@ref(fig:MRNA-Mfuzz-clusters)。`r snap(mfuzz.mrna, c(6, 8), c(1, 3, 4))`。
 
 
 ```{r}

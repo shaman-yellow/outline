@@ -1,0 +1,276 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz} \usepackage{auto-pst-pdf} \usepackage{pgfornament} \usepackage{pstricks-add} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/bosai//cover_page_idea.pdf}
+\begin{center} \textbf{\huge 再生障碍性贫血}
+\vspace{4em} \begin{textblock}{10}(3.2,9.25)
+\huge \textbf{\textcolor{black}{2024-11-27}}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{84}\end{center}\tableofcontents
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{88}\end{center}\listoffigures
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{89}\end{center}\listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+\hypertarget{abstract}{%
+\section{研究背景}\label{abstract}}
+
+见 Tab. \ref{tab:Traits-in-Open-GWAS}
+
+\hypertarget{introduction}{%
+\subsection{思路}\label{introduction}}
+
+再生障碍性贫血 (Aplastic anemia，AA) 是指骨髓无法形成血液，这是多种病理生理机制对终末器官的影响)
+(2018, \textbf{IF:96.2}, Q1, The New England journal of medicine)\textsuperscript{\protect\hyperlink{ref-Aplastic_Anemia_Young_2018}{1}}。
+骨髓被脂肪取代的常见病理可能是化学或物理损伤（医源性；苯）；免疫破坏（主要是 T 细胞）；以及维持细胞完整性和免疫调节的重要基因的体质缺陷 (Constitutional Syndromes)。
+体质性骨髓衰竭的患者中，大多数患者年龄在 18 岁以下，约 50\% 在基因组筛查中出现突变。
+免疫性 AA (Immune aplastic anemia，IAA) 中，细胞毒性 T 细胞在功能和表型上处于激活态，通过 Fas/FasL 诱导细胞凋亡，并以寡克隆形式循环 (2018, \textbf{IF:96.2}, Q1, The New England journal of medicine)\textsuperscript{\protect\hyperlink{ref-Aplastic_Anemia_Young_2018}{1}}。
+此外，免疫性 AA 会发生干细胞突变导致的免疫逃逸 (丢失了包含 HLA 等位基因的 6 号染色体区域的粒细胞) ，通过克隆扩增发挥替代造血的功能。
+全基因组关联研究 (Genome-Wide Association Study，GWAS) 研究显示，HLA-DPB1 种系的 SNP 提高了重症 AA (SAA) 的风险 (2020, \textbf{IF:8.1}, Q1, American journal of human genetics)\textsuperscript{\protect\hyperlink{ref-Genome_wide_Ass_Savage_2020}{2}}。
+
+细胞代谢与 AA 的发展有所关联。最近的研究表明，SAA 患者的血浆代谢组和肠道微生物组成均异常 (2021, \textbf{IF:4.6}, Q1, Frontiers in cell and developmental biology)\textsuperscript{\protect\hyperlink{ref-Plasma_Metabolo_Shao_2021}{3}}。此外，一项儿童的 scRNA-seq 数据分析表明，T淋巴细胞的代谢异常主要集中在糖酵解/糖异生上。此外，自然杀伤细胞的代谢异常集中在氧化磷酸化上，治疗免疫细胞的异常代谢途径可能有助于开发治疗 AA 的新策略 (2023, \textbf{IF:3.5}, Q2, Frontiers in oncology)\textsuperscript{\protect\hyperlink{ref-Single_cell_RNA_Zhou_2023}{4}}。
+
+综上，结合 TWAS 以及 AA 的细胞代谢的分析策略将可能成为发现 AA 疾病机制或治疗的重要方法。通过 TWAS 发现源于遗传突变导致的基因表达改变，随后在 AA 的细胞代写上分析这种影响，从而发现基因突变对于 AA 患者细胞代谢的改变。
+
+\hypertarget{methods}{%
+\section{可行性}\label{methods}}
+
+\hypertarget{ux4ee5-aplastic-anemia-and-gwas-ux641cux7d22ux6587ux732e}{%
+\subsection{\texorpdfstring{以 \texttt{"Aplastic\ anemia"\ AND\ "GWAS"} 搜索文献。}{以 "Aplastic anemia" AND "GWAS" 搜索文献。}}\label{ux4ee5-aplastic-anemia-and-gwas-ux641cux7d22ux6587ux732e}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-25 17-31-27.png}
+\caption{Unnamed chunk 6}\label{fig:unnamed-chunk-6}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux4ee5-aplastic-anemia-and-metabolic-ux641cux7d22ux6587ux732e}{%
+\subsection{\texorpdfstring{以 \texttt{"Aplastic\ anemia"\ AND\ "metabolic"} 搜索文献。}{以 "Aplastic anemia" AND "metabolic" 搜索文献。}}\label{ux4ee5-aplastic-anemia-and-metabolic-ux641cux7d22ux6587ux732e}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-25 17-37-00.png}
+\caption{Unnamed chunk 7}\label{fig:unnamed-chunk-7}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{results}{%
+\section{创新性}\label{results}}
+
+\hypertarget{ux4ee5-aplastic-anemia-and-twas-ux641cux7d22ux6587ux732e}{%
+\subsection{\texorpdfstring{以 \texttt{"Aplastic\ anemia"\ AND\ "TWAS"} 搜索文献。}{以 "Aplastic anemia" AND "TWAS" 搜索文献。}}\label{ux4ee5-aplastic-anemia-and-twas-ux641cux7d22ux6587ux732e}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-25 17-32-13.png}
+\caption{Unnamed chunk 8}\label{fig:unnamed-chunk-8}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux4ee5-aplastic-anemia-and-twas-and-metabolic-ux641cux7d22ux6587ux732e}{%
+\subsection{\texorpdfstring{以 \texttt{"Aplastic\ anemia"\ AND\ "TWAS"\ AND\ "metabolic"} 搜索文献。}{以 "Aplastic anemia" AND "TWAS" AND "metabolic" 搜索文献。}}\label{ux4ee5-aplastic-anemia-and-twas-and-metabolic-ux641cux7d22ux6587ux732e}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{~/Pictures/Screenshots/Screenshot from 2024-11-27 10-57-24.png}
+\caption{Unnamed chunk 9}\label{fig:unnamed-chunk-9}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{workflow}{%
+\section{参考文献和数据集}\label{workflow}}
+
+\hypertarget{gwas-ux6570ux636e}{%
+\subsection{GWAS 数据}\label{gwas-ux6570ux636e}}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{\label{tab:Traits-in-Open-GWAS}Traits in Open GWAS}\tabularnewline
+\toprule
+id & trait & ncase & group\_\ldots{} & year & author & consor\ldots{} & sex & pmid & popula\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+id & trait & ncase & group\_\ldots{} & year & author & consor\ldots{} & sex & pmid & popula\ldots{}\tabularnewline
+\midrule
+\endhead
+ebi-a-\ldots{} & Aplast\ldots{} & 4128 & public & 2021 & Sakaue S & NA & NA & 34594039 & European\tabularnewline
+ebi-a-\ldots{} & Aplast\ldots{} & 53 & public & 2021 & Sakaue S & NA & NA & 34594039 & East A\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{scrna-seq}{%
+\subsection{scRNA-seq}\label{scrna-seq}}
+
+\begin{itemize}
+\tightlist
+\item
+  GSE279914
+\end{itemize}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{\label{tab:AA-GSE279914-metadata}AA GSE279914 metadata}\tabularnewline
+\toprule
+rownames & title & batch.ch1 & cell.l\ldots{} & diseas\ldots{} & diseas\ldots{} & donor.ch1 & tissue\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & title & batch.ch1 & cell.l\ldots{} & diseas\ldots{} & diseas\ldots{} & donor.ch1 & tissue\ldots{}\tabularnewline
+\midrule
+\endhead
+GSM858\ldots{} & EG34, \ldots{} & 9 & none & diagnosis & aplast\ldots{} & D21, D22 & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG36, \ldots{} & 9 & Nalm-6\ldots{} & follow-up & aplast\ldots{} & D21, D\ldots{} & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG38, \ldots{} & 10 & Nalm-6\ldots{} & diagnosis & refrac\ldots{} & D24, D\ldots{} & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG40, \ldots{} & 10 & none & diagnosis & refrac\ldots{} & D26, D27 & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG46, \ldots{} & 12 & Nalm-6\ldots{} & diagnosis & myelod\ldots{} & D32, D\ldots{} & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG54, \ldots{} & 14 & none & diagnosis & myelod\ldots{} & D38, D\ldots{} & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG57, \ldots{} & 14 & none & diagnosis & myelod\ldots{} & D41, D42 & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG34, \ldots{} & 9 & none & diagnosis & aplast\ldots{} & D21, D22 & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG36, \ldots{} & 9 & Nalm-6\ldots{} & follow-up & aplast\ldots{} & D21, D\ldots{} & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG38, \ldots{} & 10 & Nalm-6\ldots{} & diagnosis & refrac\ldots{} & D24, D\ldots{} & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG40, \ldots{} & 10 & none & diagnosis & refrac\ldots{} & D26, D27 & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG46, \ldots{} & 12 & Nalm-6\ldots{} & diagnosis & myelod\ldots{} & D32, D\ldots{} & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG54, \ldots{} & 14 & none & diagnosis & myelod\ldots{} & D38, D\ldots{} & bone m\ldots{}\tabularnewline
+GSM858\ldots{} & EG57, \ldots{} & 14 & none & diagnosis & myelod\ldots{} & D41, D42 & bone m\ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux5355ux7ec6ux80deux6570ux636eux9884ux6d4bux4ee3ux8c22ux901aux91cfux7684ux65b9ux6cd5}{%
+\subsection{单细胞数据预测代谢通量的方法}\label{ux5355ux7ec6ux80deux6570ux636eux9884ux6d4bux4ee3ux8c22ux901aux91cfux7684ux65b9ux6cd5}}
+
+\begin{itemize}
+\tightlist
+\item
+  scFEA 通过scRNA-seq 预测代谢通量 (2021, \textbf{IF:6.2}, Q1, Genome research)\textsuperscript{\protect\hyperlink{ref-AGraphNeuralAlgham2021}{5}}
+\item
+  scFEA 的应用实例 (2023, \textbf{IF:3.9}, Q2, Frontiers in endocrinology)\textsuperscript{\protect\hyperlink{ref-SingleCellCorAgoro2023}{6}}
+\end{itemize}
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-Aplastic_Anemia_Young_2018}{}%
+1. Young, N. S. Aplastic anemia. \emph{The New England journal of medicine} \textbf{379}, 1643--1656 (2018).
+
+\leavevmode\hypertarget{ref-Genome_wide_Ass_Savage_2020}{}%
+2. Savage, S. A. \emph{et al.} Genome-wide association study identifies hla-dpb1 as a significant risk factor for severe aplastic anemia. \emph{American journal of human genetics} \textbf{106}, 264--271 (2020).
+
+\leavevmode\hypertarget{ref-Plasma_Metabolo_Shao_2021}{}%
+3. Shao, Y. \emph{et al.} Plasma metabolomic and intestinal microbial analyses of patients with severe aplastic anemia. \emph{Frontiers in cell and developmental biology} \textbf{9}, (2021).
+
+\leavevmode\hypertarget{ref-Single_cell_RNA_Zhou_2023}{}%
+4. Zhou, Q. \emph{et al.} Single-cell rna sequencing depicts metabolic changes in children with aplastic anemia. \emph{Frontiers in oncology} \textbf{13}, (2023).
+
+\leavevmode\hypertarget{ref-AGraphNeuralAlgham2021}{}%
+5. Alghamdi, N. \emph{et al.} A graph neural network model to estimate cell-wise metabolic flux using single-cell rna-seq data. \emph{Genome research} \textbf{31}, 1867--1884 (2021).
+
+\leavevmode\hypertarget{ref-SingleCellCorAgoro2023}{}%
+6. Agoro, R. \emph{et al.} Single cell cortical bone transcriptomics define novel osteolineage gene sets altered in chronic kidney disease. \emph{Frontiers in endocrinology} \textbf{14}, (2023).
+\end{cslreferences}
+
+\end{document}
