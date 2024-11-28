@@ -3,13 +3,14 @@
 
 ```{r include = F, eval = F}
 info <- items(start = td("20241114"), end = td("20241125"), finish = td("20241127"),
-  id = "BSCL241113", client = "邓姝", type = "思路设计", title = "再生障碍性贫血",
+  id = "BSCL241113", client = "邓姝", inst = "浙江省中医院",
+  type = "思路设计", title = "再生障碍性贫血",
   save = ".items_idea.rds"
 )
 show.ic(info)
 
 order_publish.bosai("idea.Rmd", "idea_out.Rmd")
-file.rename("./idea_out.docx", paste0(info$id, "+", info$title, ".docx"))
+formatName.bosai("./idea_out.docx")
 ```
 
 ```{r include = F}

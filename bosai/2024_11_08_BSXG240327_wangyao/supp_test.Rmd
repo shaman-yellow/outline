@@ -1,0 +1,137 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20240909"), end = td("20241115"), finish = td("20241126"),
+  id = "BSXG240327", client = "陈立茂", type = "补充分析",
+  title = "基于血小板RNA测序数据预测早期肺癌潜在生物标志物",
+  save = ".items_supp.rds"
+)
+show.ic(info)
+
+order_publish.bosai("supp.Rmd", "supp_out.Rmd")
+idname <- paste0(info$id, "+", info$client, "+", info$title)
+file.rename("./supp_out.pdf", idname)
+order_packaging("./supp_out.pdf", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("快照")
+)
+
+```
+
+```{r}
+route <- as_network(
+  list("RNA_seq_data:Preprocess",
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+该分析思路与 `r cite_show("@HCC_RNA_Sequen_Wang_2023")` 相似。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-11-26 17-47-48.png", asis = F)
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+```{r}
+counts <- readRDS("./order_material/mRNA.rds")
+metadata <- readRDS("./order_material/metadata.rds")
+metadata <- as_tibble(metadata)
+metadata <- dplyr::mutate(metadata, sample = rownames, group = gs(group, "-", "_"),
+  batch = strx(sample, "18[0-9]{2}"),
+  batch = ifelse(is.na(batch), "-", batch)
+)
+metadata <- dplyr::relocate(metadata, sample, group)
+metadata
+```
+
+```{r}
+#' @meth {get_meth(bm.all)}
+bm.all <- job_biomart("hsa")
+not(bm.all)
+bm.all <- step1(bm.all, rownames(counts), "ensembl_gene_id", attrs = c(general_attrs(), "gene_biotype"))
+bm.all$anno
+lm.all <- job_limma(new_dge(metadata, as_tibble(counts), bm.all$anno))
+```
+
+## Limma 差异分析 (MRNA)
+
+肝癌 RNA-seq， `r snap(lm.mrna)`
+元数据见 Tab. \@ref(tab:MRNA-metadata) 。
+对基因注释后，获取 mRNA 数据差异分析。
+`r snap(lm.mrna, 2)`
+得到的 DEGs 统计见 Fig. \@ref(fig:MRNA-Difference-intersection)。
+所有 DEGs 表达特征见 Fig. \@ref(fig:MRNA-Heatmap-of-DEGs)。
+`r snap(lm.mrna, 3)`
+
+
+```{r}
+fun_filter <- function(rna = "protein_coding") {
+  type <- lm.all@object$genes$gene_biotype
+  isThat <- type == "protein_coding" & !is.na(type)
+  lm.all@object <- lm.all@object[ isThat, ]
+  return(lm.all)
+}
+#' @meth {get_meth(lm.mrna)}
+lm.mrna <- fun_filter("protein_coding")
+lm.mrna <- step1(lm.mrna, pca = T, norm_vis = T, batch = lm.mrna@object$samples$batch)
+lm.mrna <- step2(lm.mrna, Early_stage - Healthy, Advanced_stage - Healthy, Advanced_stage - Early_stage,
+  use = "adj", cut.fc = 1, use.cut = .05, label = "hgnc_symbol")
+lm.mrna <- step3(lm.mrna)
+lm.mrna@plots$step3$p.hp
+lm.mrna@plots$step2$p.volcano$`Early_stage - Healthy`
+lm.mrna@plots$step2$p.volcano$`Advanced_stage - Healthy`
+lm.mrna@plots$step2$p.volcano$`Advanced_stage - Early_stage`
+lm.mrna@tables$step2$tops
+lm.mrna@plots$step3$p.sets_intersection
+lm.mrna@plots$step3$p.sets_intersection$raw
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-metadata
+autor(lm.mrna@params$.metadata)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-Early-stage-vs-Healthy
+autor(lm.mrna@plots$step2$p.volcano$`Early_stage - Healthy`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+# knitr::include_graphics("./report_picture/MRNA-Advanced-stage-vs-Healthy.png")
+```

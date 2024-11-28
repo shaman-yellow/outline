@@ -10,9 +10,8 @@ info <- items(start = td("20240909"), end = td("20241115"), finish = td("2024112
 show.ic(info)
 
 order_publish.bosai("supp.Rmd", "supp_out.Rmd")
-idname <- paste0(info$id, "+", info$client, "+", info$title)
-file.rename("./supp_out.pdf", idname)
-order_packaging("./supp_out.pdf", idname = idname, external_file = NULL)
+idname <- formatName.bosai("./supp_out.docx")
+order_packaging("./supp_out.docx", idname = idname, external_file = NULL)
 ```
 
 ```{r include = F}
@@ -242,15 +241,8 @@ tc.lusc
 
 数据源自 TCGA-LUSC，筛选 AJCC Stage (ajcc_pathologic_stage) 为 Stage I, Stage II 的病人，并且 days_to_last_follow_up 大于 10 天，且为肿瘤组织的样本。所用样本的元数据见 Tab. \@ref(tab:LUSC-metadata)。
 
-数据特征如下：
-
-```{r eval = T, echo = F, results = "asis"}
-#| LUSC-metadata-stats
-summary_tibble(lm.lusc$t.common)
-```
-
 将 LUSC 数据 (count) 标准化后 (同 MRNA 的方法)，以生存状态为指标 (Fig. \@ref(fig:LUSC-Group-distribution))，以 EFS 算法，进行 Feature selection, 得到 Top 30 基因, 统计得分见 Fig. \@ref(fig:LUSC-Top-Features-Selected-By-EFS)。
-随后，以单因素 COX 回归，筛选能显著预测生存结局的基因。EFS 与单因素 COX 回归结果如 Tab. \@ref(tab:LUSC-Uni-COX-cofficients-filtered-by-EFS)。共 `r nrow(sig.cox_efs)` 个基因：`r paste0(sig.cox_efs$Feature, collapse = ", ")`。
+随后，以单因素 COX 回归，筛选能显著预测生存结局的基因。EFS 与单因素 COX 回归结果如 Tab. \@ref(tab:LUSC-Uni-COX-cofficients-filtered-by-EFS)。共 `r nrow(sig.cox_efs)` 个基因：`r paste0(sig.cox_efs$feature, collapse = ", ")`。
 
 
 ```{r}
@@ -381,12 +373,7 @@ coefMerged <- dplyr::mutate(coefMerged, feature = dplyr::recode(feature,
 coefMerged
 ```
 
-进一步通过单因素和多因素 COX 回归的方式评估了包括风险评分在内的4项预后特征 (smoking, treatment 等其他数据缺失值较多，不易处理) 。数据特征如下：
-
-```{r eval = T, echo = F, results = "asis"}
-#| Prognosis-data
-summary_tibble(meta4)
-```
+进一步通过单因素和多因素 COX 回归的方式评估了包括风险评分在内的4项预后特征 (smoking, treatment 等其他数据缺失值较多，不易处理) 。
 
 单因素和多因素分析结果，风险评分是诊断早期肺癌预后的独立风险指标，见 Tab. \@ref(tab:META-Coefficients-Of-COX)。
 
@@ -397,11 +384,7 @@ autor(coefMerged)
 
 ## GEO 数据获取 (GEO_LUSC)
 
-为了验证预后特征在不同数据平台上的性能，这里获取了 GEO 数据平台的早期肺癌数据 (GSE157010，微阵列数据)，并筛选了 Stage 为 I，II 阶段的病例。数据特征如下：
-
-```{r eval = T, echo = F, results = "asis"}
-summary_tibble(metadata.geolusc)
-```
+为了验证预后特征在不同数据平台上的性能，这里获取了 GEO 数据平台的早期肺癌数据 (GSE157010，微阵列数据)，并筛选了 Stage 为 I，II 阶段的病例。
 
 ```{r}
 #' @meth {get_meth(geo.lusc)}

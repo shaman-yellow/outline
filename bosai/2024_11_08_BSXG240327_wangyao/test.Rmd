@@ -1,0 +1,25 @@
+---
+output:
+  officedown::rdocx_document:
+    keep_md: true
+---
+
+# test
+
+```{r eval = T, echo = F, results = "asis"}
+autor("./Figure+Table")
+```
+
+```{r eval = T, echo = F, results = "asis", fig.width= 4, fig.height= 5}
+knitr::include_graphics("./report_picture/GEO-LUSC-boxplot-of-risk-score.png")
+```
+
+```{r eval = T, echo = F, results = "asis"}
+officer::external_img("./report_picture/GEO-LUSC-boxplot-of-risk-score.png", 10, 10)
+```
+
+```{r}
+x <- officer::read_docx("./blank.docx")
+x <- officer::body_add_docx(x, "./supp_out.docx")
+print(x, target = "merge.docx")
+```
