@@ -1,0 +1,247 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20241016"), end = td("20241115"), finish = td("20241129"),
+  id = "BSCL240914", client = "邱美婷", inst = "",
+  type = "生信分析",
+  title = "预测甲基化调控因子",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+通过软件预测甲基化调控因子（如METTL14）的靶基因，并通过数据库筛选于PCOS患者中表达水平具有显著差异性的基因，合并交集，并对该交集中的基因进行功能富集和KEGG通路富集分析，筛选PCOS患者中可能的METTL14甲基化调控基因及其相关通路；
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## EpiFactors 表观遗传调控因子数据获取 (METHY)
+
+从所有 表观调控因子  Fig. \@ref(fig:Distribution-all-protein-of-epigenetic-regulators)
+中筛选出甲基化修饰调控因子，见 Tab. \@ref(tab:METHY-regulators)
+
+```{r}
+epi.methy <- job_epifactor()
+epi.methy <- step1(epi.methy)
+epi.methy@tables$step1$protein
+geneTable.methy <- dplyr::filter(epi.methy@tables$step1$protein, grpl(Modification, "methy", T))
+geneTable.methy
+p.distri <- new_pie(geneTable.methy$Modification)
+wrap(p.distri, 11, 9)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Distribution-all-protein-of-epigenetic-regulators
+autor(wrap(p.distri, 11, 9))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| METHY-regulators
+autor(geneTable.methy)
+```
+
+## GEO 数据获取 (PCOS)
+
+```{r}
+#' @meth {get_meth(geo.pcos)}
+geo.pcos <- job_geo("GSE277906")
+geo.pcos <- step1(geo.pcos)
+geo.pcos <- step2(geo.pcos, "counts")
+geo.pcos$prods
+raw <- ftibble(list.files(geo.pcos$dir, full.names = T))
+counts <- dplyr::select(raw, id, dplyr::starts_with("Control"), dplyr::starts_with("PCOS"))
+metadata <- group_strings(colnames(counts)[-1], c("control" = "Control", "pcos" = "PCOS"), "sample")
+genes <- dplyr::select(raw, id, !dplyr::all_of(metadata$sample))
+genes
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCOS-GSE277906
+autor(geo.pcos$prods)
+```
+
+## Limma 差异分析 (PCOS)
+
+差异分析，得到 DEGs 见 Fig. \@ref(fig:PCOS-pcos-vs-control)
+
+```{r}
+#' @meth {get_meth(lm.pcos)}
+lm.pcos <- job_limma(new_dge(metadata, counts, genes))
+#' @meth 对 GSE277906 的 mRNA 数据 (protein_coding) 差异分析
+lm.pcos <- filter(lm.pcos, coding_type == "protein_coding")
+lm.pcos <- step1(lm.pcos, norm_vis = T)
+lm.pcos <- step2(lm.pcos, pcos - control, label = "id", use = "P")
+
+wrap(lm.pcos@plots$step1$p.filter, 13, 5.5)
+wrap(lm.pcos@plots$step1$p.norm, 6, 10)
+lm.pcos@plots$step2$p.volcano$`pcos - control`
+lm.pcos@tables$step2$tops$`pcos - control`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCOS-Filter-low-counts
+autor(wrap(lm.pcos@plots$step1$p.filter, 13, 5.5))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCOS-Normalization
+autor(wrap(lm.pcos@plots$step1$p.norm, 6, 10))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCOS-pcos-vs-control
+autor(lm.pcos@plots$step2$p.volcano$`pcos - control`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PCOS-data-pcos-vs-control
+autor(lm.pcos@tables$step2$tops$`pcos - control`)
+```
+
+## 差异表达的 Methylation Factors
+
+将差异表达基因与 Tab. \@ref(tab:METHY-regulators) 中的因子取交集，
+见 Tab. \@ref(tab:Intersection-of-Methy-factor-with-DEGs)
+
+```{r}
+p.degMethyInter <- new_venn(Methy_factor = geneTable.methy$HGNC_symbol, DEGs = genesTops)
+p.degMethyInter
+geneTable.degMethy <- dplyr::filter(geneTable.methy, HGNC_symbol %in% genesTops)
+geneTable.degMethy
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-Methy-factor-with-DEGs
+autor(p.degMethyInter)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-METHY-epigenetic-regulators
+autor(geneTable.degMethy)
+```
+
+## m6A-Atlas m6A 数据获取 (METHY)
+
+```{r}
+genesTops <- lm.pcos@tables$step2$tops$`pcos - control`$id
+genesTops
+m6a.methy <- job_m6a()
+m6a.methy <- step1(m6a.methy, genesTops)
+m6a.methy@tables$step1$t.data
+p.distriDEGsSites <- new_pie(unlist(lapply(m6a.methy@tables$step1$t.data, function(x) x$.id)))
+p.distriDEGsSites
+genesPosMethySite <- unique(unlist(lapply(m6a.methy@tables$step1$t.data, function(x) x$.id)))
+table(genesPosMethySite %in% genesTops)
+```
+
+据检索，所有的 DEGs (Tab. \@ref(tab:PCOS-data-pcos-vs-control)) 都存在甲基化修饰位点。
+因此，所有 DEGs 都可能发生甲基化修饰。
+
+```{r eval = T, echo = F, results = "asis"}
+#| METHY-m6A-Atlas-search-results
+autor(m6a.methy@tables$step1$t.data)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| METHY-m6A-Atlas-search-results-distribution
+autor(wrap(p.distriDEGsSites, 12, 12))
+```
+
+## Methylation Factors 与 DEGs 关联分析
+
+为了寻找 Fig. \@ref(fig:Intersection-of-Methy-factor-with-DEGs) 中发现的差异表达的 Methylation Factors 
+可能调控的 DEGs 修饰，将两个数据集作关联分析，结果见 Tab. \@ref(tab:All-correlation-results)。
+以 pvalue &lt; 0.05 为条件筛选，见 Tab. \@ref(tab:correlation-results-05)，
+Fig. \@ref(fig:Significant-correlation)。
+
+
+```{r}
+corpAll <- cal_corp(lm.pcos, NULL, geneTable.degMethy$HGNC_symbol, genesTops, mode = "linear", use = "id")
+corpAll
+corp <- dplyr::filter(corpAll, pvalue < .001, From != To)
+corp
+corp05 <- dplyr::filter(corpAll, pvalue < .05, From != To)
+corp05
+p.corMethy <- vis(.corp(corp05))
+p.corMethy
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-correlation-results
+autor(corpAll)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Significant-correlation
+autor(p.corMethy)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| correlation-results-05
+autor(corp05)
+```
+
+## 富集分析 (SIGCOR_05)
+
+将 Tab. \@ref(tab:correlation-results-05) 中的基因富集分析 (包含 `r corp05$From[1]`)。
+
+```{r}
+en.SigCor_05 <- job_enrich(c(corp05$To, corp05$From[1]))
+en.SigCor_05 <- step1(en.SigCor_05)
+en.SigCor_05@plots$step1$p.kegg$ids
+en.SigCor_05@plots$step1$p.go$ids
+en.SigCor_05@tables$step1$res.kegg
+en.SigCor_05 <- step2(en.SigCor_05, "hsa04024")
+en.SigCor_05@plots$step2$p.pathviews$hsa04024
+```
+
+# 总结 {#conclusion}
+
