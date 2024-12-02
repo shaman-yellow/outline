@@ -1,0 +1,63 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("202412"), end = td("202412"), finish = td("202412"),
+  id = "", client = "", inst = "",
+  type = "index",
+  title = "",
+  save = ".items_index.rds"
+)
+show.ic(info)
+
+order_publish("index.Rmd", "index_out.Rmd")
+idname <- formatName.bosai("./index_out.docx")
+order_packaging("./index_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+```{r}
+file <- "./material/OtuTaxon_summary/tax_summary_a/otu_taxon_Phylum.xls"
+data <- fxlsx("./material/otu_taxon_Phylum.percent.xlsx")
+metadata <- group_strings(colnames(data)[-1], c(Control = "S", Model = "I", TCM = "H", HCQ = "E"))
+paste0(colnames(data)[-1], collapse = ", ")
+```
+
+# 总结 {#conclusion}
+

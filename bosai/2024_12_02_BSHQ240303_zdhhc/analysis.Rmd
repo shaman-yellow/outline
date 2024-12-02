@@ -1,0 +1,166 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20240326"), end = td("20241204"), finish = td("20241202"),
+  id = "BSHQ240303", client = "张永旭", inst = "大连医科大学附属第二医院骨科",
+  type = "生信分析",
+  title = "骨肉瘤分析ZDHHC家族成员",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("骨肉瘤")
+  # [1] "Osteosarcoma"
+)
+
+```
+
+根据方案2中的设计，完成第一部分生信分析 （骨肉瘤）：
+
+1. GEPIA等数据库，分析ZDHHC家族成员的差异表达
+2. TCGA、TIMER、GSE等数据集，分析ZDHHC家族成员的预后情况
+3. 通过预后、表达的相关趋势，利用韦恩图，筛选明显上调的棕榈酰化酶ZDHHC
+4. 验证集分析：更换其他的数据库、GEO数据集，证明ZDHHC明显高表达、预后较差。
+5. 通过HPA数据库验证以上差异蛋白的IHC表达结果。
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## GEO 数据获取 (GEO-OS)
+
+```{r}
+#' @meth {get_meth(geo.geoOs)}
+geo.geoOs <- job_geo("GSE218035")
+geo.geoOs <- step1(geo.geoOs)
+geo.geoOs@params$guess
+geo.geoOs@params$prods
+geo.geoOs <- step2(geo.geoOs)
+untar(list.files(geo.geoOs$dir, full.names = T), exdir = normalizePath(geo.geoOs$dir))
+list.files(geo.geoOs$dir, "txt.gz$", full.names = T)[1] %>% ftibble
+counts <- edgeR::readDGE(
+  list.files(geo.geoOs$dir, "txt.gz$"), normalizePath(geo.geoOs$dir), c(1, 4))$counts
+colnames(counts) <- strx(colnames(counts), "[A-Z0-9]+")
+counts
+
+metadata <- geo.geoOs@params$guess
+metadata <- dplyr::relocate(metadata, sample = rownames)
+metadata <- dplyr::mutate(metadata, group = ifelse(grpl(tissue.ch1, "Os"), "OS", "Normal"), .after = sample)
+metadata
+genes <- dplyr::select(ftibble(list.files(geo.geoOs$dir, "txt.gz$", full.names = T)[1]), entrez = 1, 3)
+geneGeoAllZDHHC <- dplyr::filter(genes, grpl(Symbol, "ZDHHC"))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS-GSE218035
+autor(geo.geoOs@params$prods)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS-GSE218035-metadata
+autor(geo.geoOs@params$guess)
+```
+
+## Limma 差异分析 (GEOOS)
+
+```{r}
+#' @meth {get_meth(lm.geoOs)}
+lm.geoOs <- job_limma(new_dge(metadata, as_tibble(counts), genes))
+lm.geoOs@object <- lm.geoOs@object[grpl(genes$Symbol, "ZDHHC"), ]
+lm.geoOs <- step1(lm.geoOs, data_type = "cpm")
+lm.geoOs <- step2(lm.geoOs, OS - Normal, label = "Symbol", use = "P")
+lm.geoOs@tables$step2$tops$`OS - Normal`
+lm.geoOs@plots$step2$p.volcano$`OS - Normal`
+
+geneTable_GeoOsZDHHC <- dplyr::filter(lm.geoOs@tables$step2$tops$`OS - Normal`, grpl(Symbol, "ZDHHC"))
+lab(geneTable_GeoOsZDHHC) %<>% paste(., "ZDHHC")
+geneTable_GeoOsZDHHC
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS-data-OS-vs-Normal-ZDHHC
+autor(geneTable_GeoOsZDHHC)
+```
+
+## TCGA 数据获取 (OS)
+
+```{r}
+#' @meth {get_meth(tcga.os)}
+tcga.os <- job_tcga("TARGET-OS")
+tcga.os <- step1(tcga.os)
+tcga.os <- step2(tcga.os)
+tcga.os <- step3(tcga.os)
+```
+
+## Limma 差异分析 (OS)
+
+```{r}
+tcga.os@object
+#' @meth {get_meth(lm.os)}
+lm.os <- asjob_limma(tcga.os)
+lm.os@params$p.isTumor
+lm.os <- step1(lm.os)
+lm.os@plots$step1$p.filter
+geneZDHHC <- filter(lm.os@params$normed_data$genes, grpl(gene_name, "ZDHHC"))$gene_name
+geneZDHHC
+```
+
+## Survival 生存分析 (OS)
+
+```{r}
+lm.os@object$targets
+#' @meth {get_meth(surv.os)}
+surv.os <- asjob_survival(lm.os, geneZDHHC, time = "days_to_death")
+surv.os <- step1(surv.os)
+surv.os@plots$step1$p.surv$ZDHHC3
+surv.os@plots$step1$p.surv$ZDHHC23
+surv.os@tables$step1$t.SignificantSurvivalPValue
+```
+
+```{r}
+p.vennZDHHC <- new_venn(
+  # GEO_ZDHHC_All = geneGeoAllZDHHC$Symbol,
+  GEO_ZDHHC = geneTable_GeoOsZDHHC$Symbol,
+  TAEGET_ZDHHC = surv.os@tables$step1$t.SignificantSurvivalPValue$name
+)
+p.vennZDHHC
+```
+
+# 总结 {#conclusion}
+
