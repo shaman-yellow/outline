@@ -1,5 +1,13 @@
 ---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
 ---
+
 
 ```{r include = F, eval = F}
 info <- items(start = td("20240326"), end = td("20241204"), finish = td("20241202"),
@@ -332,3 +340,4 @@ HPA 数据库不包含上述基因的 Osteosarcoma 数据。
 按实际分析的结果，筛选的两个基因见
 `r ref("Intersection-of-GEO2-ZDHHC-with-TAEGET-ZDHHC")`，
 `r ref("Intersection-of-GEO4-ZDHHC-with-TAEGET-ZDHHC")`
+

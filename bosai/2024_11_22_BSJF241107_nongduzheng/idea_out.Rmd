@@ -1,5 +1,13 @@
 ---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
 ---
+
 
 ```{r include = F, eval = F}
 info <- items(start = td("20241119"), end = td("20241126"), finish = td("20241203"),

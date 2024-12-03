@@ -1,0 +1,127 @@
+
+
+## GEO 数据获取 (GEO-OS)
+
+```{r}
+#' @meth {get_meth(geo.geoOs)}
+geo.geoOs <- job_geo("GSE218035")
+geo.geoOs <- step1(geo.geoOs)
+geo.geoOs@params$guess
+geo.geoOs@params$prods
+geo.geoOs <- step2(geo.geoOs)
+untar(list.files(geo.geoOs$dir, full.names = T), exdir = normalizePath(geo.geoOs$dir))
+list.files(geo.geoOs$dir, "txt.gz$", full.names = T)[1] %>% ftibble
+counts <- edgeR::readDGE(
+  list.files(geo.geoOs$dir, "txt.gz$"), normalizePath(geo.geoOs$dir), c(1, 4))$counts
+colnames(counts) <- strx(colnames(counts), "[A-Z0-9]+")
+counts
+
+metadata <- geo.geoOs@params$guess
+metadata <- dplyr::relocate(metadata, sample = rownames)
+metadata <- dplyr::mutate(metadata,
+  group = ifelse(grpl(tissue.ch1, "Os"), "OS", "Normal"),
+  pairs = individual.ch1,
+  .after = sample)
+metadata
+metadata <- filter(metadata, grpl(site.ch1, "Low"))
+genes <- dplyr::select(ftibble(list.files(geo.geoOs$dir, "txt.gz$", full.names = T)[1]), entrez = 1, 3)
+
+geneGeoAllZDHHC <- dplyr::filter(genes, grpl(Symbol, "ZDHHC"))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS-GSE218035
+autor(geo.geoOs@params$prods)
+```
+
+## Limma 差异分析 (GEOOS)
+
+```{r}
+#' @meth {get_meth(lm.geoOs)}
+lm.geoOs <- job_limma(new_dge(metadata, as_tibble(counts), genes))
+lm.geoOs@object <- lm.geoOs@object[grpl(genes$Symbol, "ZDHHC"), ]
+lm.geoOs <- step1(lm.geoOs, data_type = "cpm")
+lm.geoOs@params$.metadata
+lm.geoOs$design
+lm.geoOs <- step2(lm.geoOs, OS - Normal, label = "Symbol", use = "P")
+lm.geoOs@tables$step2$tops$`OS - Normal`
+lm.geoOs@plots$step2$p.volcano$`OS - Normal`
+
+geneTable_GeoOsZDHHC <- dplyr::filter(lm.geoOs@tables$step2$tops$`OS - Normal`, grpl(Symbol, "ZDHHC"))
+lab(geneTable_GeoOsZDHHC) %<>% paste(., "ZDHHC")
+geneTable_GeoOsZDHHC
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS-data-OS-vs-Normal-ZDHHC
+autor(geneTable_GeoOsZDHHC)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS-metadata-of-used-sample
+autor(lm.geoOs@params$.metadata)
+```
+
+
+map(lm.geoOs3, ref = p.vennZDHHC$ins, ref.use = "GENE_SYMBOL")
+
+```{r}
+p.vennZDHHC_geo3 <- new_venn(
+  GEO3_ZDHHC = geneTable_GeoOs3ZDHHC$hgnc_symbol,
+  TAEGET_ZDHHC = surv.os@tables$step1$t.SignificantSurvivalPValue$name
+)
+p.vennZDHHC_geo3$ins
+```
+
+## GEO 数据获取 (GEOOS3)
+
+```{r}
+geo.geoOs3 <- job_geo("GSE19276")
+geo.geoOs3 <- step1(geo.geoOs3)
+geo.geoOs3@params$guess
+geo.geoOs3$prods
+metadata3 <- dplyr::mutate(geo.geoOs3@params$guess,
+  sample = rownames,
+  group = ifelse(grpl(title, "Non"), "Normal", ifelse(grpl(title, "poor"), "PoorRes", "GoodRes")),
+  pairs = strx(title, "[A-Z0-9]+"),
+  batch = make.names(bone.ch1),
+  .before = 1
+)
+metadata3 <- dplyr::filter(metadata3, batch != "NA.")
+metadata3
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS3-GSE19276
+autor(geo.geoOs3$prods)
+```
+
+
+## Limma 差异分析 (GEOOS3)
+
+```{r}
+lm.geoOs3 <- asjob_limma(geo.geoOs3, metadata3, normed = T)
+lm.geoOs3@params$genes %<>% dplyr::filter(grpl(GENE_SYMBOL, "ZDHHC"))
+lm.geoOs3@params$genes
+lm.geoOs3@object %<>% .[rownames(.) %in% lm.geoOs3@params$genes$rownames, ]
+lm.geoOs3@object
+lm.geoOs3 <- step1(lm.geoOs3, batch = NULL)
+lm.geoOs3 <- step2(lm.geoOs3,
+  (PoorRes + GoodRes) / 2,
+  PoorRes - Normal, GoodRes - Normal, PoorRes - GoodRes,
+  label = "GENE_SYMBOL", use = "P")
+
+lm.geoOs3@plots$step2$p.volcano$`(PoorRes + GoodRes)/2`
+lm.geoOs3@plots$step2$p.volcano$`PoorRes - Normal`
+lm.geoOs3@tables$step2$tops$`PoorRes - Normal`
+lm.geoOs3@tables$step2$tops$`PoorRes - Normal`
+lm.geoOs3@tables$step2$tops$`GoodRes - Normal`
+lm.geoOs3@params$normed_data
+
+geneTable_GeoOs3ZDHHC <- lm.geoOs3@tables$step2$tops$`(PoorRes + GoodRes)/2`
+geneTable_GeoOs3ZDHHC
+```
+
