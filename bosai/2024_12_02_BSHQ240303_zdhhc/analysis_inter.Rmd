@@ -1,0 +1,96 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20240326"), end = td("20241206"), finish = td("20241204"),
+  id = "BSHQ240303", client = "张永旭", inst = "大连医科大学附属第二医院骨科",
+  type = "生信分析",
+  title = "ZDHHC15互作蛋白筛选",
+  save = ".items_analysis_inter.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis_inter.Rmd", "analysis_inter_out.Rmd")
+idname <- formatName.bosai("./analysis_inter_out.docx")
+order_packaging("./analysis_inter_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table_inter", tabs = "Figure+Table_inter"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+## 需求
+
+根据结果选择ZDHHC15做后续实验，需要继续做一个蛋白互作网络，看看ZDHHC15结合的什么分子，结合分数多少。（用骨肉瘤的基因集，构建蛋白互作网络。 筛选ZDHHC15结合的分子，依据结合分数，确认下游靶蛋白）。
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## GEO 数据获取 (GEOOS2)
+
+```{r}
+geo.geoOs2 <- readRDS("./geo.geoOs2.2.rds")
+geo.geoOs2@params$prods
+```
+
+## Limma 差异分析 (GEOOS2)
+
+```{r}
+lm.geoOs2 <- readRDS("./lm.geoOs20.rds")
+lm.geoOs2 <- step1(lm.geoOs2, batch = NULL)
+lm.geoOs2 <- step2(lm.geoOs2, TUMOR - NORMAL, label = "symbol", use = "P")
+lm.geoOs2@params$.metadata
+lm.geoOs2@tables$step2$tops$`TUMOR - NORMAL`
+lm.geoOs2@plots$step2$p.volcano$`TUMOR - NORMAL`
+```
+
+## STRINGdb PPI 分析 (GEOOS2)
+
+```{r}
+sdb.geoOs2 <- asjob_stringdb(lm.geoOs2@tables$step2$tops$`TUMOR - NORMAL`$symbol)
+sdb.geoOs2 <- step1(sdb.geoOs2, network_type = "full")
+sdb.geoOs2@plots$step1$p.ppi
+sdb.geoOs2@params$edges
+dplyr::filter(sdb.geoOs2@tables$step1$hub_genes, grpl(Symbol, "^ZD"))
+
+sdb.geoOs2@params$graph
+lstSdb.geoOs2 <- filter(sdb.geoOs2, "ZDHHC15", sdb.geoOs2@object$Symbol, use.top = "to", keep.ref = F, top = Inf)
+lstSdb.geoOs2$p.mcc
+lstSdb.geoOs2$edges
+
+sdb.geoOs2@params$edges
+
+```
+
+# 总结 {#conclusion}
+

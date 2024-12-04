@@ -140,6 +140,7 @@ autor(surv.os@plots$step1$p.surv$ZDHHC15)
 geo.geoOs2 <- job_geo("GSE99671")
 geo.geoOs2 <- step1(geo.geoOs2)
 geo.geoOs2 <- step2(geo.geoOs2, "filecounts")
+clear(geo.geoOs2)
 geo.geoOs2$guess
 geo.geoOs2$prods
 rawOs2 <- ftibble(list.files(geo.geoOs2$dir, full.names = T))
@@ -173,6 +174,7 @@ autor(geo.geoOs2$prods)
 ```{r}
 #' @meth {get_meth(lm.geoOs2)}
 lm.geoOs2 <- job_limma(new_dge(metadata2, counts2, genes2))
+clear(lm.geoOs2)
 lm.geoOs2@object <- lm.geoOs2@object[grpl(genes2$symbol, "ZDHHC"), ]
 lm.geoOs2@params$normed_data$genes
 dim(lm.geoOs2@object)
@@ -184,6 +186,8 @@ lm.geoOs2@plots$step2$p.volcano$`TUMOR - NORMAL`
 geneTable_GeoOs2ZDHHC <- lm.geoOs2@tables$step2$tops$`TUMOR - NORMAL`
 geneTable_GeoOs2ZDHHC
 lm.geoOs2$.metadata
+
+clear(lm.geoOs2)
 ```
 
 
@@ -332,3 +336,5 @@ HPA 数据库不包含上述基因的 Osteosarcoma 数据。
 按实际分析的结果，筛选的两个基因见
 `r ref("Intersection-of-GEO2-ZDHHC-with-TAEGET-ZDHHC")`，
 `r ref("Intersection-of-GEO4-ZDHHC-with-TAEGET-ZDHHC")`
+
+
