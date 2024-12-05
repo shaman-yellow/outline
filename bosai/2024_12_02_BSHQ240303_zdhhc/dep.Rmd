@@ -6,6 +6,7 @@
 #' @meth {get_meth(geo.geoOs)}
 geo.geoOs <- job_geo("GSE218035")
 geo.geoOs <- step1(geo.geoOs)
+clear(geo.geoOs)
 geo.geoOs@params$guess
 geo.geoOs@params$prods
 geo.geoOs <- step2(geo.geoOs)
@@ -40,6 +41,7 @@ autor(geo.geoOs@params$prods)
 ```{r}
 #' @meth {get_meth(lm.geoOs)}
 lm.geoOs <- job_limma(new_dge(metadata, as_tibble(counts), genes))
+clear(lm.geoOs)
 lm.geoOs@object <- lm.geoOs@object[grpl(genes$Symbol, "ZDHHC"), ]
 lm.geoOs <- step1(lm.geoOs, data_type = "cpm")
 lm.geoOs@params$.metadata
@@ -125,3 +127,100 @@ geneTable_GeoOs3ZDHHC <- lm.geoOs3@tables$step2$tops$`(PoorRes + GoodRes)/2`
 geneTable_GeoOs3ZDHHC
 ```
 
+
+## ZDHHC15 与铁死亡驱动因子
+
+```{r}
+p.pieZdDri <- new_venn(Interaction_protein = lstSdb.geoOs2$edges$to,
+  ferr_driver = tbl_fe.ferr_drive$symbol,
+  all_DEGs = tbl_lm.geoOs2_TUMOR$symbol
+
+p.pieZdDri
+
+p.pieDegDri <- new_venn(
+  ferr_driver = tbl_fe.ferr_drive$symbol,
+  all_DEGs = tbl_lm.geoOs2_TUMOR$symbol
+)
+p.pieDegDri
+
+p.pieZdAll <- new_venn(Interaction_protein = lstSdb.geoOs2$edges$to,
+  lst = lapply(list_fe.ferr_tferr, function(x) x$symbol))
+p.pieZdAll
+
+p.pieZdSupp <- new_venn(Interaction_protein = lstSdb.geoOs2$edges$to,
+  suppressor = list_fe.ferr_tferr$suppressor$symbol
+)
+p.pieZdSupp$ins
+dplyr::filter(tbl_lm.geoOs2_TUMOR, symbol %in% p.pieZdSupp$ins)
+dplyr::filter(tbl_lm.geoOs2_TUMOR, symbol == "ZDHHC15")
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| FERR-ferroptosis-Regulators-Distribution
+autor(fe.ferr@plots$step1$p.ferroptosisRegulatorsDistribution)
+```
+
+
+## GEO 数据获取 (GEOOS2)
+
+```{r}
+#' @meth {get_meth(geo.geoOs2)}
+geo.geoOs2 <- readRDS("./geo.geoOs2.2.rds")
+geo.geoOs2@params$prods
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS2-GSE99671
+autor(geo.geoOs2@params$prods)
+```
+
+## Limma 差异分析 (GEOOS2)
+
+```{r}
+#' @meth {get_meth(lm.geoOs2)}
+lm.geoOs2 <- readRDS("./lm.geoOs20.rds")
+lm.geoOs2 <- step1(lm.geoOs2, batch = NULL)
+lm.geoOs2 <- step2(lm.geoOs2, TUMOR - NORMAL, label = "symbol", use = "P")
+lm.geoOs2@params$.metadata
+lm.geoOs2@plots$step2$p.volcano$`TUMOR - NORMAL`
+lm.geoOs2@tables$step2$tops$`TUMOR - NORMAL`
+tbl_lm.geoOs2_TUMOR <- lm.geoOs2@tables$step2$tops$`TUMOR - NORMAL`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS2-TUMOR-vs-NORMAL
+autor(lm.geoOs2@plots$step2$p.volcano$`TUMOR - NORMAL`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEOOS2-data-TUMOR-vs-NORMAL
+autor(lm.geoOs2@tables$step2$tops$`TUMOR - NORMAL`)
+```
+
+## STRINGdb PPI 分析 (GEOOS2)
+
+```{r}
+#' @meth {get_meth(sdb.geoOs2)}
+sdb.geoOs2 <- asjob_stringdb(lm.geoOs2@tables$step2$tops$`TUMOR - NORMAL`$symbol)
+sdb.geoOs2 <- step1(sdb.geoOs2, network_type = "full")
+sdb.geoOs2@plots$step1$p.ppi
+sdb.geoOs2@params$edges
+
+dplyr::filter(sdb.geoOs2@params$edges, grpl(from, "^ZDHHC15") | grpl(to, "^ZDHHC15"))
+
+sdb.geoOs2@params$graph
+lstSdb.geoOs2 <- filter(sdb.geoOs2, "ZDHHC15", sdb.geoOs2@object$Symbol, use.top = "to",
+  keep.ref = T, top = Inf)
+lstSdb.geoOs2$p.mcc
+lstSdb.geoOs2$edges
+
+```
+
+
+p.exprZdDriver <- map(lm.geoOs2, lstSdb.zdDriver$edges$to, ref.use = "symbol")
+p.exprZdDriver

@@ -214,6 +214,7 @@ autor(lm.geoOs2$.metadata)
 ```{r}
 #' @meth {get_meth(geo.geoOs4)}
 geo.geoOs4 <- job_geo("GSE253548")
+clear(geo.geoOs4)
 geo.geoOs4 <- step1(geo.geoOs4)
 geo.geoOs4@params$guess
 geo.geoOs4@params$prods
@@ -254,6 +255,7 @@ bm.geoOs4$anno
 ```{r}
 #' @meth {get_meth(lm.geoOs4)}
 lm.geoOs4 <- job_limma_normed(dplyr::select(counts4, -2), metadata4, bm.geoOs4$anno)
+clear(lm.geoOs4)
 lm.geoOs4@params$genes %<>% dplyr::filter(grpl(hgnc_symbol, "ZDHHC"))
 lm.geoOs4@params$genes
 lm.geoOs4@params$metadata

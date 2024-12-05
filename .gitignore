@@ -1,12 +1,13 @@
 xcms_workflow.R
 
+*.rds
 !.items.rds
+!*_small.rds
 *.swp
 *.tar
 *.R*
 *.rdata
 *.zip
-*.rds
 *.cfg
 *.gz
 *.idx

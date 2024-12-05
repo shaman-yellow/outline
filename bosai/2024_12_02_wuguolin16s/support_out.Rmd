@@ -1,0 +1,162 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("20241129"), end = td("20241205"), finish = td("20241205"),
+  id = "_", client = "吴国琳", inst = "_",
+  type = "生信协助",
+  title = "菌群补充绘图",
+  save = ".items_support.rds"
+)
+show.ic(info)
+
+order_publish.bosai("support.Rmd", "support_out.Rmd")
+idname <- formatName.bosai("./support_out.docx")
+order_packaging("./support_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table_support", tabs = "Figure+Table_support"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+```{r}
+ocr <- job_ocr()
+ocr <- step1(ocr)
+pha <- map(ocr, "~/Pictures/Screenshots/Screenshot from 2024-12-05 09-58-10.png")
+pha <- pha %>% unlist %>% grpf("^[a-zA-Z]") %>% substr(1, 3)
+
+reTable <- tibble::tribble(
+  ~ old, ~ new,
+  "D5", "D5", "D6", "E2", "E1", "E1", "E3", "E3", "E4", "E4",
+  "E5", "H5", "F1", "H6", "G4", "G4", "H1", "H1", "H2", "H2",
+  "H3", "H8", "H4", "H7", "H5", "H3", "H6", "I1", "I1", "H4",
+  "I2", "I2", "I3", "I3", "I4", "J3", "I5", "I5", "I6", "I9",
+  "J1", "J1", "J2", "J2", "J3", "I7", "J4", "J4", "J5", "I8",
+  "J6", "J6"
+)
+reTable
+```
+
+```{r}
+data <- fxlsx("./material/otu_taxon_Phylum.percent.xlsx")
+data <- dplyr::select(data, 1, dplyr::all_of(reTable$old))
+data <- dplyr::rename(data, !!!nl(reTable$new, reTable$old))
+data
+data_ex <- fxlsx("./material/otu_taxon_Phylum.percent_S.xlsx")
+
+identical(data$X.OTU.ID, data_ex$X.OTU.ID)
+# [1] FALSE
+
+dataAll <- tbmerge(data, data_ex, by = "X.OTU.ID", all.x = T, all.y = T)
+dataFilter <- dplyr::filter(dataAll, grpl(X.OTU.ID, paste0(paste0("__", pha), collapse = "|")))
+dataFilter <- dplyr::mutate(dataFilter,
+  dplyr::across(dplyr::where(is.double), function(x) ifelse(is.na(x), 0, x))
+)
+dataFilter
+
+metadata <- group_strings(colnames(dataFilter)[-1],
+  c(Control = "S", Model = "I", TCM = "H", HCQ = "E"), "sample")
+used <- c(paste0("I", c(2, 3, 5, 9)), paste0("E", 1:4), paste0("H", 1:4), paste0("S", c(5, 7, 9, 10)))
+metadata <- dplyr::filter(metadata, sample %in% !!used)
+print(metadata, n = Inf)
+
+dataFilterSam <- dplyr::select(dataFilter, 1, dplyr::all_of(metadata$sample))
+dataLong <- tidyr::pivot_longer(dataFilterSam, -1, names_to = "sample", values_to = "value")
+dataLong <- map(dataLong, "sample", metadata, "sample", "group", col = "group")
+dataLong <- dplyr::mutate(dataLong, phylum = gs(X.OTU.ID, "p__", ""))
+
+dataMean <- dplyr::group_by(dataLong, phylum, group)
+dataMean <- dplyr::summarise(dataMean, mean = mean(value))
+dataMean <- dplyr::mutate(dataMean, rank = sum(mean),
+  rank_group = ifelse(rank < .2, "Low", "High"),
+  mean = mean * 100
+)
+dataMean <- dplyr::arrange(dataMean, dplyr::desc(mean))
+
+dataPvalue <- dplyr::group_by(dataLong, phylum)
+dataPvalue <- dplyr::summarise(dataPvalue,
+  pvalue = kruskal.test(value, group)$p.value)
+dataPvalue <- map(dataPvalue, "phylum", dataMean, "phylum", "rank_group", col = "rank_group")
+# get max
+dataPvalue <- map(dataPvalue, "phylum", dataMean, "phylum", "mean", col = "coord")
+dataPvalue <- dplyr::mutate(dataPvalue,
+  sig = ifelse(pvalue < .001, "***", ifelse(pvalue < .01, "**", "*")),
+  sig = paste0(sig, " (", round(pvalue, 4), ")")
+)
+dataPvalue
+
+p.cols <- ggplot(dataMean) +
+  geom_col(aes(x = reorder(phylum, rank), y = mean, fill = group), position = "dodge", width = .6) +
+  ggforce::facet_col(~ rank_group, scales = "free", space = "free") +
+  geom_text(data = dataPvalue,
+    aes(x = phylum, y = coord + ifelse(rank_group == "Low", .01, 5), label = sig), hjust = 0) +
+  geom_blank(aes(x = phylum, y = mean + ifelse(rank_group == "Low", .05, 30), fill = group)) +
+  coord_flip() +
+  labs(x = "Phylum", y = "Mean Proportions (%)") +
+  theme_minimal()
+wrap(p.cols, 7, 9)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| data-all
+autor(dataLong)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| data-mean
+autor(dataMean)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| significant-pvalue
+autor(dataPvalue)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| plot-significant
+autor(wrap(p.cols, 7, 9))
+```
+
+# 总结 {#conclusion}
+

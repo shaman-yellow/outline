@@ -40,6 +40,7 @@ set_index()
 ## 需求
 
 根据结果选择ZDHHC15做后续实验，需要继续做一个蛋白互作网络，看看ZDHHC15结合的什么分子，结合分数多少。（用骨肉瘤的基因集，构建蛋白互作网络。 筛选ZDHHC15结合的分子，依据结合分数，确认下游靶蛋白）。
+补充要求，互作蛋白首选铁死亡促进因子/基因。
 
 ```{r}
 dic(di("差异表达基因"),
@@ -56,41 +57,59 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
-## GEO 数据获取 (GEOOS2)
+## FerrDb 铁死亡调控因子 (FERR)
 
 ```{r}
-geo.geoOs2 <- readRDS("./geo.geoOs2.2.rds")
-geo.geoOs2@params$prods
+#' @meth {get_meth(fe.ferr)}
+fe.ferr <- job_fe()
+fe.ferr <- step1(fe.ferr, collate = T)
+fe.ferr@plots$step1$p.ferroptosisRegulatorsDistribution
+fe.ferr@tables$step1$t.ferroptosisRegulators$driver
+tbl_fe.ferr_drive <- fe.ferr@tables$step1$t.ferroptosisRegulators$driver
+
+fe.ferr@tables$step1$t.ferroptosisRegulators
+list_fe.ferr_tferr <- fe.ferr@tables$step1$t.ferroptosisRegulators
+
 ```
 
-## Limma 差异分析 (GEOOS2)
+## STRINGdb PPI 分析 (ZD-DRIVER)
 
 ```{r}
-lm.geoOs2 <- readRDS("./lm.geoOs20.rds")
-lm.geoOs2 <- step1(lm.geoOs2, batch = NULL)
-lm.geoOs2 <- step2(lm.geoOs2, TUMOR - NORMAL, label = "symbol", use = "P")
-lm.geoOs2@params$.metadata
-lm.geoOs2@tables$step2$tops$`TUMOR - NORMAL`
-lm.geoOs2@plots$step2$p.volcano$`TUMOR - NORMAL`
-```
+sdb.zdDriver <- job_stringdb(c("ZDHHC15", list_fe.ferr_tferr$driver$symbol))
+sdb.zdDriver <- step1(sdb.zdDriver, network_type = "full")
+sdb.zdDriver@plots$step1$p.ppi
 
-## STRINGdb PPI 分析 (GEOOS2)
+dplyr::filter(sdb.zdDriver@params$edges, from == "ZDHHC15" | to == "ZDHHC15")
+
+lstSdb.zdDriver <- filter(sdb.zdDriver, "ZDHHC15", sdb.zdDriver@object$Symbol,
+  use.top = "to", keep.ref = F, top = Inf)
+lstSdb.zdDriver$edges
+
+```
 
 ```{r}
-sdb.geoOs2 <- asjob_stringdb(lm.geoOs2@tables$step2$tops$`TUMOR - NORMAL`$symbol)
-sdb.geoOs2 <- step1(sdb.geoOs2, network_type = "full")
-sdb.geoOs2@plots$step1$p.ppi
-sdb.geoOs2@params$edges
-dplyr::filter(sdb.geoOs2@tables$step1$hub_genes, grpl(Symbol, "^ZD"))
-
-sdb.geoOs2@params$graph
-lstSdb.geoOs2 <- filter(sdb.geoOs2, "ZDHHC15", sdb.geoOs2@object$Symbol, use.top = "to", keep.ref = F, top = Inf)
-lstSdb.geoOs2$p.mcc
-lstSdb.geoOs2$edges
-
-sdb.geoOs2@params$edges
-
+lm.geoOs4 <- readRDS("./lm.geoOs40.rds")
+lm.geoOs4 <- step1(lm.geoOs4)
+lm.geoOs4 <- step2(lm.geoOs4, TUMOUR - NORMAL, label = "hgnc_symbol", use = "P")
+lm.geoOs4@tables$step2$tops$`TUMOUR - NORMAL`
+tbl_lm.geoOs4_TUMOU <- lm.geoOs4@tables$step2$tops$`TUMOUR - NORMAL`
+dplyr::filter(tbl_lm.geoOs4_TUMOU, hgnc_symbol %in% lstSdb.zdDriver$edges$to)
 ```
+
+```{r}
+lm.geoOs <- readRDS("./lm.geoOs0.rds")
+lm.geoOs <- step1(lm.geoOs, data_type = "cpm")
+lm.geoOs <- step2(lm.geoOs, OS - Normal, label = "Symbol", use = "P")
+lm.geoOs@tables$step2$tops$`OS - Normal`
+tbl_lm.geoOs_OSNor <- lm.geoOs@tables$step2$tops$`OS - Normal`
+dplyr::filter(tbl_lm.geoOs_OSNor, Symbol %in% lstSdb.zdDriver$edges$to)
+```
+
 
 # 总结 {#conclusion}
 
+```{r}
+loads("./workflow_inter.rdata")
+
+saves("./workflow_inter.rdata")
+```
