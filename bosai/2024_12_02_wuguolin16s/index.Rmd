@@ -57,7 +57,10 @@ file <- "./material/OtuTaxon_summary/tax_summary_a/otu_taxon_Phylum.xls"
 data <- fxlsx("./material/otu_taxon_Phylum.percent.xlsx")
 metadata <- group_strings(colnames(data)[-1], c(Control = "S", Model = "I", TCM = "H", HCQ = "E"))
 paste0(colnames(data)[-1], collapse = ", ")
+
 ```
+
+
 
 # 总结 {#conclusion}
 
