@@ -1,8 +1,16 @@
 ---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
 ---
 
+
 ```{r include = F, eval = F}
-info <- items(start = td("20240326"), end = td("20241206"), finish = td("20241206"),
+info <- items(start = td("20240326"), end = td("20241206"), finish = td("20241204"),
   id = "BSHQ240303", client = "张永旭", inst = "大连医科大学附属第二医院骨科",
   type = "生信分析",
   title = "ZDHHC15互作蛋白筛选",
@@ -138,3 +146,4 @@ loads("./workflow_inter.rdata")
 
 saves("./workflow_inter.rdata")
 ```
+

@@ -1,0 +1,101 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20241007"), end = td("20241128"), finish = NA,
+  id = "BSHQ230805", client = "刘炀", inst = "中国医科大学附属第一医院",
+  type = "生信分析",
+  title = "膀胱癌",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## TCGA 数据获取 (BLCA)
+
+```{r}
+tcga.blca <- job_tcga("TCGA-BLCA")
+tcga.blca <- step1(tcga.blca, "RNA")
+tcga.blca <- step2(tcga.blca)
+tcga.blca <- step3(tcga.blca)
+```
+
+## Limma 差异分析 (BLCA)
+
+按 CLSPN 表达量，`r snap(lm.blca)`。
+
+```{r}
+lm.blca <- asjob_limma(tcga.blca, isTumor == "tumor")
+lm.blca <- step1(lm.blca)
+isClspn <- lm.blca@object$genes$gene_name == "CLSPN"
+medianClspn <- median(lm.blca@object$E[isClspn, ])
+groupClspn <- ifelse(lm.blca@object$E[isClspn, ] > medianClspn, "High", "Low")
+groupClspn
+
+lm.blca <- asjob_limma(tcga.blca, isTumor == "tumor")
+lm.blca@object$samples$group <- groupClspn
+lm.blca@object$samples$group
+lm.blca <- step1(lm.blca)
+lm.blca <- step2(lm.blca, High - Low)
+lm.blca@tables$step2$tops$`High - Low`
+tbl_lm.blca_HighL <- lm.blca@tables$step2$tops$`High - Low`[-1, ]
+tbl_lm.blca_HighL <- dplyr::mutate(tbl_lm.blca_HighL, gene_name = gs(gene_name, "\\..*$", ""))
+
+```
+
+## ClusterProfiler GSEA 富集分析 (BLCA)
+
+```{r}
+gsea.blca <- asjob_gsea(lm.blca, data = tbl_lm.blca_HighL)
+gsea.blca@object$entrezgene_id
+gsea.blca <- step1(gsea.blca, order = "p.adj")
+wrap(gsea.blca@plots$step1$p.kegg, 7, 7)
+gsea.blca@plots$step1$p.go
+```
+
+
+
+
+# 总结 {#conclusion}
+

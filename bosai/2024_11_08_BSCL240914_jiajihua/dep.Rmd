@@ -4,3 +4,38 @@
 je <- job_esearch("RNA methylation")
 vis(je)
 ```
+
+```{r}
+je.he <- job_esearch("'Histone methylation' AND database")
+vis(je.he)
+
+```
+
+## m6A-Atlas m6A 数据获取 (METHY)
+
+```{r}
+genesTops <- lm.pcos@tables$step2$tops$`pcos - control`$id
+genesTops
+#' @meth {get_meth(m6a.methy)}
+m6a.methy <- job_m6a()
+m6a.methy <- step1(m6a.methy, genesTops)
+m6a.methy@tables$step1$t.data
+p.distriDEGsSites <- new_pie(unlist(lapply(m6a.methy@tables$step1$t.data, function(x) x$.id)))
+p.distriDEGsSites
+genesPosMethySite <- unique(unlist(lapply(m6a.methy@tables$step1$t.data, function(x) x$.id)))
+table(genesPosMethySite %in% genesTops)
+```
+
+据检索，所有的 DEGs  (`r ref("PCOS-pcos-vs-control")`) 都存在甲基化修饰位点。
+因此，所有 DEGs 都可能发生甲基化修饰 (`r ref("METHY-m6A-Atlas-search-results-distribution")` )
+
+```{r eval = T, echo = F, results = "asis"}
+#| METHY-m6A-Atlas-search-results
+autor(m6a.methy@tables$step1$t.data)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| METHY-m6A-Atlas-search-results-distribution
+autor(wrap(p.distriDEGsSites, 12, 12))
+```
+

@@ -1,0 +1,828 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\usepackage{longtable,booktabs}
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{frame}
+\begin{titlepage} \newgeometry{top=6.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/bosai//cover_page_analysis.pdf}
+\begin{center} \textbf{\huge 预测甲基化调控因子}
+\vspace{4em} \begin{textblock}{10}(3,4.85) \Large
+\textbf{\textcolor{black}{BSCL240914}}
+\end{textblock} \begin{textblock}{10}(3,5.8)
+\Large \textbf{\textcolor{black}{黄礼闯}}
+\end{textblock} \begin{textblock}{10}(3,6.75)
+\Large
+\textbf{\textcolor{black}{生信分析}}
+\end{textblock} \begin{textblock}{10}(3,7.7)
+\Large
+\textbf{\textcolor{black}{邱美婷}}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{84}\end{center}\tableofcontents
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{88}\end{center}\listoffigures
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{89}\end{center}\listoftables
+
+
+
+\pagenumbering{arabic}
+\end{frame}
+
+\begin{frame}{分析流程}
+\protect\hypertarget{abstract}{}
+\begin{block}{需求}
+\protect\hypertarget{ux9700ux6c42}{}
+通过软件预测甲基化调控因子（如METTL14）的靶基因，并通过数据库筛选于PCOS患者中表达水平具有显著差异性的基因，合并交集，并对该交集中的基因进行功能富集和KEGG通路富集分析，筛选PCOS患者中可能的METTL14甲基化调控基因及其相关通路；
+\end{block}
+
+\begin{block}{实际流程}
+\protect\hypertarget{ux5b9eux9645ux6d41ux7a0b}{}
+从 EpiFactors 获取表观遗传调控因子，筛出甲基化相关调控因子 (A 集合) 。
+获取 PCOS GEO 数据，差异分析得到 DEGs，与 m6A-Atlas
+数据库比对，发现可能存在甲基化修饰位点的基因 B 集合。 在 PCOS
+中筛选出差异表达的甲基化调控因子 (C集合) ，与 B
+集合关联分析，随后富集分析。
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{材料和方法}
+\protect\hypertarget{introduction}{}
+\begin{block}{数据分析平台}
+\protect\hypertarget{ux6570ux636eux5206ux6790ux5e73ux53f0}{}
+在 Linux pop-os x86\_64 (6.9.3-76060903-generic) 上，使用 R version
+4.4.2 (2024-10-31) (\url{https://www.r-project.org/})
+对数据统计分析与整合分析。
+\end{block}
+
+\begin{block}{EpiFactors 表观遗传调控因子数据获取 (Dataset: METHY)}
+\protect\hypertarget{epifactors-ux8868ux89c2ux9057ux4f20ux8c03ux63a7ux56e0ux5b50ux6570ux636eux83b7ux53d6-dataset-methy}{}
+从数据库 \texttt{EpiFactors} (2023, \textbf{IF:16.6}, Q1, Nucleic acids
+research){[}@Epifactors2022Maraku2023{]} 获取表观遗传调控蛋白的数据。
+\end{block}
+
+\begin{block}{GEO 数据获取 (Dataset: PCOS)}
+\protect\hypertarget{geo-ux6570ux636eux83b7ux53d6-dataset-pcos}{}
+以 R 包 \texttt{GEOquery} (2.74.0) 获取 GSE277906 数据集。
+\end{block}
+
+\begin{block}{Limma 差异分析 (Dataset: PCOS)}
+\protect\hypertarget{limma-ux5deeux5f02ux5206ux6790-dataset-pcos}{}
+以 R 包 \texttt{limma} (3.62.1) (2005, \textbf{IF:}, ,
+){[}@LimmaLinearMSmyth2005{]} \texttt{edgeR} (4.4.0) (, \textbf{IF:}, ,
+){[}@EdgerDifferenChen{]} 进行差异分析。以 \texttt{edgeR::filterByExpr}
+过滤 count 数量小于 10 的基因。以
+\texttt{edgeR::calcNormFactors}，\texttt{limma::voom} 转化 count 数据为
+log2 counts-per-million (logCPM)。分析方法参考
+\url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}。随后，以
+公式 \textasciitilde{} 0 + group 创建设计矩阵 (design matrix)
+用于线性分析。 使用 \texttt{limma::lmFit},
+\texttt{limma::contrasts.fit}, \texttt{limma::eBayes}
+差异分析对比组：pcos vs control。以 \texttt{limma::topTable}
+提取所有结果，并过滤得到 P.Value 小于 0.05，\textbar Log2(FC)\textbar{}
+大于 0.5 的统计结果。 对 GSE277906 的 mRNA 数据 (protein\_coding)
+差异分析
+\end{block}
+
+\begin{block}{富集分析 (Dataset: SIGCOR\_05)}
+\protect\hypertarget{ux5bccux96c6ux5206ux6790-dataset-sigcor_05}{}
+以 ClusterProfiler R 包 (4.15.0.2) (2021, \textbf{IF:33.2}, Q1, The
+Innovation){[}@ClusterprofilerWuTi2021{]}进行 KEGG 和 GO 富集分析。 以
+\texttt{pathview} R 包 (1.46.0) 对选择的 KEGG 通路可视化。
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{分析结果}
+\protect\hypertarget{workflow}{}
+\begin{block}{EpiFactors 表观遗传调控因子数据获取 (METHY)}
+\protect\hypertarget{epifactors-ux8868ux89c2ux9057ux4f20ux8c03ux63a7ux56e0ux5b50ux6570ux636eux83b7ux53d6-methy}{}
+从所有 表观调控因子 Fig.
+@ref(fig:Distribution-all-protein-of-epigenetic-regulators)
+中筛选出甲基化修饰调控因子，见 Tab. @ref(tab:METHY-regulators)
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Distribution-all-protein-of-epigenetic-regulators.pdf}
+\caption{Distribution all protein of epigenetic regulators}\label{fig:Distribution-all-protein-of-epigenetic-regulators}
+\end{center}
+
+Figure @ref(fig:Distribution-all-protein-of-epigenetic-regulators)
+(下方图) 为图Distribution all protein of epigenetic regulators概览。
+
+\textbf{(File path:
+\texttt{Figure+Table/Distribution-all-protein-of-epigenetic-regulators.pdf})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{METHY regulators}\tabularnewline
+\toprule
+Id & HGNC\_s\ldots{} & Status & HGNC\_ID & HGNC\_name & GeneID &
+UniPro\ldots\ldots7 & UniPro\ldots\ldots8 & Domain &
+MGI\_sy\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Id & HGNC\_s\ldots{} & Status & HGNC\_ID & HGNC\_name & GeneID &
+UniPro\ldots\ldots7 & UniPro\ldots\ldots8 & Domain &
+MGI\_sy\ldots{}\tabularnewline
+\midrule
+\endhead
+11 & AEBP2 & \# & 24051 & AE bin\ldots{} & 121536 & Q6ZN18 &
+AEBP2\_\ldots{} & Pfam-B\ldots{} & Aebp2\tabularnewline
+12 & AICDA & \# & 13203 & activa\ldots{} & 57379 & Q9GZX7 &
+AICDA\_\ldots{} & APOBEC\ldots{} & Aicda\tabularnewline
+15 & ALKBH1 & New & 17911 & Nuclei\ldots{} & 8846 & Q13686 &
+ALKB1\_\ldots{} & PF13532 & Alkbh1\tabularnewline
+16 & ALKBH4 & New & 21900 & Alpha-\ldots{} & 54784 & Q9NXW9 &
+ALKB4\_\ldots{} & PF13532 & Alkbh4\tabularnewline
+17 & ALKBH5 & New & 25996 & alkB h\ldots{} & 54890 & Q6P6C2 &
+ALKB5\_\ldots{} & PF13532 & Alkbh5\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} &
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table @ref(tab:METHY-regulators) (下方表格) 为表格METHY regulators概览。
+
+\textbf{(File path: \texttt{Figure+Table/METHY-regulators.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有175行25列，以下预览的表格可能省略部分数据；含有175个唯一`Id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+\end{block}
+
+\begin{block}{GEO 数据获取 (PCOS)}
+\protect\hypertarget{geo-ux6570ux636eux83b7ux53d6-pcos}{}
+获取 GEO PCOS 数据，用于筛选差异表达基因。
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Data Source ID
+:}
+
+\vspace{0.5em}
+
+    GSE277906
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing
+:}
+
+\vspace{0.5em}
+
+    Illumina Casava1.7 software used for basecalling.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.1
+:}
+
+\vspace{0.5em}
+
+    Raw reads of fastq format were firstly processed using
+fastp and the low quality reads were removed to obtain the
+clean reads.
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.2
+:}
+
+\vspace{0.5em}
+
+    The clean reads were mapped to the reference genome
+using HISAT2. FPKM of each gene was calculated and the read
+counts of each gene were obtained by HTSeq-count
+
+\vspace{2em}
+
+
+\textbf{
+data\_processing.3
+:}
+
+\vspace{0.5em}
+
+    Assembly: GRCh38
+
+\vspace{2em}
+
+
+\textbf{
+(Others)
+:}
+
+\vspace{0.5em}
+
+    ...
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(见 \texttt{Figure+Table/PCOS-GSE277906-content})}
+\end{block}
+
+\begin{block}{Limma 差异分析 (PCOS)}
+\protect\hypertarget{limma-ux5deeux5f02ux5206ux6790-pcos}{}
+差异分析，得到 DEGs 见 Fig. @ref(fig:PCOS-pcos-vs-control)
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PCOS-Filter-low-counts.pdf}
+\caption{PCOS Filter low counts}\label{fig:PCOS-Filter-low-counts}
+\end{center}
+
+Figure @ref(fig:PCOS-Filter-low-counts) (下方图) 为图PCOS Filter low
+counts概览。
+
+\textbf{(File path: \texttt{Figure+Table/PCOS-Filter-low-counts.pdf})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PCOS-Normalization.pdf}
+\caption{PCOS Normalization}\label{fig:PCOS-Normalization}
+\end{center}
+
+Figure @ref(fig:PCOS-Normalization) (下方图) 为图PCOS
+Normalization概览。
+
+\textbf{(File path: \texttt{Figure+Table/PCOS-Normalization.pdf})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PCOS-pcos-vs-control.pdf}
+\caption{PCOS pcos vs control}\label{fig:PCOS-pcos-vs-control}
+\end{center}
+
+Figure @ref(fig:PCOS-pcos-vs-control) (下方图) 为图PCOS pcos vs
+control概览。
+
+\textbf{(File path: \texttt{Figure+Table/PCOS-pcos-vs-control.pdf})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+P.Value cut-off
+:}
+
+\vspace{0.5em}
+
+    0.05
+
+\vspace{2em}
+
+
+\textbf{
+Log2(FC) cut-off
+:}
+
+\vspace{0.5em}
+
+    0.5
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(See: \texttt{Figure+Table/PCOS-pcos-vs-control-content})}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{PCOS data pcos vs control}\tabularnewline
+\toprule
+rownames & id & gene\_D\ldots{} & coding\ldots{} & descri\ldots{} &
+pathway & pathwa\ldots{} & GO\_ID & GO\_term & wiki\_ID\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & id & gene\_D\ldots{} & coding\ldots{} & descri\ldots{} &
+pathway & pathwa\ldots{} & GO\_ID & GO\_term & wiki\_ID\tabularnewline
+\midrule
+\endhead
+PRPS2 & PRPS2 & 5634 & protei\ldots{} & phosph\ldots{} & hsa000\ldots{}
+& Pentos\ldots{} & \url{GO:000}\ldots{} & magnes\ldots{}
+&\tabularnewline
+FXYD6 & FXYD6 & 53826 & protei\ldots{} & FXYD d\ldots{} & & &
+\url{GO:000}\ldots{} & molecu\ldots{} &\tabularnewline
+MMP15 & MMP15 & 4324 & protei\ldots{} & matrix\ldots{} & hsa04928 &
+Parath\ldots{} & \url{GO:000}\ldots{} & metall\ldots{} &
+WP5283\ldots{}\tabularnewline
+CXCL16 & CXCL16 & 58191 & protei\ldots{} & C-X-C \ldots{} &
+hsa040\ldots{} & Cytoki\ldots{} & \url{GO:000}\ldots{} & low-de\ldots{}
+& WP5115\ldots{}\tabularnewline
+MX1 & MX1 & 4599 & protei\ldots{} & MX dyn\ldots{} & hsa032\ldots{} &
+Viral \ldots{} & \url{GO:000}\ldots{} & GTPase\ldots{} &
+WP5115\ldots{}\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} &
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table @ref(tab:PCOS-data-pcos-vs-control) (下方表格) 为表格PCOS data
+pcos vs control概览。
+
+\textbf{(File path:
+\texttt{Figure+Table/PCOS-data-pcos-vs-control.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有177行19列，以下预览的表格可能省略部分数据；含有177个唯一`rownames'。
+\end{tcolorbox}
+\end{center}
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]\begin{enumerate}\tightlist
+\item logFC:  estimate of the log2-fold-change corresponding to the effect or contrast (for ‘topTableF’ there may be several columns of log-fold-changes)
+\item AveExpr:  average log2-expression for the probe over all arrays and channels, same as ‘Amean’ in the ‘MarrayLM’ object
+\item t:  moderated t-statistic (omitted for ‘topTableF’)
+\item P.Value:  raw p-value
+\item B:  log-odds that the gene is differentially expressed (omitted for ‘topTreat’)
+\end{enumerate}\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+\end{block}
+
+\begin{block}{差异表达的 Methylation Factors}
+\protect\hypertarget{ux5deeux5f02ux8868ux8fbeux7684-methylation-factors}{}
+将差异表达基因与 Tab. @ref(tab:METHY-regulators) 中的因子取交集， 见
+Fig. @ref(fig:Intersection-of-Methy-factor-with-DEGs) 。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Intersection-of-Methy-factor-with-DEGs.pdf}
+\caption{Intersection of Methy factor with DEGs}\label{fig:Intersection-of-Methy-factor-with-DEGs}
+\end{center}
+
+Figure @ref(fig:Intersection-of-Methy-factor-with-DEGs) (下方图)
+为图Intersection of Methy factor with DEGs概览。
+
+\textbf{(File path:
+\texttt{Figure+Table/Intersection-of-Methy-factor-with-DEGs.pdf})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+All\_intersection
+:}
+
+\vspace{0.5em}
+
+    PRDM6
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\textbf{(See:
+\texttt{Figure+Table/Intersection-of-Methy-factor-with-DEGs-content})}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{Intersection METHY epigenetic regulators}\tabularnewline
+\toprule
+Id & HGNC\_s\ldots{} & Status & HGNC\_ID & HGNC\_name & GeneID &
+UniPro\ldots{} & UniPro\ldots1 & Domain & MGI\_sy\ldots{}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Id & HGNC\_s\ldots{} & Status & HGNC\_ID & HGNC\_name & GeneID &
+UniPro\ldots{} & UniPro\ldots1 & Domain & MGI\_sy\ldots{}\tabularnewline
+\midrule
+\endhead
+510 & PRDM6 & \# & 9350 & PR dom\ldots{} & 93166 & Q9NQX0 &
+PRDM6\_\ldots{} & SET PF\ldots{} & Prdm6\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table @ref(tab:Intersection-METHY-epigenetic-regulators) (下方表格)
+为表格Intersection METHY epigenetic regulators概览。
+
+\textbf{(File path:
+\texttt{Figure+Table/Intersection-METHY-epigenetic-regulators.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有1行25列，以下预览的表格可能省略部分数据；含有1个唯一`Id'。
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+\end{block}
+
+\begin{block}{Methylation Factors 与 DEGs 关联分析}
+\protect\hypertarget{methylation-factors-ux4e0e-degs-ux5173ux8054ux5206ux6790}{}
+为了寻找 Fig. @ref(fig:Intersection-of-Methy-factor-with-DEGs)
+中发现的差异表达的 Methylation Factors 可能调控的 DEGs
+修饰，将两个数据集作关联分析，结果见 Tab.
+@ref(tab:All-correlation-results) 。 以 pvalue \textless{} 0.05
+为条件筛选，见 Tab. @ref(tab:correlation-results-05) ， Fig.
+@ref(fig:Significant-correlation) 。 其中，pvalue \textless{} 0.001
+的见Fig. @ref(fig:correlation-results-001)。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{All correlation results}\tabularnewline
+\toprule
+From & To & cor & pvalue & model & -log2(\ldots{} & signif\ldots{} &
+sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+From & To & cor & pvalue & model & -log2(\ldots{} & signif\ldots{} &
+sign\tabularnewline
+\midrule
+\endhead
+PRDM6 & A2M & 0.1286\ldots{} & 0.49596 & c(Cont\ldots{} & 1.0117\ldots{}
+& \textgreater{} 0.05 & -\tabularnewline
+PRDM6 & AARD & -0.195\ldots{} & 0.35308 & c(Cont\ldots{} &
+1.5019\ldots{} & \textgreater{} 0.05 & -\tabularnewline
+PRDM6 & AATK & -0.035\ldots{} & 0.74928 & c(Cont\ldots{} &
+0.4164\ldots{} & \textgreater{} 0.05 & -\tabularnewline
+PRDM6 & ABCC9 & -0.146\ldots{} & 0.45304 & c(Cont\ldots{} &
+1.1422\ldots{} & \textgreater{} 0.05 & -\tabularnewline
+PRDM6 & ADAMTSL2 & 0.1576\ldots{} & 0.30011 & c(Cont\ldots{} &
+1.7364\ldots{} & \textgreater{} 0.05 & -\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} &
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table @ref(tab:All-correlation-results) (下方表格) 为表格All correlation
+results概览。
+
+\textbf{(File path: \texttt{Figure+Table/All-correlation-results.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有177行8列，以下预览的表格可能省略部分数据；含有1个唯一`From'。
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Significant-correlation.pdf}
+\caption{Significant correlation}\label{fig:Significant-correlation}
+\end{center}
+
+Figure @ref(fig:Significant-correlation) (下方图) 为图Significant
+correlation概览。
+
+\textbf{(File path: \texttt{Figure+Table/Significant-correlation.pdf})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\caption{Correlation results 05}\tabularnewline
+\toprule
+From & To & cor & pvalue & model & -log2(\ldots{} & signif\ldots{} &
+sign\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+From & To & cor & pvalue & model & -log2(\ldots{} & signif\ldots{} &
+sign\tabularnewline
+\midrule
+\endhead
+PRDM6 & ARL17A & -0.401\ldots{} & 0.019322 & c(Cont\ldots{} &
+5.6936\ldots{} & \textless{} 0.05 & *\tabularnewline
+PRDM6 & BSN & -0.295\ldots{} & 0.0035095 & c(Cont\ldots{} &
+8.1545\ldots{} & \textless{} 0.05 & *\tabularnewline
+PRDM6 & C1orf115 & 0.3889\ldots{} & 0.0074019 & c(Cont\ldots{} &
+7.0778\ldots{} & \textless{} 0.05 & *\tabularnewline
+PRDM6 & C2CD4C & 0.4359\ldots{} & 0.0027875 & c(Cont\ldots{} &
+8.4868\ldots{} & \textless{} 0.05 & *\tabularnewline
+PRDM6 & CLDN22 & -0.862\ldots{} & 0.0002\ldots{} & c(Cont\ldots{} &
+11.862\ldots{} & \textless{} 0.001 & **\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} &
+\ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table @ref(tab:correlation-results-05) (下方表格) 为表格correlation
+results 05概览。
+
+\textbf{(File path: \texttt{Figure+Table/correlation-results-05.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有25行8列，以下预览的表格可能省略部分数据；含有1个唯一`From'。
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/correlation-results-001.pdf}
+\caption{Correlation results 001}\label{fig:correlation-results-001}
+\end{center}
+
+Figure @ref(fig:correlation-results-001) (下方图) 为图correlation
+results 001概览。
+
+\textbf{(File path: \texttt{Figure+Table/correlation-results-001.pdf})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+\end{block}
+
+\begin{block}{富集分析 (SIGCOR\_05)}
+\protect\hypertarget{ux5bccux96c6ux5206ux6790-sigcor_05}{}
+将 Tab. @ref(tab:correlation-results-05) 中的基因富集分析 (包含 PRDM6)，
+
+KEGG，GO 结果见 Fig. @ref(fig:SIGCOR-05-KEGG-enrichment)， Fig.
+@ref(fig:SIGCOR-05-GO-enrichment) 。 Fig.
+@ref(fig:SIGCOR-05-hsa04024-visualization) 为 KEGG 中最为显著的 cAMP
+通路，可能与 PCOS 中甲基化调控相关。 富集分析的数据表格见 Tab.
+@ref(tab:SIGCOR-05-KEGG-enrichment-data)， Tab.
+@ref(tab:SIGCOR-05-GO-enrichment-data) 。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SIGCOR-05-KEGG-enrichment.pdf}
+\caption{SIGCOR 05 KEGG enrichment}\label{fig:SIGCOR-05-KEGG-enrichment}
+\end{center}
+
+Figure @ref(fig:SIGCOR-05-KEGG-enrichment) (下方图) 为图SIGCOR 05 KEGG
+enrichment概览。
+
+\textbf{(File path:
+\texttt{Figure+Table/SIGCOR-05-KEGG-enrichment.pdf})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/SIGCOR-05-GO-enrichment.pdf}
+\caption{SIGCOR 05 GO enrichment}\label{fig:SIGCOR-05-GO-enrichment}
+\end{center}
+
+Figure @ref(fig:SIGCOR-05-GO-enrichment) (下方图) 为图SIGCOR 05 GO
+enrichment概览。
+
+\textbf{(File path: \texttt{Figure+Table/SIGCOR-05-GO-enrichment.pdf})}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{pathview2024-11-29_17_49_18.568122/hsa04024.pathview.png}
+\caption{SIGCOR 05 hsa04024 visualization}\label{fig:SIGCOR-05-hsa04024-visualization}
+\end{center}
+
+Figure @ref(fig:SIGCOR-05-hsa04024-visualization) (下方图) 为图SIGCOR 05
+hsa04024 visualization概览。
+
+\textbf{(File path:
+\texttt{Figure+Table/SIGCOR-05-hsa04024-visualization.png})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
+\textbf{
+Interactive figure
+:}
+
+\vspace{0.5em}
+
+    \url{https://www.genome.jp/pathway/hsa04024}
+
+\vspace{2em}
+
+
+\textbf{
+Enriched genes
+:}
+
+\vspace{0.5em}
+
+    SSTR2, FXYD1, RAC3
+
+\vspace{2em}
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{SIGCOR 05 KEGG enrichment data}\tabularnewline
+\toprule
+category & subcat\ldots{} & ID & Descri\ldots{} & GeneRatio & BgRatio &
+pvalue & p.adjust & qvalue & geneID\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+category & subcat\ldots{} & ID & Descri\ldots{} & GeneRatio & BgRatio &
+pvalue & p.adjust & qvalue & geneID\tabularnewline
+\midrule
+\endhead
+Enviro\ldots{} & Signal\ldots{} & hsa04024 & cAMP s\ldots{} & 3/12 &
+226/8868 & 0.0030\ldots{} & 0.1085\ldots{} & 0.1009\ldots{} &
+5348/5\ldots{}\tabularnewline
+Cellul\ldots{} & Cellul\ldots{} & hsa04520 & Adhere\ldots{} & 2/12 &
+93/8868 & 0.0067\ldots{} & 0.1085\ldots{} & 0.1009\ldots{} &
+5795/5881\tabularnewline
+Human \ldots{} & Cancer\ldots{} & hsa05231 & Cholin\ldots{} & 2/12 &
+99/8868 & 0.0075\ldots{} & 0.1085\ldots{} & 0.1009\ldots{} &
+9468/5881\tabularnewline
+Metabo\ldots{} & Carboh\ldots{} & hsa00030 & Pentos\ldots{} & 1/12 &
+31/8868 & 0.0411\ldots{} & 0.2895\ldots{} & 0.2693\ldots{} &
+5634\tabularnewline
+Metabo\ldots{} & Carboh\ldots{} & hsa00051 & Fructo\ldots{} & 1/12 &
+34/8868 & 0.0450\ldots{} & 0.2895\ldots{} & 0.2693\ldots{} &
+3795\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} &
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table @ref(tab:SIGCOR-05-KEGG-enrichment-data) (下方表格) 为表格SIGCOR
+05 KEGG enrichment data概览。
+
+\textbf{(File path:
+\texttt{Figure+Table/SIGCOR-05-KEGG-enrichment-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有43行13列，以下预览的表格可能省略部分数据；含有6个唯一`category'。
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llllllllll@{}}
+\caption{SIGCOR 05 GO enrichment data}\tabularnewline
+\toprule
+ont & ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust &
+qvalue & geneID & Count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ont & ID & Descri\ldots{} & GeneRatio & BgRatio & pvalue & p.adjust &
+qvalue & geneID & Count\tabularnewline
+\midrule
+\endhead
+BP & \url{GO:003}\ldots{} & regula\ldots{} & 4/20 & 307/18986 &
+0.0002\ldots{} & 0.0821\ldots{} & 0.0605\ldots{} & 1191/7\ldots{} &
+4\tabularnewline
+BP & \url{GO:200}\ldots{} & negati\ldots{} & 2/20 & 25/18986 &
+0.0003\ldots{} & 0.0821\ldots{} & 0.0605\ldots{} & 25927/\ldots{} &
+2\tabularnewline
+BP & \url{GO:009}\ldots{} & granul\ldots{} & 3/20 & 156/18986 &
+0.0005\ldots{} & 0.0821\ldots{} & 0.0605\ldots{} & 4354/5\ldots{} &
+3\tabularnewline
+BP & \url{GO:004}\ldots{} & positi\ldots{} & 3/20 & 159/18986 &
+0.0005\ldots{} & 0.0821\ldots{} & 0.0605\ldots{} & 1191/7\ldots{} &
+3\tabularnewline
+BP & \url{GO:190}\ldots{} & regula\ldots{} & 2/20 & 47/18986 &
+0.0011\ldots{} & 0.1115\ldots{} & 0.0822\ldots{} & 4354/5881 &
+2\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{} &
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table @ref(tab:SIGCOR-05-GO-enrichment-data) (下方表格) 为表格SIGCOR 05
+GO enrichment data概览。
+
+\textbf{(File path:
+\texttt{Figure+Table/SIGCOR-05-GO-enrichment-data.xlsx})}
+
+\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]注：表格共有732行12列，以下预览的表格可能省略部分数据；含有3个唯一`ont'。
+\end{tcolorbox}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+\end{block}
+
+\begin{block}{MusiteDeep 蛋白质转录后修饰位点预测 (SIGCOR\_05)}
+\protect\hypertarget{musitedeep-ux86cbux767dux8d28ux8f6cux5f55ux540eux4feeux9970ux4f4dux70b9ux9884ux6d4b-sigcor_05}{}
+\end{block}
+\end{frame}
+
+\begin{frame}{总结}
+\protect\hypertarget{conclusion}{}
+筛选的甲基化调控因子为 PRDM6，可能调控的基因见 Tab.
+@ref(tab:correlation-results-05) ， 富集分析结果中，cAMP
+通路最为显著，Fig. @ref(fig:SIGCOR-05-hsa04024-visualization) 。
+\end{frame}
+
+\end{document}

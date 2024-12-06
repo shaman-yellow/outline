@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20241016"), end = td("20241115"), finish = td("20241129"),
+info <- items(start = td("20241016"), end = td("20241115"), finish = td("20241202"),
   id = "BSCL240914", client = "邱美婷", inst = "",
   type = "生信分析",
   title = "预测甲基化调控因子",
@@ -44,8 +44,10 @@ set_index()
 ## 实际流程
 
 从 EpiFactors 获取表观遗传调控因子，筛出甲基化相关调控因子  (A 集合) 。
-获取 PCOS GEO 数据，差异分析得到 DEGs，与 m6A-Atlas 数据库比对，发现可能存在甲基化修饰位点的基因 B 集合。
+获取 PCOS GEO 数据，差异分析得到 DEGs，发现可能存在甲基化修饰位点的基因 B 集合。
 在 PCOS 中筛选出差异表达的甲基化调控因子 (C集合) ，与 B 集合关联分析，随后富集分析。
+
+补充了显著关联的基因的 PTMs 预测 (组蛋白修饰位点预测，包括 Methylarginine，Methyllysine 类型。
 
 ```{r}
 dic(di("差异表达基因"),
@@ -73,9 +75,11 @@ epi.methy <- job_epifactor()
 epi.methy <- step1(epi.methy)
 epi.methy@tables$step1$protein
 geneTable.methy <- dplyr::filter(epi.methy@tables$step1$protein, grpl(Modification, "methy", T))
-geneTable.methy
+geneTable.methy$Modification
 p.distri <- new_pie(geneTable.methy$Modification)
 wrap(p.distri, 11, 9)
+geneTable.methy$Modification
+"Histone methylation"
 ```
 
 
@@ -177,34 +181,6 @@ autor(p.degMethyInter)
 autor(geneTable.degMethy)
 ```
 
-## m6A-Atlas m6A 数据获取 (METHY)
-
-```{r}
-genesTops <- lm.pcos@tables$step2$tops$`pcos - control`$id
-genesTops
-#' @meth {get_meth(m6a.methy)}
-m6a.methy <- job_m6a()
-m6a.methy <- step1(m6a.methy, genesTops)
-m6a.methy@tables$step1$t.data
-p.distriDEGsSites <- new_pie(unlist(lapply(m6a.methy@tables$step1$t.data, function(x) x$.id)))
-p.distriDEGsSites
-genesPosMethySite <- unique(unlist(lapply(m6a.methy@tables$step1$t.data, function(x) x$.id)))
-table(genesPosMethySite %in% genesTops)
-```
-
-据检索，所有的 DEGs  (`r ref("PCOS-pcos-vs-control")`) 都存在甲基化修饰位点。
-因此，所有 DEGs 都可能发生甲基化修饰 (`r ref("METHY-m6A-Atlas-search-results-distribution")` )
-
-```{r eval = T, echo = F, results = "asis"}
-#| METHY-m6A-Atlas-search-results
-autor(m6a.methy@tables$step1$t.data)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| METHY-m6A-Atlas-search-results-distribution
-autor(wrap(p.distriDEGsSites, 12, 12))
-```
-
 ## Methylation Factors 与 DEGs 关联分析
 
 为了寻找 `r ref("Intersection-of-Methy-factor-with-DEGs")`  中发现的差异表达的 Methylation Factors 
@@ -302,8 +278,116 @@ autor(en.SigCor_05@tables$step1$res.kegg$ids)
 autor(en.SigCor_05@tables$step1$res.go$ids)
 ```
 
+## MusiteDeep 蛋白质转录后修饰位点预测 (SIGCOR_05)
+
+对 `r ref("correlation-results-05")` 中的基因预测了组蛋白修饰位点 ("Methylarginine", "Methyllysine") 。
+
+`r ref("SIGCOR-05-has-PTMs")` 统计了含有修饰位点的基因 (设置了 PTM score cutoff，见 \@ref(Intersection))。
+`r ref("SIGCOR-05-Methylarginine-PTM-numbers")`，`r ref("SIGCOR-05-Methyllysine-PTM-numbers")` 为各类型统计。
+
+`r ref("SIGCOR-05-RAC3-PTM-score")`， `r ref("SIGCOR-05-SSTR2-PTM-score")` ，
+`r ref("SIGCOR-05-FXYD1-PTM-score")`，为所有 cAMP 通路的三个基因的修饰位点，以 `r ref("SIGCOR-05-RAC3-PTM-score")` 为最佳。
+
+```{r}
+#' @meth {get_meth(mus.SigCor_05)}
+mus.SigCor_05 <- job_musite(corp05$To)
+mus.SigCor_05 <- step1(mus.SigCor_05)
+mus.SigCor_05@step <- 1L
+mus.SigCor_05 <- step2(mus.SigCor_05, c("Methylarginine", "Methyllysine"), respective = T)
+mus.SigCor_05@plots$step2$p.hasPTMs
+mus.SigCor_05@plots$step2$p.PTMsNumber$Methylarginine
+mus.SigCor_05@plots$step2$p.PTMsNumber$Methyllysine
+mus.SigCor_05@plots$step2$p.tops$RAC3
+mus.SigCor_05@plots$step2$p.tops$SSTR2
+mus.SigCor_05@plots$step2$p.tops$FXYD1
+mus.SigCor_05@plots$step2$p.tops
+mus.SigCor_05@object
+mus.SigCor_05@tables$step2$t.cutoff$Sequence_name
+character_mus.SigCor_05_Seque <- unique(mus.SigCor_05@tables$step2$t.cutoff$Sequence_name)
+character_mus.SigCor_05_Seque
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIGCOR-05-has-PTMs
+autor(mus.SigCor_05@plots$step2$p.hasPTMs)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIGCOR-05-Methylarginine-PTM-numbers
+autor(mus.SigCor_05@plots$step2$p.PTMsNumber$Methylarginine)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIGCOR-05-Methyllysine-PTM-numbers
+autor(mus.SigCor_05@plots$step2$p.PTMsNumber$Methyllysine)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIGCOR-05-RAC3-PTM-score
+autor(mus.SigCor_05@plots$step2$p.tops$RAC3)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIGCOR-05-SSTR2-PTM-score
+autor(mus.SigCor_05@plots$step2$p.tops$SSTR2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIGCOR-05-FXYD1-PTM-score
+autor(mus.SigCor_05@plots$step2$p.tops$FXYD1)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIGCOR-05-All-PTM-score
+autor(mus.SigCor_05@plots$step2$p.tops)
+```
+
+## 富集分析 (PTMS)
+
+补充了上述有 PTMs 的基因的富集分析，发现同样聚焦于 cAMP 通路，见`r ref("PTMS-hsa04024-visualization")`。
+
+
+
+```{r}
+#' @meth {get_meth(en.ptms)}
+en.ptms <- job_enrich(character_mus.SigCor_05_Seque)
+en.ptms <- step1(en.ptms)
+en.ptms@plots$step1$p.kegg$ids
+en.ptms@plots$step1$p.go$ids
+en.ptms <- step2(en.ptms, "hsa04024",
+  gene.level = dplyr::select(lm.pcos@tables$step2$tops$`pcos - control`, id, logFC))
+en.ptms@plots$step2$p.pathviews$hsa04024
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PTMS-KEGG-enrichment
+autor(en.ptms@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PTMS-GO-enrichment
+autor(en.ptms@plots$step1$p.go$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PTMS-hsa04024-visualization
+autor(en.ptms@plots$step2$p.pathviews$hsa04024)
+```
+
 # 总结 {#conclusion}
 
 筛选的甲基化调控因子为 PRDM6，可能调控的基因见 `r ref("correlation-results-05")` ，
 富集分析结果中，cAMP 通路最为显著，`r ref("SIGCOR-05-hsa04024-visualization")` 。
 
+cAMP 通路的三个基因的修饰位点见 `r ref("SIGCOR-05-RAC3-PTM-score")`, `r ref("SIGCOR-05-FXYD1-PTM-score")`,
+`r ref("SIGCOR-05-SSTR2-PTM-score")`。

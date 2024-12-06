@@ -67,8 +67,9 @@ autor(geneTable_GeoOsZDHHC)
 autor(lm.geoOs@params$.metadata)
 ```
 
-
+```{r}
 map(lm.geoOs3, ref = p.vennZDHHC$ins, ref.use = "GENE_SYMBOL")
+```
 
 ```{r}
 p.vennZDHHC_geo3 <- new_venn(
@@ -83,6 +84,7 @@ p.vennZDHHC_geo3$ins
 ```{r}
 geo.geoOs3 <- job_geo("GSE19276")
 geo.geoOs3 <- step1(geo.geoOs3)
+clear(geo.geoOs3)
 geo.geoOs3@params$guess
 geo.geoOs3$prods
 metadata3 <- dplyr::mutate(geo.geoOs3@params$guess,
@@ -106,6 +108,7 @@ autor(geo.geoOs3$prods)
 
 ```{r}
 lm.geoOs3 <- asjob_limma(geo.geoOs3, metadata3, normed = T)
+clear(lm.geoOs3)
 lm.geoOs3@params$genes %<>% dplyr::filter(grpl(GENE_SYMBOL, "ZDHHC"))
 lm.geoOs3@params$genes
 lm.geoOs3@object %<>% .[rownames(.) %in% lm.geoOs3@params$genes$rownames, ]
@@ -221,6 +224,41 @@ lstSdb.geoOs2$edges
 
 ```
 
-
+```{r}
 p.exprZdDriver <- map(lm.geoOs2, lstSdb.zdDriver$edges$to, ref.use = "symbol")
 p.exprZdDriver
+```
+
+## inter
+
+```{r}
+lm.geoOs4 <- readRDS("./lm.geoOs40.rds")
+lm.geoOs4 <- step1(lm.geoOs4)
+lm.geoOs4 <- step2(lm.geoOs4, TUMOUR - NORMAL, label = "hgnc_symbol", use = "P")
+lm.geoOs4@tables$step2$tops$`TUMOUR - NORMAL`
+tbl_lm.geoOs4_TUMOU <- lm.geoOs4@tables$step2$tops$`TUMOUR - NORMAL`
+dplyr::filter(tbl_lm.geoOs4_TUMOU, hgnc_symbol %in% lstSdb.zdDriver$edges$to)
+```
+
+```{r}
+lm.geoOs <- readRDS("./lm.geoOs0.rds")
+lm.geoOs <- step1(lm.geoOs, data_type = "cpm")
+lm.geoOs <- step2(lm.geoOs, OS - Normal, label = "Symbol", use = "P")
+lm.geoOs@tables$step2$tops$`OS - Normal`
+tbl_lm.geoOs_OSNor <- lm.geoOs@tables$step2$tops$`OS - Normal`
+dplyr::filter(tbl_lm.geoOs_OSNor, Symbol %in% lstSdb.zdDriver$edges$to)
+```
+
+```{r}
+lm.geoOs3 <- readRDS("./lm.geoOs30.rds")
+lm.geoOs3 <- step1(lm.geoOs3, batch = NULL)
+lm.geoOs3 <- step2(lm.geoOs3,
+  (PoorRes + GoodRes) / 2,
+  PoorRes - Normal, GoodRes - Normal, PoorRes - GoodRes,
+  label = "GENE_SYMBOL", use = "P")
+lm.geoOs3@tables$step2$tops$`PoorRes - Normal`
+tbl_lm.geoOs3_PoorR <- lm.geoOs3@tables$step2$tops$`PoorRes - Normal`
+dplyr::filter(tbl_lm.geoOs3_PoorR, GENE_SYMBOL %in% lstSdb.zdDriver$edges$to)
+
+```
+

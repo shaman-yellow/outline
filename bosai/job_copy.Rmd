@@ -3,4 +3,14 @@
 
 ```{r}
 summary_week.bosai(rm = T)
+alls <- get_orders()
+print(alls, n = Inf, width = 400)
+
+alls <- dplyr::mutate(alls, cost = ifelse(type == "思路设计", 3, NA))
+collate <- dplyr::select(alls, type, id, title, cost, finish)
+collate <- dplyr::mutate(collate, name = paste0(id, ", ", title))
+collate <- dplyr::select(collate, type, name, cost, finish)
+collate <- dplyr::filter(collate, !is.na(finish))
+data.table::fwrite(collate, "./summary/assess_data_1.csv")
+browseURL("./summary/assess_data_1.csv")
 ```
