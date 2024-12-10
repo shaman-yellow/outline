@@ -14,3 +14,12 @@ collate <- dplyr::filter(collate, !is.na(finish))
 data.table::fwrite(collate, "./summary/assess_data_1.csv")
 browseURL("./summary/assess_data_1.csv")
 ```
+
+## 2024-12-10
+
+```{r}
+alls <- get_orders()
+alls
+backup_jobs.bosai(alls, "2024-12-10")
+```
+

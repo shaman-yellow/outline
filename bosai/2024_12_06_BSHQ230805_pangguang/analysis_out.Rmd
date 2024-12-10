@@ -1,0 +1,414 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("20241007"), end = td("20241128"), finish = td("20241209"),
+  id = "BSHQ230805", client = "刘炀", inst = "中国医科大学附属第一医院",
+  type = "生信分析",
+  title = "膀胱癌",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+## 需求
+
+### 第一部分 {#first}
+
+利用生物信息学筛选出与CLSPN联系最紧密的下游信号通路或机制。（参考PMID: 35149175，2022，IF9.1，Cancer Letters；PMID: 36627634，2023，11.4，Journal of Experimental & Clinical Cancer Research）
+
+1. 根据CLSPN表达将TCGA-BLCA患者分为CLSPN高表达组和CLSPN低表达组
+2. 利用GSVA富集分析CLSPN高表达组表达差异显著的通路（选择差异最显著的前3个通路）
+3. 筛选出的前三条差异基因通路中有显著差异的基因的折叠变化进行了计算和排序，找出与CLSPN低表达组相比差异基因倍数变化最大的通路。
+4. 对 3 中筛出的差异表达变化最显著的通路中显著上调的基因进行分类富集，选择较多基因富集的通路后续研究通路
+
+### 第二部分 {#second}
+
+为了探究CLSPN在膀胱癌中的相互作用蛋白，我们利用不同在线软件对CLSPN可能的互作蛋白进行了探究。
+分析
+
+1. 通过PPI，STRING，Genemania等网站预测差异基因中具有与CLSPN互作性的蛋白，明确直接与CLSPN相互作用蛋白P
+2. 利用TCGA数据库分析蛋白P在OS中的表达、相关性及与预后的关系  
+
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## TCGA 数据获取 (BLCA)
+
+```{r}
+#' @meth {get_meth(tcga.blca)}
+tcga.blca <- job_tcga("TCGA-BLCA")
+tcga.blca <- step1(tcga.blca, "RNA")
+tcga.blca <- step2(tcga.blca)
+tcga.blca <- step3(tcga.blca)
+
+tcga.blca <- clear(tcga.blca)
+saves()
+```
+
+## Limma 差异分析 (BLCA)
+
+按 CLSPN 表达量，`r snap(lm.blca)`。
+`r snap(lm.blca, 2)`，
+`r snap(lm.blca, 3)`
+
+```{r}
+#' @meth {get_meth(lm.blca)}
+lm.blca <- asjob_limma(tcga.blca, isTumor == "tumor")
+lm.blca <- step1(lm.blca)
+isClspn <- lm.blca@object$genes$gene_name == "CLSPN"
+medianClspn <- median(lm.blca@object$E[isClspn, ])
+groupClspn <- ifelse(lm.blca@object$E[isClspn, ] > medianClspn, "High", "Low")
+groupClspn
+
+lm.blca <- asjob_limma(tcga.blca, isTumor == "tumor")
+lm.blca <- regroup(lm.blca, group = !!groupClspn)
+lm.blca <- step1(lm.blca)
+lm.blca <- step2(lm.blca, High - Low)
+lm.blca@tables$step2$tops$`High - Low`
+tbl_lm.blca_HighL <- lm.blca@tables$step2$tops$`High - Low`[-1, ]
+tbl_lm.blca_HighL <- dplyr::mutate(tbl_lm.blca_HighL, gene_name = gs(gene_name, "\\..*$", ""))
+lm.blca@plots$step2$p.volcano$`High - Low`
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BLCA-High-vs-Low
+autor(lm.blca@plots$step2$p.volcano$`High - Low`)
+```
+
+## ClusterProfiler GSEA 富集分析 (BLCA)
+
+以 GSEA 算法，对`r ref("BLCA-High-vs-Low")` 的基因富集分析。
+选择三条最显著的通路，见`r ref("Used-pathways")` 
+
+```{r}
+#' @meth {get_meth(gsea.blca)}
+gsea.blca <- asjob_gsea(lm.blca, data = tbl_lm.blca_HighL)
+gsea.blca@object$entrezgene_id
+gsea.blca@step <- 0L
+gsea.blca <- step1(gsea.blca, order = "p.adjust")
+wrap(gsea.blca@plots$step1$p.kegg, 7, 7)
+gsea.blca@tables$step1$table_kegg
+tbl_gsea.blca_table <- gsea.blca@tables$step1$table_kegg
+tbl_gsea.blca_table
+tbl_gsea.blca_table <- dplyr::arrange(tbl_gsea.blca_table, p.adjust)
+used_gsea.blca_table <- tbl_gsea.blca_table[c(1,2,4), ]
+used_gsea.blca_table
+gsea.blca <- step2(gsea.blca, sort_by = "p.adjust",
+  key = used_gsea.blca_table$ID, highlight = used_gsea.blca_table$ID)
+gsea.blca@plots$step2$p.code
+gsea.blca@plots$step2$p.highlight
+gsea.blca <- step3(gsea.blca, used_gsea.blca_table$ID)
+gsea.blca@plots$step3$p.pathviews$hsa04110
+
+used_gsea.blca_table$geneName_list[[1]]
+tbl_cellCycle <- dplyr::filter(tbl_lm.blca_HighL,
+  gene_name %in% dplyr::all_of(used_gsea.blca_table$geneName_list[[1]])
+)
+tbl_cellCycle$gene_name
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BLCA-KEGG-enrichment
+autor(wrap(gsea.blca@plots$step1$p.kegg, 7, 7))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Used-pathways
+autor(used_gsea.blca_table)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BLCA-GSEA-plot-of-the-pathways
+autor(gsea.blca@plots$step2$p.code)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BLCA-KEGG-enrichment-with-enriched-genes
+autor(gsea.blca@plots$step2$p.highlight)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BLCA-hsa04110-visualization
+autor(gsea.blca@plots$step3$p.pathviews$hsa04110)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| All-pathways
+autor(tbl_gsea.blca_table)
+```
+
+## 富集分析 (CELL)
+
+对`r ref("Used-pathways")` 所示的三条通路，归类富集 (重新富集分析一边，提取信号通路) ，
+见 `r ref("Re-classification-pathways")`。
+
+其中，p53 通路含最多的基因。
+
+```{r}
+#' @meth {get_meth(en.cell)}
+en.cell <- job_enrich(tbl_cellCycle$gene_name)
+en.cell <- step1(en.cell)
+tbl_signaling <- dplyr::filter(en.cell@tables$step1$res.kegg$ids, grpl(Description, "signaling"))
+tbl_signaling
+
+lst_signaling <- lapply(list(1, 2, 3, 4:nrow(tbl_signaling)),
+    function(which) {
+      unlist(tbl_signaling$geneName_list[which])
+    })
+names(lst_signaling) <- c(tbl_signaling$Description[1:3], "Others")
+lst_signaling <- lapply(lst_signaling,
+  function(genes) {
+    data <- dplyr::filter(tbl_lm.blca_HighL, gene_name %in% dplyr::all_of(genes))
+    data <- dplyr::select(data, gene_name, logFC)
+    data
+  })
+tbl_signaling_fc <- frbind(lst_signaling, idcol = "Signaling")
+tbl_signaling_fc <- tidyr::pivot_wider(tbl_signaling_fc, names_from = gene_name, values_from = logFC)
+tbl_signaling_fc <- tidyr::pivot_longer(
+  tbl_signaling_fc, -Signaling, names_to = "gene_name", values_to = "logFC"
+)
+tbl_signaling_fc <- dplyr::mutate(tbl_signaling_fc, logFC = ifelse(is.na(logFC), 0, logFC))
+tbl_signaling_fc <- dplyr::mutate(tbl_signaling_fc, Signaling = factor(Signaling, names(lst_signaling)))
+
+p.hp_SigHasGene <- tidyHeatmap::heatmap(tbl_signaling_fc, gene_name, Signaling, logFC,
+  palette_value = fun_color(values = tbl_signaling_fc$logFC, category = "div"), cluster_columns = F)
+p.hp_SigHasGene
+
+en.cell <- step2(en.cell, tbl_signaling$ID[1], gene.level = dplyr::select(tbl_lm.blca_HighL, gene_name, logFC))
+en.cell@plots$step2$p.pathviews
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Re-classification-pathways
+autor(wrap(p.hp_SigHasGene))
+```
+
+## Limma 差异分析 (BLCA_EX: Dead_vs_alive)
+
+对 Dead vs alive 做了差异分析。
+
+`r snap(lm.blca_ex)`
+`r snap(lm.blca_ex, 2)`
+`r snap(lm.blca_ex, 3)`
+
+```{r}
+#' @meth {get_meth(lm.blca_ex)}
+lm.blca_ex <- asjob_limma(tcga.blca)
+lm.blca_ex <- regroup(lm.blca_ex, group = make.names(vital_status))
+lm.blca_ex <- step1(lm.blca_ex)
+lm.blca_ex <- step2(lm.blca_ex, Dead - Alive, label = "gene_name", use = "P")
+tbl_lm.blca_ex_DeadA <- lm.blca_ex@tables$step2$tops$`Dead - Alive`
+lm.blca_ex@tables$step2$tops$`Dead - Alive`
+```
+
+## Limma 差异分析 (BLCA_TUMOR: Tumor_vs_normal)
+
+对 Tumor_vs_normal 做了差异分析。
+
+`r snap(lm.blca_tumor)`
+`r snap(lm.blca_tumor, 2)`
+`r snap(lm.blca_tumor, 3)`
+
+```{r}
+#' @meth {get_meth(lm.blca_tumor)}
+lm.blca_tumor <- asjob_limma(tcga.blca)
+lm.blca_tumor <- regroup(lm.blca_tumor, group = isTumor)
+lm.blca_tumor <- step1(lm.blca_tumor)
+lm.blca_tumor <- step2(lm.blca_tumor, tumor - normal, label = "gene_name", use = "P")
+lm.blca_tumor@tables$step2$tops$`tumor - normal`
+tbl_lm.blca_tumor_tumor <- lm.blca_tumor@tables$step2$tops$`tumor - normal`
+tbl_lm.blca_tumor_tumor
+```
+
+## 共同显著的基因
+
+```{r}
+p.vennAll <- new_venn(Dead_vs_alive = genes(tbl_lm.blca_HighL$gene_name),
+  Tumor_vs_normal = genes(tbl_lm.blca_tumor_tumor$gene_name))
+p.vennAll$ins
+p.vennAll
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-Dead-vs-alive-with-Tumor-vs-normal
+autor(p.vennAll)
+```
+
+## STRINGdb PPI 分析 (CLSPN)
+
+对上述 `r ref("Intersection-of-Dead-vs-alive-with-Tumor-vs-normal")` 交集基因，与 CLSPN 以 PPI 网络分析。
+
+```{r}
+#' @meth {get_meth(sdb.clspn)}
+sdb.clspn <- job_stringdb(c("CLSPN", p.vennAll$ins))
+sdb.clspn <- step1(sdb.clspn, network_type = "full")
+
+filter_clspn <- filter(sdb.clspn, c("CLSPN"), p.vennAll$ins,
+  use.top = "to", keep.ref = F, HLs = c("CLSPN"))
+filter_clspn$edges
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CLSPN-to-others-full-link
+autor(filter_clspn$edges)
+```
+
+## Survival 生存分析 (COL)
+
+对`r ref("CLSPN-to-others-full-link")` 中的基因做了生存分析。
+
+```{r}
+#' @meth {get_meth(surv.clspn)}
+surv.clspn <- asjob_survival(lm.blca_ex, c("CLSPN", unique(filter_clspn$edges$to)))
+surv.clspn <- step1(surv.clspn)
+surv.clspn@plots$step1$p.surv
+list_surv.clspn_psurv <- surv.clspn@plots$step1$p.surv %>% .[ names(.) %in% tbl_sigClspn$name ]
+list_surv.clspn_psurv
+tbl_sigClspn <- dplyr::filter(surv.clspn@tables$step1$t.SurvivalPValue, pvalue < .05)
+tbl_sigClspn
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COL-Survival-PValue
+autor(tbl_sigClspn)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Significant-Survival
+autor(list_surv.clspn_psurv)
+```
+
+## 关联性分析
+
+
+```{r}
+corClspnCol <- cal_corp(lm.blca_ex, NULL, "CLSPN", tbl_sigClspn$name, mode = "linear")
+corClspnCol <- dplyr::filter(corClspnCol, sign != "-")
+p.corClspnCol <- vis(.corp(corClspnCol))
+p.corClspnCol
+
+filter_sig <- filter(sdb.clspn, c("CLSPN"), corClspnCol$To, use.top = "to", keep.ref = T, HLs = c("CLSPN"))
+filter_sig$p.mcc
+
+p.boxSig <- map(lm.blca_tumor, corClspnCol$To, ref.use = "gene_name")
+p.boxSig
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Linear-regression
+autor(p.corClspnCol)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CLSPN-interaction-to-Significant-genes
+autor(filter_sig$p.mcc)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Boxplot-of-Significant-genes
+autor(p.boxSig)
+```
+
+## 信号通路的选择
+
+注：原思路无法在最显著的通路 (前三条) 与后续的 生存、差异分析、互作之间，找到共同的基因，
+因此，以后续的分析，反向寻找通路可能更好。
+以下是可行的通路。
+ (以 `r ref("Linear-regression")` 的基因，在 `r ref("All-pathways")` 中寻找通路) 
+ 见 `r ref("BLCA-Significant-genes-pathway")`
+
+
+```{r}
+whichInPath <- vapply(tbl_gsea.blca_table$geneName_list, function(x) {
+  any(corClspnCol$To %in% x)
+}, logical(1))
+tbl_exactPath <- tbl_gsea.blca_table[whichInPath, ]
+tbl_exactPath
+
+gsea.blca_ex <- gsea.blca
+gsea.blca_ex@step <- 1L
+gsea.blca_ex <- step2(gsea.blca_ex, sort_by = "p.adjust", key = tbl_exactPath$ID, highlight = tbl_exactPath$ID)
+wrap(gsea.blca_ex@plots$step2$p.highlight, 12, 10)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BLCA-Significant-genes-pathway
+autor(wrap(gsea.blca_ex@plots$step2$p.highlight, 12, 10))
+```
+
+# 总结 {#conclusion}
+
+原思路的第一部分与第二部分分别分析，第一部分主要结果见 `r ref("Re-classification-pathways")`
+第二部分主要结果见：
+`r ref("Linear-regression")` 
+`r ref("CLSPN-interaction-to-Significant-genes")` 
+`r ref("Boxplot-of-Significant-genes")` 
+
+两部分的基因没有共同交集，因此建议，按第二部分的基因，在第一部分重新寻找其它通路，见
+`r ref("BLCA-Significant-genes-pathway")`
+

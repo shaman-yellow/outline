@@ -1,0 +1,298 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{frame}
+\begin{titlepage} \newgeometry{top=6.5cm}
+\ThisCenterWallPaper{1.12}{~/outline/bosai//cover_page_analysis.pdf}
+\begin{center} \textbf{\huge 膀胱癌}
+\vspace{4em} \begin{textblock}{10}(3,4.85) \Large
+\textbf{\textcolor{black}{BSHQ230805}}
+\end{textblock} \begin{textblock}{10}(3,5.8)
+\Large \textbf{\textcolor{black}{黄礼闯}}
+\end{textblock} \begin{textblock}{10}(3,6.75)
+\Large
+\textbf{\textcolor{black}{生信分析}}
+\end{textblock} \begin{textblock}{10}(3,7.7)
+\Large
+\textbf{\textcolor{black}{刘炀}}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{84}\end{center}\tableofcontents
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{88}\end{center}\listoffigures
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=8cm]{89}\end{center}\listoftables
+
+
+
+\pagenumbering{arabic}
+\end{frame}
+
+\hypertarget{abstract}{%
+\section{分析流程}\label{abstract}}
+
+\begin{frame}{需求}
+\protect\hypertarget{ux9700ux6c42}{}
+利用生物信息学筛选出与CLSPN联系最紧密的下游信号通路或机制。（参考PMID:
+35149175，2022，IF9.1，Cancer Letters；PMID:
+36627634，2023，11.4，Journal of Experimental \& Clinical Cancer
+Research）
+
+\begin{enumerate}
+\tightlist
+\item
+  根据CLSPN表达将TCGA-BLCA患者分为CLSPN高表达组和CLSPN低表达组
+\item
+  利用GSVA富集分析CLSPN高表达组表达差异显著的通路（选择差异最显著的前3个通路）
+\item
+  筛选出的前三条差异基因通路中有显著差异的基因的折叠变化进行了计算和排序，找出与CLSPN低表达组相比差异基因倍数变化最大的通路。
+\item
+  对 3
+  中筛出的差异表达变化最显著的通路中显著上调的基因进行分类富集，选择较多基因富集的通路后续研究通路
+\end{enumerate}
+
+为了探究CLSPN在膀胱癌中的相互作用蛋白，我们利用不同在线软件对CLSPN可能的互作蛋白进行了探究。
+分析
+
+\begin{enumerate}
+\tightlist
+\item
+  通过PPI，STRING，Genemania等网站预测差异基因中具有与CLSPN互作性的蛋白，明确直接与CLSPN相互作用蛋白P
+\item
+  利用TCGA数据库分析蛋白P在OS中的表达、相关性及与预后的关系
+\end{enumerate}
+\end{frame}
+
+\hypertarget{introduction}{%
+\section{材料和方法}\label{introduction}}
+
+\begin{frame}{数据分析平台}
+\protect\hypertarget{ux6570ux636eux5206ux6790ux5e73ux53f0}{}
+在 Linux pop-os x86\_64 (6.9.3-76060903-generic) 上，使用 R version
+4.4.2 (2024-10-31) (\url{https://www.r-project.org/})
+对数据统计分析与整合分析。
+\end{frame}
+
+\begin{frame}[fragile]{TCGA 数据获取 (Dataset: BLCA)}
+\protect\hypertarget{tcga-ux6570ux636eux83b7ux53d6-dataset-blca}{}
+以 R 包 \texttt{TCGAbiolinks} (2.34.0) (2015, \textbf{IF:16.6}, Q1,
+Nucleic Acids Research){[}@TcgabiolinksAColapr2015{]} 获取 TCGA-BLCA
+数据集。
+\end{frame}
+
+\begin{frame}[fragile]{Limma 差异分析 (Dataset: BLCA)}
+\protect\hypertarget{limma-ux5deeux5f02ux5206ux6790-dataset-blca}{}
+以 R 包 \texttt{limma} (3.62.1) (2005, \textbf{IF:}, ,
+){[}@LimmaLinearMSmyth2005{]} \texttt{edgeR} (4.4.0) (, \textbf{IF:}, ,
+){[}@EdgerDifferenChen{]} 进行差异分析。以 \texttt{edgeR::filterByExpr}
+过滤 count 数量小于 10 的基因。以
+\texttt{edgeR::calcNormFactors}，\texttt{limma::voom} 转化 count 数据为
+log2 counts-per-million (logCPM)。分析方法参考
+\url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}。随后，以
+公式 \textasciitilde{} 0 + group 创建设计矩阵 (design matrix)
+用于线性分析。 使用 \texttt{limma::lmFit},
+\texttt{limma::contrasts.fit}, \texttt{limma::eBayes}
+差异分析对比组：High vs Low。以 \texttt{limma::topTable}
+提取所有结果，并过滤得到 adj.P.Val 小于
+0.05，\textbar Log2(FC)\textbar{} 大于 0.5 的统计结果。
+\end{frame}
+
+\begin{frame}[fragile]{ClusterProfiler GSEA 富集分析 (Dataset: BLCA)}
+\protect\hypertarget{clusterprofiler-gsea-ux5bccux96c6ux5206ux6790-dataset-blca}{}
+以 ClusterProfiler R 包 (4.15.0.2) (2021, \textbf{IF:33.2}, Q1, The
+Innovation){[}@ClusterprofilerWuTi2021{]} 按 GSVA 算法
+(\texttt{clusterProfiler::gseGO},
+\texttt{ClusterProfiler::gseKEGG})，进行 KEGG 和 GO 富集分析。
+\end{frame}
+
+\begin{frame}[fragile]{富集分析 (Dataset: CELL)}
+\protect\hypertarget{ux5bccux96c6ux5206ux6790-dataset-cell}{}
+以 ClusterProfiler R 包 (4.15.0.2) (2021, \textbf{IF:33.2}, Q1, The
+Innovation){[}@ClusterprofilerWuTi2021{]}进行 KEGG 和 GO 富集分析。 以
+\texttt{pathview} R 包 (1.46.0) 对选择的 KEGG 通路可视化。
+\end{frame}
+
+\begin{frame}[fragile]{Limma 差异分析 (Dataset: BLCA\_EX)}
+\protect\hypertarget{limma-ux5deeux5f02ux5206ux6790-dataset-blca_ex}{}
+以 R 包 \texttt{limma} (3.62.1) (2005, \textbf{IF:}, ,
+){[}@LimmaLinearMSmyth2005{]} \texttt{edgeR} (4.4.0) (, \textbf{IF:}, ,
+){[}@EdgerDifferenChen{]} 进行差异分析。以 \texttt{edgeR::filterByExpr}
+过滤 count 数量小于 10 的基因。以
+\texttt{edgeR::calcNormFactors}，\texttt{limma::voom} 转化 count 数据为
+log2 counts-per-million (logCPM)。分析方法参考
+\url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}。随后，以
+公式 \textasciitilde{} 0 + group 创建设计矩阵 (design matrix)
+用于线性分析。 使用 \texttt{limma::lmFit},
+\texttt{limma::contrasts.fit}, \texttt{limma::eBayes}
+差异分析对比组：Dead vs Alive。以 \texttt{limma::topTable}
+提取所有结果，并过滤得到 P.Value 小于 0.05，\textbar Log2(FC)\textbar{}
+大于 0.5 的统计结果。
+\end{frame}
+
+\begin{frame}[fragile]{Limma 差异分析 (Dataset: BLCA\_TUMOR)}
+\protect\hypertarget{limma-ux5deeux5f02ux5206ux6790-dataset-blca_tumor}{}
+以 R 包 \texttt{limma} (3.62.1) (2005, \textbf{IF:}, ,
+){[}@LimmaLinearMSmyth2005{]} \texttt{edgeR} (4.4.0) (, \textbf{IF:}, ,
+){[}@EdgerDifferenChen{]} 进行差异分析。以 \texttt{edgeR::filterByExpr}
+过滤 count 数量小于 10 的基因。以
+\texttt{edgeR::calcNormFactors}，\texttt{limma::voom} 转化 count 数据为
+log2 counts-per-million (logCPM)。分析方法参考
+\url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}。随后，以
+公式 \textasciitilde{} 0 + group 创建设计矩阵 (design matrix)
+用于线性分析。 使用 \texttt{limma::lmFit},
+\texttt{limma::contrasts.fit}, \texttt{limma::eBayes}
+差异分析对比组：tumor vs normal。以 \texttt{limma::topTable}
+提取所有结果，并过滤得到 P.Value 小于 0.05，\textbar Log2(FC)\textbar{}
+大于 0.5 的统计结果。
+\end{frame}
+
+\begin{frame}[fragile]{STRINGdb PPI 分析 (Dataset: CLSPN)}
+\protect\hypertarget{stringdb-ppi-ux5206ux6790-dataset-clspn}{}
+以 R 包 \texttt{STEINGdb} (2.18.0) (2021, \textbf{IF:16.6}, Q1, Nucleic
+Acids Research){[}@TheStringDataSzklar2021{]} 构建 PPI 网络。数据版本为
+12.0，互作类型为 full。以 Cytohubba (2014, \textbf{IF:NA}, NA, BMC
+Systems Biology){[}@CytohubbaIdenChin2014{]} 的算法计算 MCC score (在 R
+中计算) 。随后，以 \texttt{ggraph} 可视化网络 (2.2.1)。
+\end{frame}
+
+\begin{frame}[fragile]{Survival 生存分析 (Dataset: COL)}
+\protect\hypertarget{survival-ux751fux5b58ux5206ux6790-dataset-col}{}
+去除了生存状态未知的数据。 以 R 包 \texttt{survival} (3.7.0)
+生存分析，以 R 包 \texttt{survminer} (0.5.0) 绘制生存曲线。以 R 包
+\texttt{timeROC} (0.4) 绘制 1, 3, 5 年生存曲线。
+\end{frame}
+
+\hypertarget{workflow}{%
+\section{分析结果}\label{workflow}}
+
+\begin{frame}{TCGA 数据获取 (BLCA)}
+\protect\hypertarget{tcga-ux6570ux636eux83b7ux53d6-blca}{}
+\end{frame}
+
+\begin{frame}{Limma 差异分析 (BLCA)}
+\protect\hypertarget{limma-ux5deeux5f02ux5206ux6790-blca}{}
+按 CLSPN 表达量，共 409 个样本，分 2 组，分别为 High (204) , Low (205)
+。。 差异分析 High vs Low (若 A vs B，则为前者比后者，LogFC 大于 0 时，A
+表达量高于 B)， 所有上调 DEGs 有 2131 个，下调共 3353；一共 5484 个
+(非重复)。
+\end{frame}
+
+\begin{frame}{ClusterProfiler GSEA 富集分析 (BLCA)}
+\protect\hypertarget{clusterprofiler-gsea-ux5bccux96c6ux5206ux6790-blca}{}
+\end{frame}
+
+\begin{frame}{富集分析 (CELL)}
+\protect\hypertarget{ux5bccux96c6ux5206ux6790-cell}{}
+\end{frame}
+
+\begin{frame}{Limma 差异分析 (BLCA\_EX: Dead\_vs\_alive)}
+\protect\hypertarget{limma-ux5deeux5f02ux5206ux6790-blca_ex-dead_vs_alive}{}
+\end{frame}
+
+\begin{frame}{Limma 差异分析 (BLCA\_TUMOR: Tumor\_vs\_normal)}
+\protect\hypertarget{limma-ux5deeux5f02ux5206ux6790-blca_tumor-tumor_vs_normal}{}
+\end{frame}
+
+\begin{frame}{STRINGdb PPI 分析 (CLSPN)}
+\protect\hypertarget{stringdb-ppi-ux5206ux6790-clspn}{}
+\end{frame}
+
+\begin{frame}{Survival 生存分析 (COL)}
+\protect\hypertarget{survival-ux751fux5b58ux5206ux6790-col}{}
+\end{frame}
+
+\hypertarget{conclusion}{%
+\section{总结}\label{conclusion}}
+
+\end{document}

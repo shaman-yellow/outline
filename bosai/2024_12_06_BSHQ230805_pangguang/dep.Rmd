@@ -1,0 +1,14 @@
+
+
+```{r}
+sdb.clspn_sig_p53 <- job_stringdb(c(tbl_sigClspn$name, "CLSPN", tbl_signaling$geneName_list[[1]]))
+sdb.clspn_sig_p53 <- step1(sdb.clspn_sig_p53, network_type = "full")
+sdb.clspn_sig_p53@plots$step1$p.ppi
+
+filter_clspn_sig_p53 <- filter(filter_clspn_sig_p53,
+  c(tbl_signaling$geneName_list[[1]]), c(tbl_sigClspn$name),
+  use.top = "to", keep.ref = T, HLs = tbl_signaling$geneName_list[[1]]
+)
+
+```
+
