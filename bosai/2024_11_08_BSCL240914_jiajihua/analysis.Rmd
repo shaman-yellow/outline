@@ -281,10 +281,8 @@ autor(en.SigCor_05@tables$step1$res.go$ids)
 ## MusiteDeep 蛋白质转录后修饰位点预测 (SIGCOR_05)
 
 对 `r ref("correlation-results-05")` 中的基因预测了组蛋白修饰位点 ("Methylarginine", "Methyllysine") 。
-
-`r ref("SIGCOR-05-has-PTMs")` 统计了含有修饰位点的基因 (设置了 PTM score cutoff，见 \@ref(Intersection))。
+`r ref("SIGCOR-05-has-PTMs")` 统计了含有修饰位点的基因 (设置了 PTM score cutoff，见 \@ref(introduction))。
 `r ref("SIGCOR-05-Methylarginine-PTM-numbers")`，`r ref("SIGCOR-05-Methyllysine-PTM-numbers")` 为各类型统计。
-
 `r ref("SIGCOR-05-RAC3-PTM-score")`， `r ref("SIGCOR-05-SSTR2-PTM-score")` ，
 `r ref("SIGCOR-05-FXYD1-PTM-score")`，为所有 cAMP 通路的三个基因的修饰位点，以 `r ref("SIGCOR-05-RAC3-PTM-score")` 为最佳。
 

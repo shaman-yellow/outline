@@ -1,0 +1,128 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20241209"), end = td("20241211"), finish = td("20241211"),
+  id = "BSZD241215", client = "张国富", inst = "哈尔滨医科大学附属第一医院",
+  type = "思路设计",
+  title = "主动脉夹层",
+  save = ".items_idea.rds"
+)
+show.ic(info)
+
+order_publish.bosai("idea.Rmd", "idea_out.Rmd")
+formatName.bosai("./idea_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("主动脉夹层")
+)
+# DEG: Differentially expressed genes 差异表达基因
+# AD: Aortic dissection 主动脉夹层
+```
+
+```{r}
+```
+
+循环血液标志物有助于许多疾病环境下的诊断、风险分层、预后和治疗监测。一个非常突出的例子是肌钙蛋白作为心肌损伤的标志物。
+
+血清或血浆的蛋白质组分析已成为该领域的一个关键研究课题。
+
+
+`r cite_show('Identification_Zhang_2023')`
+
+## 思路 {#introduction}
+
+# 可行性 {#methods}
+
+# 创新性 {#results}
+
+# 参考文献和数据集 {#workflow}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+## GSE 数据搜索 (AD)
+
+### 所有数据
+
+`r snap(gds.ad, patterns)`
+
+### 分组信息
+
+`r snap_metas`
+
+```{r}
+#' @meth {get_meth(gds.ad)}
+gds.ad <- job_gds("Aortic dissection", 1:1000)
+gds.ad <- step1(gds.ad)
+gds.ad@plots$step1$p.AllGdsType
+vis(gds.ad)
+active(gds.ad)
+
+patterns <- c(
+  "scRNA-seq" = "single.?cell|scRNA",
+  "Spatial Transcriptomics" = "spatial|\\bST\\b",
+  "16s RNA-seq" = "16s|microbiota"
+)
+finds <- focus(gds.ad, patterns)
+finds
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| AD-All-Gds-Type
+autor(gds.ad@plots$step1$p.AllGdsType)
+```
+
+```{r}
+gses <- finds[[1]]$GSE
+geo.ads <- lapply(gses, job_geo)
+geo.ads <- lapply(geo.ads, step1)
+metas <- lapply(geo.ads, function(x) {
+  x$guess
+})
+metas
+
+fun <- function(meta) {
+  maybeGroup <- c("group", "disease", "title")
+  col <- unlist(.find_and_sort_strings(colnames(meta), maybeGroup))[1]
+  groups <- meta[[col]]
+  if (col == "title") {
+    groups <- gs(groups, "[0-9]+$", "")
+  }
+  groupFreq <- table(groups)
+}
+freqs <- lapply(metas, fun)
+
+snap_freqs <- lapply(freqs, function(x) {
+  glue::glue("{names(x)} (n = {unname(x)})")
+})
+
+snap_metas <- bind(unlist(lapply(seq_along(gses), function(n) {
+  paste0("- ", gses[[n]], ": ", paste0(snap_freqs[[n]], collapse = ', '))
+})), co = "\n")
+```
