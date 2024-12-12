@@ -55,15 +55,77 @@ dic(di("差异表达基因"),
 ```{r}
 ```
 
-循环血液标志物有助于许多疾病环境下的诊断、风险分层、预后和治疗监测。一个非常突出的例子是肌钙蛋白作为心肌损伤的标志物。
+主动脉夹层 (AD) 是一种危及生命的疾病，由主动脉内膜层撕裂或主动脉壁内出血引起，导致主动脉壁各层分离（夹层）。
+`r cite_show("Aortic_dissecti_Nienab_2016")`。
+细胞水平的研究，以及蛋白质组学的分析，正成为该领域研究的新的突破口。
 
-血清或血浆的蛋白质组分析已成为该领域的一个关键研究课题。
+最近的研究强调了巨噬细胞在主动脉夹层病理学中的不可或缺的作用。这些细胞参与了关键过程，例如细胞外基质的重塑、免疫细胞浸润和平滑肌细胞的表型转换。但巨噬细胞对主动脉夹层发展和进展的具体贡献仍不清楚 `r cite_show("Role_of_macroph_Li_Sh_2024")`。
+
+循环血液标志物有助于许多疾病环境下的诊断、风险分层、预后和治疗监测。一个突出的例子是肌钙蛋白作为心肌损伤的标志物。血清或血浆的蛋白质组分析已成为该领域的一个关键研究课题`r cite_show("Acute_aortic_di_Rylski_2023")`。
 
 ## 思路 {#introduction}
 
+以单细胞数据为基础，预测蛋白质活性数据，`r cite_show("Single_cell_pro_Obrado_2021")`，
+通过联合单细胞转录组和蛋白质活性数据 (scRNA-seq + 拟蛋白质组学)，揭示 AD 中免疫系统的功能，尤其是巨噬细胞的作用 `r cite_show("Role_of_macroph_Li_Sh_2024")`。
+随后以不同单细胞数据集或 Bulk RNA-seq 数据集验证发现。
+
+```{r}
+#| route
+route <- as_network(
+  list("AD:GEO",
+    "GEO:scRNA-seq",
+    "scRNA-seq:基因表达, 蛋白活性",
+    "基因表达::蛋白活性",
+    "基因表达:细胞鉴定",
+    "细胞鉴定:Macrophage",
+    "Macrophage, 蛋白活性:Macrophage 异质性",
+    "Macrophage 异质性:特征集, 富集分析, 拟时分析, 通讯分析",
+    "特征集:bulk_RNA-seq验证",
+    "bulk_RNA-seq验证:特征集的GSEA富集, 其他分析"
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+wrap(p.route)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+set_showtext()
+autor(wrap(p.route))
+```
+
 # 可行性 {#methods}
 
+思路可借鉴 `r cite_show("Single_cell_pro_Obrado_2021")`。
+
+## 以 `"Aortic dissection" AND "scRNA-seq" AND "macrophage"` 搜索文献。
+
+发现一篇相关文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-12-12 12-09-27.png")
+```
+
+## 以 `"Aortic dissection" AND "proteomics"` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-12-12 12-10-33.png")
+```
+
 # 创新性 {#results}
+
+## 以 `"Aortic dissection" AND "scRNA-seq" AND "proteins activity"` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-12-12 12-06-19.png")
+```
+
+## 以 `"Aortic dissection" AND "scRNA-seq" AND "proteomics"` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-12-12 12-07-14.png")
+```
 
 # 参考文献和数据集 {#workflow}
 
@@ -91,6 +153,7 @@ active(gds.ad)
 
 patterns <- c(
   "scRNA-seq" = "single.?cell|scRNA",
+  "CITE-seq" = "\\bCITE\\b",
   "Spatial Transcriptomics" = "spatial|\\bST\\b",
   "16s RNA-seq" = "16s|microbiota"
 )
