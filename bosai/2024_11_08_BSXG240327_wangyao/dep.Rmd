@@ -84,3 +84,77 @@ surv.lusc <- asjob_survival(lasso.lusc)
 surv.lusc <- step1(surv.lusc)
 surv.lusc@plots$step1$risk_score$p.surv
 ```
+
+## COX 回归 (Prognosis)
+
+```{r}
+meta4 <- tbmerge(
+  select(lasso.lung$metadata, rownames,
+    # smoking = paper_Smoking.Status,
+    # treatment_or_therapy,
+    age = age_at_index, gender, ajcc_pathologic_stage),
+  select(surv.lung@object, rownames, risk_score),
+  by = "rownames"
+)
+meta4 <- dplyr::mutate(meta4,
+  # smoking = ifelse(is.na(smoking) | grpl(smoking, "N/A"),
+    # "not reported", as.character(smoking)),
+  ajcc_pathologic_stage = strx(ajcc_pathologic_stage, "Stage I[I]?"),
+  age = ifelse(is.na(age), "not reported",
+    ifelse(age > 65, "> 65", "<= 65"))
+)
+meta4 <- dplyr::filter(meta4, dplyr::if_all(-rownames, ~ !grpl(.x, "reported")))
+summary_tibble(meta4)
+
+#' @meth {get_meth(lasso.prog)}
+lasso.prog <- job_lasso(meta4[, -1], filter(lasso.lung$metadata, rownames %in% meta4$rownames))
+lasso.prog <- step1(lasso.prog)
+lasso.prog <- step2(lasso.prog, efs = F)
+lasso.prog <- step3(lasso.prog, multi_cox = T, alpha = 0, use_data = "all", multi_cox.inherits = F)
+coefMerged <- lasso.prog@tables$step3$t.CoefficientsOfCOX
+coefMerged <- dplyr::mutate(coefMerged, feature = dplyr::recode(feature,
+    age = "Age (>65/<=64)", gender = "gender (female/male)",
+    ajcc_pathologic_stage = "AJCC stage (I/II)", risk_score = "Risk score")
+)
+coefMerged
+```
+
+进一步通过单因素和多因素 COX 回归的方式评估了包括风险评分在内的4项预后特征 (smoking, treatment 等其他数据缺失值较多，不易处理) 。
+
+单因素和多因素分析结果，风险评分是诊断早期肺癌预后的独立风险指标，见 Tab. \@ref(tab:META-Coefficients-Of-COX)。
+
+```{r eval = T, echo = F, results = "asis"}
+#| META-Coefficients-Of-COX
+autor(coefMerged)
+```
+
+
+sigLusc <- lasso.lung$sig.uni_cox
+sigLusc
+sigLusc_less <- dplyr::filter(sigLusc, !feature %in% c("HERC3", "SPACA9"))
+sigLusc_less
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEO-LUSC-risk-score-related-genes-heatmap
+autor(surv.GEO_lusc@params$p.surv_genes_hp)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEO-LUSC-boxplot-of-risk-score
+autor(surv.GEO_lusc@plots$step1$risk_score$p.boxplot)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEO-LUSC-time-ROC
+autor(surv.GEO_lusc@plots$step1$risk_score$p.roc)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEO-LUSC-survival-curve-of-risk-score
+autor(surv.GEO_lusc@plots$step1$risk_score$p.surv)
+```
+

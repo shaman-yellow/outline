@@ -1,0 +1,37 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20241212"), end = td("20241213"), finish = NA,
+  id = "BSTF241223", client = "邓玲玲", inst = "山东省立医院",
+  type = "生信评估",
+  title = "",
+  save = ".items_eval.rds"
+)
+show.ic(info)
+
+order_publish.bosai("eval.Rmd", "eval_out.Rmd")
+formatName.bosai("./eval_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+

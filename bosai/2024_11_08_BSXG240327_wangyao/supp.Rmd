@@ -93,11 +93,9 @@ lm.all <- job_limma(new_dge(metadata, as_tibble(counts), bm.all$anno))
 ## Limma 差异分析 (MRNA)
 
 肝癌 RNA-seq， `r snap(lm.mrna)`
-元数据见 Tab. \@ref(tab:MRNA-metadata) 。
 对基因注释后，获取 mRNA 数据差异分析。
 `r snap(lm.mrna, 2)`
-得到的 DEGs 统计见 Fig. \@ref(fig:MRNA-Difference-intersection)。
-所有 DEGs 表达特征见 Fig. \@ref(fig:MRNA-Heatmap-of-DEGs)。
+得到的 DEGs 统计见 `r ref("MRNA-Difference-intersection")`
 `r snap(lm.mrna, 3)`
 
 
@@ -110,28 +108,16 @@ fun_filter <- function(rna = "protein_coding") {
 }
 #' @meth {get_meth(lm.mrna)}
 lm.mrna <- fun_filter("protein_coding")
-lm.mrna <- step1(lm.mrna, pca = T, norm_vis = T, batch = lm.mrna@object$samples$batch)
+lm.mrna <- step1(lm.mrna, pca = T, norm_vis = T, batch = NULL)
 lm.mrna <- step2(lm.mrna, Early_stage - Healthy, Advanced_stage - Healthy, Advanced_stage - Early_stage,
-  use = "adj", cut.fc = 1, use.cut = .05, label = "hgnc_symbol")
+  use = "P", cut.fc = .5, use.cut = .05, label = "hgnc_symbol")
 lm.mrna <- step3(lm.mrna)
-lm.mrna@plots$step3$p.hp
 lm.mrna@plots$step2$p.volcano$`Early_stage - Healthy`
 lm.mrna@plots$step2$p.volcano$`Advanced_stage - Healthy`
 lm.mrna@plots$step2$p.volcano$`Advanced_stage - Early_stage`
 lm.mrna@tables$step2$tops
 lm.mrna@plots$step3$p.sets_intersection
 lm.mrna@plots$step3$p.sets_intersection$raw
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| MRNA-metadata
-autor(lm.mrna@params$.metadata)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| MRNA-Heatmap-of-DEGs
-autor(lm.mrna@plots$step3$p.hp)
 ```
 
 
@@ -163,14 +149,16 @@ autor(lm.mrna@tables$step2$tops)
 ## Mfuzz 聚类分析 (MRNA)
 
 将上述筛选得的 DEGs 以 Mfuzz 聚类分析。
-见 Fig. \@ref(fig:MRNA-Mfuzz-clusters)。`r snap(mfuzz.mrna, c(6, 8), c(1, 3, 4))`。
+见 Fig. \@ref(fig:MRNA-Mfuzz-clusters)。`r snap(mfuzz.mrna)`。
 
 
 ```{r}
 #' @meth {get_meth(mfuzz.mrna)}
 mfuzz.mrna <- asjob_mfuzz(lm.mrna)
 mfuzz.mrna <- step1(mfuzz.mrna, 4:2)
-mfuzz.mrna <- step2(mfuzz.mrna, alpha = .3)
+mfuzz.mrna <- step2(mfuzz.mrna, 10, c(2, 5), alpha = .3)
+mfuzz.mrna <- step3(mfuzz.mrna, 8, NULL)
+mfuzz.mrna$ups
 mfuzz.mrna@plots$step2$p.clusters
 mfuzz.mrna@params$clusters
 ```
@@ -184,52 +172,35 @@ autor(mfuzz.mrna@plots$step2$p.clusters)
 ## 富集分析 (MRNA)
 
 将 MFuzz 上调聚类与下调聚类分别以 KEGG 富集分析。
-KEGG 见 Fig. \@ref(fig:MRNA-up-KEGG-enrichment), Fig. \@ref(fig:MRNA-down-KEGG-enrichment)。
-GO 见 Fig. \@ref(fig:MRNA-up-GO-enrichment), Fig. \@ref(fig:MRNA-down-GO-enrichment)。
-上调组主要富集于 Cellular Processes, Metabolism 相关。
-下调组富集于 Immune system 相关。
-
+KEGG 见 `r ref("MRNA-down-KEGG-enrichment")`
+GO 见 `r ref("MRNA-down-GO-enrichment")`
 
 ```{r}
 #' @meth {get_meth(en.mrna)}
-en.mrna <- asjob_enrich(mfuzz.mrna, list(down = c(1, 3, 4), up = c(6, 8)))
+en.mrna <- asjob_enrich(mfuzz.mrna)
+en.mrna@object
 en.mrna <- step1(en.mrna, use = "pvalue")
-# Cellular Processes, Metabolism
-en.mrna@plots$step1$p.kegg$up
-en.mrna@plots$step1$p.go$up
 # Immune system
-en.mrna@plots$step1$p.kegg$down
-en.mrna@plots$step1$p.go$down 
+en.mrna@plots$step1$p.kegg$ups
+en.mrna@plots$step1$p.go$ups
 
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| MRNA-up-KEGG-enrichment
-autor(en.mrna@plots$step1$p.kegg$up)
+#| MRNA-ups-KEGG-enrichment
+autor(en.mrna@plots$step1$p.kegg$ups)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| MRNA-up-GO-enrichment
-autor(en.mrna@plots$step1$p.go$up)
+#| MRNA-ups-GO-enrichment
+autor(en.mrna@plots$step1$p.go$ups)
 ```
 
+## TCGA 数据获取 (LUSC, LUAD)
 
-```{r eval = T, echo = F, results = "asis"}
-#| MRNA-down-KEGG-enrichment
-autor(en.mrna@plots$step1$p.kegg$down)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| MRNA-down-GO-enrichment
-autor(en.mrna@plots$step1$p.go$down )
-```
-
-## TCGA 数据获取 (LUSC)
-
-获取 TCGA-LUSC 数据，用于临床数据分析和预后模型建立。
+获取 TCGA-LUSC, TCGA-LUAD 数据，并将其合并，用于临床数据分析和预后模型建立。
 
 ```{r}
 #' @meth {get_meth(tc.lusc)}
@@ -241,63 +212,86 @@ tc.lusc <- clear(tc.lusc)
 tc.lusc
 ```
 
-## COX 回归 (LUSC)
+```{r}
+#' @meth {get_meth(tc.luad)}
+#' @meth 随后，将 TCGA-LUSC 和 TCGA-LUAD 数据集合并。 
+tc.luad <- job_tcga("TCGA-LUAD")
+tc.luad <- step1(tc.luad)
+tc.luad <- step2(tc.luad)
+tc.luad <- step3(tc.luad)
+tc.luad
+```
 
-数据源自 TCGA-LUSC，筛选 AJCC Stage (ajcc_pathologic_stage) 为 Stage I, Stage II 的病人，并且 days_to_last_follow_up 大于 10 天，且为肿瘤组织的样本。所用样本的元数据见 Tab. \@ref(tab:LUSC-metadata)。
+```{r}
+tc.lusc <- readRDS("./tc.lusc.3.rds")
+tc.luad <- readRDS("./tc.luad.3.rds")
 
-将 LUSC 数据 (count) 标准化后 (同 MRNA 的方法)，以生存状态为指标 (Fig. \@ref(fig:LUSC-Group-distribution))，以 EFS 算法，进行 Feature selection, 得到 Top 30 基因, 统计得分见 Fig. \@ref(fig:LUSC-Top-Features-Selected-By-EFS)。
-随后，以单因素 COX 回归，筛选能显著预测生存结局的基因。EFS 与单因素 COX 回归结果如 Tab. \@ref(tab:LUSC-Uni-COX-cofficients-filtered-by-EFS)。共 `r nrow(sig.cox_efs)` 个基因：`r paste0(sig.cox_efs$feature, collapse = ", ")`。
+tc.lung <- merge(tc.lusc, tc.luad)
+tc.lusc <- clear(tc.lusc, save = F)
+tc.luad <- clear(tc.luad, save = F)
+```
+
+## COX 回归 (LUNG)
+
+筛选 AJCC Stage (ajcc_pathologic_stage) 为 Stage I, Stage II 的病人，并且 days_to_last_follow_up 大于 30 天，且为肿瘤组织的样本。`r snap(lm.lung, 1, NULL)`
+
+将数据 (count) 标准化后 (同 MRNA 的方法)，以生存状态为指标
+(`r ref("LUNG-Group-distribution")`)
+以 EFS 算法，对 `r ref("MRNA-Mfuzz-clusters")` 中的上调基因，
+
+随后，以单因素 COX 回归，筛选能显著预测生存结局的基因。EFS 与单因素 COX 回归结果如 
+`r ref("LUNG-Uni-COX-cofficients-filtered-by-EFS")`。
+取 EFS 和 单因素 COX 的交集，共 `r nrow(sig.cox_lasso)` 个基因：
+`r paste0(sig.cox_lasso$feature, collapse = ", ")`。
 
 
 ```{r}
-lm.lusc <- asjob_limma(tc.lusc,
+lm.lung <- asjob_limma(tc.lung,
   grpl(ajcc_pathologic_stage, "Stage [I]{1,2}[AB]?$"),
-  days_to_last_follow_up >= 10, isTumor == "tumor")
-lm.lusc@params$p.isTumor
-lm.lusc@params$t.common
-lm.lusc@params$p.group
-lm.lusc@params$.metadata
-lm.lusc <- step1(lm.lusc)
+  days_to_last_follow_up >= 30, isTumor == "tumor")
 
-#' @meth {get_meth(lasso.lusc, F)}
-#' @meth 数据源自 TCGA-LUSC，筛选 AJCC Stage (ajcc_pathologic_stage) 为 Stage I, Stage II 的病人，并且 days_to_last_follow_up 大于 10 天，且为肿瘤组织的样本。
-lasso.lusc <- asjob_lasso(lm.lusc, unlist(en.mrna$raw))
-lasso.lusc <- step1(lasso.lusc)
-lasso.lusc <- step2(lasso.lusc, 30)
-lasso.lusc@plots$step2$p.TopFeaturesSelectedByEFS
-lasso.lusc <- step3(lasso.lusc, use_data = "all")
-lasso.lusc@object
-lasso.lusc$target
+lm.lung@params$p.isTumor
+lm.lung@params$t.common
+lm.lung@params$p.group
+lm.lung@params$.metadata
+lm.lung <- step1(lm.lung)
 
-sig.cox_efs <- filter(lasso.lusc@params$sig.uni_cox, feature %in% head(lasso.lusc@params$efs_tops, n = 30))
-sig.cox_efs
+#' @meth {get_meth(lasso.lung, F)}
+#' @meth 筛选 AJCC Stage (ajcc_pathologic_stage) 为 Stage I, Stage II 的病人，并且 days_to_last_follow_up 大于 30 天，且为肿瘤组织的样本 (并去除了来自相同病人的重复样本)。
+lasso.lung <- asjob_lasso(lm.lung, unlist(en.mrna$raw))
+lasso.lung <- step1(lasso.lung)
+dim(lasso.lung@object)
+lasso.lung <- step2(lasso.lung, efs = F)
+lasso.lung@plots$step2$p.TopFeaturesSelectedByEFS
+lasso.lung <- step3(lasso.lung, use_data = "all", multi_cox = T, fun_multiCox = "cv")
+lasso.lung@plots$step3$p.lassoCOX_model
+lasso.lung@plots$step3$p.lassoCOX_coeffients
+
+sig.cox_lasso <- lasso.lung@tables$step3$t.sigMultivariateCoxCoefficients
+sig.cox_lasso
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LUSC-metadata
-autor(lm.lusc@params$.metadata)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| LUSC-Group-distribution
-autor(lm.lusc@params$p.group)
+#| Group-distribution
+autor(lm.lung@params$p.group)
 ```
 
 
+
 ```{r eval = T, echo = F, results = "asis"}
-#| LUSC-Top-Features-Selected-By-EFS
-autor(lasso.lusc@plots$step2$p.TopFeaturesSelectedByEFS)
+#| LUNG-lasso-COX-model
+autor(lasso.lung@plots$step3$p.lassoCOX_model)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LUSC-Uni-COX-cofficients-filtered-by-EFS
-autor(sig.cox_efs)
+#| LUNG-lasso-COX-coeffients
+autor(lasso.lung@plots$step3$p.lassoCOX_coeffients)
 ```
 
-## Survival 生存分析 (LUSC)
+## Survival 生存分析 (LUNG)
 
-这些基因表达特征如 Fig. \@ref(fig:LUSC-risk-score-related-genes-heatmap) 热图所示。
+这些基因表达特征如  热图所示。
 
 建立预后特征，构建风险评分：
 
@@ -306,89 +300,48 @@ Score = \sum(expr(Gene) \times coef)
 $$
 
 按中位风险评分，将病例分为 Low 和 High 风险组，随后进行生存分析，
-见 Fig. \@ref(fig:LUSC-survival-curve-of-risk-score)。
-AUC 见 Fig. \@ref(fig:LUSC-time-ROC)。
+见
+`r ref("LUNG-survival-curve-of-risk-score")`。
+AUC 见`r ref("LUNG-time-ROC")` 
 第 1，3，5 年存活的患者，风险评分显著较低。
 
 ```{r}
-#' @meth {get_meth(surv.lusc)}
-surv.lusc <- asjob_survival(lasso.lusc, "uni_cox", sig.uni_cox = sig.cox_efs)
-surv.lusc <- step1(surv.lusc)
-surv.lusc@params$p.surv_genes_hp
-surv.lusc@plots$step1$risk_score$p.surv
-surv.lusc@plots$step1$risk_score$p.roc
-surv.lusc@plots$step1$risk_score$p.boxplot
+#' @meth {get_meth(surv.lung)}
+surv.lung <- asjob_survival(lasso.lung, "uni_cox", sig.uni_cox = sig.cox_lasso)
+surv.lung <- step1(surv.lung)
+surv.lung@params$p.surv_genes_hp
+surv.lung@plots$step1$p.surv$risk_score
+surv.lung@plots$step1$p.roc$risk_score
+surv.lung@plots$step1$p.boxplot$risk_score
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LUSC-risk-score-related-genes-heatmap
-autor(surv.lusc@params$p.surv_genes_hp)
+#| LUNG-risk-score-related-genes-heatmap
+autor(surv.lung@params$p.surv_genes_hp)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LUSC-survival-curve-of-risk-score
-autor(surv.lusc@plots$step1$risk_score$p.surv)
+#| LUNG-survival-curve-of-risk-score
+autor(surv.lung@plots$step1$p.surv$risk_score)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LUSC-time-ROC
-autor(surv.lusc@plots$step1$risk_score$p.roc)
+#| LUNG-time-ROC
+autor(surv.lung@plots$step1$p.roc$risk_score)
 ```
+
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LUSC-boxplot-of-risk-score
-autor(surv.lusc@plots$step1$risk_score$p.boxplot)
-```
-
-## COX 回归 (Prognosis)
-
-```{r}
-meta4 <- tbmerge(
-  select(lasso.lusc$metadata, rownames,
-    # smoking = paper_Smoking.Status,
-    # treatment_or_therapy,
-    age = age_at_index, gender, ajcc_pathologic_stage),
-  select(surv.lusc@object, rownames, risk_score),
-  by = "rownames"
-)
-meta4 <- dplyr::mutate(meta4,
-  # smoking = ifelse(is.na(smoking) | grpl(smoking, "N/A"),
-    # "not reported", as.character(smoking)),
-  ajcc_pathologic_stage = strx(ajcc_pathologic_stage, "Stage I[I]?"),
-  age = ifelse(is.na(age), "not reported",
-    ifelse(age > 65, "> 65", "<= 65"))
-)
-meta4 <- dplyr::filter(meta4, dplyr::if_all(-rownames, ~ !grpl(.x, "reported")))
-summary_tibble(meta4)
-
-#' @meth {get_meth(lasso.prog)}
-lasso.prog <- job_lasso(meta4[, -1], filter(lasso.lusc$metadata, rownames %in% meta4$rownames))
-lasso.prog <- step1(lasso.prog)
-lasso.prog <- step2(lasso.prog, efs = F)
-lasso.prog <- step3(lasso.prog, multi_cox = T, alpha = 0, use_data = "all")
-coefMerged <- lasso.prog@tables$step3$t.CoefficientsOfCOX
-coefMerged <- dplyr::mutate(coefMerged, feature = dplyr::recode(feature,
-    age = "Age (>65/<=64)", gender = "gender (female/male)",
-    ajcc_pathologic_stage = "AJCC stage (I/II)", risk_score = "Risk score")
-)
-coefMerged
-```
-
-进一步通过单因素和多因素 COX 回归的方式评估了包括风险评分在内的4项预后特征 (smoking, treatment 等其他数据缺失值较多，不易处理) 。
-
-单因素和多因素分析结果，风险评分是诊断早期肺癌预后的独立风险指标，见 Tab. \@ref(tab:META-Coefficients-Of-COX)。
-
-```{r eval = T, echo = F, results = "asis"}
-#| META-Coefficients-Of-COX
-autor(coefMerged)
+#| LUNG-boxplot-of-risk-score
+autor(surv.lung@plots$step1$p.boxplot$risk_score)
 ```
 
 ## GEO 数据获取 (GEO_LUSC)
 
-为了验证预后特征在不同数据平台上的性能，这里获取了 GEO 数据平台的早期肺癌数据 (GSE157010，微阵列数据)，并筛选了 Stage 为 I，II 阶段的病例。
+为了验证预后特征在不同数据平台上的性能，这里获取了 GEO 数据平台的早期肺癌数据 (GSE157010，微阵列数据)，并筛选了 Stage 为 I，II 阶段的病例。`r snap(lm.GEO_lusc, 1)`
 
 ```{r}
 #' @meth {get_meth(geo.lusc)}
@@ -417,28 +370,22 @@ lasso.GEO_lusc <- step1(lasso.GEO_lusc)
 # lasso.GEO_lusc <- step3(lasso.GEO_lusc, use_data = "all")
 ```
 
-
-```{r eval = T, echo = F, results = "asis"}
-#| LUSC-GSE157010-metadata
-autor(metadata.geolusc)
-```
-
 ## Survival 生存分析 (GEO_LUSC)
 
-GEO 数据集中，风险评分基因集表达特征见 Fig. \@ref(fig:GEO-LUSC-risk-score-related-genes-heatmap)。
+GEO 数据集中，风险评分基因集表达特征见
+Fig. \@ref(fig:GEO-LUSC-risk-score-related-genes-heatmap)
 将 GEO 数据集按相同的方式处理，并计算风险评分，
-生存结果见 Fig. \@ref(fig:GEO-LUSC-survival-curve-of-risk-score)，高风险组与低风险组显著差异。
-ROC 曲线见 Fig. \@ref(fig:GEO-LUSC-time-ROC)。
-第 1，3，5 年风险评分差异见 Fig. \@ref(fig:GEO-LUSC-boxplot-of-risk-score) 。
+生存结果见
+Fig. \@ref(fig:GEO-LUSC-survival-curve-of-risk-score)
+高风险组与低风险组显著差异。
+ROC 曲线见
+Fig. \@ref(fig:GEO-LUSC-time-ROC)。
+第 1，3，5 年风险评分差异见
+Fig. \@ref(fig:GEO-LUSC-boxplot-of-risk-score) 。
 
 ```{r}
-sigLusc <- lasso.lusc$sig.uni_cox
-sigLusc
-sigLusc_less <- dplyr::filter(sigLusc, !feature %in% c("HERC3", "SPACA9"))
-sigLusc_less
-
 #' @meth {get_meth(surv.GEO_lusc)}
-surv.GEO_lusc <- asjob_survival(lasso.GEO_lusc, sig.uni_cox = sig.cox_efs, force = T)
+surv.GEO_lusc <- asjob_survival(lasso.GEO_lusc, sig.uni_cox = sig.cox_lasso, force = T)
 surv.GEO_lusc@params$p.surv_genes_hp
 surv.GEO_lusc <- step1(surv.GEO_lusc)
 surv.GEO_lusc@plots$step1$risk_score$p.boxplot
@@ -446,61 +393,66 @@ surv.GEO_lusc@plots$step1$risk_score$p.roc
 surv.GEO_lusc@plots$step1$risk_score$p.surv
 ```
 
-```{r eval = T, echo = F, results = "asis"}
-#| GEO-LUSC-risk-score-related-genes-heatmap
-autor(surv.GEO_lusc@params$p.surv_genes_hp)
+## GEO 数据获取 (GEO_LUAD)
+
+```{r}
+gds.luad <- job_gds(c("lung adenocarcinoma", "survival"), 30:1000)
+gds.luad <- step1(gds.luad)
+vis(gds.luad)
+active(gds.luad)
+
+geo.luads <- batch_geo(gds.luad@object$GSE[21:43])
+rm(geo.luads)
+
+hasSurv <- c(gds.luad@object$GSE[21:43][c(1, 6, 9, 11, 12, 13)])
+#' @meth {get_meth(geo.luad)}
+geo.luad <- job_geo(hasSurv[1])
+geo.luad <- step1(geo.luad)
+geo.luad <- step2(geo.luad)
+
+metadata.geoluad <- dplyr::mutate(geo.luad$guess,
+  sample = rownames,
+  vital_status = ifelse(survstatus.ch1 == "0", "Alive", "Dead"),
+  group = vital_status,
+  days_to_last_follow_up = as.double(time.to.last.followup.ch1) * 30 * 12,
+  stage = Stage.ch1,
+  .before = 1
+)
+metadata.geoluad
+lm.luad <- asjob_limma(geo.luad, metadata.geoluad)
 ```
 
-
-```{r eval = T, echo = F, results = "asis"}
-#| GEO-LUSC-boxplot-of-risk-score
-autor(surv.GEO_lusc@plots$step1$risk_score$p.boxplot)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| GEO-LUSC-time-ROC
-autor(surv.GEO_lusc@plots$step1$risk_score$p.roc)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| GEO-LUSC-survival-curve-of-risk-score
-autor(surv.GEO_lusc@plots$step1$risk_score$p.surv)
-```
-
-
-## estimate 免疫评分 (LUSC)
+## estimate 免疫评分 (LUNG)
 
 为了探索标记与肿瘤免疫微环境之间的关系，我们对来自 TCGA LUSC 的数据进行了 ESTIMATE 计算免疫评分、ESTIMATE 评分和stromal 评分。根据评分结果，将病例分为 High 组和 Low 组，免疫评分和 ESTIMATE 评分较低的患者具有较高的风险评分，见 Fig. \@ref(fig:LUSC-immune-Scores-Plot)。
 此外，还比较了高危组和低危组之间编码免疫调节剂和趋化因子的基因的表达情况。从 TISIDB 数据库下载的 178 个基因中，有 127 个可以在 TCGA 表达矩阵中找到，两组之间有 119 个表达存在差异 (p.value &lt; 0.05)。
 前 10 个基因见 Fig. \@ref(fig:LUSC-Top10-Immune-Related-Genes)。
 
 ```{r}
-#' @meth {get_meth(est.lusc)}
-est.lusc <- asjob_estimate(lm.lusc, "gene_name")
-est.lusc <- step1(est.lusc)
-est.lusc <- step2(est.lusc, select(surv.lusc@object, sample = "rownames", risk_score), "risk_score")
-est.lusc <- step3(est.lusc,
-  select(surv.lusc@object, sample = "rownames", risk_group = score_group), "risk_group"
+#' @meth {get_meth(est.lung)}
+est.lung <- asjob_estimate(lm.lung, "gene_name")
+est.lung <- step1(est.lung)
+est.lung <- step2(est.lung, select(surv.lung@object, sample = "rownames", risk_score), "risk_score")
+est.lung <- step3(est.lung,
+  select(surv.lung@object, sample = "rownames", risk_group = score_group), "risk_group"
 )
-est.lusc@tables$step3$t.SignificantImmuneRelatedGenes
-est.lusc@tables$step2$t.immuneScores
-est.lusc@plots$step2$p.immuneScoresPlot
-est.lusc@plots$step3$p.Top10ImmuneRelatedGenes
+est.lung@tables$step3$t.SignificantImmuneRelatedGenes
+est.lung@tables$step2$t.immuneScores
+est.lung@plots$step2$p.immuneScoresPlot
+est.lung@plots$step3$p.Top10ImmuneRelatedGenes
 ftibble("./estimate/input.tsv")
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUSC-immune-Scores-Plot
-autor(est.lusc@plots$step2$p.immuneScoresPlot)
+autor(est.lung@plots$step2$p.immuneScoresPlot)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUSC-Top10-Immune-Related-Genes
-autor(est.lusc@plots$step3$p.Top10ImmuneRelatedGenes)
+autor(est.lung@plots$step3$p.Top10ImmuneRelatedGenes)
 ```
 
 
@@ -546,7 +498,7 @@ autor(lm.lncrna@plots$step3$p.sets_intersection)
 共包含 `r colSum(sigCor_mrna2lnc[[1]])` 个 mRNA，`r colSum(sigCor_mrna2lnc[[1]])` 个 lncRNA，`r nrow(sigCor_mrna2lnc)` 对关联关系。
 
 ```{r}
-p.hpCor <- cal_corp(lm.mrna, lm.lncrna, sig.cox_efs$feature, allsLncTops, c("mRNA", "LncRNA"))
+p.hpCor <- cal_corp(lm.mrna, lm.lncrna, sig.cox_lasso$feature, allsLncTops, c("mRNA", "LncRNA"))
 p.hpCor$sig.corp
 
 sigCor_mrna2lnc <- dplyr::filter(p.hpCor$sig.corp, abs(cor) > .6, pvalue < .001, cor != 1)
@@ -573,7 +525,7 @@ autor(sigCor_mrna2lnc)
 
 # 总结 {#conclusion}
 
-本研究为肺癌早期诊断建立了预后的独立风险指标，这些基因是 `r paste0(sig.cox_efs$Feature, collapse = ", ")`，
+本研究为肺癌早期诊断建立了预后的独立风险指标，这些基因是 `r paste0(sig.cox_lasso$Feature, collapse = ", ")`，
 可预测肺癌 LUSC 中，Sage I、II 的预后疗效。
 该风险评分对于 RNA-seq 可能有更敏感的评估，因为我们在 GEO 的微阵列数据集中，High 组与 Low 组
 的风险评分差异不如 TCGA 显著。由于 GEO 中，包含生存结局和详细临床数据记录的数据集不多，
