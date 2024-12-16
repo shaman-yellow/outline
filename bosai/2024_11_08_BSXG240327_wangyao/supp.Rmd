@@ -108,7 +108,7 @@ fun_filter <- function(rna = "protein_coding") {
 }
 #' @meth {get_meth(lm.mrna)}
 lm.mrna <- fun_filter("protein_coding")
-lm.mrna <- step1(lm.mrna, pca = T, norm_vis = T, batch = NULL)
+lm.mrna <- step1(lm.mrna, pca = T, norm_vis = T)
 lm.mrna <- step2(lm.mrna, Early_stage - Healthy, Advanced_stage - Healthy, Advanced_stage - Early_stage,
   use = "P", cut.fc = .5, use.cut = .05, label = "hgnc_symbol")
 lm.mrna <- step3(lm.mrna)
@@ -157,7 +157,7 @@ autor(lm.mrna@tables$step2$tops)
 mfuzz.mrna <- asjob_mfuzz(lm.mrna)
 mfuzz.mrna <- step1(mfuzz.mrna, 4:2)
 mfuzz.mrna <- step2(mfuzz.mrna, 10, c(2, 5), alpha = .3)
-mfuzz.mrna <- step3(mfuzz.mrna, 8, NULL)
+mfuzz.mrna <- step3(mfuzz.mrna, c(8, 10), c(3, 4))
 mfuzz.mrna$ups
 mfuzz.mrna@plots$step2$p.clusters
 mfuzz.mrna@params$clusters
