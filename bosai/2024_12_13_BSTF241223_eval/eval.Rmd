@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20241212"), end = td("20241213"), finish = NA,
+info <- items(start = td("20241212"), end = td("20241213"), finish = td("20241216"),
   id = "BSTF241223", client = "邓玲玲", inst = "山东省立医院",
   type = "生信评估",
   title = "",
@@ -34,4 +34,4 @@ set_cover.bosai(info)
 set_index()
 ```
 
-
+看这里 lasso 的图，应该是用 `cv.glmnet` 函数，不是有 45 个基因吗，为什么一开始就是 6 个基因了？
