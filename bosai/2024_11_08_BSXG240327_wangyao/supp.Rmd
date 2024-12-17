@@ -11,7 +11,7 @@ show.ic(info)
 
 order_publish.bosai("supp.Rmd", "supp_out.Rmd")
 idname <- formatName.bosai("./supp_out.docx")
-order_packaging("./supp_out.docx", idname = idname, external_file = NULL)
+order_packaging("./supp_out.docx", idname = idname, external_file = NULL, extras = "./order_material/anno.md")
 ```
 
 ```{r include = F}
@@ -569,3 +569,7 @@ autor(sigCor_mrna2lnc)
 诊断模型的构建，采用了 LASSO 处罚的 COX 回归，并采用了十倍交叉验证的方式选择参数，一定程度上反映了模型的鲁棒性。
 
 
+```{r}
+extract_anno("./order_material/BSXG240327-陈立茂-补充分析-基于血小板RNA测序数据预测早期肺癌潜在生物标志物-2024.12.17ByF.docx", "./order_material/anno.md")
+postModify_annoDocx("./order_material/anno.md")
+```
