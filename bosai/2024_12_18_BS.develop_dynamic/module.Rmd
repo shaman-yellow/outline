@@ -1,0 +1,38 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20241216"), end = td("20241218"), finish = td("20241218"),
+  id = "BS.develop", client = "", inst = "",
+  type = "模块开发",
+  title = "生信分析动态文档",
+  note = "基于 step 体系 (我在上一个公司时搭建的分析体系)，嵌入动态文档功能，做了优化，包括方法说明，阶段性分析结果。现已撰写网络药理学 (BATMAN-TCM)、limma 差异分析、lasso、survival、enrichment、ferrDb、GeneCard、stringdb、TCGA 等分析或数据库的动态文档。持续更新中。",
+  save = ".items_module.rds"
+)
+show.ic(info)
+
+order_publish.bosai("module.Rmd", "module_out.Rmd")
+formatName.bosai("./module_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+

@@ -1,0 +1,38 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20241210"), end = td("20241211"), finish = td("20241211"),
+  id = "BS.develop", client = "", inst = "",
+  type = "模块开发",
+  title = "GEO 数据库快速调研",
+  note = "以 EDirect (Unix) 和 GEOquery (R)，实现以关键词搜索获取数据集、元数据，取得样本分组信息，检测是否有充足临床数据 (例如生存时间等)。",
+  save = ".items_module.rds"
+)
+show.ic(info)
+
+order_publish.bosai("module.Rmd", "module_out.Rmd")
+formatName.bosai("./module_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+

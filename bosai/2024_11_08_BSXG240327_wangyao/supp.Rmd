@@ -52,7 +52,8 @@ route <- as_network(
     "Early_vs_healthy, Advanced_vs_healthy, Advanced_vs_early:DEGs",
     "DEGs:Mfuzz聚类",
     "Mfuzz聚类:Up_DEGs, Down_DEGs",
-    "Up_DEGs, Down_DEGs:富集分析, TCGA 数据集",
+    "Up_DEGs, Down_DEGs:富集分析",
+    "富集分析:TCGA 数据集",
     "TCGA 数据集:COX 回归",
     "COX 回归:单因素COX, LASSO_COX",
     "LASSO_COX:十倍交叉验证, 风险评分模型",
@@ -104,12 +105,12 @@ lm.all <- job_limma(new_dge(metadata, as_tibble(counts), bm.all$anno))
 
 ## Limma 差异分析 (MRNA)
 
-肝癌 RNA-seq， `r snap(lm.mrna)`
-对基因注释后，获取 mRNA 数据差异分析。
+肝癌 RNA-seq，
+`r snap(lm.mrna, 0)`
+`r snap(lm.mrna, 1)`
 `r snap(lm.mrna, 2)`
-得到的 DEGs 统计见 `r ref("MRNA-Difference-intersection")`
 `r snap(lm.mrna, 3)`
-
+见 `r ref("MRNA-Difference-intersection")`
 
 ```{r}
 fun_filter <- function(rna = "protein_coding") {
@@ -160,10 +161,11 @@ autor(lm.mrna@tables$step2$tops)
 
 ## Mfuzz 聚类分析 (MRNA)
 
-将上述筛选得的 DEGs 以 Mfuzz 聚类分析。
+`r snap(mfuzz.mrna, 0)`
+`r snap(mfuzz.mrna, 1)`
+`r snap(mfuzz.mrna, 2)`
+`r snap(mfuzz.mrna, 3)`
 见 `r ref("MRNA-Mfuzz-clusters")`
-`r snap(mfuzz.mrna)`。
-
 
 ```{r}
 #' @meth {get_meth(mfuzz.mrna)}
@@ -189,7 +191,7 @@ autor(mfuzz.mrna@plots$step2$p.clusters)
 
 ## 富集分析 (MRNA)
 
-将 MFuzz 上调聚类与下调聚类分别以 KEGG 富集分析。
+`r snap(en.mrna, 0)`
 KEGG 见 `r ref("MRNA-downs-KEGG-enrichment")`,
 `r ref("MRNA-ups-KEGG-enrichment")`
 GO 见 `r ref("MRNA-downs-GO-enrichment")`
@@ -209,7 +211,7 @@ en.mrna@plots$step1$p.kegg$downs
 en.mrna@plots$step1$p.go$ups
 en.mrna@plots$step1$p.go$downs
 
-en.mrna@tables$step1$res.kegg$ups$Description %>% head
+en.mrna@tables$step1$res.kegg$ups
 en.mrna@tables$step1$res.kegg$downs$Description
 ```
 
@@ -236,12 +238,10 @@ autor(en.mrna@plots$step1$p.go$ups)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| MRNA-downs-GO-enrichment
-autor(en.mrna@plots$step1$p.go$downs)
+autor(wrap(en.mrna@plots$step1$p.go$downs, 8, 8))
 ```
 
 ## TCGA 数据获取 (LUSC, LUAD)
-
-获取 TCGA-LUSC, TCGA-LUAD 数据，并将其合并，用于临床数据分析和预后模型建立。
 
 ```{r}
 #' @meth {get_meth(tc.lusc)}
@@ -263,6 +263,8 @@ tc.luad <- step3(tc.luad)
 tc.luad
 ```
 
+`r snap(tc.lung, 0)`
+
 ```{r}
 tc.lusc <- readRDS("./tc.lusc.3.rds")
 tc.luad <- readRDS("./tc.luad.3.rds")
@@ -274,15 +276,16 @@ tc.luad <- clear(tc.luad, save = F)
 
 ## COX 回归 (LUNG)
 
-筛选 AJCC Stage (ajcc_pathologic_stage) 为 Stage I, Stage II 的病人，并且 days_to_last_follow_up 大于 30 天，且为肿瘤组织的样本。`r snap(lm.lung, 1, NULL)`
+`r snap(lm.lung, 0)`
+`r snap(lasso.lung, 0)`
+`r snap(lasso.lung, 1)`
+`r snap(lasso.lung, 2)`
+`r snap(lasso.lung, 3)`
 
-将数据 (count) 标准化后 (同 MRNA 的方法)，以生存状态为指标
-(`r ref("Group-distribution")`)，单因素 COX 回归，筛选能显著预测生存结局的基因。
+单因素 COX 回归，筛选能显著预测生存结局的基因。
 在单因素 COX 回归的基础上，以 Lasso 处罚的多因素 COX 回归构建模型，十倍交叉验证，选择最佳 lambda 值，
 见 `r ref("LUNG-lasso-COX-model")`，选择 lambda.min，
 确定模型系数，见 `r ref("LUNG-sig-Multivariate-Cox-Coefficients")`
-
-
 
 ```{r}
 lm.lung <- asjob_limma(tc.lung,
@@ -296,12 +299,13 @@ lm.lung@params$.metadata
 lm.lung <- step1(lm.lung)
 
 #' @meth {get_meth(lasso.lung, F)}
-#' @meth 筛选 AJCC Stage (ajcc_pathologic_stage) 为 Stage I, Stage II 的病人，并且 days_to_last_follow_up 大于 30 天，且为肿瘤组织的样本 (并去除了来自相同病人的重复样本)。
-lasso.lung <- asjob_lasso(lm.lung, genes(unlist(en.mrna$raw)))
+#' @meth {snap(lm.lung, 0)}
+lasso.lung <- do_lasso(lm.lung, mfuzz.mrna)
 lasso.lung <- step1(lasso.lung)
 dim(lasso.lung@object)
 lasso.lung <- step2(lasso.lung, efs = F, use_data = "all")
 lasso.lung <- step3(lasso.lung, use_data = "all", multi_cox = T, fun_multiCox = "cv")
+
 lasso.lung@plots$step3$p.lassoCOX_model
 lasso.lung@plots$step3$p.lassoCOX_coeffients
 
@@ -401,6 +405,9 @@ gds.luad <- job_gds(c("lung adenocarcinoma", "survival"), 30:1000)
 gds.luad <- step1(gds.luad)
 vis(gds.luad)
 active(gds.luad)
+
+geo.lungs <- batch_geo(c("GSE30219",  "GSE50081",  "GSE31210",  "GSE11969",  "GSE68465"))
+geo.lungs$res
 
 geo.luads <- batch_geo(gds.luad@object$GSE[21:43])
 rm(geo.luads)
