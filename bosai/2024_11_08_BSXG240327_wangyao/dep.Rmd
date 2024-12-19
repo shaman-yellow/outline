@@ -290,3 +290,12 @@ surv.GEO_lusc@plots$step1$p.boxplot$risk_score
 surv.GEO_lusc@plots$step1$p.roc$risk_score
 ```
 
+
+metadata.geoluad <- dplyr::mutate(geo.luad$guess,
+  sample = rownames,
+  vital_status = ifelse(survstatus.ch1 == "0", "Alive", "Dead"),
+  group = vital_status,
+  days_to_last_follow_up = as.double(time.to.last.followup.ch1) * 30 * 12,
+  stage = Stage.ch1,
+  .before = 1
+)

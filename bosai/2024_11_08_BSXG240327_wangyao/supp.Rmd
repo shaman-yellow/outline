@@ -56,7 +56,7 @@ route <- as_network(
     "富集分析:TCGA 数据集",
     "TCGA 数据集:COX 回归",
     "COX 回归:单因素COX, LASSO_COX",
-    "LASSO_COX:十倍交叉验证, 风险评分模型",
+    "LASSO_COX:交叉验证, 风险评分模型",
     "风险评分模型:生存分析, ROC, 风险评分显著性, GEO 外部数据集验证",
     "GEO 外部数据集验证:免疫评分, LncRNA",
     "LncRNA:关联分析"
@@ -281,11 +281,8 @@ tc.luad <- clear(tc.luad, save = F)
 `r snap(lasso.lung, 1)`
 `r snap(lasso.lung, 2)`
 `r snap(lasso.lung, 3)`
-
-单因素 COX 回归，筛选能显著预测生存结局的基因。
-在单因素 COX 回归的基础上，以 Lasso 处罚的多因素 COX 回归构建模型，十倍交叉验证，选择最佳 lambda 值，
-见 `r ref("LUNG-lasso-COX-model")`，选择 lambda.min，
-确定模型系数，见 `r ref("LUNG-sig-Multivariate-Cox-Coefficients")`
+`r snap(lasso.lung, 4)`
+`r snap(lasso.lung, 5)`
 
 ```{r}
 lm.lung <- asjob_limma(tc.lung,
@@ -303,18 +300,19 @@ lm.lung <- step1(lm.lung)
 lasso.lung <- do_lasso(lm.lung, mfuzz.mrna)
 lasso.lung <- step1(lasso.lung)
 dim(lasso.lung@object)
-lasso.lung <- step2(lasso.lung, efs = F, use_data = "all")
-lasso.lung <- step3(lasso.lung, use_data = "all", multi_cox = T, fun_multiCox = "cv")
+lasso.lung <- step2(lasso.lung, use_data = "all", efs = F)
+lasso.lung <- step3(lasso.lung)
+lasso.lung <- step4(lasso.lung, fun = "cv", nfold = 7)
 
-lasso.lung@plots$step3$p.lassoCOX_model
-lasso.lung@plots$step3$p.lassoCOX_coeffients
+lasso.lung@params$sig.uni_cox
+lasso.lung@params$sig.mul_cox
+lasso.lung@plots$step4$p.lassoCOX_model
+lasso.lung@plots$step4$p.lassoCOX_coeffients
+lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.min
+lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se
 
-sig.cox_lasso <- lasso.lung@tables$step3$t.sigMultivariateCoxCoefficients
+sig.cox_lasso <- lasso.lung@tables$step4$t.sigMultivariateCoxCoefficients
 sig.cox_lasso
-
-lasso.lung@params$train
-lasso.lung@params$train.target
-lasso.lung@params$train.time
 
 ```
 
@@ -325,41 +323,44 @@ autor(lm.lung@params$p.group)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUNG-lasso-COX-model
-autor(lasso.lung@plots$step3$p.lassoCOX_model)
+autor(lasso.lung@plots$step4$p.lassoCOX_model)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUNG-lasso-COX-coeffients
-autor(lasso.lung@plots$step3$p.lassoCOX_coeffients)
+autor(lasso.lung@plots$step4$p.lassoCOX_coeffients)
 ```
-
-
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUNG-sig-Multivariate-Cox-Coefficients
 autor(sig.cox_lasso)
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-lasso-COX-ROC-lambda-min
+autor(lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-lasso-COX-ROC-lambda-1se
+autor(lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se)
+```
+
 ## Survival 生存分析 (LUNG)
 
-这些基因表达特征如热图所示`r ref("LUNG-risk-score-related-genes-heatmap")`，
+`r snap(surv.lung, 0)`
 
-建立预后特征，构建风险评分：
-
-$$
-Score = \sum(expr(Gene) \times coef)
-$$
-
-按中位风险评分，将病例分为 Low 和 High 风险组，随后进行生存分析，
-见 `r ref("LUNG-survival-curve-of-risk-score")`。
 此外，第 1，3，5 年存活的患者，风险评分显著较低`r ref("LUNG-boxplot-of-risk-score")`，
 AUC 见`r ref("LUNG-time-ROC")` 。
 
 ```{r}
 #' @meth {get_meth(surv.lung)}
-surv.lung <- asjob_survival(lasso.lung, "uni_cox", fea_coefs = sig.cox_lasso)
+surv.lung <- asjob_survival(lasso.lung, "mul", "1se")
 surv.lung <- step1(surv.lung)
+
 surv.lung@params$p.surv_genes_hp
 surv.lung@plots$step1$p.surv$risk_score
 surv.lung@plots$step1$p.roc$risk_score
@@ -392,33 +393,32 @@ autor(surv.lung@plots$step1$p.boxplot$risk_score)
 
 ## GEO 数据获取 (GEO_LUAD)
 
-使用 EDirect 检索所有包含 LUAD 数据后，进一步以 'Expression profiling by high throughput sequencing' 为条件 (考虑到 RNAseq 与微阵列数据的差异性)，最后，我们找到了一个可用的验证数据集: `r hasSurv[1]`。
-该数据集包含 `r nrow(metadata.geoluad)` 个样本。
-
-风险评分相关基因表达见 `r ref("GEO-LUAD-risk-score-related-genes-heatmap")` (注，该 GEO 数据集不含 H3C12 基因) 
-生存曲线见 `r ref("GEO-LUAD-survival-curve-of-risk-score")`，高风险评分生存率低于低风险评分组，但碍于于样本量较小，未显著。ROC  (五年)  见 `r ref("GEO-LUAD-time-ROC")` 。
+`r snap(gds.luad, 1)`
 
 
 ```{r}
 #' @meth {get_meth(gds.luad)}
-gds.luad <- job_gds(c("lung adenocarcinoma", "survival"), 30:1000)
-gds.luad <- step1(gds.luad)
+gds.luad <- job_gds(c("lung cancer", "survival"), 30:1000)
+gds.luad <- step1(gds.luad, grpl(gdsType, "^Expression[^;]*sequencing$"))
+gds.luad <- step2(gds.luad)
+gds.luad@object
 vis(gds.luad)
-active(gds.luad)
+hasSurv <- gds.luad$querys[ c(23, 7, 6) ]
+hasSurv
+# gds.luad$res
 
-geo.lungs <- batch_geo(c("GSE30219",  "GSE50081",  "GSE31210",  "GSE11969",  "GSE68465"))
-geo.lungs$res
+active(gds.luad, hasSurv)
 
-geo.luads <- batch_geo(gds.luad@object$GSE[21:43])
-rm(geo.luads)
+#' @meth {get_meth(geo.lung)}
+geo.lung <- job_geo(hasSurv[3])
+geo.lung <- step1(geo.lung)
+geo.lung$guess
+metadata.geolung <- geo.lung$guess
+metadata.geolung$survival.and_follow_up_.ned._no_evidence_of_disease..ch1
+geo.lung <- step2(geo.lung, rna = F)
+counts.lung <- ftibble(list.files(geo.lung$dir, full.names = T))
 
-hasSurv <- c(gds.luad@object$GSE[21:43][c(1, 6, 9, 11, 12, 13)])
-#' @meth {get_meth(geo.luad)}
-geo.luad <- job_geo(hasSurv[1])
-geo.luad <- step1(geo.luad)
-geo.luad <- step2(geo.luad)
-
-metadata.geoluad <- dplyr::mutate(geo.luad$guess,
+metadata.geolung <- dplyr::mutate(metadata.geolung,
   sample = rownames,
   vital_status = ifelse(survstatus.ch1 == "0", "Alive", "Dead"),
   group = vital_status,
@@ -426,22 +426,24 @@ metadata.geoluad <- dplyr::mutate(geo.luad$guess,
   stage = Stage.ch1,
   .before = 1
 )
-metadata.geoluad <- dplyr::filter(metadata.geoluad, days_to_last_follow_up > 30)
-metadata.geoluad
-lm.GEO_luad <- asjob_limma(geo.luad, metadata.geoluad)
-lm.GEO_luad <- step1(lm.GEO_luad)
+metadata.geolung <- dplyr::filter(metadata.geolung, days_to_last_follow_up > 30)
+metadata.geolung
+lm.GEO_lung <- asjob_limma(geo.lung, metadata.geolung)
+lm.GEO_lung <- step1(lm.GEO_lung)
 
-lasso.GEO_luad <- asjob_lasso(lm.GEO_luad, unlist(en.mrna$raw),
+lasso.GEO_lung <- asjob_lasso(lm.GEO_lung, unlist(en.mrna$raw),
   use = "hgnc_symbol", dup_method = "max")
-lasso.GEO_luad <- step1(lasso.GEO_luad)
+lasso.GEO_lung <- step1(lasso.GEO_lung)
 ```
 
 ```{r}
-surv.GEO_luad <- asjob_survival(lasso.GEO_luad, fea_coefs = sig.cox_lasso, force = T)
-surv.GEO_luad <- step1(surv.GEO_luad, only_keep_sig = F, roc_time = 5)
-surv.GEO_luad@params$p.surv_genes_hp
-surv.GEO_luad@plots$step1$p.surv$risk_score
-surv.GEO_luad@plots$step1$p.roc$risk_score
+lasso.lung@params$sig.mul_cox
+surv.GEO_lung <- asjob_survival(lasso.GEO_lung, fea_coefs = surv.lung$fea_coefs, force = T)
+surv.GEO_lung <- step1(surv.GEO_lung, only_keep_sig = F, roc_time = 5)
+
+surv.GEO_lung@params$p.surv_genes_hp
+surv.GEO_lung@plots$step1$p.surv$risk_score
+surv.GEO_lung@plots$step1$p.roc$risk_score
 
 ```
 
@@ -450,19 +452,19 @@ surv.GEO_luad@plots$step1$p.roc$risk_score
 
 ```{r eval = T, echo = F, results = "asis"}
 #| GEO-LUAD-risk-score-related-genes-heatmap
-autor(surv.GEO_luad@params$p.surv_genes_hp)
+autor(surv.GEO_lung@params$p.surv_genes_hp)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
 #| GEO-LUAD-survival-curve-of-risk-score
-autor(surv.GEO_luad@plots$step1$p.surv$risk_score)
+autor(surv.GEO_lung@plots$step1$p.surv$risk_score)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
 #| GEO-LUAD-time-ROC
-autor(surv.GEO_luad@plots$step1$p.roc$risk_score)
+autor(surv.GEO_lung@plots$step1$p.roc$risk_score)
 ```
 
 ## estimate 免疫评分 (LUNG)
@@ -573,7 +575,7 @@ autor(sigCor_mrna2lnc)
 的风险评分差异不如 TCGA 显著。由于 GEO 中，包含生存结局和详细临床数据记录的数据集不多，
 仅对 LUSC 的数据集进行了验证，而未能找到 LUAD 的 RNA-seq 数据集进行验证
 (对 GEO 的搜索策略涵盖了整个 GEO 数据集：以 EDirect 检索得到 GSE ID，所有以 GEOquery 获取数据集的元数据，仅包含生存数据的数据集可用于验证) 。
-诊断模型的构建，采用了 LASSO 处罚的 COX 回归，并采用了十倍交叉验证的方式选择参数，一定程度上反映了模型的鲁棒性。
+诊断模型的构建，采用了 LASSO 处罚的 COX 回归，并采用了 `r lasso.lung$nfold` 倍交叉验证的方式选择参数，一定程度上反映了模型的鲁棒性。
 
 
 ```{r}
