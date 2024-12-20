@@ -6,7 +6,7 @@ info <- items(start = td("20241216"), end = td("20241218"), finish = td("2024121
   id = "BS.develop", client = "", inst = "",
   type = "模块开发",
   title = "生信分析动态文档",
-  note = "基于 step 体系 (我在上一个公司时搭建的分析体系)，嵌入动态文档功能，做了优化，包括方法说明，阶段性分析结果。现已撰写网络药理学 (BATMAN-TCM)、limma 差异分析、lasso、survival、enrichment、ferrDb、GeneCard、stringdb、TCGA 等分析或数据库的动态文档。持续更新中。",
+  note = "基于 step 体系 (我在上一个公司时搭建的分析体系)，嵌入动态文档功能，包含方法说明，一般分析总结，图片、表格说明 (待完善) 。",
   save = ".items_module.rds"
 )
 show.ic(info)

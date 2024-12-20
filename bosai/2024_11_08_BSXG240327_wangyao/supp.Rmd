@@ -11,7 +11,8 @@ show.ic(info)
 
 order_publish.bosai("supp.Rmd", "supp_out.Rmd")
 idname <- formatName.bosai("./supp_out.docx")
-order_packaging("./supp_out.docx", idname = idname, external_file = NULL, extras = "./order_material/anno.md")
+order_packaging("./supp_out.docx", idname = idname, external_file = NULL,
+  extras = "Reply_冯力.docx")
 ```
 
 ```{r include = F}
@@ -57,8 +58,8 @@ route <- as_network(
     "TCGA 数据集:COX 回归",
     "COX 回归:单因素COX, LASSO_COX",
     "LASSO_COX:交叉验证, 风险评分模型",
-    "风险评分模型:生存分析, ROC, 风险评分显著性, GEO 外部数据集验证",
-    "GEO 外部数据集验证:免疫评分, LncRNA",
+    "风险评分模型:生存分析, ROC, GEO 外部数据集验证, lncRNA",
+    "GEO 外部数据集验证:GSE_1, GSE_2",
     "LncRNA:关联分析"
     ), "tree"
 )
@@ -71,7 +72,7 @@ p.route
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Route
-autor(wrap(p.route, 10, 9))
+autor(wrap(p.route, 10, 9, showtext = T))
 ```
 
 # 材料和方法 {#introduction}
@@ -173,10 +174,9 @@ autor(lm.mrna@tables$step2$tops)
 mfuzz.mrna <- asjob_mfuzz(lm.mrna)
 mfuzz.mrna <- step1(mfuzz.mrna, 4:2)
 mfuzz.mrna <- step2(mfuzz.mrna, 10, c(2, 5), alpha = .3)
-mfuzz.mrna <- step3(mfuzz.mrna, c(8, 10), c(3, 4))
+mfuzz.mrna <- step3(mfuzz.mrna, c(2), c(1, 6))
 mfuzz.mrna$ups
 # autosv(mfuzz.mrna@plots$step2$p.clusters, "MRNA-Mfuzz-clusters")
-mfuzz.mrna@plots$step2$p.clusters <- file_fig("MRNA-Mfuzz-clusters", .file_fig("./Figure+Table/MRNA-Mfuzz-clusters.pdf"))
 mfuzz.mrna@plots$step2$p.clusters
 mfuzz.mrna@params$clusters
 mfuzz.mrna@params$up
@@ -263,7 +263,7 @@ tc.luad <- step3(tc.luad)
 tc.luad
 ```
 
-`r snap(tc.lung, 0)`
+`r snap(tc.lung, "merge")`
 
 ```{r}
 tc.lusc <- readRDS("./tc.lusc.3.rds")
@@ -276,33 +276,26 @@ tc.luad <- clear(tc.luad, save = F)
 
 ## COX 回归 (LUNG)
 
-`r snap(lm.lung, 0)`
-`r snap(lasso.lung, 0)`
-`r snap(lasso.lung, 1)`
-`r snap(lasso.lung, 2)`
-`r snap(lasso.lung, 3)`
-`r snap(lasso.lung, 4)`
-`r snap(lasso.lung, 5)`
+`r snap(lm.lung, 0:5)`
+`r snap(lasso.lung, 0:5)`
 
 ```{r}
 lm.lung <- asjob_limma(tc.lung,
   grpl(ajcc_pathologic_stage, "Stage [I]{1,2}[AB]?$"),
   days_to_last_follow_up >= 30, isTumor == "tumor")
-
-lm.lung@params$p.isTumor
-lm.lung@params$t.common
-lm.lung@params$p.group
-lm.lung@params$.metadata
 lm.lung <- step1(lm.lung)
 
-#' @meth {get_meth(lasso.lung, F)}
+#' @meth {get_meth(lasso.lung, F)[-4]}
 #' @meth {snap(lm.lung, 0)}
 lasso.lung <- do_lasso(lm.lung, mfuzz.mrna)
 lasso.lung <- step1(lasso.lung)
 dim(lasso.lung@object)
-lasso.lung <- step2(lasso.lung, use_data = "all", efs = F)
-lasso.lung <- step3(lasso.lung)
-lasso.lung <- step4(lasso.lung, fun = "cv", nfold = 7)
+lasso.lung <- step2(lasso.lung, use_data = "all", efs = F, top = 50)
+lasso.lung <- step3(lasso.lung, use_tops = T)
+
+lasso.lung@step <- 3L
+lasso.lung$seed <- 5136
+lasso.lung <- step4(lasso.lung, fun = "cv", nfold = 5)
 
 lasso.lung@params$sig.uni_cox
 lasso.lung@params$sig.mul_cox
@@ -311,15 +304,8 @@ lasso.lung@plots$step4$p.lassoCOX_coeffients
 lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.min
 lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se
 
-sig.cox_lasso <- lasso.lung@tables$step4$t.sigMultivariateCoxCoefficients
-sig.cox_lasso
-
 ```
 
-```{r eval = T, echo = F, results = "asis"}
-#| Group-distribution
-autor(lm.lung@params$p.group)
-```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUNG-lasso-COX-model
@@ -330,11 +316,6 @@ autor(lasso.lung@plots$step4$p.lassoCOX_model)
 ```{r eval = T, echo = F, results = "asis"}
 #| LUNG-lasso-COX-coeffients
 autor(lasso.lung@plots$step4$p.lassoCOX_coeffients)
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| LUNG-sig-Multivariate-Cox-Coefficients
-autor(sig.cox_lasso)
 ```
 
 
@@ -351,20 +332,16 @@ autor(lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se)
 
 ## Survival 生存分析 (LUNG)
 
-`r snap(surv.lung, 0)`
-
-此外，第 1，3，5 年存活的患者，风险评分显著较低`r ref("LUNG-boxplot-of-risk-score")`，
-AUC 见`r ref("LUNG-time-ROC")` 。
+`r snap(surv.lung, 0:1)`
 
 ```{r}
 #' @meth {get_meth(surv.lung)}
-surv.lung <- asjob_survival(lasso.lung, "mul", "1se")
+surv.lung <- asjob_survival(lasso.lung, "mul", "1", base_method = "s")
 surv.lung <- step1(surv.lung)
 
 surv.lung@params$p.surv_genes_hp
 surv.lung@plots$step1$p.surv$risk_score
 surv.lung@plots$step1$p.roc$risk_score
-surv.lung@plots$step1$p.boxplot$risk_score
 ```
 
 
@@ -386,38 +363,80 @@ autor(surv.lung@plots$step1$p.roc$risk_score)
 ```
 
 
-```{r eval = T, echo = F, results = "asis"}
-#| LUNG-boxplot-of-risk-score
-autor(surv.lung@plots$step1$p.boxplot$risk_score)
-```
+## GSE 数据搜索 (LUNG)
 
-## GEO 数据获取 (GEO_LUAD)
-
-`r snap(gds.luad, 1)`
-
+`r snap(gds.lung, 0:2)`
+`r bind(hasSurv)` 含有生存信息。
+GSE198048  不包含生存事件 (Dead) 。 因此，以 `r bind(hasSurv[-2])` 验证。
 
 ```{r}
-#' @meth {get_meth(gds.luad)}
-gds.luad <- job_gds(c("lung cancer", "survival"), 30:1000)
-gds.luad <- step1(gds.luad, grpl(gdsType, "^Expression[^;]*sequencing$"))
-gds.luad <- step2(gds.luad)
-gds.luad@object
-vis(gds.luad)
-hasSurv <- gds.luad$querys[ c(23, 7, 6) ]
+#' @meth {get_meth(gds.lung)}
+gds.lung <- job_gds(c("lung cancer", "survival"), 30:1000)
+gds.lung <- step1(gds.lung, grpl(gdsType, "^Expression[^;]*sequencing$"))
+gds.lung <- step2(gds.lung)
+gds.lung@object
+vis(gds.lung)
+hasSurv <- gds.lung$querys[ c(23, 7, 6) ]
 hasSurv
-# gds.luad$res
+# gds.lung$res
 
-active(gds.luad, hasSurv)
+active(gds.lung, hasSurv)
+```
 
+
+## GEO 数据获取 (GEO_LUNG2)
+
+```{r}
+geo.lung2 <- job_geo(hasSurv[3])
+geo.lung2 <- step1(geo.lung2)
+geo.lung2 <- step2(geo.lung2, rna = F)
+geo.lung2$prods
+counts.geolung2 <- ftibble(list.files("~/disk_sda1/GEO/GSE256047", full.names = T))
+counts.geolung2 <- dplyr::mutate(counts.geolung2, dplyr::across(dplyr::where(is.numeric), log2))
+counts.geolung2
+
+metadata.geolung2 <- geo.lung2$guess
+metadata.geolung2 <- dplyr::mutate(metadata.geolung2,
+  sample = title, group = group.ch1,
+  des = survival.and_follow_up_.ned._no_evidence_of_disease..ch1,
+  vital_status = stringr::str_extract(des, "[Dd]ie|NED|[Aa]live"),
+  vital_status = ifelse(grpl(vital_status, "die", T), "Dead",
+    ifelse(!is.na(vital_status), "Alive", "")),
+  days_to_last_follow_up = as.double(unlist(
+    lapply(stringr::str_extract_all(des, "[0-9.]+"),
+      function(x) if (length(x)) tail(x, n = 1) else ""
+    ))) * 30,
+  .before = 1
+)
+metadata.geolung2
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG2-GSE256047
+autor(geo.lung2$prods)
+```
+
+`r snap(lm.GEO_lung2, 0:2)`
+`r snap(lasso.GEO_lung2, 0:2)`
+
+```{r}
+lm.GEO_lung2 <- job_limma_normed(counts.geolung2, metadata.geolung2, dplyr::select(counts.geolung2, 1))
+lm.GEO_lung2 <- filter(lm.GEO_lung2, vital_status != "", days_to_last_follow_up > 10, type = "metadata")
+
+lasso.GEO_lung2 <- asjob_lasso(lm.GEO_lung2, use = "V1", dup_method = "max")
+```
+
+
+## GEO 数据获取 (GEO_LUNG)
+
+```{r}
 #' @meth {get_meth(geo.lung)}
-geo.lung <- job_geo(hasSurv[3])
+geo.lung <- job_geo(hasSurv[1])
 geo.lung <- step1(geo.lung)
-geo.lung$guess
-metadata.geolung <- geo.lung$guess
-metadata.geolung$survival.and_follow_up_.ned._no_evidence_of_disease..ch1
-geo.lung <- step2(geo.lung, rna = F)
-counts.lung <- ftibble(list.files(geo.lung$dir, full.names = T))
+geo.lung$prods
+geo.lung <- step2(geo.lung)
 
+metadata.geolung <- geo.lung$guess
 metadata.geolung <- dplyr::mutate(metadata.geolung,
   sample = rownames,
   vital_status = ifelse(survstatus.ch1 == "0", "Alive", "Dead"),
@@ -426,28 +445,36 @@ metadata.geolung <- dplyr::mutate(metadata.geolung,
   stage = Stage.ch1,
   .before = 1
 )
-metadata.geolung <- dplyr::filter(metadata.geolung, days_to_last_follow_up > 30)
-metadata.geolung
 lm.GEO_lung <- asjob_limma(geo.lung, metadata.geolung)
+lm.GEO_lung <- filter(lm.GEO_lung, days_to_last_follow_up > 10, type = "metadata")
 lm.GEO_lung <- step1(lm.GEO_lung)
-
-lasso.GEO_lung <- asjob_lasso(lm.GEO_lung, unlist(en.mrna$raw),
-  use = "hgnc_symbol", dup_method = "max")
-lasso.GEO_lung <- step1(lasso.GEO_lung)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-GSE87340
+autor(geo.lung$prods)
+```
+
+`r snap(lm.GEO_lung, 0:3)`
+
+## Survival 生存分析 (GEO_LUNG) (验证)
+
+`r snap(lasso.GEO_lung, 0:2)`
+`r snap(surv.GEO_lung, 0:2)`
+
 ```{r}
-lasso.lung@params$sig.mul_cox
+lasso.GEO_lung <- asjob_lasso(lm.GEO_lung, use = "hgnc_symbol", dup_method = "max")
+lasso.GEO_lung <- merge(lasso.GEO_lung, lasso.GEO_lung2)
+lasso.GEO_lung <- step1(lasso.GEO_lung)
+
 surv.GEO_lung <- asjob_survival(lasso.GEO_lung, fea_coefs = surv.lung$fea_coefs, force = T)
-surv.GEO_lung <- step1(surv.GEO_lung, only_keep_sig = F, roc_time = 5)
+surv.GEO_lung <- step1(surv.GEO_lung, only_keep_sig = F, roc_time = c(1, 3, 5))
 
 surv.GEO_lung@params$p.surv_genes_hp
 surv.GEO_lung@plots$step1$p.surv$risk_score
 surv.GEO_lung@plots$step1$p.roc$risk_score
 
 ```
-
-
 
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -467,48 +494,15 @@ autor(surv.GEO_lung@plots$step1$p.surv$risk_score)
 autor(surv.GEO_lung@plots$step1$p.roc$risk_score)
 ```
 
-## estimate 免疫评分 (LUNG)
-
-为了探索标记与肿瘤免疫微环境之间的关系，我们对来自 TCGA LUSC 的数据进行了 ESTIMATE 计算免疫评分、ESTIMATE 评分和stromal 评分。根据评分结果，将病例分为 High 组和 Low 组。
-还比较了高危组和低危组之间编码免疫调节剂和趋化因子的基因的表达情况。从 TISIDB 数据库下载的 178 个基因中，有 127 个可以在 TCGA 表达矩阵中找到，两组之间有 `r nrow(tbl_est.lung_tSign)` 个表达存在差异 (p.value &lt; 0.05)。
-前 10 个基因见
-`r ref("LUSC-Top10-Immune-Related-Genes")`
-
-```{r}
-#' @meth {get_meth(est.lung)}
-est.lung <- asjob_estimate(lm.lung, "gene_name")
-est.lung <- step1(est.lung)
-est.lung <- step2(est.lung, select(surv.lung@object, sample = "rownames", risk_score), "risk_score")
-est.lung <- step3(est.lung,
-  select(surv.lung@object, sample = "rownames", risk_group = score_group), "risk_group"
-)
-est.lung@tables$step3$t.SignificantImmuneRelatedGenes
-tbl_est.lung_tSign <- est.lung@tables$step3$t.SignificantImmuneRelatedGenes
-est.lung@tables$step2$t.immuneScores
-est.lung@plots$step3$p.Top10ImmuneRelatedGenes
-ftibble("./estimate/input.tsv")
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| LUSC-Top10-Immune-Related-Genes
-autor(est.lung@plots$step3$p.Top10ImmuneRelatedGenes)
-```
-
-
 ## Limma 差异分析 (LNCRNA)
 
 长链非编码RNA（lncRNA）在基因调控和癌症发展中起着重要作用。
-这里对 lncRNA 做了差异分析，并与 mRNA 关联分析。
-`r snap(lm.lncrna, 2)`。
-得到的 DEGs 统计见
-`r ref("LNCRNA-Difference-intersection")`
-`r snap(lm.lncrna, 3)`。
 
+`r snap(lm.lncrna, 0:3)`
 
 ```{r}
 #' @meth {get_meth(lm.lncrna)}
 lm.lncrna <- fun_filter("lncRNA")
-lm.lncrna@object
 lm.lncrna <- step1(lm.lncrna, pca = T, norm_vis = T)
 lm.lncrna <- step2(lm.lncrna, Early_stage - Healthy, Advanced_stage - Healthy, Advanced_stage - Early_stage,
   use = "P", cut.fc = .5, use.cut = .05, label = "hgnc_symbol")
@@ -535,18 +529,17 @@ autor(lm.lncrna@plots$step3$p.sets_intersection)
 
 ## 关联分析 (MRNA, LNCRNA)
 
-将相关系数 &gt; 0.5 和 p &lt; 0.001 设定为识别相关阈值，最终建立网络图见
-`r ref("Significant-Correlation-mrna-lncRNA")`
-共包含 `r colSum(sigCor_mrna2lnc[[1]])` 个 mRNA，
-`r colSum(sigCor_mrna2lnc[[1]])` 个 lncRNA，
-`r nrow(sigCor_mrna2lnc)` 对关联关系。
+`r snap(cp.cor, 0:1)`
+`r snap(sigCor_mrna2lnc, 0:3)`
 
 ```{r}
-p.hpCor <- cal_corp(lm.mrna, lm.lncrna, sig.cox_lasso$feature, allsLncTops, c("mRNA", "LncRNA"))
-p.hpCor$sig.corp
+cp.cor <- cal_corp(lm.mrna, lm.lncrna, surv.lung$fea_coefs$feature, allsLncTops, c("mRNA", "LncRNA"))
 
-sigCor_mrna2lnc <- dplyr::filter(p.hpCor$sig.corp, abs(cor) > .5, pvalue < .001, cor != 1)
+sigCor_mrna2lnc <- dplyr::mutate(cp.cor$sig.corp, `|cor|` = abs(cor))
+sigCor_mrna2lnc <- dplyr::filter(sigCor_mrna2lnc, cor != 1)
+sigCor_mrna2lnc <- trace_filter(sigCor_mrna2lnc, `|cor|` > 0.4, pvalue < 0.001)
 sigCor_mrna2lnc
+
 p.sigCor_mrna2lnc <- plot_network.pharm(dplyr::mutate(sigCor_mrna2lnc[, 1:2], Cor = "Cor", .before = 1),
   ax1 = "Cor", ax2 = "mRNA", ax3 = "lncRNA", less.label = F)
 p.sigCor_mrna2lnc
@@ -569,16 +562,14 @@ autor(sigCor_mrna2lnc)
 
 # 总结 {#conclusion}
 
-本研究为肺癌早期诊断建立了预后的独立风险指标，这些基因是 `r bind(sig.cox_lasso$feature)`，
+本研究为肺癌早期诊断建立了预后的独立风险指标，这些基因是 `r bind(surv.lung$fea_coefs$feature)`，
 可预测肺癌 (包括 LUSC, LUAD) 中，Sage I、II 的预后疗效。
-该风险评分对于 RNA-seq 可能有更敏感的评估，因为我们在 GEO 的微阵列数据集中，High 组与 Low 组
-的风险评分差异不如 TCGA 显著。由于 GEO 中，包含生存结局和详细临床数据记录的数据集不多，
-仅对 LUSC 的数据集进行了验证，而未能找到 LUAD 的 RNA-seq 数据集进行验证
-(对 GEO 的搜索策略涵盖了整个 GEO 数据集：以 EDirect 检索得到 GSE ID，所有以 GEOquery 获取数据集的元数据，仅包含生存数据的数据集可用于验证) 。
-诊断模型的构建，采用了 LASSO 处罚的 COX 回归，并采用了 `r lasso.lung$nfold` 倍交叉验证的方式选择参数，一定程度上反映了模型的鲁棒性。
+该风险评分对于 RNA-seq 可能有更敏感的评估，因为训练于 TCGA 的 RNA-seq 数据集。
+由于 GEO 中，包含生存结局和详细临床数据记录的数据集不多，本次验证尽可能涵盖了整个 GEO 数据库。
 
 
 ```{r}
 extract_anno("./order_material/BSXG240327-陈立茂-补充分析-基于血小板RNA测序数据预测早期肺癌潜在生物标志物-2024.12.17ByF.docx", "./order_material/anno.md")
 postModify_annoDocx("./order_material/anno.md")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_冯力.docx")
 ```
