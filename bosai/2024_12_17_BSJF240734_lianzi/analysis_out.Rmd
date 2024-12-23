@@ -47,7 +47,8 @@ set_index()
 
 ```{r}
 dic(di("差异表达基因"),
-  di("慢性肾病")
+  di("慢性肾病"),
+  di("占位符")
 )
 
 ```
@@ -95,6 +96,9 @@ collate_details("meth")
 `r snap(bat.qingxin, 1)`
 `r snap(bat.qingxin, 2)`
 
+`r ref("Intersection-of-herbs-compounds")` 
+`r ref("Intersection-of-herbs-all-targets")` 
+
 ```{r}
 herbs <- c("莲子", "麦冬", "黄芩", "地骨皮", "人参", "车前子", "甘草", "赤芍", "黄芪")
 #' @meth {get_meth(bat.qingxin)}
@@ -140,6 +144,10 @@ autor(gn.ckd@tables$step1$t.genecards)
 ```
 
 ## Network 疾病-成分-靶点 (QINGXIN)
+
+
+`r ref("QINGXIN-network-pharmacology-with-disease")` 
+`r ref("QINGXIN-Targets-intersect-with-targets-of-diseases")` 
 
 ```{r}
 bat.qingxin <- map(bat.qingxin, list(gn.ckd@tables$step1$t.genecards$Symbol))
@@ -193,6 +201,7 @@ en.common <- step1(en.common)
 en.common <- step2(en.common, "hsa04066")
 en.common@plots$step2$p.pathviews$hsa04066
 en.common@plots$step1$p.kegg$ids
+en.common@plots$step1$p.go$ids
 en.common@tables$step1$res.kegg$ids
 wrap(en.common@plots$step1$p.go$ids, 8, 7)
 ```
@@ -225,4 +234,11 @@ autor(en.common@plots$step2$p.pathviews$hsa04066)
 
 调控铁死亡的通路可能是 HIF-1 ，见`r ref("COMMON-hsa04066-visualization")` 。
 其他可能的通路，见`r ref("COMMON-KEGG-enrichment-data")` 
+
+```{r}
+extract_anno("./order_material/BSJF240734-林波-生信分析-清心莲子饮网络药理学分析-2024.12.17-YRX批注 (1).docx"
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_闫姐.docx")
+
+
+```
 

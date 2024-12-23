@@ -106,7 +106,7 @@ lm.all <- job_limma(new_dge(metadata, as_tibble(counts), bm.all$anno))
 
 ## Limma 差异分析 (MRNA)
 
-肝癌 RNA-seq，
+肺癌 RNA-seq，
 `r snap(lm.mrna, 0)`
 `r snap(lm.mrna, 1)`
 `r snap(lm.mrna, 2)`
