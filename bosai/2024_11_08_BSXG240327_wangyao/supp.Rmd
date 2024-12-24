@@ -573,3 +573,32 @@ extract_anno("./order_material/BSXG240327-陈立茂-补充分析-基于血小板
 postModify_annoDocx("./order_material/anno.md")
 cdRun("pandoc ./order_material/comment_reply.md -o Reply_冯力.docx")
 ```
+
+```{r}
+raw <- clinical <- fxlsx("./order_material/样本信息（更新性别和年龄）-待补充信息.xlsx")
+clinical <- dplyr::select(
+  clinical, name = 编号, gender = 性别, age = 年龄,
+  stage = 病理分期..什么标准..
+)
+clinical <- dplyr::mutate(
+  clinical, name = gs(name, "_L1$", ""),
+  gender = dplyr::recode(gender, "男" = "male", "女" = "female"),
+  age = as.integer(age)
+)
+clinical <- dplyr::filter(clinical, name %in% rownames(metadata))
+clinical <- map(
+  clinical, "name", as_tibble(metadata), 
+  "rownames", "group", col = "stage"
+)
+clinical <- dplyr::select(clinical, -name)
+
+res <- summary_tibble2(clinical, "stage")
+openxlsx::write.xlsx(res, "clinical_feature.xlsx")
+pretty_flex(res, "", NULL)
+
+# hasUsed <- ins(
+#   meta = rownames(metadata), count = colnames(counts), clinical = clinical[[1]]
+# )
+# rownames(metadata) %>% .[ ! . %in% clinical[[1]] ]
+# dplyr::filter(clinical, grpl(编号, "_L1$"))
+```

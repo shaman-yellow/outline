@@ -85,8 +85,7 @@ collate_details("meth")
 
 ## BATMAN 网络药理学 (QINGXIN)
 
-`r snap(bat.qingxin, 1)`
-`r snap(bat.qingxin, 2)`
+`r snap(bat.qingxin, 0:3)`
 
 `r ref("Intersection-of-herbs-compounds")` 
 `r ref("Intersection-of-herbs-all-targets")` 
@@ -97,8 +96,7 @@ herbs <- c("莲子", "麦冬", "黄芩", "地骨皮", "人参", "车前子", "�
 
 bat.qingxin <- job_batman(herbs)
 bat.qingxin$herbs_info %<>% dplyr::distinct(Chinese.Name, .keep_all = T)
-bat.qingxin <- step1(bat.qingxin, F, T, F)
-
+bat.qingxin <- step1(bat.qingxin)
 bat.qingxin <- step2(bat.qingxin)
 bat.qingxin <- step3(bat.qingxin)
 
@@ -127,7 +125,6 @@ autor(bat.qingxin@plots$step3$p.herbs_targets)
 gn.ckd <- job_genecard("Chronic kidney disease")
 gn.ckd <- step1(gn.ckd, 3)
 gn.ckd@tables$step1$t.genecards
-
 ```
 
 
@@ -136,16 +133,16 @@ gn.ckd@tables$step1$t.genecards
 autor(gn.ckd@tables$step1$t.genecards)
 ```
 
-## Network 疾病-成分-靶点 (QINGXIN)
+## Network 中药-成分-疾病-靶点网络 (QINGXIN)
 
+`r snap(bat.qingxin, "m")`
 
 `r ref("QINGXIN-network-pharmacology-with-disease")` 
 `r ref("QINGXIN-Targets-intersect-with-targets-of-diseases")` 
 
 ```{r}
-bat.qingxin <- map(bat.qingxin, list(gn.ckd@tables$step1$t.genecards$Symbol))
-bat.qingxin@params$p.venn2dis$ins
-character_bat.qingxin_ins <- bat.qingxin@params$p.venn2dis$ins
+bat.qingxin <- map(bat.qingxin, feature(gn.ckd))
+bat.qingxin@params$p.venn2dis %>% Legend
 wrap(bat.qingxin@params$p.venn2dis, 6, 4)
 wrap(bat.qingxin@params$p.pharm2dis, 12, 10)
 ```
@@ -175,10 +172,11 @@ fe.ferr@tables$step1$t.ferroptosisRegulators
 
 ## FerrDb 与铁死亡相关基因的交集 (FERR)
 
+`r snap(fe.ferr, "m")`
 `r ref("Intersection-of-Related-targets-with-Ferroptosis-all")` 
 
 ```{r}
-fe.ferr <- map(fe.ferr, list(character_bat.qingxin_ins))
+fe.ferr <- map(fe.ferr, feature(bat.qingxin))
 fe.ferr$upset
 ```
 
@@ -191,7 +189,7 @@ autor(fe.ferr$upset)
 
 ```{r}
 #' @meth {get_meth(en.common)}
-en.common <- job_enrich(fe.ferr$upset$ins)
+en.common <- asjob_enrich(feature(fe.ferr))
 en.common <- step1(en.common)
 en.common <- step2(en.common, "hsa04066")
 en.common@plots$step2$p.pathviews$hsa04066
