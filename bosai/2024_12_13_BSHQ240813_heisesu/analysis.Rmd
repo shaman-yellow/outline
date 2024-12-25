@@ -5,7 +5,7 @@
 info <- items(start = td("20241030"), end = td("20241213"), finish = NA,
   id = "BSHQ240813", client = "王凯", inst = "大连医科大学附属第二医院",
   type = "生信分析",
-  title = "",
+  title = " CAP2通过靶向EMT信号通路促进黑色素瘤进展",
   save = ".items_analysis.rds"
 )
 show.ic(info)
@@ -37,10 +37,14 @@ set_index()
 
 # 分析流程 {#abstract}
 
+1. 通过生物信息分析分析 CAP2 在黑色素瘤异常表达且与预后相关。HPA数据库分析。
+2. 为了研究CAP2影响黑色素瘤进展的机制，进行GSEA等生物信息分析，寻找与CAP2R显著相关的下游信号通路
+
 ```{r}
 dic(di("差异表达基因"),
-  di("")
+  di("黑色素瘤")
 )
+# M: Melanoma 黑色素瘤
 
 ```
 
@@ -52,7 +56,21 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
+## TCGA 数据获取 (SKCM)
 
+`r snap(tc.skcm, 0:3)`
+
+```{r}
+tc.skcm <- job_tcga("TCGA-SKCM")
+tc.skcm <- step1(tc.skcm, "RNA")
+tc.skcm <- step2(tc.skcm)
+tc.skcm <- step3(tc.skcm)
+tc.skcm@plots$step3$p.vital
+```
+
+```{r}
+lm.skcm <- asjob_limma(tc.skcm, group = "isTumor")
+```
 
 # 总结 {#conclusion}
 

@@ -12,7 +12,9 @@ show.ic(info)
 
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
-order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+order_packaging(
+  "./analysis_out.docx", idname = idname, external_file = NULL, extras = "./Reply_闫姐.docx"
+)
 ```
 
 ```{r include = F}
@@ -137,26 +139,35 @@ autor(gn.ckd@tables$step1$t.genecards)
 
 `r snap(bat.qingxin, "m")`
 
-`r ref("QINGXIN-network-pharmacology-with-disease")` 
-`r ref("QINGXIN-Targets-intersect-with-targets-of-diseases")` 
+`r ref("QINGXIN-Targets-intersect-with-related-targets")` 
+`r ref("QINGXIN-network-pharmacology-with-filtered-type")` 
+`r ref("QINGXIN-network-pharmacology-with-filtered-type-original-data")` 
 
 ```{r}
 bat.qingxin <- map(bat.qingxin, feature(gn.ckd))
 bat.qingxin@params$p.venn2dis %>% Legend
+bat.qingxin@params$t.pharm2dis
 wrap(bat.qingxin@params$p.venn2dis, 6, 4)
 wrap(bat.qingxin@params$p.pharm2dis, 12, 10)
 ```
 
-```{r eval = T, echo = F, results = "asis"}
-#| QINGXIN-network-pharmacology-with-disease
-autor(wrap(bat.qingxin@params$p.pharm2dis, 12, 10))
-```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| QINGXIN-Targets-intersect-with-targets-of-diseases
+#| QINGXIN-Targets-intersect-with-related-targets
 autor(wrap(bat.qingxin@params$p.venn2dis, 6, 4))
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| QINGXIN-network-pharmacology-with-filtered-type
+autor(wrap(bat.qingxin@params$p.pharm2dis, 12, 10))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| QINGXIN-network-pharmacology-with-filtered-type-original-data
+autor(bat.qingxin@params$t.pharm2dis)
+```
 
 ## FerrDb 铁死亡调控因子 (FERR)
 
@@ -187,12 +198,25 @@ autor(fe.ferr$upset)
 
 ## 富集分析 (COMMON)
 
+`r snap(en.common, 0:3)`
+
+`r ref("COMMON-KEGG-enrichment")` 
+`r ref("COMMON-GO-enrichment")` 
+`r ref("COMMON-hsa04066-visualization")` 
+
+`r res(en.common, "des")` 已在多种疾病中被报道与铁死亡的关系
+`r cite_show("Identification_Xiang_2023")` 
+`r cite_show("Bioinformatics_Liu_C_2022")`
+`r cite_show("Ferroptosis_rel_Dong_2023")`。
+
 ```{r}
 #' @meth {get_meth(en.common)}
 en.common <- asjob_enrich(feature(fe.ferr))
 en.common <- step1(en.common)
 en.common <- step2(en.common, "hsa04066")
+feature(en.common)
 en.common@plots$step2$p.pathviews$hsa04066
+
 en.common@plots$step1$p.kegg$ids
 en.common@plots$step1$p.go$ids
 en.common@tables$step1$res.kegg$ids
@@ -223,15 +247,78 @@ autor(en.common@tables$step1$res.kegg$ids)
 autor(en.common@plots$step2$p.pathviews$hsa04066)
 ```
 
+```{r}
+gds.ckd <- job_gds(c("Chronic kidney disease", "Normal"))
+gds.ckd <- step1(gds.ckd)
+active(gds.ckd)
+vis(gds.ckd)
+# GSE66494
+```
+
+## GEO 数据获取 (CKD)
+
+`r snap(geo.ckd, 0:3)`
+
+```{r}
+geo.ckd <- job_geo("GSE66494")
+geo.ckd <- step1(geo.ckd)
+geo.ckd$prods
+metadata.ckd <- geo.ckd$guess
+metadata.ckd <- dplyr::mutate(
+  metadata.ckd, sample = rownames,
+  group = strx(title, "CKD|Control"), 
+  batch = strx(title, "Discovery|Validation"), .before = 1
+)
+metadata.ckd
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CKD-GSE66494
+autor(geo.ckd$prods)
+```
+
+## Limma 差异分析 (CKD)
+
+`r snap(lm.ckd, 0:2)`
+针对 `r snap(feature(en.common), TRUE)` 差异分析。
+`r snap(lm.ckd, 3)`
+`r snap(p.less)`
+
+```{r}
+#' @meth {get_meth(lm.ckd)}
+lm.ckd <- asjob_limma(geo.ckd, metadata.ckd)
+lm.ckd <- filter(lm.ckd, GENE_SYMBOL %in% feature(en.common))
+lm.ckd <- step1(lm.ckd)
+lm.ckd <- step2(
+  lm.ckd, CKD - Control, label = "GENE_SYMBOL", cut.fc = 1
+)
+lm.ckd <- step3(lm.ckd)
+lm.ckd@plots$step2$p.volcano$`CKD - Control`
+lm.ckd@tables$step2$tops$`CKD - Control`
+
+p.less <- wrap(map(lm.ckd, c("VEGFA", "TLR4")), 4, 4)
+p.less
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| CKD-CKD-vs-Control
+autor(lm.ckd@plots$step2$p.volcano$`CKD - Control`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| CKD-wilcox-test-for-some-genes
+autor(p.less)
+```
+
 # 总结 {#conclusion}
 
 调控铁死亡的通路可能是 HIF-1 ，见`r ref("COMMON-hsa04066-visualization")` 。
+以 GEO 数据验证后发现，`r feature(p.less)` 为差异表达基因。
 其他可能的通路，见`r ref("COMMON-KEGG-enrichment-data")` 
 
 ```{r}
-extract_anno("./order_material/BSJF240734-林波-生信分析-清心莲子饮网络药理学分析-2024.12.17-YRX批注 (1).docx"
+extract_anno("./order_material/BSJF240734-林波-生信分析-清心莲子饮网络药理学分析-2024.12.17-YRX批注 (1).docx")
 cdRun("pandoc ./order_material/comment_reply.md -o Reply_闫姐.docx")
-
-
 ```
 
