@@ -1,0 +1,112 @@
+
+
+## Limma 差异分析 (SKCM)
+
+```{r}
+lm.skcm <- asjob_limma(tc.skcm, group = "isTumor")
+# dplyr::filter(lm.skcm@object$genes, grpl(gene_name, "^CAP2"))
+lm.skcm <- step1(lm.skcm)
+lm.skcm <- step2(lm.skcm, tumor - normal, use = "P", cut.fc = .1)
+lm.skcm@plots$step2$p.volcano$`tumor - normal`
+dplyr::filter(
+  lm.skcm@tables$step2$tops$`tumor - normal`, grpl(gene_name, "CAP2")
+)
+lm.skcm <- step3(lm.skcm)
+```
+
+
+## TCGA 数据获取 (SKCM)
+
+`r snap(tc.skcm, 0:3)`
+
+```{r}
+tc.skcm <- job_tcga("TCGA-SKCM")
+#' @meth {get_meth(tc.skcm)}
+tc.skcm <- step1(tc.skcm, "RNA")
+tc.skcm <- step2(tc.skcm)
+tc.skcm <- step3(tc.skcm)
+tc.skcm@plots$step3$p.vital
+```
+
+## Survival 生存分析 (SKCM)
+
+`r snap(surv.skcm, 0:3)`
+
+```{r}
+lm.skcm <- asjob_limma(tc.skcm, group = "vital_status")
+lm.skcm <- step1(lm.skcm)
+surv.skcm <- asjob_survival(lm.skcm, "CAP2")
+#' @meth {get_meth(surv.skcm)}
+surv.skcm <- step1(surv.skcm)
+surv.skcm@tables$step1$t.SurvivalPValue
+# map(regroup(lm.skcm, group = isTumor), "CAP2")
+```
+
+
+counts.GSE230864 <- ftibble(list.files(geo.GSE230864$dir, "raw", full.names = TRUE))
+colnames(counts.GSE230864)[-1] %<>% strx("S[0-9]*$")
+counts.GSE230864
+metadata.GSE230864 <- geo.GSE230864$guess
+metadata.GSE230864 <- dplyr::mutate(
+  metadata.GSE230864, sample = paste0(
+    "S", strx(sample.number.ch1, "[0-9]+")
+  ), 
+  group = disease.state.ch1, .before = 1
+)
+metadata.GSE230864
+genes.GSE230864 <- dplyr::select(counts.GSE230864, 1)
+genes.GSE230864
+
+lm.GSE230864 <- job_limma(
+  new_dge(metadata.GSE230864, counts.GSE230864, genes.GSE230864)
+)
+
+## GEO 数据获取 (GSE239750)
+
+```{r}
+geo.GSE239750 <- job_geo("GSE239750")
+geo.GSE239750 <- step1(geo.GSE239750)
+geo.GSE239750$guess
+geo.GSE239750 <- step2(geo.GSE239750)
+
+```
+
+## GEO 数据获取 (GSE211044)
+
+```{r}
+geo.GSE211044 <- job_geo("GSE211044")
+geo.GSE211044 <- step1(geo.GSE211044)
+geo.GSE211044$guess
+geo.GSE211044 <- step2(geo.GSE211044, rna = FALSE)
+ftibble(list.files(geo.GSE211044$dir, full.names = TRUE))
+```
+
+## GEO 数据获取 (GSE157236)
+
+```{r}
+geo.GSE157236 <- job_geo("GSE157236")
+geo.GSE157236 <- step1(geo.GSE157236)
+geo.GSE157236 <- step2(geo.GSE157236, rna = TRUE)
+metadata.GSE157236 <- geo.GSE157236$guess
+metadata.GSE157236 <- dplyr::mutate(
+  metadata.GSE157236, sample = rownames,
+  group = ifelse(
+    grpl(disease.status.ch1, "Healthy"), "Healthy", "Melanoma"
+  ), .before = 1
+)
+metadata.GSE157236
+```
+
+## Limma 差异分析 (GSE157236)
+
+```{r}
+lm.GSE157236 <- asjob_limma(geo.GSE157236, metadata.GSE157236)
+lm.GSE157236@object$genes
+lm.GSE157236 <- step1(lm.GSE157236)
+lm.GSE157236 <- step2(
+  lm.GSE157236, Melanoma - Healthy, use = "P", cut.fc = .3
+)
+dplyr::filter(
+  lm.GSE157236@tables$step2$tops$`Melanoma - Healthy`, grpl(hgnc_symbol, "CAP2")
+)
+```

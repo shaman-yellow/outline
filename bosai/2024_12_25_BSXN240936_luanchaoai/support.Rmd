@@ -39,7 +39,7 @@ set_index()
 
 ```{r}
 dic(di("差异表达基因"),
-  di("")
+  di(, "high-grade serous ovarian cancer")
 )
 
 ```
@@ -52,7 +52,30 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
+## TCGA 数据获取 (OV)
 
+```{r}
+tc.ov <- job_tcga("TCGA-OV")
+#' @meth {get_meth(tc.ov)}
+tc.ov <- step1(tc.ov, "RNA")
+tc.ov <- step2(tc.ov)
+tc.ov <- step3(tc.ov)
+clear(tc.ov)
+```
+
+```{r}
+lm.ov <- asjob_limma(tc.ov)
+print(as_tibble(lm.ov@object$samples), width = 800)
+lm.ov@object$samples$primary_diagnosis
+lm.ov@object$samples$site_of_resection_or_biopsy
+```
+
+```{r}
+gds.hgsoc <- job_gds("high-grade serous ovarian cancer")
+vis(gds.hgsoc)
+active(gds.hgsoc)
+gds.hgsoc <- step1(gds.hgsoc)
+```
 
 # 总结 {#conclusion}
 
