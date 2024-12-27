@@ -6,6 +6,7 @@ info <- items(start = td("20241204"), end = td("20241220"), finish = td("2024121
   id = "BSJF240734", client = "林波", inst = "浙江省人民医院",
   type = "生信分析",
   title = "清心莲子饮网络药理学分析",
+  note = "用动态文档功能补充了分析说明",
   save = ".items_analysis.rds"
 )
 show.ic(info)

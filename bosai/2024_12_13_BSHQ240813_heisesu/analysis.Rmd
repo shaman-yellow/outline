@@ -2,10 +2,11 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20241030"), end = td("20241213"), finish = NA,
+info <- items(start = td("20241030"), end = td("20241213"), finish = td("2024-12-27"),
   id = "BSHQ240813", client = "王凯", inst = "大连医科大学附属第二医院",
   type = "生信分析",
   title = " CAP2通过靶向EMT信号通路促进黑色素瘤进展",
+  # note = "CAP2 不符合原方案预期，需重新分析",
   save = ".items_analysis.rds"
 )
 show.ic(info)
@@ -56,115 +57,84 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
-## GSE 数据搜索 (SKCM)
+## GEO 数据获取 (GSE11907)
 
-`r snap(gds.skcm, 0:3)`
-
-```{r}
-gds.skcm <- job_gds(c("Melanoma", "survival"), 30:1000)
-#' @meth {get_meth(gds.skcm)}
-gds.skcm@object$gdsType
-gds.skcm <- step1(gds.skcm, grpl(gdsType, "^Expression[^;]*sequencing$|Expression profiling by array"))
-vis(gds.skcm)
-gds.skcm <- step2(gds.skcm)
-gds.skcm$res$metas
-hasSurv <- c(
-  43, 42, 41, 39, 38, 37, 35, 34, 29, 27, 23, 20, 17, 13, 6
-)
-active(gds.skcm, which = hasSurv)
-```
-
-## Survival 生存分析 (GSE19234)
-
-`r snap(surv.GSE19234, 0:3)`
-
-`r ref("GSE19234-survival-curve-of-CAP2")` 
-`r ref("GSE19234-time-ROC")` 
+`r snap(geo.GSE11907, 0:3)`
 
 ```{r}
-geo.GSE19234 <- job_geo("GSE19234")
-geo.GSE19234 <- step1(geo.GSE19234)
-metadata.GSE19234 <- geo.GSE19234$guess
-metadata.GSE19234 <- dplyr::mutate(
-  metadata.GSE19234, 
-  sample = rownames,
-  vital_status = ifelse(staus.dead.or.alive.ch1 == "0", "Alive", "Dead"),
-  group = vital_status,
-  days_to_last_follow_up = as.integer(days.since.initial.diagnosis.ch1), .before = 1
+geo.GSE11907 <- job_geo("GSE11907")
+#' @meth {get_meth(geo.GSE11907)}
+geo.GSE11907 <- step1(geo.GSE11907)
+metadata.GSE11907 <- geo.GSE11907$guess
+metadata.GSE11907 <- dplyr::mutate(
+  metadata.GSE11907, sample = rownames, group = make.names(Illness.ch1), 
+  group = ifelse(
+    grpl(group, "Melanoma|Healthy"), 
+    strx(group, "Melanoma|Healthy"), "Others"
+  ), .before = 1
 )
-metadata.GSE19234
+metadata.GSE11907
 
-lm.GSE19234 <- asjob_limma(geo.GSE19234, metadata.GSE19234)
-lm.GSE19234 <- step1(lm.GSE19234)
-filter(lm.GSE19234@object$genes, hgnc_symbol == "CAP2")
-
-lm.GSE19234@object$counts
-surv.GSE19234 <- asjob_survival(lm.GSE19234, "CAP2", use = "hgnc_symbol")
-#' @meth {get_meth(surv.GSE19234)}
-surv.GSE19234 <- step1(surv.GSE19234)
-surv.GSE19234@plots$step1$p.surv$CAP2
-surv.GSE19234@plots$step1$p.roc$CAP2
-surv.GSE19234@tables$step1$t.SurvivalPValue
 ```
 
-```{r eval = T, echo = F, results = "asis"}
-#| GSE19234-survival-curve-of-CAP2
-autor(surv.GSE19234@plots$step1$p.surv$CAP2)
-```
+## Limma 差异分析 (GSE11907)
 
-```{r eval = T, echo = F, results = "asis"}
-#| GSE19234-time-ROC
-autor(surv.GSE19234@plots$step1$p.roc$CAP2)
-```
-
-## GSE 数据搜索 (SKCM_HEALTHY)
-
-`r snap(gds.skcm_healthy, 0:3)`
+`r snap(lm.GSE11907, 0:3)`
 
 ```{r}
-gds.skcm_healthy <- job_gds(c("Melanoma", "healthy"), 5:400)
-#' @meth {get_meth(gds.skcm_healthy)}
-vis(gds.skcm_healthy)
-gds.skcm_healthy <- step1( gds.skcm_healthy, grpl(gdsType, "^Expression profiling by array$") )
-gds.skcm_healthy <- step2(gds.skcm_healthy)
-gds.skcm_healthy$res$metas
-active(gds.skcm_healthy, which = 22:29)
-which(gds.skcm_healthy@object$GSE == "")
-gds.skcm_healthy$res$metas[[6]]
+lm.GSE11907 <- asjob_limma(geo.GSE11907, metadata.GSE11907)
+#' @meth {get_meth(lm.GSE11907)}
+lm.GSE11907 <- filter(
+  lm.GSE11907, grpl(group, "Healthy|Melanoma"), type = "metadata"
+)
+lm.GSE11907 <- step1(lm.GSE11907)
+lm.GSE11907 <- step2(
+  lm.GSE11907, Melanoma - Healthy, label = "hgnc_symbol"
+)
+lm.GSE11907 <- step3(lm.GSE11907, use.gene = "hgnc_symbol")
+feature(lm.GSE11907)
 ```
 
-## GEO 数据获取 (GSE6887)
+## TCGA 数据获取 (TCGA_SKCM)
+
+`r snap(tc.tcga_skcm, 0:3)`
 
 ```{r}
-geo.GSE6887 <- job_geo("GSE6887")
-geo.GSE6887 <- step1(geo.GSE6887)
-metadata.GSE6887 <- geo.GSE6887$guess
-metadata.GSE6887 <- dplyr::mutate(
-  metadata.GSE6887, sample = rownames,
-  group = gs(title, "_[^_]+$", ""), .before = 1
-)
-metadata.GSE6887
+tc.tcga_skcm <- job_tcga("TCGA-SKCM")
+#' @meth {get_meth(tc.tcga_skcm)}
+tc.tcga_skcm <- step1(tc.tcga_skcm, "RNA")
+tc.tcga_skcm <- step2(tc.tcga_skcm)
+tc.tcga_skcm <- step3(tc.tcga_skcm)
+tc.tcga_skcm@plots$step3$p.vital
 ```
 
-## Limma 差异分析 (GSE6887)
+## COX 回归 (TCGA_SKCM)
+
+`r snap(cox.tcga_skcm, 0:3)`
 
 ```{r}
-lm.GSE6887 <- asjob_limma(geo.GSE6887, metadata.GSE6887, normed = TRUE)
-lm.GSE6887 <- step1(lm.GSE6887)
-lm.GSE6887@params$genes
-lm.GSE6887 <- step2(
-  lm.GSE6887,
-  B_cell_pool_melanoma - B_cell_pool_healthy,
-  CD4_T_cell_pool_melanoma - CD4_T_cell_pool_healthy,
-  CD8_T_cell_pool_melanoma - CD8_T_cell_pool_healthy,
-  NK_cell_pool_melanoma - NK_cell_pool_healthy,
-  use = "P", cut.fc = .3
-)
-lapply(lm.GSE6887@tables$step2$tops, dplyr::filter, grpl(GENE_SYMBOL, "CAP2"))
+lm.tcga_skcm <- asjob_limma(tc.tcga_skcm)
+lm.tcga_skcm <- step1(lm.tcga_skcm)
+lm.tcga_skcm@object <- NULL
 
-dplyr::filter(
-  lm.GSE6887@tables$step2$tops$`B_cell_pool_melanoma - B_cell_pool_healthy`, grpl(GENE_SYMBOL, "CAP2")
-)
+cox.tcga_skcm <- asjob_lasso(lm.tcga_skcm, feature(lm.GSE11907))
+cox.tcga_skcm$.snap
+#' @meth {get_meth(cox.tcga_skcm)}
+cox.tcga_skcm <- step1(cox.tcga_skcm)
+cox.tcga_skcm <- step2(cox.tcga_skcm)
+cox.tcga_skcm <- step3(cox.tcga_skcm)
+```
+
+## Survival 生存分析 (TCGA_SKCM)
+
+`r snap(surv.tcga_skcm, 0:3)`
+
+```{r}
+surv.tcga_skcm <- asjob_survival(lm.tcga_skcm, feature(cox.tcga_skcm))
+#' @meth {get_meth(surv.tcga_skcm)}
+surv.tcga_skcm <- step1(surv.tcga_skcm)
+surv.tcga_skcm@tables$step1$t.SignificantSurvivalPValue
+# map(regroup(lm.skcm, group = isTumor), "CAP2")
 ```
 
 # 总结 {#conclusion}

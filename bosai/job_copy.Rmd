@@ -2,7 +2,7 @@
 # Project status
 
 ```{r}
-summary_week.bosai(rm = T, must_include = c("BS.develop", "BSXG240327"))
+summary_week.bosai(rm = T, must_include = "BSJF240734")
 alls <- get_orders()
 print(alls, n = Inf, width = 400)
 

@@ -110,3 +110,275 @@ dplyr::filter(
   lm.GSE157236@tables$step2$tops$`Melanoma - Healthy`, grpl(hgnc_symbol, "CAP2")
 )
 ```
+
+## Limma 差异分析 (GSE6887)
+
+```{r}
+lm.GSE6887 <- asjob_limma(geo.GSE6887, metadata.GSE6887, normed = TRUE)
+lm.GSE6887 <- step1(lm.GSE6887)
+lm.GSE6887@params$genes
+lm.GSE6887 <- step2(
+  lm.GSE6887,
+  B_cell_pool_melanoma - B_cell_pool_healthy,
+  CD4_T_cell_pool_melanoma - CD4_T_cell_pool_healthy,
+  CD8_T_cell_pool_melanoma - CD8_T_cell_pool_healthy,
+  NK_cell_pool_melanoma - NK_cell_pool_healthy,
+  use = "P", cut.fc = .3
+)
+lapply(lm.GSE6887@tables$step2$tops, dplyr::filter, grpl(GENE_SYMBOL, "CAP2"))
+
+dplyr::filter(
+  lm.GSE6887@tables$step2$tops$`B_cell_pool_melanoma - B_cell_pool_healthy`, grpl(GENE_SYMBOL, "CAP2")
+)
+```
+
+
+## GEO 数据获取 (GSE6887)
+
+```{r}
+geo.GSE6887 <- job_geo("GSE6887")
+geo.GSE6887 <- step1(geo.GSE6887)
+metadata.GSE6887 <- geo.GSE6887$guess
+metadata.GSE6887 <- dplyr::mutate(
+  metadata.GSE6887, sample = rownames,
+  group = gs(title, "_[^_]+$", ""), .before = 1
+)
+metadata.GSE6887
+```
+
+
+## GEO 数据获取 (GSE208173)
+
+```{r}
+# in sufficient data
+geo.GSE208173 <- job_geo("GSE208173")
+geo.GSE208173 <- step1(geo.GSE208173)
+metadata.GSE208173 <- geo.GSE208173$guess
+metadata.GSE208173
+geo.GSE208173 <- step2(geo.GSE208173, "RAW", rna = FALSE)
+untar(
+  list.files(geo.GSE208173$dir, ".tar", full.names = TRUE), exdir = normalizePath(geo.GSE208173$dir)
+)
+lapply(
+  list.files(geo.GSE208173$dir, ".gz$", full.names = TRUE), 
+    function(x) {
+      data <- ftibble(x, skip = 26)
+      data.table::fwrite(data, gs(x, "gz$", "csv"))
+    }
+)
+metadata.GSE208173 <- dplyr::mutate(
+  metadata.GSE208173, sample = rownames,
+  group = gs(title, "_[^_]+$", ""), .before = 1
+)
+metadata.GSE208173
+```
+
+
+## GEO 数据获取 (GSE186143)
+
+```{r}
+geo.GSE186143 <- job_geo("GSE186143")
+geo.GSE186143 <- step1(geo.GSE186143)
+geo.GSE186143 <- step2(geo.GSE186143, rna = FALSE)
+metadata.GSE186143 <- geo.GSE186143$guess
+metadata.GSE186143 <- dplyr::mutate(
+  metadata.GSE186143, 
+  sample = patient.ch1, 
+  group = strx(
+    diagnosis.ch1, "[^ ]+"
+  ), batch = sequencing.batch.ch1, .before = 1
+)
+metadata.GSE186143
+
+counts.GSE186143 <- ftibble(list.files(geo.GSE186143$dir, full.names = TRUE))
+counts.GSE186143
+genes.GSE186143 <- dplyr::select(counts.GSE186143, 1)
+```
+
+## Limma 差异分析 (GSE186143)
+
+```{r}
+lm.GSE186143 <- job_limma(
+  new_dge(metadata.GSE186143, counts.GSE186143, genes.GSE186143),
+)
+lm.GSE186143 <- step1(lm.GSE186143, data_type = "tpm")
+lm.GSE186143 <- step2(
+  lm.GSE186143, Melanoma - Healthy, use = "P", cut.fc = .3
+)
+lapply(lm.GSE186143@tables$step2$tops, dplyr::filter, grpl(GENE, "CAP2"))
+```
+
+
+## GEO 数据获取 (GSE11907)
+
+```{r}
+geo.GSE11907 <- job_geo("GSE11907")
+geo.GSE11907 <- step1(geo.GSE11907)
+metadata.GSE11907 <- geo.GSE11907$guess
+metadata.GSE11907 <- dplyr::mutate(
+  metadata.GSE11907, sample = rownames, group = make.names(Illness.ch1), 
+  group = ifelse(
+    grpl(group, "Melanoma|Healthy"), 
+    strx(group, "Melanoma|Healthy"), "Others"
+  ), .before = 1
+)
+metadata.GSE11907$group
+
+```
+
+## Limma 差异分析 (GSE11907)
+
+```{r}
+lm.GSE11907 <- asjob_limma(geo.GSE11907, metadata.GSE11907)
+lm.GSE11907 <- filter(
+  lm.GSE11907, grpl(group, "Healthy|Melanoma"), type = "metadata"
+)
+lm.GSE11907 <- step1(lm.GSE11907)
+lm.GSE11907 <- step2(
+  lm.GSE11907, Melanoma - Healthy, use = "P", cut.fc = .1
+)
+dplyr::filter(lm.GSE11907@tables$step2$tops$`Melanoma - Healthy`, hgnc_symbol == "CAP2")
+```
+
+
+```{r}
+geo.GSE31879 <- job_geo("GSE31879")
+geo.GSE31879 <- step1(geo.GSE31879)
+dir.create("GSE31879")
+cdRun("mv ~/Downloads/GSE31879_RAW.tar -t ./GSE31879")
+untar("./GSE31879/GSE31879_RAW.tar", exdir = "./GSE31879")
+list.files("./GSE31879/", "gz", full.names = TRUE)
+```
+
+
+## GEO 数据获取 (GSE15605)
+
+```{r}
+gds.skcm@object$GSE[40]
+active(gds.skcm, gds.skcm@object$GSE[40])
+geo.GSE15605 <- job_geo("GSE15605")
+geo.GSE15605 <- step1(geo.GSE15605)
+geo.GSE15605$guess
+metadata.GSE15605 <- dplyr::mutate(
+  geo.GSE15605$guess, sample = rownames, group = ifelse(
+    grpl(title, "normal", T), "Normal", "Melanoma"
+  ), .before = 1
+)
+metadata.GSE15605 <- dplyr::filter(
+  metadata.GSE15605, grpl(title, "metastasis|Normal")
+)
+```
+
+## Limma 差异分析 (GSE15605)
+
+```{r}
+lm.GSE15605 <- asjob_limma(geo.GSE15605, metadata.GSE15605)
+lm.GSE15605 <- step1(lm.GSE15605)
+lm.GSE15605 <- step2(
+  lm.GSE15605, Melanoma - Normal, use = "P", cut.fc = .3
+)
+dplyr::filter(lm.GSE15605@tables$step2$tops$`Melanoma - Normal`, hgnc_symbol == "CAP2")
+
+```
+
+
+## GSE 数据搜索 (SKCM_HEALTHY)
+
+`r snap(gds.skcm_healthy, 0:3)`
+
+```{r}
+gds.skcm_healthy <- job_gds(c("Melanoma", "healthy"), 5:1000)
+#' @meth {get_meth(gds.skcm_healthy)}
+vis(gds.skcm_healthy)
+gds.skcm_healthy <- step1(gds.skcm_healthy)
+gds.skcm_healthy <- step2(gds.skcm_healthy)
+
+```
+
+
+## GEO 数据获取 (GSE211906)
+
+```{r}
+geo.GSE211906 <- job_geo("GSE211906")
+geo.GSE211906 <- step1(geo.GSE211906)
+geo.GSE211906$guess$tissue.ch1
+```
+
+## GSE 数据搜索 (SKCM)
+
+`r snap(gds.skcm, 0:3)`
+
+```{r}
+gds.skcm <- job_gds(c("Melanoma", "survival"), 30:1000)
+#' @meth {get_meth(gds.skcm)}
+gds.skcm@object$gdsType
+gds.skcm <- step1(gds.skcm, grpl(gdsType, "^Expression[^;]*sequencing$|Expression profiling by array"))
+vis(gds.skcm)
+gds.skcm <- step2(gds.skcm)
+gds.skcm$res$metas
+hasSurv <- c(
+  43, 42, 41, 39, 38, 37, 35, 34, 29, 27, 23, 20, 17, 13, 6
+)
+active(gds.skcm, which = hasSurv)
+```
+
+## Survival 生存分析 (GSE19234)
+
+`r snap(surv.GSE19234, 0:3)`
+
+`r ref("GSE19234-survival-curve-of-CAP2")` 
+`r ref("GSE19234-time-ROC")` 
+
+```{r}
+geo.GSE19234 <- job_geo("GSE19234")
+geo.GSE19234 <- step1(geo.GSE19234)
+metadata.GSE19234 <- geo.GSE19234$guess
+metadata.GSE19234 <- dplyr::mutate(
+  metadata.GSE19234, 
+  sample = rownames,
+  vital_status = ifelse(staus.dead.or.alive.ch1 == "0", "Alive", "Dead"),
+  group = vital_status,
+  days_to_last_follow_up = as.integer(days.since.initial.diagnosis.ch1), .before = 1
+)
+metadata.GSE19234
+
+lm.GSE19234 <- asjob_limma(geo.GSE19234, metadata.GSE19234)
+lm.GSE19234 <- step1(lm.GSE19234)
+filter(lm.GSE19234@object$genes, hgnc_symbol == "CAP2")
+
+lm.GSE19234@object$counts
+surv.GSE19234 <- asjob_survival(lm.GSE19234, "CAP2", use = "hgnc_symbol")
+#' @meth {get_meth(surv.GSE19234)}
+surv.GSE19234 <- step1(surv.GSE19234)
+surv.GSE19234@plots$step1$p.surv$CAP2
+surv.GSE19234@plots$step1$p.roc$CAP2
+surv.GSE19234@tables$step1$t.SurvivalPValue
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE19234-survival-curve-of-CAP2
+autor(surv.GSE19234@plots$step1$p.surv$CAP2)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE19234-time-ROC
+autor(surv.GSE19234@plots$step1$p.roc$CAP2)
+```
+
+
+```{r}
+geo.skcm <- job_geo("GSE65904")
+geo.skcm <- step1(geo.skcm)
+print(geo.skcm$guess, width = 400)
+metadata.skcm <- dplyr::mutate(
+  geo.skcm$guess, 
+  sample = rownames, days_to_last_follow_up = disease.specific.survival.in.days.ch1,
+  days_to_last_follow_up = as.integer(days_to_last_follow_up),
+  vital_status = disease.specific.survival..1.death..0.alive..ch1,
+  vital_status = ifelse(vital_status == "0", "Alive", "Dead"),
+  group = vital_status,
+  .before = 1
+)
+metadata.skcm
+```
+

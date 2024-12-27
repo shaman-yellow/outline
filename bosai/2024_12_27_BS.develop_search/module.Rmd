@@ -2,11 +2,11 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2024-12-23"), end = td("2024-12-25"), finish = td("2024-12-25"),
+info <- items(start = td("2024-12-26"), end = td("2024-12-27"), finish = td("2024-12-27"),
   id = "BS.develop", client = "", inst = "",
   type = "模块开发",
-  title = "分析框架与动态文档优化",
-  note = "增强了方法衔接的注释说明功能",
+  title = "GEO 数据库搜索",
+  note = "为特定基因表达预期寻找大量数据集，加强了检索策略",
   save = ".items_module.rds"
 )
 show.ic(info)
