@@ -382,3 +382,53 @@ metadata.skcm <- dplyr::mutate(
 metadata.skcm
 ```
 
+
+## 富集分析 (TCGA_SKCM)
+
+`r snap(en.tcga_skcm, 0:3)`
+
+```{r}
+en.tcga_skcm <- asjob_enrich(feature(surv.tcga_skcm))
+#' @meth {get_meth(en.tcga_skcm)}
+en.tcga_skcm <- step1(en.tcga_skcm)
+en.tcga_skcm@tables$step1$res.kegg$ids
+en.tcga_skcm@plots$step1$p.kegg$ids
+en.tcga_skcm <- step2(en.tcga_skcm, res(en.tcga_skcm, "id"))
+en.tcga_skcm@plots$step2$p.pathviews$hsa00650
+```
+
+
+## ClusterProfiler GSEA 富集分析 (GSE11907)
+
+`r snap(gsea.GSE11907, 0:3)`
+
+```{r}
+gsea.GSE11907 <- asjob_gsea(lm.GSE11907)
+#' @meth {get_meth(gsea.GSE11907)}
+gsea.GSE11907 <- step1(gsea.GSE11907)
+gsea.GSE11907@plots$step1$p.kegg
+gsea.GSE11907@plots$step1$p.go
+dplyr::filter(
+  gsea.GSE11907@tables$step1$table_kegg, grpl(Description, "signaling")
+)
+tbl_path <- filter(gsea.GSE11907, genes = feature(surv.tcga_skcm)@.Data)
+tbl_path
+
+gsea.GSE11907 <- step2(gsea.GSE11907, tbl_path$ID[2])
+gsea.GSE11907@plots$step2$p.code
+gsea.GSE11907 <- step3(gsea.GSE11907, tbl_path$ID[2])
+gsea.GSE11907@tables$step3$res.pathviews
+gsea.GSE11907@plots$step3$p.pathviews$hsa04820
+```
+
+```{r}
+cp.mybph <- cal_corp(
+  lm.GSE11907, NULL, "MYBPH", tbl_path$geneName_list[[2]], 
+  use = "hgnc_symbol", mode = "linear"
+)
+cp.mybph@params$res
+vis(
+  .corp(dplyr::filter(cp.mybph@params$res, pvalue < .05, cor != 1))
+)
+```
+

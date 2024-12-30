@@ -5,7 +5,7 @@
 info <- items(start = td("20241030"), end = td("20241213"), finish = td("2024-12-27"),
   id = "BSHQ240813", client = "王凯", inst = "大连医科大学附属第二医院",
   type = "生信分析",
-  title = " CAP2通过靶向EMT信号通路促进黑色素瘤进展",
+  title = "黑色素瘤",
   # note = "CAP2 不符合原方案预期，需重新分析",
   save = ".items_analysis.rds"
 )
@@ -92,7 +92,6 @@ lm.GSE11907 <- step2(
   lm.GSE11907, Melanoma - Healthy, label = "hgnc_symbol"
 )
 lm.GSE11907 <- step3(lm.GSE11907, use.gene = "hgnc_symbol")
-feature(lm.GSE11907)
 ```
 
 ## TCGA 数据获取 (TCGA_SKCM)
@@ -134,7 +133,31 @@ surv.tcga_skcm <- asjob_survival(lm.tcga_skcm, feature(cox.tcga_skcm))
 #' @meth {get_meth(surv.tcga_skcm)}
 surv.tcga_skcm <- step1(surv.tcga_skcm)
 surv.tcga_skcm@tables$step1$t.SignificantSurvivalPValue
-# map(regroup(lm.skcm, group = isTumor), "CAP2")
+```
+
+## 富集分析 (SIG)
+
+```{r}
+en.sig <- asjob_enrich(feature(surv.tcga_skcm))
+en.sig <- step1(en.sig)
+en.sig@tables$step1$res.kegg$ids$geneName_list[[3]]
+en.sig@plots$step1$p.kegg
+
+en.sig <- step2(en.sig, res(en.sig, "id", 3))
+en.sig@plots$step2$p.pathviews$hsa04662
+en.sig@tables$step2$res.pathviews$hsa04662$plot.data.gene
+```
+
+
+```{r}
+cp.mybph <- cal_corp(
+  lm.GSE11907, NULL, "MYBPH", tbl_path$geneName_list[[2]], 
+  use = "hgnc_symbol", mode = "linear"
+)
+cp.mybph@params$res
+vis(
+  .corp(dplyr::filter(cp.mybph@params$res, pvalue < .05, cor != 1))
+)
 ```
 
 # 总结 {#conclusion}
