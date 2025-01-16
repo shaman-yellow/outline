@@ -2,11 +2,11 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20241204"), end = td("20241220"), finish = td("20241217"),
+info <- items(start = td("20241204"), end = td("20241220"), finish = td("2025-01-07"),
   id = "BSJF240734", client = "林波", inst = "浙江省人民医院",
   type = "生信分析",
   title = "清心莲子饮网络药理学分析",
-  note = "用动态文档功能补充了分析说明",
+  note = "",
   save = ".items_analysis.rds"
 )
 show.ic(info)
@@ -14,7 +14,7 @@ show.ic(info)
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
 order_packaging(
-  "./analysis_out.docx", idname = idname, external_file = NULL, extras = "./Reply_闫姐.docx"
+  "./analysis_out.docx", idname = idname, external_file = NULL, extras = NULL
 )
 ```
 
@@ -66,7 +66,8 @@ route <- as_network(
     "Common_targets:Network_pharmacology",
     "Network_pharmacology:Related_targets",
     "Related_targets, Ferroptosis:Ferr_targets",
-    "Ferr_targets:Enrichment"
+    "Ferr_targets:Enrichment",
+    "Enrichment:Molecular_docking"
     ), "sugiyama"
 )
 p.route <- flowChart(route, 1.1, 1)
@@ -92,6 +93,7 @@ collate_details("meth")
 
 `r ref("Intersection-of-herbs-compounds")` 
 `r ref("Intersection-of-herbs-all-targets")` 
+`r ref("Herbs-compounds-and-targets")`
 
 ```{r}
 herbs <- c("莲子", "麦冬", "黄芩", "地骨皮", "人参", "车前子", "甘草", "赤芍", "黄芪")
@@ -100,11 +102,13 @@ herbs <- c("莲子", "麦冬", "黄芩", "地骨皮", "人参", "车前子", "�
 bat.qingxin <- job_batman(herbs)
 bat.qingxin$herbs_info %<>% dplyr::distinct(Chinese.Name, .keep_all = T)
 bat.qingxin <- step1(bat.qingxin)
+
 bat.qingxin <- step2(bat.qingxin)
 bat.qingxin <- step3(bat.qingxin)
 
 bat.qingxin@plots$step3$p.herbs_compounds
 bat.qingxin@plots$step3$p.herbs_targets
+bat.qingxin@params$easyRead
 ```
 
 
@@ -117,6 +121,12 @@ autor(bat.qingxin@plots$step3$p.herbs_compounds)
 ```{r eval = T, echo = F, results = "asis"}
 #| Intersection-of-herbs-all-targets
 autor(bat.qingxin@plots$step3$p.herbs_targets)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets
+autor(bat.qingxin@params$easyRead)
 ```
 
 ## GeneCards 基因获取 (CKD)
@@ -197,13 +207,13 @@ fe.ferr$upset
 autor(fe.ferr$upset)
 ```
 
-## 富集分析 (COMMON)
+## ClusterProfiler 富集分析 (COMMON)
 
 `r snap(en.common, 0:3)`
 
 `r ref("COMMON-KEGG-enrichment")` 
 `r ref("COMMON-GO-enrichment")` 
-`r ref("COMMON-hsa04066-visualization")` 
+`r ref("COMMON-pathviews-hsa04066")`
 
 `r res(en.common, "des")` 已在多种疾病中被报道与铁死亡的关系
 `r cite_show("Identification_Xiang_2023")` 
@@ -214,9 +224,11 @@ autor(fe.ferr$upset)
 #' @meth {get_meth(en.common)}
 en.common <- asjob_enrich(feature(fe.ferr))
 en.common <- step1(en.common)
-en.common <- step2(en.common, "hsa04066")
+
+pat.common <- asjob_pathview(en.common)
+pat.common <- step1(pat.common, "hsa04066")
 feature(en.common)
-en.common@plots$step2$p.pathviews$hsa04066
+pat.common@plots$step1$p.pathviews$hsa04066
 
 en.common@plots$step1$p.kegg$ids
 en.common@plots$step1$p.go$ids
@@ -242,10 +254,9 @@ autor(wrap(en.common@plots$step1$p.go$ids, 8, 7))
 autor(en.common@tables$step1$res.kegg$ids)
 ```
 
-
 ```{r eval = T, echo = F, results = "asis"}
-#| COMMON-hsa04066-visualization
-autor(en.common@plots$step2$p.pathviews$hsa04066)
+#| COMMON-pathviews-hsa04066
+autor(pat.common@plots$step1$p.pathviews$hsa04066)
 ```
 
 ```{r}
@@ -282,14 +293,18 @@ autor(geo.ckd$prods)
 ## Limma 差异分析 (CKD)
 
 `r snap(lm.ckd, 0:2)`
-针对 `r snap(feature(en.common), TRUE)` 差异分析。
+针对 `r snap(feature(pat.common), TRUE)` 差异分析。
 `r snap(lm.ckd, 3)`
-`r snap(p.less)`
+
+`r ref("CKD-CKD-vs-Control")` 
+`r ref("CKD-Box-Plot-Of-DEGs")` 
+`r ref("CKD-data-CKD-vs-Control")` 
 
 ```{r}
 #' @meth {get_meth(lm.ckd)}
 lm.ckd <- asjob_limma(geo.ckd, metadata.ckd)
-lm.ckd <- filter(lm.ckd, GENE_SYMBOL %in% feature(en.common))
+lm.ckd <- filter(lm.ckd, GENE_SYMBOL %in% feature(pat.common))
+
 lm.ckd <- step1(lm.ckd)
 lm.ckd <- step2(
   lm.ckd, CKD - Control, label = "GENE_SYMBOL", cut.fc = 1
@@ -298,8 +313,8 @@ lm.ckd <- step3(lm.ckd)
 lm.ckd@plots$step2$p.volcano$`CKD - Control`
 lm.ckd@tables$step2$tops$`CKD - Control`
 
-p.less <- wrap(map(lm.ckd, c("VEGFA", "TLR4")), 4, 4)
-p.less
+lm.ckd <- map(lm.ckd, c("VEGFA", "TLR4"))
+lm.ckd@plots$step2$p.BoxPlotOfDEGs
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -307,16 +322,99 @@ p.less
 autor(lm.ckd@plots$step2$p.volcano$`CKD - Control`)
 ```
 
+
 ```{r eval = T, echo = F, results = "asis"}
-#| CKD-wilcox-test-for-some-genes
-autor(p.less)
+#| CKD-Box-Plot-Of-DEGs
+autor(lm.ckd@plots$step2$p.BoxPlotOfDEGs)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CKD-data-CKD-vs-Control
+autor(lm.ckd@tables$step2$tops$`CKD - Control`)
+```
+
+## AutoDock vina 分子对接 (QINGXIN)
+
+`r snap(vina.qingxin, 0:7)`
+
+`r ref("QINGXIN-herbs-compounds-and-targets-for-docking")` 
+`r ref("QINGXIN-compounds-and-targets-for-docking")` 
+`r ref("QINGXIN-proteins-used-PDB")` 
+`r ref("QINGXIN-Overall-combining-Affinity")` 
+`r ref("QINGXIN-All-combining-Affinity-data")` 
+`r ref("Docking-91424-into-2z62")` 
+
+`r ref("Docking-91424-into-2z62", FALSE)` 为最佳分子对接结果。
+`r ref("Docking-91424-into-2z62-detail")` 
+
+```{r}
+vina.qingxin <- asjob_vina(bat.qingxin, as_feature("TLR4", pat.common))
+#' @meth {get_meth(vina.qingxin)}
+vina.qingxin <- step1(vina.qingxin)
+vina.qingxin <- step2(vina.qingxin)
+vina.qingxin <- step3(vina.qingxin)
+vina.qingxin <- step4(vina.qingxin)
+vina.qingxin <- step5(vina.qingxin)
+vina.qingxin@step <- 5L
+vina.qingxin <- step6(vina.qingxin, top = 3)
+vina.qingxin <- step7(vina.qingxin)
+
+vina.qingxin@tables$step5$res_dock
+vina.qingxin@plots$step5$p.res_vina
+vina.qingxin@plots$step6$Top1_91424_into_2z62
+vina.qingxin@plots$step6
+vina.qingxin@plots$step7$Top1_91424_into_2z62
+
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| QINGXIN-herbs-compounds-and-targets-for-docking
+autor(vina.qingxin@params$herComTar)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| QINGXIN-compounds-and-targets-for-docking
+autor(vina.qingxin@params$comTar)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| QINGXIN-proteins-used-PDB
+autor(vina.qingxin@tables$step1$t.proteins_used_PDB)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| QINGXIN-Overall-combining-Affinity
+autor(vina.qingxin@plots$step5$p.res_vina)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| QINGXIN-All-combining-Affinity-data
+autor(vina.qingxin@tables$step5$res_dock)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-91424-into-2z62
+autor(vina.qingxin@plots$step6$Top1_91424_into_2z62)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-91424-into-2z62-detail
+autor(vina.qingxin@plots$step7$Top1_91424_into_2z62)
 ```
 
 # 总结 {#conclusion}
 
-调控铁死亡的通路可能是 HIF-1 ，见`r ref("COMMON-hsa04066-visualization")` 。
-以 GEO 数据验证后发现，`r feature(p.less)` 为差异表达基因。
+
+调控铁死亡的通路可能是 HIF-1 ，见 `r ref("COMMON-pathviews-hsa04066")` 。
+以 GEO 数据验证后发现，`r feature(lm.ckd@plots$step2$p.BoxPlotOfDEGs)` 为差异表达基因。
 其他可能的通路，见`r ref("COMMON-KEGG-enrichment-data")` 
+
+补充了分子对接分析，见 `r ref("QINGXIN-Overall-combining-Affinity")`。
 
 ```{r}
 extract_anno("./order_material/BSJF240734-林波-生信分析-清心莲子饮网络药理学分析-2024.12.17-YRX批注 (1).docx")

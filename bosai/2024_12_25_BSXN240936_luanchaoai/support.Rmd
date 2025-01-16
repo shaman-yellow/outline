@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2024-09-27"), end = td("2025-12-27"), finish = td("2024-12-26"),
+info <- items(start = td("2024-09-27"), end = td("2025-12-27"), finish = td("2025-01-03"),
   id = "BSXN240936", client = "李扬", inst = "中国医科大学附属盛京医院",
   type = "生信协助",
   title = "高级别浆液性卵巢癌",
@@ -37,6 +37,34 @@ set_index()
 
 # 分析流程 {#abstract}
 
+- GTSE1 在 HGSOC 中高表达促进肿瘤增值与迁移。
+  GTSE1 与化疗耐药有关。在卵巢癌 (HGSOC) 中的表达，在化疗耐药卵巢癌数据集中的表达。
+- GTSE1 的 mRNA 序列上的 m6A 甲基化，GTSE1可能主要被ALKBH5、IGF2BP1、METTL14、METTL3、YTHDF1、YTHDF2。
+  GTSE1与甲基化相关酶的表达进行相关性分析
+
+```{r}
+#| route
+route <- as_network(
+  list("HGSOC:GEO_data",
+    "GEO_data:dataset_1, dataset_2",
+    "dataset_1:DEGs_hgsoc_vs_normal",
+    "dataset_2:DEGs_resistant_vs_sensitive",
+    "DEGs_hgsoc_vs_normal, DEGs_resistant_vs_sensitive:GTSE1",
+    "DB_EpiFactors:RNA_Methylation",
+    "RNA_Methylation, DEGs_hgsoc_vs_normal:DEGs_RNA_Methylation",
+    "GTSE1, DEGs_RNA_Methylation:Correlation"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+wrap(p.route)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 10, 9, showtext = T))
+```
+
+
 ```{r}
 dic(di("差异表达基因"),
   di(, "high-grade serous ovarian cancer")
@@ -52,30 +80,213 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
-## TCGA 数据获取 (OV)
+## GSE 数据搜索 (HGSOC)
+
+`r snap(gds.hgsoc, 0:3)`
 
 ```{r}
-tc.ov <- job_tcga("TCGA-OV")
-#' @meth {get_meth(tc.ov)}
-tc.ov <- step1(tc.ov, "RNA")
-tc.ov <- step2(tc.ov)
-tc.ov <- step3(tc.ov)
-clear(tc.ov)
-```
-
-```{r}
-lm.ov <- asjob_limma(tc.ov)
-print(as_tibble(lm.ov@object$samples), width = 800)
-lm.ov@object$samples$primary_diagnosis
-lm.ov@object$samples$site_of_resection_or_biopsy
-```
-
-```{r}
-gds.hgsoc <- job_gds("high-grade serous ovarian cancer")
+gds.hgsoc <- job_gds(c("high-grade serous ovarian cancer", "normal"))
+#' @meth {get_meth(gds.hgsoc)}
+gds.hgsoc <- step1(gds.hgsoc)
 vis(gds.hgsoc)
 active(gds.hgsoc)
-gds.hgsoc <- step1(gds.hgsoc)
+
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| High-grade-serous-ovarian-cancer-EDirect-query
+autor(gds.hgsoc@object)
+```
+
+## GEO 数据获取 (HGSOC)
+
+```{r}
+geo.hgsoc <- job_geo("GSE146553")
+#' @meth {get_meth(geo.hgsoc)}
+geo.hgsoc <- step1(geo.hgsoc)
+metadata.hgsoc <- expect(
+  geo.hgsoc, geo_cols(group_recode = c(normal = "normal", hgsoc = "grade")), force = TRUE
+)
+```
+
+## Limma 差异分析 (HGSOC)
+
+`r snap(lm.hgsoc, 0:3)`
+
+`r ref("HGSOC-Box-Plot-Of-DEGs")` 
+
+```{r}
+lm.hgsoc <- asjob_limma(geo.hgsoc, metadata.hgsoc)
+#' @meth {get_meth(lm.hgsoc)}
+lm.hgsoc@object$genes <- dplyr::mutate(
+  lm.hgsoc@object$genes, hgnc_symbol = strx(gene_assignment, "(?<=// )[^ ]+")
+)
+lm.hgsoc <- filter(lm.hgsoc, group != "Others", type = "metadata")
+lm.hgsoc <- step1(lm.hgsoc)
+lm.hgsoc <- step2(
+  lm.hgsoc, hgsoc - normal, label = "hgnc_symbol", 
+  cut.fc = .5, use = "P"
+)
+lm.hgsoc <- step3(lm.hgsoc, use.gene = "hgnc_symbol")
+lm.hgsoc@tables$step2$tops$`hgsoc - normal`
+tbl_lm.hgsoc_hgsoc <- lm.hgsoc@tables$step2$tops$`hgsoc - normal`
+dplyr::filter(tbl_lm.hgsoc_hgsoc, hgnc_symbol == "GTSE1")
+
+lm.hgsoc <- map(lm.hgsoc, "GTSE1", "hgnc_symbol", use = "P")
+lm.hgsoc@plots$step2$p.volcano$`hgsoc - normal`
+lm.hgsoc@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| HGSOC-hgsoc-vs-normal
+autor(lm.hgsoc@plots$step2$p.volcano$`hgsoc - normal`)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| HGSOC-Box-Plot-Of-DEGs
+autor(lm.hgsoc@plots$step2$p.BoxPlotOfDEGs)
+```
+
+## GSE 数据搜索 (HGSOC_RES)
+
+```{r}
+gds.hgsoc_Res <- job_gds(c("high-grade serous ovarian cancer", "Drug resistance"))
+#' @meth {get_meth(gds.hgsoc_Res)}
+vis(gds.hgsoc_Res)
+active(gds.hgsoc_Res)
+```
+
+## GEO 数据获取 (HGSOC_RES)
+
+`r snap(geo.hgsoc_Res, 0:3)`
+
+```{r}
+geo.hgsoc_Res <- job_geo("GSE141630")
+#' @meth {get_meth(geo.hgsoc_Res)}
+geo.hgsoc_Res <- step1(geo.hgsoc_Res)
+geo.hgsoc_Res <- step2(geo.hgsoc_Res, rna = FALSE)
+geo.hgsoc_Res$prods
+counts.hgsoc_Res <- ftibble(list.files(geo.hgsoc_Res$dir, ".", full.names = TRUE))
+counts.hgsoc_Res <- dplyr::rename_with(counts.hgsoc_Res, function(x) gs(x, "^[^_]+_", ""))
+counts.hgsoc_Res
+metadata.hgsoc_Res <- expect(
+  geo.hgsoc_Res, geo_cols(
+    group_recode = c(
+      sensitive = "sensitive", carboplatin_resistant = "carboplatin resistant", 
+      cisplatin_resistant = "cisplatin resistant"
+    )
+  ), force = TRUE
+)
+metadata.hgsoc_Res <- dplyr::mutate(
+  metadata.hgsoc_Res, sample = title, .before = 1
+)
+genes.hgsoc_Res <- dplyr::select(counts.hgsoc_Res, 1)
+genes.hgsoc_Res
+
+bm <- job_biomart("hsa")
+bm <- step1(bm, genes.hgsoc_Res$Gene, "ensembl_gene_id")
+bm$anno
+```
+
+## Limma 差异分析 (HGSOC_RES)
+
+`r snap(lm.hgsoc_Res, 0:3)`
+(注：cisplatin_resistant 未显著，所以未分析)
+
+`r ref("HGSOC-RES-Box-Plot-Of-DEGs")`
+
+```{r}
+lm.hgsoc_Res <- job_limma_normed(counts.hgsoc_Res, metadata.hgsoc_Res, bm$anno)
+#' @meth {get_meth(lm.hgsoc_Res)}
+lm.hgsoc_Res@params$normed_data
+lm.hgsoc_Res <- step1(lm.hgsoc_Res)
+lm.hgsoc_Res <- step2(
+  lm.hgsoc_Res, carboplatin_resistant - sensitive, label = "hgnc_symbol",
+  cut.fc = .5, use = "P"
+)
+lm.hgsoc_Res <- step3(lm.hgsoc_Res, use.gene = "hgnc_symbol")
+lm.hgsoc_Res@plots$step2$p.volcano$`carboplatin_resistant - sensitive`
+
+lm.hgsoc_Res <- map(
+  lm.hgsoc_Res, "GTSE1", "hgnc_symbol", use = "P", which = 1L
+)
+lm.hgsoc_Res@plots$step2$p.BoxPlotOfDEGs
+
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HGSOC-RES-carboplatin-resistant-vs-sensitive
+autor(lm.hgsoc_Res@plots$step2$p.volcano$`carboplatin_resistant - sensitive`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| HGSOC-RES-Box-Plot-Of-DEGs
+autor(lm.hgsoc_Res@plots$step2$p.BoxPlotOfDEGs)
+```
+
+## EpiFactors 表观遗传调控因子数据获取 (M6A)
+
+`r snap(epi.m6a, 0:3)`
+
+```{r}
+epi.m6a <- job_epifactor()
+#' @meth {get_meth(epi.m6a)}
+epi.m6a <- step1(epi.m6a)
+epi.m6a <- filter(epi.m6a)
+feature(epi.m6a)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| M6A-all-protein-of-epigenetic-regulators
+autor(epi.m6a@tables$step1$protein)
+```
+
+## 交集: HGSOC_DEGs + RNA_Methy (SIG)
+
+`r ref("Intersection-of-HGSOC-DEGs-with-RNA-Methy", FALSE)`
+`r snap(venn.sig, 0:3)`
+
+```{r}
+venn.sig <- job_venn(
+  HGSOC_DEGs = feature(lm.hgsoc), 
+  RNA_Methy = feature(epi.m6a)
+)
+venn.sig <- step1(venn.sig)
+venn.sig@plots$step1$p.venn
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-HGSOC-DEGs-with-RNA-Methy
+autor(venn.sig@plots$step1$p.venn)
+```
+
+## 关联分析 (HGSOC)
+
+`r snap(cp.cor, 0:3)`
+
+```{r}
+cp.cor <- cal_corp(
+  lm.hgsoc, NULL, feature(venn.sig), "GTSE1", use = "hgnc_symbol", mode = "linear"
+)
+p.cor <- vis(.corp(cp.cor@params$res))
+p.cor
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Linear-regression
+autor(p.cor)
 ```
 
 # 总结 {#conclusion}
+
+`r ref("HGSOC-RES-Box-Plot-Of-DEGs")` 与
+`r ref("HGSOC-Box-Plot-Of-DEGs")`，
+结果表明 GTSE1 在癌症或耐药数据集中均差异表达，且癌症高表达，耐药数据集相对以于癌症低表达，
+表明耐药组已无法通过调控该基因发挥抗癌作用(耐药)。
+
+随后，筛选出的差异表达基因 METTL14，与 GTSE1 显著关联，见 `r ref("Linear-regression")`。
 

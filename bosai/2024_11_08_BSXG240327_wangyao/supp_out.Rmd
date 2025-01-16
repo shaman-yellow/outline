@@ -19,7 +19,8 @@ show.ic(info)
 
 order_publish.bosai("supp.Rmd", "supp_out.Rmd")
 idname <- formatName.bosai("./supp_out.docx")
-order_packaging("./supp_out.docx", idname = idname, external_file = NULL, extras = "./order_material/anno.md")
+order_packaging("./supp_out.docx", idname = idname, external_file = NULL,
+  extras = "Reply_冯力.docx")
 ```
 
 ```{r include = F}
@@ -113,7 +114,7 @@ lm.all <- job_limma(new_dge(metadata, as_tibble(counts), bm.all$anno))
 
 ## Limma 差异分析 (MRNA)
 
-肝癌 RNA-seq，
+肺癌 RNA-seq，
 `r snap(lm.mrna, 0)`
 `r snap(lm.mrna, 1)`
 `r snap(lm.mrna, 2)`
@@ -292,7 +293,7 @@ lm.lung <- asjob_limma(tc.lung,
   days_to_last_follow_up >= 30, isTumor == "tumor")
 lm.lung <- step1(lm.lung)
 
-#' @meth {get_meth(lasso.lung, F)[-4]}
+#' @meth {get_meth(lasso.lung, F)}
 #' @meth {snap(lm.lung, 0)}
 lasso.lung <- do_lasso(lm.lung, mfuzz.mrna)
 lasso.lung <- step1(lasso.lung)
@@ -321,10 +322,14 @@ autor(lasso.lung@plots$step4$p.lassoCOX_model)
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LUNG-lasso-COX-coeffients
-autor(lasso.lung@plots$step4$p.lassoCOX_coeffients)
+#| LUNG-lasso-COX-coeffients-lambda-min
+autor(lasso.lung@plots$step4$p.lassoCOX_coeffients$lambda.min)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-lasso-COX-coeffients-lambda-1se
+autor(lasso.lung@plots$step4$p.lassoCOX_coeffients$lambda.1se)
+```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUNG-lasso-COX-ROC-lambda-min
@@ -537,7 +542,7 @@ autor(lm.lncrna@plots$step3$p.sets_intersection)
 ## 关联分析 (MRNA, LNCRNA)
 
 `r snap(cp.cor, 0:1)`
-`r snap(sigCor_mrna2lnc, 0:3)`
+`r snap(sigCor_mrna2lnc)`
 
 ```{r}
 cp.cor <- cal_corp(lm.mrna, lm.lncrna, surv.lung$fea_coefs$feature, allsLncTops, c("mRNA", "LncRNA"))
@@ -578,4 +583,34 @@ autor(sigCor_mrna2lnc)
 ```{r}
 extract_anno("./order_material/BSXG240327-陈立茂-补充分析-基于血小板RNA测序数据预测早期肺癌潜在生物标志物-2024.12.17ByF.docx", "./order_material/anno.md")
 postModify_annoDocx("./order_material/anno.md")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_冯力.docx")
+```
+
+```{r}
+raw <- clinical <- fxlsx("./order_material/样本信息（更新性别和年龄）-待补充信息.xlsx")
+clinical <- dplyr::select(
+  clinical, name = 编号, gender = 性别, age = 年龄,
+  stage = 病理分期..什么标准..
+)
+clinical <- dplyr::mutate(
+  clinical, name = gs(name, "_L1$", ""),
+  gender = dplyr::recode(gender, "男" = "male", "女" = "female"),
+  age = as.integer(age)
+)
+clinical <- dplyr::filter(clinical, name %in% rownames(metadata))
+clinical <- map(
+  clinical, "name", as_tibble(metadata), 
+  "rownames", "group", col = "stage"
+)
+clinical <- dplyr::select(clinical, -name)
+
+res <- summary_tibble2(clinical, "stage")
+openxlsx::write.xlsx(res, "clinical_feature.xlsx")
+pretty_flex(res, "", NULL)
+
+# hasUsed <- ins(
+#   meta = rownames(metadata), count = colnames(counts), clinical = clinical[[1]]
+# )
+# rownames(metadata) %>% .[ ! . %in% clinical[[1]] ]
+# dplyr::filter(clinical, grpl(编号, "_L1$"))
 ```

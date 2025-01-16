@@ -286,3 +286,5 @@ BiocManager::install("Mfuzz")
 # install.packages("gtsummary")
 install.packages("summarytools")
 install.packages("timeROC")
+
+BiocManager::install("SNPlocs.Hsapiens.dbSNP155.GRCh37")

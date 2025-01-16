@@ -5,7 +5,11 @@
 summary_week.bosai(rm = T, must_include = "BSJF240734")
 alls <- get_orders()
 print(alls, n = Inf, width = 400)
+```
 
+## 2024-12-04
+
+```{r}
 alls <- dplyr::mutate(alls, cost = ifelse(type == "思路设计", 3, NA))
 collate <- dplyr::select(alls, type, id, title, cost, finish)
 collate <- dplyr::mutate(collate, name = paste0(id, ", ", title))
@@ -23,3 +27,34 @@ alls
 backup_jobs.bosai(alls, "2024-12-10")
 ```
 
+## 2024-12-31
+
+
+```{r}
+orders <- get_orders()
+month1 <- ftibble("./summary/assess_data_1.csv")
+orders_month1 <- dplyr::filter(
+  orders, id %in% strx(month1$name, "[^,]*"), finish <= max(month1$finish)
+)
+orders_month1 <- dplyr::mutate(orders_month1, summary_month = td("2024-12-04"), .before = 1)
+orders_month1
+saveRDS(orders_month1, "summary/records.rds")
+saveRDS(orders_month1, "summary/month_records.rds")
+
+summary_assess.bosai(get_orders())
+```
+
+## 2025-01-03
+
+```{r}
+summary_month.bosai(get_orders(), rm = TRUE)
+```
+
+## 2025-01-10
+
+```{r}
+alls <- get_orders()
+backup_jobs.bosai(alls, "2025-01-10")
+
+summary_week.bosai(rm = T)
+```

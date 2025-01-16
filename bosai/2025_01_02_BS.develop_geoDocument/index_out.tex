@@ -1,0 +1,596 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz} \usepackage{auto-pst-pdf} \usepackage{pgfornament} \usepackage{pstricks-add} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{titlepage} \newgeometry{top=7.5cm}
+\begin{center} \textbf{\Huge GEO
+数据快速查询与获取} \vspace{4em}
+\begin{textblock}{10}(3,5.9) \huge
+\textbf{\textcolor{black}{2025-01-02}}
+\end{textblock} \begin{textblock}{10}(3,7.3)
+\Large \textcolor{black}{LiChuang Huang}
+\end{textblock} \end{center} \end{titlepage}
+\restoregeometry
+
+\hypertarget{ux5b89ux88c5ux4f9dux8d56}{%
+\section{安装依赖}\label{ux5b89ux88c5ux4f9dux8d56}}
+
+对于该文档所述的功能，只需要两个工具，\texttt{EDirect}，以及我的R包 \texttt{utils.tool} (从 github 获取)。
+\texttt{utils.tool} 需要很多 R 包依赖，例如这里主要的 \texttt{GEOquery} R 包。
+还可能存在一些你没有安装过的R包。
+
+对于该功能，我已经在服务器 (账号：
+
+\texttt{HostName\ ssh.cn-zhongwei-1.paracloud.com} \newline
+\texttt{User\ t0s000324@BSCC-T} \newline
+
+) 中部署完毕 (conda: \texttt{r4-base})，可直接使用，无需再安装了。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# 这是一个 Linux 命令行工具}
+\KeywordTok{system}\NormalTok{(}\StringTok{\textquotesingle{}sh {-}c "$(wget {-}q https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install{-}edirect.sh {-}O {-})"\textquotesingle{}}\NormalTok{)}
+\CommentTok{\#\# 获取 github 中的 R 包。}
+\KeywordTok{system}\NormalTok{(}\StringTok{"git clone {-}{-}depth 1 https://github.com/shaman{-}yellow/utils.tool \textasciitilde{}/utils.tool"}\NormalTok{)}
+\CommentTok{\#\# 由于该包很多方法没有导出，所以无法通过 install 来使用。请使用以下方式加载：}
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{load\_all}\NormalTok{(}\StringTok{"\textasciitilde{}/utils.tool"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux57faux672cux65b9ux6cd5}{%
+\section{基本方法}\label{ux57faux672cux65b9ux6cd5}}
+
+\hypertarget{ux52a0ux8f7dux5305}{%
+\subsection{加载包}\label{ux52a0ux8f7dux5305}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# devtools::load\_all, 相当于 \textasciigrave{}library\textasciigrave{} 这个命令}
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{load\_all}\NormalTok{(}\StringTok{"\textasciitilde{}/utils.tool"}\NormalTok{)}
+\CommentTok{\#\# 设置缓存路径}
+\KeywordTok{set\_prefix}\NormalTok{(}\StringTok{"\textasciitilde{}/cache"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux4e3bux8981ux65b9ux6cd5}{%
+\subsection{主要方法}\label{ux4e3bux8981ux65b9ux6cd5}}
+
+以下所有，除了 \texttt{job\_gds}， 都是 S4 泛型方法。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# 以 EDirect 查询 GEO 信息，整理成数据框导入}
+\NormalTok{job\_gds}
+\CommentTok{\#\# 预设的一些过滤条件}
+\NormalTok{step1}
+\CommentTok{\#\# 预设的一些过滤方法}
+\NormalTok{step2}
+\CommentTok{\#\# 一种交互式操作，快速格式化元数据的列，整理出 sample, group 列}
+\NormalTok{expect}
+\CommentTok{\#\# 针对 group 列，形成 markdown 格式文本}
+\NormalTok{anno}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux67e5ux770bux65b9ux6cd5ux672cux4f53}{%
+\subsection{查看方法本体}\label{ux67e5ux770bux65b9ux6cd5ux672cux4f53}}
+
+S4 在查看函数本体上不如普通的 function 方便，但你可以用以下方法查看：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{selectMethod}\NormalTok{(step1, }\StringTok{"job\_gds"}\NormalTok{)}
+\KeywordTok{selectMethod}\NormalTok{(step2, }\StringTok{"job\_gds"}\NormalTok{)}
+\KeywordTok{selectMethod}\NormalTok{(expect, }\StringTok{"job\_gds"}\NormalTok{)}
+\KeywordTok{selectMethod}\NormalTok{(anno, }\StringTok{"job\_gds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+或者，也可以直接查看 R 包中的源代码。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{readLines}\NormalTok{(}\StringTok{"\textasciitilde{}/utils.tool/R/workflow\_88\_gds.R"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux4f7fux7528ux793aux4f8b}{%
+\section{使用示例}\label{ux4f7fux7528ux793aux4f8b}}
+
+\hypertarget{ux6700ux521d}{%
+\subsection{最初}\label{ux6700ux521d}}
+
+先加载这个包。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{load\_all}\NormalTok{(}\StringTok{"\textasciitilde{}/utils.tool"}\NormalTok{)}
+\KeywordTok{set\_prefix}\NormalTok{(}\StringTok{"\textasciitilde{}/cache"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux67e5ux8be2ux7761ux7720ux547cux5438ux6682ux505cux75c7}{%
+\subsection{查询睡眠呼吸暂停症}\label{ux67e5ux8be2ux7761ux7720ux547cux5438ux6682ux505cux75c7}}
+
+以 ``睡眠呼吸暂停症'' 为例子，查询 GEO 可用数据。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# org 参数可以指定物种，例如 Humo Sapiens，这里不指定}
+\CommentTok{\#\# 这里还有一些默认参数，例如 n, 指定样本数量，默认是 6:1000}
+\CommentTok{\#\# 第一个参数，即 c("Sleep apnea")，可以指定多个关键词，例如 c("Sleep apnea", "Healthy")}
+\NormalTok{gds.sa \textless{}{-}}\StringTok{ }\KeywordTok{job\_gds}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"Sleep apnea"}\NormalTok{), }\DataTypeTok{org =} \OtherTok{NULL}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+注意，\texttt{job\_gds} 会形成本地缓存，下次免于联网搜索，如果你一定要重新搜索，请指定参数：\texttt{force\ =\ TRUE}。
+
+\hypertarget{ux5f97ux5230ux7684ux7ed3ux679c-ux5df2ux7ecfux5f97ux5230ux4e86ux6570ux636eux8868}{%
+\subsection{得到的结果 (已经得到了数据表)}\label{ux5f97ux5230ux7684ux7ed3ux679c-ux5df2ux7ecfux5f97ux5230ux4e86ux6570ux636eux8868}}
+
+可以从 \texttt{gds.sa@object} 中查看运行结果。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gds.sa}\OperatorTok{@}\NormalTok{object}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 12 x 7
+##    GSE       title                     summary taxon gdsType n_samples PubMedIds
+##    <chr>     <chr>                     <chr>   <chr> <chr>       <int> <chr>    
+##  1 GSE242668 Long-term intermittent h~ Obstru~ Mus ~ Expres~        10 PRJNA101~
+##  2 GSE235867 Low testosterone and int~ Interm~ Mus ~ Expres~        20 PRJNA987~
+##  3 GSE215935 mRNA, lncRNA, and circRN~ Backgr~ Mus ~ Expres~         6 PRJNA891~
+##  4 GSE189958 Combined intermittent an~ Study ~ Mus ~ Expres~        16 PRJNA785~
+##  5 GSE145435 Short-term exposure to i~ Obstru~ Mus ~ Expres~         6 PRJNA607~
+##  6 GSE145434 Short-term exposure to i~ Obstru~ Mus ~ Expres~        12 PRJNA607~
+##  7 GSE145221 Expression data from mou~ Athero~ Mus ~ Expres~        23 PRJNA606~
+##  8 GSE21409  Chronic Intermittent Hyp~ Obstru~ Mus ~ Expres~        10 PRJNA126~
+##  9 GSE14981  Distinct Mechanisms Unde~ Backgr~ Dros~ Expres~         9 PRJNA111~
+## 10 GSE2271   Gene expression and phen~ Chroni~ Mus ~ Expres~        18 PRJNA913~
+## 11 GSE1873   The effect of intermitte~ All an~ Mus ~ Expres~        10 PRJNA905~
+## 12 GSE480    Sleep apnea and glucose ~ This s~ Mus ~ Expres~        20 PRJNA851~
+\end{verbatim}
+
+\hypertarget{ux6b63ux5219ux5339ux914dux8fc7ux6ee4-ux53efux9009ux7684}{%
+\subsection{正则匹配过滤 (可选的)}\label{ux6b63ux5219ux5339ux914dux8fc7ux6ee4-ux53efux9009ux7684}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# 函数 \textasciigrave{}grpl\textasciigrave{} 是 \textasciigrave{}grepl\textasciigrave{} 的封装，只是改变了参数顺序。 }
+\CommentTok{\#\# clinical 会按照预设的一些条件，过滤掉一些数据，请查看 \textasciigrave{}selectMethod(step1, "job\_gds")\textasciigrave{}}
+\CommentTok{\#\# 这里筛选了包含 \textasciigrave{}Intermittent hypoxia\textasciigrave{} 的数据。}
+\NormalTok{gds.sa \textless{}{-}}\StringTok{ }\KeywordTok{step1}\NormalTok{(}
+\NormalTok{  gds.sa, }\DataTypeTok{clinical =} \OtherTok{FALSE}\NormalTok{, }\OperatorTok{!}\KeywordTok{grpl}\NormalTok{(taxon, }\StringTok{"Homo Sapiens"}\NormalTok{, }\OtherTok{TRUE}\NormalTok{),}
+  \KeywordTok{grpl}\NormalTok{(summary, }\StringTok{"Intermittent hypoxia"}\NormalTok{, }\OtherTok{TRUE}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+可以以下方式，跳过这一步。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gds.sa}\OperatorTok{@}\NormalTok{step \textless{}{-}}\StringTok{ }\NormalTok{1L}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux83b7ux53d6ux5143ux6570ux636e}{%
+\subsection{获取元数据}\label{ux83b7ux53d6ux5143ux6570ux636e}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# 会下载数据集，请注意，尽量避免一次性下载过多，所以过滤 \textasciigrave{}ges.sa@object\textasciigrave{} 中的数据是必要的}
+\CommentTok{\#\# 需要等待一会儿}
+\NormalTok{ges.sa \textless{}{-}}\StringTok{ }\KeywordTok{step2}\NormalTok{(gds.sa)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux67e5ux770bux5143ux6570ux636e}{%
+\subsection{查看元数据}\label{ux67e5ux770bux5143ux6570ux636e}}
+
+基本上，该数据集能否用于你的分析，看一下这个结果就能知道了。
+例如生存分析，你至少要在结果中找到 survival 对应的数据记录。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(gds.sa}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{res}\OperatorTok{$}\NormalTok{metas, }\DataTypeTok{n =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $GSE242668
+## # A tibble: 10 x 11
+##    sample     group  rownames title age.at_the_treatment~1 diet.ch1 genotype.ch1
+##    <chr>      <chr>  <chr>    <chr> <chr>                  <chr>    <chr>       
+##  1 GSM7766596 inter~ GSM7766~ ih36~ 16 weeks               regular~ C57BL/6JRj ~
+##  2 GSM7766597 inter~ GSM7766~ ih37~ 16 weeks               regular~ C57BL/6JRj ~
+##  3 GSM7766598 inter~ GSM7766~ ih38~ 16 weeks               regular~ C57BL/6JRj ~
+##  4 GSM7766599 inter~ GSM7766~ ih39~ 16 weeks               regular~ C57BL/6JRj ~
+##  5 GSM7766600 inter~ GSM7766~ ih40~ 16 weeks               regular~ C57BL/6JRj ~
+##  6 GSM7766601 normo~ GSM7766~ no31~ 16 weeks               regular~ C57BL/6JRj ~
+##  7 GSM7766602 normo~ GSM7766~ no32~ 16 weeks               regular~ C57BL/6JRj ~
+##  8 GSM7766603 normo~ GSM7766~ no33~ 16 weeks               regular~ C57BL/6JRj ~
+##  9 GSM7766604 normo~ GSM7766~ no34~ 16 weeks               regular~ C57BL/6JRj ~
+## 10 GSM7766605 normo~ GSM7766~ no35~ 16 weeks               regular~ C57BL/6JRj ~
+## # i abbreviated name: 1: age.at_the_treatment_onset.ch1
+## # i 4 more variables: Sex.ch1 <chr>, tissue.ch1 <chr>,
+## #   treatment.duration.ch1 <chr>, treatment.ch1 <chr>
+\end{verbatim}
+
+\hypertarget{ux5febux901fux683cux5f0fux5316ux5206ux7ec4ux4fe1ux606f-ux53efux9009}{%
+\subsection{快速格式化分组信息 (可选)}\label{ux5febux901fux683cux5f0fux5316ux5206ux7ec4ux4fe1ux606f-ux53efux9009}}
+
+这是一个极其方便的工具，查找可能存在的 ``group'' 列，交互式 (并生成本地记录) 提示，可能让你手动指定。
+请自行探索。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gds.sa \textless{}{-}}\StringTok{ }\KeywordTok{expect}\NormalTok{(gds.sa, }\KeywordTok{geo\_cols}\NormalTok{())}
+\CommentTok{\#\# 结果请查看}
+\NormalTok{gds.sa}\OperatorTok{@}\NormalTok{params}\OperatorTok{$}\NormalTok{res}\OperatorTok{$}\NormalTok{metas}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5bf9-group-ux5217ux751fux6210ux603bux7ed3-ux53efux9009}{%
+\subsection{对 Group 列生成总结 (可选)}\label{ux5bf9-group-ux5217ux751fux6210ux603bux7ed3-ux53efux9009}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gds.sa \textless{}{-}}\StringTok{ }\KeywordTok{anno}\NormalTok{(gds.sa)}
+\end{Highlighting}
+\end{Shaded}
+
+可以通过以下方式查看结果
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gds.sa}\OperatorTok{@}\NormalTok{snap}
+\end{Highlighting}
+\end{Shaded}
+
+或者：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{writeLines}\NormalTok{(}\KeywordTok{snap}\NormalTok{(gds.sa, }\StringTok{"a"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux6700ux7ec8ux6548ux679cux5c55ux73b0}{%
+\subsection{最终效果展现}\label{ux6700ux7ec8ux6548ux679cux5c55ux73b0}}
+
+上述步骤都运行后，可得到：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{writeLines}\NormalTok{(}\KeywordTok{snap}\NormalTok{(gds.sa, }\StringTok{"a"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GSE242668}, \textbf{Type}: RNA-seq
+
+  \begin{itemize}
+  \tightlist
+  \item
+    intermittent\_hypoxia (n = 5)
+  \item
+    normoxic\_control (n = 5)
+  \end{itemize}
+\item
+  \textbf{GSE235867}, \textbf{Type}: RNA-seq
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ORX-IH (n = 5)
+  \item
+    ORX-Nx (n = 5)
+  \item
+    Sham-IH (n = 5)
+  \item
+    Sham-Nx (n = 5)
+  \end{itemize}
+\item
+  \textbf{GSE215935}, \textbf{Type}: Microarray; Non-coding RNA-seq
+
+  \begin{itemize}
+  \tightlist
+  \item
+    chronic intermittent hypoxia (CIH) system combined with Ang II (n = 3)
+  \item
+    normal saline (n = 3)
+  \end{itemize}
+\item
+  \textbf{GSE189958}, \textbf{Type}: RNA-seq
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Intermittent hypoxia (n = 4)
+  \item
+    Overlap hypoxia (n = 4)
+  \item
+    Room air (n = 4)
+  \item
+    Sustained hypoxia (n = 4)
+  \end{itemize}
+\item
+  \textbf{GSE145435}, \textbf{Type}: (scRNA-seq) RNA-seq
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Ctrl (n = 3)
+  \item
+    Hypo (n = 3)
+  \end{itemize}
+\item
+  \textbf{GSE145434}, \textbf{Type}: RNA-seq
+
+  \begin{itemize}
+  \tightlist
+  \item
+    CTRL (n = 6)
+  \item
+    HYPO (n = 6)
+  \end{itemize}
+\item
+  \textbf{GSE145221}, \textbf{Type}: Microarray
+
+  \begin{itemize}
+  \tightlist
+  \item
+    CIH for 12 (n = 4)
+  \item
+    CIH for 8 (n = 5)
+  \item
+    CIH for 8 weeks followed by normoxia for 4 (n = 4)
+  \item
+    normoxia for 12 (n = 5)
+  \item
+    normoxia for 8 (n = 5)
+  \end{itemize}
+\item
+  \textbf{GSE21409}, \textbf{Type}: Microarray
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Interm Hypoxia (n = 5)
+  \item
+    Normoxia (n = 5)
+  \end{itemize}
+\item
+  \textbf{GSE14981}, \textbf{Type}: Microarray
+
+  \begin{itemize}
+  \tightlist
+  \item
+    CH (n = 3)
+  \item
+    IH (n = 3)
+  \item
+    NC (n = 3)
+  \end{itemize}
+\item
+  \textbf{GSE2271}, \textbf{Type}: Microarray
+
+  \begin{itemize}
+  \tightlist
+  \item
+    mouse subjected (n = 2)
+  \item
+    mouse subjected 1 week to chronic constant hypoxia (n = 1)
+  \item
+    mouse subjected 1 week to chronic intermittent hypoxia (n = 2)
+  \item
+    mouse subjected 2 week to chronic constant hypoxia (n = 1)
+  \item
+    mouse subjected 2 week to chronic intermittent hypoxia (n = 2)
+  \item
+    mouse subjected 4 week to chronic constant hypoxia (n = 2)
+  \item
+    mouse subjected 4 week to chronic intermittent hypoxia (n = 2)
+  \item
+    mouse, 1 week control (n = 2)
+  \item
+    mouse, 2 week control (n = 2)
+  \item
+    mouse, 4 week control (n = 2)
+  \end{itemize}
+\item
+  \textbf{GSE1873}, \textbf{Type}: Microarray
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Liver, Intermittent Hypoxia (n = 5)
+  \item
+    Liver, Normoxia (n = 5)
+  \end{itemize}
+\item
+  \textbf{GSE480}, \textbf{Type}: Microarray
+
+  \begin{itemize}
+  \tightlist
+  \item
+    PGA-MGM-ConBrain (n = 1)
+  \item
+    PGA-MGM-ConHeart (n = 1)
+  \item
+    PGA-MGM-ConHyp (n = 2)
+  \item
+    PGA-MGM-ConLung (n = 1)
+  \item
+    PGA-MGM-ConMuscle (n = 1)
+  \item
+    PGA-MGM-ConNonHyp (n = 2)
+  \item
+    PGA-MGM-FragBrain (n = 1)
+  \item
+    PGA-MGM-FragHeart (n = 1)
+  \item
+    PGA-MGM-FragLung (n = 1)
+  \item
+    PGA-MGM-FragMuscle (n = 1)
+  \item
+    PGA-MGM-GlucoseHyp (n = 2)
+  \item
+    PGA-MGM-GlucoseNonHyp (n = 2)
+  \item
+    PGA-MGM-HypoxiaBrain (n = 1)
+  \item
+    PGA-MGM-HypoxiaHeart (n = 1)
+  \item
+    PGA-MGM-HypoxiaLung (n = 1)
+  \item
+    PGA-MGM-HypoxiaMuscle (n = 1)
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{ux8865ux5145ux8bf4ux660e}{%
+\section{补充说明}\label{ux8865ux5145ux8bf4ux660e}}
+
+\hypertarget{ux5173ux4e8e-job_gds}{%
+\subsection{\texorpdfstring{关于 \texttt{job\_gds}}{关于 job\_gds}}\label{ux5173ux4e8e-job_gds}}
+
+\texttt{gds.sa\ \textless{}-\ job\_gds(c("Sleep\ apnea"),\ org\ =\ NULL)} 的运行效果，相当于以下：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{system}\NormalTok{(}\StringTok{"esearch {-}db gds {-}query \textquotesingle{}(Sleep apnea[Description]) AND ((6:1000[Number of Samples]) AND (GSE[Entry Type]))\textquotesingle{} |efetch {-}format docsum |xtract {-}pattern DocumentSummary {-}sep \textquotesingle{}|\textquotesingle{} {-}element GSE title summary taxon gdsType n\_samples PubMedIds BioProject \textgreater{} \textasciitilde{}/cache/query\_gds/X.Sleep.apnea.Description...AND...6.1000.Number.of.Samples...AND..GSE.Entry.Type..."}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+请参考 \url{https://www.ncbi.nlm.nih.gov/books/NBK3837/} 官方文档说明。
+
+\hypertarget{ux5173ux4e8e-step2-ux83b7ux53d6ux6570ux636e}{%
+\subsection{\texorpdfstring{关于 \texttt{step2} 获取数据}{关于 step2 获取数据}}\label{ux5173ux4e8e-step2-ux83b7ux53d6ux6570ux636e}}
+
+是以下函数的封装：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{GEOquery}\OperatorTok{::}\NormalTok{getGEO}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

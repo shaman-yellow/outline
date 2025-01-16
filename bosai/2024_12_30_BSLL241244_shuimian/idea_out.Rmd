@@ -1,0 +1,145 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2024-12-25"), end = td("2024-12-27"), finish = td("2024-12-30"),
+  id = "BSLL241244", client = "凌继祖", inst = "",
+  type = "思路设计",
+  title = "睡眠呼吸暂停症+间歇性低氧诱导的动物模型",
+  save = ".items_idea.rds"
+)
+show.ic(info)
+
+order_publish.bosai("idea.Rmd", "idea_out.Rmd")
+formatName.bosai("./idea_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+阻塞性睡眠呼吸暂停 (OSA) 是一种呼吸障碍，当睡眠期间上呼吸道反复阻塞导致呼吸暂停、低通气和(或)呼吸困难觉醒时就会发生`r cite_show("Autophagy_and_i_Racane_2018")`。
+自噬是体内正常的生理过程，参与细胞稳态和正常呼吸细胞的生存机制。自噬是一种基本的细胞内过程，负责溶酶体降解微生物（病毒、细菌、真菌和原生生物/原生动物）、受损细胞器和蛋白酶体无法降解的受损蛋白质`r cite_show("Autophagy_and_i_Racane_2018")`。
+自噬在 OSA 发病机制中的作用受到了关注。动物研究已将自噬调节与慢性间歇性缺氧联系起来。使用慢性间歇性缺氧大鼠模型，研究人员证明，通过施用褪黑激素增加自噬可防止 OSA 中常见的心脏变化`r cite_show("Chronic_intermi_Xie_S_2016")`。另一项研究测试了自噬在驱动慢性间歇性缺氧引起的胰岛素抵抗中的作用，发现这些过程没有因果关系`r cite_show("Melatonin_prote_Xie_S_2015")`。
+
+目前仍缺少从 RNA-seq 或 scRNA-seq 等组学水平研究自噬与 OSA 关系的报道。
+
+```{r}
+dic(di("差异表达基因"),
+  di("间歇性低氧诱导"),
+  di("睡眠呼吸暂停症")
+)
+# IHI: Intermittent hypoxia induction 间歇性低氧诱导
+# SA: Sleep apnea 睡眠呼吸暂停症
+
+```
+
+## 思路 {#introduction}
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "Autophagy:相关数据库",
+    "相关数据库:自噬基因集",
+    "Sleep_apnea:scRNA-seq, bulk_RNA-seq",
+    "scRNA-seq:聚类分析, 拟时分析, 通讯分析, 富集分析",
+    "聚类分析, 拟时分析, 通讯分析, 富集分析:DEGs",
+    "DEGs, 自噬基因集:联合分析",
+    "联合分析:交集基因, 关联分析, 上下游关系",
+    "交集基因, 关联分析, 上下游关系:关键基因",
+    "关键基因:验证表达",
+    "验证表达:bulk_RNA-seq, 实验验证?"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+wrap(p.route)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 10, 9, showtext = T))
+```
+
+
+# 可行性 {#methods}
+
+## 以 `"Sleep apnea" AND "autophagy"` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-12-30 17-04-42.png")
+```
+
+# 创新性 {#results}
+
+## 以 `"Sleep apnea" AND "autophagy" AND "single cell"` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2024-12-30 17-05-35.png")
+```
+
+# GEO 检索方法
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 参考文献和数据集 {#workflow}
+
+## GSE 数据搜索 (SA)
+
+`r snap(gds.sa, 0:3)`
+
+`r snap(gds.sa, "a")`
+
+```{r}
+gds.sa <- job_gds(c("Sleep apnea"), org = NULL)
+#' @meth {get_meth(gds.sa)}
+gds.sa <- step1(
+  gds.sa, clinical = FALSE, !grpl(taxon, "Homo Sapiens", TRUE),
+  grpl(summary, "Intermittent hypoxia", TRUE)
+)
+gds.sa <- step2(gds.sa)
+gds.sa <- expect(gds.sa, geo_cols())
+gds.sa <- anno(gds.sa)
+active(gds.sa)
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SA-All-Gds-Type
+autor(gds.sa@plots$step1$p.AllGdsType)
+```
+
+```{r}
+extract_anno("./order_material/BSLL241244-凌继祖-思路设计-睡眠呼吸暂停症+间歇性低氧诱导的动物模型-2024.12.30-YRX批注.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_.docx")
+```
+

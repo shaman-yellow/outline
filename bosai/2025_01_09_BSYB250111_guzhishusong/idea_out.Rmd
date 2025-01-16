@@ -1,0 +1,112 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-01-09"), end = td("2025-01-09"), finish = td("2025-01-10"),
+  id = "BSYB250111", client = "赵斌", inst = "中国人民解放军总医院第四医学中心",
+  type = "思路设计",
+  title = "骨质疏松",
+  save = ".items_idea.rds"
+)
+show.ic(info)
+
+order_publish.bosai("idea.Rmd", "idea_out.Rmd")
+formatName.bosai("./idea_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("骨质疏松"),
+  di("代谢重编程")
+)
+```
+
+骨质疏松症是一种骨骼疾病，会导致骨骼结构和强度受损，从而导致脆性骨折的风险逐渐增加。全球老龄人口中骨质疏松症的患病率正在上升。由于骨质疏松症具有慢性特点，需要数年甚至数十年的预防措施或治疗 `r cite_show("Long_term_and_s_Foessl_2023")`。
+骨细胞在维持骨稳态和调节骨骼对激素和机械负荷的反应方面发挥着关键作用。大量证据表明，骨细胞及其陷窝在老化的骨骼中表现出形态变化，表明骨细胞在骨骼老化过程中起着潜在的作用。值得注意的是，最近的研究表明老化的骨细胞具有机械敏感性受损、细胞衰老积累、骨陷窝周围/小管重塑功能障碍以及陷窝-小管网络退化等特征。然而，骨细胞的详细分子机制仍不清楚`r cite_show("Osteocytes_in_b_Cui_J_2022")`。
+
+代谢重编程（Metabolic reprogramming）是指细胞为了应对各种刺激压力而做出的代谢改变。
+近年有多数报道就骨质疏松症与代谢重编程展开探讨`r cite_show("BAP1_promotes_o_Rohatg_2023")`，`r cite_show("L_arginine_meta_Cao_S_2024")`。然而两者关系并未系统阐明。
+
+## 思路 {#introduction}
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "Osteoporosis:GEO_dataset",
+    "GEO_dataset:WGCNA, Differential_analysis",
+    "WGCNA, Differential_analysis:Module, DEGs",
+    "DEGs:GSEA_enrichment",
+    "Module, DEGs:Intersected_Genes",
+    "Intersected_Genes:Enrichment",
+    "DB:Metabolic_reprogramming",
+    "Metabolic_reprogramming, Intersected_Genes:Correlation_analysis",
+    "Correlation_analysis:Significants",
+    "Significants:LASSO_regression",
+    "LASSO_regression:Diagnosis_model",
+    "Diagnosis_model:Validation"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+wrap(p.route)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 10, 9, showtext = T))
+```
+
+
+# GEO 检索方法
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 参考文献和数据集 {#workflow}
+
+## GSE 数据搜索 (OS)
+
+`r snap(gds.os, 0:3)`
+`r snap(gds.os, "a")`
+
+```{r}
+gds.os <- job_gds("Osteoporosis", n = 2:1000)
+vis(gds.os)
+#' @meth {get_meth(gds.os)}
+gds.os <- step1(gds.os, single_cell = NULL)
+gds.os <- step2(gds.os)
+gds.os <- expect(gds.os, geo_cols())
+gds.os <- anno(gds.os)
+writeLines(snap(gds.os, "a"))
+```

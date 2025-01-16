@@ -285,7 +285,7 @@ lm.lung <- asjob_limma(tc.lung,
   days_to_last_follow_up >= 30, isTumor == "tumor")
 lm.lung <- step1(lm.lung)
 
-#' @meth {get_meth(lasso.lung, F)[-4]}
+#' @meth {get_meth(lasso.lung, F)}
 #' @meth {snap(lm.lung, 0)}
 lasso.lung <- do_lasso(lm.lung, mfuzz.mrna)
 lasso.lung <- step1(lasso.lung)
@@ -295,12 +295,14 @@ lasso.lung <- step3(lasso.lung, use_tops = T)
 
 lasso.lung@step <- 3L
 lasso.lung$seed <- 5136
-lasso.lung <- step4(lasso.lung, fun = "cv", nfold = 5)
+lasso.lung <- step4(
+  lasso.lung, fun = "cv", nfold = 5, type.measure = "C"
+)
 
 lasso.lung@params$sig.uni_cox
 lasso.lung@params$sig.mul_cox
 lasso.lung@plots$step4$p.lassoCOX_model
-lasso.lung@plots$step4$p.lassoCOX_coeffients
+lasso.lung@plots$step4$p.lassoCOX_coeffients$lambda.1se
 lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.min
 lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se
 
@@ -314,10 +316,14 @@ autor(lasso.lung@plots$step4$p.lassoCOX_model)
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| LUNG-lasso-COX-coeffients
-autor(lasso.lung@plots$step4$p.lassoCOX_coeffients)
+#| LUNG-lasso-COX-coeffients-lambda-min
+autor(lasso.lung@plots$step4$p.lassoCOX_coeffients$lambda.min)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-lasso-COX-coeffients-lambda-1se
+autor(lasso.lung@plots$step4$p.lassoCOX_coeffients$lambda.1se)
+```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUNG-lasso-COX-ROC-lambda-min
@@ -337,7 +343,7 @@ autor(lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se)
 ```{r}
 #' @meth {get_meth(surv.lung)}
 surv.lung <- asjob_survival(lasso.lung, "mul", "1", base_method = "s")
-surv.lung <- step1(surv.lung)
+surv.lung <- step1(surv.lung, roc_time = c(3, 5, 10))
 
 surv.lung@params$p.surv_genes_hp
 surv.lung@plots$step1$p.surv$risk_score
@@ -372,17 +378,87 @@ GSE198048  不包含生存事件 (Dead) 。 因此，以 `r bind(hasSurv[-2])` �
 ```{r}
 #' @meth {get_meth(gds.lung)}
 gds.lung <- job_gds(c("lung cancer", "survival"), 30:1000)
-gds.lung <- step1(gds.lung, grpl(gdsType, "^Expression[^;]*sequencing$"))
+gds.lung <- step1(gds.lung)
 gds.lung <- step2(gds.lung)
-gds.lung@object
+gds.lung <- step3(gds.lung)
+gds.lung$res
+
 vis(gds.lung)
-hasSurv <- gds.lung$querys[ c(23, 7, 6) ]
 hasSurv
+# [1] "GSE87340"  "GSE198048" "GSE256047"
 # gds.lung$res
 
 active(gds.lung, hasSurv)
 ```
 
+## GEO 数据获取 (GEO_LUNG3)
+
+```{r}
+geo.lung3 <- job_geo("GSE37745")
+geo.lung3 <- step1(geo.lung3)
+metadata.lung3 <- expect(geo.lung3, geo_cols())
+metadata.lung3 <- dplyr::mutate(metadata.lung3,
+  days_to_last_follow_up = as.integer(days.to.determined.death.status.ch1),
+  vital_status = ifelse(dead.ch1 == "yes", "Dead", "Alive"),
+  group = vital_status,
+  ajcc_pathologic_stage = paste0(
+    "T", strx(tumor.stage.ch1, "[0-9]")
+  )
+)
+```
+
+```{r}
+lm.GEO_lung3 <- asjob_limma(geo.lung3, metadata.lung3)
+lm.GEO_lung3 <- filter(
+  lm.GEO_lung3, type = "metadata", grpl(
+    ajcc_pathologic_stage, "T0|T1|T2"
+  ), days_to_last_follow_up > 10
+)
+lm.GEO_lung3 <- step1(lm.GEO_lung3)
+lasso.GEO_lung3 <- asjob_lasso(lm.GEO_lung3, use = "hgnc_symbol")
+lasso.GEO_lung3 <- step1(lasso.GEO_lung3)
+surv.GEO_lung3 <- asjob_survival(
+  lasso.GEO_lung3, fea_coefs = surv.lung$fea_coefs, force = T
+)
+surv.GEO_lung3 <- step1(
+  surv.GEO_lung3, only_keep_sig = FALSE, roc_time = c(3, 5, 10)
+)
+surv.GEO_lung3@plots$step1$p.surv
+surv.GEO_lung3@plots$step1$p.roc
+```
+
+## GEO 数据获取 (GEO_LUNG4)
+
+```{r}
+geo.lung4 <- job_geo("GSE14814")
+geo.lung4 <- step1(geo.lung4)
+metadata.lung4 <- expect(geo.lung4, geo_cols())
+metadata.lung4 <- dplyr::mutate(metadata.lung4,
+  ajcc_pathologic_stage = ifelse(
+    grpl(Stage.ch1, "I"), nchar(Stage.ch1), Stage.ch1
+    ),
+  ajcc_pathologic_stage = paste0(
+    "T", strx(ajcc_pathologic_stage, "[0-9]")
+    ),
+  days_to_last_follow_up = as.numeric(OS.time.ch1) * 365,
+  vital_status = OS.status.ch1
+)
+```
+
+```{r}
+lm.GEO_lung4 <- asjob_limma(geo.lung4, metadata.lung4)
+lm.GEO_lung4 <- filter(lm.GEO_lung4, type = "metadata",
+  grpl(Cause.of.death.ch1, "Lung cancer|Alive"),
+  grpl(
+    ajcc_pathologic_stage, "T0|T1|T2"
+  ), days_to_last_follow_up > 10
+)
+lm.GEO_lung4 <- step1(lm.GEO_lung4)
+lasso.GEO_lung4 <- asjob_lasso(lm.GEO_lung4, use = "hgnc_symbol")
+lasso.GEO_lung4 <- step1(lasso.GEO_lung4)
+surv.GEO_lung4 <- asjob_survival(lasso.GEO_lung4, fea_coefs = surv.lung$fea_coefs, force = T)
+surv.GEO_lung4 <- step1(surv.GEO_lung4, only_keep_sig = FALSE)
+```
 
 ## GEO 数据获取 (GEO_LUNG2)
 
@@ -402,6 +478,7 @@ metadata.geolung2 <- dplyr::mutate(metadata.geolung2,
   vital_status = stringr::str_extract(des, "[Dd]ie|NED|[Aa]live"),
   vital_status = ifelse(grpl(vital_status, "die", T), "Dead",
     ifelse(!is.na(vital_status), "Alive", "")),
+  ajcc_pathologic_stage = strx(tumor.stage_.ajcc_8..ch1, "^T[0-9]+"),
   days_to_last_follow_up = as.double(unlist(
     lapply(stringr::str_extract_all(des, "[0-9.]+"),
       function(x) if (length(x)) tail(x, n = 1) else ""
@@ -421,9 +498,12 @@ autor(geo.lung2$prods)
 
 ```{r}
 lm.GEO_lung2 <- job_limma_normed(counts.geolung2, metadata.geolung2, dplyr::select(counts.geolung2, 1))
-lm.GEO_lung2 <- filter(lm.GEO_lung2, vital_status != "", days_to_last_follow_up > 10, type = "metadata")
-
-lasso.GEO_lung2 <- asjob_lasso(lm.GEO_lung2, use = "V1", dup_method = "max")
+lm.GEO_lung2 <- filter(
+  lm.GEO_lung2, vital_status != "", days_to_last_follow_up > 10, 
+  type = "metadata", grpl(ajcc_pathologic_stage, "T1|T2|T0")
+)
+lm.GEO_lung2 <- step1(lm.GEO_lung2)
+lm.GEO_lung2@object
 ```
 
 
@@ -442,12 +522,19 @@ metadata.geolung <- dplyr::mutate(metadata.geolung,
   vital_status = ifelse(survstatus.ch1 == "0", "Alive", "Dead"),
   group = vital_status,
   days_to_last_follow_up = as.double(time.to.last.followup.ch1) * 30 * 12,
-  stage = Stage.ch1,
+  ajcc_pathologic_stage = strx(Stage.ch1, "^I"),
+  # all are T1
+  ajcc_pathologic_stage = "T1",
   .before = 1
 )
+metadata.geolung
 lm.GEO_lung <- asjob_limma(geo.lung, metadata.geolung)
-lm.GEO_lung <- filter(lm.GEO_lung, days_to_last_follow_up > 10, type = "metadata")
+lm.GEO_lung <- filter(
+  lm.GEO_lung, days_to_last_follow_up > 10, type = "metadata", 
+  grpl(ajcc_pathologic_stage, "T0|T1|T2")
+)
 lm.GEO_lung <- step1(lm.GEO_lung)
+lm.GEO_lung@object
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -464,10 +551,13 @@ autor(geo.lung$prods)
 
 ```{r}
 lasso.GEO_lung <- asjob_lasso(lm.GEO_lung, use = "hgnc_symbol", dup_method = "max")
+lasso.GEO_lung2 <- asjob_lasso(lm.GEO_lung2, use = "rownames", dup_method = "max")
+
 lasso.GEO_lung <- merge(lasso.GEO_lung, lasso.GEO_lung2)
 lasso.GEO_lung <- step1(lasso.GEO_lung)
 
 surv.GEO_lung <- asjob_survival(lasso.GEO_lung, fea_coefs = surv.lung$fea_coefs, force = T)
+surv.GEO_lung$p.surv_genes_hp
 surv.GEO_lung <- step1(surv.GEO_lung, only_keep_sig = F, roc_time = c(1, 3, 5))
 
 surv.GEO_lung@params$p.surv_genes_hp
@@ -504,8 +594,11 @@ autor(surv.GEO_lung@plots$step1$p.roc$risk_score)
 #' @meth {get_meth(lm.lncrna)}
 lm.lncrna <- fun_filter("lncRNA")
 lm.lncrna <- step1(lm.lncrna, pca = T, norm_vis = T)
-lm.lncrna <- step2(lm.lncrna, Early_stage - Healthy, Advanced_stage - Healthy, Advanced_stage - Early_stage,
-  use = "P", cut.fc = .5, use.cut = .05, label = "hgnc_symbol")
+lm.lncrna <- step2(
+  lm.lncrna, Early_stage - Healthy, Advanced_stage - Healthy, 
+  Advanced_stage - Early_stage,
+  use = "P", cut.fc = .5, use.cut = .05, label = "hgnc_symbol"
+)
 lm.lncrna <- step3(lm.lncrna)
 lm.lncrna@tables$step2$tops
 lm.lncrna@plots$step3$p.sets_intersection
@@ -530,7 +623,7 @@ autor(lm.lncrna@plots$step3$p.sets_intersection)
 ## 关联分析 (MRNA, LNCRNA)
 
 `r snap(cp.cor, 0:1)`
-`r snap(sigCor_mrna2lnc, 0:3)`
+`r snap(sigCor_mrna2lnc)`
 
 ```{r}
 cp.cor <- cal_corp(lm.mrna, lm.lncrna, surv.lung$fea_coefs$feature, allsLncTops, c("mRNA", "LncRNA"))

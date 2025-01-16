@@ -368,3 +368,14 @@ ftibble("./estimate/input.tsv")
 autor(est.lung@plots$step3$p.Top10ImmuneRelatedGenes)
 ```
 
+
+lapply(list.files(.prefix("gds_geoMeta", "db"), "rds$", full.names = TRUE), 
+  function(file) {
+    x <- readRDS(file)
+    x <- .job_geo(object = x@object,
+      step = 1L, params = list(guess = try(x$guess, TRUE))
+    )
+    saveRDS(x, file)
+  })
+
+geo.lung4 <- job_geo("GSE102287")

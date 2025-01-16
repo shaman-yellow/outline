@@ -1,0 +1,208 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-01-13"), end = td("2025-01-13"), finish = td("2025-01-13"),
+  id = "BS.asis", client = "", inst = "",
+  type = "生信协助",
+  title = "子宫内膜异位",
+  save = ".items_support.rds"
+)
+show.ic(info)
+
+order_publish.bosai("support.Rmd", "support_out.Rmd")
+idname <- formatName.bosai("./support_out.docx")
+order_packaging("./support_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("子宫内膜异位")
+)
+# E: Endometriosis 子宫内膜异位
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## GSE 数据搜索 (EM)
+
+```{r}
+gds.em <- job_gds(c("Endometriosis", "Control"))
+gds.em <- step1(gds.em)
+vis(gds.em)
+active(gds.em)
+```
+
+## GEO 数据获取 (EM)
+
+```{r}
+geo.em <- job_geo("GSE192636")
+geo.em <- step1(geo.em)
+geo.em <- step2(geo.em, rna = FALSE)
+geo.em <- expect(geo.em, geo_cols())
+geo.em$guess
+metadata.em <- dplyr::mutate(
+  geo.em$guess, sample = gs(title, ", ", "_")
+)
+metadata.em
+
+counts.em <- ftibble(list.files(geo.em$dir, "mRNA", full.names = TRUE))
+counts.em <- dplyr::distinct(counts.em, Gene_id, .keep_all = TRUE)
+genes.em <- dplyr::select(counts.em, 1:4)
+genes.em
+counts.em <- dplyr::select(counts.em, 1, dplyr::where(is.integer))
+
+
+```
+
+## Limma 差异分析 (EM)
+
+```{r}
+lm.em <- job_limma(new_dge(metadata.em, counts.em, genes.em))
+lm.em <- step1(lm.em)
+lm.em <- step2(
+  lm.em, endometriosis - control_normal, label = "Gene_Name", 
+  use = "P", cut.fc = .3
+)
+dplyr::filter(
+  lm.em@tables$step2$tops$`endometriosis - control_normal`, grpl(
+    Gene_Name, "cic", TRUE
+  )
+)
+
+```
+
+## GEO 数据获取 (EM2)
+
+```{r}
+geo.em2 <- job_geo("GSE232713")
+geo.em2 <- step1(geo.em2)
+geo.em2 <- step2(geo.em2)
+geo.em2 <- expect(geo.em2, geo_cols())
+geo.em2$guess
+```
+
+## Limma 差异分析 (EM2)
+
+```{r}
+lm.em2 <- asjob_limma(geo.em2, geo.em2$guess)
+lm.em2 <- step1(lm.em2)
+lm.em2 <- step2(lm.em2, endometriosis - control, use = "P", cut.fc = .3)
+dplyr::filter(
+  lm.em2@tables$step2$tops$`endometriosis - control`, grpl(
+    hgnc_symbol, "^cic", TRUE
+  )
+)
+```
+
+## GEO 数据获取 (EM3)
+
+```{r}
+geo.em3 <- job_geo("GSE153739")
+geo.em3 <- step1(geo.em3)
+geo.em3 <- step2(geo.em3)
+geo.em3 <- expect(geo.em3, geo_cols())
+geo.em3$guess
+metadata.em3 <- dplyr::mutate(
+  geo.em3$guess, group = ifelse(
+    grpl(group, "endo"), "endometriosis", "Healthy"
+  )
+)
+```
+
+## Limma 差异分析 (EM3)
+
+```{r}
+lm.em3 <- asjob_limma(geo.em3, metadata.em3)
+lm.em3@object
+lm.em3 <- step1(lm.em3)
+lm.em3 <- step2(lm.em3, endometriosis - Healthy, use = "P", cut.fc = .3)
+dplyr::filter(
+  lm.em3@tables$step2$tops$`endometriosis - Healthy`, grpl(hgnc_symbol, "^cic", TRUE)
+)
+```
+
+## GEO 数据获取 (EM4)
+
+```{r}
+geo.em4 <- job_geo("GSE193928")
+geo.em4 <- step1(geo.em4)
+geo.em4 <- step2(geo.em4, rna = FALSE)
+geo.em4 <- expect(geo.em4, geo_cols())
+counts.em4 <- fxlsx(list.files(geo.em4$dir, "fpkm", full.names = TRUE))
+geo.em4$guess
+counts.em4 <- ftibble("~/Downloads/GSE193928_raw_counts_GRCh38.p13_NCBI.tsv.gz")
+counts.em4
+genes.em4 <- ftibble("~/Downloads/Human.GRCh38.p13.annot.tsv.gz")
+genes.em4
+```
+
+```{r}
+lm.em4 <- job_limma(new_dge(geo.em4$guess, counts.em4, genes.em4))
+```
+
+## GEO 数据获取 (EM5)
+
+```{r}
+geo.em5 <- job_geo("GSE153740")
+geo.em5 <- step1(geo.em5)
+geo.em5 <- step2(geo.em5)
+geo.em5 <- expect(geo.em5, geo_cols())
+metadata.em5 <- dplyr::mutate(
+  geo.em5$guess, group = ifelse(
+    grpl(group, "endo"), "endometriosis", "Healthy"
+  )
+)
+```
+
+## Limma 差异分析 (EM5)
+
+```{r}
+lm.em5 <- asjob_limma(geo.em5, metadata.em5)
+lm.em5 <- step1(lm.em5)
+lm.em5 <- step2(lm.em5, endometriosis - Healthy, use = "P", cut.fc = .3)
+dplyr::filter(
+  lm.em5@tables$step2$tops$`endometriosis - Healthy`, grpl(
+    hgnc_symbol, "^CIC", TRUE
+  )
+)
+```
+
+```{r}
+alls <- vapply(
+  ls(pattern = "geo"), function(x) get(x, envir = .GlobalEnv)@object, character(1)
+)
+bind(alls)
+```
+
+# 总结 {#conclusion}
+

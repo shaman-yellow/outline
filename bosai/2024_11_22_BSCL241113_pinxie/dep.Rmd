@@ -1,3 +1,62 @@
 
 
 而在免疫性 AA 中，会发生干细胞突变导致的免疫逃逸 (丢失了包含 HLA 等位基因的 6 号染色体区域的粒细胞) 。
+
+metagwas <- MungeSumstats::find_sumstats(
+  traits = c("parkinson", "alzheimer"),
+  min_sample_size = 5000
+)
+### Only use a subset for testing purposes
+ids <- (dplyr::arrange(metagwas, nsnp))$id
+datasets <- MungeSumstats::import_sumstats(ids = ids[1])
+datasets
+
+
+metagwas <- MungeSumstats::find_sumstats(
+  traits = c("parkinson", "alzheimer"),
+  min_sample_size = 5000
+)
+
+### Only use a subset for testing purposes
+ids <- (dplyr::arrange(metagwas, nsnp))$id
+datasets <- MungeSumstats::import_sumstats(ids = ids[1])
+ftibble(datasets[[1]])
+
+```{r}
+nscf.aa <- asjob_nscfea(sr5n.aa, "hu")
+nscf.aa <- set_remote(nscf.aa)
+nscf.aa <- step1(nscf.aa)
+nscf.aa <- step2(nscf.aa)
+
+test <- lapply(
+  list.files("./scfea_aa1_test", "data.csv", full.names = TRUE, recursive = TRUE),
+  ftibble
+)
+test %>% lapply(
+  function(x) {
+    any(apply(x[, -1], 2, sum) == 0)
+  })
+test
+
+err <- ftibble("./scfea_aa1_test/5_scfea/data.csv")
+sums = err[-1] %>% apply(2, sum)
+which(sums == 0)
+```
+
+```{r}
+sr5n.aa1 <- getsub(sr5n.aa, orig.ident == "AA1")
+split <- grouping_vec2list(seq_len(dim(sr5n.aa1@object)[2]), 500)
+sr5n.aa1@object@meta.data$split <- rep(seq_along(split), lengths(split))
+
+```
+
+
+```{r}
+nscf.test <- asjob_nscfea(
+  sr5n.aa1, "human", "split", dir = "scfea_aa1_test2", testWhich = 5
+)
+nscf.test <- set_remote(nscf.test, "scfea_aa1_test2")
+nscf.test <- step1(nscf.test)
+nscf.test <- step2(nscf.test)
+```
+

@@ -1,0 +1,28 @@
+
+
+## GEO 数据获取 (EM)
+
+```{r}
+geo.em <- job_geo("GSE272606")
+geo.em <- step1(geo.em)
+geo.em <- step2(geo.em, rna = FALSE)
+geo.em <- expect(geo.em, geo_cols())
+geo.em$guess
+metadata.em <- dplyr::mutate(geo.em$guess, sample = title)
+metadata.em
+counts.em <- ftibble(list.files(geo.em$dir, ".", full.names = TRUE))
+counts.em <- dplyr::distinct(counts.em, V1, .keep_all = TRUE)
+genes.em <- dplyr::select(counts.em, genes = V1)
+```
+
+## Limma 差异分析 (EM)
+
+```{r}
+lm.em <- job_limma(new_dge(metadata.em, counts.em, genes.em))
+lm.em <- step1(lm.em)
+lm.em <- step2(lm.em, EP - CP, label = "genes", use = "P")
+lm.em@tables$step2$tops$`EP - CP`
+
+
+```
+

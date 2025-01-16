@@ -44,6 +44,38 @@ dic(di("差异表达基因"),
 
 ```
 
+```{r}
+#| route
+route <- as_network(
+  list(
+    "Aplastic_anemia:GWAS_dataset, scRNA-seq_dataset, RNA-seq_and_Microarray",
+    "GWAS_dataset:TWAS",
+    "TWAS:Changed_genes",
+    "scRNA-seq_dataset:cell_identification",
+    "cell_identification:Metabolic_Flux",
+    "Metabolic_Flux:Metabolics, Metabolic_genes",
+    "Changed_genes, Metabolic_genes:Correlation",
+    "Correlation:Significant, Cells",
+    "Cells:Pseudotime",
+    "Significant:Enrichment",
+    "Metabolics:Metabolic_Pseudotime",
+    "RNA-seq_and_Microarray:dataset_1, dataset_2",
+    "dataset_1:DEGs",
+    "Significant, DEGs:validation_1",
+    "validation_1:LASSO_Diagnose_model",
+    "dataset_2, LASSO_Diagnose_model:validation_2"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+wrap(p.route)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 10, 9, showtext = T))
+```
+
+
 # 材料和方法 {#introduction}
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -52,7 +84,120 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
+## MungeSumstats 获取 GWAS 数据 (AA)
 
+```{r}
+ogwas.aa <- job_ogwas("Aplastic anemia")
+ogwas.aa@object
+ogwas.aa <- step1(ogwas.aa, which = 1L)
+
+test <- ftibble("./material/GCST90018794_buildGRCh37.tsv.gz")
+test2 <- dplyr::filter(test, p_value < .05)
+test2
+```
+
+```{r}
+gds.aa <- job_gds("Aplastic anemia", 2:1000)
+gds.aa <- step1(gds.aa, single_cell = TRUE, clinical = NULL)
+vis(gds.aa)
+```
+
+## GEO 数据获取 (AA_SCRNA)
+
+`r snap(geo.aa_scRNA, 0:2)`
+
+```{r}
+geo.aa_scRNA <- job_geo("GSE181989")
+geo.aa_scRNA <- step1(geo.aa_scRNA)
+#' @meth {get_meth(geo.aa_scRNA)}
+geo.aa_scRNA <- expect(geo.aa_scRNA, geo_cols())
+geo.aa_scRNA$guess
+geo.aa_scRNA <- step2(geo.aa_scRNA, rna = FALSE)
+
+utils::untar(
+  list.files(geo.aa_scRNA$dir, "RAW", full.names = TRUE), exdir = normalizePath(geo.aa_scRNA$dir)
+)
+
+lapply(c("AA1", "AA2", "Normal1", "Normal2"), 
+  function(pat) {
+    prepare_10x(geo.aa_scRNA$dir, pat)
+  })
+list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE)
+```
+
+## Seurat 集成单细胞数据分析 (AA)
+
+```{r}
+sr5n.aa <- job_seurat5n(
+  list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE), c("AA1", "AA2", "Normal1", "Normal2")
+)
+sr5n.aa@params$p.qc_pre
+sr5n.aa <- step1(sr5n.aa, 0, 5000, 20)
+sr5n.aa@params$p.qc_aft
+sr5n.aa <- step2(sr5n.aa)
+sr5n.aa@plots$step2$p.pca_rank
+sr5n.aa <- step3(sr5n.aa, use = "CCA")
+sr5n.aa@plots$step3$p.umapUint
+sr5n.aa@plots$step3$p.umapInt
+sr5n.aa <- step4(sr5n.aa, "")
+sr5n.aa <- step5(sr5n.aa)
+sr5n.aa@step <- 5L
+sr5n.aa <- step6(sr5n.aa, "bone marrow")
+sr5n.aa$hp_cell_markers
+
+sr5n.aa@plots$step6$p.map_gpt
+sr5n.aa@plots$step6$p.markers
+sr5n.aa@tables$step6$t.ChatGPT4_cell_types_annotation
+sr5n.aa@plots$step6$p.markers
+sr5n.aa@plots$step6$p.props_gpt
+
+clear(sr5n.aa)
+
+# sr5n.aa <- readRDS("./sr5n.aa.5.rds")
+# saveRDS(sr5n.aa, "sr5n.aa.3_cca.rds")
+```
+
+## scFEA 单细胞数据的代谢通量预测 (AA)
+
+`r snap(scf.aa, 0:2)`
+
+```{r}
+set_remoteRun.bosai()
+scf.aa <- asjob_scfea(sr5n.aa, org = "hu", dir = "scfea_aa_all")
+scf.aa <- set_remote(scf.aa, "scfea_aa_all")
+scf.aa <- step1(scf.aa)
+#' @meth {get_meth(scf.aa)}
+scf.aa <- step2(scf.aa)
+scf.aa@plots$step2$p.loss
+scf.aa@tables$step2$t.flux
+
+sr5n.aa <- map(sr5n.aa, scf.aa)
+sr5n.aa@params$p.map_flux
+vis(sr5n.aa, reduction = "umap.flux")
+```
+
+## Limma 代谢通量差异分析 (AA_FLUX)
+
+`r snap(lm.aa_flux, 0:3)`
+
+```{r}
+scf.aa$metadata$ChatGPT_cell <- sr5n.aa@object@meta.data$ChatGPT_cell
+lm.aa_flux <- asjob_limma(scf.aa)
+lm.aa_flux <- step1(lm.aa_flux)
+#' @meth {get_meth(lm.aa_flux)}
+lm.aa_flux <- step2(lm.aa_flux,
+  contrasts = grpf(
+    pattern_contrasts(lm.aa_flux$metadata$group, AA - Normal),
+    "^T_Cell|^B_Cell|^NK_Cell|Macrophage|Neutrophil"
+  ),
+  label = "name", use = "P", cut.fc = .5
+)
+
+lm.aa_flux@tables$step2$tops
+lm.aa_flux@plots$step2$p.volcano$`Macrophage_AA - Macrophage_Normal`
+
+```
 
 # 总结 {#conclusion}
+
 

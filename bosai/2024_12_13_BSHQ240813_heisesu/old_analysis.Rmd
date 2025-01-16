@@ -1,0 +1,321 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20241030"), end = td("20241213"), finish = td("2024-12-31"),
+  id = "BSHQ240813", client = "王凯", inst = "大连医科大学附属第二医院",
+  type = "生信分析",
+  title = "黑色素瘤",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+## 需求
+
+1. 通过生物信息分析分析 CAP2 在黑色素瘤异常表达且与预后相关。HPA数据库分析。
+2. 为了研究CAP2影响黑色素瘤进展的机制，进行GSEA等生物信息分析，寻找与CAP2R显著相关的下游信号通路
+
+## 实际分析
+
+因为 CAP2 未找到符合要求的数据集，改换寻找其他满足条件的基因，并寻找下游通路。
+
+```{r}
+#| route
+route <- as_network(
+  list("Melanoma:GEO, TCGA",
+    "GEO:Melanoma_vs_Normal",
+    "TCGA:Univariate_cox",
+    "Univariate_cox:Survival",
+    "Survival, Melanoma_vs_Normal:sig_DEGs",
+    "sig_DEGs:enrichment",
+    "enrichment:Signaling_pathway",
+    "Signaling_pathway:sig_DEGs, Downstream_genes",
+    "sig_DEGs, Downstream_genes:Correlation"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+wrap(p.route)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(z7(wrap(p.route, 10, 9, showtext = TRUE)))
+```
+
+
+```{r}
+dic(di("差异表达基因"),
+  di("黑色素瘤")
+)
+# M: Melanoma 黑色素瘤
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## GEO 数据获取 (GSE11907)
+
+`r snap(geo.GSE11907, 0:3)`
+
+```{r}
+geo.GSE11907 <- job_geo("GSE11907")
+#' @meth {get_meth(geo.GSE11907)}
+geo.GSE11907 <- step1(geo.GSE11907)
+geo.GSE11907$prods
+metadata.GSE11907 <- geo.GSE11907$guess
+metadata.GSE11907 <- dplyr::mutate(
+  metadata.GSE11907, sample = rownames, group = make.names(Illness.ch1), 
+  group = ifelse(
+    grpl(group, "Melanoma|Healthy"), 
+    strx(group, "Melanoma|Healthy"), "Others"
+  ), .before = 1
+)
+metadata.GSE11907
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE11907-GSE11907
+autor(geo.GSE11907$prods)
+```
+
+## Limma 差异分析 (GSE11907)
+
+`r snap(lm.GSE11907, 0:3)`
+
+差异基因见
+`r ref("GSE11907-Melanoma-vs-Healthy", FALSE)` 
+`r ref("GSE11907-data-Melanoma-vs-Healthy", FALSE)` 
+
+```{r}
+lm.GSE11907 <- asjob_limma(geo.GSE11907, metadata.GSE11907)
+#' @meth {get_meth(lm.GSE11907)}
+lm.GSE11907 <- filter(
+  lm.GSE11907, grpl(group, "Healthy|Melanoma"), type = "metadata"
+)
+lm.GSE11907 <- step1(lm.GSE11907)
+lm.GSE11907 <- step2(
+  lm.GSE11907, Melanoma - Healthy, label = "hgnc_symbol"
+)
+lm.GSE11907 <- step3(lm.GSE11907, use.gene = "hgnc_symbol")
+lm.GSE11907@plots$step2$p.volcano$`Melanoma - Healthy`
+lm.GSE11907@tables$step2$tops$`Melanoma - Healthy`
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE11907-Melanoma-vs-Healthy
+autor(lm.GSE11907@plots$step2$p.volcano$`Melanoma - Healthy`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE11907-data-Melanoma-vs-Healthy
+autor(lm.GSE11907@tables$step2$tops$`Melanoma - Healthy`)
+```
+
+## TCGA 数据获取 (TCGA_SKCM)
+
+`r snap(tc.tcga_skcm, 0:3)`
+
+```{r}
+tc.tcga_skcm <- job_tcga("TCGA-SKCM")
+#' @meth {get_meth(tc.tcga_skcm)}
+tc.tcga_skcm <- step1(tc.tcga_skcm, "RNA")
+tc.tcga_skcm <- step2(tc.tcga_skcm)
+tc.tcga_skcm <- step3(tc.tcga_skcm)
+tc.tcga_skcm@plots$step3$p.vital
+```
+
+## COX 回归 (TCGA_SKCM)
+
+`r snap(cox.tcga_skcm, 0:3)`
+`r ref("TCGA-SKCM-sig-Univariate-Cox-Coefficients")`。
+
+```{r}
+lm.tcga_skcm <- asjob_limma(tc.tcga_skcm)
+lm.tcga_skcm <- step1(lm.tcga_skcm)
+lm.tcga_skcm@object <- NULL
+
+cox.tcga_skcm <- asjob_lasso(lm.tcga_skcm, feature(lm.GSE11907))
+cox.tcga_skcm$.snap
+#' @meth {get_meth(cox.tcga_skcm)}
+cox.tcga_skcm <- step1(cox.tcga_skcm)
+cox.tcga_skcm <- step2(cox.tcga_skcm)
+cox.tcga_skcm <- step3(cox.tcga_skcm)
+cox.tcga_skcm@tables$step3$t.sigUnivariateCoxCoefficients
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-sig-Univariate-Cox-Coefficients
+autor(cox.tcga_skcm@tables$step3$t.sigUnivariateCoxCoefficients)
+```
+
+## Survival 生存分析 (TCGA_SKCM)
+
+`r snap(surv.tcga_skcm, 0:3)`
+
+`r ref("TCGA-SKCM-Significant-Survival-PValue")` 。
+`r ref("TCGA-SKCM-survival-curve-of-LILRA5")` 
+
+```{r}
+surv.tcga_skcm <- asjob_survival(lm.tcga_skcm, feature(cox.tcga_skcm))
+#' @meth {get_meth(surv.tcga_skcm)}
+surv.tcga_skcm <- step1(surv.tcga_skcm)
+surv.tcga_skcm@plots$step1$p.surv$LILRA5
+surv.tcga_skcm@tables$step1$t.SignificantSurvivalPValue
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-Significant-Survival-PValue
+autor(surv.tcga_skcm@tables$step1$t.SignificantSurvivalPValue)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-survival-curve-of-LILRA5
+autor(surv.tcga_skcm@plots$step1$p.surv$LILRA5)
+```
+
+## ClusterProfiler 富集分析 (SIG)
+
+`r snap(en.sig, 0:3)`
+
+`r ref("SIG-KEGG-enrichment", FALSE)`, 观察到，
+`r res(en.sig, "des", 3)` 富集到一个基因，为信号通路
+(P-value: `r res(en.sig, "p", 3)`，其实这里 P 值不重要，主要是找到基因所在的通路)。
+
+`r ref("SIG-KEGG-enrichment-data")`
+
+```{r}
+en.sig <- asjob_enrich(feature(lm.GSE11907))
+#' @meth {get_meth(en.sig)}
+en.sig <- step1(en.sig)
+en.sig@tables$step1$res.kegg$ids$geneName_list[[3]]
+en.sig@tables$step1$res.kegg$ids
+en.sig@plots$step1$p.kegg$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIG-KEGG-enrichment
+autor(en.sig@plots$step1$p.kegg$ids)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIG-KEGG-enrichment-data
+autor(en.sig@tables$step1$res.kegg$ids)
+```
+
+## Pathview 通路可视化 (SIG)
+
+`r snap(pt.sig, 0:3)`
+
+`r ref("SIG-pathviews")`
+富集的基因为 LILRA5。
+
+`r snap(pt.sig2, 0)`
+`r ref("SIG2-pathviews", FALSE)`, 发现下游基因 FOS。
+
+```{r}
+pt.sig <- asjob_pathview(en.sig)
+#' @meth {get_meth(pt.sig)}
+pt.sig <- step1(pt.sig, res(en.sig, "id", 3))
+pt.sig@plots$step1$p.pathviews$hsa04662
+```
+
+```{r}
+pt.sig2 <- asjob_pathview(pt.sig, lm.GSE11907)
+pt.sig2 <- step1(pt.sig2, res(en.sig, "id", 3))
+pt.sig2@plots$step1$p.pathviews$hsa04662
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIG-pathviews
+autor(pt.sig@plots$step1$p.pathviews$hsa04662)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SIG2-pathviews
+autor(pt.sig2@plots$step1$p.pathviews$hsa04662)
+```
+
+## 关联分析 (GSE11907)
+
+`r snap(cp.mybph, 0:3)`
+`r ref("Linear-regression")`，两者显著关联。
+
+```{r}
+cp.mybph <- cal_corp(
+  lm.GSE11907, NULL, "LILRA5", c("FOS"), 
+  use = "hgnc_symbol", mode = "linear"
+)
+cp.mybph@params$res
+p.cor <- vis(
+  .corp(dplyr::filter(cp.mybph@params$res, pvalue < .05, cor != 1))
+)
+p.cor
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Linear-regression
+autor(p.cor)
+```
+
+# 总结 {#conclusion}
+
+筛选的基因为 LILRA5, 相关通路为 `r res(en.sig, "des", 3)`，
+下游通路为`r ref("SIG2-pathviews")` 中的 FOS，两者显著关联，
+见`r ref("Linear-regression")` 。
+
+FOS 在多数 Melanoma 的文献中被报导，例如 `r cite_show("The_role_of_FOS_Shao_2021")`。
+而 LILRA5 还未被报道。
+
+HPA 数据库未包含 LILRA5 的 Melanoma 组织染色等数据，仅 TCGA 表达量数据。未进一步分析。
+
+```{r}
+extract_anno("./order_material/BSHQ240813-王凯-生信分析- CAP2通过靶向EMT信号通路促进黑色素瘤进展-2024.12.27-批注YRX.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_.docx")
+```
+
+```{r}
+xena <- job_xena()
+
+```

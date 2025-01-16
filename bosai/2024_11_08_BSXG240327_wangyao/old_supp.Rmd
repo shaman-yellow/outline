@@ -1,0 +1,627 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("20240909"), end = td("20241115"), finish = td("20241126"),
+  id = "BSXG240327", client = "陈立茂", type = "补充分析",
+  title = "基于血小板RNA测序数据预测早期肺癌潜在生物标志物",
+  save = ".items_supp.rds"
+)
+show.ic(info)
+
+order_publish.bosai("supp.Rmd", "supp_out.Rmd")
+idname <- formatName.bosai("./supp_out.docx")
+order_packaging("./supp_out.docx", idname = idname, external_file = NULL,
+  extras = "Reply_冯力.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("快照")
+)
+
+```
+
+```{r}
+route <- as_network(
+  list("肺癌RNA-seq数据集:差异分析",
+    "差异分析:Early_vs_healthy, Advanced_vs_healthy, Advanced_vs_early",
+    "Early_vs_healthy, Advanced_vs_healthy, Advanced_vs_early:DEGs",
+    "DEGs:Mfuzz聚类",
+    "Mfuzz聚类:Up_DEGs, Down_DEGs",
+    "Up_DEGs, Down_DEGs:富集分析",
+    "富集分析:TCGA 数据集",
+    "TCGA 数据集:COX 回归",
+    "COX 回归:单因素COX, LASSO_COX",
+    "LASSO_COX:交叉验证, 风险评分模型",
+    "风险评分模型:生存分析, ROC, GEO 外部数据集验证, lncRNA",
+    "GEO 外部数据集验证:GSE_1, GSE_2",
+    "LncRNA:关联分析"
+    ), "tree"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+```
+
+该分析思路与 `r cite_show("@HCC_RNA_Sequen_Wang_2023")` 相似。
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 10, 9, showtext = T))
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+```{r}
+counts <- readRDS("./order_material/mRNA.rds")
+metadata <- readRDS("./order_material/metadata.rds")
+metadata <- as_tibble(metadata)
+metadata <- dplyr::mutate(metadata, sample = rownames, group = gs(group, "-", "_"),
+  batch = strx(sample, "18[0-9]{2}"),
+  batch = ifelse(is.na(batch), "-", batch)
+)
+metadata <- dplyr::relocate(metadata, sample, group)
+metadata
+```
+
+```{r}
+#' @meth {get_meth(bm.all)}
+bm.all <- job_biomart("hsa")
+not(bm.all)
+bm.all <- step1(bm.all, rownames(counts), "ensembl_gene_id", attrs = c(general_attrs(), "gene_biotype"))
+bm.all$anno
+lm.all <- job_limma(new_dge(metadata, as_tibble(counts), bm.all$anno))
+```
+
+## Limma 差异分析 (MRNA)
+
+肺癌 RNA-seq，
+`r snap(lm.mrna, 0)`
+`r snap(lm.mrna, 1)`
+`r snap(lm.mrna, 2)`
+`r snap(lm.mrna, 3)`
+见 `r ref("MRNA-Difference-intersection")`
+
+```{r}
+fun_filter <- function(rna = "protein_coding") {
+  type <- lm.all@object$genes$gene_biotype
+  isThat <- type == rna & !is.na(type)
+  lm.all@object <- lm.all@object[ isThat, ]
+  return(lm.all)
+}
+#' @meth {get_meth(lm.mrna)}
+lm.mrna <- fun_filter("protein_coding")
+lm.mrna <- step1(lm.mrna, pca = T, norm_vis = T)
+lm.mrna <- step2(lm.mrna, Early_stage - Healthy, Advanced_stage - Healthy, Advanced_stage - Early_stage,
+  use = "P", cut.fc = .5, use.cut = .05, label = "hgnc_symbol")
+lm.mrna <- step3(lm.mrna)
+lm.mrna@plots$step2$p.volcano$`Early_stage - Healthy`
+lm.mrna@plots$step2$p.volcano$`Advanced_stage - Healthy`
+lm.mrna@plots$step2$p.volcano$`Advanced_stage - Early_stage`
+lm.mrna@tables$step2$tops
+lm.mrna@plots$step3$p.sets_intersection
+lm.mrna@plots$step3$p.sets_intersection$raw
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-Early-stage-vs-Healthy
+autor(lm.mrna@plots$step2$p.volcano$`Early_stage - Healthy`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-Advanced-stage-vs-Healthy
+autor(lm.mrna@plots$step2$p.volcano$`Advanced_stage - Healthy`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-Advanced-stage-vs-Early-stage
+autor(lm.mrna@plots$step2$p.volcano$`Advanced_stage - Early_stage`)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-Difference-intersection
+autor(lm.mrna@plots$step3$p.sets_intersection)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-data-DEGs
+autor(lm.mrna@tables$step2$tops)
+```
+
+## Mfuzz 聚类分析 (MRNA)
+
+`r snap(mfuzz.mrna, 0)`
+`r snap(mfuzz.mrna, 1)`
+`r snap(mfuzz.mrna, 2)`
+`r snap(mfuzz.mrna, 3)`
+见 `r ref("MRNA-Mfuzz-clusters")`
+
+```{r}
+#' @meth {get_meth(mfuzz.mrna)}
+# mfuzz.mrna <- readRDS("./mfuzz.mrna.3.rds")
+mfuzz.mrna <- asjob_mfuzz(lm.mrna)
+mfuzz.mrna <- step1(mfuzz.mrna, 4:2)
+mfuzz.mrna <- step2(mfuzz.mrna, 10, c(2, 5), alpha = .3)
+mfuzz.mrna <- step3(mfuzz.mrna, c(2), c(1, 6))
+mfuzz.mrna$ups
+# autosv(mfuzz.mrna@plots$step2$p.clusters, "MRNA-Mfuzz-clusters")
+mfuzz.mrna@plots$step2$p.clusters
+mfuzz.mrna@params$clusters
+mfuzz.mrna@params$up
+mfuzz.mrna@params$down
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-Mfuzz-clusters
+autor(mfuzz.mrna@plots$step2$p.clusters)
+```
+
+## 富集分析 (MRNA)
+
+`r snap(en.mrna, 0)`
+KEGG 见 `r ref("MRNA-downs-KEGG-enrichment")`,
+`r ref("MRNA-ups-KEGG-enrichment")`
+GO 见 `r ref("MRNA-downs-GO-enrichment")`
+`r ref("MRNA-ups-GO-enrichment")`。
+
+可以发现，上调与下调富集的首要通路，都与遗传信息的处理相关。
+在 `r ref("MRNA-Mfuzz-clusters")` 中，下调的趋势更明显，
+暗示 Biosynthesis of cofactors 等代谢相关的通路，可能更与肺癌的早期发展相关。
+
+```{r}
+#' @meth {get_meth(en.mrna)}
+en.mrna <- asjob_enrich(mfuzz.mrna)
+en.mrna@object
+en.mrna <- step1(en.mrna, use = "pvalue")
+en.mrna@plots$step1$p.kegg$ups
+en.mrna@plots$step1$p.kegg$downs
+en.mrna@plots$step1$p.go$ups
+en.mrna@plots$step1$p.go$downs
+
+en.mrna@tables$step1$res.kegg$ups
+en.mrna@tables$step1$res.kegg$downs$Description
+```
+
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-ups-KEGG-enrichment
+autor(en.mrna@plots$step1$p.kegg$ups)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-downs-KEGG-enrichment
+autor(en.mrna@plots$step1$p.kegg$downs)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-ups-GO-enrichment
+autor(en.mrna@plots$step1$p.go$ups)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-downs-GO-enrichment
+autor(wrap(en.mrna@plots$step1$p.go$downs, 8, 8))
+```
+
+## TCGA 数据获取 (LUSC, LUAD)
+
+```{r}
+#' @meth {get_meth(tc.lusc)}
+tc.lusc <- job_tcga("TCGA-LUSC")
+tc.lusc <- step1(tc.lusc)
+tc.lusc <- step2(tc.lusc)
+tc.lusc <- step3(tc.lusc)
+tc.lusc <- clear(tc.lusc)
+tc.lusc
+```
+
+```{r}
+#' @meth {get_meth(tc.luad)}
+#' @meth 随后，将 TCGA-LUSC 和 TCGA-LUAD 数据集合并。 
+tc.luad <- job_tcga("TCGA-LUAD")
+tc.luad <- step1(tc.luad)
+tc.luad <- step2(tc.luad)
+tc.luad <- step3(tc.luad)
+tc.luad
+```
+
+`r snap(tc.lung, "merge")`
+
+```{r}
+tc.lusc <- readRDS("./tc.lusc.3.rds")
+tc.luad <- readRDS("./tc.luad.3.rds")
+
+tc.lung <- merge(tc.lusc, tc.luad)
+tc.lusc <- clear(tc.lusc, save = F)
+tc.luad <- clear(tc.luad, save = F)
+```
+
+## COX 回归 (LUNG)
+
+`r snap(lm.lung, 0:5)`
+`r snap(lasso.lung, 0:5)`
+
+```{r}
+lm.lung <- asjob_limma(tc.lung,
+  grpl(ajcc_pathologic_stage, "Stage [I]{1,2}[AB]?$"),
+  days_to_last_follow_up >= 30, isTumor == "tumor")
+lm.lung <- step1(lm.lung)
+
+#' @meth {get_meth(lasso.lung, F)}
+#' @meth {snap(lm.lung, 0)}
+lasso.lung <- do_lasso(lm.lung, mfuzz.mrna)
+lasso.lung <- step1(lasso.lung)
+dim(lasso.lung@object)
+lasso.lung <- step2(lasso.lung, use_data = "all", efs = F, top = 50)
+lasso.lung <- step3(lasso.lung, use_tops = T)
+
+lasso.lung@step <- 3L
+lasso.lung$seed <- 5136
+lasso.lung <- step4(
+  lasso.lung, fun = "cv", nfold = 5, type.measure = "C"
+)
+
+lasso.lung@params$sig.uni_cox
+lasso.lung@params$sig.mul_cox
+lasso.lung@plots$step4$p.lassoCOX_model
+lasso.lung@plots$step4$p.lassoCOX_coeffients$lambda.1se
+lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.min
+lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-lasso-COX-model
+autor(lasso.lung@plots$step4$p.lassoCOX_model)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-lasso-COX-coeffients-lambda-min
+autor(lasso.lung@plots$step4$p.lassoCOX_coeffients$lambda.min)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-lasso-COX-coeffients-lambda-1se
+autor(lasso.lung@plots$step4$p.lassoCOX_coeffients$lambda.1se)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-lasso-COX-ROC-lambda-min
+autor(lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-lasso-COX-ROC-lambda-1se
+autor(lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se)
+```
+
+## Survival 生存分析 (LUNG)
+
+`r snap(surv.lung, 0:1)`
+
+```{r}
+#' @meth {get_meth(surv.lung)}
+surv.lung <- asjob_survival(lasso.lung, "mul", "1", base_method = "s")
+surv.lung <- step1(surv.lung)
+
+surv.lung@params$p.surv_genes_hp
+surv.lung@plots$step1$p.surv$risk_score
+surv.lung@plots$step1$p.roc$risk_score
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-risk-score-related-genes-heatmap
+autor(surv.lung@params$p.surv_genes_hp)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-survival-curve-of-risk-score
+autor(surv.lung@plots$step1$p.surv$risk_score)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-time-ROC
+autor(surv.lung@plots$step1$p.roc$risk_score)
+```
+
+
+## GSE 数据搜索 (LUNG)
+
+`r snap(gds.lung, 0:2)`
+`r bind(hasSurv)` 含有生存信息。
+GSE198048  不包含生存事件 (Dead) 。 因此，以 `r bind(hasSurv[-2])` 验证。
+
+```{r}
+#' @meth {get_meth(gds.lung)}
+gds.lung <- job_gds(c("lung cancer", "survival"), 30:1000)
+gds.lung <- step1(gds.lung, grpl(gdsType, "^Expression[^;]*sequencing$"))
+gds.lung <- step2(gds.lung)
+gds.lung@object
+vis(gds.lung)
+hasSurv <- gds.lung$querys[ c(23, 7, 6) ]
+hasSurv
+# gds.lung$res
+
+active(gds.lung, hasSurv)
+```
+
+
+## GEO 数据获取 (GEO_LUNG2)
+
+```{r}
+geo.lung2 <- job_geo(hasSurv[3])
+geo.lung2 <- step1(geo.lung2)
+geo.lung2 <- step2(geo.lung2, rna = F)
+geo.lung2$prods
+counts.geolung2 <- ftibble(list.files("~/disk_sda1/GEO/GSE256047", full.names = T))
+counts.geolung2 <- dplyr::mutate(counts.geolung2, dplyr::across(dplyr::where(is.numeric), log2))
+counts.geolung2
+
+metadata.geolung2 <- geo.lung2$guess
+metadata.geolung2 <- dplyr::mutate(metadata.geolung2,
+  sample = title, group = group.ch1,
+  des = survival.and_follow_up_.ned._no_evidence_of_disease..ch1,
+  vital_status = stringr::str_extract(des, "[Dd]ie|NED|[Aa]live"),
+  vital_status = ifelse(grpl(vital_status, "die", T), "Dead",
+    ifelse(!is.na(vital_status), "Alive", "")),
+  ajcc_pathologic_stage = strx(tumor.stage_.ajcc_8..ch1, "^T[0-9]+"),
+  days_to_last_follow_up = as.double(unlist(
+    lapply(stringr::str_extract_all(des, "[0-9.]+"),
+      function(x) if (length(x)) tail(x, n = 1) else ""
+    ))) * 30,
+  .before = 1
+)
+metadata.geolung2
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG2-GSE256047
+autor(geo.lung2$prods)
+```
+
+`r snap(lm.GEO_lung2, 0:2)`
+`r snap(lasso.GEO_lung2, 0:2)`
+
+```{r}
+lm.GEO_lung2 <- job_limma_normed(counts.geolung2, metadata.geolung2, dplyr::select(counts.geolung2, 1))
+lm.GEO_lung2 <- filter(
+  lm.GEO_lung2, vital_status != "", days_to_last_follow_up > 10, 
+  type = "metadata", grpl(ajcc_pathologic_stage, "T1|T2|T0")
+)
+lm.GEO_lung2 <- step1(lm.GEO_lung2)
+lm.GEO_lung2@object
+```
+
+
+## GEO 数据获取 (GEO_LUNG)
+
+```{r}
+#' @meth {get_meth(geo.lung)}
+geo.lung <- job_geo(hasSurv[1])
+geo.lung <- step1(geo.lung)
+geo.lung$prods
+geo.lung <- step2(geo.lung)
+
+metadata.geolung <- geo.lung$guess
+metadata.geolung <- dplyr::mutate(metadata.geolung,
+  sample = rownames,
+  vital_status = ifelse(survstatus.ch1 == "0", "Alive", "Dead"),
+  group = vital_status,
+  days_to_last_follow_up = as.double(time.to.last.followup.ch1) * 30 * 12,
+  ajcc_pathologic_stage = strx(Stage.ch1, "^I"),
+  # all are T1
+  ajcc_pathologic_stage = "T1",
+  .before = 1
+)
+metadata.geolung
+lm.GEO_lung <- asjob_limma(geo.lung, metadata.geolung)
+lm.GEO_lung <- filter(
+  lm.GEO_lung, days_to_last_follow_up > 10, type = "metadata", 
+  grpl(ajcc_pathologic_stage, "T0|T1|T2")
+)
+lm.GEO_lung <- step1(lm.GEO_lung)
+lm.GEO_lung@object
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-GSE87340
+autor(geo.lung$prods)
+```
+
+`r snap(lm.GEO_lung, 0:3)`
+
+## Survival 生存分析 (GEO_LUNG) (验证)
+
+`r snap(lasso.GEO_lung, 0:2)`
+`r snap(surv.GEO_lung, 0:2)`
+
+```{r}
+lasso.GEO_lung <- asjob_lasso(lm.GEO_lung, use = "hgnc_symbol", dup_method = "max")
+lasso.GEO_lung2 <- asjob_lasso(lm.GEO_lung2, use = "rownames", dup_method = "max")
+
+lasso.GEO_lung <- merge(lasso.GEO_lung, lasso.GEO_lung2)
+lasso.GEO_lung <- step1(lasso.GEO_lung)
+
+surv.GEO_lung <- asjob_survival(lasso.GEO_lung, fea_coefs = surv.lung$fea_coefs, force = T)
+surv.GEO_lung$p.surv_genes_hp
+surv.GEO_lung <- step1(surv.GEO_lung, only_keep_sig = F, roc_time = c(1, 3, 5))
+
+surv.GEO_lung@params$p.surv_genes_hp
+surv.GEO_lung@plots$step1$p.surv$risk_score
+surv.GEO_lung@plots$step1$p.roc$risk_score
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEO-LUAD-risk-score-related-genes-heatmap
+autor(surv.GEO_lung@params$p.surv_genes_hp)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEO-LUAD-survival-curve-of-risk-score
+autor(surv.GEO_lung@plots$step1$p.surv$risk_score)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GEO-LUAD-time-ROC
+autor(surv.GEO_lung@plots$step1$p.roc$risk_score)
+```
+
+## Limma 差异分析 (LNCRNA)
+
+长链非编码RNA（lncRNA）在基因调控和癌症发展中起着重要作用。
+
+`r snap(lm.lncrna, 0:3)`
+
+```{r}
+#' @meth {get_meth(lm.lncrna)}
+lm.lncrna <- fun_filter("lncRNA")
+lm.lncrna <- step1(lm.lncrna, pca = T, norm_vis = T)
+lm.lncrna <- step2(
+  lm.lncrna, Early_stage - Healthy, Advanced_stage - Healthy, 
+  Advanced_stage - Early_stage,
+  use = "P", cut.fc = .5, use.cut = .05, label = "hgnc_symbol"
+)
+lm.lncrna <- step3(lm.lncrna)
+lm.lncrna@tables$step2$tops
+lm.lncrna@plots$step3$p.sets_intersection
+allsLncTops <- rm.no(unlist(lm.lncrna@plots$step3$p.sets_intersection$raw))
+allsLncTops
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LNCRNA-DEGs-data
+autor(lm.lncrna@tables$step2$tops)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LNCRNA-Difference-intersection
+autor(lm.lncrna@plots$step3$p.sets_intersection)
+```
+
+
+## 关联分析 (MRNA, LNCRNA)
+
+`r snap(cp.cor, 0:1)`
+`r snap(sigCor_mrna2lnc)`
+
+```{r}
+cp.cor <- cal_corp(lm.mrna, lm.lncrna, surv.lung$fea_coefs$feature, allsLncTops, c("mRNA", "LncRNA"))
+
+sigCor_mrna2lnc <- dplyr::mutate(cp.cor$sig.corp, `|cor|` = abs(cor))
+sigCor_mrna2lnc <- dplyr::filter(sigCor_mrna2lnc, cor != 1)
+sigCor_mrna2lnc <- trace_filter(sigCor_mrna2lnc, `|cor|` > 0.4, pvalue < 0.001)
+sigCor_mrna2lnc
+
+p.sigCor_mrna2lnc <- plot_network.pharm(dplyr::mutate(sigCor_mrna2lnc[, 1:2], Cor = "Cor", .before = 1),
+  ax1 = "Cor", ax2 = "mRNA", ax3 = "lncRNA", less.label = F)
+p.sigCor_mrna2lnc
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Significant-Correlation-mrna-lncRNA
+autor(p.sigCor_mrna2lnc)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Significant-correlation
+autor(sigCor_mrna2lnc)
+```
+
+## 实验验证
+
+请参考 `r cite_show("HCC_RNA_Sequen_Wang_2023")`
+
+# 总结 {#conclusion}
+
+本研究为肺癌早期诊断建立了预后的独立风险指标，这些基因是 `r bind(surv.lung$fea_coefs$feature)`，
+可预测肺癌 (包括 LUSC, LUAD) 中，Sage I、II 的预后疗效。
+该风险评分对于 RNA-seq 可能有更敏感的评估，因为训练于 TCGA 的 RNA-seq 数据集。
+由于 GEO 中，包含生存结局和详细临床数据记录的数据集不多，本次验证尽可能涵盖了整个 GEO 数据库。
+
+
+```{r}
+extract_anno("./order_material/BSXG240327-陈立茂-补充分析-基于血小板RNA测序数据预测早期肺癌潜在生物标志物-2024.12.17ByF.docx", "./order_material/anno.md")
+postModify_annoDocx("./order_material/anno.md")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_冯力.docx")
+```
+
+```{r}
+raw <- clinical <- fxlsx("./order_material/样本信息（更新性别和年龄）-待补充信息.xlsx")
+clinical <- dplyr::select(
+  clinical, name = 编号, gender = 性别, age = 年龄,
+  stage = 病理分期..什么标准..
+)
+clinical <- dplyr::mutate(
+  clinical, name = gs(name, "_L1$", ""),
+  gender = dplyr::recode(gender, "男" = "male", "女" = "female"),
+  age = as.integer(age)
+)
+clinical <- dplyr::filter(clinical, name %in% rownames(metadata))
+clinical <- map(
+  clinical, "name", as_tibble(metadata), 
+  "rownames", "group", col = "stage"
+)
+clinical <- dplyr::select(clinical, -name)
+
+res <- summary_tibble2(clinical, "stage")
+openxlsx::write.xlsx(res, "clinical_feature.xlsx")
+pretty_flex(res, "", NULL)
+
+# hasUsed <- ins(
+#   meta = rownames(metadata), count = colnames(counts), clinical = clinical[[1]]
+# )
+# rownames(metadata) %>% .[ ! . %in% clinical[[1]] ]
+# dplyr::filter(clinical, grpl(编号, "_L1$"))
+```
