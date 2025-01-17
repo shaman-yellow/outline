@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20241129"), end = td("20241213"), finish = NA,
+info <- items(start = td("20241129"), end = td("20241213"), finish = td("2025-01-17"),
   id = "BSCL241113", client = "邓姝", inst = "",
   type = "生信分析",
   title = "",
@@ -86,15 +86,21 @@ collate_details("meth")
 
 ## MungeSumstats 获取 GWAS 数据 (AA)
 
+`r snap(ogwas.aa, 0:1)`
+
 ```{r}
 ogwas.aa <- job_ogwas("Aplastic anemia")
-ogwas.aa@object
 ogwas.aa <- step1(ogwas.aa, which = 1L)
+#' @meth {get_meth(ogwas.aa)}
+ogwas.aa@meth
+ogwas.aa$db
 
-test <- ftibble("./material/GCST90018794_buildGRCh37.tsv.gz")
-test2 <- dplyr::filter(test, p_value < .05)
-test2
 ```
+
+```{r}
+fus.aa <- job_fusion()
+```
+
 
 ```{r}
 gds.aa <- job_gds("Aplastic anemia", 2:1000)

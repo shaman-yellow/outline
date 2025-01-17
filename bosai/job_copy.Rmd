@@ -58,3 +58,9 @@ backup_jobs.bosai(alls, "2025-01-10")
 
 summary_week.bosai(rm = T)
 ```
+
+## 2025-01-17
+
+```{r}
+summary_week.bosai(rm = T, must_include = "BSXG240327")
+```

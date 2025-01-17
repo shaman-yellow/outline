@@ -1,0 +1,38 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-01-13"), end = td("2025-01-14"), finish = td("2025-01-14"),
+  id = "BS.develop", client = "", inst = "",
+  type = "模块开发",
+  title = "scFEA 用于单细胞数据预测代谢通量配置与调试",
+  note = "Seurat 和某些程序版本发生了变动，做了调试",
+  save = ".items_module.rds"
+)
+show.ic(info)
+
+order_publish.bosai("module.Rmd", "module_out.Rmd")
+formatName.bosai("./module_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+

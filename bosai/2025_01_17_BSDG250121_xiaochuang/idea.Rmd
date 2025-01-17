@@ -1,0 +1,139 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-01-15"), end = td("2025-01-17"), finish = td("2025-01-17"),
+  id = "BSDG250121", client = "赵蓓蓓", inst = "大连医科大学附属第二医院",
+  type = "思路设计",
+  title = "哮喘相关",
+  save = ".items_idea.rds"
+)
+show.ic(info)
+
+order_publish.bosai("idea.Rmd", "idea_out.Rmd")
+formatName.bosai("./idea_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+哮喘是影响全球儿童和成人的最常见呼吸道疾病之一，其表型多样，其潜在致病机制尚不明确。随着基因组测序技术的进步，人们做出了科学努力来解释和预测哮喘的复杂性和异质性，全基因组关联研究 (GWAS) 迅速成为首选的研究方法 `r cite_show("Genetics_and_Ep_Ntonts_2021")`。
+
+TWAS （Transcriptome-Wide Association Study，全转录组关联研究）是一种强大的方法，用于探索基因表达与表型之间的关联，为基因组学研究和遗传病因探索提供了重要工具。它结合了 GWAS 的遗传变异数据和功能基因组数据，能够识别潜在的功能基因，为疾病机制研究和药物开发提供重要线索。
+
+将 TWAS `r cite_show("@IntegrativeAppGusev2016")` 和 WGCNA（Weighted Gene Co-Expression Network Analysis，加权基因共表达网络分析）`r cite_show("@WgcnaAnRPacLangfe2008")`以及差异分析结合起来，能够充分挖掘基因表达调控与表型（例如疾病）之间的复杂关系
+
+
+
+```{r}
+dic(di("差异表达基因"),
+  di("骨髓瘤"),
+  di("哮喘")
+)
+# A: asthma 哮喘
+
+```
+
+## 思路 {#introduction}
+
+```{r}
+#| route
+route <- as_network(
+  list("Asthma:GEO, Open_GWAS",
+    "GEO:Microarray_or_RNA-seq",
+    "Microarray_or_RNA-seq:WGCNA, Limma",
+    "WGCNA, Limma:DEGs",
+    "DEGs:Enrichment, STRINGdb",
+    "Open_GWAS:GWAS_summary",
+    "GWAS_summary:TWAS",
+    "TWAS:genes",
+    "genes:DEGs, Enrichment, STRINGdb"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+wrap(p.route)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 10, 9, showtext = T))
+```
+
+
+# 可行性 {#methods}
+
+## 以 `asthma AND TWAS` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2025-01-17 17-18-33.png")
+```
+
+# 创新性 {#results}
+
+## 以 `asthma AND TWAS AND WGCNA` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2025-01-17 17-01-17.png")
+```
+
+# GEO 检索方法
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 参考文献和数据集 {#workflow}
+
+## GWAS 数据
+
+```{r}
+ogwas.as <- job_ogwas("Asthma")
+ogwas.as@object
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Traits-found-in-Open-GWAS
+autor(ogwas.as@object)
+```
+
+## GSE 数据搜索 (AS)
+
+`r snap(gds.as, 0:3)`
+`r snap(gds.as, "a")`
+
+```{r}
+gds.as <- job_gds(c("asthma", "healthy"))
+gds.as <- step1(gds.as)
+#' @meth {get_meth(gds.as)}
+gds.as <- step2(gds.as, force = TRUE)
+gds.as <- expect(gds.as, geo_cols())
+gds.as <- anno(gds.as)
+gds.as@plots$step1$p.AllGdsType
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AS-All-Gds-Type
+autor(gds.as@plots$step1$p.AllGdsType)
+```
+
