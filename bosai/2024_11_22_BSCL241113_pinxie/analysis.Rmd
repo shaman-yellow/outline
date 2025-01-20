@@ -93,8 +93,19 @@ ogwas.aa <- job_ogwas("Aplastic anemia")
 ogwas.aa <- step1(ogwas.aa, which = 1L)
 #' @meth {get_meth(ogwas.aa)}
 ogwas.aa@meth
-ogwas.aa$db
+ogwas.aa$db[[1]]
 
+data.table::fread(
+  "./vep_test/vep_output.tsv", skip = "#", sep = "|", 
+  select = 2
+)
+```
+
+```{r}
+vep.aa <- job_vep(ogwas.aa$db[[1]])
+vep.aa <- step1(vep.aa, fork = 5)
+vep.aa@object
+vep.aa$anno
 ```
 
 ```{r}

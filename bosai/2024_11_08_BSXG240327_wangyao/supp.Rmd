@@ -160,6 +160,21 @@ autor(lm.mrna@plots$step3$p.sets_intersection)
 autor(lm.mrna@tables$step2$tops)
 ```
 
+## WGCNA 分析 (MRNA)
+
+`r snap(wgcna.mrna, 0:6)`
+
+```{r}
+wgcna.mrna <- asjob_wgcna(lm.mrna, feature(lm.mrna))
+#' @meth {get_meth(wgcna.mrna)}
+wgcna.mrna <- step1(wgcna.mrna)
+wgcna.mrna <- step2(wgcna.mrna)
+wgcna.mrna <- step3(wgcna.mrna)
+wgcna.mrna@plots$step3$sft
+wgcna.mrna <- step4(wgcna.mrna)
+
+```
+
 ## Mfuzz 聚类分析 (MRNA)
 
 `r snap(mfuzz.mrna, 0)`
@@ -296,7 +311,7 @@ lasso.lung <- step3(lasso.lung, use_tops = T)
 lasso.lung@step <- 3L
 lasso.lung$seed <- 5136
 lasso.lung <- step4(
-  lasso.lung, fun = "cv", nfold = 5, type.measure = "C"
+  lasso.lung, fun = "cv", nfold = 5, type.measure = "d"
 )
 
 lasso.lung@params$sig.uni_cox
@@ -343,7 +358,7 @@ autor(lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se)
 ```{r}
 #' @meth {get_meth(surv.lung)}
 surv.lung <- asjob_survival(lasso.lung, "mul", "1", base_method = "s")
-surv.lung <- step1(surv.lung, roc_time = c(3, 5, 10))
+surv.lung <- step1(surv.lung, roc_time = c(1, 3, 5))
 
 surv.lung@params$p.surv_genes_hp
 surv.lung@plots$step1$p.surv$risk_score
@@ -458,6 +473,7 @@ lasso.GEO_lung4 <- asjob_lasso(lm.GEO_lung4, use = "hgnc_symbol")
 lasso.GEO_lung4 <- step1(lasso.GEO_lung4)
 surv.GEO_lung4 <- asjob_survival(lasso.GEO_lung4, fea_coefs = surv.lung$fea_coefs, force = T)
 surv.GEO_lung4 <- step1(surv.GEO_lung4, only_keep_sig = FALSE)
+surv.GEO_lung4@plots$step1$p.surv$risk_score
 ```
 
 ## GEO 数据获取 (GEO_LUNG2)
