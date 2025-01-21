@@ -379,3 +379,174 @@ lapply(list.files(.prefix("gds_geoMeta", "db"), "rds$", full.names = TRUE),
   })
 
 geo.lung4 <- job_geo("GSE102287")
+
+## Mfuzz 聚类分析 (MRNA)
+
+`r snap(mfuzz.mrna, 0)`
+`r snap(mfuzz.mrna, 1)`
+`r snap(mfuzz.mrna, 2)`
+`r snap(mfuzz.mrna, 3)`
+见 `r ref("MRNA-Mfuzz-clusters")`
+
+```{r}
+#' @meth {get_meth(mfuzz.mrna)}
+# mfuzz.mrna <- readRDS("./mfuzz.mrna.3.rds")
+mfuzz.mrna <- asjob_mfuzz(lm.mrna)
+mfuzz.mrna <- step1(mfuzz.mrna, 4:2)
+mfuzz.mrna <- step2(mfuzz.mrna, 10, c(2, 5), alpha = .3)
+mfuzz.mrna <- step3(mfuzz.mrna, c(2), c(1, 6))
+mfuzz.mrna$ups
+# autosv(mfuzz.mrna@plots$step2$p.clusters, "MRNA-Mfuzz-clusters")
+mfuzz.mrna@plots$step2$p.clusters
+mfuzz.mrna@params$clusters
+mfuzz.mrna@params$up
+mfuzz.mrna@params$down
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-Mfuzz-clusters
+autor(mfuzz.mrna@plots$step2$p.clusters)
+```
+
+
+## GSE 数据搜索 (LUNG)
+
+`r snap(gds.lung, 0:2)`
+`r bind(hasSurv)` 含有生存信息。
+GSE198048  不包含生存事件 (Dead) 。 因此，以 `r bind(hasSurv[-2])` 验证。
+
+```{r}
+#' @meth {get_meth(gds.lung)}
+gds.lung <- job_gds(c("lung cancer", "survival"), 30:1000)
+gds.lung <- step1(gds.lung)
+gds.lung <- step2(gds.lung)
+gds.lung <- step3(gds.lung)
+gds.lung$res
+
+vis(gds.lung)
+hasSurv
+# [1] "GSE87340"  "GSE198048" "GSE256047"
+# gds.lung$res
+
+active(gds.lung, hasSurv)
+```
+
+## GEO 数据获取 (GEO_LUNG3)
+
+```{r}
+geo.lung3 <- job_geo("GSE37745")
+geo.lung3 <- step1(geo.lung3)
+metadata.lung3 <- expect(geo.lung3, geo_cols())
+metadata.lung3 <- dplyr::mutate(metadata.lung3,
+  days_to_last_follow_up = as.integer(days.to.determined.death.status.ch1),
+  vital_status = ifelse(dead.ch1 == "yes", "Dead", "Alive"),
+  group = vital_status,
+  ajcc_pathologic_stage = paste0(
+    "T", strx(tumor.stage.ch1, "[0-9]")
+  )
+)
+```
+
+```{r}
+lm.GEO_lung3 <- asjob_limma(geo.lung3, metadata.lung3)
+lm.GEO_lung3 <- filter(
+  lm.GEO_lung3, type = "metadata", days_to_last_follow_up > 10
+)
+lm.GEO_lung3 <- step1(lm.GEO_lung3)
+lasso.GEO_lung3 <- asjob_lasso(lm.GEO_lung3, use = "hgnc_symbol")
+lasso.GEO_lung3 <- step1(lasso.GEO_lung3)
+
+surv.GEO_lung3 <- asjob_survival(
+  lasso.GEO_lung3, fea_coefs = surv.lung$fea_coefs, force = T
+)
+surv.GEO_lung3 <- step1(
+  surv.GEO_lung3, only_keep_sig = FALSE, roc_time = c(
+    1, 3, 5
+  )
+)
+surv.GEO_lung3@plots$step1$p.surv
+surv.GEO_lung3@plots$step1$p.roc
+```
+
+## GEO 数据获取 (GEO_LUNG4)
+
+```{r}
+geo.lung4 <- job_geo("GSE14814")
+geo.lung4 <- step1(geo.lung4)
+metadata.lung4 <- expect(geo.lung4, geo_cols())
+metadata.lung4 <- dplyr::mutate(metadata.lung4,
+  ajcc_pathologic_stage = ifelse(
+    grpl(Stage.ch1, "I"), nchar(Stage.ch1), Stage.ch1
+    ),
+  ajcc_pathologic_stage = paste0(
+    "T", strx(ajcc_pathologic_stage, "[0-9]")
+    ),
+  days_to_last_follow_up = as.numeric(OS.time.ch1) * 365,
+  vital_status = OS.status.ch1
+)
+```
+
+```{r}
+lm.GEO_lung4 <- asjob_limma(geo.lung4, metadata.lung4)
+lm.GEO_lung4 <- filter(lm.GEO_lung4, type = "metadata",
+  grpl(Cause.of.death.ch1, "Lung cancer|Alive"),
+  grpl(
+    ajcc_pathologic_stage, "T0|T1|T2"
+  ), days_to_last_follow_up > 10
+)
+lm.GEO_lung4 <- step1(lm.GEO_lung4)
+lasso.GEO_lung4 <- asjob_lasso(lm.GEO_lung4, use = "hgnc_symbol")
+lasso.GEO_lung4 <- step1(lasso.GEO_lung4)
+surv.GEO_lung4 <- asjob_survival(lasso.GEO_lung4, fea_coefs = surv.lung$fea_coefs, force = T)
+surv.GEO_lung4 <- step1(surv.GEO_lung4, only_keep_sig = FALSE)
+surv.GEO_lung4@plots$step1$p.surv$risk_score
+```
+
+## GEO 数据获取 (GEO_LUNG2)
+
+```{r}
+geo.lung2 <- job_geo(hasSurv[3])
+geo.lung2 <- step1(geo.lung2)
+geo.lung2 <- step2(geo.lung2, rna = F)
+geo.lung2$prods
+counts.geolung2 <- ftibble(list.files("~/disk_sda1/GEO/GSE256047", full.names = T))
+counts.geolung2 <- dplyr::mutate(counts.geolung2, dplyr::across(dplyr::where(is.numeric), log2))
+counts.geolung2
+
+metadata.geolung2 <- geo.lung2$guess
+metadata.geolung2 <- dplyr::mutate(metadata.geolung2,
+  sample = title, group = group.ch1,
+  des = survival.and_follow_up_.ned._no_evidence_of_disease..ch1,
+  vital_status = stringr::str_extract(des, "[Dd]ie|NED|[Aa]live"),
+  vital_status = ifelse(grpl(vital_status, "die", T), "Dead",
+    ifelse(!is.na(vital_status), "Alive", "")),
+  ajcc_pathologic_stage = strx(tumor.stage_.ajcc_8..ch1, "^T[0-9]+"),
+  days_to_last_follow_up = as.double(unlist(
+    lapply(stringr::str_extract_all(des, "[0-9.]+"),
+      function(x) if (length(x)) tail(x, n = 1) else ""
+    ))) * 30,
+  .before = 1
+)
+metadata.geolung2
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG2-GSE256047
+autor(geo.lung2$prods)
+```
+
+`r snap(lm.GEO_lung2, 0:2)`
+`r snap(lasso.GEO_lung2, 0:2)`
+
+```{r}
+lm.GEO_lung2 <- job_limma_normed(counts.geolung2, metadata.geolung2, dplyr::select(counts.geolung2, 1))
+lm.GEO_lung2 <- filter(
+  lm.GEO_lung2, vital_status != "", days_to_last_follow_up > 10, 
+  type = "metadata", grpl(ajcc_pathologic_stage, "T1|T2|T0")
+)
+lm.GEO_lung2 <- step1(lm.GEO_lung2)
+lm.GEO_lung2@object
+```
+
+

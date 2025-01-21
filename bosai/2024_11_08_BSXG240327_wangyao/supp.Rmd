@@ -125,6 +125,8 @@ lm.mrna <- fun_filter("protein_coding")
 lm.mrna <- step1(lm.mrna, pca = T, norm_vis = T)
 lm.mrna <- step2(lm.mrna, Early_stage - Healthy, Advanced_stage - Healthy, Advanced_stage - Early_stage,
   use = "P", cut.fc = .5, use.cut = .05, label = "hgnc_symbol")
+lm.mrna@step <- 2L
+lm.mrna$rna <- TRUE
 lm.mrna <- step3(lm.mrna)
 lm.mrna@plots$step2$p.volcano$`Early_stage - Healthy`
 lm.mrna@plots$step2$p.volcano$`Advanced_stage - Healthy`
@@ -164,97 +166,92 @@ autor(lm.mrna@tables$step2$tops)
 
 `r snap(wgcna.mrna, 0:6)`
 
+`r ref("MRNA-soft-thresholding-powers")` 
+`r ref("MRNA-co-expression-module")` 
+`r ref("MRNA-correlation-of-module-with-group")` 
+
 ```{r}
 wgcna.mrna <- asjob_wgcna(lm.mrna, feature(lm.mrna))
 #' @meth {get_meth(wgcna.mrna)}
 wgcna.mrna <- step1(wgcna.mrna)
 wgcna.mrna <- step2(wgcna.mrna)
 wgcna.mrna <- step3(wgcna.mrna)
-wgcna.mrna@plots$step3$sft
 wgcna.mrna <- step4(wgcna.mrna)
+wgcna.mrna <- step5(
+  wgcna.mrna, group_levels = c("Healthy", "Early_stage", "Advanced_stage"), 
+  cut.cor = .3
+)
+feature(wgcna.mrna)
 wgcna.mrna@plots$step4$net
-
+wgcna.mrna@plots$step3$sft
+wgcna.mrna@params$corp_group
 ```
 
-## Mfuzz 聚类分析 (MRNA)
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-soft-thresholding-powers
+autor(wgcna.mrna@plots$step3$sft)
+```
 
-`r snap(mfuzz.mrna, 0)`
-`r snap(mfuzz.mrna, 1)`
-`r snap(mfuzz.mrna, 2)`
-`r snap(mfuzz.mrna, 3)`
-见 `r ref("MRNA-Mfuzz-clusters")`
-
-```{r}
-#' @meth {get_meth(mfuzz.mrna)}
-# mfuzz.mrna <- readRDS("./mfuzz.mrna.3.rds")
-mfuzz.mrna <- asjob_mfuzz(lm.mrna)
-mfuzz.mrna <- step1(mfuzz.mrna, 4:2)
-mfuzz.mrna <- step2(mfuzz.mrna, 10, c(2, 5), alpha = .3)
-mfuzz.mrna <- step3(mfuzz.mrna, c(2), c(1, 6))
-mfuzz.mrna$ups
-# autosv(mfuzz.mrna@plots$step2$p.clusters, "MRNA-Mfuzz-clusters")
-mfuzz.mrna@plots$step2$p.clusters
-mfuzz.mrna@params$clusters
-mfuzz.mrna@params$up
-mfuzz.mrna@params$down
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-co-expression-module
+autor(wgcna.mrna@plots$step4$net)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| MRNA-Mfuzz-clusters
-autor(mfuzz.mrna@plots$step2$p.clusters)
+#| MRNA-correlation-of-module-with-group
+autor(wgcna.mrna@params$corp_group)
 ```
 
-## 富集分析 (MRNA)
+## ClusterProfiler 富集分析 (MRNA)
 
-`r snap(en.mrna, 0)`
-KEGG 见 `r ref("MRNA-downs-KEGG-enrichment")`,
-`r ref("MRNA-ups-KEGG-enrichment")`
-GO 见 `r ref("MRNA-downs-GO-enrichment")`
-`r ref("MRNA-ups-GO-enrichment")`。
+`r snap(en.mrna, 0:2)`
 
-可以发现，上调与下调富集的首要通路，都与遗传信息的处理相关。
-在 `r ref("MRNA-Mfuzz-clusters")` 中，下调的趋势更明显，
-暗示 Biosynthesis of cofactors 等代谢相关的通路，可能更与肺癌的早期发展相关。
+`r ref("MRNA-KEGG-enrichment")` 
+`r ref("MRNA-GO-enrichment")` 
+
+KEGG 富集分析揭示，`r res(en.mrna, "des", 4)` 可能与肺癌进展相关`r cite_show("Genome_wide_ide_Das_J_2023")`
+`r cite_show("Neutrophil_Extr_Wang_2022")`
+`r cite_show("Design_and_Synt_Wang_2024")`。
+
+`r ref("MRNA-KEGG-enrichment-data")` 
+`r ref("MRNA-GO-enrichment-data")` 
 
 ```{r}
+en.mrna <- asjob_enrich(feature(wgcna.mrna))
 #' @meth {get_meth(en.mrna)}
-en.mrna <- asjob_enrich(mfuzz.mrna)
 en.mrna@object
-en.mrna <- step1(en.mrna, use = "pvalue")
-en.mrna@plots$step1$p.kegg$ups
-en.mrna@plots$step1$p.kegg$downs
-en.mrna@plots$step1$p.go$ups
-en.mrna@plots$step1$p.go$downs
+en.mrna <- step1(en.mrna)
+en.mrna@plots$step1$p.kegg$ids
+en.mrna@plots$step1$p.go$ids
+en.mrna@tables$step1$res.kegg$ids
+en.mrna@tables$step1$res.go$ids
+res(en.mrna, "des", 4)
 
-en.mrna@tables$step1$res.kegg$ups
-en.mrna@tables$step1$res.kegg$downs$Description
-```
-
-
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| MRNA-ups-KEGG-enrichment
-autor(en.mrna@plots$step1$p.kegg$ups)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| MRNA-downs-KEGG-enrichment
-autor(en.mrna@plots$step1$p.kegg$downs)
+#| MRNA-KEGG-enrichment
+autor(en.mrna@plots$step1$p.kegg$ids)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| MRNA-ups-GO-enrichment
-autor(en.mrna@plots$step1$p.go$ups)
+#| MRNA-KEGG-enrichment-data
+autor(en.mrna@tables$step1$res.kegg$ids)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| MRNA-downs-GO-enrichment
-autor(wrap(en.mrna@plots$step1$p.go$downs, 8, 8))
+#| MRNA-GO-enrichment
+autor(en.mrna@plots$step1$p.go$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MRNA-GO-enrichment-data
+autor(en.mrna@tables$step1$res.go$ids)
 ```
 
 ## TCGA 数据获取 (LUSC, LUAD)
@@ -271,7 +268,6 @@ tc.lusc
 
 ```{r}
 #' @meth {get_meth(tc.luad)}
-#' @meth 随后，将 TCGA-LUSC 和 TCGA-LUAD 数据集合并。 
 tc.luad <- job_tcga("TCGA-LUAD")
 tc.luad <- step1(tc.luad)
 tc.luad <- step2(tc.luad)
@@ -297,23 +293,30 @@ tc.luad <- clear(tc.luad, save = F)
 
 ```{r}
 lm.lung <- asjob_limma(tc.lung,
-  grpl(ajcc_pathologic_stage, "Stage [I]{1,2}[AB]?$"),
   days_to_last_follow_up >= 30, isTumor == "tumor")
 lm.lung <- step1(lm.lung)
 
 #' @meth {get_meth(lasso.lung, F)}
 #' @meth {snap(lm.lung, 0)}
-lasso.lung <- do_lasso(lm.lung, mfuzz.mrna)
+# lasso.lung <- do_lasso(lm.lung, mfuzz.mrna)
+lasso.lung <- asjob_lasso(lm.lung, feature(wgcna.mrna))
 lasso.lung <- step1(lasso.lung)
 dim(lasso.lung@object)
-lasso.lung <- step2(lasso.lung, use_data = "all", efs = F, top = 50)
+lasso.lung <- step2(lasso.lung, use_data = "all")
 lasso.lung <- step3(lasso.lung, use_tops = T)
 
 lasso.lung@step <- 3L
-lasso.lung$seed <- 5136
+lasso.lung$seed <- 14784
 lasso.lung <- step4(
-  lasso.lung, fun = "cv", nfold = 5, type.measure = "d"
+  lasso.lung, fun = "cv", nfold = 5, type.measure = "C", nlambda = 250
 )
+
+jobs <- multi_test_lasso(
+  lasso.lung, fun = "cv", nfold = 5, type.measure = "C", 
+  nlambda = 250, n = 30
+)
+jobs$seeds
+lapply(jobs$jobs, function(x) x$nfeature_lambdas)
 
 lasso.lung@params$sig.uni_cox
 lasso.lung@params$sig.mul_cox
@@ -358,8 +361,9 @@ autor(lasso.lung@plots$step4$p.lassoCOX_ROC$lambda.1se)
 
 ```{r}
 #' @meth {get_meth(surv.lung)}
-surv.lung <- asjob_survival(lasso.lung, "mul", "1", base_method = "s")
+surv.lung <- asjob_survival(lasso.lung, "mul", "1", base_method = "m")
 surv.lung <- step1(surv.lung, roc_time = c(1, 3, 5))
+surv.lung$p.density_follow_time
 
 surv.lung@params$p.surv_genes_hp
 surv.lung@plots$step1$p.surv$risk_score
@@ -384,145 +388,10 @@ autor(surv.lung@plots$step1$p.surv$risk_score)
 autor(surv.lung@plots$step1$p.roc$risk_score)
 ```
 
-
-## GSE 数据搜索 (LUNG)
-
-`r snap(gds.lung, 0:2)`
-`r bind(hasSurv)` 含有生存信息。
-GSE198048  不包含生存事件 (Dead) 。 因此，以 `r bind(hasSurv[-2])` 验证。
-
-```{r}
-#' @meth {get_meth(gds.lung)}
-gds.lung <- job_gds(c("lung cancer", "survival"), 30:1000)
-gds.lung <- step1(gds.lung)
-gds.lung <- step2(gds.lung)
-gds.lung <- step3(gds.lung)
-gds.lung$res
-
-vis(gds.lung)
-hasSurv
-# [1] "GSE87340"  "GSE198048" "GSE256047"
-# gds.lung$res
-
-active(gds.lung, hasSurv)
-```
-
-## GEO 数据获取 (GEO_LUNG3)
-
-```{r}
-geo.lung3 <- job_geo("GSE37745")
-geo.lung3 <- step1(geo.lung3)
-metadata.lung3 <- expect(geo.lung3, geo_cols())
-metadata.lung3 <- dplyr::mutate(metadata.lung3,
-  days_to_last_follow_up = as.integer(days.to.determined.death.status.ch1),
-  vital_status = ifelse(dead.ch1 == "yes", "Dead", "Alive"),
-  group = vital_status,
-  ajcc_pathologic_stage = paste0(
-    "T", strx(tumor.stage.ch1, "[0-9]")
-  )
-)
-```
-
-```{r}
-lm.GEO_lung3 <- asjob_limma(geo.lung3, metadata.lung3)
-lm.GEO_lung3 <- filter(
-  lm.GEO_lung3, type = "metadata", grpl(
-    ajcc_pathologic_stage, "T0|T1|T2"
-  ), days_to_last_follow_up > 10
-)
-lm.GEO_lung3 <- step1(lm.GEO_lung3)
-lasso.GEO_lung3 <- asjob_lasso(lm.GEO_lung3, use = "hgnc_symbol")
-lasso.GEO_lung3 <- step1(lasso.GEO_lung3)
-surv.GEO_lung3 <- asjob_survival(
-  lasso.GEO_lung3, fea_coefs = surv.lung$fea_coefs, force = T
-)
-surv.GEO_lung3 <- step1(
-  surv.GEO_lung3, only_keep_sig = FALSE, roc_time = c(3, 5, 10)
-)
-surv.GEO_lung3@plots$step1$p.surv
-surv.GEO_lung3@plots$step1$p.roc
-```
-
-## GEO 数据获取 (GEO_LUNG4)
-
-```{r}
-geo.lung4 <- job_geo("GSE14814")
-geo.lung4 <- step1(geo.lung4)
-metadata.lung4 <- expect(geo.lung4, geo_cols())
-metadata.lung4 <- dplyr::mutate(metadata.lung4,
-  ajcc_pathologic_stage = ifelse(
-    grpl(Stage.ch1, "I"), nchar(Stage.ch1), Stage.ch1
-    ),
-  ajcc_pathologic_stage = paste0(
-    "T", strx(ajcc_pathologic_stage, "[0-9]")
-    ),
-  days_to_last_follow_up = as.numeric(OS.time.ch1) * 365,
-  vital_status = OS.status.ch1
-)
-```
-
-```{r}
-lm.GEO_lung4 <- asjob_limma(geo.lung4, metadata.lung4)
-lm.GEO_lung4 <- filter(lm.GEO_lung4, type = "metadata",
-  grpl(Cause.of.death.ch1, "Lung cancer|Alive"),
-  grpl(
-    ajcc_pathologic_stage, "T0|T1|T2"
-  ), days_to_last_follow_up > 10
-)
-lm.GEO_lung4 <- step1(lm.GEO_lung4)
-lasso.GEO_lung4 <- asjob_lasso(lm.GEO_lung4, use = "hgnc_symbol")
-lasso.GEO_lung4 <- step1(lasso.GEO_lung4)
-surv.GEO_lung4 <- asjob_survival(lasso.GEO_lung4, fea_coefs = surv.lung$fea_coefs, force = T)
-surv.GEO_lung4 <- step1(surv.GEO_lung4, only_keep_sig = FALSE)
-surv.GEO_lung4@plots$step1$p.surv$risk_score
-```
-
-## GEO 数据获取 (GEO_LUNG2)
-
-```{r}
-geo.lung2 <- job_geo(hasSurv[3])
-geo.lung2 <- step1(geo.lung2)
-geo.lung2 <- step2(geo.lung2, rna = F)
-geo.lung2$prods
-counts.geolung2 <- ftibble(list.files("~/disk_sda1/GEO/GSE256047", full.names = T))
-counts.geolung2 <- dplyr::mutate(counts.geolung2, dplyr::across(dplyr::where(is.numeric), log2))
-counts.geolung2
-
-metadata.geolung2 <- geo.lung2$guess
-metadata.geolung2 <- dplyr::mutate(metadata.geolung2,
-  sample = title, group = group.ch1,
-  des = survival.and_follow_up_.ned._no_evidence_of_disease..ch1,
-  vital_status = stringr::str_extract(des, "[Dd]ie|NED|[Aa]live"),
-  vital_status = ifelse(grpl(vital_status, "die", T), "Dead",
-    ifelse(!is.na(vital_status), "Alive", "")),
-  ajcc_pathologic_stage = strx(tumor.stage_.ajcc_8..ch1, "^T[0-9]+"),
-  days_to_last_follow_up = as.double(unlist(
-    lapply(stringr::str_extract_all(des, "[0-9.]+"),
-      function(x) if (length(x)) tail(x, n = 1) else ""
-    ))) * 30,
-  .before = 1
-)
-metadata.geolung2
-```
-
 ```{r eval = T, echo = F, results = "asis"}
-#| LUNG2-GSE256047
-autor(geo.lung2$prods)
+#| LUNG-density-of-follow-up-time
+autor(surv.lung$p.density_follow_time)
 ```
-
-`r snap(lm.GEO_lung2, 0:2)`
-`r snap(lasso.GEO_lung2, 0:2)`
-
-```{r}
-lm.GEO_lung2 <- job_limma_normed(counts.geolung2, metadata.geolung2, dplyr::select(counts.geolung2, 1))
-lm.GEO_lung2 <- filter(
-  lm.GEO_lung2, vital_status != "", days_to_last_follow_up > 10, 
-  type = "metadata", grpl(ajcc_pathologic_stage, "T1|T2|T0")
-)
-lm.GEO_lung2 <- step1(lm.GEO_lung2)
-lm.GEO_lung2@object
-```
-
 
 ## GEO 数据获取 (GEO_LUNG)
 
@@ -539,16 +408,12 @@ metadata.geolung <- dplyr::mutate(metadata.geolung,
   vital_status = ifelse(survstatus.ch1 == "0", "Alive", "Dead"),
   group = vital_status,
   days_to_last_follow_up = as.double(time.to.last.followup.ch1) * 30 * 12,
-  ajcc_pathologic_stage = strx(Stage.ch1, "^I"),
-  # all are T1
-  ajcc_pathologic_stage = "T1",
   .before = 1
 )
-metadata.geolung
+
 lm.GEO_lung <- asjob_limma(geo.lung, metadata.geolung)
 lm.GEO_lung <- filter(
-  lm.GEO_lung, days_to_last_follow_up > 10, type = "metadata", 
-  grpl(ajcc_pathologic_stage, "T0|T1|T2")
+  lm.GEO_lung, days_to_last_follow_up > 10, type = "metadata"
 )
 lm.GEO_lung <- step1(lm.GEO_lung)
 lm.GEO_lung@object
@@ -568,15 +433,17 @@ autor(geo.lung$prods)
 
 ```{r}
 lasso.GEO_lung <- asjob_lasso(lm.GEO_lung, use = "hgnc_symbol", dup_method = "max")
-lasso.GEO_lung2 <- asjob_lasso(lm.GEO_lung2, use = "rownames", dup_method = "max")
-
-lasso.GEO_lung <- merge(lasso.GEO_lung, lasso.GEO_lung2)
 lasso.GEO_lung <- step1(lasso.GEO_lung)
 
-surv.GEO_lung <- asjob_survival(lasso.GEO_lung, fea_coefs = surv.lung$fea_coefs, force = T)
-surv.GEO_lung$p.surv_genes_hp
-surv.GEO_lung <- step1(surv.GEO_lung, only_keep_sig = F, roc_time = c(1, 3, 5))
+surv.GEO_lung <- asjob_survival(
+  lasso.GEO_lung, fea_coefs = surv.lung$fea_coefs, force = T, base_method = "s"
+)
+surv.GEO_lung <- step1(
+  surv.GEO_lung, roc_time = c(4, 7, 9), only_keep_sig = FALSE
+)
 
+surv.GEO_lung@params$p.density_follow_time
+surv.GEO_lung$p.surv_genes_hp
 surv.GEO_lung@params$p.surv_genes_hp
 surv.GEO_lung@plots$step1$p.surv$risk_score
 surv.GEO_lung@plots$step1$p.roc$risk_score
@@ -587,18 +454,6 @@ surv.GEO_lung@plots$step1$p.roc$risk_score
 ```{r eval = T, echo = F, results = "asis"}
 #| GEO-LUAD-risk-score-related-genes-heatmap
 autor(surv.GEO_lung@params$p.surv_genes_hp)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| GEO-LUAD-survival-curve-of-risk-score
-autor(surv.GEO_lung@plots$step1$p.surv$risk_score)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| GEO-LUAD-time-ROC
-autor(surv.GEO_lung@plots$step1$p.roc$risk_score)
 ```
 
 ## Limma 差异分析 (LNCRNA)
