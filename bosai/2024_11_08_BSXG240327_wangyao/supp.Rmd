@@ -172,6 +172,7 @@ wgcna.mrna <- step2(wgcna.mrna)
 wgcna.mrna <- step3(wgcna.mrna)
 wgcna.mrna@plots$step3$sft
 wgcna.mrna <- step4(wgcna.mrna)
+wgcna.mrna@plots$step4$net
 
 ```
 
