@@ -1,0 +1,28 @@
+*********************************************************************
+* LD Score Regression (LDSC)
+* Version 1.0.1
+* (C) 2014-2019 Brendan Bulik-Sullivan and Hilary Finucane
+* Broad Institute of MIT and Harvard / MIT Department of Mathematics
+* GNU General Public License v3
+*********************************************************************
+Call: 
+./munge_sumstats.py \
+--signed-sumstats Z,0 \
+--out GCST90018794_buildGRCh37_rsID_zScore.tsv.gz \
+--N 473500.0 \
+--a1 effect_allele \
+--a2 other_allele \
+--snp rsID \
+--sumstats /home/echo/disk_sda1/GCST/GCST90018794/GCST90018794_buildGRCh37_rsID_zScore.tsv.gz 
+
+
+ERROR converting summary statistics:
+
+Traceback (most recent call last):
+  File "/home/echo/ldsc/munge_sumstats.py", line 627, in munge_sumstats
+    raise ValueError('Could not find {C} column.'.format(C=c))
+ValueError: Could not find SNP column.
+
+
+Conversion finished at Wed Jan 22 15:14:28 2025
+Total time elapsed: 0.0s

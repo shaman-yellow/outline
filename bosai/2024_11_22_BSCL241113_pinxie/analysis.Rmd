@@ -92,24 +92,33 @@ collate_details("meth")
 ogwas.aa <- job_ogwas("Aplastic anemia")
 ogwas.aa <- step1(ogwas.aa, which = 1L)
 #' @meth {get_meth(ogwas.aa)}
-ogwas.aa@meth
-ogwas.aa$db[[1]]
-
-data.table::fread(
-  "./vep_test/vep_output.tsv", skip = "#", sep = "|", 
-  select = 2
-)
+ogwas.aa@object
 ```
 
+## VEP 变异注释 (AA)
+
+`r snap(vep.aa, 0:3)`
+
 ```{r}
-vep.aa <- job_vep(ogwas.aa$db[[1]])
+vep.aa <- asjob_vep(ogwas.aa, check = FALSE)
 vep.aa <- step1(vep.aa, fork = 5)
-vep.aa@object
-vep.aa$anno
+#' @meth {get_meth(vep.aa)}
+vep.aa <- step2(vep.aa)
+vep.aa <- step3(vep.aa)
 ```
 
+
+## FUSION TWAS全转录组关联研究 (AA)
+
+`r snap(fus.aa, 0:1)`
+
 ```{r}
-fus.aa <- job_fusion()
+fus.aa <- asjob_fusion(vep.aa)
+fus.aa@step <- 0L
+#' @meth {get_meth(fus.aa)}
+fus.aa <- step1(fus.aa)
+fus.aa$metadata
+
 ```
 
 
