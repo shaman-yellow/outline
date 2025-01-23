@@ -110,23 +110,18 @@ vep.aa <- step3(vep.aa)
 
 ## FUSION TWAS全转录组关联研究 (AA)
 
-`r snap(fus.aa, 0:1)`
+`r snap(fus.aa, 0:3)`
 
 ```{r}
 fus.aa <- asjob_fusion(vep.aa)
-fus.aa@step <- 0L
 #' @meth {get_meth(fus.aa)}
 fus.aa <- step1(fus.aa)
-fus.aa$metadata
-
+fus.aa <- step2(fus.aa, "Whole Blood")
+fus.aa@step <- 2L
+fus.aa <- step3(fus.aa, "all", use = "P", use.cut = .05)
+feature(fus.aa)
 ```
 
-
-```{r}
-gds.aa <- job_gds("Aplastic anemia", 2:1000)
-gds.aa <- step1(gds.aa, single_cell = TRUE, clinical = NULL)
-vis(gds.aa)
-```
 
 ## GEO 数据获取 (AA_SCRNA)
 
@@ -167,21 +162,24 @@ sr5n.aa@plots$step3$p.umapUint
 sr5n.aa@plots$step3$p.umapInt
 sr5n.aa <- step4(sr5n.aa, "")
 sr5n.aa <- step5(sr5n.aa)
-sr5n.aa@step <- 5L
 sr5n.aa <- step6(sr5n.aa, "bone marrow")
-sr5n.aa$hp_cell_markers
 
+sr5n.aa <- mutate(
+  sr5n.aa, Cell_Sample = as_type_group(ChatGPT_cell, orig.ident)
+)
+sr5n.aa <- diff(sr5n.aa, "Cell_Sample", list())
+
+
+sr5n.aa@params$hp_cell_markers
+sr5n.aa@params$hp_cell_markers
 sr5n.aa@plots$step6$p.map_gpt
 sr5n.aa@plots$step6$p.markers
-sr5n.aa@tables$step6$t.ChatGPT4_cell_types_annotation
-sr5n.aa@plots$step6$p.markers
 sr5n.aa@plots$step6$p.props_gpt
-
-clear(sr5n.aa)
 
 # sr5n.aa <- readRDS("./sr5n.aa.5.rds")
 # saveRDS(sr5n.aa, "sr5n.aa.3_cca.rds")
 ```
+
 
 ## scFEA 单细胞数据的代谢通量预测 (AA)
 
@@ -212,15 +210,11 @@ lm.aa_flux <- asjob_limma(scf.aa)
 lm.aa_flux <- step1(lm.aa_flux)
 #' @meth {get_meth(lm.aa_flux)}
 lm.aa_flux <- step2(lm.aa_flux,
-  contrasts = grpf(
-    pattern_contrasts(lm.aa_flux$metadata$group, AA - Normal),
-    "^T_Cell|^B_Cell|^NK_Cell|Macrophage|Neutrophil"
-  ),
+  contrasts = pattern_contrasts(lm.aa_flux$metadata$group, AA - Normal),
   label = "name", use = "P", cut.fc = .5
 )
 
 lm.aa_flux@tables$step2$tops
-lm.aa_flux@plots$step2$p.volcano$`Macrophage_AA - Macrophage_Normal`
 
 ```
 

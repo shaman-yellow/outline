@@ -60,3 +60,10 @@ nscf.test <- step1(nscf.test)
 nscf.test <- step2(nscf.test)
 ```
 
+
+```{r}
+gds.aa <- job_gds("Aplastic anemia", 2:1000)
+gds.aa <- step1(gds.aa, single_cell = TRUE, clinical = NULL)
+vis(gds.aa)
+```
+
