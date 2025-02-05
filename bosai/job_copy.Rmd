@@ -64,3 +64,9 @@ summary_week.bosai(rm = T)
 ```{r}
 summary_week.bosai(rm = T, must_include = "BSXG240327")
 ```
+
+## 2025-02-05
+
+```{r}
+summary_month.bosai(get_orders(), rm = TRUE)
+```

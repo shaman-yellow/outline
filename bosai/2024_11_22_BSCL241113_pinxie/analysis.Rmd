@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20241129"), end = td("20241213"), finish = td("2025-01-17"),
+info <- items(start = td("20241129"), end = td("20241213"), finish = td("2025-02-06"),
   id = "BSCL241113", client = "邓姝", inst = "",
   type = "生信分析",
   title = "",
@@ -39,8 +39,9 @@ set_index()
 
 ```{r}
 dic(di("差异表达基因"),
-  di("")
+  di(, "Aplastic anemia")
 )
+# AA: Aplastic anemia 再生障碍性贫血
 
 ```
 
@@ -148,7 +149,11 @@ list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE)
 
 ## Seurat 集成单细胞数据分析 (AA)
 
+`r snap(sr5n.aa, 0:7)`
+`r snap(sr5n.aa, "d")`
+
 ```{r}
+#' @meth {get_meth(sr5n.aa)}
 sr5n.aa <- job_seurat5n(
   list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE), c("AA1", "AA2", "Normal1", "Normal2")
 )
@@ -167,8 +172,12 @@ sr5n.aa <- step6(sr5n.aa, "bone marrow")
 sr5n.aa <- mutate(
   sr5n.aa, Cell_Sample = as_type_group(ChatGPT_cell, orig.ident)
 )
-sr5n.aa <- diff(sr5n.aa, "Cell_Sample", list())
-
+sr5n.aa@object@meta.data$Cell_Sample
+sr5n.aa <- diff(
+  sr5n.aa, "Cell_Sample", pattern_contrasts(
+    sr5n.aa@object@meta.data$Cell_Sample, AA - Normal, as.list = TRUE
+  )
+)
 
 sr5n.aa@params$hp_cell_markers
 sr5n.aa@params$hp_cell_markers
@@ -180,6 +189,16 @@ sr5n.aa@plots$step6$p.props_gpt
 # saveRDS(sr5n.aa, "sr5n.aa.3_cca.rds")
 ```
 
+## Seurat 细胞群中的 TWAS 风险相关基因 (AA)
+
+`r snap(sr5n.aa, "m")`
+
+```{r}
+sr5n.aa <- map(sr5n.aa, fus.aa)
+tbl_genesEry <- dplyr::filter(sr5n.aa@params$fusion_degs, grpl(contrast, "Erythroblast"))
+tbl_genesEry
+
+```
 
 ## scFEA 单细胞数据的代谢通量预测 (AA)
 
@@ -213,8 +232,69 @@ lm.aa_flux <- step2(lm.aa_flux,
   contrasts = pattern_contrasts(lm.aa_flux$metadata$group, AA - Normal),
   label = "name", use = "P", cut.fc = .5
 )
+lm.aa_flux <- step3(lm.aa_flux, use.gene = "name")
+lm.aa_flux@tables$step2$tops$`Erythroblast_AA - Erythroblast_Normal`$name
+character_lm.aa_flux_name <- lm.aa_flux@tables$step2$tops$`Erythroblast_AA - Erythroblast_Normal`$name
+```
 
-lm.aa_flux@tables$step2$tops
+## 关联分析
+
+```{r}
+lm.erythroblast <- asjob_limma(sr5n.aa, feature(fus.aa), cell_groups = "Erythroblast")
+cp.corr <- cal_corp(
+  lm.erythroblast, lm.aa_flux,
+  tbl_genesEry$gene, character_lm.aa_flux_name,
+  names = c("TWAS associated DEGs", "Metabolic Flux"),
+  use.x = "gene", use.y = "name", gname = FALSE
+)
+cp.corr@params$res$hp
+```
+
+```{r}
+p.Ery <- focus(sr5n.aa, tbl_genesEry$gene)
+p.Ery$p.dim
+```
+
+
+
+```{r}
+gds.aa_bulk <- job_gds(c("Aplastic anemia", "Healthy"))
+vis(gds.aa_bulk)
+gds.aa_bulk <- step1(gds.aa_bulk)
+active(gds.aa_bulk, "GSE165870")
+```
+
+## GEO 数据获取 (AA_BULK)
+
+```{r}
+geo.aa_bulk <- job_geo("GSE165870")
+geo.aa_bulk <- step1(geo.aa_bulk)
+geo.aa_bulk <- step2(geo.aa_bulk, rna = FALSE)
+metadata.aa_bulk <- expect(geo.aa_bulk, geo_cols())
+metadata.aa_bulk <- dplyr::mutate(metadata.aa_bulk, sample = title)
+metadata.aa_bulk$group
+
+raw.aa_bulk <- ftibble(list.files(geo.aa_bulk$dir, ".", full.names = TRUE))
+counts.aa_bulk <- dplyr::select(raw.aa_bulk, GeneName, dplyr::where(is.integer))
+counts.aa_bulk %>% colnames
+
+genes.aa_bulk <- dplyr::select(raw.aa_bulk, GeneName, GeneSymbol)
+genes.aa_bulk
+```
+
+## Limma 差异分析 (AA_BULK)
+
+```{r}
+lm.aa_bulk <- job_limma(
+  new_dge(metadata.aa_bulk, counts.aa_bulk, genes.aa_bulk)
+)
+lm.aa_bulk <- step1(lm.aa_bulk)
+lm.aa_bulk <- step2(
+  lm.aa_bulk, non_SAA - Ctrl, label = "GeneSymbol", use = "P", cut.fc = .3
+)
+lm.aa_bulk@tables$step2$tops$`non_SAA - Ctrl`
+
+dplyr::filter(lm.aa_bulk@tables$step2$tops$`non_SAA - Ctrl`, GeneSymbol == "TUBB2A")
 
 ```
 
