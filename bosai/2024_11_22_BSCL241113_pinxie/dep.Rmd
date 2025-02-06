@@ -67,3 +67,46 @@ gds.aa <- step1(gds.aa, single_cell = TRUE, clinical = NULL)
 vis(gds.aa)
 ```
 
+
+## GEO 数据获取 (AA_BULK)
+
+```{r}
+geo.aa_bulk <- job_geo("GSE165870")
+geo.aa_bulk <- step1(geo.aa_bulk)
+geo.aa_bulk <- step2(geo.aa_bulk, rna = FALSE)
+metadata.aa_bulk <- expect(geo.aa_bulk, geo_cols())
+metadata.aa_bulk <- dplyr::mutate(metadata.aa_bulk, sample = title)
+metadata.aa_bulk$group
+
+raw.aa_bulk <- ftibble(list.files(geo.aa_bulk$dir, ".", full.names = TRUE))
+counts.aa_bulk <- dplyr::select(raw.aa_bulk, GeneName, dplyr::where(is.integer))
+counts.aa_bulk %>% colnames
+
+genes.aa_bulk <- dplyr::select(raw.aa_bulk, GeneName, GeneSymbol)
+genes.aa_bulk
+```
+
+## Limma 差异分析 (AA_BULK)
+
+```{r}
+lm.aa_bulk <- job_limma(
+  new_dge(metadata.aa_bulk, counts.aa_bulk, genes.aa_bulk)
+)
+lm.aa_bulk <- step1(lm.aa_bulk)
+lm.aa_bulk <- step2(
+  lm.aa_bulk, non_SAA - Ctrl, label = "GeneSymbol", use = "P", cut.fc = .3
+)
+lm.aa_bulk@tables$step2$tops$`non_SAA - Ctrl`
+
+dplyr::filter(lm.aa_bulk@tables$step2$tops$`non_SAA - Ctrl`, GeneSymbol %in% tbl_genesEry$gene)
+
+```
+
+
+```{r}
+gds.aa_bulk <- job_gds(c("Aplastic anemia"))
+active(gds.aa_bulk)
+gds.aa_bulk <- step1(gds.aa_bulk)
+vis(gds.aa_bulk)
+```
+
