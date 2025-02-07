@@ -1,0 +1,73 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-02-07"), end = td("2025-02-12"), finish = td("2025-02-07"),
+  id = "BSLL250203", client = "王东敏", inst = "",
+  type = "思路设计",
+  title = "网络药理学",
+  save = ".items_idea.rds"
+)
+show.ic(info)
+
+order_publish.bosai("idea.Rmd", "idea_out.Rmd")
+formatName.bosai("./idea_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("骨髓瘤")
+)
+
+```
+
+## 思路 {#introduction}
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "中药复方:数据库BATMAN:所有成分:20%口服利用度预测:20%HOB_成分:已知靶点, 预测靶点:所有靶点",
+    "压力性损伤:DB_GeneCards, DB_GEO:疾病相关基因",
+    "疾病相关基因, 所有靶点:疾病靶点:中药-成分-靶点网络:PPI网络分析:Hub_Genes:富集分析:GO, KEGG:信号通路基因",
+    "信号通路基因:批量分子对接:对接分数, TOP对接可视化:成分-靶点"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 10, 12, showtext = T))
+```
+
