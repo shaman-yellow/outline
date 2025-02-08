@@ -1,0 +1,359 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-02-07"), end = td("2025-02-28"), finish = td("2025-02-07"),
+  id = "BSJF250113", client = "傅兰君", inst = "浙江省中医院",
+  type = "生信分析",
+  title = "消瘀泄浊饮对糖尿病肾病",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("糖尿病肾病")
+)
+# DN: Diabetic nephropathy 糖尿病肾病
+
+```
+
+消瘀泄浊饮对糖尿病肾病，筛选可以调控 lncRNA (MEG3) 表达及修饰的靶点基因，比如RNA甲基化调控基因。
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "中药复方:数据库BATMAN:所有成分:20%口服利用度预测:20%HOB_成分:已知靶点, 预测靶点:所有靶点",
+    "糖尿病肾病:DB_GeneCards:疾病相关基因",
+    "疾病相关基因, 所有靶点:疾病靶点:中药-成分-靶点网络",
+    "DB_EpiFactors:RNA_methylation",
+    "RNA_methylation, 疾病靶点:中药-成分-甲基修饰靶点网络:分子对接:对接分数, TOP对接可视化:成分-甲基修饰酶靶点",
+    "成分-甲基修饰酶靶点, MEG3:RBP"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+wrap(p.route)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, showtext = T))
+```
+
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## BATMAN 网络药理学 (XIAOYU)
+
+`r snap(bat.xiaoyu, 0:3)`
+
+
+`r ref("Intersection-of-herbs-compounds")` 
+`r ref("Intersection-of-herbs-all-targets")` 
+`r ref("Herbs-compounds-and-targets")` 
+
+```{r}
+herbs <- c("黄芪", "川牛膝", "桃仁", "地龙", "大黄", "车前草")
+bat.xiaoyu <- job_batman(herbs)
+#' @meth {get_meth(bat.xiaoyu)}
+bat.xiaoyu <- step1(bat.xiaoyu, filter.hob = TRUE)
+bat.xiaoyu <- step2(bat.xiaoyu, cutoff = .5)
+bat.xiaoyu <- step3(bat.xiaoyu)
+
+bat.xiaoyu@plots$step3$p.herbs_compounds
+bat.xiaoyu@plots$step3$p.herbs_targets
+bat.xiaoyu@params$easyRead
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-herbs-compounds
+autor(bat.xiaoyu@plots$step3$p.herbs_compounds)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-herbs-all-targets
+autor(bat.xiaoyu@plots$step3$p.herbs_targets)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets
+autor(bat.xiaoyu@params$easyRead)
+```
+
+## GeneCards 基因获取 (DN)
+
+`r snap(gn.dn, 0:1)`
+
+`r ref("CKD-disease-related-targets-from-GeneCards")`
+
+```{r}
+gn.dn <- job_genecard("Diabetic nephropathy")
+gn.dn <- step1(gn.dn, 1)
+#' @meth {get_meth(gn.dn)}
+gn.dn@tables$step1$t.genecards
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CKD-disease-related-targets-from-GeneCards
+autor(gn.dn@tables$step1$t.genecards)
+```
+
+## Network 中药-成分-疾病-靶点网络 (XIAOYU)
+
+`r snap(bat.xiaoyu, "m")`
+
+`r ref("Targets-intersect-with-related-targets-dis")` 
+`r ref("Network-pharmacology-with-filtered-type-original-data-dis")` 
+`r ref("Network-pharmacology-with-filtered-type-dis")` 
+
+```{r}
+bat.xiaoyu <- map(bat.xiaoyu, feature(gn.dn))
+bat.xiaoyu@params$p.venn2dis
+bat.xiaoyu@params$t.pharm2dis
+wrap(bat.xiaoyu@params$p.pharm2dis, 13, 10)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Targets-intersect-with-related-targets-dis
+autor(bat.xiaoyu@params$p.venn2dis)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-with-filtered-type-original-data-dis
+autor(bat.xiaoyu@params$t.pharm2dis)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-with-filtered-type-dis
+autor(wrap(bat.xiaoyu@params$p.pharm2dis, 13, 10))
+```
+
+## EpiFactors 表观遗传调控因子数据获取 (M6A)
+
+`r snap(epi.m6a, 0:1)`
+
+`r ref("M6A-all-protein-of-epigenetic-regulators")` 
+
+```{r}
+epi.m6a <- job_epifactor()
+#' @meth {get_meth(epi.m6a)}
+epi.m6a <- step1(epi.m6a)
+epi.m6a <- filter(epi.m6a)
+epi.m6a@tables$step1$protein
+feature(epi.m6a)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| M6A-all-protein-of-epigenetic-regulators
+autor(epi.m6a@tables$step1$protein)
+```
+
+## 交集: All_RNA_methylation + DN_related (M6A)
+
+`r snap(venn.m6a, 0:1)`
+
+`r ref("Intersection-of-All-RNA-methylation-with-DN-related")` 
+
+```{r}
+venn.m6a <- job_venn(
+  All_RNA_methylation = feature(epi.m6a), DN_related = feature(gn.dn)
+)
+venn.m6a <- step1(venn.m6a)
+venn.m6a@plots$step1$p.venn
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-All-RNA-methylation-with-DN-related
+autor(venn.m6a@plots$step1$p.venn)
+```
+
+## Network 中药-成分-疾病-甲基靶点网络 (m6a)
+
+
+`r ref("Network-pharmacology-with-filtered-type-m6a")` 
+`r ref("Network-pharmacology-with-filtered-type-original-data-m6a")` 
+
+```{r}
+bat.xiaoyu <- map(
+  bat.xiaoyu, feature(venn.m6a), name = "m6a", less.label = FALSE
+)
+wrap(bat.xiaoyu@params$p.pharm2m6a, 7, 4.5)
+bat.xiaoyu@params$t.pharm2m6a
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-with-filtered-type-m6a
+autor(wrap(bat.xiaoyu@params$p.pharm2m6a, 7, 4.5))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Network-pharmacology-with-filtered-type-original-data-m6a
+autor(bat.xiaoyu@params$t.pharm2m6a)
+```
+
+## AutoDock vina 分子对接 (M6A)
+
+`r snap(vina.m6a, 0:7)`
+
+`r ref("M6A-All-combining-Affinity-data")` 
+`r ref("M6A-Overall-combining-Affinity")` 
+`r ref("Docking-243-into-5il2")` 
+`r ref("Docking-34755-into-5il2")` 
+`r ref("Docking-34755-into-5il2-b")` 
+`r ref("Docking-243-into-5il2-detail")` 
+`r ref("Docking-34755-into-5il2-detail")` 
+`r ref("Docking-34755-into-5il2-b-detail")` 
+
+注：METTL3 与 METTL14 的蛋白结构常见为复合体 (METTL3-METTL14 complex, PDB:5IL2)，
+
+```{r}
+vina.m6a <- asjob_vina(bat.xiaoyu, feature(venn.m6a))
+#' @meth {get_meth(vina.m6a)}
+vina.m6a <- step1(vina.m6a, custom_pdbs = c("METTL14" = "5IL2"))
+vina.m6a <- step2(vina.m6a)
+vina.m6a <- step3(vina.m6a)
+vina.m6a <- step4(vina.m6a)
+vina.m6a <- step5(vina.m6a)
+vina.m6a@tables$step5$res_dock
+wrap(vina.m6a@plots$step5$p.res_vina, 8, 3)
+
+vina.m6a <- step6(vina.m6a)
+vina.m6a@plots$step6$Top1_243_into_5il2
+vina.m6a@plots$step6$Top2_34755_into_5il2
+vina.m6a@plots$step6$Top3_34755_into_5il2_b
+
+vina.m6a <- step7(vina.m6a)
+vina.m6a@plots$step7$Top1_243_into_5il2
+vina.m6a@plots$step7$Top2_34755_into_5il2
+vina.m6a@plots$step7$Top3_34755_into_5il2_b
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| M6A-All-combining-Affinity-data
+autor(vina.m6a@tables$step5$res_dock)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| M6A-Overall-combining-Affinity
+autor(wrap(vina.m6a@plots$step5$p.res_vina, 8, 3))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-243-into-5il2
+autor(vina.m6a@plots$step6$Top1_243_into_5il2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-34755-into-5il2
+autor(vina.m6a@plots$step6$Top2_34755_into_5il2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-34755-into-5il2-b
+autor(vina.m6a@plots$step6$Top3_34755_into_5il2_b)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-243-into-5il2-detail
+autor(vina.m6a@plots$step7$Top1_243_into_5il2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-34755-into-5il2-detail
+autor(vina.m6a@plots$step7$Top2_34755_into_5il2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-34755-into-5il2-b-detail
+autor(vina.m6a@plots$step7$Top3_34755_into_5il2_b)
+```
+
+## CatRAPID omics RBP 预测 (RBP)
+
+`r snap(catr.rbp, 0:3)`
+
+```{r}
+catr.rbp <- job_catr(c("METTL3", "METTL14"), "MEG3")
+catr.rbp <- step1(catr.rbp)
+#' @meth {get_meth(catr.rbp)}
+catr.rbp <- step2(catr.rbp)
+catr.rbp@tables$step2$top
+
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| RBP-RBP-top-interaction
+autor(catr.rbp@tables$step2$top)
+```
+
+# 总结 {#conclusion}
+
+中药-成分-疾病靶点甲基修饰酶网络见
+`r ref("Network-pharmacology-with-filtered-type-m6a")`。
+
+通过分子对接确认化合物与甲基修饰酶的结合`r ref("M6A-Overall-combining-Affinity")` 。
+
+METTL14 或 METTL14+METTL3 的复合体蛋白，可能是该复方调控靶点。
+
+

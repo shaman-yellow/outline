@@ -72,3 +72,9 @@ summary_assess.bosai(get_orders())
 
 summary_month.bosai(get_orders(), rm = TRUE)
 ```
+
+## 2025-02-08
+
+```{r}
+summary_week.bosai(rm = T)
+```

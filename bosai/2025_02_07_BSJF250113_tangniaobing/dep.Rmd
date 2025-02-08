@@ -1,0 +1,14 @@
+
+
+## CatRAPID omics RBP 预测 (RBP)
+
+`r snap(catr.rbp, 0:3)`
+
+```{r}
+catr.rbp <- job_catr(c("METTL3", "METTL14"), "MEG3")
+catr.rbp <- step1(catr.rbp)
+#' @meth {get_meth(catr.rbp)}
+
+readLines("./fasta/protein_1.fasta")
+
+```
