@@ -193,7 +193,9 @@ sr5n.aa@plots$step3$p.umapInt
 sr5n.aa <- step4(sr5n.aa, "")
 sr5n.aa <- step5(sr5n.aa)
 sr5n.aa@tables$step5$all_markers
-sr5n.aa <- step6(sr5n.aa, "bone marrow")
+sr5n.aa@step <- 5L
+sr5n.aa <- step6(sr5n.aa, "Bone marrow")
+sr5n.aa@plots$step6$p.map_gpt
 
 sr5n.aa <- mutate(
   sr5n.aa, Cell_Sample = as_type_group(ChatGPT_cell, orig.ident)
@@ -501,4 +503,10 @@ autor(mn.aa_ery@plots$step4$genes_in_pseudotime$pseudo1)
 对 Erythroblast 细胞的拟时分析，明确了 'TUBB2A' 在 AA 中的高表达变化。
 
 局限：目前公开可得的 AA 数据集较少，难以多方面验证，该分析可能受限于当前数据集。
+
+```{r}
+extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫血-2025.02.06.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_.docx")
+```
+
 

@@ -339,6 +339,23 @@ catr.rbp@tables$step2$top
 autor(catr.rbp@tables$step2$top)
 ```
 
+## m6A-Atlas m6A 数据获取 (MEG3)
+
+`r snap(m6a.meg3, 0:1)`
+
+```{r}
+m6a.meg3 <- job_m6a()
+#' @meth {get_meth(m6a.meg3)}
+m6a.meg3 <- step1(m6a.meg3, "MEG3")
+m6a.meg3@tables$step1$t.data$HighResolution
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MEG3-HighResolution-m6A-Atlas-search-results
+autor(m6a.meg3@tables$step1$t.data$HighResolution)
+```
+
 # 总结 {#conclusion}
 
 中药-成分-疾病靶点甲基修饰酶网络见

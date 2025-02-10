@@ -1,0 +1,254 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-02-10"), end = td("2025-02-10"), finish = td("2025-02-10"),
+  id = "BSXG250204", client = "公司内部", inst = "",
+  type = "生信分析",
+  title = "多酚五种成分与高脂血症网络药理分析",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("高脂血症")
+)
+# H: Hyperlipidemia 高脂血症
+
+```
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "五种多酚:数据库BATMAN:已知靶点, 预测靶点:所有靶点",
+    "高脂血症:DB_GeneCards:疾病相关基因",
+    "疾病相关基因, 所有靶点:疾病靶点:成分-靶点网络:PPI网络分析, 富集分析",
+    "富集分析:KEGG, GO",
+    "成分-靶点网络, KEGG:成分-靶点-富集通路网络"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+wrap(p.route)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, showtext = T))
+```
+
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## BATMAN 网络药理学 (PHENOL)
+
+`r snap(bat.phenol, 0:3)`
+`r ref("Herbs-compounds-and-targets")`
+
+```{r}
+cpds <- c(
+  "Quercetin-3-O-glucoside", "Rutin", "Kaempferol-3-O-glucoside", "Vitexin", "Quercetin"
+)
+cpds_info <- PubChemR::get_cids(cpds)
+cpds_info <- PubChemR::CIDs(cpds_info)
+cpds_info <- set_lab_legend(cpds_info, "compounds info", "五种多酚成分信息")
+
+bat.phenol <- job_batman(cpd_cid = cpds_info$CID)
+#' @meth {get_meth(bat.phenol)}
+bat.phenol <- step1(bat.phenol, filter.hob = FALSE)
+bat.phenol <- step2(bat.phenol, cutoff = .5)
+bat.phenol <- step3(bat.phenol)
+
+bat.phenol@plots$step3$p.pharm
+bat.phenol@params$easyRead
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets
+autor(bat.phenol@params$easyRead)
+```
+
+
+## GeneCards 基因获取 (HL)
+
+`r snap(gn.hl, 0:1)`
+`r ref("HL-disease-related-targets-from-GeneCards")`
+
+```{r}
+#' @meth {get_meth(gn.hl)}
+gn.hl <- job_genecard("Hyperlipidemia")
+gn.hl <- step1(gn.hl, 1)
+gn.hl@tables$step1$t.genecards
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| HL-disease-related-targets-from-GeneCards
+autor(gn.hl@tables$step1$t.genecards)
+```
+
+## Network 中药-成分-疾病-靶点网络 (PHENOL)
+
+`r snap(bat.phenol, "m")`
+
+`r ref("PHENOL-Targets-intersect-with-related-targets-dis")` 
+`r ref("PHENOL-network-pharmacology-with-filtered-type-dis")` 
+`r ref("PHENOL-network-pharmacology-with-filtered-type-original-data-dis")` 
+
+```{r}
+bat.phenol <- map(bat.phenol, feature(gn.hl), less.label = FALSE)
+bat.phenol@params$p.venn2dis
+bat.phenol@params$p.pharm2dis
+bat.phenol@params$t.pharm2dis
+feature(bat.phenol)
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-Targets-intersect-with-related-targets-dis
+autor(bat.phenol@params$p.venn2dis)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-network-pharmacology-with-filtered-type-dis
+autor(bat.phenol@params$p.pharm2dis)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-network-pharmacology-with-filtered-type-original-data-dis
+autor(bat.phenol@params$t.pharm2dis)
+```
+
+## STRINGdb PPI 分析 (PHENOL)
+
+`r snap(sdb.phenol, 0:1)`
+
+`r ref("PHENOL-Top-MCC-score")` 
+`r ref("PHENOL-graph-MCC-layout-data")` 
+
+```{r}
+sdb.phenol <- asjob_stringdb(feature(bat.phenol))
+#' @meth {get_meth(sdb.phenol)}
+sdb.phenol <- step1(sdb.phenol, NULL, MCC = TRUE)
+wrap(sdb.phenol@plots$step1$p.mcc, 12, 10)
+sdb.phenol@params$graph_mcc
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-Top-MCC-score
+autor(wrap(sdb.phenol@plots$step1$p.mcc, 12, 10))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-graph-MCC-layout-data
+autor(tibble::as_tibble(sdb.phenol@params$graph_mcc))
+```
+
+## ClusterProfiler 富集分析 (PHENOL)
+
+`r snap(en.phenol, 0:2)`
+
+`r ref("PHENOL-KEGG-enrichment")` 
+`r ref("PHENOL-GO-enrichment")` 
+`r ref("PHENOL-KEGG-enrichment-data")` 
+`r ref("PHENOL-GO-enrichment-data")` 
+
+```{r}
+en.phenol <- asjob_enrich(feature(bat.phenol))
+#' @meth {get_meth(en.phenol)}
+en.phenol <- step1(en.phenol)
+en.phenol@plots$step1$p.kegg$ids
+en.phenol@plots$step1$p.go$ids
+en.phenol@tables$step1$res.kegg$ids
+en.phenol@tables$step1$res.go$ids
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-KEGG-enrichment
+autor(en.phenol@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-GO-enrichment
+autor(en.phenol@plots$step1$p.go$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-KEGG-enrichment-data
+autor(en.phenol@tables$step1$res.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-GO-enrichment-data
+autor(en.phenol@tables$step1$res.go$ids)
+```
+
+## Network 中药-成分-疾病-靶点-富集通路网络 (PHENOL)
+
+`r ref("PHENOL-network-pharmacology-with-filtered-type-enrich")`
+
+```{r}
+bat.phenol <- map(
+  bat.phenol, feature(gn.hl), 
+  enrichment = en.phenol, name = "enrich", less.label = FALSE
+)
+bat.phenol@params$p.pharm2enrich
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PHENOL-network-pharmacology-with-filtered-type-enrich
+autor(bat.phenol@params$p.pharm2enrich)
+```
+
+# 总结 {#conclusion}
+
+见上述分析结果。
+

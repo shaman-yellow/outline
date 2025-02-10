@@ -1,0 +1,85 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-02-07"), end = td("2025-02-14"), finish = td("2025-02-11"),
+  id = "BSJF250113", client = "傅兰君", inst = "",
+  type = "生信协助",
+  title = "线粒体自噬",
+  save = ".items_support.rds"
+)
+show.ic(info)
+
+order_publish.bosai("support.Rmd", "support_out.Rmd")
+idname <- formatName.bosai("./support_out.docx")
+order_packaging("./support_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table_support", tabs = "Figure+Table_support"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+筛选与lncRNA MEG3 相关的差异靶基因，且与线粒体自噬相关。
+(消瘀泄浊饮可能通过调控lncRNA Meg3 m6A甲基化，抑制lncRNA
+Meg3表达，进而通过miR-148a-3p/FUNDC1线粒体自噬轴，改善DN)
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## LncTarD LncRNA调控靶点 (MEG3)
+
+`r snap(lnct.meg3, 0:1)`
+
+```{r}
+lnct.meg3 <- job_lnctard()
+#' @meth {get_meth(lnct.meg3)}
+lnct.meg3 <- step1(lnct.meg3, "MEG3")
+lnct.meg3@tables$step1$t.lncRNA_regulation_data
+```
+
+## GEO 数据获取 (DN)
+
+```{r}
+gds.dn <- job_gds(c("Diabetic nephropathy", "Healthy"))
+gds.dn <- step1(gds.dn)
+vis(gds.dn)
+active(gds.dn)
+
+geo.dn <- job_geo("GSE142153")
+geo.dn <- step1(geo.dn)
+metadata.dn <- expect(geo.dn, geo_cols())
+metadata.dn
+```
+
+# 总结 {#conclusion}
+

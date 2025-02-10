@@ -290,3 +290,9 @@ autor(p.cor)
 
 随后，筛选出的差异表达基因 METTL14，与 GTSE1 显著关联，见 `r ref("Linear-regression")`。
 
+```{r}
+extract_anno("./order_material/BSXN240936-李扬-生信协助-高级别浆液性卵巢癌-2025.01.03-批注.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_.docx")
+```
+
+
