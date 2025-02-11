@@ -1,0 +1,74 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-01-17"), end = td("2025-01-21"), finish = td("2025-02-12"),
+  id = "BSGY240816", client = "", inst = "",
+  type = "生信分析",
+  title = "",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("结肠癌")
+)
+# CC: Colon cancer 结肠癌
+
+```
+
+- Piezo1与结肠癌预后不良相关
+- 鉴定 Piezo1 表达水平高和低的结肠癌患者之间的差异表达基因（DEGs），并进行GSEA分析，探究血管生成是否在Piezo1高表达组明显富集
+- 探究Piezo1与血管生成通路相关及血管生成相关基因、抗血管生成基因的相关性
+- (scRNA-seq) Piezo1在内皮细胞（ECs）中高表达，在血管生成中起关键作用（PMID：31704174），因此进一步利用GEO数据库探究肿瘤微环境中哪些细胞大多表达Piezo1基因，探究结肠癌内皮细胞中Piezo1表达是否最为丰富。
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## TCGA 数据获取 (COAD)
+
+`r snap(tcga.coad, 0:3)`
+
+```{r}
+tcga.coad <- job_tcga("TCGA-COAD")
+#' @meth {get_meth(tcga.coad)}
+tcga.coad <- step1(tcga.coad)
+tcga.coad <- step2(tcga.coad)
+tcga.coad <- step3(tcga.coad)
+```
+
+# 总结 {#conclusion}
+

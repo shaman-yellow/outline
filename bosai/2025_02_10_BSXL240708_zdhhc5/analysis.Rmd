@@ -39,17 +39,24 @@ set_index()
 
 ```{r}
 dic(di("差异表达基因"),
-  di("")
+  di("卵巢癌"),
+  di("耐药")
 )
+# OC: Ovarian cancer 卵巢癌
+# DR: Drug resistance 耐药
 
 ```
 
-- 不同RUNX2水平癌症患者总生存期的荟萃分析（根据文献情况及分析结果选择是否保留）。
-  (预期：RUNX2高表达预后不好)
+- ~~不同RUNX2水平癌症患者总生存期的荟萃分析（根据文献情况及分析结果选择是否保留）(预期：RUNX2高表达预后不好)。~~
+    - 未完成
 - 基于ENCORI平台的卵巢癌和癌旁组织中RUNX2水平的比较
-- 显示TMA（组织微阵列）中RUNX2蛋白的IHC评分的箱形图。
+- ~~显示TMA（组织微阵列）中RUNX2蛋白的IHC评分的箱形图。~~
+    - 无合适数据集
 - 不同RUNX2水平的卵巢癌患者的总生存期。
 - GEO数据集验证RUNX2 mRNA在耐药细胞系中的表达
+- 通过STRING、GeneMANIA等网站或者数据库，寻找与RUNX2互作的ZDHHCs蛋白；
+根据实际预测结果确定，暂定为ZDHHC5
+- 使用SwissPalm和TermiNator在线工具预测RUNX2可能受S-棕榈酰化调节。
 
 # 材料和方法 {#introduction}
 
@@ -60,6 +67,141 @@ collate_details("meth")
 # 分析结果 {#workflow}
 
 
+## GEO 数据获取 (GSE289067)
+
+`r snap(geo.GSE289067, 0:2)`
+
+```{r}
+gds.ov <- job_gds(c("Ovarian cancer"))
+gds.ov <- step1(gds.ov)
+vis(gds.ov)
+active(gds.ov, which = 1:10)
+
+geo.GSE289067 <- job_geo("GSE289067")
+#' @meth {get_meth(geo.GSE289067)}
+geo.GSE289067 <- step1(geo.GSE289067)
+metadata.GSE289067 <- expect(
+  geo.GSE289067, geo_cols(sample = "title"), force = TRUE
+)
+metadata.GSE289067$group
+geo.GSE289067 <- step2(geo.GSE289067, rna = FALSE)
+counts.GSE289067 <- ftibble(list.files(geo.GSE289067$dir, "raw", full.names = TRUE))
+genes.GSE289067 <- dplyr::select(counts.GSE289067, hgnc_symbol = V1)
+```
+
+## Limma 差异分析 (GSE289067)
+
+`r snap(lm.GSE289067, 0:3)`
+
+```{r}
+lm.GSE289067 <- job_limma(
+  new_dge(metadata.GSE289067, counts.GSE289067, genes.GSE289067)
+)
+#' @meth {get_meth(lm.GSE289067)}
+lm.GSE289067 <- filter(
+  lm.GSE289067, grpl(group, "Tumor_tissue|Control_tissue"), type = "metadata"
+)
+lm.GSE289067 <- step1(lm.GSE289067)
+lm.GSE289067 <- step2(
+  lm.GSE289067, Tumor_tissue - Control_tissue, label = "hgnc_symbol", use = "P", cut.fc = .5
+)
+dplyr::filter(lm.GSE289067@tables$step2$tops$`Tumor_tissue - Control_tissue`, grpl(hgnc_symbol, "RUNX"))
+lm.GSE289067@plots$step2$p.volcano$`Tumor_tissue - Control_tissue`
+lm.GSE289067 <- map(lm.GSE289067, "RUNX2")
+lm.GSE289067@plots$step2$p.BoxPlotOfDEGs
+
+tbl_degZdhhc <- dplyr::filter(
+  lm.GSE289067@tables$step2$tops$`Tumor_tissue - Control_tissue`, grpl(hgnc_symbol, "ZDHHC")
+)
+tbl_degZdhhc <- set_lab_legend(tbl_degZdhhc, "DEGs of ZDHHCs", "差异表达的 ZDHHCs。")
+fea_runx2_zdhhcs <- as_feature(
+  c("RUNX2", tbl_degZdhhc$hgnc_symbol), lm.GSE289067
+)
+fea_runx2_zdhhcs
+
+lm.GSE289067 <- map(lm.GSE289067, tbl_degZdhhc$hgnc_symbol, name = "ZDHHC")
+lm.GSE289067@plots$step2$p.BoxPlotOfDEGs_ZDHHC
+```
+
+## STRINGdb PPI 分析 (ZDHHC)
+
+`r snap(sdb.zdhhc, 0:1)`
+
+```{r}
+sdb.zdhhc <- job_stringdb(fea_runx2_zdhhcs)
+#' @meth {get_meth(sdb.zdhhc)}
+sdb.zdhhc <- step1(sdb.zdhhc, NULL, network_type = "full", MCC = TRUE)
+sdb.zdhhc@plots$step1$p.mcc
+```
+
+## TCGA 数据获取 (OV)
+
+`r snap(tcga.ov, 0:3)`
+
+```{r}
+#' @meth {get_meth(tcga.ov)}
+tcga.ov <- job_tcga("TCGA-OV")
+tcga.ov <- step1(tcga.ov)
+tcga.ov <- step2(tcga.ov)
+tcga.ov <- step3(tcga.ov)
+clear(tcga.ov)
+```
+
+## Survival 生存分析 (TCGA_OV)
+
+`r snap(surv.tcga_ov, 0:1)`
+
+```{r}
+lm.tcga_ov <- asjob_limma(tcga.ov)
+lm.tcga_ov <- step1(lm.tcga_ov)
+clear(lm.tcga_ov)
+#' @meth {get_meth(surv.tcga_ov)}
+surv.tcga_ov <- asjob_survival(lm.tcga_ov, "RUNX2")
+surv.tcga_ov <- step1(surv.tcga_ov, only_keep_sig = FALSE)
+surv.tcga_ov@plots$step1$p.surv
+clear(surv.tcga_ov)
+```
+
+## GEO 数据获取 (GSE173579)
+
+`r snap(geo.GSE173579, 0:2)`
+
+```{r}
+gds.ov_dr <- job_gds(c("Ovarian cancer", "Drug resistance"))
+gds.ov_dr <- step1(gds.ov_dr)
+vis(gds.ov_dr)
+active(gds.ov_dr)
+
+#' @meth {get_meth(geo.GSE173579)}
+geo.GSE173579 <- job_geo("GSE173579")
+geo.GSE173579 <- step1(geo.GSE173579)
+geo.GSE173579 <- step2(geo.GSE173579)
+metadata.GSE173579 <- expect(geo.GSE173579, geo_cols())
+metadata.GSE173579
+```
+
+## Limma 差异分析 (耐药细胞系) (GSE173579)
+
+`r snap(lm.GSE173579, 0:3)`
+
+```{r}
+lm.GSE173579 <- asjob_limma(geo.GSE173579, metadata.GSE173579)
+lm.GSE173579 <- filter(lm.GSE173579, grpl(group, "high_Resistant|Non_resistance"), type = "meta")
+lm.GSE173579 <- step1(lm.GSE173579)
+#' @meth {get_meth(lm.GSE173579)}
+lm.GSE173579 <- step2(
+  lm.GSE173579, Carboplatin_high_Resistant_SKOV3 - Non_resistance_SKOV3, 
+  label = "hgnc_symbol", use = "P", cut.fc = .5
+)
+lapply(lm.GSE173579@tables$step2$tops,
+  function(x) {
+    dplyr::filter(x, grpl(hgnc_symbol, "RUNX"))
+  })
+lm.GSE173579@tables$step2$tops$`Carboplatin_high_Resistant_SKOV3 - Non_resistance_SKOV3`
+lm.GSE173579@plots$step2$p.volcano$`Carboplatin_high_Resistant_SKOV3 - Non_resistance_SKOV3`
+lm.GSE173579 <- map(lm.GSE173579, "RUNX2", use = "P")
+lm.GSE173579@plots$step2$p.BoxPlotOfDEGs
+```
 
 # 总结 {#conclusion}
 

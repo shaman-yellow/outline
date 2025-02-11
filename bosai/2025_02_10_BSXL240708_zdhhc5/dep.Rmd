@@ -1,0 +1,87 @@
+
+
+```{r}
+geo.GSE264282 <- job_geo("GSE264282")
+geo.GSE264282 <- step1(geo.GSE264282)
+geo.GSE264282 <- step2(geo.GSE264282, rna = FALSE)
+counts.GSE264282 <- fxlsx(list.files(geo.GSE264282$dir, ".", full.names = TRUE))
+genes.GSE264282 <- dplyr::select(counts.GSE264282, ID, Name)
+counts.GSE264282 <- dplyr::select(
+  counts.GSE264282, ID, dplyr::where(is.double)
+)
+counts.GSE264282
+metadata.GSE264282 <- expect(
+  geo.GSE264282, geo_cols(sample = "title"), force = TRUE
+)
+metadata.GSE264282 <- dplyr::mutate(metadata.GSE264282, sample = make.names(sample))
+metadata.GSE264282
+
+lm.GSE264282 <- job_limma_normed(
+  counts.GSE264282, metadata.GSE264282, genes.GSE264282
+)
+lm.GSE264282 <- step1(lm.GSE264282)
+lm.GSE264282 <- step2(
+  lm.GSE264282, high_grade_serous_ovarian_cancer - Normal, label = "Name", use = "P", cut.fc = .5
+)
+dplyr::filter(
+  lm.GSE264282@tables$step2$tops$`high_grade_serous_ovarian_cancer - Normal`, grpl(Name, "RUNX")
+)
+
+
+geo.ov <- job_geo("GSE31682")
+geo.ov <- step1(geo.ov)
+metadata.ov <- expect(geo.ov, geo_cols(group = "title"))
+
+lm.geo_ov <- asjob_limma(geo.ov, metadata.ov)
+lm.geo_ov <- step1(lm.geo_ov)
+lm.geo_ov <- step2(
+  lm.geo_ov, Patient - Control, label = "hgnc_symbol", use = "P", cut.fc = .5
+)
+dplyr::filter(lm.geo_ov@tables$step2$tops$`Patient - Control`, grpl(hgnc_symbol, "RUNX", TRUE))
+
+geo.GSE54388 <- job_geo("GSE54388")
+geo.GSE54388 <- step1(geo.GSE54388)
+metadata.GSE54388 <- expect(geo.GSE54388, geo_cols(group = "diagnosis"), force = TRUE)
+
+lm.GSE54388 <- asjob_limma(geo.GSE54388, metadata.GSE54388, normed = TRUE)
+lm.GSE54388 <- step1(lm.GSE54388)
+lm.GSE54388 <- step2(
+  lm.GSE54388, serous_ovarian_cancer - healthy_normal, 
+  use = "P", cut.fc = .5, label = "hgnc_symbol"
+)
+dplyr::filter(
+  lm.GSE54388@tables$step2$tops$`serous_ovarian_cancer - healthy_normal`, grpl(hgnc_symbol, "RUNX", TRUE)
+)
+```
+
+
+## UCSCXenaTools 癌症相关数据获取 (OV)
+
+`r snap(xena.ov, 0:2)`
+
+```{r}
+xena.ov <- job_xena()
+xena.ov <- step1(xena.ov, mode = "OV")
+#' @meth {get_meth(xena.ov)}
+xena.ov <- step2(xena.ov)
+xena.ov@params$metadata
+```
+
+## Limma 差异分析 (XENA_OV)
+
+`r snap(lm.xena_ov, 0:3)`
+
+```{r}
+lm.xena_ov <- asjob_limma(xena.ov)
+#' @meth {get_meth(lm.xena_ov)}
+lm.xena_ov <- step1(lm.xena_ov)
+lm.xena_ov <- step2(lm.xena_ov, OV - Normal, use = "P", cut.fc = .5)
+dplyr::filter(lm.xena_ov@tables$step2$tops$`OV - Normal`, grpl(hgnc_symbol, "RUNX", TRUE))
+```
+
+```{r}
+gds.tma_ov <- job_gds(c("Ovarian cancer", "Tissue Microarray"))
+gds.tma_ov <- step1(gds.tma_ov)
+vis(gds.tma_ov)
+active(gds.tma_ov)
+```

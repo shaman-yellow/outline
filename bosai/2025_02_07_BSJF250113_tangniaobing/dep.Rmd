@@ -1,1 +1,8 @@
 
+
+```{r}
+cp.dn <- cal_corp(
+  lm.dn, NULL, feature(lnct.meg3), "MEG3", mode = "li", cut.cor = .1
+)
+cp.dn@params$res$p.sig.corp
+```
