@@ -80,6 +80,7 @@ active(gds.ov, which = 1:10)
 geo.GSE289067 <- job_geo("GSE289067")
 #' @meth {get_meth(geo.GSE289067)}
 geo.GSE289067 <- step1(geo.GSE289067)
+geo.GSE289067$prods
 metadata.GSE289067 <- expect(
   geo.GSE289067, geo_cols(sample = "title"), force = TRUE
 )
@@ -89,9 +90,21 @@ counts.GSE289067 <- ftibble(list.files(geo.GSE289067$dir, "raw", full.names = TR
 genes.GSE289067 <- dplyr::select(counts.GSE289067, hgnc_symbol = V1)
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE289067-GSE289067
+autor(geo.GSE289067$prods)
+```
+
 ## Limma 差异分析 (GSE289067)
 
 `r snap(lm.GSE289067, 0:3)`
+
+`r ref("GSE289067-Tumor-tissue-vs-Control-tissue")` 
+`r ref("GSE289067-data-Tumor-tissue-vs-Control-tissue")` 
+`r ref("GSE289067-Box-Plot-Of-DEGs")` 
+`r ref("DEGs-of-ZDHHCs")` 
+`r ref("GSE289067-Box-Plot-Of-DEGs-ZDHHC")` 
 
 ```{r}
 lm.GSE289067 <- job_limma(
@@ -107,6 +120,7 @@ lm.GSE289067 <- step2(
 )
 dplyr::filter(lm.GSE289067@tables$step2$tops$`Tumor_tissue - Control_tissue`, grpl(hgnc_symbol, "RUNX"))
 lm.GSE289067@plots$step2$p.volcano$`Tumor_tissue - Control_tissue`
+lm.GSE289067@tables$step2$tops$`Tumor_tissue - Control_tissue`
 lm.GSE289067 <- map(lm.GSE289067, "RUNX2")
 lm.GSE289067@plots$step2$p.BoxPlotOfDEGs
 
@@ -114,24 +128,53 @@ tbl_degZdhhc <- dplyr::filter(
   lm.GSE289067@tables$step2$tops$`Tumor_tissue - Control_tissue`, grpl(hgnc_symbol, "ZDHHC")
 )
 tbl_degZdhhc <- set_lab_legend(tbl_degZdhhc, "DEGs of ZDHHCs", "差异表达的 ZDHHCs。")
+tbl_degZdhhc
 fea_runx2_zdhhcs <- as_feature(
   c("RUNX2", tbl_degZdhhc$hgnc_symbol), lm.GSE289067
 )
 fea_runx2_zdhhcs
 
+fea_runx2_allZdhhcs <- as_feature(
+  c("RUNX2", dplyr::filter(
+    lm.GSE289067@params$normed_data$genes, grpl(
+      hgnc_symbol, "ZDHHC", TRUE
+    )
+  )$hgnc_symbol), lm.GSE289067
+)
+fea_runx2_allZdhhcs
+
 lm.GSE289067 <- map(lm.GSE289067, tbl_degZdhhc$hgnc_symbol, name = "ZDHHC")
 lm.GSE289067@plots$step2$p.BoxPlotOfDEGs_ZDHHC
 ```
 
-## STRINGdb PPI 分析 (ZDHHC)
 
-`r snap(sdb.zdhhc, 0:1)`
+```{r eval = T, echo = F, results = "asis"}
+#| GSE289067-Tumor-tissue-vs-Control-tissue
+autor(lm.GSE289067@plots$step2$p.volcano$`Tumor_tissue - Control_tissue`)
+```
 
-```{r}
-sdb.zdhhc <- job_stringdb(fea_runx2_zdhhcs)
-#' @meth {get_meth(sdb.zdhhc)}
-sdb.zdhhc <- step1(sdb.zdhhc, NULL, network_type = "full", MCC = TRUE)
-sdb.zdhhc@plots$step1$p.mcc
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE289067-data-Tumor-tissue-vs-Control-tissue
+autor(lm.GSE289067@tables$step2$tops$`Tumor_tissue - Control_tissue`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE289067-Box-Plot-Of-DEGs
+autor(lm.GSE289067@plots$step2$p.BoxPlotOfDEGs)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| DEGs-of-ZDHHCs
+autor(tbl_degZdhhc)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE289067-Box-Plot-Of-DEGs-ZDHHC
+autor(lm.GSE289067@plots$step2$p.BoxPlotOfDEGs_ZDHHC)
 ```
 
 ## TCGA 数据获取 (OV)
@@ -151,6 +194,8 @@ clear(tcga.ov)
 
 `r snap(surv.tcga_ov, 0:1)`
 
+`r ref("TCGA-OV-Survival-plots")` 
+
 ```{r}
 lm.tcga_ov <- asjob_limma(tcga.ov)
 lm.tcga_ov <- step1(lm.tcga_ov)
@@ -162,7 +207,13 @@ surv.tcga_ov@plots$step1$p.surv
 clear(surv.tcga_ov)
 ```
 
-## GEO 数据获取 (GSE173579)
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-OV-Survival-plots
+autor(surv.tcga_ov@plots$step1$p.surv)
+```
+
+## GEO 数据获取 (耐药细胞系) (GSE173579)
 
 `r snap(geo.GSE173579, 0:2)`
 
@@ -176,13 +227,24 @@ active(gds.ov_dr)
 geo.GSE173579 <- job_geo("GSE173579")
 geo.GSE173579 <- step1(geo.GSE173579)
 geo.GSE173579 <- step2(geo.GSE173579)
+geo.GSE173579$prods
 metadata.GSE173579 <- expect(geo.GSE173579, geo_cols())
 metadata.GSE173579
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE173579-GSE173579
+autor(geo.GSE173579$prods)
 ```
 
 ## Limma 差异分析 (耐药细胞系) (GSE173579)
 
 `r snap(lm.GSE173579, 0:3)`
+
+`r ref("GSE173579-Carboplatin-high-Resistant-SKOV3-vs-Non-resistance-SKOV3")` 
+`r ref("GSE173579-data-Carboplatin-high-Resistant-SKOV3-vs-Non-resistance-SKOV3")` 
+`r ref("GSE173579-Box-Plot-Of-DEGs")` 
 
 ```{r}
 lm.GSE173579 <- asjob_limma(geo.GSE173579, metadata.GSE173579)
@@ -197,11 +259,109 @@ lapply(lm.GSE173579@tables$step2$tops,
   function(x) {
     dplyr::filter(x, grpl(hgnc_symbol, "RUNX"))
   })
-lm.GSE173579@tables$step2$tops$`Carboplatin_high_Resistant_SKOV3 - Non_resistance_SKOV3`
 lm.GSE173579@plots$step2$p.volcano$`Carboplatin_high_Resistant_SKOV3 - Non_resistance_SKOV3`
+lm.GSE173579@tables$step2$tops$`Carboplatin_high_Resistant_SKOV3 - Non_resistance_SKOV3`
 lm.GSE173579 <- map(lm.GSE173579, "RUNX2", use = "P")
 lm.GSE173579@plots$step2$p.BoxPlotOfDEGs
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE173579-Carboplatin-high-Resistant-SKOV3-vs-Non-resistance-SKOV3
+autor(lm.GSE173579@plots$step2$p.volcano$`Carboplatin_high_Resistant_SKOV3 - Non_resistance_SKOV3`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE173579-data-Carboplatin-high-Resistant-SKOV3-vs-Non-resistance-SKOV3
+autor(lm.GSE173579@tables$step2$tops$`Carboplatin_high_Resistant_SKOV3 - Non_resistance_SKOV3`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE173579-Box-Plot-Of-DEGs
+autor(lm.GSE173579@plots$step2$p.BoxPlotOfDEGs)
+```
+
+## STRINGdb PPI 分析 (ZDHHC)
+
+`r snap(sdb.zdhhc, 0:1)`
+`r ref("ZDHHC-Top-MCC-score")`
+
+```{r}
+sdb.zdhhc <- job_stringdb(fea_runx2_allZdhhcs)
+#' @meth {get_meth(sdb.zdhhc)}
+sdb.zdhhc <- step1(
+  sdb.zdhhc, NULL, network_type = "full", MCC = TRUE, HLs = "RUNX2"
+)
+sdb.zdhhc@plots$step1$p.mcc
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| ZDHHC-Top-MCC-score
+autor(sdb.zdhhc@plots$step1$p.mcc)
+```
+
+## ClusPro 蛋白质-蛋白质对接预测 (ZDHHC)
+
+`r snap(clusp.zdhhc, 0:4)`
+
+```{r}
+clusp.zdhhc <- job_cluspro(
+  .layout = data.frame(from = tbl_degZdhhc$hgnc_symbol, to = "RUNX2")
+)
+#' @meth {get_meth(clusp.zdhhc)}
+clusp.zdhhc <- step1(clusp.zdhhc)
+clusp.zdhhc@params$layouts
+clusp.zdhhc@params$pdb.files
+
+clusp.zdhhc@params$targets_annotation
+clusp.zdhhc <- login(clusp.zdhhc)
+clusp.zdhhc$link
+
+fileInputElement <- clusp.zdhhc$link$findElement(using = "xpath", "//input[@type='file' and @name='lig']")
+fileInputElement$sendKeysToElement(list(normalizePath("./protein_pdb/6vgd.pdb")))
+```
+
+## MusiteDeep 蛋白质转录后修饰位点预测 (RUNX2)
+
+`r snap(mus.runx2, 0:3)`
+
+`r ref("RUNX2-RUNX2-PTM-score")` 
+`r ref("RUNX2-prediction-PTM-of-S-palmitoyl-cysteine")` 
+
+```{r}
+#' @meth {get_meth(mus.runx2)}
+mus.runx2 <- job_musite("RUNX2")
+mus.runx2 <- step1(mus.runx2)
+mus.runx2 <- step2(mus.runx2, "S-p")
+wrap(mus.runx2@plots$step2$p.tops$RUNX2, 7, 2)
+mus.runx2@tables$step2$t.data
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| RUNX2-RUNX2-PTM-score
+autor(wrap(mus.runx2@plots$step2$p.tops$RUNX2, 7, 2))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| RUNX2-prediction-PTM-of-S-palmitoyl-cysteine
+autor(mus.runx2@tables$step2$t.data)
+```
+
 # 总结 {#conclusion}
+
+- 卵巢癌和癌旁组织中RUNX2水平的比较，见`r ref("GSE289067-Box-Plot-Of-DEGs")` 
+- 不同RUNX2水平的卵巢癌患者的总生存期，见`r ref("TCGA-OV-Survival-plots")` 
+- GEO数据集验证RUNX2 mRNA在耐药细胞系中的表达，见 `r ref("GSE173579-Box-Plot-Of-DEGs")`，
+- 通过STRING、GeneMANIA等网站或者数据库，寻找与RUNX2互作的ZDHHCs蛋白，见 `r ref("ZDHHC-Top-MCC-score")`
+  (未发现互作)
+- 预测RUNX2可能受S-棕榈酰化调节，`r ref("RUNX2-RUNX2-PTM-score")`
+
+未完成：
+
+- 不同RUNX2水平癌症患者总生存期的荟萃分析（根据文献情况及分析结果选择是否保留）(预期：RUNX2高表达预后不好)。
+- 显示TMA（组织微阵列）中RUNX2蛋白的IHC评分的箱形图。(无合适数据集)
 

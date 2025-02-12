@@ -85,3 +85,13 @@ gds.tma_ov <- step1(gds.tma_ov)
 vis(gds.tma_ov)
 active(gds.tma_ov)
 ```
+
+vina.test <- job_vina(
+  c(morphine = 5288826), head(fea_runx2_allZdhhcs@.Data, n = 2)
+)
+vina.test <- step1(vina.test)
+vina.test <- step2(vina.test)
+vina.test <- step3(vina.test)
+vina.test@params$dock_layout
+vina.test <- step4(vina.test)
+vina.test <- step5(vina.test)
