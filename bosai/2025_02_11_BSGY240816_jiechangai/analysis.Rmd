@@ -2,10 +2,10 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2025-01-17"), end = td("2025-01-21"), finish = td("2025-02-12"),
-  id = "BSGY240816", client = "", inst = "",
+info <- items(start = td("2025-01-17"), end = td("2025-01-21"), finish = td("2025-02-13"),
+  id = "BSGY240816", client = "颜艺超", inst = "北京大学国际医院",
   type = "生信分析",
-  title = "",
+  title = "结肠癌",
   save = ".items_analysis.rds"
 )
 show.ic(info)
@@ -39,16 +39,15 @@ set_index()
 
 ```{r}
 dic(di("差异表达基因"),
-  di("结肠癌")
+  di("")
 )
-# CC: Colon cancer 结肠癌
 
 ```
 
-- Piezo1与结肠癌预后不良相关
-- 鉴定 Piezo1 表达水平高和低的结肠癌患者之间的差异表达基因（DEGs），并进行GSEA分析，探究血管生成是否在Piezo1高表达组明显富集
-- 探究Piezo1与血管生成通路相关及血管生成相关基因、抗血管生成基因的相关性
-- (scRNA-seq) Piezo1在内皮细胞（ECs）中高表达，在血管生成中起关键作用（PMID：31704174），因此进一步利用GEO数据库探究肿瘤微环境中哪些细胞大多表达Piezo1基因，探究结肠癌内皮细胞中Piezo1表达是否最为丰富。
+- 利用TCGA和GEO数据评估结肠癌组织和正常结肠组织以及CC组织和邻近组织对中PIEZO1 mRNA水平 PMID：39366066（多个数据库验证，明确PIEZO1如何表达）
+- 使用TCGA或HPA数据库的数据评估CC和正常结肠组织中PIEZO1蛋白水平（若数据库可用，结果保留，否则不做分析） PMID：39366066
+- Kaplan-Meier生存分析PIZEO1高表达的CC患者的总生存期（OS）时间 PMID：39366066
+- 通过Kaplan-Meier Plotter在线数据库对CC患者的OS（K）进行Kaplan-Meier分析；使用GEO数据对CC患者OS进行Kaplan-Meier验证
 
 # 材料和方法 {#introduction}
 
@@ -57,6 +56,35 @@ collate_details("meth")
 ```
 
 # 分析结果 {#workflow}
+
+## UCSCXenaTools 癌症相关数据获取 (COAD)
+
+`r snap(xena.coad, 0:2)`
+
+```{r}
+xena.coad <- job_xena()
+xena.coad <- step1(xena.coad, mode = "COAD")
+#' @meth {get_meth(xena.coad)}
+xena.coad <- step2(xena.coad)
+```
+
+## Limma 差异分析 (XENA_COAD)
+
+`r snap(lm.xena_coad, 0:3)`
+
+```{r}
+lm.xena_coad <- asjob_limma(xena.coad)
+lm.xena_coad <- step1(lm.xena_coad)
+#' @meth {get_meth(lm.xena_coad)}
+lm.xena_coad <- step2(
+  lm.xena_coad, COAD - Normal, use = "P", cut.fc = .3
+)
+lm.xena_coad@plots$step2$p.volcano$`COAD - Normal`
+lm.xena_coad@tables$step2$tops$`COAD - Normal`
+
+lm.xena_coad <- map(lm.xena_coad, "PIEZO1", name = "Piezo1")
+lm.xena_coad@plots$step2$p.BoxPlotOfDEGs_Piezo1
+```
 
 ## TCGA 数据获取 (COAD)
 
@@ -68,7 +96,9 @@ tcga.coad <- job_tcga("TCGA-COAD")
 tcga.coad <- step1(tcga.coad)
 tcga.coad <- step2(tcga.coad)
 tcga.coad <- step3(tcga.coad)
+clear(tcga.coad)
 ```
+
 
 # 总结 {#conclusion}
 

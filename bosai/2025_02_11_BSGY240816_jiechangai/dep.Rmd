@@ -1,0 +1,15 @@
+
+
+```{r}
+en.coad_piezo1 <- asjob_enrich(feature(lm.coad_piezo1)[[1]][1])
+en.coad_piezo1 <- step1(en.coad_piezo1)
+en.coad_piezo1@plots$step1$p.kegg$ids
+en.coad_piezo1@plots$step1$p.go$ids
+
+dplyr::filter(
+  en.coad_piezo1@tables$step1$res.go$ids, grpl(
+    Description, "Angiogenesis", TRUE
+  )
+)$Description
+
+```

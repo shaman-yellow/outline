@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2025-02-10"), end = td("2025-02-10"), finish = td("2025-02-10"),
+info <- items(start = td("2025-02-10"), end = td("2025-02-10"), finish = td("2025-02-13"),
   id = "BSXL240708", client = "宛迎春", inst = "",
   type = "生信分析",
   title = "卵巢癌耐药性",
@@ -210,7 +210,7 @@ clear(surv.tcga_ov)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| TCGA-OV-Survival-plots
-autor(surv.tcga_ov@plots$step1$p.surv)
+autor(surv.tcga_ov@plots$step1$p.surv$RUNX2)
 ```
 
 ## GEO 数据获取 (耐药细胞系) (GSE173579)
@@ -305,6 +305,12 @@ autor(sdb.zdhhc@plots$step1$p.mcc)
 ## ClusPro 蛋白质-蛋白质对接预测 (ZDHHC)
 
 `r snap(clusp.zdhhc, 0:4)`
+`r ref("ZDHHC-docking-layouts")`
+
+`r ref("ZDHHC-Overview-of-protein-docking-results-")` 
+`r ref("Protein-docking-of-ZDHHC14-RUNX2")` 
+`r ref("Protein-docking-of-ZDHHC23-RUNX2")` 
+`r ref("Protein-docking-of-ZDHHC15-RUNX2")` 
 
 ```{r}
 clusp.zdhhc <- job_cluspro(
@@ -312,15 +318,49 @@ clusp.zdhhc <- job_cluspro(
 )
 #' @meth {get_meth(clusp.zdhhc)}
 clusp.zdhhc <- step1(clusp.zdhhc)
-clusp.zdhhc@params$layouts
-clusp.zdhhc@params$pdb.files
+clusp.zdhhc <- step2(clusp.zdhhc)
+clusp.zdhhc@tables$step1$t.docking_layouts
+clusp.zdhhc <- step3(clusp.zdhhc)
+clusp.zdhhc <- upload(clusp.zdhhc)
 
-clusp.zdhhc@params$targets_annotation
 clusp.zdhhc <- login(clusp.zdhhc)
-clusp.zdhhc$link
+clusp.zdhhc <- pull(clusp.zdhhc)
 
-fileInputElement <- clusp.zdhhc$link$findElement(using = "xpath", "//input[@type='file' and @name='lig']")
-fileInputElement$sendKeysToElement(list(normalizePath("./protein_pdb/6vgd.pdb")))
+clusp.zdhhc <- step4(clusp.zdhhc)
+clusp.zdhhc@plots$step4$p.score
+clusp.zdhhc@plots$step4$top$Top_1_ZDHHC14_RUNX2
+clusp.zdhhc@plots$step4$top$Top_2_ZDHHC23_RUNX2
+clusp.zdhhc@plots$step4$top$Top_3_ZDHHC15_RUNX2
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| ZDHHC-docking-layouts
+autor(clusp.zdhhc@tables$step1$t.docking_layouts)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| ZDHHC-Overview-of-protein-docking-results-
+autor(clusp.zdhhc@plots$step4$p.score)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Protein-docking-of-ZDHHC14-RUNX2
+autor(clusp.zdhhc@plots$step4$top$Top_1_ZDHHC14_RUNX2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Protein-docking-of-ZDHHC23-RUNX2
+autor(clusp.zdhhc@plots$step4$top$Top_2_ZDHHC23_RUNX2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Protein-docking-of-ZDHHC15-RUNX2
+autor(clusp.zdhhc@plots$step4$top$Top_3_ZDHHC15_RUNX2)
 ```
 
 ## MusiteDeep 蛋白质转录后修饰位点预测 (RUNX2)
@@ -354,10 +394,11 @@ autor(mus.runx2@tables$step2$t.data)
 # 总结 {#conclusion}
 
 - 卵巢癌和癌旁组织中RUNX2水平的比较，见`r ref("GSE289067-Box-Plot-Of-DEGs")` 
-- 不同RUNX2水平的卵巢癌患者的总生存期，见`r ref("TCGA-OV-Survival-plots")` 
+- 不同RUNX2水平的卵巢癌患者的总生存期，见 `r ref("TCGA-OV-Survival-plots")` 
 - GEO数据集验证RUNX2 mRNA在耐药细胞系中的表达，见 `r ref("GSE173579-Box-Plot-Of-DEGs")`，
 - 通过STRING、GeneMANIA等网站或者数据库，寻找与RUNX2互作的ZDHHCs蛋白，见 `r ref("ZDHHC-Top-MCC-score")`
-  (未发现互作)
+  (未发现互作数据)。随后，尝试以 `ClusPro` 对 RUNX2 与 ZDHHCs 对接，
+  见 `r ref("ZDHHC-Overview-of-protein-docking-results-")`
 - 预测RUNX2可能受S-棕榈酰化调节，`r ref("RUNX2-RUNX2-PTM-score")`
 
 未完成：

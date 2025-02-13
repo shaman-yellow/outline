@@ -78,3 +78,12 @@ summary_month.bosai(get_orders(), rm = TRUE)
 ```{r}
 summary_week.bosai(rm = T)
 ```
+
+## 2025-02-13
+
+```{r}
+alls <- get_orders()
+backup_jobs.bosai(
+  dplyr::filter(alls, finish <= td("2025-02-08")), "2025-02-13"
+)
+```

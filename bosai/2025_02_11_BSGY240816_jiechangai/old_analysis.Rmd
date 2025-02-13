@@ -1,0 +1,153 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-01-17"), end = td("2025-01-21"), finish = td("2025-02-13"),
+  id = "BSGY240816", client = "颜艺超", inst = "北京大学国际医院",
+  type = "生信分析",
+  title = "结肠癌",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("结肠癌"),
+  di("血管生成")
+)
+# CC: Colon cancer 结肠癌
+# A: Angiogenesis 血管生成
+
+```
+
+- Piezo1与结肠癌预后不良相关
+- 鉴定 Piezo1 表达水平高和低的结肠癌患者之间的差异表达基因（DEGs），并进行GSEA分析，探究血管生成是否在Piezo1高表达组明显富集
+- 探究 Piezo1 与血管生成通路相关及血管生成相关基因、抗血管生成基因的相关性
+- (scRNA-seq) Piezo1在内皮细胞（ECs）中高表达，在血管生成中起关键作用（PMID：31704174），因此进一步利用GEO数据库探究肿瘤微环境中哪些细胞大多表达Piezo1基因，探究结肠癌内皮细胞中Piezo1表达是否最为丰富。
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## TCGA 数据获取 (COAD)
+
+`r snap(tcga.coad, 0:3)`
+
+```{r}
+tcga.coad <- job_tcga("TCGA-COAD")
+#' @meth {get_meth(tcga.coad)}
+tcga.coad <- step1(tcga.coad)
+tcga.coad <- step2(tcga.coad)
+tcga.coad <- step3(tcga.coad)
+clear(tcga.coad)
+```
+
+## Survival 生存分析 (COAD)
+
+`r snap(surv.coad, 0:1)`
+`r ref("COAD-survival-curve-of-PIEZO1")`
+
+```{r}
+lm.coad <- asjob_limma(tcga.coad)
+lm.coad <- step1(lm.coad)
+surv.coad <- asjob_survival(lm.coad, "PIEZO1")
+#' @meth {get_meth(surv.coad)}
+surv.coad <- step1(surv.coad, only_keep_sig = FALSE)
+surv.coad@plots$step1$p.surv$PIEZO1
+clear(surv.coad)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COAD-survival-curve-of-PIEZO1
+autor(surv.coad@plots$step1$p.surv$PIEZO1)
+```
+
+## Limma 差异分析 (COAD)
+
+`r snap(lm.coad_piezo1, 0:3)`
+
+`r ref("COAD-High-vs-Low")` 
+`r ref("COAD-data-High-vs-Low")` 
+
+```{r}
+lm.coad_piezo1 <- regroup(lm.coad, surv.coad)
+#' @meth {get_meth(lm.coad_piezo1)}
+lm.coad_piezo1 <- step2(
+  lm.coad_piezo1, High - Low, use = "P", cut.fc = .5
+)
+lm.coad_piezo1@plots$step2$p.volcano$`High - Low`
+lm.coad_piezo1@tables$step2$tops$`High - Low`
+lm.coad_piezo1 <- step3(lm.coad_piezo1)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COAD-High-vs-Low
+autor(lm.coad_piezo1@plots$step2$p.volcano$`High - Low`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COAD-data-High-vs-Low
+autor(lm.coad_piezo1@tables$step2$tops$`High - Low`)
+```
+
+## ClusterProfiler GSEA 富集分析 (COAD_PIEZO1)
+
+`r snap(gsea.coad_piezo1, 0:3)`
+
+```{r}
+gsea.coad_piezo1 <- asjob_gsea(lm.coad_piezo1)
+#' @meth {get_meth(gsea.coad_piezo1)}
+gsea.coad_piezo1 <- step1(gsea.coad_piezo1)
+gsea.coad_piezo1 <- step2(gsea.coad_piezo1, NULL)
+gsea.coad_piezo1@step <- 2L
+gsea.coad_piezo1 <- step3(
+  gsea.coad_piezo1, mode = "C2", map = "Angiog"
+)
+gsea.coad_piezo1@tables$step3$table_gsea
+gsea.coad_piezo1@plots$step3$p.code
+
+dplyr::filter(
+  gsea.coad_piezo1@tables$step3$table_gsea, grpl(
+    Description, "Angio", TRUE
+  )
+)$Description
+
+# autosv(gsea.coad_piezo1@tables$step3$table_gsea, "c2_gsea", force = TRUE)
+```
+
+# 总结 {#conclusion}
+
