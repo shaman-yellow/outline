@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2025-01-17"), end = td("2025-01-21"), finish = td("2025-02-13"),
+info <- items(start = td("2025-01-17"), end = td("2025-01-21"), finish = td("2025-02-17"),
   id = "BSGY240816", client = "颜艺超", inst = "北京大学国际医院",
   type = "生信分析",
   title = "结肠癌",
@@ -45,6 +45,8 @@ dic(di("差异表达基因"),
 ```
 
 - 利用TCGA和GEO数据评估结肠癌组织和正常结肠组织以及CC组织和邻近组织对中PIEZO1 mRNA水平 PMID：39366066（多个数据库验证，明确PIEZO1如何表达）
+    - Cancer vs Healthy (Healthy donor)
+    - Cancer vs Normal (Cancer donor)
 - 使用TCGA或HPA数据库的数据评估CC和正常结肠组织中PIEZO1蛋白水平（若数据库可用，结果保留，否则不做分析） PMID：39366066
 - Kaplan-Meier生存分析PIZEO1高表达的CC患者的总生存期（OS）时间 PMID：39366066
 - 通过Kaplan-Meier Plotter在线数据库对CC患者的OS（K）进行Kaplan-Meier分析；使用GEO数据对CC患者OS进行Kaplan-Meier验证
@@ -57,7 +59,84 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
-## UCSCXenaTools 癌症相关数据获取 (COAD)
+## 差异分析的数据集信息
+
+- (CH) Cancer vs Healthy (Healthy donor): GSE44076 (Tumor vs Mucosa), XENA_COAD
+- (CN) Cancer vs Normal (Cancer donor): GSE44076 (Tumor vs Normal), ...
+
+```{r}
+gds.coad <- job_gds(c("colon cancer", "Control"))
+gds.coad <- step1(gds.coad)
+vis(gds.coad)
+active(gds.coad, which = 1:20)
+
+gse.used <- c(
+  "GSE95132", "GSE44076", "GSE89393", "GSE137327", 
+  "GSE76855", "GSE134525", "GSE97300", "GSE70880",
+  "GSE38939", "GSE36400", "GSE20970", "GSE20881"
+)
+# - Healthy xena, GSE44076, GSE20881
+```
+
+## 差异分析 (CH) Cancer vs Healthy (Healthy donor)
+
+### GEO 数据获取 (CH_GSE44076) {#same}
+
+`r snap(geo.ch_GSE44076, 0:2)`
+
+```{r}
+geo.ch_GSE44076 <- job_geo("GSE44076")
+#' @meth {get_meth(geo.ch_GSE44076)}
+geo.ch_GSE44076 <- step1(geo.ch_GSE44076)
+metadata.ch_GSE44076 <- expect(geo.ch_GSE44076, geo_cols())
+metadata.ch_GSE44076 <- dplyr::mutate(
+  metadata.ch_GSE44076, group = gs(group, "_from.*", ""),
+  pairs = individual.id.ch1
+)
+metadata.ch_GSE44076$group %>% table
+```
+
+### Limma 差异分析 (CH_GSE44076)
+
+`r snap(lm.ch_GSE44076, 0:3)`
+
+`r ref("CH-GSE44076-data-Tumor-sample-vs-Mucosa-sample")` 
+`r ref("CH-GSE44076-Box-Plot-Of-DEGs")` 
+
+```{r}
+lm.ch_GSE44076 <- asjob_limma(geo.ch_GSE44076, metadata.ch_GSE44076)
+lm.ch_GSE44076 <- filter(
+  lm.ch_GSE44076, type = "metadata", grpl(group, "Mucosa_sample|Tumor_sample")
+)
+lm.ch_GSE44076 <- step1(lm.ch_GSE44076, formula = "~ 0 + group")
+#' @meth {get_meth(lm.ch_GSE44076)}
+lm.ch_GSE44076 <- step2(
+  lm.ch_GSE44076, Tumor_sample - Mucosa_sample,
+  use = "P", cut.fc = .3, label = "hgnc_symbol"
+)
+lm.ch_GSE44076@tables$step2$tops$`Tumor_sample - Mucosa_sample`
+dplyr::filter(lm.ch_GSE44076@tables$step2$tops$`Tumor_sample - Mucosa_sample`,
+  grpl(hgnc_symbol, "PIEZO1|FAM38A", TRUE)
+)
+lm.ch_GSE44076 <- map(lm.ch_GSE44076, "FAM38A", ref.use = "hgnc_symbol")
+lm.ch_GSE44076@plots$step2$p.BoxPlotOfDEGs
+
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CH-GSE44076-data-Tumor-sample-vs-Mucosa-sample
+autor(lm.ch_GSE44076@tables$step2$tops$`Tumor_sample - Mucosa_sample`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CH-GSE44076-Box-Plot-Of-DEGs
+autor(lm.ch_GSE44076@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### UCSCXenaTools 癌症相关数据获取 (COAD)
 
 `r snap(xena.coad, 0:2)`
 
@@ -68,9 +147,12 @@ xena.coad <- step1(xena.coad, mode = "COAD")
 xena.coad <- step2(xena.coad)
 ```
 
-## Limma 差异分析 (XENA_COAD)
+### Limma 差异分析 (XENA_COAD)
 
 `r snap(lm.xena_coad, 0:3)`
+
+`r ref("XENA-COAD-data-COAD-vs-Normal")` 
+`r ref("XENA-COAD-Box-Plot-Of-DEGs")` 
 
 ```{r}
 lm.xena_coad <- asjob_limma(xena.coad)
@@ -82,11 +164,437 @@ lm.xena_coad <- step2(
 lm.xena_coad@plots$step2$p.volcano$`COAD - Normal`
 lm.xena_coad@tables$step2$tops$`COAD - Normal`
 
-lm.xena_coad <- map(lm.xena_coad, "PIEZO1", name = "Piezo1")
-lm.xena_coad@plots$step2$p.BoxPlotOfDEGs_Piezo1
+lm.xena_coad <- map(lm.xena_coad, "PIEZO1")
+lm.xena_coad@plots$step2$p.BoxPlotOfDEGs
 ```
 
-## TCGA 数据获取 (COAD)
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| XENA-COAD-data-COAD-vs-Normal
+autor(lm.xena_coad@tables$step2$tops$`COAD - Normal`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| XENA-COAD-Box-Plot-Of-DEGs
+autor(lm.xena_coad@plots$step2$p.BoxPlotOfDEGs)
+```
+
+## 差异分析 (CN) Cancer vs Normal
+
+### GEO 数据获取 (CN_GSE44076)
+
+同 \@ref(same)
+
+### Limma 差异分析 (CN_GSE44076)
+
+`r snap(lm.cn_GSE44076, 0:3)`
+
+`r ref("CN-GSE44076-data-Tumor-sample-vs-Normal-paired-sample")` 
+`r ref("CN-GSE44076-Box-Plot-Of-DEGs")` 
+
+```{r}
+lm.cn_GSE44076 <- asjob_limma(geo.ch_GSE44076, metadata.ch_GSE44076)
+lm.cn_GSE44076 <- filter(
+  lm.cn_GSE44076, type = "metadata", grpl(group, "Normal_paired_sample|Tumor_sample")
+)
+lm.cn_GSE44076 <- step1(lm.cn_GSE44076)
+#' @meth {get_meth(lm.cn_GSE44076)}
+lm.cn_GSE44076 <- step2(
+  lm.cn_GSE44076, Tumor_sample - Normal_paired_sample,
+  use = "P", cut.fc = .3, label = "hgnc_symbol"
+)
+dplyr::filter(lm.cn_GSE44076@tables$step2$tops$`Tumor_sample - Normal_paired_sample`,
+  grpl(hgnc_symbol, "PIEZO1|FAM38A", TRUE)
+)
+lm.cn_GSE44076@tables$step2$tops$`Tumor_sample - Normal_paired_sample`
+lm.cn_GSE44076 <- map(lm.cn_GSE44076, "FAM38A", ref.use = "hgnc_symbol")
+lm.cn_GSE44076@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE44076-data-Tumor-sample-vs-Normal-paired-sample
+autor(lm.cn_GSE44076@tables$step2$tops$`Tumor_sample - Normal_paired_sample`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE44076-Box-Plot-Of-DEGs
+autor(lm.cn_GSE44076@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### GEO 数据获取 (CN_GSE95132)
+
+`r snap(geo.cn_GSE95132, 0:2)`
+
+```{r}
+geo.cn_GSE95132 <- job_geo("GSE95132")
+geo.cn_GSE95132 <- step1(geo.cn_GSE95132)
+#' @meth {get_meth(geo.cn_GSE95132)}
+geo.cn_GSE95132 <- step2(geo.cn_GSE95132)
+metadata.cn_GSE95132 <- expect(geo.cn_GSE95132, geo_cols())
+```
+
+### Limma 差异分析 (CN_GSE95132)
+
+`r snap(lm.cn_GSE95132, 0:3)`
+
+`r ref("CN-GSE95132-data-Colon-cancer-stage-II-IV-vs-Healthy")` 
+`r ref("CN-GSE95132-Box-Plot-Of-DEGs")` 
+
+```{r}
+lm.cn_GSE95132 <- asjob_limma(geo.cn_GSE95132, metadata.cn_GSE95132)
+lm.cn_GSE95132 <- step1(lm.cn_GSE95132)
+lm.cn_GSE95132@object$genes
+#' @meth {get_meth(lm.cn_GSE95132)}
+lm.cn_GSE95132 <- step2(
+  lm.cn_GSE95132, Colon_cancer_stage_II_IV - Healthy,
+  use = "P", cut.fc = .3, label = "hgnc_symbol"
+)
+dplyr::filter(lm.cn_GSE95132@tables$step2$tops$`Colon_cancer_stage_II_IV - Healthy`,
+  grpl(hgnc_symbol, "PIEZO1|FAM38A", TRUE)
+)
+lm.cn_GSE95132@tables$step2$tops$`Colon_cancer_stage_II_IV - Healthy`
+lm.cn_GSE95132 <- map(lm.cn_GSE95132, "PIEZO1")
+lm.cn_GSE95132@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE95132-data-Colon-cancer-stage-II-IV-vs-Healthy
+autor(lm.cn_GSE95132@tables$step2$tops$`Colon_cancer_stage_II_IV - Healthy`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE95132-Box-Plot-Of-DEGs
+autor(lm.cn_GSE95132@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### GEO 数据获取 (CN_GSE137327)
+
+`r snap(geo.cn_GSE137327, 0:2)`
+
+```{r}
+geo.cn_GSE137327 <- job_geo("GSE137327")
+#' @meth {get_meth(geo.cn_GSE137327)}
+geo.cn_GSE137327 <- step1(geo.cn_GSE137327)
+geo.cn_GSE137327 <- step2(geo.cn_GSE137327)
+metadata.cn_GSE137327 <- expect(geo.cn_GSE137327, geo_cols())
+```
+
+### Limma 差异分析 (CN_GSE137327)
+
+`r snap(lm.cn_GSE137327, 0:3)`
+
+`r ref("CN-GSE137327-data-Primary-colon-cancer-vs-Adjacent-non-cancerous-colon-tissue")` 
+`r ref("CN-GSE137327-Box-Plot-Of-DEGs")` 
+
+```{r}
+lm.cn_GSE137327 <- asjob_limma(geo.cn_GSE137327, metadata.cn_GSE137327)
+lm.cn_GSE137327 <- step1(lm.cn_GSE137327)
+#' @meth {get_meth(lm.cn_GSE137327)}
+lm.cn_GSE137327 <- step2(
+  lm.cn_GSE137327, Primary_colon_cancer - Adjacent_non_cancerous_colon_tissue,
+  use = "P", cut.fc = .3
+)
+dplyr::filter(lm.cn_GSE137327@tables$step2$tops$`Primary_colon_cancer - Adjacent_non_cancerous_colon_tissue`,
+  grpl(hgnc_symbol, "PIEZO1|FAM38A", TRUE)
+)
+lm.cn_GSE137327@tables$step2$tops$`Primary_colon_cancer - Adjacent_non_cancerous_colon_tissue`
+lm.cn_GSE137327 <- map(lm.cn_GSE137327, "PIEZO1")
+lm.cn_GSE137327@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE137327-data-Primary-colon-cancer-vs-Adjacent-non-cancerous-colon-tissue
+autor(lm.cn_GSE137327@tables$step2$tops$`Primary_colon_cancer - Adjacent_non_cancerous_colon_tissue`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE137327-Box-Plot-Of-DEGs
+autor(lm.cn_GSE137327@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### GEO 数据获取 (CN_GSE76855)
+
+`r snap(geo.cn_GSE76855, 0:2)`
+
+```{r}
+geo.cn_GSE76855 <- job_geo("GSE76855")
+#' @meth {get_meth(geo.cn_GSE76855)}
+geo.cn_GSE76855 <- step1(geo.cn_GSE76855)
+metadata.cn_GSE76855 <- expect(geo.cn_GSE76855, geo_cols())
+```
+
+### Limma 差异分析 (CN_GSE76855)
+
+`r snap(lm.cn_GSE76855, 0:3)`
+
+`r ref("CN-GSE76855-data-Colon-Cancer-vs-Normal-tissue")` 
+`r ref("CN-GSE76855-Box-Plot-Of-DEGs")` 
+
+```{r}
+lm.cn_GSE76855 <- asjob_limma(geo.cn_GSE76855, metadata.cn_GSE76855)
+lm.cn_GSE76855@object$genes <- dplyr::mutate(
+  lm.cn_GSE76855@object$genes, GENE_SYMBOL = strx(
+    gene_assignment, "(?<=// )[^/ ]+(?= //)"
+  )
+)
+lm.cn_GSE76855 <- step1(lm.cn_GSE76855)
+#' @meth {get_meth(lm.cn_GSE76855)}
+lm.cn_GSE76855 <- step2(
+  lm.cn_GSE76855, Colon_Cancer - Normal_tissue,
+  use = "P", cut.fc = .3
+)
+dplyr::filter(lm.cn_GSE76855@tables$step2$tops$`Colon_Cancer - Normal_tissue`,
+  grpl(GENE_SYMBOL, "PIEZO1|FAM38A", TRUE)
+)
+lm.cn_GSE76855@tables$step2$tops$`Colon_Cancer - Normal_tissue`
+lm.cn_GSE76855 <- map(lm.cn_GSE76855, "PIEZO1")
+lm.cn_GSE76855@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE76855-data-Colon-Cancer-vs-Normal-tissue
+autor(lm.cn_GSE76855@tables$step2$tops$`Colon_Cancer - Normal_tissue`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE76855-Box-Plot-Of-DEGs
+autor(lm.cn_GSE76855@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### GEO 数据获取 (CN_GSE38939)
+
+`r snap(geo.cn_GSE38939, 0:2)`
+
+```{r}
+geo.cn_GSE38939 <- job_geo("GSE38939")
+#' @meth {get_meth(geo.cn_GSE38939)}
+geo.cn_GSE38939 <- step1(geo.cn_GSE38939)
+metadata.cn_GSE38939 <- expect(geo.cn_GSE38939, geo_cols())
+metadata.cn_GSE38939
+```
+
+### Limma 差异分析 (CN_GSE38939)
+
+`r snap(lm.cn_GSE38939, 0:3)`
+
+`r ref("CN-GSE38939-data-tumor-vs-adjacent-non-tumor")` 
+`r ref("CN-GSE38939-Box-Plot-Of-DEGs")` 
+
+```{r}
+lm.cn_GSE38939 <- asjob_limma(
+  geo.cn_GSE38939, metadata.cn_GSE38939, normed = TRUE
+)
+lm.cn_GSE38939 <- step1(lm.cn_GSE38939)
+#' @meth {get_meth(lm.cn_GSE38939)}
+lm.cn_GSE38939 <- step2(
+  lm.cn_GSE38939, tumor - adjacent_non_tumor,
+  use = "P", cut.fc = .3, label = "Symbol"
+)
+lm.cn_GSE38939@tables$step2$tops$`tumor - adjacent_non_tumor`
+dplyr::filter(lm.cn_GSE38939@tables$step2$tops$`tumor - adjacent_non_tumor`,
+  grpl(Symbol, "PIEZO1|FAM38A", TRUE)
+)
+lm.cn_GSE38939@tables$step2$tops$`tumor - adjacent_non_tumor`
+lm.cn_GSE38939 <- map(lm.cn_GSE38939, "FAM38A", ref.use = "Symbol")
+lm.cn_GSE38939@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE38939-data-tumor-vs-adjacent-non-tumor
+autor(lm.cn_GSE38939@tables$step2$tops$`tumor - adjacent_non_tumor`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE38939-Box-Plot-Of-DEGs
+autor(lm.cn_GSE38939@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### GEO 数据获取 (CN_GSE36400)
+
+`r snap(geo.cn_GSE36400, 0:2)`
+
+```{r}
+geo.cn_GSE36400 <- job_geo("GSE36400")
+#' @meth {get_meth(geo.cn_GSE36400)}
+geo.cn_GSE36400 <- step1(geo.cn_GSE36400)
+metadata.cn_GSE36400 <- expect(geo.cn_GSE36400, geo_cols())
+metadata.cn_GSE36400
+```
+
+### Limma 差异分析 (CN_GSE36400)
+
+`r snap(lm.cn_GSE36400, 0:3)`
+
+`r ref("CN-GSE36400-data-Colon-Cancer-Cell-Line-vs-Normal-Colon-Crypt")` 
+`r ref("CN-GSE36400-Box-Plot-Of-DEGs")` 
+
+```{r}
+lm.cn_GSE36400 <- asjob_limma(geo.cn_GSE36400, metadata.cn_GSE36400)
+#' @meth {get_meth(lm.cn_GSE36400)}
+lm.cn_GSE36400 <- step1(lm.cn_GSE36400)
+lm.cn_GSE36400 <- step2(
+  lm.cn_GSE36400, Colon_Cancer_Cell_Line - Normal_Colon_Crypt,
+  use = "P", cut.fc = .3
+)
+dplyr::filter(lm.cn_GSE36400@tables$step2$tops$`Colon_Cancer_Cell_Line - Normal_Colon_Crypt`,
+  grpl(GENE_SYMBOL, "PIEZO1|FAM38A", TRUE)
+)
+lm.cn_GSE36400@tables$step2$tops$`Colon_Cancer_Cell_Line - Normal_Colon_Crypt`
+lm.cn_GSE36400 <- map(lm.cn_GSE36400, "FAM38A")
+lm.cn_GSE36400@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE36400-data-Colon-Cancer-Cell-Line-vs-Normal-Colon-Crypt
+autor(lm.cn_GSE36400@tables$step2$tops$`Colon_Cancer_Cell_Line - Normal_Colon_Crypt`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| CN-GSE36400-Box-Plot-Of-DEGs
+autor(lm.cn_GSE36400@plots$step2$p.BoxPlotOfDEGs)
+```
+
+## 差异分析汇总
+
+`r ref("PIEZO1-Cancer-vs-Healthy")` 
+`r ref("PIEZO1-Cancer-vs-Normal")` 
+
+```{r}
+fun_extract_box <- function(names) {
+  sapply(names, simplify = FALSE,
+    function(x) {
+      x <- get(x, envir = .GlobalEnv)
+      x@plots$step2$p.BoxPlotOfDEGs
+    })
+}
+
+gene_piezo1_ch <- ls(pattern = "lm.xena|lm.ch_")
+# [1] "lm.ch_GSE44076" "lm.xena_coad"  
+gene_piezo1_ch <- fun_extract_box(gene_piezo1_ch)
+gene_piezo1_ch <- frame_wrap(gene_piezo1_ch)
+gene_piezo1_ch <- wrap(gene_piezo1_ch, 6, 4)
+gene_piezo1_ch <- set_lab_legend(gene_piezo1_ch, "PIEZO1 Cancer vs Healthy")
+gene_piezo1_ch
+
+gene_piezo1_cn <- ls(pattern = "lm.cn_")
+gene_piezo1_cn <- gene_piezo1_cn[!grpl(gene_piezo1_cn, "GSE137327|GSE38939")]
+gene_piezo1_cn <- fun_extract_box(gene_piezo1_cn)
+gene_piezo1_cn <- frame_wrap(gene_piezo1_cn)
+gene_piezo1_cn <- wrap(gene_piezo1_cn, 9, 4)
+gene_piezo1_cn <- set_lab_legend(
+  gene_piezo1_cn, "PIEZO1 Cancer vs Normal", "PIEZO1 Cancer vs Normal (不包括不显著的数据集)"
+)
+gene_piezo1_cn
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PIEZO1-Cancer-vs-Healthy
+autor(gene_piezo1_ch)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PIEZO1-Cancer-vs-Normal
+autor(gene_piezo1_cn)
+```
+
+## 生存分析的数据集信息
+
+- GEO: GSE152430, GSE29621, GSE39582, GSE31595
+- TCGA-COAD
+
+```{r}
+gds.coad_surv <- job_gds(c("colon cancer", "survival"))
+gds.coad_surv <- step1(gds.coad_surv)
+gds.coad_surv <- step2(gds.coad_surv)
+vis(gds.coad_surv)
+gds.coad_surv@params$res$metas
+```
+
+## GEO 数据获取 (SURV_GSE29621)
+
+`r snap(geo.surv_GSE29621, 0:2)`
+
+```{r}
+geo.surv_GSE29621 <- job_geo("GSE29621")
+#' @meth {get_meth(geo.surv_GSE29621)}
+geo.surv_GSE29621 <- step1(geo.surv_GSE29621)
+metadata.surv_GSE29621 <- expect(
+  geo.surv_GSE29621, geo_cols(group = "ajcc.staging.ch1"), force = TRUE
+)
+metadata.surv_GSE29621 |> str()
+metadata.surv_GSE29621 <- dplyr::mutate(
+  metadata.surv_GSE29621, days_to_last_follow_up = as.double(overall.survival..os..ch1) * 30,
+  vital_status = Hmisc::capitalize(os.event.ch1)
+)
+```
+
+```{r}
+lm.surv_GSE29621 <- asjob_limma(geo.surv_GSE29621, metadata.surv_GSE29621)
+# filter
+lm.surv_GSE29621 <- step1(lm.surv_GSE29621)
+dplyr::filter(
+  lm.surv_GSE29621@object$genes, grpl(hgnc_symbol, "PIEZO1")
+)
+surv.surv_GSE29621 <- asjob_survival(
+  lm.surv_GSE29621, "PIEZO1", use = "hgnc_symbol"
+)
+surv.surv_GSE29621 <- step1(surv.surv_GSE29621, only_keep_sig = FALSE)
+```
+
+## GEO 数据获取 (SURV_GSE152430)
+
+`r snap(geo.surv_GSE152430, 0:2)`
+
+```{r}
+geo.surv_GSE152430 <- job_geo("GSE152430")
+geo.surv_GSE152430 <- step1(geo.surv_GSE152430)
+#' @meth {get_meth(geo.surv_GSE152430)}
+geo.surv_GSE152430 <- step2(geo.surv_GSE152430)
+metadata.surv_GSE152430 <- expect(geo.surv_GSE152430, geo_cols())
+metadata.surv_GSE152430 <- dplyr::mutate(metadata.surv_GSE152430,
+  days_to_last_follow_up = as.integer(days_to_death_or_censor.ch1),
+  vital_status = ifelse(
+    overall_survival.ch1 == "1", "Dead", "Alive"
+  )
+)
+```
+
+## Survival 生存分析 (SURV_GSE152430)
+
+`r snap(surv.surv_GSE152430, 0:1)`
+
+```{r}
+lm.surv_GSE152430 <- asjob_limma(geo.surv_GSE152430, metadata.surv_GSE152430)
+lm.surv_GSE152430 <- filter(
+  lm.surv_GSE152430, type = "metadata", days_to_last_follow_up > 0
+)
+lm.surv_GSE152430 <- step1(lm.surv_GSE152430)
+surv.surv_GSE152430 <- asjob_survival(
+  lm.surv_GSE152430, "PIEZO1", use = "hgnc_symbol", base_method = "surv"
+)
+#' @meth {get_meth(surv.surv_GSE152430)}
+surv.surv_GSE152430 <- step1(surv.surv_GSE152430, only_keep_sig = FALSE)
+surv.surv_GSE152430@plots$step1$p.surv$PIEZO1
+```
+
+
+### TCGA 数据获取 (COAD)
 
 `r snap(tcga.coad, 0:3)`
 
@@ -96,9 +604,28 @@ tcga.coad <- job_tcga("TCGA-COAD")
 tcga.coad <- step1(tcga.coad)
 tcga.coad <- step2(tcga.coad)
 tcga.coad <- step3(tcga.coad)
-clear(tcga.coad)
+tcga.coad
 ```
 
+### Survival 生存分析 (COAD)
+
+`r snap(surv.coad, 0:1)`
+
+`r ref("COAD-survival-curve-of-PIEZO1")` 
+
+```{r}
+lm.coad <- asjob_limma(tcga.coad)
+lm.coad <- step1(lm.coad)
+surv.coad <- asjob_survival(lm.coad, "PIEZO1")
+#' @meth {get_meth(surv.coad)}
+surv.coad <- step1(surv.coad, only_keep_sig = FALSE)
+surv.coad@plots$step1$p.surv$PIEZO1
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| COAD-survival-curve-of-PIEZO1
+autor(surv.coad@plots$step1$p.surv$PIEZO1)
+```
 
 # 总结 {#conclusion}
 

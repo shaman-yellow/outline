@@ -13,3 +13,88 @@ dplyr::filter(
 )$Description
 
 ```
+
+## GEO 数据获取 (CH_GSE20881)
+
+`r snap(geo.ch_GSE20881, 0:2)`
+
+```{r}
+geo.ch_GSE20881 <- job_geo("GSE20881")
+#' @meth {get_meth(geo.ch_GSE20881)}
+geo.ch_GSE20881 <- step1(geo.ch_GSE20881)
+metadata.ch_GSE20881 <- expect(geo.ch_GSE20881, geo_cols())
+metadata.ch_GSE20881 <- dplyr::mutate(
+  metadata.ch_GSE20881, group = gs(disease.ch1, " ", "_"),
+  batch = gs(anatomic.location.ch1, " ", "_")
+)
+```
+
+## Limma 差异分析 (CH_GSE20881)
+
+`r snap(lm.ch_GSE20881, 0:3)`
+
+```{r}
+lm.ch_GSE20881 <- asjob_limma(
+  geo.ch_GSE20881, metadata.ch_GSE20881, normed = TRUE
+)
+lm.ch_GSE20881 <- filter(
+  lm.ch_GSE20881, type = "metadata", !grpl(
+    anatomic.location.ch1, "ileum", TRUE
+  )
+)
+lm.ch_GSE20881 <- step1(lm.ch_GSE20881)
+#' @meth {get_meth(lm.ch_GSE20881)}
+lm.ch_GSE20881 <- step2(
+  lm.ch_GSE20881, crohns_disease - healthy,
+  use = "P", cut.fc = .3
+)
+lm.ch_GSE20881 <- map(
+  lm.ch_GSE20881, "FAM38A", ref.use = "GENE_SYMBOL", use = "P"
+)
+lm.ch_GSE20881@plots$step2$p.BoxPlotOfDEGs
+```
+
+### GEO 数据获取 (CN_GSE89393)
+
+`r snap(geo.cn_GSE89393, 0:2)`
+
+```{r}
+geo.cn_GSE89393 <- job_geo("GSE89393")
+geo.cn_GSE89393 <- step1(geo.cn_GSE89393)
+#' @meth {get_meth(geo.cn_GSE89393)}
+geo.cn_GSE89393 <- step2(geo.cn_GSE89393)
+metadata.cn_GSE89393 <- expect(geo.cn_GSE89393, geo_cols())
+metadata.cn_GSE89393
+```
+
+### GEO 数据获取 (CN_GSE70880)
+
+`r snap(geo.cn_GSE70880, 0:2)`
+
+```{r}
+geo.cn_GSE70880 <- job_geo("GSE70880")
+#' @meth {get_meth(geo.cn_GSE70880)}
+geo.cn_GSE70880 <- step1(geo.cn_GSE70880)
+metadata.cn_GSE70880 <- expect(
+  geo.cn_GSE70880, geo_cols(group = "tissue.type.ch1"), force = TRUE
+)
+metadata.cn_GSE70880
+```
+
+### Limma 差异分析 (CN_GSE70880)
+
+`r snap(lm.cn_GSE70880, 0:3)`
+
+```{r}
+lm.cn_GSE70880 <- asjob_limma(geo.cn_GSE70880, metadata.cn_GSE70880)
+lm.cn_GSE70880 <- filter(
+  lm.cn_GSE70880, type = "metadata", grpl(disease.ch1, "colon cancer")
+)
+lm.cn_GSE70880 <- step1(lm.cn_GSE70880)
+lm.cn_GSE70880@object$genes
+#' @meth {get_meth(lm.cn_GSE70880)}
+lm.cn_GSE70880 <- step2(
+  lm.cn_GSE70880, Cancer_tissue - Normal_tissue,
+  use = "P", cut.fc = .3
+)
+```

@@ -87,3 +87,44 @@ backup_jobs.bosai(
   dplyr::filter(alls, finish <= td("2025-02-08")), "2025-02-13"
 )
 ```
+
+## 2025-02-14
+
+```{r}
+alls <- get_orders()
+data <- dplyr::filter(alls, grpl(type, "生信|分析"), tags == "")
+
+hasTags <- dplyr::filter(alls, tags != "")
+hasTags <- dplyr::select(hasTags, id, title, tags.list)
+hasTags <- dplyr::filter(hasTags, id != "_")
+hasTags <- reframe_col(hasTags, "tags.list", unlist)
+hasTags <- dplyr::mutate(
+  hasTags, id_title = paste0(id, " (", title, ")"), .before = 1
+)
+hasTags <- dplyr::select(hasTags, -id, -title)
+hasTags <- reframe_col(hasTags, "id_title", bind)
+hasTags
+
+extraTags <- tibble::tibble(tags.list = names(.tag_anno()))
+
+allTags <- tbmerge(extraTags, hasTags, all.x = TRUE, by = "tags.list")
+allTags <- dplyr::arrange(allTags, id_title)
+
+allTags <- dplyr::mutate(allTags, Analysis = recode_tags(tags.list))
+allTags <- dplyr::filter(allTags, !grpl(Analysis, "__dep__"))
+allTags <- dplyr::select(allTags, Analysis, id_title)
+allTags <- dplyr::mutate(
+  allTags, Status = ifelse(
+    is.na(id_title), "Not Finished", "Finished"
+  ), .before = 1
+)
+allTags
+
+openxlsx::write.xlsx(allTags, "./summary/workflow_types.xlsx")
+```
+
+## 2025-02-14
+
+```{r}
+summary_week.bosai(rm = T, must_include = "BSGY240816")
+```
