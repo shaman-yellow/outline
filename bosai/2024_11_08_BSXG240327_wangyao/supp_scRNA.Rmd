@@ -1,0 +1,96 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2024-09-09"), end = td("2024-11-15"), finish = td(NA),
+  id = "BSXG240327", client = "陈立茂", inst = "",
+  type = "补充分析",
+  title = "肺癌",
+  save = ".items_supp_scRNA.rds"
+)
+show.ic(info)
+
+order_publish.bosai("supp_scRNA.Rmd", "supp_scRNA_out.Rmd")
+idname <- formatName.bosai("./supp_scRNA_out.docx")
+order_packaging("./supp_scRNA_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table_scRNA", tabs = "Figure+Table_scRNA"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("肺癌"),
+  di("血小板")
+)
+# LC: Lung cancer 肺癌
+# P: platelet 血小板
+```
+
+```{r}
+#| route
+route <- as_network(
+  list(":",
+    ":, ",
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(p.route)
+```
+
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+```{r}
+gds.lung <- job_gds(c("Lung cancer", "platelet"))
+vis(gds.lung)
+active(gds.lung)
+```
+
+## GEO 数据获取 (LUNG_GSE244645)
+
+```{r}
+geo.lung_GSE244645 <- job_geo("GSE244645")
+geo.lung_GSE244645 <- step1(geo.lung_GSE244645)
+metadata.lung_GSE244645 <- expect(geo.lung_GSE244645, geo_cols())
+
+metadata.lung_GSE244645 <- dplyr::mutate(
+  metadata.lung_GSE244645, group = ifelse(
+    grpl(group, "post"), "Tumor_free", "Tumor"
+  )
+)
+metadata.lung_GSE244645
+```
+
+# 总结 {#conclusion}
+

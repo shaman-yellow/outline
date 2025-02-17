@@ -1,0 +1,113 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-02-07"), end = td("2025-02-17"), finish = td("2025-02-17"),
+  id = "BSJF250113", client = "傅兰君", inst = "",
+  type = "生信协助",
+  title = "Pearson相关分析",
+  save = ".items_support_cor.rds"
+)
+show.ic(info)
+
+order_publish.bosai("support_cor.Rmd", "support_cor_out.Rmd")
+idname <- formatName.bosai("./support_cor_out.docx")
+order_packaging("./support_cor_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table_cor", tabs = "Figure+Table_cor"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## GEO 数据获取 (DN)
+
+`r snap(geo.dn, 0:2)`
+
+```{r}
+gds.dn <- job_gds("Diabetic nephropathy")
+vis(gds.dn)
+active(gds.dn, which = 1:20)
+
+geo.dn <- job_geo("GSE142153")
+#' @meth {get_meth(geo.dn)}
+geo.dn <- step1(geo.dn)
+metadata.dn <- expect(geo.dn, geo_cols())
+```
+
+```{r}
+lm.dn <- asjob_limma(geo.dn, metadata.dn)
+lm.dn <- filter(
+  lm.dn, grpl(group, "healthy_control|diabetic_nephropathy"), type = "metadata"
+)
+lm.dn <- step1(lm.dn)
+lm.dn <- step2(lm.dn, cut.fc = .5, use = "P",
+  diabetic_nephropathy - healthy_control
+)
+lm.dn <- focus(
+  lm.dn, c("METTL3", "METTL14", "MEG3", "NRF2", "NFE2L2")
+)
+lm.dn@params$focusedDegs$p.BoxPlotOfDEGs
+
+cp.mettl_meg3 <- cal_corp(
+  lm.dn, NULL, c("METTL3", "METTL14"), 
+  "MEG3", mode = "linear", cut.cor = 0
+)
+cp.mettl_meg3@params$res$corp
+
+cp.meg3_nrf2 <- cal_corp(
+  lm.dn, NULL, "MEG3", c("NFE2L2", "TNF", "HIF1A"),
+  mode = "linear", cut.cor = 0
+)
+cp.meg3_nrf2@params$res$corp
+
+usedGenes <- c(
+  "METTL3", "METTL14", "MEG3", "NFE2L2", "TNF", "HIF1A"
+)
+```
+
+```{r}
+geo.dn4 <- job_geo("GSE166239")
+geo.dn4 <- step1(geo.dn4)
+geo.dn4 <- step2(geo.dn4, "counts.txt", rna = FALSE)
+counts.dn4 <- ftibble(list.files(geo.dn4$dir, full.names = TRUE))
+genes.dn4 <- dplyr::select(counts.dn4, Geneid = contig)
+genes.dn4 <- map_gene(genes.dn4, "Geneid", "ENSEMBL")
+dplyr::filter(genes.dn4, SYMBOL %in% usedGenes)
+
+counts.dn4
+```
+
+# 总结 {#conclusion}
+

@@ -114,13 +114,10 @@ lm.ch_GSE44076 <- step2(
   lm.ch_GSE44076, Tumor_sample - Mucosa_sample,
   use = "P", cut.fc = .3, label = "hgnc_symbol"
 )
+gnamePiezo1 <- c("PIEZO1", "FAM38A")
+lm.ch_GSE44076 <- focus(lm.ch_GSE44076, c("PIEZO1", "FAM38A"))
+lm.ch_GSE44076@params$focusedDegs$p.BoxPlotOfDEGs
 lm.ch_GSE44076@tables$step2$tops$`Tumor_sample - Mucosa_sample`
-dplyr::filter(lm.ch_GSE44076@tables$step2$tops$`Tumor_sample - Mucosa_sample`,
-  grpl(hgnc_symbol, "PIEZO1|FAM38A", TRUE)
-)
-lm.ch_GSE44076 <- map(lm.ch_GSE44076, "FAM38A", ref.use = "hgnc_symbol")
-lm.ch_GSE44076@plots$step2$p.BoxPlotOfDEGs
-
 ```
 
 
@@ -205,12 +202,9 @@ lm.cn_GSE44076 <- step2(
   lm.cn_GSE44076, Tumor_sample - Normal_paired_sample,
   use = "P", cut.fc = .3, label = "hgnc_symbol"
 )
-dplyr::filter(lm.cn_GSE44076@tables$step2$tops$`Tumor_sample - Normal_paired_sample`,
-  grpl(hgnc_symbol, "PIEZO1|FAM38A", TRUE)
-)
+lm.cn_GSE44076 <- focus(lm.cn_GSE44076, gnamePiezo1)
+lm.cn_GSE44076@params$focusedDegs$p.BoxPlotOfDEGs
 lm.cn_GSE44076@tables$step2$tops$`Tumor_sample - Normal_paired_sample`
-lm.cn_GSE44076 <- map(lm.cn_GSE44076, "FAM38A", ref.use = "hgnc_symbol")
-lm.cn_GSE44076@plots$step2$p.BoxPlotOfDEGs
 ```
 
 
@@ -253,12 +247,9 @@ lm.cn_GSE95132 <- step2(
   lm.cn_GSE95132, Colon_cancer_stage_II_IV - Healthy,
   use = "P", cut.fc = .3, label = "hgnc_symbol"
 )
-dplyr::filter(lm.cn_GSE95132@tables$step2$tops$`Colon_cancer_stage_II_IV - Healthy`,
-  grpl(hgnc_symbol, "PIEZO1|FAM38A", TRUE)
-)
+lm.cn_GSE95132 <- focus(lm.cn_GSE95132, gnamePiezo1)
+lm.cn_GSE95132@params$focusedDegs$p.BoxPlotOfDEGs
 lm.cn_GSE95132@tables$step2$tops$`Colon_cancer_stage_II_IV - Healthy`
-lm.cn_GSE95132 <- map(lm.cn_GSE95132, "PIEZO1")
-lm.cn_GSE95132@plots$step2$p.BoxPlotOfDEGs
 ```
 
 
@@ -300,12 +291,8 @@ lm.cn_GSE137327 <- step2(
   lm.cn_GSE137327, Primary_colon_cancer - Adjacent_non_cancerous_colon_tissue,
   use = "P", cut.fc = .3
 )
-dplyr::filter(lm.cn_GSE137327@tables$step2$tops$`Primary_colon_cancer - Adjacent_non_cancerous_colon_tissue`,
-  grpl(hgnc_symbol, "PIEZO1|FAM38A", TRUE)
-)
+lm.cn_GSE137327 <- focus(lm.cn_GSE137327, gnamePiezo1)
 lm.cn_GSE137327@tables$step2$tops$`Primary_colon_cancer - Adjacent_non_cancerous_colon_tissue`
-lm.cn_GSE137327 <- map(lm.cn_GSE137327, "PIEZO1")
-lm.cn_GSE137327@plots$step2$p.BoxPlotOfDEGs
 ```
 
 
@@ -351,11 +338,8 @@ lm.cn_GSE76855 <- step2(
   lm.cn_GSE76855, Colon_Cancer - Normal_tissue,
   use = "P", cut.fc = .3
 )
-dplyr::filter(lm.cn_GSE76855@tables$step2$tops$`Colon_Cancer - Normal_tissue`,
-  grpl(GENE_SYMBOL, "PIEZO1|FAM38A", TRUE)
-)
+lm.cn_GSE76855 <- focus(lm.cn_GSE76855, gnamePiezo1)
 lm.cn_GSE76855@tables$step2$tops$`Colon_Cancer - Normal_tissue`
-lm.cn_GSE76855 <- map(lm.cn_GSE76855, "PIEZO1")
 lm.cn_GSE76855@plots$step2$p.BoxPlotOfDEGs
 ```
 
@@ -400,12 +384,8 @@ lm.cn_GSE38939 <- step2(
   lm.cn_GSE38939, tumor - adjacent_non_tumor,
   use = "P", cut.fc = .3, label = "Symbol"
 )
+lm.cn_GSE38939 <- focus(lm.cn_GSE38939, gnamePiezo1)
 lm.cn_GSE38939@tables$step2$tops$`tumor - adjacent_non_tumor`
-dplyr::filter(lm.cn_GSE38939@tables$step2$tops$`tumor - adjacent_non_tumor`,
-  grpl(Symbol, "PIEZO1|FAM38A", TRUE)
-)
-lm.cn_GSE38939@tables$step2$tops$`tumor - adjacent_non_tumor`
-lm.cn_GSE38939 <- map(lm.cn_GSE38939, "FAM38A", ref.use = "Symbol")
 lm.cn_GSE38939@plots$step2$p.BoxPlotOfDEGs
 ```
 
@@ -454,6 +434,7 @@ dplyr::filter(lm.cn_GSE36400@tables$step2$tops$`Colon_Cancer_Cell_Line - Normal_
 lm.cn_GSE36400@tables$step2$tops$`Colon_Cancer_Cell_Line - Normal_Colon_Crypt`
 lm.cn_GSE36400 <- map(lm.cn_GSE36400, "FAM38A")
 lm.cn_GSE36400@plots$step2$p.BoxPlotOfDEGs
+lm.cn_GSE36400 <- focus(lm.cn_GSE36400)
 ```
 
 
@@ -474,26 +455,13 @@ autor(lm.cn_GSE36400@plots$step2$p.BoxPlotOfDEGs)
 `r ref("PIEZO1-Cancer-vs-Normal")` 
 
 ```{r}
-fun_extract_box <- function(names) {
-  sapply(names, simplify = FALSE,
-    function(x) {
-      x <- get(x, envir = .GlobalEnv)
-      x@plots$step2$p.BoxPlotOfDEGs
-    })
-}
-
-gene_piezo1_ch <- ls(pattern = "lm.xena|lm.ch_")
-# [1] "lm.ch_GSE44076" "lm.xena_coad"  
-gene_piezo1_ch <- fun_extract_box(gene_piezo1_ch)
-gene_piezo1_ch <- frame_wrap(gene_piezo1_ch)
-gene_piezo1_ch <- wrap(gene_piezo1_ch, 6, 4)
-gene_piezo1_ch <- set_lab_legend(gene_piezo1_ch, "PIEZO1 Cancer vs Healthy")
+gene_piezo1_ch <- search_job_frame_wrap(
+  "lm.xena|lm.ch_", function(x) x@plots$step2$p.BoxPlotOfDEGs
+)
+gene_piezo1_ch <- set_lab_legend(wrap(gene_piezo1_ch, 6, 4), "PIEZO1 Cancer vs Healthy")
 gene_piezo1_ch
 
-gene_piezo1_cn <- ls(pattern = "lm.cn_")
-gene_piezo1_cn <- gene_piezo1_cn[!grpl(gene_piezo1_cn, "GSE137327|GSE38939")]
-gene_piezo1_cn <- fun_extract_box(gene_piezo1_cn)
-gene_piezo1_cn <- frame_wrap(gene_piezo1_cn)
+gene_piezo1_cn <- search_job_frame_wrap("lm.cn_", function(x) x@plots$step2$p.BoxPlotOfDEGs)
 gene_piezo1_cn <- wrap(gene_piezo1_cn, 9, 4)
 gene_piezo1_cn <- set_lab_legend(
   gene_piezo1_cn, "PIEZO1 Cancer vs Normal", "PIEZO1 Cancer vs Normal (不包括不显著的数据集)"
@@ -526,7 +494,67 @@ vis(gds.coad_surv)
 gds.coad_surv@params$res$metas
 ```
 
-## GEO 数据获取 (SURV_GSE29621)
+### GEO 数据获取 (SURV_GSE31595)
+
+`r snap(geo.surv_GSE31595, 0:2)`
+
+```{r}
+#' @meth {get_meth(geo.surv_GSE31595)}
+geo.surv_GSE31595 <- job_geo("GSE31595")
+geo.surv_GSE31595 <- step1(geo.surv_GSE31595)
+metadata.surv_GSE31595 <- expect(geo.surv_GSE31595, geo_cols())
+metadata.surv_GSE31595$relapse.free.survival.time.ch1
+metadata.surv_GSE31595 <- dplyr::mutate(
+  metadata.surv_GSE31595,
+  days_to_last_follow_up = as.double(strx(relapse.free.survival.time.ch1, "[0-9.]+")) * 30,
+  vital_status = ifelse(death.ch1 == "yes", "Dead", "Alive")
+)
+```
+
+### Survival 生存分析 (SURV_GSE31595)
+
+```{r}
+lm.surv_GSE31595 <- asjob_limma(geo.surv_GSE31595, metadata.surv_GSE31595)
+lm.surv_GSE31595 <- step1(lm.surv_GSE31595)
+surv.surv_GSE31595 <- asjob_survival(lm.surv_GSE31595, "PIEZO1")
+surv.surv_GSE31595 <- step1(surv.surv_GSE31595)
+surv.surv_GSE31595@plots$step1$p.surv$PIEZO1
+```
+
+### GEO 数据获取 (SURV_GSE39582)
+
+`r snap(geo.surv_GSE39582, 0:2)`
+
+```{r}
+geo.surv_GSE39582 <- job_geo("GSE39582")
+#' @meth {get_meth(geo.surv_GSE39582)}
+geo.surv_GSE39582 <- step1(geo.surv_GSE39582)
+metadata.surv_GSE39582 <- expect(geo.surv_GSE39582, geo_cols())
+metadata.surv_GSE39582 <- dplyr::mutate(
+  metadata.surv_GSE39582, vital_status = ifelse(
+    os.event.ch1 == "0", "Alive", "Dead"
+  ), days_to_last_follow_up = as.double(os.delay..months..ch1) * 30
+)
+metadata.surv_GSE39582
+```
+
+### Survival 生存分析 (SURV_GSE39582)
+
+`r snap(surv.surv_GSE39582, 0:1)`
+
+```{r}
+lm.surv_GSE39582 <- asjob_limma(geo.surv_GSE39582, metadata.surv_GSE39582)
+lm.surv_GSE39582 <- filter(
+  lm.surv_GSE39582, type = "metadata", days_to_last_follow_up > 0
+)
+lm.surv_GSE39582 <- step1(lm.surv_GSE39582)
+surv.surv_GSE39582 <- asjob_survival(lm.surv_GSE39582, "PIEZO1")
+#' @meth {get_meth(surv.surv_GSE39582)}
+surv.surv_GSE39582 <- step1(surv.surv_GSE39582)
+surv.surv_GSE39582@plots$step1$p.surv$PIEZO1
+```
+
+### GEO 数据获取 (SURV_GSE29621)
 
 `r snap(geo.surv_GSE29621, 0:2)`
 
@@ -537,27 +565,31 @@ geo.surv_GSE29621 <- step1(geo.surv_GSE29621)
 metadata.surv_GSE29621 <- expect(
   geo.surv_GSE29621, geo_cols(group = "ajcc.staging.ch1"), force = TRUE
 )
-metadata.surv_GSE29621 |> str()
 metadata.surv_GSE29621 <- dplyr::mutate(
   metadata.surv_GSE29621, days_to_last_follow_up = as.double(overall.survival..os..ch1) * 30,
   vital_status = Hmisc::capitalize(os.event.ch1)
 )
 ```
 
+### Survival 生存分析 (SURV_GSE29621)
+
+`r snap(surv.surv_GSE29621, 0:1)`
+
 ```{r}
 lm.surv_GSE29621 <- asjob_limma(geo.surv_GSE29621, metadata.surv_GSE29621)
-# filter
-lm.surv_GSE29621 <- step1(lm.surv_GSE29621)
-dplyr::filter(
-  lm.surv_GSE29621@object$genes, grpl(hgnc_symbol, "PIEZO1")
+lm.surv_GSE29621 <- filter(
+  lm.surv_GSE29621, type = "metadata", days_to_last_follow_up > 0
 )
+lm.surv_GSE29621 <- step1(lm.surv_GSE29621)
 surv.surv_GSE29621 <- asjob_survival(
   lm.surv_GSE29621, "PIEZO1", use = "hgnc_symbol"
 )
+#' @meth {get_meth(surv.surv_GSE29621)}
 surv.surv_GSE29621 <- step1(surv.surv_GSE29621, only_keep_sig = FALSE)
+surv.surv_GSE29621@plots$step1$p.surv$PIEZO1
 ```
 
-## GEO 数据获取 (SURV_GSE152430)
+### GEO 数据获取 (SURV_GSE152430)
 
 `r snap(geo.surv_GSE152430, 0:2)`
 
@@ -575,7 +607,7 @@ metadata.surv_GSE152430 <- dplyr::mutate(metadata.surv_GSE152430,
 )
 ```
 
-## Survival 生存分析 (SURV_GSE152430)
+### Survival 生存分析 (SURV_GSE152430)
 
 `r snap(surv.surv_GSE152430, 0:1)`
 
@@ -626,6 +658,16 @@ surv.coad@plots$step1$p.surv$PIEZO1
 #| COAD-survival-curve-of-PIEZO1
 autor(surv.coad@plots$step1$p.surv$PIEZO1)
 ```
+
+## 生存分析汇总
+
+```{r}
+gene_piezo1_surv <- search_job_frame_wrap(
+  "surv.surv_|surv.coad", function(x) as_grob(x@plots$step1$p.surv[[1]]@data[[1]])
+)
+wrap(gene_piezo1_surv, 13, 4)
+```
+
 
 # 总结 {#conclusion}
 

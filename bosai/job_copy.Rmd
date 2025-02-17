@@ -118,6 +118,12 @@ allTags <- dplyr::mutate(
     is.na(id_title), "Not Finished", "Finished"
   ), .before = 1
 )
+allTags <- dplyr::mutate(
+  allTags, Class = strx(Analysis, "(?<=\\[).*(?=\\])"), 
+  Class = recode_tagClass(Class),
+  .before = 1,
+)
+allTags <- dplyr::arrange(allTags, id_title, Class)
 allTags
 
 openxlsx::write.xlsx(allTags, "./summary/workflow_types.xlsx")

@@ -6,3 +6,36 @@ cp.dn <- cal_corp(
 )
 cp.dn@params$res$p.sig.corp
 ```
+
+```{r}
+geo.dn2 <- job_geo("GSE154881")
+geo.dn2 <- step1(geo.dn2)
+geo.dn2 <- step2(geo.dn2, rna = FALSE)
+metadata.dn2 <- expect(geo.dn2, geo_cols(sample = "title"))
+
+counts.dn2 <- ftibble(list.files(geo.dn2$dir, "txt", full.names = TRUE))
+counts.dn2
+genes.dn2 <- dplyr::select(counts.dn2, 1)
+genes.dn2 <- map_gene(genes.dn2, "Geneid", "ENSEMBL")
+genes.dn2 <- dplyr::filter(
+  genes.dn2, SYMBOL %in% c("METTL3", "METTL14", "MEG3", "NFE2L2")
+)
+genes.dn2
+```
+
+```{r}
+geo.dn3 <- job_geo("GSE104954")
+geo.dn3 <- step1(geo.dn3)
+metadata.dn3 <- expect(geo.dn3, geo_cols())
+```
+
+```{r}
+lm.dn3 <- asjob_limma(geo.dn3, metadata.dn3)
+lm.dn3 <- filter(lm.dn3, type = "meta", grpl(group, "H7_Tub_LD|H7_Tub_LD"))
+lm.dn3 <- step1(lm.dn3)
+cp3.mettl_meg3 <- cal_corp(
+  lm.dn3, NULL, c("METTL3", "METTL14"), 
+  "MEG3", mode = "linear", cut.cor = 0
+)
+```
+
