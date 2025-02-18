@@ -58,6 +58,7 @@ collate_details("meth")
 ```{r}
 gds.dn <- job_gds("Diabetic nephropathy")
 vis(gds.dn)
+dplyr::filter(gds.dn@object, grpl(gdsType, "Non-coding RNA profiling by array"))
 active(gds.dn, which = 1:20)
 
 geo.dn <- job_geo("GSE142153")
@@ -76,7 +77,9 @@ lm.dn <- step2(lm.dn, cut.fc = .5, use = "P",
   diabetic_nephropathy - healthy_control
 )
 lm.dn <- focus(
-  lm.dn, c("METTL3", "METTL14", "MEG3", "NRF2", "NFE2L2")
+  lm.dn, c(
+    "METTL3", "METTL14", "MEG3", "HIF1A", "NFE2L2", "TNF"
+  ), use = "P"
 )
 lm.dn@params$focusedDegs$p.BoxPlotOfDEGs
 
@@ -94,6 +97,28 @@ cp.meg3_nrf2@params$res$corp
 
 usedGenes <- c(
   "METTL3", "METTL14", "MEG3", "NFE2L2", "TNF", "HIF1A"
+)
+```
+
+## GEO 数据获取 (DN_LNCRNA)
+
+`r snap(geo.dn_lncRNA, 0:2)`
+
+```{r}
+geo.dn_lncRNA <- job_geo("GSE218344")
+#' @meth {get_meth(geo.dn_lncRNA)}
+geo.dn_lncRNA <- step1(geo.dn_lncRNA)
+metadata.dn_lncRNA <- expect(geo.dn_lncRNA, geo_cols())
+```
+
+```{r}
+lm.dn_lncRNA <- asjob_limma(geo.dn_lncRNA, metadata.dn_lncRNA)
+grpf(lm.dn_lncRNA@object$genes$ID, "MEG3", TRUE)
+
+lm.dn_lncRNA <- step1(lm.dn_lncRNA)
+lm.dn_lncRNA <- step2(
+  lm.dn_lncRNA, diabetic_nephropathy - control,
+  use = "P", cut.fc = .5
 )
 ```
 

@@ -82,15 +82,193 @@ active(gds.lung)
 ```{r}
 geo.lung_GSE244645 <- job_geo("GSE244645")
 geo.lung_GSE244645 <- step1(geo.lung_GSE244645)
-metadata.lung_GSE244645 <- expect(geo.lung_GSE244645, geo_cols())
-
-metadata.lung_GSE244645 <- dplyr::mutate(
-  metadata.lung_GSE244645, group = ifelse(
-    grpl(group, "post"), "Tumor_free", "Tumor"
-  )
-)
-metadata.lung_GSE244645
+metadata.lung_GSE244645 <- expect(geo.lung_GSE244645, geo_cols(group = "condition"))
+# NSCLC
 ```
+
+## Limma 差异分析 (LUNG_GSE244645)
+
+`r snap(lm.lung_GSE244645, 0:3)`
+
+```{r}
+lm.lung_GSE244645 <- asjob_limma(geo.lung_GSE244645, metadata.lung_GSE244645)
+lm.lung_GSE244645 <- filter(
+  lm.lung_GSE244645, type = "metadata", grpl(title, "NSCLC")
+)
+lm.lung_GSE244645 <- step1(lm.lung_GSE244645)
+#' @meth {get_meth(lm.lung_GSE244645)}
+lm.lung_GSE244645 <- step2(
+  lm.lung_GSE244645, tumour_presence - tumour_free,
+  use = "P", cut.fc = .5
+)
+lm.lung_GSE244645@plots$step2$p.volcano$`tumour_presence - tumour_free`
+lm.lung_GSE244645@tables$step2$tops$`tumour_presence - tumour_free`
+```
+
+## GEO 数据获取 (LUNG_GSE68086)
+
+`r snap(geo.lung_GSE68086, 0:2)`
+
+```{r}
+geo.lung_GSE68086 <- job_geo("lung_GSE68086")
+#' @meth {get_meth(geo.lung_GSE68086)}
+geo.lung_GSE68086 <- step1(geo.lung_GSE68086)
+metadata.lung_GSE68086 <- expect(geo.lung_GSE68086, geo_cols())
+metadata.lung_GSE68086 <- dplyr::mutate(
+  metadata.lung_GSE68086, group = s(group, "(_Lung).*$", "\\1"), batch = batch.ch1
+)
+geo.lung_GSE68086 <- step2(geo.lung_GSE68086)
+```
+
+## Limma 差异分析 (LUNG_GSE68086)
+
+`r snap(lm.lung_GSE68086, 0:3)`
+
+```{r}
+lm.lung_GSE68086 <- asjob_limma(geo.lung_GSE68086, metadata.lung_GSE68086)
+lm.lung_GSE68086 <- filter(
+  lm.lung_GSE68086, type = "metadata", grpl(group, "Blood_Platelets_Lung|Blood_Platelets_HC")
+)
+lm.lung_GSE68086 <- step1(lm.lung_GSE68086)
+#' @meth {get_meth(lm.lung_GSE68086)}
+lm.lung_GSE68086 <- step2(
+  lm.lung_GSE68086, Blood_Platelets_Lung - Blood_Platelets_HC,
+  use = "P", cut.fc = .5
+)
+lm.lung_GSE68086@plots$step2$p.volcano$`Blood_Platelets_Lung - Blood_Platelets_HC`
+lm.lung_GSE68086@tables$step2$tops$`Blood_Platelets_Lung - Blood_Platelets_HC`
+```
+
+## GEO 数据获取 (LUNG_GSE225787)
+
+```{r}
+geo.lung_GSE225787 <- job_geo("lung_GSE225787")
+geo.lung_GSE225787 <- step1(geo.lung_GSE225787)
+metadata.lung_GSE225787 <- expect(geo.lung_GSE225787, geo_cols())
+metadata.lung_GSE225787
+```
+
+## Limma 差异分析 (LUNG_GSE225787)
+
+`r snap(lm.lung_GSE225787, 0:3)`
+
+```{r}
+lm.lung_GSE225787 <- asjob_limma(
+  geo.lung_GSE225787, metadata.lung_GSE225787, use.col = "ID"
+)
+lm.lung_GSE225787 <- step1(lm.lung_GSE225787)
+#' @meth {get_meth(lm.lung_GSE225787)}
+lm.lung_GSE225787 <- step2(
+  lm.lung_GSE225787, lung_cancer - control,
+  use = "P", cut.fc = .5
+)
+lm.lung_GSE225787@tables$step2$tops$`lung_cancer - control`
+lm.lung_GSE225787@plots$step2$p.volcano$`lung_cancer - control`
+```
+
+## GEO 数据获取 (LUNG_GSE207586)
+
+`r snap(geo.lung_GSE207586, 0:2)`
+
+```{r}
+geo.lung_GSE207586 <- job_geo("lung_GSE207586")
+geo.lung_GSE207586 <- step1(geo.lung_GSE207586)
+#' @meth {get_meth(geo.lung_GSE207586)}
+geo.lung_GSE207586 <- step2(geo.lung_GSE207586)
+metadata.lung_GSE207586 <- expect(
+  geo.lung_GSE207586, geo_cols(group = "group"), force = TRUE
+)
+metadata.lung_GSE207586
+```
+
+## Limma 差异分析 (LUNG_GSE207586)
+
+`r snap(lm.lung_GSE207586, 0:3)`
+
+```{r}
+lm.lung_GSE207586 <- asjob_limma(geo.lung_GSE207586, metadata.lung_GSE207586)
+lm.lung_GSE207586 <- step1(lm.lung_GSE207586)
+#' @meth {get_meth(lm.lung_GSE207586)}
+lm.lung_GSE207586 <- step2(
+  lm.lung_GSE207586, NSCLC - Control,
+  use = "P", cut.fc = .5
+)
+lm.lung_GSE207586@tables$step2$tops$`NSCLC - Control`
+```
+
+## Limma 差异分析 (LUNG_SEQ)
+
+```{r}
+lm.lung_seq <- readRDS("./lm.mrna0.rds")
+lm.lung_seq$rna <- TRUE
+lm.lung_seq <- modify_job_limma_meta(
+  lm.lung_seq, group = ifelse(
+    group == "Healthy", "Control", "Lung_cancer"
+  ), batch = NULL, fun = dplyr::mutate, modify_object = TRUE
+)
+lm.lung_seq <- step1(lm.lung_seq)
+lm.lung_seq <- step2(lm.lung_seq,
+  Lung_cancer - Control,
+  use = "P", cut.fc = .5
+)
+lm.lung_seq@tables$step2$tops$`Lung_cancer - Control`
+```
+
+## 分析汇总
+
+```{r}
+tops <- collate("lm.lung_", function(x) x@tables$step2$tops[[1]])
+tops
+venns <- new_venn(lst = lapply(tops, function(x) x[[1]]), force_upset = TRUE)
+venns
+inst <- venns$ins
+inst
+
+boxs <- collate(
+  "lm.lung_", function(x) map(x, inst, use = "P")@plots$step2$p.BoxPlotOfDEGs
+)
+frame_wrap(boxs)
+```
+
+
+## TCGA 数据获取 (LUSC)
+
+`r snap(tcga.lusc, 0:3)`
+
+```{r}
+tcga.lusc <- job_tcga("TCGA-LUSC")
+#' @meth {get_meth(tcga.lusc)}
+tcga.lusc <- step1(tcga.lusc)
+tcga.lusc <- step2(tcga.lusc)
+tcga.lusc <- step3(tcga.lusc)
+```
+
+## Survival 生存分析 (LUSC)
+
+```{r}
+lm.lusc <- asjob_limma(tcga.lusc)
+lm.lusc <- step1(lm.lusc)
+surv.lusc <- asjob_survival(lm.lusc, inst)
+surv.lusc <- step1(surv.lusc)
+surv.lusc@plots$step1$p.surv$BCL2
+```
+
+```{r}
+gds.lung_scRNA <- job_gds(c("Lung cancer", "single cell"))
+vis(gds.lung_scRNA)
+active(gds.lung_scRNA, which = 21:30)
+
+geo.lungScRNA_GSE198099 <- job_geo("lungScRNA_GSE198099")
+geo.lungScRNA_GSE198099 <- step1(geo.lungScRNA_GSE198099)
+geo.lungScRNA_GSE198099 <- step2(geo.lungScRNA_GSE198099, rna = FALSE)
+metadata.lungScRNA_GSE198099 <- expect(geo.lungScRNA_GSE198099, geo_cols())
+
+geo.lungScRNA_GSE198099@params$dir_files
+
+
+```
+
+
 
 # 总结 {#conclusion}
 

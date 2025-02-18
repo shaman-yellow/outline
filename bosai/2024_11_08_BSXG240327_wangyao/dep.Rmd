@@ -550,3 +550,66 @@ lm.GEO_lung2@object
 ```
 
 
+
+## GEO 数据获取 (LUNG_GSE216297)
+
+`r snap(geo.lung_GSE216297, 0:2)`
+
+```{r}
+geo.lung_GSE216297 <- job_geo("lung_GSE216297")
+#' @meth {get_meth(geo.lung_GSE216297)}
+geo.lung_GSE216297 <- step1(geo.lung_GSE216297)
+geo.lung_GSE216297 <- step2(geo.lung_GSE216297)
+metadata.lung_GSE216297 <- expect(geo.lung_GSE216297, geo_cols())
+metadata.lung_GSE216297
+```
+
+## Limma 差异分析 (LUNG_GSE216297)
+
+`r snap(lm.lung_GSE216297, 0:3)`
+
+```{r}
+lm.lung_GSE216297 <- asjob_limma(geo.lung_GSE216297, metadata.lung_GSE216297)
+lm.lung_GSE216297 <- step1(lm.lung_GSE216297)
+#' @meth {get_meth(lm.lung_GSE216297)}
+lm.lung_GSE216297 <- step2(
+  lm.lung_GSE216297, nonResponder - Responder,
+  use = "P", cut.fc = .5
+)
+lm.lung_GSE216297@plots$step2$p.volcano$`nonResponder - Responder`
+lm.lung_GSE216297@tables$step2$tops$`nonResponder - Responder`
+rm(lm.lung_GSE216297, geo.lung_GSE216297)
+```
+
+
+## UCSCXenaTools 癌症相关数据获取 (LUNG_LUSC)
+
+```{r}
+xena.lung_LUSC <- job_xena()
+xena.lung_LUSC <- step1(xena.lung_LUSC, mode = "LUSC")
+xena.lung_LUSC <- step2(xena.lung_LUSC)
+rm(xena.lung_LUSC, lm.lung_LUSC)
+```
+
+## Limma 差异分析 (LUNG_LUSC)
+
+```{r}
+lm.lung_LUSC <- asjob_limma(xena.lung_LUSC)
+lm.lung_LUSC <- step1(lm.lung_LUSC)
+lm.lung_LUSC <- step2(
+  lm.lung_LUSC, LUSC - Normal,
+  use = "P", cut.fc = .5
+)
+lm.lung_LUSC@tables$step2$tops$`LUSC - Normal`
+lm.lung_LUSC <- map(lm.lung_LUSC, "BCL2", use = "P")
+lm.lung_LUSC@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+
+
+```{r}
+gds.lung_scRNA <- job_gds(c("Lung cancer", "single cell"))
+vis(gds.lung_scRNA)
+active(gds.lung_scRNA)
+```

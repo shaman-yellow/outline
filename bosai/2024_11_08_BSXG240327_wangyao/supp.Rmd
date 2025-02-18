@@ -122,6 +122,7 @@ fun_filter <- function(rna = "protein_coding") {
 }
 #' @meth {get_meth(lm.mrna)}
 lm.mrna <- fun_filter("protein_coding")
+clear(lm.mrna)
 lm.mrna <- step1(lm.mrna, pca = T, norm_vis = T)
 lm.mrna <- step2(lm.mrna, Early_stage - Healthy, Advanced_stage - Healthy, Advanced_stage - Early_stage,
   use = "P", cut.fc = .5, use.cut = .05, label = "hgnc_symbol")
