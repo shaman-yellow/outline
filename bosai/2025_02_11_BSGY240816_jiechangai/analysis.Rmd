@@ -6,7 +6,8 @@ info <- items(start = td("2025-01-17"), end = td("2025-01-21"), finish = td("202
   id = "BSGY240816", client = "颜艺超", inst = "北京大学国际医院",
   type = "生信分析",
   title = "结肠癌",
-  save = ".items_analysis.rds"
+  save = ".items_analysis.rds",
+  note = "PIEZO1表达与预期不符"
 )
 show.ic(info)
 

@@ -219,7 +219,7 @@ lm.lung_seq@tables$step2$tops$`Lung_cancer - Control`
 ```{r}
 tops <- collate("lm.lung_", function(x) x@tables$step2$tops[[1]])
 tops
-venns <- new_venn(lst = lapply(tops, function(x) x[[1]]), force_upset = TRUE)
+venns <- new_venn(lst = lapply(tops, function(x) x[[1]])[-2], force_upset = TRUE)
 venns
 inst <- venns$ins
 inst
@@ -231,41 +231,20 @@ frame_wrap(boxs)
 ```
 
 
-## TCGA 数据获取 (LUSC)
+## Lasso 诊断模型建立 (LUNG_GSE207586)
 
-`r snap(tcga.lusc, 0:3)`
-
-```{r}
-tcga.lusc <- job_tcga("TCGA-LUSC")
-#' @meth {get_meth(tcga.lusc)}
-tcga.lusc <- step1(tcga.lusc)
-tcga.lusc <- step2(tcga.lusc)
-tcga.lusc <- step3(tcga.lusc)
-```
-
-## Survival 生存分析 (LUSC)
+`r snap(dia.lung_GSE207586, 0:5)`
 
 ```{r}
-lm.lusc <- asjob_limma(tcga.lusc)
-lm.lusc <- step1(lm.lusc)
-surv.lusc <- asjob_survival(lm.lusc, inst)
-surv.lusc <- step1(surv.lusc)
-surv.lusc@plots$step1$p.surv$BCL2
-```
-
-```{r}
-gds.lung_scRNA <- job_gds(c("Lung cancer", "single cell"))
-vis(gds.lung_scRNA)
-active(gds.lung_scRNA, which = 21:30)
-
-geo.lungScRNA_GSE198099 <- job_geo("lungScRNA_GSE198099")
-geo.lungScRNA_GSE198099 <- step1(geo.lungScRNA_GSE198099)
-geo.lungScRNA_GSE198099 <- step2(geo.lungScRNA_GSE198099, rna = FALSE)
-metadata.lungScRNA_GSE198099 <- expect(geo.lungScRNA_GSE198099, geo_cols())
-
-geo.lungScRNA_GSE198099@params$dir_files
-
-
+dia.lung_GSE207586 <- asjob_diag(lm.lung_GSE207586, inst)
+#' @meth {get_meth(dia.lung_GSE207586)}
+dia.lung_GSE207586 <- step1(dia.lung_GSE207586)
+dia.lung_GSE207586 <- step2(dia.lung_GSE207586)
+dia.lung_GSE207586 <- step3(dia.lung_GSE207586)
+dia.lung_GSE207586 <- step4(dia.lung_GSE207586)
+dia.lung_GSE207586@plots$step4$p.lasso_ROC$lambda.min
+dia.lung_GSE207586@plots$step4$p.lasso_model
+dia.lung_GSE207586@plots$step4$p.lasso_coeffients$lambda.min
 ```
 
 

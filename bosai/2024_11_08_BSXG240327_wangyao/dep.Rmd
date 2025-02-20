@@ -613,3 +613,72 @@ gds.lung_scRNA <- job_gds(c("Lung cancer", "single cell"))
 vis(gds.lung_scRNA)
 active(gds.lung_scRNA)
 ```
+
+## Seurat 集成单细胞数据分析 (GSE198099)
+
+`r snap(sr5n.GSE198099, 0:7)`
+
+```{r}
+dirs <- list.dirs(geo.lungScRNA_GSE198099$dir, full.names = TRUE)[-1]
+sr5n.GSE198099 <- job_seurat5n(
+  dirs[1:4], c("Cancer1", "Cancer2", "Normal1", "Normal2")
+)
+sr5n.GSE198099@params$p.qc_pre
+sr5n.GSE198099 <- step1(sr5n.GSE198099, 0, 9000, 15)
+#' @meth {get_meth(sr5n.GSE198099)}
+sr5n.GSE198099@params$p.qc_aft
+sr5n.GSE198099 <- step2(sr5n.GSE198099)
+sr5n.GSE198099@plots$step2$p.pca_rank
+sr5n.GSE198099 <- step3(sr5n.GSE198099, use = "CCA")
+```
+
+
+## GEO 数据获取 (LUNGSCRNA_GSE198099)
+
+`r snap(geo.lungScRNA_GSE198099, 0:2)`
+
+```{r}
+gds.lung_scRNA <- job_gds(c("Lung cancer", "single cell"))
+vis(gds.lung_scRNA)
+active(gds.lung_scRNA, which = 21:30)
+
+#' @meth {get_meth(geo.lungScRNA_GSE198099)}
+geo.lungScRNA_GSE198099 <- job_geo("lungScRNA_GSE198099")
+geo.lungScRNA_GSE198099 <- step1(geo.lungScRNA_GSE198099)
+geo.lungScRNA_GSE198099 <- step2(geo.lungScRNA_GSE198099, rna = FALSE)
+geo.lungScRNA_GSE198099$dir_files
+metadata.lungScRNA_GSE198099 <- expect(geo.lungScRNA_GSE198099, geo_cols())
+
+lapply(list.files(geo.lungScRNA_GSE198099$dir, "genes"),
+  function(x) {
+    pattern <- s(
+      tools::file_path_sans_ext(x, TRUE), "_genes", ""
+    )
+    prepare_10x(geo.lungScRNA_GSE198099$dir, pattern)
+  })
+
+```
+
+
+## TCGA 数据获取 (LUSC)
+
+`r snap(tcga.lusc, 0:3)`
+
+```{r}
+tcga.lusc <- job_tcga("TCGA-LUSC")
+#' @meth {get_meth(tcga.lusc)}
+tcga.lusc <- step1(tcga.lusc)
+tcga.lusc <- step2(tcga.lusc)
+tcga.lusc <- step3(tcga.lusc)
+rm(tcga.lusc, lm.lusc)
+```
+
+## Survival 生存分析 (LUSC)
+
+```{r}
+lm.lusc <- asjob_limma(tcga.lusc)
+lm.lusc <- step1(lm.lusc)
+surv.lusc <- asjob_survival(lm.lusc, inst)
+surv.lusc <- step1(surv.lusc)
+surv.lusc
+```

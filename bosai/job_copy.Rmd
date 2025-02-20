@@ -134,3 +134,7 @@ openxlsx::write.xlsx(allTags, "./summary/workflow_types.xlsx")
 ```{r}
 summary_week.bosai(rm = T, must_include = "BSGY240816")
 ```
+
+```{r}
+summary_week.bosai(rm = T)
+```

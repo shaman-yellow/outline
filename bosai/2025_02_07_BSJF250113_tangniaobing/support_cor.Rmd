@@ -2,11 +2,12 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2025-02-07"), end = td("2025-02-17"), finish = td("2025-02-17"),
+info <- items(start = td("2025-02-07"), end = td("2025-02-17"), finish = td("2025-02-20"),
   id = "BSJF250113", client = "傅兰君", inst = "",
   type = "生信协助",
   title = "Pearson相关分析",
-  save = ".items_support_cor.rds"
+  save = ".items_support_cor.rds",
+  note = "METTL3、METTL14等表达与预期不符"
 )
 show.ic(info)
 
@@ -56,10 +57,11 @@ collate_details("meth")
 `r snap(geo.dn, 0:2)`
 
 ```{r}
+# PBMCs
 gds.dn <- job_gds("Diabetic nephropathy")
 vis(gds.dn)
 dplyr::filter(gds.dn@object, grpl(gdsType, "Non-coding RNA profiling by array"))
-active(gds.dn, which = 1:20)
+active(gds.dn, which = 41:50)
 
 geo.dn <- job_geo("GSE142153")
 #' @meth {get_meth(geo.dn)}
@@ -68,6 +70,10 @@ metadata.dn <- expect(geo.dn, geo_cols())
 ```
 
 ```{r}
+usedGenes <- c(
+  "METTL3", "METTL14", "MEG3", "NFE2L2", "TNF", "HIF1A"
+)
+
 lm.dn <- asjob_limma(geo.dn, metadata.dn)
 lm.dn <- filter(
   lm.dn, grpl(group, "healthy_control|diabetic_nephropathy"), type = "metadata"
@@ -76,28 +82,9 @@ lm.dn <- step1(lm.dn)
 lm.dn <- step2(lm.dn, cut.fc = .5, use = "P",
   diabetic_nephropathy - healthy_control
 )
-lm.dn <- focus(
-  lm.dn, c(
-    "METTL3", "METTL14", "MEG3", "HIF1A", "NFE2L2", "TNF"
-  ), use = "P"
-)
+lm.dn <- focus(lm.dn, usedGenes, use = "P")
 lm.dn@params$focusedDegs$p.BoxPlotOfDEGs
-
-cp.mettl_meg3 <- cal_corp(
-  lm.dn, NULL, c("METTL3", "METTL14"), 
-  "MEG3", mode = "linear", cut.cor = 0
-)
-cp.mettl_meg3@params$res$corp
-
-cp.meg3_nrf2 <- cal_corp(
-  lm.dn, NULL, "MEG3", c("NFE2L2", "TNF", "HIF1A"),
-  mode = "linear", cut.cor = 0
-)
-cp.meg3_nrf2@params$res$corp
-
-usedGenes <- c(
-  "METTL3", "METTL14", "MEG3", "NFE2L2", "TNF", "HIF1A"
-)
+lm.dn@params$focusedDegs$data
 ```
 
 ## GEO 数据获取 (DN_LNCRNA)
@@ -105,34 +92,140 @@ usedGenes <- c(
 `r snap(geo.dn_lncRNA, 0:2)`
 
 ```{r}
+# kidney sample
 geo.dn_lncRNA <- job_geo("GSE218344")
 #' @meth {get_meth(geo.dn_lncRNA)}
 geo.dn_lncRNA <- step1(geo.dn_lncRNA)
 metadata.dn_lncRNA <- expect(geo.dn_lncRNA, geo_cols())
 ```
 
+## Limma 差异分析 (DN_LNCRNA)
+
+`r snap(lm.dn_lncRNA, 0:3)`
+
 ```{r}
 lm.dn_lncRNA <- asjob_limma(geo.dn_lncRNA, metadata.dn_lncRNA)
-grpf(lm.dn_lncRNA@object$genes$ID, "MEG3", TRUE)
-
+lm.dn_lncRNA <- map(lm.dn_lncRNA, geo.dn_lncRNA)
 lm.dn_lncRNA <- step1(lm.dn_lncRNA)
+#' @meth {get_meth(lm.dn_lncRNA)}
 lm.dn_lncRNA <- step2(
   lm.dn_lncRNA, diabetic_nephropathy - control,
   use = "P", cut.fc = .5
 )
+dplyr::filter(lm.dn_lncRNA@tables$step2$tops$`diabetic_nephropathy - control`, symbol %in% usedGenes)
+lm.dn_lncRNA <- focus(lm.dn_lncRNA, usedGenes, use = "P")
+lm.dn_lncRNA@params$focusedDegs$data
 ```
 
+## GEO 数据获取 (DN4)
+
 ```{r}
+# kidney sample
 geo.dn4 <- job_geo("GSE166239")
 geo.dn4 <- step1(geo.dn4)
 geo.dn4 <- step2(geo.dn4, "counts.txt", rna = FALSE)
+metadata.dn4 <- expect(geo.dn4, geo_cols(sample = "title"), force = TRUE)
+metadata.dn4
 counts.dn4 <- ftibble(list.files(geo.dn4$dir, full.names = TRUE))
+counts.dn4
 genes.dn4 <- dplyr::select(counts.dn4, Geneid = contig)
 genes.dn4 <- map_gene(genes.dn4, "Geneid", "ENSEMBL")
-dplyr::filter(genes.dn4, SYMBOL %in% usedGenes)
-
 counts.dn4
 ```
+
+## Limma 差异分析 (DN4)
+
+`r snap(lm.dn4, 0:3)`
+
+```{r}
+lm.dn4 <- job_limma(new_dge(metadata.dn4, counts.dn4, genes.dn4))
+lm.dn4 <- filter(
+  lm.dn4, type = "metadata", grpl(group, "Ctrl|T2DN")
+)
+lm.dn4 <- step1(lm.dn4)
+#' @meth {get_meth(lm.dn4)}
+lm.dn4 <- step2(
+  lm.dn4, T2DN - Ctrl,
+  use = "P", cut.fc = .5
+)
+lm.dn4 <- focus(lm.dn4, usedGenes, use = "P")
+lm.dn4@params$focusedDegs$data
+lm.dn4@tables$step2$tops$`T2DN - Ctrl`
+```
+
+## GEO 数据获取 (DN6)
+
+`r snap(geo.dn6, 0:2)`
+
+```{r}
+# tubulointerstitial
+geo.dn6 <- job_geo("GSE175759")
+geo.dn6 <- step1(geo.dn6)
+#' @meth {get_meth(geo.dn6)}
+geo.dn6 <- step2(geo.dn6)
+metadata.dn6 <- expect(geo.dn6, geo_cols())
+
+```
+
+```{r}
+lm.dn6 <- asjob_limma(geo.dn6, metadata.dn6)
+lm.dn6 <- filter(
+  lm.dn6, type = "metadata", grpl(group, "Diabetic_nephropathy|Control")
+)
+lm.dn6 <- step1(lm.dn6)
+lm.dn6 <- step2(
+  lm.dn6, Diabetic_nephropathy_sample - Control_sample,
+  use = "P", cut.fc = .3
+)
+lm.dn6 <- focus(lm.dn6, usedGenes, use = "P")
+lm.dn6@params$focusedDegs$data
+```
+
+## GEO 数据获取 (DN7)
+
+`r snap(geo.dn7, 0:2)`
+
+```{r}
+# glomeruli
+geo.dn7 <- job_geo("GSE96804")
+#' @meth {get_meth(geo.dn7)}
+geo.dn7 <- step1(geo.dn7)
+metadata.dn7 <- expect(geo.dn7, geo_cols())
+```
+
+```{r}
+lm.dn7 <- asjob_limma(geo.dn7, metadata.dn7)
+lm.dn7 <- step1(lm.dn7)
+lm.dn7 <- step2(
+  lm.dn7, DN - Control,
+  use = "P", cut.fc = .5
+)
+lm.dn7 <- focus(lm.dn7, usedGenes, use = "P")
+lm.dn7@params$focusedDegs$data
+```
+
+## GEO 数据获取 (DN8)
+
+`r snap(geo.dn8, 0:2)`
+
+```{r}
+geo.dn8 <- job_geo("GSE111154")
+#' @meth {get_meth(geo.dn8)}
+geo.dn8 <- step1(geo.dn8)
+metadata.dn8 <- expect(geo.dn8, geo_cols())
+```
+
+```{r}
+lm.dn8 <- asjob_limma(geo.dn8, metadata.dn8)
+lm.dn8 <- step1(lm.dn8)
+lm.dn8 <- step2(
+  lm.dn8, early_diabetic_nephropathy - Control,
+  use = "P", cut.fc = .5
+)
+lm.dn8 <- focus(lm.dn8, usedGenes, use = "P")
+lm.dn8@params$focusedDegs$data
+```
+
 
 # 总结 {#conclusion}
 

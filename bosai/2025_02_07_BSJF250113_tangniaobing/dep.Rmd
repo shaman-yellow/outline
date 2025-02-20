@@ -39,3 +39,32 @@ cp3.mettl_meg3 <- cal_corp(
 )
 ```
 
+
+cp.mettl_meg3 <- cal_corp(
+  lm.dn, NULL, c("METTL3", "METTL14"), 
+  "MEG3", mode = "linear", cut.cor = 0
+)
+cp.mettl_meg3@params$res$corp
+
+cp.meg3_nrf2 <- cal_corp(
+  lm.dn, NULL, "MEG3", c("NFE2L2", "TNF", "HIF1A"),
+  mode = "linear", cut.cor = 0
+)
+cp.meg3_nrf2@params$res$corp
+
+
+```{r}
+geo.dn0 <- job_geo("GSE142153")
+geo.dn0 <- step1(geo.dn0)
+```
+
+
+```{r}
+geo.dn0 <- job_geo("GSE142153")
+geo.dn0 <- step1(geo.dn0)
+```
+
+geo.dn5 <- job_geo("GSE189002")
+geo.dn5 <- step1(geo.dn5)
+msetadata.dn5 <- expect(geo.dn5, geo_cols())
+metadata.dn5 <- dplyr::mutate(, , .before = 1)
