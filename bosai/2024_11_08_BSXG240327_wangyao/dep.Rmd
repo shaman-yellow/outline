@@ -682,3 +682,30 @@ surv.lusc <- asjob_survival(lm.lusc, inst)
 surv.lusc <- step1(surv.lusc)
 surv.lusc
 ```
+
+## GEO 数据获取 (LUNG_GSE225787)
+
+```{r}
+geo.lung_GSE225787 <- job_geo("lung_GSE225787")
+geo.lung_GSE225787 <- step1(geo.lung_GSE225787)
+metadata.lung_GSE225787 <- expect(geo.lung_GSE225787, geo_cols())
+metadata.lung_GSE225787
+```
+
+## Limma 差异分析 (LUNG_GSE225787)
+
+`r snap(lm.lung_GSE225787, 0:3)`
+
+```{r}
+lm.lung_GSE225787 <- asjob_limma(
+  geo.lung_GSE225787, metadata.lung_GSE225787, use.col = "ID"
+)
+lm.lung_GSE225787 <- step1(lm.lung_GSE225787)
+#' @meth {get_meth(lm.lung_GSE225787)}
+lm.lung_GSE225787 <- step2(
+  lm.lung_GSE225787, lung_cancer - control,
+  use = "P", cut.fc = .5
+)
+lm.lung_GSE225787@tables$step2$tops$`lung_cancer - control`
+lm.lung_GSE225787@plots$step2$p.volcano$`lung_cancer - control`
+```

@@ -135,6 +135,25 @@ openxlsx::write.xlsx(allTags, "./summary/workflow_types.xlsx")
 summary_week.bosai(rm = T, must_include = "BSGY240816")
 ```
 
+## 2025-02-21
+
 ```{r}
 summary_week.bosai(rm = T)
+```
+
+```{r}
+# file <- "~/disk_sda1/backup/"
+# data <- readRDS(file)
+# data <- dplyr::filter(data, belong < td("2025-02-07"))
+# saveRDS(data, file)
+```
+
+```{r}
+file <- "~/outline/bosai/summary/month_records.rds"
+data <- readRDS(file)
+
+data <- dplyr::filter(data, belong < td("2025-02-07"))
+saveRDS(data, file)
+
+summary_month.bosai(get_orders(), rm = TRUE)
 ```

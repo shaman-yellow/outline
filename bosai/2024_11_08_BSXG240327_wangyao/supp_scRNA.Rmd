@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2024-09-09"), end = td("2024-11-15"), finish = td(NA),
+info <- items(start = td("2024-09-09"), end = td("2024-11-15"), finish = td("2025-02-24"),
   id = "BSXG240327", client = "陈立茂", inst = "",
   type = "补充分析",
   title = "肺癌",
@@ -79,11 +79,13 @@ active(gds.lung)
 
 ## GEO 数据获取 (LUNG_GSE244645)
 
+`r snap(geo.lung_GSE244645, 0:2)`
+
 ```{r}
+#' @meth {get_meth(geo.lung_GSE244645)}
 geo.lung_GSE244645 <- job_geo("GSE244645")
 geo.lung_GSE244645 <- step1(geo.lung_GSE244645)
 metadata.lung_GSE244645 <- expect(geo.lung_GSE244645, geo_cols(group = "condition"))
-# NSCLC
 ```
 
 ## Limma 差异分析 (LUNG_GSE244645)
@@ -101,6 +103,7 @@ lm.lung_GSE244645 <- step2(
   lm.lung_GSE244645, tumour_presence - tumour_free,
   use = "P", cut.fc = .5
 )
+lm.lung_GSE244645 <- step3(lm.lung_GSE244645)
 lm.lung_GSE244645@plots$step2$p.volcano$`tumour_presence - tumour_free`
 lm.lung_GSE244645@tables$step2$tops$`tumour_presence - tumour_free`
 ```
@@ -135,36 +138,11 @@ lm.lung_GSE68086 <- step2(
   lm.lung_GSE68086, Blood_Platelets_Lung - Blood_Platelets_HC,
   use = "P", cut.fc = .5
 )
+lm.lung_GSE68086 <- step3(lm.lung_GSE68086)
 lm.lung_GSE68086@plots$step2$p.volcano$`Blood_Platelets_Lung - Blood_Platelets_HC`
 lm.lung_GSE68086@tables$step2$tops$`Blood_Platelets_Lung - Blood_Platelets_HC`
 ```
 
-## GEO 数据获取 (LUNG_GSE225787)
-
-```{r}
-geo.lung_GSE225787 <- job_geo("lung_GSE225787")
-geo.lung_GSE225787 <- step1(geo.lung_GSE225787)
-metadata.lung_GSE225787 <- expect(geo.lung_GSE225787, geo_cols())
-metadata.lung_GSE225787
-```
-
-## Limma 差异分析 (LUNG_GSE225787)
-
-`r snap(lm.lung_GSE225787, 0:3)`
-
-```{r}
-lm.lung_GSE225787 <- asjob_limma(
-  geo.lung_GSE225787, metadata.lung_GSE225787, use.col = "ID"
-)
-lm.lung_GSE225787 <- step1(lm.lung_GSE225787)
-#' @meth {get_meth(lm.lung_GSE225787)}
-lm.lung_GSE225787 <- step2(
-  lm.lung_GSE225787, lung_cancer - control,
-  use = "P", cut.fc = .5
-)
-lm.lung_GSE225787@tables$step2$tops$`lung_cancer - control`
-lm.lung_GSE225787@plots$step2$p.volcano$`lung_cancer - control`
-```
 
 ## GEO 数据获取 (LUNG_GSE207586)
 
@@ -193,10 +171,14 @@ lm.lung_GSE207586 <- step2(
   lm.lung_GSE207586, NSCLC - Control,
   use = "P", cut.fc = .5
 )
+lm.lung_GSE207586 <- step3(lm.lung_GSE207586)
 lm.lung_GSE207586@tables$step2$tops$`NSCLC - Control`
 ```
 
 ## Limma 差异分析 (LUNG_SEQ)
+
+测序数据肺癌 RNA-seq, 以 mRNA (protein_coding) 差异分析。
+`r snap(lm.lung_seq, 0:3)`
 
 ```{r}
 lm.lung_seq <- readRDS("./lm.mrna0.rds")
@@ -206,48 +188,195 @@ lm.lung_seq <- modify_job_limma_meta(
     group == "Healthy", "Control", "Lung_cancer"
   ), batch = NULL, fun = dplyr::mutate, modify_object = TRUE
 )
+#' @meth {get_meth(lm.lung_seq)}
 lm.lung_seq <- step1(lm.lung_seq)
 lm.lung_seq <- step2(lm.lung_seq,
   Lung_cancer - Control,
   use = "P", cut.fc = .5
 )
+lm.lung_seq <- step3(lm.lung_seq)
 lm.lung_seq@tables$step2$tops$`Lung_cancer - Control`
 ```
 
-## 分析汇总
+## 交集: lung_GSE207586 + lung_GSE244645 + lung_GSE68086 + lung_seq (LUNG)
+
+`r snap(venn.lung, 0:1)`
 
 ```{r}
-tops <- collate("lm.lung_", function(x) x@tables$step2$tops[[1]])
-tops
-venns <- new_venn(lst = lapply(tops, function(x) x[[1]])[-2], force_upset = TRUE)
-venns
-inst <- venns$ins
-inst
+pattern_collate <- "lm.lung_GSE207586|lm.lung_GSE244645|lm.lung_GSE68086|lm.lung_seq"
+tops <- collate(pattern_collate, function(x) feature(x))
+venn.lung <- job_venn(lst = tops)
+#' @meth {get_meth(venn.lung)}
+venn.lung <- step1(venn.lung, force_upset = TRUE)
+wrap(venn.lung@plots$step1$p.venn, 6, 3.5)
+```
 
-boxs <- collate(
-  "lm.lung_", function(x) map(x, inst, use = "P")@plots$step2$p.BoxPlotOfDEGs
+```{r}
+jobs <- lapply(
+  list(lm.lung_GSE244645, lm.lung_GSE68086, 
+    lm.lung_GSE207586, lm.lung_seq), 
+  function(x) {
+    x <- asjob_diag(x, inst)
+    x <- step1(x, pattern_control = "HC|control|free")
+    x@plots$step1$p.consist
+  }
 )
-frame_wrap(boxs)
+jobs[[4]]
 ```
 
 
-## Lasso 诊断模型建立 (LUNG_GSE207586)
+## Lasso 诊断模型建立 (LUNG_SEQ)
 
-`r snap(dia.lung_GSE207586, 0:5)`
+`r snap(dia.lung_seq, 0:5)`
 
 ```{r}
-dia.lung_GSE207586 <- asjob_diag(lm.lung_GSE207586, inst)
-#' @meth {get_meth(dia.lung_GSE207586)}
-dia.lung_GSE207586 <- step1(dia.lung_GSE207586)
-dia.lung_GSE207586 <- step2(dia.lung_GSE207586)
-dia.lung_GSE207586 <- step3(dia.lung_GSE207586)
-dia.lung_GSE207586 <- step4(dia.lung_GSE207586)
-dia.lung_GSE207586@plots$step4$p.lasso_ROC$lambda.min
-dia.lung_GSE207586@plots$step4$p.lasso_model
-dia.lung_GSE207586@plots$step4$p.lasso_coeffients$lambda.min
+#' @meth {get_meth(dia.lung_seq)}
+dia.lung_seq <- asjob_diag(lm.lung_seq, inst)
+dia.lung_seq <- step1(dia.lung_seq, pattern_control = "HC|control|free")
+dia.lung_seq@plots$step1$p.consist
+dia.lung_seq <- step2(dia.lung_seq)
+dia.lung_seq <- step3(dia.lung_seq)
+dia.lung_seq <- step4(dia.lung_seq)
+
+dia.lung_seq@plots$step4$p.lasso_ROC$lambda.1se
+dia.lung_seq@plots$step4$p.lasso_ROC$lambda.min
+dia.lung_seq@plots$step4$p.lasso_model
+dia.lung_seq@plots$step4$p.lasso_coeffients$lambda.min
+dia.lung_seq@plots$step4$p.lasso_coeffients$lambda.1se
+dia.lung_seq@params$sig.diag
 ```
 
+## 使用外部数据验证 (LUNG_SEQ)
 
+```{r}
+dia.lung_GSE68086 <- asjob_diag(lm.lung_GSE68086, inst)
+dia.lung_GSE68086 <- step1(dia.lung_GSE68086, pattern_control = "HC|control|free")
+dia.lung_GSE68086 <- map(dia.lung_GSE68086, dia.lung_seq)
+dia.lung_GSE68086@params$valid_results$lambda.1se$roc
+dia.lung_GSE68086@params$valid_results$lambda.min$roc
+```
+
+## GEO 数据获取 (LUNG_GSE89843)
+
+```{r}
+geo.lung_GSE89843 <- job_geo("lung_GSE89843")
+geo.lung_GSE89843 <- step1(geo.lung_GSE89843)
+metadata.lung_GSE89843 <- expect(geo.lung_GSE89843, geo_cols())
+geo.lung_GSE89843 <- step2(geo.lung_GSE89843)
+```
+
+```{r}
+lm.lung_GSE89843 <- asjob_limma(geo.lung_GSE89843, metadata.lung_GSE89843)
+lm.lung_GSE89843 <- filter(
+  lm.lung_GSE89843, type = "metadata", grpl(group, "Healthy_Control|NSCLC")
+)
+lm.lung_GSE89843 <- step1(lm.lung_GSE89843)
+lm.lung_GSE89843 <- step2(
+  lm.lung_GSE89843, NSCLC - Healthy_Control,
+  use = "P", cut.fc = .5
+)
+
+diag.lung_GSE89843 <- asjob_diag(lm.lung_GSE89843, inst)
+diag.lung_GSE89843 <- step1(diag.lung_GSE89843)
+diag.lung_GSE89843 <- map(diag.lung_GSE89843, dia.lung_seq)
+diag.lung_GSE89843@params$valid_results$lambda.1se$roc 
+```
+
+## UCSCXenaTools 癌症相关数据获取 (LUNG_LUSC)
+
+```{r}
+xena.lung_LUSC <- job_xena()
+xena.lung_LUSC <- step1(xena.lung_LUSC, mode = "LUSC")
+xena.lung_LUSC <- step2(xena.lung_LUSC)
+```
+
+```{r}
+lm.lung_LUSC <- asjob_limma(xena.lung_LUSC)
+lm.lung_LUSC <- step1(lm.lung_LUSC)
+dia.lung_LUSC <- asjob_diag(lm.lung_LUSC, inst)
+dia.lung_LUSC <- step1(dia.lung_LUSC)
+dia.lung_LUSC <- map(dia.lung_LUSC, dia.lung_seq)
+dia.lung_LUSC@params$valid_results$lambda.min$roc
+dia.lung_LUSC@params$valid_results$lambda.1se$roc
+```
+
+## UCSCXenaTools 癌症相关数据获取 (LUNG_LUAD)
+
+```{r}
+xena.lung_LUAD <- job_xena()
+xena.lung_LUAD <- step1(xena.lung_LUAD, mode = "LUAD")
+xena.lung_LUAD <- step2(xena.lung_LUAD)
+```
+
+```{r}
+lm.lung_LUAD <- asjob_limma(xena.lung_LUAD)
+lm.lung_LUAD <- step1(lm.lung_LUAD)
+dia.lung_LUAD <- asjob_diag(lm.lung_LUAD, inst)
+dia.lung_LUAD <- step1(dia.lung_LUAD)
+dia.lung_LUAD <- map(dia.lung_LUAD, dia.lung_seq)
+dia.lung_LUAD@params$valid_results$lambda.min$roc
+dia.lung_LUAD@params$valid_results$lambda.1se$roc
+```
+
+```{r}
+tc.lusc <- job_tcga("TCGA-LUSC")
+tc.lusc <- step1(tc.lusc)
+tc.lusc <- step2(tc.lusc)
+tc.lusc <- step3(tc.lusc)
+
+lm.lusc <- asjob_limma(tc.lusc)
+lm.lusc <- step1(lm.lusc)
+lasso.lusc <- asjob_lasso(lm.lusc, inst)
+lasso.lusc <- step1(lasso.lusc)
+
+surv.lusc <- asjob_survival(
+  lasso.lusc, fea_coefs = dia.lung_seq@params$sig.diag, 
+  force = T, lambda = "1se"
+)
+surv.lusc <- step1(surv.lusc)
+surv.lusc@plots$step1$p.surv$risk_score
+```
+
+## Survival 生存分析 (LUSC)
+
+```{r}
+tc.lusc <- job_tcga("TCGA-LUSC")
+tc.lusc <- step1(tc.lusc)
+tc.lusc <- step2(tc.lusc)
+tc.lusc <- step3(tc.lusc)
+
+lm.lusc <- asjob_limma(tc.lusc)
+lm.lusc <- step1(lm.lusc)
+lasso.lusc <- asjob_lasso(lm.lusc, inst)
+lasso.lusc <- step1(lasso.lusc)
+
+surv.lusc <- asjob_survival(
+  lasso.lusc, fea_coefs = dia.lung_seq@params$sig.diag, 
+  force = T, lambda = "1se"
+)
+surv.lusc <- step1(surv.lusc)
+surv.lusc@plots$step1$p.surv$risk_score
+```
+
+```{r}
+tc.luad <- job_tcga("TCGA-LUAD")
+tc.luad <- step1(tc.luad)
+tc.luad <- step2(tc.luad)
+tc.luad <- step3(tc.luad)
+
+lm.luad <- asjob_limma(tc.luad)
+lm.luad <- step1(lm.luad)
+lasso.luad <- asjob_lasso(lm.luad, inst)
+lasso.luad <- step1(lasso.luad)
+
+surv.luad <- asjob_survival(
+  lasso.luad, fea_coefs = dia.lung_seq@params$sig.diag, 
+  force = T, lambda = "1se"
+)
+surv.luad <- step1(surv.luad)
+surv.luad@plots$step1$p.surv$risk_score
+
+```
 
 # 总结 {#conclusion}
 
