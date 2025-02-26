@@ -709,3 +709,30 @@ lm.lung_GSE225787 <- step2(
 lm.lung_GSE225787@tables$step2$tops$`lung_cancer - control`
 lm.lung_GSE225787@plots$step2$p.volcano$`lung_cancer - control`
 ```
+
+## GEO 数据获取 (LUNG_GSE89843)
+
+```{r}
+geo.lung_GSE89843 <- job_geo("lung_GSE89843")
+geo.lung_GSE89843 <- step1(geo.lung_GSE89843)
+metadata.lung_GSE89843 <- expect(geo.lung_GSE89843, geo_cols())
+geo.lung_GSE89843 <- step2(geo.lung_GSE89843)
+```
+
+```{r}
+rm(geo.lung_GSE89843, lm.lung_GSE89843)
+lm.lung_GSE89843 <- asjob_limma(geo.lung_GSE89843, metadata.lung_GSE89843)
+lm.lung_GSE89843 <- filter(
+  lm.lung_GSE89843, type = "metadata", grpl(group, "Healthy_Control|NSCLC")
+)
+lm.lung_GSE89843 <- step1(lm.lung_GSE89843)
+lm.lung_GSE89843 <- step2(
+  lm.lung_GSE89843, NSCLC - Healthy_Control,
+  use = "P", cut.fc = .5
+)
+
+diag.lung_GSE89843 <- asjob_diag(lm.lung_GSE89843, inst)
+diag.lung_GSE89843 <- step1(diag.lung_GSE89843)
+diag.lung_GSE89843 <- map(diag.lung_GSE89843, dia.lung_seq)
+diag.lung_GSE89843@params$valid_results$lambda.1se$roc 
+```

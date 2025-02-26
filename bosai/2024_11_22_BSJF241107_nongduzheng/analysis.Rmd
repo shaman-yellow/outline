@@ -1,0 +1,124 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2024-11-19"), end = td("2025-02-21"), finish = td("2025-02-28"),
+  id = "BSJF241107", client = "许冠华", inst = "",
+  type = "生信分析",
+  title = "脓毒症发病标志物",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+```{r}
+clinical <- fxlsx("./order_material/Clinical_Data_Reyes_et_al_NATURE_MED.xlsx")
+meta <- ftibble("./order_material/scp_meta_updated.txt")
+groupSepsis <- c("Int-URO", "URO", "Bac-SEP", "ICU-SEP")
+meta <- dplyr::mutate(
+  meta, group = ifelse(Cohort %in% groupSepsis, "Sepsis", Cohort)
+)
+prepare_10x("./order_material/scp_gex_matrix_raw.csv.gz", single = TRUE)
+
+sr.sepsis <- job_seurat("./order_material/scp_gex_matrix_raw")
+sr.sepsis <- mutate(sr.sepsis, barcodes = colnames(sr.sepsis@object))
+sr.sepsis@object@meta.data <- merge(
+  sr.sepsis@object@meta.data, meta, by.x = "barcodes", by.y = "NAME", all.x = TRUE, sort = FALSE
+)
+rownames(sr.sepsis@object@meta.data) <- sr.sepsis@object@meta.data$barcodes
+
+sr.sepsis <- getsub(sr.sepsis, group %in% c("Control", "Sepsis"))
+# `r cite_show("An_immune_cell_Reyes_2020")`
+sr.sepsis <- mutate(sr.sepsis, orig.ident = group)
+```
+
+## Seurat 单细胞数据分析 (SEPSIS)
+
+```{r}
+sr.sepsis <- step1(sr.sepsis)
+sr.sepsis@params$p.qc_pre
+sr.sepsis <- step2(sr.sepsis, 0, 4000, 10)
+sr.sepsis@plots$step2$p.pca_rank
+sr.sepsis <- step3(sr.sepsis)
+sr.sepsis@plots$step3$p.umap
+vis(sr.sepsis, "Cell_Type", mode = "sample")
+
+sr.sepsis$group.by = "Cell_Type"
+```
+
+## scFEA 单细胞数据的代谢通量预测 (SEPSIS)
+
+`r snap(scfea.sepsis, 0:2)`
+
+```{r}
+set_remoteRun.bosai()
+scfea.sepsis <- asjob_scfea(sr.sepsis, groups = "T")
+scfea.sepsis <- set_remote(scfea.sepsis, "scfea_sepsis")
+#' @meth {get_meth(scfea.sepsis)}
+scfea.sepsis <- step1(scfea.sepsis)
+scfea.sepsis <- step2(scfea.sepsis)
+scfea.sepsis@tables$step2$t.anno
+scfea.sepsis@tables$step2$t.flux
+scfea.sepsis@params$metadata
+
+vis(scfea.sepsis)
+```
+
+## Limma 代谢通量差异分析 (SEPSIS_FLUX)
+
+`r snap(lm.sepsis_flux, 0:3)`
+
+```{r}
+scfea.sepsis$metadata$orig.ident %>% table
+lm.sepsis_flux <- asjob_limma(scfea.sepsis, group = "orig.ident")
+lm.sepsis_flux <- step1(lm.sepsis_flux)
+#' @meth {get_meth(lm.sepsis_flux)}
+lm.sepsis_flux <- step2(
+  lm.sepsis_flux, Sepsis - Control, use = "P", cut.fc = .15
+)
+lm.sepsis_flux@tables$step2$tops$`Sepsis - Control`
+```
+
+# 总结 {#conclusion}
+

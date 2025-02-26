@@ -1,0 +1,617 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2024-09-09"), end = td("2024-11-15"), finish = td("2025-02-24"),
+  id = "BSXG240327", client = "陈立茂", inst = "",
+  type = "补充分析",
+  title = "肺癌",
+  save = ".items_supp_scRNA.rds"
+)
+show.ic(info)
+
+order_publish.bosai("supp_scRNA.Rmd", "supp_scRNA_out.Rmd")
+idname <- formatName.bosai("./supp_scRNA_out.docx")
+order_packaging("./supp_scRNA_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table_scRNA", tabs = "Figure+Table_scRNA"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("肺癌"),
+  di("血小板")
+)
+# LC: Lung cancer 肺癌
+# P: platelet 血小板
+```
+
+```{r}
+#| route
+route <- as_network(
+  list("肺癌Tumor_educated-platelet:GEO, RNA-seq",
+    "GEO:GSE244645, GSE68086, GSE207586:差异分析",
+    "RNA-seq:差异分析",
+    "差异分析:DEGs:富集分析:Lasso回归:诊断模型:验证:Platelet, Lung_tissue",
+    "Platelet:GEO_*3",
+    "Lung_tissue:LUSC, LUAD:GTEx+TCGA",
+    "诊断模型:生存分析(额外的)",
+    "RNA-seq:Lasso回归"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(p.route)
+```
+
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## Lung cancer (GEO Platelet)
+
+
+## GSE 数据搜索 (LUNG)
+
+`r snap(gds.lung, 0:3)`
+
+使用的 GEO 数据集见
+`r ref("Lung-cancer-EDirect-query")`
+<!-- LEGEND_END -->
+
+```{r}
+#' @meth {get_meth(gds.lung)}
+gds.lung <- job_gds(c("Lung cancer", "platelet"))
+gds.lung <- step1(gds.lung)
+usedData <- dplyr::filter(data, GSE %in% c("GSE244645", "GSE68086", "GSE207586"))
+usedData
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Lung-cancer-EDirect-query
+autor(usedData)
+```
+
+### GEO 数据获取 (LUNG_GSE244645)
+
+`r snap(geo.lung_GSE244645, 0:2)`
+
+```{r}
+#' @meth {get_meth(geo.lung_GSE244645)}
+geo.lung_GSE244645 <- job_geo("GSE244645")
+geo.lung_GSE244645 <- step1(geo.lung_GSE244645)
+metadata.lung_GSE244645 <- expect(geo.lung_GSE244645, geo_cols(group = "condition"))
+```
+
+### Limma 差异分析 (LUNG_GSE244645)
+
+`r snap(lm.lung_GSE244645, 0:3)`
+
+`r ref("LUNG-GSE244645-tumour-presence-vs-tumour-free")`
+`r ref("LUNG-GSE244645-data-tumour-presence-vs-tumour-free")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.lung_GSE244645 <- asjob_limma(geo.lung_GSE244645, metadata.lung_GSE244645)
+lm.lung_GSE244645 <- filter(
+  lm.lung_GSE244645, type = "metadata", grpl(title, "NSCLC")
+)
+lm.lung_GSE244645 <- step1(lm.lung_GSE244645)
+#' @meth {get_meth(lm.lung_GSE244645)}
+lm.lung_GSE244645 <- step2(
+  lm.lung_GSE244645, tumour_presence - tumour_free,
+  use = "P", cut.fc = .5
+)
+lm.lung_GSE244645 <- step3(lm.lung_GSE244645)
+lm.lung_GSE244645@plots$step2$p.volcano$`tumour_presence - tumour_free`
+lm.lung_GSE244645@tables$step2$tops$`tumour_presence - tumour_free`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-GSE244645-tumour-presence-vs-tumour-free
+autor(lm.lung_GSE244645@plots$step2$p.volcano$`tumour_presence - tumour_free`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-GSE244645-data-tumour-presence-vs-tumour-free
+autor(lm.lung_GSE244645@tables$step2$tops$`tumour_presence - tumour_free`)
+```
+
+### GEO 数据获取 (LUNG_GSE68086)
+
+`r snap(geo.lung_GSE68086, 0:2)`
+
+```{r}
+geo.lung_GSE68086 <- job_geo("lung_GSE68086")
+#' @meth {get_meth(geo.lung_GSE68086)}
+geo.lung_GSE68086 <- step1(geo.lung_GSE68086)
+metadata.lung_GSE68086 <- expect(geo.lung_GSE68086, geo_cols())
+metadata.lung_GSE68086 <- dplyr::mutate(
+  metadata.lung_GSE68086, group = s(group, "(_Lung).*$", "\\1"), batch = batch.ch1
+)
+geo.lung_GSE68086 <- step2(geo.lung_GSE68086)
+```
+
+### Limma 差异分析 (LUNG_GSE68086)
+
+`r snap(lm.lung_GSE68086, 0:3)`
+
+`r ref("LUNG-GSE68086-Blood-Platelets-Lung-vs-Blood-Platelets-HC")`
+`r ref("LUNG-GSE68086-data-Blood-Platelets-Lung-vs-Blood-Platelets-HC")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.lung_GSE68086 <- asjob_limma(geo.lung_GSE68086, metadata.lung_GSE68086)
+lm.lung_GSE68086 <- filter(
+  lm.lung_GSE68086, type = "metadata", grpl(group, "Blood_Platelets_Lung|Blood_Platelets_HC")
+)
+lm.lung_GSE68086 <- step1(lm.lung_GSE68086)
+#' @meth {get_meth(lm.lung_GSE68086)}
+lm.lung_GSE68086 <- step2(
+  lm.lung_GSE68086, Blood_Platelets_Lung - Blood_Platelets_HC,
+  use = "P", cut.fc = .5
+)
+lm.lung_GSE68086 <- step3(lm.lung_GSE68086)
+lm.lung_GSE68086@plots$step2$p.volcano$`Blood_Platelets_Lung - Blood_Platelets_HC`
+lm.lung_GSE68086@tables$step2$tops$`Blood_Platelets_Lung - Blood_Platelets_HC`
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-GSE68086-Blood-Platelets-Lung-vs-Blood-Platelets-HC
+autor(lm.lung_GSE68086@plots$step2$p.volcano$`Blood_Platelets_Lung - Blood_Platelets_HC`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-GSE68086-data-Blood-Platelets-Lung-vs-Blood-Platelets-HC
+autor(lm.lung_GSE68086@tables$step2$tops$`Blood_Platelets_Lung - Blood_Platelets_HC`)
+```
+
+### GEO 数据获取 (LUNG_GSE207586)
+
+`r snap(geo.lung_GSE207586, 0:2)`
+
+```{r}
+geo.lung_GSE207586 <- job_geo("lung_GSE207586")
+geo.lung_GSE207586 <- step1(geo.lung_GSE207586)
+#' @meth {get_meth(geo.lung_GSE207586)}
+geo.lung_GSE207586 <- step2(geo.lung_GSE207586)
+metadata.lung_GSE207586 <- expect(
+  geo.lung_GSE207586, geo_cols(group = "group"), force = TRUE
+)
+metadata.lung_GSE207586
+```
+
+### Limma 差异分析 (LUNG_GSE207586)
+
+`r snap(lm.lung_GSE207586, 0:3)`
+
+`r ref("LUNG-GSE207586-NSCLC-vs-Control")`
+`r ref("LUNG-GSE207586-data-NSCLC-vs-Control")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.lung_GSE207586 <- asjob_limma(geo.lung_GSE207586, metadata.lung_GSE207586)
+lm.lung_GSE207586 <- step1(lm.lung_GSE207586)
+#' @meth {get_meth(lm.lung_GSE207586)}
+lm.lung_GSE207586 <- step2(
+  lm.lung_GSE207586, NSCLC - Control,
+  use = "P", cut.fc = .5
+)
+lm.lung_GSE207586 <- step3(lm.lung_GSE207586)
+lm.lung_GSE207586@plots$step2$p.volcano$`NSCLC - Control`
+lm.lung_GSE207586@tables$step2$tops$`NSCLC - Control`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-GSE207586-NSCLC-vs-Control
+autor(lm.lung_GSE207586@plots$step2$p.volcano$`NSCLC - Control`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-GSE207586-data-NSCLC-vs-Control
+autor(lm.lung_GSE207586@tables$step2$tops$`NSCLC - Control`)
+```
+
+### Limma 差异分析 (LUNG_SEQ)
+
+测序数据肺癌 RNA-seq, 以 mRNA (protein_coding) 差异分析。
+`r snap(lm.lung_seq, 0:3)`
+
+`r ref("LUNG-SEQ-Lung-cancer-vs-Control")`
+`r ref("LUNG-SEQ-data-Lung-cancer-vs-Control")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.lung_seq <- readRDS("./lm.mrna0.rds")
+lm.lung_seq$rna <- TRUE
+lm.lung_seq <- modify_job_limma_meta(
+  lm.lung_seq, group = ifelse(
+    group == "Healthy", "Control", "Lung_cancer"
+  ), batch = NULL, fun = dplyr::mutate, modify_object = TRUE
+)
+#' @meth {get_meth(lm.lung_seq)}
+lm.lung_seq <- step1(lm.lung_seq)
+lm.lung_seq <- step2(lm.lung_seq,
+  Lung_cancer - Control,
+  use = "P", cut.fc = .5
+)
+lm.lung_seq <- step3(lm.lung_seq)
+lm.lung_seq@tables$step2$tops$`Lung_cancer - Control`
+lm.lung_seq@plots$step2$p.volcano$`Lung_cancer - Control`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-SEQ-Lung-cancer-vs-Control
+autor(lm.lung_seq@plots$step2$p.volcano$`Lung_cancer - Control`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-SEQ-data-Lung-cancer-vs-Control
+autor(lm.lung_seq@tables$step2$tops$`Lung_cancer - Control`)
+```
+
+## 交集: lung_GSE207586 + lung_GSE244645 + lung_GSE68086 + lung_seq (LUNG)
+
+`r snap(venn.lung, 0:1)`
+
+`r ref("Intersection-of-lung-GSE207586-with-lung-GSE244645-with-lung-GSE68086-with-lung-seq")`
+<!-- LEGEND_END -->
+
+```{r}
+pattern_collate <- "lm.lung_GSE207586|lm.lung_GSE244645|lm.lung_GSE68086|lm.lung_seq"
+tops <- collate(pattern_collate, function(x) feature(x))
+venn.lung <- job_venn(lst = tops)
+#' @meth {get_meth(venn.lung)}
+venn.lung <- step1(venn.lung, force_upset = TRUE)
+wrap(venn.lung@plots$step1$p.venn, 6, 3.5)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-lung-GSE207586-with-lung-GSE244645-with-lung-GSE68086-with-lung-seq
+autor(wrap(venn.lung@plots$step1$p.venn, 6, 3.5))
+```
+
+## ClusterProfiler 富集分析 (VENN)
+
+`r snap(en.venn, 0:2)`
+
+`r ref("VENN-KEGG-enrichment")`
+`r ref("VENN-GO-enrichment")`
+`r ref("VENN-KEGG-enrichment-data")`
+`r ref("VENN-GO-enrichment-data")`
+<!-- LEGEND_END -->
+
+```{r}
+en.venn <- asjob_enrich(feature(venn.lung))
+#' @meth {get_meth(en.venn)}
+en.venn <- step1(en.venn)
+en.venn@plots$step1$p.kegg$ids
+en.venn@plots$step1$p.go$ids
+en.venn@tables$step1$res.kegg$ids
+en.venn@tables$step1$res.go$ids
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| VENN-KEGG-enrichment
+autor(en.venn@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| VENN-GO-enrichment
+autor(en.venn@plots$step1$p.go$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| VENN-KEGG-enrichment-data
+autor(en.venn@tables$step1$res.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| VENN-GO-enrichment-data
+autor(en.venn@tables$step1$res.go$ids)
+```
+
+## Lasso 诊断模型建立 (LUNG_SEQ)
+
+`r snap(dia.lung_seq, 0:5)`
+
+`r ref("Heatmap-of-input-genes")`
+`r ref("LUNG-SEQ-lasso-model")`
+`r ref("LUNG-SEQ-lasso-coeffients-lambda-min")`
+`r ref("LUNG-SEQ-lasso-coeffients-lambda-1se")`
+`r ref("LUNG-SEQ-sig-Coefficients")`
+`r ref("LUNG-SEQ-lasso-ROC-lambda-1se")`
+`r ref("LUNG-SEQ-lasso-ROC-lambda-min")`
+<!-- LEGEND_END -->
+
+```{r}
+#' @meth {get_meth(dia.lung_seq)}
+dia.lung_seq <- asjob_diag(lm.lung_seq, feature(venn.lung))
+dia.lung_seq <- step1(dia.lung_seq, pattern_control = "HC|control|free")
+dia.lung_seq <- step2(dia.lung_seq)
+dia.lung_seq <- step3(dia.lung_seq)
+dia.lung_seq <- step4(dia.lung_seq)
+
+wrap(dia.lung_seq@params$p.hp, 10, 7)
+dia.lung_seq@plots$step4$p.lasso_model
+dia.lung_seq@plots$step4$p.lasso_coeffients$lambda.min
+dia.lung_seq@plots$step4$p.lasso_coeffients$lambda.1se
+dia.lung_seq@tables$step4$t.sigCoefficients
+dia.lung_seq@plots$step4$p.lasso_ROC$lambda.1se
+dia.lung_seq@plots$step4$p.lasso_ROC$lambda.min
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Heatmap-of-input-genes
+autor(wrap(dia.lung_seq@params$p.hp, 10, 7))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-SEQ-lasso-model
+autor(dia.lung_seq@plots$step4$p.lasso_model)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-SEQ-lasso-coeffients-lambda-min
+autor(dia.lung_seq@plots$step4$p.lasso_coeffients$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-SEQ-lasso-coeffients-lambda-1se
+autor(dia.lung_seq@plots$step4$p.lasso_coeffients$lambda.1se)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-SEQ-sig-Coefficients
+autor(dia.lung_seq@tables$step4$t.sigCoefficients)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-SEQ-lasso-ROC-lambda-1se
+autor(dia.lung_seq@plots$step4$p.lasso_ROC$lambda.1se)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-SEQ-lasso-ROC-lambda-min
+autor(dia.lung_seq@plots$step4$p.lasso_ROC$lambda.min)
+```
+
+## RNA 数据集 (Platelet) 验证 (LUNG_VALID)
+
+选择 lambda.min 时的诊断模型，`r snap(dia.GEO_valid, 0:1)`
+
+`r ref("LUNG-VALID-GSE207586-feature-heatmap-in-validation-dataset")`
+`r ref("LUNG-VALID-GSE244645-feature-heatmap-in-validation-dataset")`
+`r ref("LUNG-VALID-GSE68086-feature-heatmap-in-validation-dataset")`
+`r ref("LUNG-VALID-lambda-min-ROC")`
+<!-- LEGEND_END -->
+
+```{r}
+dia.GEO_valid <- job_diagn(
+  list(
+    lm.lung_GSE207586, lm.lung_GSE244645, lm.lung_GSE68086
+  ), feature(venn.lung)
+)
+dia.GEO_valid <- step1(dia.GEO_valid, "HC|control|free")
+#' @meth {get_meth(dia.GEO_valid)}
+dia.GEO_valid <- map(dia.GEO_valid, dia.lung_seq)
+dia.GEO_valid@params$p.hps$GSE207586
+dia.GEO_valid@params$p.hps$GSE244645
+dia.GEO_valid@params$p.hps$GSE68086
+dia.GEO_valid@params$p.rocs$lambda.min
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-VALID-GSE207586-feature-heatmap-in-validation-dataset
+autor(dia.GEO_valid@params$p.hps$GSE207586)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-VALID-GSE244645-feature-heatmap-in-validation-dataset
+autor(dia.GEO_valid@params$p.hps$GSE244645)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-VALID-GSE68086-feature-heatmap-in-validation-dataset
+autor(dia.GEO_valid@params$p.hps$GSE68086)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUNG-VALID-lambda-min-ROC
+autor(dia.GEO_valid@params$p.rocs$lambda.min)
+```
+
+## 肺组织 RNA-seq 数据集验证
+
+以上模型的构建和验证均选取肺癌 Tumour-educated Platelet 基因表达数据。
+以下，尝试将模型推广于肺组织样本基因表达数据 (来自于 GTEx 的正常组织样本和 TCGA 的癌组织样本) 。
+
+### UCSCXenaTools 癌症相关数据获取 (LUNG_LUSC)
+
+`r snap(xena.lung_LUSC, 0:2)`
+
+```{r}
+#' @meth {get_meth(xena.lung_LUSC)}
+xena.lung_LUSC <- job_xena()
+xena.lung_LUSC <- step1(xena.lung_LUSC, mode = "LUSC")
+xena.lung_LUSC <- step2(xena.lung_LUSC)
+lm.lung_LUSC <- asjob_limma(xena.lung_LUSC)
+lm.lung_LUSC <- step1(lm.lung_LUSC)
+```
+
+### UCSCXenaTools 癌症相关数据获取 (LUNG_LUAD)
+
+`r snap(xena.lung_LUAD, 0:2)`
+
+```{r}
+#' @meth {get_meth(xena.lung_LUAD)}
+xena.lung_LUAD <- job_xena()
+xena.lung_LUAD <- step1(xena.lung_LUAD, mode = "LUAD")
+xena.lung_LUAD <- step2(xena.lung_LUAD)
+lm.lung_LUAD <- asjob_limma(xena.lung_LUAD)
+lm.lung_LUAD <- step1(lm.lung_LUAD)
+```
+
+### RNA 数据集验证 (TCGA_VALID)
+
+`r snap(dia.tcga_valid, 0:1)`
+
+`r ref("TCGA-VALID-lambda-min-ROC")`
+<!-- LEGEND_END -->
+
+```{r}
+dia.tcga_valid <- job_diagn(
+  list(lm.lung_LUAD, lm.lung_LUSC), inst
+)
+#' @meth {get_meth(dia.tcga_valid)}
+dia.tcga_valid <- step1(dia.tcga_valid)
+dia.tcga_valid <- map(dia.tcga_valid, dia.lung_seq)
+dia.tcga_valid@params$p.rocs$lambda.min
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-VALID-lambda-min-ROC
+autor(dia.tcga_valid@params$p.rocs$lambda.min)
+```
+
+
+## Survival 生存分析 (LUSC)
+
+`r snap(surv.lusc, 0:1)`
+
+`r ref("LUSC-survival-curve-of-risk-score")`
+<!-- LEGEND_END -->
+
+```{r}
+tc.lusc <- job_tcga("TCGA-LUSC")
+tc.lusc <- step1(tc.lusc)
+tc.lusc <- step2(tc.lusc)
+tc.lusc <- step3(tc.lusc)
+
+lm.lusc <- asjob_limma(tc.lusc)
+lm.lusc <- step1(lm.lusc)
+lasso.lusc <- asjob_lasso(lm.lusc, inst)
+lasso.lusc <- step1(lasso.lusc)
+
+#' @meth {get_meth(surv.lusc)}
+surv.lusc <- asjob_survival(
+  lasso.lusc, fea_coefs = dia.lung_seq@params$sig.diag, 
+  force = T, lambda = "min"
+)
+surv.lusc <- step1(surv.lusc)
+surv.lusc@plots$step1$p.surv$risk_score
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUSC-survival-curve-of-risk-score
+autor(surv.lusc@plots$step1$p.surv$risk_score)
+```
+
+## Survival 生存分析 (LUAD)
+
+`r snap(surv.luad, 0:1)`
+
+`r ref("LUAD-survival-curve-of-risk-score")`
+<!-- LEGEND_END -->
+
+```{r}
+tc.luad <- job_tcga("TCGA-LUAD")
+tc.luad <- step1(tc.luad)
+tc.luad <- step2(tc.luad)
+tc.luad <- step3(tc.luad)
+
+lm.luad <- asjob_limma(tc.luad)
+lm.luad <- step1(lm.luad)
+lasso.luad <- asjob_lasso(lm.luad, inst)
+lasso.luad <- step1(lasso.luad)
+
+#' @meth {get_meth(surv.luad)}
+surv.luad <- asjob_survival(
+  lasso.luad, fea_coefs = dia.lung_seq@params$sig.diag, 
+  force = T, lambda = "min"
+)
+surv.luad <- step1(surv.luad)
+surv.luad@plots$step1$p.surv$risk_score
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-survival-curve-of-risk-score
+autor(surv.luad@plots$step1$p.surv$risk_score)
+```
+
+# 总结 {#conclusion}
+
+本研究从多组 Tumor-educated platelet 数据集 (3 组GEO 和 1 组临床样本RNA-seq) 出发，差异分析，
+发现共同 DEGs，随后以机器学习 (Lasso) 建立诊断模型，用以肺癌 (包括 LUAD 和 LUSC) 诊断。
+随后又从多个数据集上外部验证了模型的稳定性。本研究还将 Tumor-educated platelet 测序数据，推广
+到肺组织样本的基因表达数据的诊断，LUSC 和 LUAD 的结果均表明，该诊断模型具有优异的诊断性能。
+

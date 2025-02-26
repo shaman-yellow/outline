@@ -1,0 +1,130 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2024-12-26"), end = td("2025-02-28"), finish = td("2025-02-25"),
+  id = "BSHQ241042", client = "梁海东", inst = "",
+  type = "生信分析",
+  title = "骨肉瘤ZDHHC",
+  save = ".items_analysis_zdhhc8.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis_zdhhc8.Rmd", "analysis_zdhhc8_out.Rmd")
+idname <- formatName.bosai("./analysis_zdhhc8_out.docx")
+order_packaging("./analysis_zdhhc8_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table_zdhhc8", tabs = "Figure+Table_zdhhc8"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+- 生物信息学筛选OS中差异表达 (正常与OS组织) 并且与预后相关的ZDHHC基因
+- 鉴定ZDHHC-X和脂质代谢合成相关枢纽基因
+  - 将OS转移以及未转移样本中ZDHHC-X表达从低到高排序
+  - 进行WGCNA分析，选择与脂质代谢合成相关性最高的模块
+  - 将ZDHCC-X与筛选出的基因上传至GENEMANIA、STRING构建PPI网络，筛选出与ZDHHCC-X相互作用的脂质代谢合成相关蛋白
+  - 在OS转移与未转移样本中分析相关蛋白的表达
+  - 相关性分析：ZDHHC-X与相互作用蛋白在OS转移中的相关性
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## TCGA 数据获取 (OS)
+
+`r snap(tcga.os, 0:3)`
+
+```{r}
+#' @meth {get_meth(tcga.os)}
+tcga.os <- job_tcga("TARGET-OS")
+tcga.os <- step1(tcga.os)
+tcga.os <- step2(tcga.os)
+tcga.os <- step3(tcga.os)
+```
+
+## Survival 生存分析 (OS)
+
+`r ref("OS-Significant-Survival-PValue")`
+<!-- LEGEND_END -->
+
+## Limma 差异分析 (OS)
+
+`r snap(surv.os, 0:1)`
+
+## Survival 生存分析 (OS)
+
+`r snap(surv.os, 0:1)`
+
+`r ref("OS-survival-curve-of-alls")`
+`r ref("OS-survival-curve-of-ZDHHC8")`
+`r ref("OS-Survival-plots")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.os <- asjob_limma(tcga.os)
+lm.os <- filter(
+  lm.os, type = "gene", grpl(gene_name, "ZDHHC")
+)
+genesZdhhcs <- lm.os@object$genes$gene_name
+lm.os <- step1(lm.os)
+#' @meth {get_meth(surv.os)}
+surv.os <- asjob_survival(lm.os, genesZdhhcs)
+surv.os <- step1(surv.os)
+surv.os@tables$step1$t.SignificantSurvivalPValue
+surv.os@plots$step1$p.surv$ZDHHC8
+surv.os@plots$step1$p.surv
+feature(surv.os)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-Significant-Survival-PValue
+autor(surv.os@tables$step1$t.SignificantSurvivalPValue)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-survival-curve-of-ZDHHC8
+autor(surv.os@plots$step1$p.surv$ZDHHC8)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-Survival-plots
+autor(surv.os@plots$step1$p.surv)
+```
+
+
+
+# 总结 {#conclusion}
+

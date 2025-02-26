@@ -1,0 +1,145 @@
+
+
+```{r}
+xena.os <- job_xena()
+dplyr::filter(
+  xena.os@params$clinical, grpl(
+    detailed_category, "Osteosarcoma", TRUE
+  )
+)
+xena.os <- step1(xena.os)
+```
+
+## ClusterProfiler GSEA 富集分析 (GSE87624)
+
+`r snap(gsea.GSE87624, 0:3)`
+
+```{r}
+gsea.GSE87624 <- asjob_gsea(lm.GSE87624)
+#' @meth {get_meth(gsea.GSE87624)}
+gsea.GSE87624 <- step1(gsea.GSE87624)
+gsea.GSE87624 <- step2(gsea.GSE87624, NULL)
+gsea.GSE87624@step <- 2L
+gsea.GSE87624 <- step3(gsea.GSE87624, map = "lipid")
+gsea.GSE87624@plots$step3$p.code
+
+```
+
+### GEO 数据获取 (GSE19276)
+
+`r snap(geo.GSE19276, 0:2)`
+
+OS vs Normal
+
+```{r}
+geo.GSE19276 <- job_geo("GSE19276")
+#' @meth {get_meth(geo.GSE19276)}
+geo.GSE19276 <- step1(geo.GSE19276)
+metadata.GSE19276 <- expect(geo.GSE19276, geo_cols())
+metadata.GSE19276$title
+```
+
+### GEO 数据获取 (GSE5045)
+
+`r snap(geo.GSE5045, 0:2)`
+
+```{r}
+geo.GSE5045 <- job_geo("GSE5045")
+#' @meth {get_meth(geo.GSE5045)}
+geo.GSE5045 <- step1(geo.GSE5045)
+geo.GSE5045@params$about$`GSE5045-GPL1133_series_matrix.txt.gz`
+geo.GSE5045@params$about$`GSE5045-GPL1120_series_matrix.txt.gz`
+geo.GSE5045@params$about$`GSE5045-GPL3865_series_matrix.txt.gz`@phenoData@data
+metadata.GSE5045 <- expect(geo.GSE5045, geo_cols())
+metadata.GSE5045
+```
+
+### GEO 数据获取 (GSE16088)
+
+`r snap(geo.GSE16088, 0:2)`
+
+```{r}
+geo.GSE16088 <- job_geo("GSE16088")
+#' @meth {get_meth(geo.GSE16088)}
+geo.GSE16088 <- step1(geo.GSE16088)
+metadata.GSE16088 <- expect(geo.GSE16088, geo_cols())
+metadata.GSE16088$tissue.ch1
+metadata.GSE16088$disease.state.ch1
+```
+
+### GEO 数据获取 (GSE16091)
+
+`r snap(geo.GSE16091, 0:2)`
+
+```{r}
+geo.GSE16091 <- job_geo("GSE16091")
+#' @meth {get_meth(geo.GSE16091)}
+geo.GSE16091 <- step1(geo.GSE16091)
+metadata.GSE16091 <- expect(geo.GSE16091, geo_cols())
+metadata.GSE16091
+```
+
+### GEO 数据获取 (GSE12865)
+
+`r snap(geo.GSE12865, 0:2)`
+
+```{r}
+geo.GSE12865 <- job_geo("GSE12865")
+#' @meth {get_meth(geo.GSE12865)}
+geo.GSE12865 <- step1(geo.GSE12865)
+metadata.GSE12865 <- expect(geo.GSE12865, geo_cols())
+metadata.GSE12865
+```
+
+### GEO 数据获取 (GSE12630)
+
+`r snap(geo.GSE12630, 0:2)`
+
+```{r}
+geo.GSE12630 <- job_geo("GSE12630")
+#' @meth {get_meth(geo.GSE12630)}
+geo.GSE12630 <- step1(geo.GSE12630)
+metadata.GSE12630 <- expect(geo.GSE12630, geo_cols())
+metadata.GSE12630$Anatomical.sites.ch1
+```
+
+### GEO 数据获取 (GSE74230)
+
+`r snap(geo.GSE74230, 0:2)`
+
+```{r}
+geo.GSE74230 <- job_geo("GSE74230")
+#' @meth {get_meth(geo.GSE74230)}
+geo.GSE74230 <- step1(geo.GSE74230)
+metadata.GSE74230 <- expect(geo.GSE74230, geo_cols())
+metadata.GSE74230
+```
+
+### GEO 数据获取 (GSE33458)
+
+`r snap(geo.GSE33458, 0:2)`
+
+```{r}
+geo.GSE33458 <- job_geo("GSE33458")
+#' @meth {get_meth(geo.GSE33458)}
+geo.GSE33458 <- step1(geo.GSE33458)
+metadata.GSE33458 <- expect(geo.GSE33458, geo_cols())
+```
+
+### GEO 数据获取 (NORMAL_GSE12865)
+
+```{r}
+geo.normal_GSE12865 <- job_geo("normal_GSE12865")
+geo.normal_GSE12865 <- step1(geo.normal_GSE12865)
+metadata.normal_GSE12865 <- expect(geo.normal_GSE12865, geo_cols())
+metadata.normal_GSE12865
+```
+
+### GEO 数据获取 (NORMAL_GSE140131)
+
+```{r}
+geo.normal_GSE140131 <- job_geo("normal_GSE140131")
+geo.normal_GSE140131 <- step1(geo.normal_GSE140131)
+metadata.normal_GSE140131 <- expect(geo.normal_GSE140131, geo_cols())
+metadata.normal_GSE140131
+```
