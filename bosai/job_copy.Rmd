@@ -157,3 +157,11 @@ saveRDS(data, file)
 
 summary_month.bosai(get_orders(), rm = TRUE)
 ```
+
+## 2025-02-27
+
+```{r}
+summary_month.bosai(get_orders(), rm = TRUE, must_include = "BSJF241107")
+print(readRDS("./summary/month_records.rds"), n = Inf)
+```
+
