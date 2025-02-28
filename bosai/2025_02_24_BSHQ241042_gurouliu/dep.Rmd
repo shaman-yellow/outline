@@ -143,3 +143,229 @@ geo.normal_GSE140131 <- step1(geo.normal_GSE140131)
 metadata.normal_GSE140131 <- expect(geo.normal_GSE140131, geo_cols())
 metadata.normal_GSE140131
 ```
+
+## ZDHHC3 (重新分析)
+
+### Metastasis vs Primary (GSE14359) 和 Primary vs Normal (GSE218035)
+
+`r snap(lm.GSE14359, "zdhhc3")`
+`r ref("GSE14359-Box-Plot-Of-DEGs-zdhhc3")`
+`r ref("GSE14359-Statistic-of-Focused-genes-zdhhc3")`
+
+`r snap(lm.normal_GSE218035, "zdhhc3")`
+`r ref("NORMAL-GSE218035-Box-Plot-Of-DEGs-zdhhc3")`
+`r ref("NORMAL-GSE218035-Statistic-of-Focused-genes-zdhhc3")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.GSE14359 <- focus(
+  lm.GSE14359, "ZDHHC3", .name = "zdhhc3", use = "P"
+)
+lm.GSE14359@params$focusedDegs_zdhhc3$p.BoxPlotOfDEGs
+lm.GSE14359@params$focusedDegs_zdhhc3$data
+
+lm.normal_GSE218035 <- focus(
+  lm.normal_GSE218035, "ZDHHC3", .name = "zdhhc3", use = "P"
+)
+lm.normal_GSE218035@params$focusedDegs_zdhhc3$p.BoxPlotOfDEGs
+lm.normal_GSE218035@params$focusedDegs_zdhhc3$data
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE14359-Box-Plot-Of-DEGs-zdhhc3
+autor(lm.GSE14359@params$focusedDegs_zdhhc3$p.BoxPlotOfDEGs)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| NORMAL-GSE218035-Box-Plot-Of-DEGs-zdhhc3
+autor(lm.normal_GSE218035@params$focusedDegs_zdhhc3$p.BoxPlotOfDEGs)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE14359-Statistic-of-Focused-genes-zdhhc3
+autor(lm.GSE14359@params$focusedDegs_zdhhc3$data)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| NORMAL-GSE218035-Statistic-of-Focused-genes-zdhhc3
+autor(lm.normal_GSE218035@params$focusedDegs_zdhhc3$data)
+```
+
+### Limma 差异分析 (META_GSE14359)
+
+`r snap(lm.meta_GSE14359, 0:3)`
+
+`r ref("META-GSE14359-Metastasis-vs-Primary")`
+`r ref("META-GSE14359-data-Metastasis-vs-Primary")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.meta_GSE14359 <- asjob_limma(geo.GSE14359, metadata.GSE14359)
+lm.meta_GSE14359 <- step1(lm.meta_GSE14359)
+#' @meth {get_meth(lm.meta_GSE14359)}
+lm.meta_GSE14359 <- step2(
+  lm.meta_GSE14359, Metastasis - Primary,
+  use = "P", cut.fc = .5
+)
+lm.meta_GSE14359@plots$step2$p.volcano$`Metastasis - Primary`
+lm.meta_GSE14359@tables$step2$tops$`Metastasis - Primary`
+lm.meta_GSE14359 <- step3(lm.meta_GSE14359)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| META-GSE14359-Metastasis-vs-Primary
+autor(lm.meta_GSE14359@plots$step2$p.volcano$`Metastasis - Primary`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| META-GSE14359-data-Metastasis-vs-Primary
+autor(lm.meta_GSE14359@tables$step2$tops$`Metastasis - Primary`)
+```
+
+### 交集: Lipid_metabolism + Metastasis_DEGs (LIPID_METAGSE14359)
+
+`r snap(venn.lipid_metaGSE14359, 0:1)`
+
+`r ref("LIPID-METAGSE14359-Intersection-of-Lipid-metabolism-with-Metastasis-DEGs")`
+<!-- LEGEND_END -->
+
+```{r}
+venn.lipid_metaGSE14359 <- job_venn(
+  Lipid_metabolism = feature(gn.lipid), Metastasis_DEGs = feature(lm.meta_GSE14359)
+)
+venn.lipid_metaGSE14359 <- step1(venn.lipid_metaGSE14359)
+#' @meth {get_meth(venn.lipid_metaGSE14359)}
+venn.lipid_metaGSE14359@plots$step1$p.venn
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LIPID-METAGSE14359-Intersection-of-Lipid-metabolism-with-Metastasis-DEGs
+autor(venn.lipid_metaGSE14359@plots$step1$p.venn)
+```
+
+### 关联分析 (META_GSE14359)
+
+`r snap(cp.zdhhc3_lipid_metaGSE14359, 0:0)`
+
+`r ref("META-GSE14359-significant-correlation-analysis-data")`
+`r ref("META-GSE14359-significant-correlation-plots")`
+<!-- LEGEND_END -->
+
+```{r}
+cp.zdhhc3_lipid_metaGSE14359 <- cal_corp(
+  lm.meta_GSE14359, NULL, "ZDHHC3", feature(venn.lipid_metaGSE14359), 
+  mode = "linear"
+)
+#' @meth {get_meth(cp.zdhhc3_lipid_metaGSE14359)}
+cp.zdhhc3_lipid_metaGSE14359@params$res$sig.corp
+cp.zdhhc3_lipid_metaGSE14359@params$res$p.sig.corp
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| META-GSE14359-significant-correlation-analysis-data
+autor(cp.zdhhc3_lipid_metaGSE14359@params$res$sig.corp)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| META-GSE14359-significant-correlation-plots
+autor(cp.zdhhc3_lipid_metaGSE14359@params$res$p.sig.corp)
+```
+
+### STRINGdb PPI 分析 (LIPID_ZDHHC3)
+
+`r snap(sdb.lipid_zdhhc3, 0:1)`
+
+`r ref("LIPID-ZDHHC3-Top-MCC-score")`
+<!-- LEGEND_END -->
+
+```{r}
+sdb.lipid_zdhhc3 <- asjob_stringdb(feature(cp.zdhhc3_lipid_metaGSE14359))
+sdb.lipid_zdhhc3 <- step1(
+  sdb.lipid_zdhhc3, top = NULL, network_type = "full"
+)
+#' @meth {get_meth(sdb.lipid_zdhhc3)}
+sdb.lipid_zdhhc3@plots$step1$p.mcc
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LIPID-ZDHHC3-Top-MCC-score
+autor(sdb.lipid_zdhhc3@plots$step1$p.mcc)
+```
+
+### ClusPro 蛋白质-蛋白质对接预测 (ZDHHC3_LIPID)
+
+`r snap(clus.zdhhc3_lipid, 0:4)`
+
+```{r}
+clus.zdhhc3_lipid <- job_cluspro(
+  feature(cp.zdhhc3_lipid_metaGSE14359),
+  .layout = head(cp.zdhhc3_lipid_metaGSE14359@params$res$sig.corp, n = 10)
+)
+clus.zdhhc3_lipid <- step1(clus.zdhhc3_lipid)
+#' @meth {get_meth(clus.zdhhc3_lipid)}
+clus.zdhhc3_lipid <- step2(clus.zdhhc3_lipid)
+clus.zdhhc3_lipid <- step3(clus.zdhhc3_lipid)
+
+clus.zdhhc3_lipid <- upload(clus.zdhhc3_lipid)
+clus.zdhhc3_lipid <- login(clus.zdhhc3_lipid)
+clus.zdhhc3_lipid <- pull(clus.zdhhc3_lipid)
+
+clus.zdhhc3_lipid <- step4(clus.zdhhc3_lipid)
+clus.zdhhc3_lipid@plots$step4$p.score
+
+```
+
+### MusiteDeep 蛋白质转录后修饰位点预测 (ZDHHC3_LIPID)
+
+`r snap(mus.zdhhc3_lipid, 0:3)`
+
+`r ref("ZDHHC3-LIPID-S-palmitoyl-cysteine-PTM-numbers")`
+<!-- LEGEND_END -->
+
+```{r}
+mus.zdhhc3_lipid <- job_musite(feature(cp.zdhhc3_lipid_metaGSE14359)[[2]][1:10])
+mus.zdhhc3_lipid <- step1(mus.zdhhc3_lipid)
+#' @meth {get_meth(mus.zdhhc3_lipid)}
+mus.zdhhc3_lipid <- step2(mus.zdhhc3_lipid, "S-p")
+mus.zdhhc3_lipid@plots$step2$p.PTMsNumber$`S-palmitoyl_cysteine`
+mus.zdhhc3_lipid@plots$step2$p.tops$IRS2
+mus.zdhhc3_lipid@plots$step2$p.tops$PRX
+
+lm.meta_GSE14359 <- focus(
+  lm.meta_GSE14359, c("ZDHHC3", "IRS2", "PRX"), .name = "final", use = "P"
+)
+lm.meta_GSE14359@params$focusedDegs_final$p.BoxPlotOfDEGs
+
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| ZDHHC3-LIPID-S-palmitoyl-cysteine-PTM-numbers
+autor(mus.zdhhc3_lipid@plots$step2$p.PTMsNumber$`S-palmitoyl_cysteine`)
+```
+
+
+## ZDHHC15
+
+- 生物信息学筛选OS中差异表达 (正常与OS组织) 并且与预后相关的ZDHHC基因，见`r ref("GSE87624-ZDHHC-Box-Plot-Of-DEGs-normal")` 
+- OS转移以及未转移样本差异表达，且与预后相关的基因`r ref("GSE87624-ZDHHC-Box-Plot-Of-DEGs-metastasis")`，即 ZDHHC15 (仅一个)。
+- 与脂质代谢合成相关性的基因集取自 GeneCards (原分析要求的 WGCNA 无法得到这方面的结果)。
+- ZDHHC-X与相互作用蛋白在OS转移中的相关性，见`r ref("GSE87624-significant-correlation-plots")` 
+- 先进行了关联分析，然后以 STRINGdb 寻找蛋白互作 (此前筛选的 ZDHHC15 与上述脂质蛋白)，`r ref("LIPID-ZDHHC-Top-MCC-score")` 未发现 ZDHHC15 与任何蛋白互作。
+- 由于未从 STRINGdb 数据库发现互作蛋白，所以，以 `cluspro` 预测蛋白之间的互作，见`r ref("ZDHHC-LIPID-Overview-of-protein-docking-results-")` 
+- 以 `MusiteDeep` 预测互作蛋白是否存在 S-palmitoyl_cysteine 修饰，见 `r ref("ZDHHC-LIPID-S-palmitoyl-cysteine-PTM-numbers")`
+- 综上，结合蛋白对接，关联分析，以及 S-palmitoyl_cysteine 位点预测，与 ZDHHC15 结合的最佳蛋白可能为 COL4A4，或 ECEL1。见 `r ref("GSE87624-Box-Plot-Of-DEGs-final")`
+ 
