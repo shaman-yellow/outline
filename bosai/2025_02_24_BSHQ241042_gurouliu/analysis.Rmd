@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2024-12-26"), end = td("2025-02-28"), finish = td("2025-02-25"),
+info <- items(start = td("2024-12-26"), end = td("2025-02-28"), finish = td("2025-02-28"),
   id = "BSHQ241042", client = "梁海东", inst = "",
   type = "生信分析",
   title = "骨肉瘤ZDHHC",
@@ -1093,6 +1093,12 @@ autor(sdb.lipid_zdhhc11@plots$step1$p.mcc)
 
 `r snap(clus.zdhhc11_lipid, 0:4)`
 
+`r ref("ZDHHC11-LIPID-Overview-of-protein-docking-results-")`
+`r ref("Protein-docking-of-ZDHHC11-FOXA2")`
+`r ref("Protein-docking-of-ZDHHC11-GATA6")`
+`r ref("Protein-docking-of-ZDHHC11-COL4A4")`
+<!-- LEGEND_END -->
+
 ```{r}
 clus.zdhhc11_lipid <- job_cluspro(
   feature(cp.zdhhc11_lipid_metaGSE220538),
@@ -1109,10 +1115,37 @@ clus.zdhhc11_lipid <- pull(clus.zdhhc11_lipid)
 
 clus.zdhhc11_lipid <- step4(clus.zdhhc11_lipid)
 clus.zdhhc11_lipid@plots$step4$p.score
+clus.zdhhc11_lipid@plots$step4$top$Top_1_ZDHHC11_FOXA2
+clus.zdhhc11_lipid@plots$step4$top$Top_2_ZDHHC11_GATA6
+clus.zdhhc11_lipid@plots$step4$top$Top_3_ZDHHC11_COL4A4
 
 ```
 
 
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| ZDHHC11-LIPID-Overview-of-protein-docking-results-
+autor(clus.zdhhc11_lipid@plots$step4$p.score)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Protein-docking-of-ZDHHC11-FOXA2
+autor(clus.zdhhc11_lipid@plots$step4$top$Top_1_ZDHHC11_FOXA2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Protein-docking-of-ZDHHC11-GATA6
+autor(clus.zdhhc11_lipid@plots$step4$top$Top_2_ZDHHC11_GATA6)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Protein-docking-of-ZDHHC11-COL4A4
+autor(clus.zdhhc11_lipid@plots$step4$top$Top_3_ZDHHC11_COL4A4)
+```
 
 ### MusiteDeep 蛋白质转录后修饰位点预测 (ZDHHC11_LIPID)
 
@@ -1122,6 +1155,7 @@ clus.zdhhc11_lipid@plots$step4$p.score
 `r ref("ZDHHC11-LIPID-All-PTM-score")`
 `r ref("ZDHHC11-LIPID-RYR2-PTM-score")`
 `r ref("ZDHHC11-LIPID-CYP4A11-PTM-score")`
+`r ref("META-GSE220538-Box-Plot-Of-DEGs-ptm")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -1130,11 +1164,13 @@ mus.zdhhc11_lipid <- step1(mus.zdhhc11_lipid)
 #' @meth {get_meth(mus.zdhhc11_lipid)}
 mus.zdhhc11_lipid <- step2(mus.zdhhc11_lipid, "S-p")
 mus.zdhhc11_lipid@plots$step2$p.PTMsNumber$`S-palmitoyl_cysteine`
+mus.zdhhc11_lipid@tables$step2$t.cutoff
+feature(mus.zdhhc11_lipid)
 
 lm.meta_GSE220538 <- focus(
-  lm.meta_GSE220538, c("ZDHHC11"), .name = "final", use = "P"
+  lm.meta_GSE220538, feature(mus.zdhhc11_lipid), .name = "ptm", use = "adj"
 )
-lm.meta_GSE220538@params$focusedDegs_final$p.BoxPlotOfDEGs
+lm.meta_GSE220538@params$focusedDegs_ptm$p.BoxPlotOfDEGs
 
 ```
 
@@ -1163,6 +1199,12 @@ autor(mus.zdhhc11_lipid@plots$step2$p.tops$RYR2)
 autor(mus.zdhhc11_lipid@plots$step2$p.tops$CYP4A11)
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| META-GSE220538-Box-Plot-Of-DEGs-ptm
+autor(lm.meta_GSE220538@params$focusedDegs_ptm$p.BoxPlotOfDEGs)
+```
+
 # 总结 {#conclusion}
 
 ## ZDHHC11
@@ -1173,8 +1215,9 @@ autor(mus.zdhhc11_lipid@plots$step2$p.tops$CYP4A11)
 - 与脂质代谢合成相关性的基因集取自 GeneCards (原分析要求的 WGCNA 无法得到这方面的结果)。
 - ZDHHC-X与相互作用蛋白在OS转移中的相关性，见`r ref("META-GSE220538-significant-correlation-plots")` 
 - 先进行了关联分析，然后以 STRINGdb 寻找蛋白互作 (此前筛选的 ZDHHC11 与上述脂质蛋白)，未发现 ZDHHC11 与任何蛋白互作，见 `r ref("LIPID-ZDHHC11-Top-MCC-score")`。
-- 由于未从 STRINGdb 数据库发现互作蛋白，所以，以 `cluspro` 预测蛋白之间的互作，见 ...
-- 以 `MusiteDeep` 预测互作蛋白是否存在 S-palmitoyl_cysteine 修饰，见`r ref("ZDHHC11-LIPID-S-palmitoyl-cysteine-PTM-numbers")` 
-- 综上，结合蛋白对接，关联分析，以及 S-palmitoyl_cysteine 位点预测，与 ZDHHC11 结合的最佳蛋白可能为 ...
+- 由于未从 STRINGdb 数据库发现互作蛋白，所以，以 `cluspro` 预测蛋白之间的互作，见`r ref("ZDHHC11-LIPID-Overview-of-protein-docking-results-")` 
+- 以 `MusiteDeep` 预测互作蛋白是否存在 S-palmitoyl_cysteine 修饰，见`r ref("ZDHHC11-LIPID-S-palmitoyl-cysteine-PTM-numbers")` ，
+  其基因表达见`r ref("META-GSE220538-Box-Plot-Of-DEGs-ptm")` 
+- 综上，结合蛋白对接，关联分析，以及 S-palmitoyl_cysteine 位点预测，与 ZDHHC11 结合的最佳蛋白可能为 GATA6 或 COL4A4
  
 

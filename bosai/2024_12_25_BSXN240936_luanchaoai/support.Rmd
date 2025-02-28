@@ -37,10 +37,13 @@ set_index()
 
 # 分析流程 {#abstract}
 
+## 需求
+
 - GTSE1 在 HGSOC 中高表达促进肿瘤增值与迁移。
   GTSE1 与化疗耐药有关。在卵巢癌 (HGSOC) 中的表达，在化疗耐药卵巢癌数据集中的表达。
 - GTSE1 的 mRNA 序列上的 m6A 甲基化，GTSE1可能主要被ALKBH5、IGF2BP1、METTL14、METTL3、YTHDF1、YTHDF2。
   GTSE1与甲基化相关酶的表达进行相关性分析
+
 
 ```{r}
 #| route
@@ -79,6 +82,38 @@ collate_details("meth")
 ```
 
 # 分析结果 {#workflow}
+
+## TCGA 数据获取 (OV)
+
+`r snap(tcga.ov, 0:3)`
+
+```{r}
+tcga.ov <- job_tcga("TCGA-OV")
+tcga.ov <- step1(tcga.ov)
+#' @meth {get_meth(tcga.ov)}
+tcga.ov <- step2(tcga.ov)
+tcga.ov <- step3(tcga.ov)
+```
+
+## Survival 生存分析 (OV)
+
+`r ref("OV-survival-curve-of-GTSE1")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.ov <- asjob_limma(tcga.ov)
+lm.ov@object$targets
+lm.ov <- step1(lm.ov)
+surv.ov <- asjob_survival(lm.ov, "GTSE1")
+surv.ov <- step1(surv.ov)
+surv.ov@plots$step1$p.surv$GTSE1
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OV-survival-curve-of-GTSE1
+autor(surv.ov@plots$step1$p.surv$GTSE1)
+```
 
 ## GSE 数据搜索 (HGSOC)
 
