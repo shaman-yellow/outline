@@ -164,5 +164,13 @@ summary_month.bosai(get_orders(), rm = TRUE)
 summary_month.bosai(
   get_orders(), rm = TRUE, must_include = "BSJF241107", upd = TRUE
 )
+
+```
+
+# 2025-03-03
+
+```{r}
+# exclude: BSJF241107
+summary_assess.bosai(get_orders())
 ```
 

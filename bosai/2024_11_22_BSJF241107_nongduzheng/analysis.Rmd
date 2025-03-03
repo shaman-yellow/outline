@@ -73,54 +73,6 @@ sr.sepsis <- getsub(sr.sepsis, group %in% c("Control", "Sepsis"))
 sr.sepsis <- mutate(sr.sepsis, orig.ident = group)
 ```
 
-## Seurat 单细胞数据分析 (SEPSIS)
-
-```{r}
-sr.sepsis <- step1(sr.sepsis)
-sr.sepsis@params$p.qc_pre
-sr.sepsis <- step2(sr.sepsis, 0, 4000, 10)
-sr.sepsis@plots$step2$p.pca_rank
-sr.sepsis <- step3(sr.sepsis)
-sr.sepsis@plots$step3$p.umap
-vis(sr.sepsis, "Cell_Type", mode = "sample")
-
-sr.sepsis$group.by = "Cell_Type"
-```
-
-## scFEA 单细胞数据的代谢通量预测 (SEPSIS)
-
-`r snap(scfea.sepsis, 0:2)`
-
-```{r}
-set_remoteRun.bosai()
-scfea.sepsis <- asjob_scfea(sr.sepsis, groups = "T")
-scfea.sepsis <- set_remote(scfea.sepsis, "scfea_sepsis")
-#' @meth {get_meth(scfea.sepsis)}
-scfea.sepsis <- step1(scfea.sepsis)
-scfea.sepsis <- step2(scfea.sepsis)
-scfea.sepsis@tables$step2$t.anno
-scfea.sepsis@tables$step2$t.flux
-
-```
-
-## Limma 代谢通量差异分析 (SEPSIS_FLUX)
-
-`r snap(lm.sepsis_flux, 0:3)`
-
-```{r}
-scfea.sepsis$metadata$orig.ident %>% table
-lm.sepsis_flux <- asjob_limma(scfea.sepsis, group = "orig.ident")
-lm.sepsis_flux <- step1(lm.sepsis_flux)
-#' @meth {get_meth(lm.sepsis_flux)}
-lm.sepsis_flux <- step2(
-  lm.sepsis_flux, Sepsis - Control, cut.fc = .2
-)
-lm.sepsis_flux@tables$step2$tops$`Sepsis - Control`
-
-scfea.sepsis <- map(scfea.sepsis, lm.sepsis_flux)
-scfea.sepsis@params$p.flux
-```
-
 ## Bulk RNA-seq
 
 ```{r}
@@ -129,6 +81,10 @@ vis(gds.sepsis)
 gds.sepsis <- step1(gds.sepsis)
 vis(gds.sepsis)
 active(gds.sepsis, which = 11:30)
+
+gds.early <- job_gds(c("sepsis", "early"))
+gds.early <- step1(gds.early)
+active(gds.early)
 ```
 
 ### GEO 数据获取 (PB_GSE243217)
@@ -326,31 +282,6 @@ lm.pb_GSE134347@plots$step2$p.volcano$`sepsis - healthy`
 lm.pb_GSE134347@tables$step2$tops$`sepsis - healthy`
 ```
 
-### GEO 数据获取 (PB_GSE185263) (survival)
-
-`r snap(geo.pb_GSE185263, 0:2)`
-
-```{r}
-geo.pb_GSE185263 <- job_geo("pb_GSE185263")
-#' @meth {get_meth(geo.pb_GSE185263)}
-geo.pb_GSE185263 <- step1(geo.pb_GSE185263)
-geo.pb_GSE185263 <- step2(geo.pb_GSE185263)
-metadata.pb_GSE185263 <- expect(geo.pb_GSE185263, geo_cols())
-```
-
-### Limma 差异分析 (PB_GSE185263)
-
-`r snap(lm.pb_GSE185263, 0:3)`
-
-```{r}
-lm.pb_GSE185263 <- asjob_limma(geo.pb_GSE185263, metadata.pb_GSE185263)
-lm.pb_GSE185263 <- step1(lm.pb_GSE185263)
-#' @meth {get_meth(lm.pb_GSE185263)}
-lm.pb_GSE185263 <- step2(
-  lm.pb_GSE185263, sepsis - healthy
-)
-lm.pb_GSE185263 <- step3(lm.pb_GSE185263)
-```
 
 ### GEO 数据获取 (PB_GSE69063)
 
@@ -385,17 +316,148 @@ lm.pb_GSE69063@plots$step2$p.volcano$`Sepsis - Healthy_control`
 lm.pb_GSE69063@tables$step2$tops$`Sepsis - Healthy_control`
 ```
 
-### GEO 数据获取 (GSE210797)
+## 交集: GSE13434 + GSE13734 + GSE23240 + GSE23275 + GSE24321 + GSE6906 + GSE7232 (BULK)
 
-`r snap(geo.pl_GSE210797, 0:2)`
+`r snap(venn.bulk, 0:1)`
 
 ```{r}
-geo.pl_GSE210797 <- job_geo("GSE210797")
-#' @meth {get_meth(geo.pl_GSE210797)}
-geo.pl_GSE210797 <- step1(geo.pl_GSE210797)
-geo.pl_GSE210797 <- step2(geo.pl_GSE210797)
-metadata.pl_GSE210797 <- expect(geo.pl_GSE210797, geo_cols())
+#' @meth {get_meth(venn.bulk)}
+venn.bulk <- job_vennDEGs("lm.pb_", exclude = "lm.pb_GSE185263")
+venn.bulk <- step1(venn.bulk, force_upset = TRUE, n = 25)
+wrap(venn.bulk@plots$step1$p.venn, 8.5, 5)
+venn.bulk$degs_versus
 ```
+
+## ClusterProfiler 富集分析 (BULK)
+
+`r snap(en.bulk, 0:2)`
+
+```{r}
+en.bulk <- asjob_enrich(feature(venn.bulk))
+#' @meth {get_meth(en.bulk)}
+en.bulk <- step1(en.bulk)
+en.bulk@plots$step1$p.kegg$ids
+wrap(en.bulk@plots$step1$p.go$ids, 8.5, 7.5)
+en.bulk@tables$step1$res.kegg$ids
+en.bulk@tables$step1$res.go$ids
+```
+
+## Lasso 诊断模型建立 (BULK)
+
+`r snap(dian.bulk, 0:6)`
+
+```{r}
+dian.bulk <- asjob_diagn(venn.bulk)
+dian.bulk <- step1(dian.bulk)
+#' @meth {get_meth(dian.bulk)}
+dian.bulk <- step2(dian.bulk)
+dian.bulk <- step3(dian.bulk)
+dian.bulk <- step4(dian.bulk)
+dian.bulk <- step5(dian.bulk)
+dian.bulk@step <- 5L
+dian.bulk <- step6(dian.bulk)
+dian.bulk@params$self_res$p.hp
+dian.bulk@params$self_res$p.lasso_model
+dian.bulk@params$self_res$p.lasso_coeffients$lambda.min
+dian.bulk@params$self_res$p.lasso_coeffients$lambda.1se
+dian.bulk@params$map_res$p.rocs$lambda.min
+dian.bulk@params$map_res$p.rocs$lambda.1se
+feature(dian.bulk)
+```
+
+## bulk RNA-seq 外部验证数据集
+
+### GEO 数据获取 (PB_GSE185263) (survival)
+
+`r snap(geo.pb_GSE185263, 0:2)`
+
+```{r}
+geo.pb_GSE185263 <- job_geo("pb_GSE185263")
+#' @meth {get_meth(geo.pb_GSE185263)}
+geo.pb_GSE185263 <- step1(geo.pb_GSE185263)
+geo.pb_GSE185263 <- step2(geo.pb_GSE185263)
+metadata.pb_GSE185263 <- expect(geo.pb_GSE185263, geo_cols())
+metadata.pb_GSE185263
+```
+
+### Limma 差异分析 (PB_GSE185263)
+
+`r snap(lm.pb_GSE185263, 0:3)`
+
+```{r}
+lm.pb_GSE185263 <- asjob_limma(geo.pb_GSE185263, metadata.pb_GSE185263)
+lm.pb_GSE185263 <- step1(lm.pb_GSE185263)
+#' @meth {get_meth(lm.pb_GSE185263)}
+lm.pb_GSE185263 <- step2(
+  lm.pb_GSE185263, sepsis - healthy
+)
+lm.pb_GSE185263 <- step3(lm.pb_GSE185263)
+```
+
+## 使用外部数据验证 (VALID_GSE185263)
+
+`r snap(dia.valid_GSE185263, "m")`
+
+```{r}
+dia.valid_GSE185263 <- asjob_diag(lm.pb_GSE185263)
+dia.valid_GSE185263 <- step1(dia.valid_GSE185263)
+dia.valid_GSE185263 <- map(dia.valid_GSE185263, dian.bulk)
+#' @meth {get_meth(dia.valid_GSE185263)}
+dia.valid_GSE185263@params$valid_results$lambda.min$p.roc
+dia.valid_GSE185263@params$p.hp_valid
+```
+
+## Seurat 单细胞数据分析 (SEPSIS)
+
+```{r}
+sr.sepsis <- step1(sr.sepsis)
+sr.sepsis@params$p.qc_pre
+sr.sepsis <- step2(sr.sepsis, 0, 4000, 10)
+sr.sepsis@plots$step2$p.pca_rank
+sr.sepsis <- step3(sr.sepsis)
+sr.sepsis@plots$step3$p.umap
+vis(sr.sepsis, "Cell_Type", mode = "sample")
+
+sr.sepsis <- focus(sr.sepsis, feature(dian.bulk)[[1]], name = "diag_min")
+sr.sepsis@params$focus_diag_min$p.dim
+sr.sepsis@params$focus_diag_min$p.vln
+
+```
+
+## scFEA 单细胞数据的代谢通量预测 (SEPSIS)
+
+`r snap(scfea.sepsis, 0:2)`
+
+```{r}
+set_remoteRun.bosai()
+scfea.sepsis <- asjob_scfea(sr.sepsis, groups = "T")
+scfea.sepsis <- set_remote(scfea.sepsis, "scfea_sepsis")
+#' @meth {get_meth(scfea.sepsis)}
+scfea.sepsis <- step1(scfea.sepsis)
+scfea.sepsis <- step2(scfea.sepsis)
+scfea.sepsis@tables$step2$t.anno
+scfea.sepsis@tables$step2$t.flux
+
+```
+
+## Limma 代谢通量差异分析 (SEPSIS_FLUX)
+
+`r snap(lm.sepsis_flux, 0:3)`
+
+```{r}
+scfea.sepsis$metadata$orig.ident %>% table
+lm.sepsis_flux <- asjob_limma(scfea.sepsis, group = "orig.ident")
+lm.sepsis_flux <- step1(lm.sepsis_flux)
+#' @meth {get_meth(lm.sepsis_flux)}
+lm.sepsis_flux <- step2(
+  lm.sepsis_flux, Sepsis - Control, cut.fc = .2
+)
+lm.sepsis_flux@tables$step2$tops$`Sepsis - Control`
+
+scfea.sepsis <- map(scfea.sepsis, lm.sepsis_flux)
+scfea.sepsis@params$p.flux
+```
+
 
 # 总结 {#conclusion}
 

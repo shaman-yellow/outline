@@ -1,0 +1,31 @@
+
+
+### GEO 数据获取 (PB_GSE89376)
+
+`r snap(geo.pb_GSE89376, 0:2)`
+
+```{r}
+geo.pb_GSE89376 <- job_geo("pb_GSE89376")
+#' @meth {get_meth(geo.pb_GSE89376)}
+geo.pb_GSE89376 <- step1(geo.pb_GSE89376)
+
+metadata.pb_GSE89376 <- expect(geo.pb_GSE89376, geo_cols())
+metadata.pb_GSE89376$cell.type.ch1
+```
+
+### GEO 数据获取 (GSE210797)
+
+`r snap(geo.pl_GSE210797, 0:2)`
+
+```{r}
+geo.pl_GSE210797 <- job_geo("GSE210797")
+#' @meth {get_meth(geo.pl_GSE210797)}
+geo.pl_GSE210797 <- step1(geo.pl_GSE210797)
+geo.pl_GSE210797 <- step2(geo.pl_GSE210797)
+metadata.pl_GSE210797 <- expect(geo.pl_GSE210797, geo_cols())
+```
+
+test <- sr.sepsis@object %>% Seurat::VariableFeatures()
+varFeature <- test[ test %in% feature(venn.bulk) ]
+sr.sepsis <- focus(sr.sepsis, varFeature, name = "var")
+sr.sepsis@params$focus_var$p.dim
