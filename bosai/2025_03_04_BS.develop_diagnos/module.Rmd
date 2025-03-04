@@ -1,0 +1,38 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-02-27"), end = td("2025-03-04"), finish = td("2025-03-04"),
+  id = "BS.develop", client = "", inst = "",
+  type = "模块开发",
+  title = "诊断模型的多数据集构建和验证",
+  note = "用于快速操作多个数据集的诊断模型构建和验证",
+  save = ".items_module.rds"
+)
+show.ic(info)
+
+order_publish.bosai("module.Rmd", "module_out.Rmd")
+formatName.bosai("./module_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+

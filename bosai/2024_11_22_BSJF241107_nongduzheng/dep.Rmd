@@ -29,3 +29,229 @@ test <- sr.sepsis@object %>% Seurat::VariableFeatures()
 varFeature <- test[ test %in% feature(venn.bulk) ]
 sr.sepsis <- focus(sr.sepsis, varFeature, name = "var")
 sr.sepsis@params$focus_var$p.dim
+
+### GEO 数据获取 (PB_GSE232753)
+
+`r snap(geo.pb_GSE232753, 0:2)`
+
+```{r}
+rm(geo.pb_GSE232753, lm.pb_GSE232753, metadata.pb_GSE232753)
+geo.pb_GSE232753 <- job_geo("pb_GSE232753")
+#' @meth {get_meth(geo.pb_GSE232753)}
+geo.pb_GSE232753 <- step1(geo.pb_GSE232753)
+geo.pb_GSE232753 <- step2(geo.pb_GSE232753)
+metadata.pb_GSE232753 <- expect(geo.pb_GSE232753, geo_cols())
+metadata.pb_GSE232753
+```
+
+### Limma 差异分析 (PB_GSE232753)
+
+`r snap(lm.pb_GSE232753, 0:3)`
+
+```{r}
+lm.pb_GSE232753 <- asjob_limma(geo.pb_GSE232753, metadata.pb_GSE232753)
+lm.pb_GSE232753 <- step1(lm.pb_GSE232753)
+#' @meth {get_meth(lm.pb_GSE232753)}
+lm.pb_GSE232753 <- step2(
+  lm.pb_GSE232753, sepsis - none
+)
+lm.pb_GSE232753 <- step3(lm.pb_GSE232753)
+lm.pb_GSE232753@plots$step2$p.volcano$`sepsis - none`
+lm.pb_GSE232753@tables$step2$tops$`sepsis - none`
+```
+
+
+### GEO 数据获取 (PB_GSE65682)
+
+`r snap(geo.pb_GSE65682, 0:2)`
+
+```{r}
+rm(geo.pb_GSE65682)
+geo.pb_GSE65682 <- job_geo("pb_GSE65682")
+#' @meth {get_meth(geo.pb_GSE65682)}
+geo.pb_GSE65682 <- step1(geo.pb_GSE65682)
+
+metadata.pb_GSE65682 <- expect(geo.pb_GSE65682, geo_cols())
+metadata.pb_GSE65682$icu_acquired_infection_paired.ch1
+```
+
+
+
+### GEO 数据获取 (PB_GSE168442)
+
+`r snap(geo.pb_GSE168442, 0:2)`
+
+```{r}
+geo.pb_GSE168442 <- job_geo("pb_GSE168442")
+#' @meth {get_meth(geo.pb_GSE168442)}
+geo.pb_GSE168442 <- step1(geo.pb_GSE168442)
+
+metadata.pb_GSE168442 <- expect(geo.pb_GSE168442, geo_cols())
+```
+
+### GEO 数据获取 (PB_GSE168442)
+
+`r snap(geo.pb_GSE168442, 0:2)`
+
+```{r}
+geo.pb_GSE168442 <- job_geo("pb_GSE168442")
+rm(geo.pb_GSE168442)
+#' @meth {get_meth(geo.pb_GSE168442)}
+geo.pb_GSE168442 <- step1(geo.pb_GSE168442)
+
+metadata.pb_GSE168442 <- expect(geo.pb_GSE168442, geo_cols())
+```
+
+### GEO 数据获取 (PB_GSE137340)
+
+`r snap(geo.pb_GSE137340, 0:2)`
+
+```{r}
+geo.pb_GSE137340 <- job_geo("pb_GSE137340")
+rm(geo.pb_GSE137340, lm.pb_GSE137340)
+#' @meth {get_meth(geo.pb_GSE137340)}
+geo.pb_GSE137340 <- step1(geo.pb_GSE137340)
+
+metadata.pb_GSE137340 <- expect(geo.pb_GSE137340, geo_cols(group = "diagnosis"))
+metadata.pb_GSE137340 <- dplyr::mutate(
+  metadata.pb_GSE137340, group = ifelse(
+    grpl(group, "Sepsis|Septic"), "Sepsis", group
+  )
+)
+metadata.pb_GSE137340
+```
+
+### Limma 差异分析 (PB_GSE137340)
+
+`r snap(lm.pb_GSE137340, 0:3)`
+
+```{r}
+lm.pb_GSE137340 <- asjob_limma(geo.pb_GSE137340, metadata.pb_GSE137340)
+lm.pb_GSE137340 <- filter(
+  lm.pb_GSE137340, type = "metadata", grpl(group, "Healthy|Sepsis")
+)
+lm.pb_GSE137340 <- step1(lm.pb_GSE137340)
+#' @meth {get_meth(lm.pb_GSE137340)}
+lm.pb_GSE137340 <- step2(
+  lm.pb_GSE137340, Sepsis - Healthy
+)
+lm.pb_GSE137340 <- step3(lm.pb_GSE137340)
+lm.pb_GSE137340@plots$step2$p.volcano$`Sepsis - Healthy`
+lm.pb_GSE137340@tables$step2$tops$`Sepsis - Healthy`
+```
+
+### GEO 数据获取 (PB_GSE72326)
+
+`r snap(geo.pb_GSE72326, 0:2)`
+
+```{r}
+geo.pb_GSE72326 <- job_geo("pb_GSE72326")
+#' @meth {get_meth(geo.pb_GSE72326)}
+geo.pb_GSE72326 <- step1(geo.pb_GSE72326)
+rm(geo.pb_GSE72326, lm.pb_GSE72326)
+
+metadata.pb_GSE72326 <- expect(geo.pb_GSE72326, geo_cols(group = "group"))
+metadata.pb_GSE72326 <- dplyr::mutate(
+  metadata.pb_GSE72326, group = ifelse(
+    group == "Healthy_control_of_sepsis_and_kidney_disease", "Healthy_control_of_sepsis", group
+  )
+)
+metadata.pb_GSE72326
+```
+
+### Limma 差异分析 (PB_GSE72326)
+
+`r snap(lm.pb_GSE72326, 0:3)`
+
+```{r}
+lm.pb_GSE72326 <- asjob_limma(geo.pb_GSE72326, metadata.pb_GSE72326)
+lm.pb_GSE72326 <- filter(
+  lm.pb_GSE72326, type = "metadata", grpl(group, "Healthy_control_of_sepsis|ICU_sepsis")
+)
+lm.pb_GSE72326 <- step1(lm.pb_GSE72326)
+#' @meth {get_meth(lm.pb_GSE72326)}
+lm.pb_GSE72326 <- step2(
+  lm.pb_GSE72326, Control_ICU_sepsis - Healthy_control_of_sepsis
+)
+lm.pb_GSE72326 <- step3(lm.pb_GSE72326)
+lm.pb_GSE72326@plots$step2$p.volcano$`Control_ICU_sepsis - Healthy_control_of_sepsis`
+lm.pb_GSE72326@tables$step2$tops$`Control_ICU_sepsis - Healthy_control_of_sepsis`
+```
+
+## 交集: GSE13434 + GSE13734 + GSE23240 + GSE23275 + GSE24321 + GSE6906 + GSE7232 (BULK)
+
+`r snap(venn.bulk, 0:1)`
+
+```{r}
+#' @meth {get_meth(venn.bulk)}
+venn.bulk <- job_vennDEGs(
+  "lm.pb_", exclude = c("lm.pb_GSE185263")
+)
+venn.bulk <- step1(venn.bulk, force_upset = TRUE)
+wrap(venn.bulk@plots$step1$p.venn, 8.5, 5)
+venn.bulk$degs_versus
+feature(venn.bulk)
+```
+
+isThat <- unlist(feature(sr.sepsis)) %in% unlist(feature(lm.pb_GSE134347))
+genesTDegs_nonVsSep <- unlist(feature(sr.sepsis))[isThat]
+genesTDegs_nonVsSep
+
+genesDiffTcells <- sr.sepsis@params$contrasts$gene
+genesAlls <- collate("lm.pb_", function(x) x$normed_data$genes[[.guess_symbol(x)]], exclude = "lm.pb_GSE185263")
+genesDiffTcells <- genesDiffTcells[ands(lapply(genesAlls, function(x) genesDiffTcells %in% x))]
+genesDiffTcells
+
+
+sets <- lapply(venn.bulk@object,
+  function(obj) {
+    genesDiffTcells %in% obj
+  })
+genesOrsTcells <- genesDiffTcells[ors(sets)]
+genesOrsTcells
+
+vis(sr.sepsis, "Cell_Type", mode = "sample")
+
+## 使用外部数据验证 (VALID_GSE185263)
+
+`r snap(dia.valid_GSE185263, "m")`
+
+```{r}
+dia.valid_GSE185263 <- asjob_diag(lm.pb_GSE185263)
+dia.valid_GSE185263 <- step1(dia.valid_GSE185263)
+dia.valid_GSE185263 <- map(dia.valid_GSE185263, dian.bulk)
+#' @meth {get_meth(dia.valid_GSE185263)}
+dia.valid_GSE185263@params$valid_results$lambda.min$p.roc
+dia.valid_GSE185263@params$p.hp_valid
+rm(dia.valid_GSE185263)
+feature(dian.bulk)
+```
+
+## GEO 数据获取 (PB_GSE185263) (survival)
+
+`r snap(geo.pb_GSE185263, 0:2)`
+
+```{r}
+geo.pb_GSE185263 <- job_geo("pb_GSE185263")
+#' @meth {get_meth(geo.pb_GSE185263)}
+geo.pb_GSE185263 <- step1(geo.pb_GSE185263)
+geo.pb_GSE185263 <- step2(geo.pb_GSE185263)
+rm(geo.pb_GSE185263, lm.pb_GSE185263)
+metadata.pb_GSE185263 <- expect(geo.pb_GSE185263, geo_cols())
+metadata.pb_GSE185263
+```
+
+## Limma 差异分析 (PB_GSE185263)
+
+`r snap(lm.pb_GSE185263, 0:3)`
+
+```{r}
+lm.pb_GSE185263 <- asjob_limma(geo.pb_GSE185263, metadata.pb_GSE185263)
+lm.pb_GSE185263 <- step1(lm.pb_GSE185263)
+#' @meth {get_meth(lm.pb_GSE185263)}
+lm.pb_GSE185263 <- step2(
+  lm.pb_GSE185263, sepsis - healthy
+)
+lm.pb_GSE185263 <- step3(lm.pb_GSE185263)
+```
+

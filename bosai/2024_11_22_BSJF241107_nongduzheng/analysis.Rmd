@@ -44,6 +44,31 @@ dic(di("差异表达基因"),
 
 ```
 
+```{r}
+#| route
+groupDatasets <- sort_by(names(dian.bulk$groups), unlist(dian.bulk$groups))
+r.sh <- bind(groupDatasets[1:3])
+r.si <- bind(groupDatasets[4:6])
+route <- as_network(
+  list("Sepsis:scRNA-seq, Bulk_RNA-seq",
+    "scRNA-seq:SCP548",
+    "Bulk_RNA-seq:SI_(Sepsis_vis_SIRS), SH_(Sepsis_vis_Healthy)",
+    "SI_(Sepsis_vis_SIRS):{r.si}",
+    "SH_(Sepsis_vis_Healthy):{r.sh}",
+    "GSE134347:LASSO_Diagnostic:Model:Validation",
+    "{r.si}, {r.sh}:Validation"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(p.route)
+```
+
+
 # 材料和方法 {#introduction}
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -69,11 +94,274 @@ sr.sepsis@object@meta.data <- merge(
 rownames(sr.sepsis@object@meta.data) <- sr.sepsis@object@meta.data$barcodes
 
 sr.sepsis <- getsub(sr.sepsis, group %in% c("Control", "Sepsis"))
-# `r cite_show("An_immune_cell_Reyes_2020")`
 sr.sepsis <- mutate(sr.sepsis, orig.ident = group)
 ```
 
-## Bulk RNA-seq
+## Seurat 单细胞数据分析 (SEPSIS)
+
+该数据集来源于 <https://singlecell.broadinstitute.org/single_cell/study/SCP548/an-immune-cell-signature-of-bacterial-sepsis-patient-pbmcs#study-summary> (`r cite_show("An_immune_cell_Reyes_2020")`)
+`r snap(sr.sepsis, 0:7)`
+随后，以原作者的细胞注释 (`r cite_show("An_immune_cell_Reyes_2020")`)，
+映射到 UMAP 聚类中 (`r ref("SEPSIS-The-Cell-Sample")`)。
+`r snap(sr.sepsis, "d")`
+
+`r ref("SEPSIS-Pre-Quality-control")`
+`r ref("SEPSIS-After-Quality-control")`
+`r ref("SEPSIS-Standard-deviations-of-PCs")`
+`r ref("SEPSIS-UMAP-Clustering")`
+`r ref("SEPSIS-The-Cell-Sample")`
+`r ref("SEPSIS-DEGs-of-the-contrasts")`
+<!-- LEGEND_END -->
+
+```{r}
+#' @meth {get_meth(sr.sepsis)}
+sr.sepsis <- step1(sr.sepsis)
+sr.sepsis@params$p.qc_pre
+sr.sepsis@params$p.qc_aft
+sr.sepsis <- step2(sr.sepsis, 0, 4000, 10)
+sr.sepsis@plots$step2$p.pca_rank
+sr.sepsis <- step3(sr.sepsis)
+sr.sepsis@plots$step3$p.umap
+sr.sepsis <- mutate(
+  sr.sepsis, Cell_Sample = paste0(Cell_Type, "_", orig.ident)
+)
+
+p.dimOrigin <- vis(sr.sepsis, "Cell_Type", mode = "sample")
+p.dimOrigin
+
+sr.sepsis <- diff(
+  sr.sepsis, "Cell_Sample", list(c("T_Sepsis", "T_Control"))
+)
+sr.sepsis@params$contrasts
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-Pre-Quality-control
+autor(sr.sepsis@params$p.qc_pre)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-After-Quality-control
+autor(sr.sepsis@params$p.qc_aft)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-Standard-deviations-of-PCs
+autor(sr.sepsis@plots$step2$p.pca_rank)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-UMAP-Clustering
+autor(sr.sepsis@plots$step3$p.umap)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-The-Cell-Sample
+autor(p.dimOrigin)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-DEGs-of-the-contrasts
+autor(sr.sepsis@params$contrasts)
+```
+
+## ClusterProfiler 富集分析 (BULK)
+
+`r snap(en.bulk, 0:2)`
+
+`r ref("BULK-KEGG-enrichment")`
+`r ref("BULK-GO-enrichment")`
+`r ref("BULK-KEGG-enrichment-data")`
+`r ref("BULK-GO-enrichment-data")`
+<!-- LEGEND_END -->
+
+```{r}
+en.bulk <- asjob_enrich(feature(sr.sepsis))
+#' @meth {get_meth(en.bulk)}
+en.bulk <- step1(en.bulk)
+en.bulk@plots$step1$p.kegg$ids
+en.bulk@plots$step1$p.go$ids
+en.bulk@tables$step1$res.kegg$ids
+en.bulk@tables$step1$res.go$ids
+```
+
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BULK-KEGG-enrichment
+autor(en.bulk@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BULK-GO-enrichment
+autor(en.bulk@plots$step1$p.go$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BULK-KEGG-enrichment-data
+autor(en.bulk@tables$step1$res.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BULK-GO-enrichment-data
+autor(en.bulk@tables$step1$res.go$ids)
+```
+
+## Bulk RNA-seq (Sepsis vs Non-infectious)
+
+### GEO 数据获取 (PB_GSE134347)
+
+`r snap(geo.pb_GSE134347, 0:2)`
+
+```{r}
+geo.pb_GSE134347 <- job_geo("pb_GSE134347")
+#' @meth {get_meth(geo.pb_GSE134347)}
+geo.pb_GSE134347 <- step1(geo.pb_GSE134347)
+
+metadata.pb_GSE134347 <- expect(geo.pb_GSE134347, geo_cols())
+metadata.pb_GSE134347$group
+```
+
+### Limma 差异分析 (PB_GSE134347)
+
+`r snap(lm.pb_GSE134347, 0:3)`
+
+`r ref("PB-GSE134347-sepsis-vs-noninfectious")`
+`r ref("PB-GSE134347-data-sepsis-vs-noninfectious")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.pb_GSE134347 <- asjob_limma(geo.pb_GSE134347, metadata.pb_GSE134347)
+lm.pb_GSE134347 <- filter(
+  lm.pb_GSE134347, type = "metadata", grpl(group, "sepsis|noninfectious")
+)
+lm.pb_GSE134347 <- step1(lm.pb_GSE134347)
+#' @meth {get_meth(lm.pb_GSE134347)}
+lm.pb_GSE134347 <- step2(
+  lm.pb_GSE134347, sepsis - noninfectious,
+  use = "P", cut.fc = .5
+)
+lm.pb_GSE134347 <- step3(lm.pb_GSE134347)
+lm.pb_GSE134347@plots$step2$p.volcano$`sepsis - noninfectious`
+lm.pb_GSE134347@tables$step2$tops$`sepsis - noninfectious`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE134347-sepsis-vs-noninfectious
+autor(lm.pb_GSE134347@plots$step2$p.volcano$`sepsis - noninfectious`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE134347-data-sepsis-vs-noninfectious
+autor(lm.pb_GSE134347@tables$step2$tops$`sepsis - noninfectious`)
+```
+
+### GEO 数据获取 (PB_GSE63042)
+
+`r snap(geo.pb_GSE63042, 0:2)`
+
+```{r}
+geo.pb_GSE63042 <- job_geo("pb_GSE63042")
+geo.pb_GSE63042 <- step1(geo.pb_GSE63042)
+#' @meth {get_meth(geo.pb_GSE63042)}
+geo.pb_GSE63042 <- step2(geo.pb_GSE63042)
+
+metadata.pb_GSE63042 <- expect(geo.pb_GSE63042, geo_cols(group = "sepsis"))
+metadata.pb_GSE63042
+```
+
+### Limma 差异分析 (PB_GSE63042)
+
+`r snap(lm.pb_GSE63042, 0:3)`
+
+`r ref("PB-GSE63042-Sepsis-vs-SIRS")`
+`r ref("PB-GSE63042-data-Sepsis-vs-SIRS")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.pb_GSE63042 <- asjob_limma(geo.pb_GSE63042, metadata.pb_GSE63042)
+lm.pb_GSE63042 <- step1(lm.pb_GSE63042)
+#' @meth {get_meth(lm.pb_GSE63042)}
+lm.pb_GSE63042 <- step2(
+  lm.pb_GSE63042, Sepsis - SIRS,
+  use = "P", cut.fc = .5
+)
+lm.pb_GSE63042 <- step3(lm.pb_GSE63042)
+lm.pb_GSE63042@plots$step2$p.volcano$`Sepsis - SIRS`
+lm.pb_GSE63042@tables$step2$tops$`Sepsis - SIRS`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE63042-Sepsis-vs-SIRS
+autor(lm.pb_GSE63042@plots$step2$p.volcano$`Sepsis - SIRS`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE63042-data-Sepsis-vs-SIRS
+autor(lm.pb_GSE63042@tables$step2$tops$`Sepsis - SIRS`)
+```
+
+### GEO 数据获取 (PB_GSE74224)
+
+`r snap(geo.pb_GSE74224, 0:2)`
+
+```{r}
+geo.pb_GSE74224 <- job_geo("pb_GSE74224")
+#' @meth {get_meth(geo.pb_GSE74224)}
+geo.pb_GSE74224 <- step1(geo.pb_GSE74224)
+
+metadata.pb_GSE74224 <- expect(geo.pb_GSE74224, geo_cols())
+```
+
+### Limma 差异分析 (PB_GSE74224)
+
+`r snap(lm.pb_GSE74224, 0:3)`
+
+`r ref("PB-GSE74224-Sepsis-vs-SIRS")`
+`r ref("PB-GSE74224-data-Sepsis-vs-SIRS")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.pb_GSE74224 <- asjob_limma(geo.pb_GSE74224, metadata.pb_GSE74224)
+lm.pb_GSE74224 <- step1(lm.pb_GSE74224)
+#' @meth {get_meth(lm.pb_GSE74224)}
+lm.pb_GSE74224 <- step2(
+  lm.pb_GSE74224, Sepsis - SIRS,
+  use = "P", cut.fc = .5
+)
+lm.pb_GSE74224 <- step3(lm.pb_GSE74224)
+lm.pb_GSE74224@plots$step2$p.volcano$`Sepsis - SIRS`
+lm.pb_GSE74224@tables$step2$tops$`Sepsis - SIRS`
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE74224-Sepsis-vs-SIRS
+autor(lm.pb_GSE74224@plots$step2$p.volcano$`Sepsis - SIRS`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE74224-data-Sepsis-vs-SIRS
+autor(lm.pb_GSE74224@tables$step2$tops$`Sepsis - SIRS`)
+```
+
+## Bulk RNA-seq (Sepsis vs Healthy)
 
 ```{r}
 gds.sepsis <- job_gds(c("sepsis", "healthy"))
@@ -82,8 +370,9 @@ gds.sepsis <- step1(gds.sepsis)
 vis(gds.sepsis)
 active(gds.sepsis, which = 11:30)
 
-gds.early <- job_gds(c("sepsis", "early"))
+gds.early <- job_gds(c("sepsis", "diagnostic"))
 gds.early <- step1(gds.early)
+vis(gds.early)
 active(gds.early)
 ```
 
@@ -97,12 +386,16 @@ geo.pb_GSE243217 <- job_geo("GSE243217")
 geo.pb_GSE243217 <- step1(geo.pb_GSE243217)
 geo.pb_GSE243217 <- step2(geo.pb_GSE243217)
 metadata.pb_GSE243217 <- expect(geo.pb_GSE243217, geo_cols())
-metadata.pb_GSE243217$group
+metadata.pb_GSE243217
 ```
 
 ### Limma 差异分析 (PB_GSE243217)
 
 `r snap(lm.pb_GSE243217, 0:3)`
+
+`r ref("BL-GSE243217-Sepsis-vs-healthy-donor")`
+`r ref("BL-GSE243217-data-Sepsis-vs-healthy-donor")`
+<!-- LEGEND_END -->
 
 ```{r}
 lm.pb_GSE243217 <- asjob_limma(geo.pb_GSE243217, metadata.pb_GSE243217)
@@ -119,69 +412,16 @@ lm.pb_GSE243217@plots$step2$p.volcano$`Sepsis - healthy_donor`
 lm.pb_GSE243217@tables$step2$tops$`Sepsis - healthy_donor`
 ```
 
-### GEO 数据获取 (PB_GSE232753)
 
-`r snap(geo.pb_GSE232753, 0:2)`
-
-```{r}
-geo.pb_GSE232753 <- job_geo("pb_GSE232753")
-#' @meth {get_meth(geo.pb_GSE232753)}
-geo.pb_GSE232753 <- step1(geo.pb_GSE232753)
-geo.pb_GSE232753 <- step2(geo.pb_GSE232753)
-metadata.pb_GSE232753 <- expect(geo.pb_GSE232753, geo_cols())
-```
-
-### Limma 差异分析 (PB_GSE232753)
-
-`r snap(lm.pb_GSE232753, 0:3)`
-
-```{r}
-lm.pb_GSE232753 <- asjob_limma(geo.pb_GSE232753, metadata.pb_GSE232753)
-lm.pb_GSE232753 <- step1(lm.pb_GSE232753)
-#' @meth {get_meth(lm.pb_GSE232753)}
-lm.pb_GSE232753 <- step2(
-  lm.pb_GSE232753, sepsis - none
-)
-lm.pb_GSE232753 <- step3(lm.pb_GSE232753)
-lm.pb_GSE232753@plots$step2$p.volcano$`sepsis - none`
-lm.pb_GSE232753@tables$step2$tops$`sepsis - none`
+```{r eval = T, echo = F, results = "asis"}
+#| BL-GSE243217-Sepsis-vs-healthy-donor
+autor(lm.pb_GSE243217@plots$step2$p.volcano$`Sepsis - healthy_donor`)
 ```
 
 
-### GEO 数据获取 (PB_GSE137340)
-
-`r snap(geo.pb_GSE137340, 0:2)`
-
-```{r}
-geo.pb_GSE137340 <- job_geo("pb_GSE137340")
-#' @meth {get_meth(geo.pb_GSE137340)}
-geo.pb_GSE137340 <- step1(geo.pb_GSE137340)
-
-metadata.pb_GSE137340 <- expect(geo.pb_GSE137340, geo_cols(group = "diagnosis"))
-metadata.pb_GSE137340 <- dplyr::mutate(
-  metadata.pb_GSE137340, group = ifelse(
-    grpl(group, "Sepsis|Septic"), "Sepsis", group
-  )
-)
-```
-
-### Limma 差异分析 (PB_GSE137340)
-
-`r snap(lm.pb_GSE137340, 0:3)`
-
-```{r}
-lm.pb_GSE137340 <- asjob_limma(geo.pb_GSE137340, metadata.pb_GSE137340)
-lm.pb_GSE137340 <- filter(
-  lm.pb_GSE137340, type = "metadata", grpl(group, "Healthy|Sepsis")
-)
-lm.pb_GSE137340 <- step1(lm.pb_GSE137340)
-#' @meth {get_meth(lm.pb_GSE137340)}
-lm.pb_GSE137340 <- step2(
-  lm.pb_GSE137340, Sepsis - Healthy
-)
-lm.pb_GSE137340 <- step3(lm.pb_GSE137340)
-lm.pb_GSE137340@plots$step2$p.volcano$`Sepsis - Healthy`
-lm.pb_GSE137340@tables$step2$tops$`Sepsis - Healthy`
+```{r eval = T, echo = F, results = "asis"}
+#| BL-GSE243217-data-Sepsis-vs-healthy-donor
+autor(lm.pb_GSE243217@tables$step2$tops$`Sepsis - healthy_donor`)
 ```
 
 ### GEO 数据获取 (PB_GSE232404)
@@ -201,6 +441,10 @@ metadata.pb_GSE232404
 
 `r snap(lm.pb_GSE232404, 0:3)`
 
+`r ref("PB-GSE232404-SAKI-vs-HC")`
+`r ref("PB-GSE232404-data-SAKI-vs-HC")`
+<!-- LEGEND_END -->
+
 ```{r}
 lm.pb_GSE232404 <- asjob_limma(geo.pb_GSE232404, metadata.pb_GSE232404)
 lm.pb_GSE232404 <- step1(lm.pb_GSE232404)
@@ -213,75 +457,18 @@ lm.pb_GSE232404@plots$step2$p.volcano$`SAKI - HC`
 lm.pb_GSE232404@tables$step2$tops$`SAKI - HC`
 ```
 
-### GEO 数据获取 (PB_GSE72326)
 
-`r snap(geo.pb_GSE72326, 0:2)`
 
-```{r}
-geo.pb_GSE72326 <- job_geo("pb_GSE72326")
-#' @meth {get_meth(geo.pb_GSE72326)}
-geo.pb_GSE72326 <- step1(geo.pb_GSE72326)
-
-metadata.pb_GSE72326 <- expect(geo.pb_GSE72326, geo_cols(group = "group"))
-metadata.pb_GSE72326 <- dplyr::mutate(
-  metadata.pb_GSE72326, group = ifelse(
-    group == "Healthy_control_of_sepsis_and_kidney_disease", "Healthy_control_of_sepsis", group
-  )
-)
-metadata.pb_GSE72326$group %>% table
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE232404-SAKI-vs-HC
+autor(lm.pb_GSE232404@plots$step2$p.volcano$`SAKI - HC`)
 ```
 
-### Limma 差异分析 (PB_GSE72326)
 
-`r snap(lm.pb_GSE72326, 0:3)`
-
-```{r}
-lm.pb_GSE72326 <- asjob_limma(geo.pb_GSE72326, metadata.pb_GSE72326)
-lm.pb_GSE72326 <- filter(
-  lm.pb_GSE72326, type = "metadata", grpl(group, "Healthy_control_of_sepsis|ICU_sepsis")
-)
-lm.pb_GSE72326 <- step1(lm.pb_GSE72326)
-#' @meth {get_meth(lm.pb_GSE72326)}
-lm.pb_GSE72326 <- step2(
-  lm.pb_GSE72326, Control_ICU_sepsis - Healthy_control_of_sepsis
-)
-lm.pb_GSE72326 <- step3(lm.pb_GSE72326)
-lm.pb_GSE72326@plots$step2$p.volcano$`Control_ICU_sepsis - Healthy_control_of_sepsis`
-lm.pb_GSE72326@tables$step2$tops$`Control_ICU_sepsis - Healthy_control_of_sepsis`
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE232404-data-SAKI-vs-HC
+autor(lm.pb_GSE232404@tables$step2$tops$`SAKI - HC`)
 ```
-
-### GEO 数据获取 (PB_GSE134347)
-
-`r snap(geo.pb_GSE134347, 0:2)`
-
-```{r}
-geo.pb_GSE134347 <- job_geo("pb_GSE134347")
-#' @meth {get_meth(geo.pb_GSE134347)}
-geo.pb_GSE134347 <- step1(geo.pb_GSE134347)
-
-metadata.pb_GSE134347 <- expect(geo.pb_GSE134347, geo_cols())
-metadata.pb_GSE134347$group
-```
-
-### Limma 差异分析 (PB_GSE134347)
-
-`r snap(lm.pb_GSE134347, 0:3)`
-
-```{r}
-lm.pb_GSE134347 <- asjob_limma(geo.pb_GSE134347, metadata.pb_GSE134347)
-lm.pb_GSE134347 <- filter(
-  lm.pb_GSE134347, type = "metadata", grpl(group, "sepsis|healthy")
-)
-lm.pb_GSE134347 <- step1(lm.pb_GSE134347)
-#' @meth {get_meth(lm.pb_GSE134347)}
-lm.pb_GSE134347 <- step2(
-  lm.pb_GSE134347, sepsis - healthy
-)
-lm.pb_GSE134347 <- step3(lm.pb_GSE134347)
-lm.pb_GSE134347@plots$step2$p.volcano$`sepsis - healthy`
-lm.pb_GSE134347@tables$step2$tops$`sepsis - healthy`
-```
-
 
 ### GEO 数据获取 (PB_GSE69063)
 
@@ -300,6 +487,10 @@ metadata.pb_GSE69063$group
 
 `r snap(lm.pb_GSE69063, 0:3)`
 
+`r ref("PB-GSE69063-Sepsis-vs-Healthy-control")`
+`r ref("PB-GSE69063-data-Sepsis-vs-Healthy-control")`
+<!-- LEGEND_END -->
+
 ```{r}
 lm.pb_GSE69063 <- asjob_limma(geo.pb_GSE69063, metadata.pb_GSE69063)
 lm.pb_GSE69063@object$genes <- map_gene(lm.pb_GSE69063@object$genes, "ENTREZ_GENE_ID")
@@ -316,117 +507,145 @@ lm.pb_GSE69063@plots$step2$p.volcano$`Sepsis - Healthy_control`
 lm.pb_GSE69063@tables$step2$tops$`Sepsis - Healthy_control`
 ```
 
-## 交集: GSE13434 + GSE13734 + GSE23240 + GSE23275 + GSE24321 + GSE6906 + GSE7232 (BULK)
 
-`r snap(venn.bulk, 0:1)`
 
-```{r}
-#' @meth {get_meth(venn.bulk)}
-venn.bulk <- job_vennDEGs("lm.pb_", exclude = "lm.pb_GSE185263")
-venn.bulk <- step1(venn.bulk, force_upset = TRUE, n = 25)
-wrap(venn.bulk@plots$step1$p.venn, 8.5, 5)
-venn.bulk$degs_versus
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE69063-Sepsis-vs-Healthy-control
+autor(lm.pb_GSE69063@plots$step2$p.volcano$`Sepsis - Healthy_control`)
 ```
 
-## ClusterProfiler 富集分析 (BULK)
 
-`r snap(en.bulk, 0:2)`
+```{r eval = T, echo = F, results = "asis"}
+#| PB-GSE69063-data-Sepsis-vs-Healthy-control
+autor(lm.pb_GSE69063@tables$step2$tops$`Sepsis - Healthy_control`)
+```
+
+## 汇总: GSE134347 + GSE232404 + GSE243217 + GSE63042 + GSE69063 + GSE74224 (BULK)
+
+`r snap(venn.bulk, 0:1)`
+`r ref("BULK-Intersection-of-GSE134347-with-GSE232404-with-GSE243217-with-GSE63042-with-GSE69063-with-GSE74224")`
+`r ref("Metadata-of-mutiple-datasets")`
+<!-- LEGEND_END -->
 
 ```{r}
-en.bulk <- asjob_enrich(feature(venn.bulk))
-#' @meth {get_meth(en.bulk)}
-en.bulk <- step1(en.bulk)
-en.bulk@plots$step1$p.kegg$ids
-wrap(en.bulk@plots$step1$p.go$ids, 8.5, 7.5)
-en.bulk@tables$step1$res.kegg$ids
-en.bulk@tables$step1$res.go$ids
+venn.bulk <- job_vennDEGs(
+  "lm.pb_", exclude = c("lm.pb_GSE185263"), 
+  gp = c(SI = "infectious|SIRS", SH = "healthy|Healthy|HC")
+)
+#' @meth {get_meth(venn.bulk)}
+venn.bulk <- step1(venn.bulk, force_upset = TRUE)
+venn.bulk$metadata
+wrap(venn.bulk@plots$step1$p.venn, 13, 5)
+feature(venn.bulk)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BULK-Intersection-of-GSE134347-with-GSE232404-with-GSE243217-with-GSE63042-with-GSE69063-with-GSE74224
+autor(wrap(venn.bulk@plots$step1$p.venn, 13, 5))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Metadata-of-mutiple-datasets
+autor(venn.bulk$metadata)
 ```
 
 ## Lasso 诊断模型建立 (BULK)
 
 `r snap(dian.bulk, 0:6)`
 
+`r ref("Feature-heatmap-in-validation-dataset")`
+`r ref("Lasso-model")`
+`r ref("Lasso-ROC-lambda-min")`
+`r ref("Lasso-ROC-lambda-1se")`
+`r ref("Lasso-coeffients-lambda-min")`
+`r ref("Lasso-coeffients-lambda-1se")`
+`r ref("BULK-lambda-min-ROC")`
+`r ref("BULK-lambda-1se-ROC")`
+<!-- LEGEND_END -->
+
 ```{r}
-dian.bulk <- asjob_diagn(venn.bulk)
+dian.bulk <- asjob_diagn(venn.bulk, feature(sr.sepsis))
 dian.bulk <- step1(dian.bulk)
 #' @meth {get_meth(dian.bulk)}
 dian.bulk <- step2(dian.bulk)
 dian.bulk <- step3(dian.bulk)
 dian.bulk <- step4(dian.bulk)
 dian.bulk <- step5(dian.bulk)
-dian.bulk@step <- 5L
-dian.bulk <- step6(dian.bulk)
+dian.bulk <- step6(dian.bulk, project = "GSE134347")
 dian.bulk@params$self_res$p.hp
 dian.bulk@params$self_res$p.lasso_model
+dian.bulk@params$self_res$p.lasso_ROC$lambda.min
+dian.bulk@params$self_res$p.lasso_ROC$lambda.1se
 dian.bulk@params$self_res$p.lasso_coeffients$lambda.min
 dian.bulk@params$self_res$p.lasso_coeffients$lambda.1se
 dian.bulk@params$map_res$p.rocs$lambda.min
 dian.bulk@params$map_res$p.rocs$lambda.1se
-feature(dian.bulk)
-```
 
-## bulk RNA-seq 外部验证数据集
-
-### GEO 数据获取 (PB_GSE185263) (survival)
-
-`r snap(geo.pb_GSE185263, 0:2)`
-
-```{r}
-geo.pb_GSE185263 <- job_geo("pb_GSE185263")
-#' @meth {get_meth(geo.pb_GSE185263)}
-geo.pb_GSE185263 <- step1(geo.pb_GSE185263)
-geo.pb_GSE185263 <- step2(geo.pb_GSE185263)
-metadata.pb_GSE185263 <- expect(geo.pb_GSE185263, geo_cols())
-metadata.pb_GSE185263
-```
-
-### Limma 差异分析 (PB_GSE185263)
-
-`r snap(lm.pb_GSE185263, 0:3)`
-
-```{r}
-lm.pb_GSE185263 <- asjob_limma(geo.pb_GSE185263, metadata.pb_GSE185263)
-lm.pb_GSE185263 <- step1(lm.pb_GSE185263)
-#' @meth {get_meth(lm.pb_GSE185263)}
-lm.pb_GSE185263 <- step2(
-  lm.pb_GSE185263, sepsis - healthy
+sr.sepsis <- focus(
+  sr.sepsis, unlist(feature(dian.bulk)[[1]]),
+  name = "diagn_min", group.by = "Cell_Sample"
 )
-lm.pb_GSE185263 <- step3(lm.pb_GSE185263)
+
 ```
 
-## 使用外部数据验证 (VALID_GSE185263)
 
-`r snap(dia.valid_GSE185263, "m")`
 
-```{r}
-dia.valid_GSE185263 <- asjob_diag(lm.pb_GSE185263)
-dia.valid_GSE185263 <- step1(dia.valid_GSE185263)
-dia.valid_GSE185263 <- map(dia.valid_GSE185263, dian.bulk)
-#' @meth {get_meth(dia.valid_GSE185263)}
-dia.valid_GSE185263@params$valid_results$lambda.min$p.roc
-dia.valid_GSE185263@params$p.hp_valid
+```{r eval = T, echo = F, results = "asis"}
+#| Feature-heatmap-in-validation-dataset
+autor(dian.bulk@params$self_res$p.hp)
 ```
 
-## Seurat 单细胞数据分析 (SEPSIS)
 
-```{r}
-sr.sepsis <- step1(sr.sepsis)
-sr.sepsis@params$p.qc_pre
-sr.sepsis <- step2(sr.sepsis, 0, 4000, 10)
-sr.sepsis@plots$step2$p.pca_rank
-sr.sepsis <- step3(sr.sepsis)
-sr.sepsis@plots$step3$p.umap
-vis(sr.sepsis, "Cell_Type", mode = "sample")
+```{r eval = T, echo = F, results = "asis"}
+#| Lasso-model
+autor(dian.bulk@params$self_res$p.lasso_model)
+```
 
-sr.sepsis <- focus(sr.sepsis, feature(dian.bulk)[[1]], name = "diag_min")
-sr.sepsis@params$focus_diag_min$p.dim
-sr.sepsis@params$focus_diag_min$p.vln
 
+```{r eval = T, echo = F, results = "asis"}
+#| Lasso-ROC-lambda-min
+autor(dian.bulk@params$self_res$p.lasso_ROC$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Lasso-ROC-lambda-1se
+autor(dian.bulk@params$self_res$p.lasso_ROC$lambda.1se)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Lasso-coeffients-lambda-min
+autor(dian.bulk@params$self_res$p.lasso_coeffients$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Lasso-coeffients-lambda-1se
+autor(dian.bulk@params$self_res$p.lasso_coeffients$lambda.1se)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BULK-lambda-min-ROC
+autor(dian.bulk@params$map_res$p.rocs$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BULK-lambda-1se-ROC
+autor(dian.bulk@params$map_res$p.rocs$lambda.1se)
 ```
 
 ## scFEA 单细胞数据的代谢通量预测 (SEPSIS)
 
 `r snap(scfea.sepsis, 0:2)`
+
+`r ref("SEPSIS-metabolic-flux-matrix")`
+`r ref("SEPSIS-annotation-of-metabolic-flux")`
+<!-- LEGEND_END -->
 
 ```{r}
 set_remoteRun.bosai()
@@ -437,27 +656,94 @@ scfea.sepsis <- step1(scfea.sepsis)
 scfea.sepsis <- step2(scfea.sepsis)
 scfea.sepsis@tables$step2$t.anno
 scfea.sepsis@tables$step2$t.flux
+```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-metabolic-flux-matrix
+autor(scfea.sepsis@tables$step2$t.flux)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-annotation-of-metabolic-flux
+autor(scfea.sepsis@tables$step2$t.anno)
 ```
 
 ## Limma 代谢通量差异分析 (SEPSIS_FLUX)
 
 `r snap(lm.sepsis_flux, 0:3)`
 
+`r ref("SEPSIS-FLUX-Sepsis-vs-Control")`
+`r ref("SEPSIS-FLUX-data-Sepsis-vs-Control")`
+`r ref("Cell-flux-ridge-plot")`
+<!-- LEGEND_END -->
+
 ```{r}
-scfea.sepsis$metadata$orig.ident %>% table
 lm.sepsis_flux <- asjob_limma(scfea.sepsis, group = "orig.ident")
 lm.sepsis_flux <- step1(lm.sepsis_flux)
 #' @meth {get_meth(lm.sepsis_flux)}
 lm.sepsis_flux <- step2(
   lm.sepsis_flux, Sepsis - Control, cut.fc = .2
 )
+lm.sepsis_flux@plots$step2$p.volcano$`Sepsis - Control`
 lm.sepsis_flux@tables$step2$tops$`Sepsis - Control`
+lm.sepsis_flux <- step3(lm.sepsis_flux)
+feature(lm.sepsis_flux)
 
 scfea.sepsis <- map(scfea.sepsis, lm.sepsis_flux)
 scfea.sepsis@params$p.flux
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-FLUX-Sepsis-vs-Control
+autor(lm.sepsis_flux@plots$step2$p.volcano$`Sepsis - Control`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-FLUX-data-Sepsis-vs-Control
+autor(lm.sepsis_flux@tables$step2$tops$`Sepsis - Control`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Cell-flux-ridge-plot
+autor(scfea.sepsis@params$p.flux)
+```
+
+## 关联分析
+
+`r snap(cp.corr, 0:0)`
+
+`r ref("Correlation-heatmap")`
+`r ref("Significant-correlation")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.scRNA_tcells <- asjob_limma(sr.sepsis, feature(dian.bulk)[[1]], cell_groups = "T")
+cp.corr <- cal_corp(
+  lm.scRNA_tcells, lm.sepsis_flux, feature(dian.bulk)[[1]], feature(lm.sepsis_flux), 
+  names = c("Diagnostic markers", "Metabolic Flux"),
+  use.x = "gene", use.y = "name", gname = FALSE
+)
+#' @meth {get_meth(cp.corr)}
+wrap(cp.corr@params$res$hp, 6, 6)
+cp.corr@params$res$sig.corp
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Correlation-heatmap
+autor(wrap(cp.corr@params$res$hp, 6, 6))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Significant-correlation
+autor(cp.corr@params$res$sig.corp)
+```
 
 # 总结 {#conclusion}
 
