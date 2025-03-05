@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2024-11-19"), end = td("2025-02-21"), finish = td("2025-02-28"),
+info <- items(start = td("2024-11-19"), end = td("2025-02-21"), finish = td("2025-03-05"),
   id = "BSJF241107", client = "许冠华", inst = "",
   type = "生信分析",
   title = "脓毒症发病标志物",
@@ -46,20 +46,20 @@ dic(di("差异表达基因"),
 
 ```{r}
 #| route
-groupDatasets <- sort_by(names(dian.bulk$groups), unlist(dian.bulk$groups))
-r.sh <- bind(groupDatasets[1:3])
-r.si <- bind(groupDatasets[4:6])
 route <- as_network(
-  list("Sepsis:scRNA-seq, Bulk_RNA-seq",
-    "scRNA-seq:SCP548",
+  list("Sepsis:scRNA-seq",
+    "scRNA-seq:SCP548:细胞聚类、注释:T_cells:Sepsis_vs_Healthy:Metabolic_flux, T_DEGs",
+    "T_DEGs, GSE134347:LASSO_Diagnostic:Markers:Model:Validation",
     "Bulk_RNA-seq:SI_(Sepsis_vis_SIRS), SH_(Sepsis_vis_Healthy)",
-    "SI_(Sepsis_vis_SIRS):{r.si}",
-    "SH_(Sepsis_vis_Healthy):{r.sh}",
-    "GSE134347:LASSO_Diagnostic:Model:Validation",
-    "{r.si}, {r.sh}:Validation"
+    "SI_(Sepsis_vis_SIRS):{meta(venn.bulk, 'SI')}:SI_enrichment",
+    "SH_(Sepsis_vis_Healthy):{meta(venn.bulk, 'SH')}:SH_enrichment",
+    "SI_enrichment, SH_enrichment:Comparation",
+    "Markers, Metabolic_flux:Correlation",
+    "{meta(venn.bulk)}:Validation"
     ), "sugiyama"
 )
 p.route <- flowChart(route, 1.1, 1)
+p.route <- wrap(p.route, 15, 6, showtext = TRUE)
 p.route
 ```
 
@@ -109,6 +109,7 @@ sr.sepsis <- mutate(sr.sepsis, orig.ident = group)
 `r ref("SEPSIS-After-Quality-control")`
 `r ref("SEPSIS-Standard-deviations-of-PCs")`
 `r ref("SEPSIS-UMAP-Clustering")`
+`r ref("SEPSIS-The-Cell-Type")` (为原作者的注释结果，映射到本次分析的 UMAP 中)
 `r ref("SEPSIS-The-Cell-Sample")`
 `r ref("SEPSIS-DEGs-of-the-contrasts")`
 <!-- LEGEND_END -->
@@ -126,8 +127,15 @@ sr.sepsis <- mutate(
   sr.sepsis, Cell_Sample = paste0(Cell_Type, "_", orig.ident)
 )
 
+cm.sc <- job_markers("^Blood$")
+cm.sc <- step1(cm.sc)
+cm.sc$data
+
 p.dimOrigin <- vis(sr.sepsis, "Cell_Type", mode = "sample")
 p.dimOrigin
+p.dimAnno <- vis(sr.sepsis, "Cell_Type", mode = "cell")
+p.dimAnno
+
 
 sr.sepsis <- diff(
   sr.sepsis, "Cell_Sample", list(c("T_Sepsis", "T_Control"))
@@ -159,12 +167,15 @@ autor(sr.sepsis@plots$step2$p.pca_rank)
 autor(sr.sepsis@plots$step3$p.umap)
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-The-Cell-Type
+autor(p.dimAnno)
+```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| SEPSIS-The-Cell-Sample
 autor(p.dimOrigin)
 ```
-
 
 ```{r eval = T, echo = F, results = "asis"}
 #| SEPSIS-DEGs-of-the-contrasts
@@ -285,6 +296,7 @@ metadata.pb_GSE63042
 ### Limma 差异分析 (PB_GSE63042)
 
 `r snap(lm.pb_GSE63042, 0:3)`
+(SIRS, systemic inflammatory response syndrome，文中的 SIRS 指的是 Infection-Negative Systemic Inflammation)
 
 `r ref("PB-GSE63042-Sepsis-vs-SIRS")`
 `r ref("PB-GSE63042-data-Sepsis-vs-SIRS")`
@@ -534,6 +546,7 @@ venn.bulk <- job_vennDEGs(
 )
 #' @meth {get_meth(venn.bulk)}
 venn.bulk <- step1(venn.bulk, force_upset = TRUE)
+venn.bulk$metadata <- dplyr::mutate(venn.bulk$metadata, tissue = "Blood")
 venn.bulk$metadata
 wrap(venn.bulk@plots$step1$p.venn, 13, 5)
 feature(venn.bulk)
@@ -550,6 +563,101 @@ autor(wrap(venn.bulk@plots$step1$p.venn, 13, 5))
 #| Metadata-of-mutiple-datasets
 autor(venn.bulk$metadata)
 ```
+
+## Sepsis vs Non-infectious 与 Sepsis vs Healthy {#compare}
+
+### ClusterProfiler 富集分析 (SI)
+
+`r ref("SI-KEGG-enrichment")`
+`r ref("SI-GO-enrichment")`
+`r ref("SI-KEGG-enrichment-data")`
+`r ref("SI-GO-enrichment-data")`
+<!-- LEGEND_END -->
+
+```{r}
+en.si <- asjob_enrich(feature(venn.bulk, "SI"))
+en.si <- step1(en.si)
+en.si@plots$step1$p.kegg$ids
+en.si@plots$step1$p.go$ids
+en.si@tables$step1$res.kegg$ids
+en.si@tables$step1$res.go$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SI-KEGG-enrichment
+autor(en.si@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SI-GO-enrichment
+autor(en.si@plots$step1$p.go$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SI-KEGG-enrichment-data
+autor(en.si@tables$step1$res.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SI-GO-enrichment-data
+autor(en.si@tables$step1$res.go$ids)
+```
+
+### ClusterProfiler 富集分析 (SH)
+
+`r snap(en.sh, 0:2)`
+
+`r ref("SH-KEGG-enrichment")`
+`r ref("SH-GO-enrichment")`
+`r ref("SH-KEGG-enrichment-data")`
+`r ref("SH-GO-enrichment-data")`
+<!-- LEGEND_END -->
+
+```{r}
+en.sh <- asjob_enrich(feature(venn.bulk, "SH"))
+#' @meth {get_meth(en.sh)}
+en.sh <- step1(en.sh)
+en.sh@plots$step1$p.kegg$ids
+wrap(en.sh@plots$step1$p.go$ids, 8, 7)
+en.sh@tables$step1$res.kegg$ids
+en.sh@tables$step1$res.go$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SH-KEGG-enrichment
+autor(en.sh@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SH-GO-enrichment
+autor(wrap(en.sh@plots$step1$p.go$ids, 8, 7))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SH-KEGG-enrichment-data
+autor(en.sh@tables$step1$res.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SH-GO-enrichment-data
+autor(en.sh@tables$step1$res.go$ids)
+```
+
+### 富集分析比较
+
+上述 SI 交集与 SH 交集的富集分析，均表现出免疫行为的区别。
+SH 的富集分析，富集的通路 (GO) 表现出 T 细胞行为的差异 (`r ref("SH-GO-enrichment")`)。
+而 SI 的富集分析，主要体现对病菌的感染性反应 (`r ref("SI-GO-enrichment")`)。
+可以推测，Sepsis 与 SIRS (Sepsis Negative) 的差异，可以体现在 T 细胞对病菌感染的差异行为。
+因此，后续分析集中于 T 细胞。
 
 ## Lasso 诊断模型建立 (BULK)
 
@@ -746,4 +854,23 @@ autor(cp.corr@params$res$sig.corp)
 ```
 
 # 总结 {#conclusion}
+
+(SIRS, systemic inflammatory response syndrome，文中的 SIRS 指的是 Infection-Negative Systemic Inflammation)
+本研究从 T 细胞出发，探究 Sepsis 和 Non-infectious (Sepsis-Negative) 诊断标志物。以单细胞数据筛选 T 细胞在脓毒症和正常细胞中的表达差异。富集分析表明，这些基因与 T 细胞在免疫期间的行为以及与病菌感染密切相关
+(`r ref("BULK-KEGG-enrichment")`,
+`r ref("BULK-GO-enrichment")`)。
+同时，文中通过比较 Sepsis vs Healthy 与 Sepsis vis SIRS 的富集分析，也佐证了这一点 (见 \@ref(compare))。
+随后，结合这些基因，以 Bulk RNA-seq 建立了诊断模型。该模型同时以脓毒症与 SIRS ，脓毒症与健康对照组
+的 Bulk RNA-seq 进行了大量的验证 (`r ref("BULK-lambda-1se-ROC")`,
+`r ref("BULK-lambda-min-ROC")`)。
+本研究还针对 T 细胞在 Sepsis 状态下，与正常相比，代谢通量的改变 (通过对单细胞数据集预测代谢通量`r cite_show("@AGraphNeuralAlgham2021")`) 做了差异分析，发现了五种于 Sepsis 下的代谢状态升高
+(`r ref("SEPSIS-FLUX-Sepsis-vs-Control")`，
+`r ref("Cell-flux-ridge-plot")`)。
+关联分析表明，T 细胞的诊断标志物与这些代谢通量改变总体成负相关性 (`r ref("Correlation-heatmap")`)
+
+```{r}
+extract_anno("./order_material/BSJF241107-许冠华-生信分析-脓毒症发病标志物-2025.03.05ByFL.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL.docx")
+```
+
 
