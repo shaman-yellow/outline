@@ -172,10 +172,11 @@ autor(geo.aa_scRNA@params$prods)
 `r ref("AA-UMAP-Integrated")` 
 `r ref("AA-significant-markers-of-cell-clusters")` 
 `r ref("AA-ChatGPT-Cell-type-annotation")` 
-`r ref("AA-Markers-in-cell-types")` 
+`r ref("AA-CellMarker-Validation")`
 `r ref("AA-ChatGPT4-Cell-Proportions-in-each-sample")` 
 `r ref("AA-The-Cell-Sample")` 
 `r ref("AA-DEGs-of-the-contrasts")` 
+<!-- LEGEND_END -->
 
 ```{r}
 #' @meth {get_meth(sr5n.aa)}
@@ -193,7 +194,6 @@ sr5n.aa@plots$step3$p.umapInt
 sr5n.aa <- step4(sr5n.aa, "")
 sr5n.aa <- step5(sr5n.aa)
 sr5n.aa@tables$step5$all_markers
-sr5n.aa@step <- 5L
 sr5n.aa <- step6(sr5n.aa, "Bone marrow")
 sr5n.aa@plots$step6$p.map_gpt
 
@@ -210,6 +210,18 @@ sr5n.aa@params$hp_cell_markers
 sr5n.aa@params$hp_cell_markers
 sr5n.aa@plots$step6$p.map_gpt
 sr5n.aa@plots$step6$p.markers
+
+cm.bone_marrow <- job_markers("bone.*marrow|blood")
+cm.bone_marrow <- step1(
+  cm.bone_marrow, c(
+    "Erythroblast", "Macrophage", "Mesenchymal", "Monocyte", 
+    "Neutrophil", "Plasma", "Platelet"
+  )
+)
+cm.bone_marrow
+sr5n.aa <- map(sr5n.aa, cm.bone_marrow, "CSF3R", 12)
+sr5n.aa@params$p.cellMarker
+
 sr5n.aa@plots$step6$p.props_gpt
 p.cell_sample <- vis(sr5n.aa, "Cell_Sample", mode = "type")
 wrap(p.cell_sample, 10, 5)
@@ -260,10 +272,9 @@ autor(sr5n.aa@tables$step5$all_markers)
 autor(sr5n.aa@plots$step6$p.map_gpt)
 ```
 
-
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-Markers-in-cell-types
-autor(sr5n.aa@plots$step6$p.markers)
+#| AA-CellMarker-Validation
+autor(sr5n.aa@params$p.cellMarker)
 ```
 
 
@@ -284,6 +295,7 @@ autor(wrap(p.cell_sample, 10, 5))
 autor(sr5n.aa@params$contrasts)
 ```
 
+
 ## Seurat 细胞群中的 TWAS 风险相关基因 (AA)
 
 `r snap(sr5n.aa, "m")`
@@ -292,6 +304,8 @@ autor(sr5n.aa@params$contrasts)
 ```{r}
 sr5n.aa <- map(sr5n.aa, fus.aa)
 sr5n.aa@params$fusion_degs
+split(sr5n.aa@params$fusion_degs, ~ contrast)
+
 tbl_genesEry <- dplyr::filter(sr5n.aa@params$fusion_degs, grpl(contrast, "Erythroblast"))
 tbl_genesEry$gene
 
@@ -431,7 +445,8 @@ autor(p.Ery$p.dim)
 `r ref("AA-Graph-Test-of-associated-genes")` 
 `r ref("AA-ERY-Set1-genes-in-pseudotime")` 
 
-`r ref("AA-ERY-Set1-genes-in-pseudotime")` 表明，`TUBB2A` 是一种在 AA 中高表达的基因 (Erythroblast)。
+`r ref("AA-ERY-Set1-genes-in-pseudotime")` 表明，
+`TUBB2A` 是一种在 AA 中高表达的基因 (Erythroblast)。
 
 ```{r}
 #' @meth {get_meth(mn.aa_ery)}

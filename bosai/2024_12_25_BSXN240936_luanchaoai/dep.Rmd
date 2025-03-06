@@ -18,3 +18,48 @@ lm.ov@object$samples$primary_diagnosis
 lm.ov@object$samples$site_of_resection_or_biopsy
 ```
 
+
+### GEO 数据获取 (OC2_RES)
+
+```{r}
+geo.oc2_res <- job_geo("GSE159791")
+geo.oc2_res <- step1(geo.oc2_res)
+metadata.oc2_res <- expect(geo.oc2_res, geo_cols())
+metadata.oc2_res
+rm(geo.oc2_res)
+```
+
+### GEO 数据获取 (OC2_RES)
+
+`r snap(geo.oc2_res, 0:2)`
+
+```{r}
+geo.oc2_res <- job_geo("GSE190245")
+#' @meth {get_meth(geo.oc2_res)}
+geo.oc2_res <- step1(geo.oc2_res)
+metadata.oc2_res <- expect(geo.oc2_res, geo_cols())
+```
+
+```{r}
+lm.oc2_res <- asjob_limma(geo.oc2_res, metadata.oc2_res)
+lm.oc2_res$genes
+lm.oc2_res <- step1(lm.oc2_res)
+lm.oc2_res <- step2(
+  lm.oc2_res, ,
+  use = "P", cut.fc = .3
+)
+rm(lm.oc2_res, geo.oc2_res)
+```
+
+### GEO 数据获取 (OC_GSE141630)
+
+`r snap(geo.oc_GSE141630, 0:2)`
+
+```{r}
+geo.oc_GSE141630 <- job_geo("oc_GSE141630")
+#' @meth {get_meth(geo.oc_GSE141630)}
+geo.oc_GSE141630 <- step1(geo.oc_GSE141630)
+
+metadata.oc_GSE141630 <- expect(geo.oc_GSE141630, geo_cols())
+metadata.oc_GSE141630
+```

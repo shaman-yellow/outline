@@ -12,7 +12,9 @@ show.ic(info)
 
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
-order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+order_packaging(
+  "./analysis_out.docx", idname = idname, external_file = NULL, extras = "./Reply_FL.docx"
+)
 ```
 
 ```{r include = F}
@@ -110,6 +112,7 @@ sr.sepsis <- mutate(sr.sepsis, orig.ident = group)
 `r ref("SEPSIS-Standard-deviations-of-PCs")`
 `r ref("SEPSIS-UMAP-Clustering")`
 `r ref("SEPSIS-The-Cell-Type")` (为原作者的注释结果，映射到本次分析的 UMAP 中)
+`r ref("SEPSIS-CellMarker-Validation")`
 `r ref("SEPSIS-The-Cell-Sample")`
 `r ref("SEPSIS-DEGs-of-the-contrasts")`
 <!-- LEGEND_END -->
@@ -127,10 +130,10 @@ sr.sepsis <- mutate(
   sr.sepsis, Cell_Sample = paste0(Cell_Type, "_", orig.ident)
 )
 
-cm.sc <- job_markers("^Blood$")
-cm.sc <- step1(cm.sc)
-cm.sc$db
-cm.sc$data
+cm.sc <- job_markers("blood")
+cm.sc <- step1(cm.sc, "megakary")
+sr.sepsis <- map(sr.sepsis, cm.sc, "PF4", 2)
+sr.sepsis@params$p.cellMarker
 
 p.dimOrigin <- vis(sr.sepsis, "Cell_Type", mode = "sample")
 p.dimOrigin
@@ -174,6 +177,11 @@ autor(p.dimAnno)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
+#| SEPSIS-CellMarker-Validation
+autor(sr.sepsis@params$p.cellMarker)
+```
+
+```{r eval = T, echo = F, results = "asis"}
 #| SEPSIS-The-Cell-Sample
 autor(p.dimOrigin)
 ```
@@ -182,6 +190,7 @@ autor(p.dimOrigin)
 #| SEPSIS-DEGs-of-the-contrasts
 autor(sr.sepsis@params$contrasts)
 ```
+
 
 ## ClusterProfiler 富集分析 (BULK)
 

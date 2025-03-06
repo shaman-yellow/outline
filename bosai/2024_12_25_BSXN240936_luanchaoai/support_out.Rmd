@@ -45,10 +45,13 @@ set_index()
 
 # 分析流程 {#abstract}
 
+## 需求
+
 - GTSE1 在 HGSOC 中高表达促进肿瘤增值与迁移。
   GTSE1 与化疗耐药有关。在卵巢癌 (HGSOC) 中的表达，在化疗耐药卵巢癌数据集中的表达。
 - GTSE1 的 mRNA 序列上的 m6A 甲基化，GTSE1可能主要被ALKBH5、IGF2BP1、METTL14、METTL3、YTHDF1、YTHDF2。
   GTSE1与甲基化相关酶的表达进行相关性分析
+
 
 ```{r}
 #| route
@@ -87,6 +90,38 @@ collate_details("meth")
 ```
 
 # 分析结果 {#workflow}
+
+## TCGA 数据获取 (OV)
+
+`r snap(tcga.ov, 0:3)`
+
+```{r}
+tcga.ov <- job_tcga("TCGA-OV")
+tcga.ov <- step1(tcga.ov)
+#' @meth {get_meth(tcga.ov)}
+tcga.ov <- step2(tcga.ov)
+tcga.ov <- step3(tcga.ov)
+```
+
+## Survival 生存分析 (OV)
+
+`r ref("OV-survival-curve-of-GTSE1")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.ov <- asjob_limma(tcga.ov)
+lm.ov@object$targets
+lm.ov <- step1(lm.ov)
+surv.ov <- asjob_survival(lm.ov, "GTSE1")
+surv.ov <- step1(surv.ov)
+surv.ov@plots$step1$p.surv$GTSE1
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OV-survival-curve-of-GTSE1
+autor(surv.ov@plots$step1$p.surv$GTSE1)
+```
 
 ## GSE 数据搜索 (HGSOC)
 
@@ -158,30 +193,250 @@ autor(lm.hgsoc@plots$step2$p.volcano$`hgsoc - normal`)
 autor(lm.hgsoc@plots$step2$p.BoxPlotOfDEGs)
 ```
 
-## GSE 数据搜索 (HGSOC_RES)
+## Drug resistant
+
+### GSE 数据搜索 (HGSOC_RES)
 
 ```{r}
-gds.hgsoc_Res <- job_gds(c("high-grade serous ovarian cancer", "Drug resistance"))
+gds.hgsoc_Res <- job_gds(c("ovarian cancer", "Drug resistance"))
 #' @meth {get_meth(gds.hgsoc_Res)}
 vis(gds.hgsoc_Res)
-active(gds.hgsoc_Res)
+active(gds.hgsoc_Res, which = 11:30)
 ```
 
-## GEO 数据获取 (HGSOC_RES)
+### GEO 数据获取 (OV_GSE173579)
 
-`r snap(geo.hgsoc_Res, 0:3)`
+`r snap(geo.ov_GSE173579, 0:2)`
 
 ```{r}
-geo.hgsoc_Res <- job_geo("GSE141630")
-#' @meth {get_meth(geo.hgsoc_Res)}
-geo.hgsoc_Res <- step1(geo.hgsoc_Res)
-geo.hgsoc_Res <- step2(geo.hgsoc_Res, rna = FALSE)
-geo.hgsoc_Res$prods
-counts.hgsoc_Res <- ftibble(list.files(geo.hgsoc_Res$dir, ".", full.names = TRUE))
+geo.ov_GSE173579 <- job_geo("ov_GSE173579")
+geo.ov_GSE173579 <- step1(geo.ov_GSE173579)
+#' @meth {get_meth(geo.ov_GSE173579)}
+geo.ov_GSE173579 <- step2(geo.ov_GSE173579)
+
+metadata.ov_GSE173579 <- expect(geo.ov_GSE173579, geo_cols())
+metadata.ov_GSE173579
+```
+
+### Limma 差异分析 (OV_GSE173579)
+
+`r snap(lm.ov_GSE173579, 0:3)`
+
+`r ref("OV-GSE173579-Box-Plot-Of-DEGs")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.ov_GSE173579 <- asjob_limma(geo.ov_GSE173579, metadata.ov_GSE173579)
+lm.ov_GSE173579 <- step1(lm.ov_GSE173579)
+#' @meth {get_meth(lm.ov_GSE173579)}
+lm.ov_GSE173579 <- step2(
+  lm.ov_GSE173579, Carboplatin_high_Resistant_SKOV3 - Non_resistance_SKOV3,
+  use = "P", cut.fc = .3
+)
+lm.ov_GSE173579 <- map(lm.ov_GSE173579, "GTSE1", use = "P")
+lm.ov_GSE173579@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OV-GSE173579-Box-Plot-Of-DEGs
+autor(lm.ov_GSE173579@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### GEO 数据获取 (OC_GSE140996)
+
+`r snap(geo.oc_GSE140996, 0:2)`
+
+```{r}
+geo.oc_GSE140996 <- job_geo("oc_GSE140996")
+#' @meth {get_meth(geo.oc_GSE140996)}
+geo.oc_GSE140996 <- step1(geo.oc_GSE140996)
+metadata.oc_GSE140996 <- expect(geo.oc_GSE140996, geo_cols())
+metadata.oc_GSE140996 <- dplyr::mutate(
+  metadata.oc_GSE140996, group = paste0(cell.type.ch1, "_", treatment.ch1)
+)
+metadata.oc_GSE140996
+```
+
+### Limma 差异分析 (OC_GSE140996)
+
+`r snap(lm.oc_GSE140996, 0:3)`
+
+`r ref("OC-GSE140996-Box-Plot-Of-DEGs")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.oc_GSE140996 <- asjob_limma(geo.oc_GSE140996, metadata.oc_GSE140996)
+lm.oc_GSE140996 <- filter(
+  lm.oc_GSE140996, type = "metadata", grpl(group, "none")
+)
+lm.oc_GSE140996 <- step1(lm.oc_GSE140996)
+#' @meth {get_meth(lm.oc_GSE140996)}
+lm.oc_GSE140996 <- step2(
+  lm.oc_GSE140996, W1CR_none - W1_none,
+  use = "P", cut.fc = .3
+)
+lm.oc_GSE140996 <- map(lm.oc_GSE140996, "GTSE1", use = "P")
+lm.oc_GSE140996@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OC-GSE140996-Box-Plot-Of-DEGs
+autor(lm.oc_GSE140996@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### GEO 数据获取 (OC_GSE143152)
+
+`r snap(geo.oc_GSE143152, 0:2)`
+
+```{r}
+geo.oc_GSE143152 <- job_geo("oc_GSE143152")
+#' @meth {get_meth(geo.oc_GSE143152)}
+geo.oc_GSE143152 <- step1(geo.oc_GSE143152)
+geo.oc_GSE143152 <- step2(geo.oc_GSE143152)
+metadata.oc_GSE143152 <- expect(geo.oc_GSE143152, geo_cols())
+metadata.oc_GSE143152$cell.line.ch1
+metadata.oc_GSE143152$phenotype.ch1
+metadata.oc_GSE143152 <- dplyr::mutate(
+  metadata.oc_GSE143152, group = phenotype.ch1, cell.line.ch1 = make.names(cell.line.ch1),
+  group = paste0(group, "_", s(cell.line.ch1, "\\.[0-9]+", ""))
+)
+metadata.oc_GSE143152$group
+```
+
+### Limma 差异分析 (OC_GSE143152)
+
+`r snap(lm.oc_GSE143152, 0:3)`
+
+`r ref("OC-GSE143152-Box-Plot-Of-DEGs-1")`
+`r ref("OC-GSE143152-Box-Plot-Of-DEGs-2")`
+`r ref("OC-GSE143152-Box-Plot-Of-DEGs-3")`
+`r ref("OC-GSE143152-Box-Plot-Of-DEGs-4")`
+`r ref("OC-GSE143152-Statistic-of-Focused-genes-extra")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.oc_GSE143152 <- asjob_limma(geo.oc_GSE143152, metadata.oc_GSE143152)
+lm.oc_GSE143152 <- step1(lm.oc_GSE143152)
+#' @meth {get_meth(lm.oc_GSE143152)}
+lm.oc_GSE143152 <- step2(
+  lm.oc_GSE143152, prexasertib_resistant_Kuramochi - parental_Kuramochi,
+  prexasertib_resistant_OV - parental_OV,
+  prexasertib_resistant_EFO - parental_EFO,
+  prexasertib_resistant_OVSAHO - parental_OVSAHO,
+  use = "P", cut.fc = .3
+)
+for (i in 1:4) {
+  lm.oc_GSE143152 <- map(
+    lm.oc_GSE143152, "GTSE1", use = "P", which = i, name = i
+  )
+}
+lm.oc_GSE143152@plots$step2$p.BoxPlotOfDEGs_1
+lm.oc_GSE143152@plots$step2$p.BoxPlotOfDEGs_2
+lm.oc_GSE143152@plots$step2$p.BoxPlotOfDEGs_3
+lm.oc_GSE143152@plots$step2$p.BoxPlotOfDEGs_4
+
+lm.oc_GSE143152 <- focus(
+  lm.oc_GSE143152, "GTSE1", use = "P", which = 4, .name = "extra"
+)
+lm.oc_GSE143152@params$focusedDegs_extra$data
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OC-GSE143152-Box-Plot-Of-DEGs-1
+autor(lm.oc_GSE143152@plots$step2$p.BoxPlotOfDEGs_1)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OC-GSE143152-Box-Plot-Of-DEGs-2
+autor(lm.oc_GSE143152@plots$step2$p.BoxPlotOfDEGs_2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OC-GSE143152-Box-Plot-Of-DEGs-3
+autor(lm.oc_GSE143152@plots$step2$p.BoxPlotOfDEGs_3)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OC-GSE143152-Box-Plot-Of-DEGs-4
+autor(lm.oc_GSE143152@plots$step2$p.BoxPlotOfDEGs_4)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OC-GSE143152-Statistic-of-Focused-genes-extra
+autor(lm.oc_GSE143152@params$focusedDegs_extra$data)
+```
+
+### GEO 数据获取 (OC_GSE285737)
+
+`r snap(geo.oc_GSE285737, 0:2)`
+
+```{r}
+geo.oc_GSE285737 <- job_geo("GSE285737")
+#' @meth {get_meth(geo.oc_GSE285737)}
+geo.oc_GSE285737 <- step1(geo.oc_GSE285737)
+geo.oc_GSE285737 <- step2(geo.oc_GSE285737, "Raw", rna = FALSE)
+metadata.oc_GSE285737 <- expect(geo.oc_GSE285737, geo_cols())
+metadata.oc_GSE285737$title
+metadata.oc_GSE285737$group
+
+counts.oc_res <- ftibble(geo.oc_GSE285737@params$dir_files)
+colnames(counts.oc_res)[-1] <- metadata.oc_GSE285737$sample
+
+genes.oc_res <- dplyr::select(counts.oc_res, genes = 1)
+genes.oc_res <- map_gene(genes.oc_res, "genes", "ENSEMBL")
+```
+
+
+### Limma 差异分析 (OC_GSE285737)
+
+`r snap(lm.oc_GSE285737, 0:3)`
+
+`r ref("OC-GSE285737-Box-Plot-Of-DEGs")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.oc_GSE285737 <- job_limma(
+  new_dge(metadata.oc_GSE285737, counts.oc_res, genes.oc_res)
+)
+lm.oc_GSE285737 <- step1(lm.oc_GSE285737)
+#' @meth {get_meth(lm.oc_GSE285737)}
+lm.oc_GSE285737 <- step2(
+  lm.oc_GSE285737, Carboplatin_resistant_OVCAR_3 - OVCAR_3,
+  use = "P", cut.fc = .3
+)
+lm.oc_GSE285737 <- map(lm.oc_GSE285737, "GTSE1", use = "P")
+lm.oc_GSE285737@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OC-GSE285737-Box-Plot-Of-DEGs
+autor(lm.oc_GSE285737@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### GEO 数据获取 (HGSOC_GSE141630)
+
+`r snap(geo.hgsoc_GSE141630, 0:2)`
+
+```{r}
+geo.hgsoc_GSE141630 <- job_geo("GSE141630")
+geo.hgsoc_GSE141630 <- step1(geo.hgsoc_GSE141630)
+#' @meth {get_meth(geo.hgsoc_GSE141630)}
+geo.hgsoc_GSE141630 <- step2(geo.hgsoc_GSE141630, rna = FALSE)
+geo.hgsoc_GSE141630$prods
+counts.hgsoc_Res <- ftibble(list.files(geo.hgsoc_GSE141630$dir, ".", full.names = TRUE))
 counts.hgsoc_Res <- dplyr::rename_with(counts.hgsoc_Res, function(x) gs(x, "^[^_]+_", ""))
 counts.hgsoc_Res
 metadata.hgsoc_Res <- expect(
-  geo.hgsoc_Res, geo_cols(
+  geo.hgsoc_GSE141630, geo_cols(
     group_recode = c(
       sensitive = "sensitive", carboplatin_resistant = "carboplatin resistant", 
       cisplatin_resistant = "cisplatin resistant"
@@ -199,40 +454,67 @@ bm <- step1(bm, genes.hgsoc_Res$Gene, "ensembl_gene_id")
 bm$anno
 ```
 
-## Limma 差异分析 (HGSOC_RES)
+### Limma 差异分析 (HGSOC_GSE141630)
 
-`r snap(lm.hgsoc_Res, 0:3)`
-(注：cisplatin_resistant 未显著，所以未分析)
+`r snap(lm.hgsoc_GSE141630, 0:3)`
 
-`r ref("HGSOC-RES-Box-Plot-Of-DEGs")`
+`r ref("HGSOC-GSE141630-Box-Plot-Of-DEGs")`
+<!-- LEGEND_END -->
 
 ```{r}
-lm.hgsoc_Res <- job_limma_normed(counts.hgsoc_Res, metadata.hgsoc_Res, bm$anno)
-#' @meth {get_meth(lm.hgsoc_Res)}
-lm.hgsoc_Res@params$normed_data
-lm.hgsoc_Res <- step1(lm.hgsoc_Res)
-lm.hgsoc_Res <- step2(
-  lm.hgsoc_Res, carboplatin_resistant - sensitive, label = "hgnc_symbol",
+lm.hgsoc_GSE141630 <- job_limma_normed(counts.hgsoc_Res, metadata.hgsoc_Res, bm$anno)
+#' @meth {get_meth(lm.hgsoc_GSE141630)}
+lm.hgsoc_GSE141630@params$normed_data
+lm.hgsoc_GSE141630 <- step1(lm.hgsoc_GSE141630)
+lm.hgsoc_GSE141630 <- step2(
+  lm.hgsoc_GSE141630, carboplatin_resistant - sensitive, label = "hgnc_symbol",
   cut.fc = .5, use = "P"
 )
-lm.hgsoc_Res <- step3(lm.hgsoc_Res, use.gene = "hgnc_symbol")
-lm.hgsoc_Res@plots$step2$p.volcano$`carboplatin_resistant - sensitive`
+lm.hgsoc_GSE141630 <- step3(lm.hgsoc_GSE141630)
+lm.hgsoc_GSE141630@plots$step2$p.volcano$`carboplatin_resistant - sensitive`
 
-lm.hgsoc_Res <- map(
-  lm.hgsoc_Res, "GTSE1", "hgnc_symbol", use = "P", which = 1L
+lm.hgsoc_GSE141630 <- map(
+  lm.hgsoc_GSE141630, "GTSE1", "hgnc_symbol", use = "P", which = 1L
 )
-lm.hgsoc_Res@plots$step2$p.BoxPlotOfDEGs
-
+lm.hgsoc_GSE141630@plots$step2$p.BoxPlotOfDEGs
 ```
 
-```{r eval = T, echo = F, results = "asis"}
-#| HGSOC-RES-carboplatin-resistant-vs-sensitive
-autor(lm.hgsoc_Res@plots$step2$p.volcano$`carboplatin_resistant - sensitive`)
-```
 
 ```{r eval = T, echo = F, results = "asis"}
-#| HGSOC-RES-Box-Plot-Of-DEGs
-autor(lm.hgsoc_Res@plots$step2$p.BoxPlotOfDEGs)
+#| HGSOC-GSE141630-Box-Plot-Of-DEGs
+autor(lm.hgsoc_GSE141630@plots$step2$p.BoxPlotOfDEGs)
+```
+
+### 汇总
+
+`r ref("Multiple-Datasets-GTSE1")`
+`r ref("GSE143152-differential-cell-lines-GTSE1")`
+<!-- LEGEND_END -->
+
+```{r}
+p.sets1 <- search_job_frame_wrap("^lm.hgsoc_.*|^lm.o[cv]_.*", function(x) x@plots$step2$p.BoxPlotOfDEGs)
+p.sets1 <- wrap(p.sets1, 10, 4)
+p.sets1 <- set_lab_legend(p.sets1, "Multiple Datasets GTSE1")
+p.sets1
+```
+
+```{r}
+p.sets2 <- frame_wrap(tail(lm.oc_GSE143152@plots$step2, n = 4))
+p.sets2 <- wrap(p.sets2, 10, 4)
+p.sets2 <- set_lab_legend(p.sets2, "GSE143152 differential cell lines GTSE1")
+p.sets2
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Multiple-Datasets-GTSE1
+autor(p.sets1)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE143152-differential-cell-lines-GTSE1
+autor(p.sets2)
 ```
 
 ## EpiFactors 表观遗传调控因子数据获取 (M6A)
@@ -291,10 +573,16 @@ autor(p.cor)
 
 # 总结 {#conclusion}
 
-`r ref("HGSOC-RES-Box-Plot-Of-DEGs")` 与
 `r ref("HGSOC-Box-Plot-Of-DEGs")`，
-结果表明 GTSE1 在癌症或耐药数据集中均差异表达，且癌症高表达，耐药数据集相对以于癌症低表达，
-表明耐药组已无法通过调控该基因发挥抗癌作用(耐药)。
+结果表明 GTSE1 癌症高表达，
+耐药数据集相对以于癌症低表达 (多数为低表达，见 `r ref("Multiple-Datasets-GTSE1")`)
+(`r ref("OC-GSE143152-Box-Plot-Of-DEGs-4")` 为耐药高表达)。
 
 随后，筛选出的差异表达基因 METTL14，与 GTSE1 显著关联，见 `r ref("Linear-regression")`。
+
+```{r}
+extract_anno("./order_material/BSXN240936-李扬-生信协助-高级别浆液性卵巢癌-2025.01.03-批注.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_.docx")
+```
+
 
