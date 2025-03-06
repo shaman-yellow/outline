@@ -129,6 +129,7 @@ sr.sepsis <- mutate(
 
 cm.sc <- job_markers("^Blood$")
 cm.sc <- step1(cm.sc)
+cm.sc$db
 cm.sc$data
 
 p.dimOrigin <- vis(sr.sepsis, "Cell_Type", mode = "sample")
