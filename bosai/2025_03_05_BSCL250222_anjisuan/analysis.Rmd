@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("2025-02-27"), end = td("2025-03-05"), finish = td("2025-03-06"),
+info <- items(start = td("2025-02-27"), end = td("2025-03-05"), finish = td(NA),
   id = "BSCL250222", client = "汪光亮", inst = "",
   type = "生信分析",
   title = "氨基酸分子对接",
@@ -52,7 +52,13 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
+```{r}
 
+```
+
+```{r}
+vn.mylk <- job_vina()
+```
 
 # 总结 {#conclusion}
 

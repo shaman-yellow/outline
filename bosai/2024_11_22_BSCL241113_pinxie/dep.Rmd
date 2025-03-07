@@ -110,3 +110,12 @@ gds.aa_bulk <- step1(gds.aa_bulk)
 vis(gds.aa_bulk)
 ```
 
+
+## Seurat 细胞群中的 TWAS 风险相关基因 (AA)
+
+`r snap(sr5n.aa, "fusion")`
+
+```{r}
+sr5n.aa <- map(sr5n.aa, fus.aa)
+sr5n.aa@params$fusion_degs
+```

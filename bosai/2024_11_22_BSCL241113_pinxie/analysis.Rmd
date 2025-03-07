@@ -135,6 +135,10 @@ autor(fus.aa@tables$step3$TWAS_significant)
 `r snap(geo.aa_scRNA, 0:2)`
 
 ```{r}
+gds.aa <- job_gds("Aplastic anemia")
+vis(gds.aa)
+active(gds.aa)
+
 geo.aa_scRNA <- job_geo("GSE181989")
 geo.aa_scRNA <- step1(geo.aa_scRNA)
 #' @meth {get_meth(geo.aa_scRNA)}
@@ -171,11 +175,10 @@ autor(geo.aa_scRNA@params$prods)
 `r ref("AA-UMAP-Unintegrated")` 
 `r ref("AA-UMAP-Integrated")` 
 `r ref("AA-significant-markers-of-cell-clusters")` 
-`r ref("AA-ChatGPT-Cell-type-annotation")` 
+`r ref("AA-SCSA-Cell-type-annotation")`
 `r ref("AA-CellMarker-Validation")`
-`r ref("AA-ChatGPT4-Cell-Proportions-in-each-sample")` 
-`r ref("AA-The-Cell-Sample")` 
-`r ref("AA-DEGs-of-the-contrasts")` 
+`r ref("AA-SCSA-Cell-Proportions-in-each-sample")`
+`r ref("AA-DEGs-of-the-contrasts")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -194,38 +197,29 @@ sr5n.aa@plots$step3$p.umapInt
 sr5n.aa <- step4(sr5n.aa, "")
 sr5n.aa <- step5(sr5n.aa)
 sr5n.aa@tables$step5$all_markers
-sr5n.aa <- step6(sr5n.aa, "Bone marrow")
-sr5n.aa@plots$step6$p.map_gpt
+sr5n.aa <- step6(
+  sr5n.aa, "bone.*marrow|^Blood$",
+  exclude = "hematopoietic|Mesenchymal|Langerhans|Plasmacytoid|circulating|Myeloid dendritic"
+)
+sr5n.aa@plots$step6$p.map_scsa
+sr5n.aa@params$p.cellMarker
+sr5n.aa@plots$step6$p.props_scsa
 
 sr5n.aa <- mutate(
-  sr5n.aa, Cell_Sample = as_type_group(ChatGPT_cell, orig.ident)
+  sr5n.aa, Cell_Sample = as_type_group(scsa_cell, orig.ident)
 )
 sr5n.aa <- diff(
   sr5n.aa, "Cell_Sample", pattern_contrasts(
     sr5n.aa@object@meta.data$Cell_Sample, AA - Normal, as.list = TRUE
-  )
+  ), force = TRUE
 )
+sr5n.aa@params$contrasts
 
-sr5n.aa@params$hp_cell_markers
-sr5n.aa@params$hp_cell_markers
-sr5n.aa@plots$step6$p.map_gpt
-sr5n.aa@plots$step6$p.markers
-
-cm.bone_marrow <- job_markers("bone.*marrow|blood")
-cm.bone_marrow <- step1(
-  cm.bone_marrow, c(
-    "Erythroblast", "Macrophage", "Mesenchymal", "Monocyte", 
-    "Neutrophil", "Plasma", "Platelet"
-  )
-)
-cm.bone_marrow
-sr5n.aa <- map(sr5n.aa, cm.bone_marrow, "CSF3R", 12)
-sr5n.aa@params$p.cellMarker
-
-sr5n.aa@plots$step6$p.props_gpt
 p.cell_sample <- vis(sr5n.aa, "Cell_Sample", mode = "type")
 wrap(p.cell_sample, 10, 5)
 sr5n.aa@params$contrasts
+
+sr5n.aa <- map(sr5n.aa, fus.aa)
 
 # sr5n.aa <- readRDS("./sr5n.aa.5.rds")
 # saveRDS(sr5n.aa, "sr5n.aa.3_cca.rds")
@@ -267,10 +261,12 @@ autor(sr5n.aa@tables$step5$all_markers)
 ```
 
 
+
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-ChatGPT-Cell-type-annotation
-autor(sr5n.aa@plots$step6$p.map_gpt)
+#| AA-SCSA-Cell-type-annotation
+autor(sr5n.aa@plots$step6$p.map_scsa)
 ```
+
 
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-CellMarker-Validation
@@ -279,14 +275,8 @@ autor(sr5n.aa@params$p.cellMarker)
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-ChatGPT4-Cell-Proportions-in-each-sample
-autor(sr5n.aa@plots$step6$p.props_gpt)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-The-Cell-Sample
-autor(wrap(p.cell_sample, 10, 5))
+#| AA-SCSA-Cell-Proportions-in-each-sample
+autor(sr5n.aa@plots$step6$p.props_scsa)
 ```
 
 
@@ -296,33 +286,15 @@ autor(sr5n.aa@params$contrasts)
 ```
 
 
-## Seurat 细胞群中的 TWAS 风险相关基因 (AA)
-
-`r snap(sr5n.aa, "m")`
-`r ref("AA-Filtered-TWAS-associated-genes-of-Cell-Cluster-DEGs")`
-
-```{r}
-sr5n.aa <- map(sr5n.aa, fus.aa)
-sr5n.aa@params$fusion_degs
-split(sr5n.aa@params$fusion_degs, ~ contrast)
-
-tbl_genesEry <- dplyr::filter(sr5n.aa@params$fusion_degs, grpl(contrast, "Erythroblast"))
-tbl_genesEry$gene
-
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-Filtered-TWAS-associated-genes-of-Cell-Cluster-DEGs
-autor(sr5n.aa@params$fusion_degs)
-```
-
 ## scFEA 单细胞数据的代谢通量预测 (AA)
 
 `r snap(scf.aa, 0:2)`
 
 `r ref("AA-cells-metabolic-flux")` 
 `r ref("AA-metabolic-flux-matrix")` 
+
+`r ref("AA-annotation-of-metabolic-flux")`
+<!-- LEGEND_END -->
 
 ```{r}
 set_remoteRun.bosai()
@@ -333,6 +305,7 @@ scf.aa <- step1(scf.aa)
 scf.aa <- step2(scf.aa)
 scf.aa@plots$step2$p.loss
 scf.aa@tables$step2$t.flux
+scf.aa@tables$step2$t.anno
 
 sr5n.aa <- map(sr5n.aa, scf.aa)
 sr5n.aa@params$p.map_flux
@@ -350,31 +323,32 @@ autor(sr5n.aa@params$p.map_flux)
 autor(scf.aa@tables$step2$t.flux)
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-annotation-of-metabolic-flux
+autor(scf.aa@tables$step2$t.anno)
+```
+
 ## Limma 代谢通量差异分析 (AA_FLUX)
 
 `r snap(lm.aa_flux, 0:3)`
 
 `r ref("AA-FLUX-Differential-Statistic-data")` 
-`r ref("AA-FLUX-Erythroblast-AA-vs-Erythroblast-Normal")` 
 
 ```{r}
-scf.aa$metadata$ChatGPT_cell <- sr5n.aa@object@meta.data$ChatGPT_cell
-lm.aa_flux <- asjob_limma(scf.aa)
+scf.aa$metadata$Cell_Sample <- sr5n.aa@object@meta.data$Cell_Sample
+lm.aa_flux <- asjob_limma(scf.aa, group = "Cell_Sample")
 lm.aa_flux <- step1(lm.aa_flux)
 #' @meth {get_meth(lm.aa_flux)}
 lm.aa_flux <- step2(lm.aa_flux,
   contrasts = pattern_contrasts(lm.aa_flux$metadata$group, AA - Normal),
   label = "name", use = "P", cut.fc = .5
 )
-
 lm.aa_flux <- step3(lm.aa_flux, use.gene = "name")
-lm.aa_flux@tables$step2$tops$`Erythroblast_AA - Erythroblast_Normal`
-tbl_lm.aa_flux_Eryth <- lm.aa_flux@tables$step2$tops$`Erythroblast_AA - Erythroblast_Normal`
-less(tbl_lm.aa_flux_Eryth$name)
-lm.aa_flux@plots$step2$p.volcano$`Erythroblast_AA - Erythroblast_Normal`
+lm.aa_flux@tables$step2$tops
 
-character_lm.aa_flux_name <- lm.aa_flux@tables$step2$tops$`Erythroblast_AA - Erythroblast_Normal`$name
-character_lm.aa_flux_name
+split(sr5n.aa@params$fusion_degs, ~ contrast) %>% names
+lm.aa_flux@tables$step2$tops %>% names
 ```
 
 
@@ -383,11 +357,6 @@ character_lm.aa_flux_name
 autor(lm.aa_flux@tables$step2$tops)
 ```
 
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-FLUX-Erythroblast-AA-vs-Erythroblast-Normal
-autor(lm.aa_flux@plots$step2$p.volcano$`Erythroblast_AA - Erythroblast_Normal`)
-```
 
 ## 关联分析
 
@@ -400,6 +369,9 @@ autor(lm.aa_flux@plots$step2$p.volcano$`Erythroblast_AA - Erythroblast_Normal`)
 `r ref("AA-dimension-plot-of-expression-level-of-the-genes")` 
 
 `r ref("AA-dimension-plot-of-expression-level-of-the-genes")` 中，'TUBB2A' 具有差异分布趋势。
+
+`r ref("AA-violing-plot-of-expression-level-of-the-genes")`
+<!-- LEGEND_END -->
 
 ```{r}
 lm.erythroblast <- asjob_limma(sr5n.aa, feature(fus.aa), cell_groups = "Erythroblast")
@@ -416,6 +388,9 @@ cp.corr@params$res$sig.corp
 ```{r}
 p.Ery <- focus(sr5n.aa, tbl_genesEry$gene)
 p.Ery$p.dim
+
+p.Ery_TUBB2A <- focus(sr5n.aa, "TUBB2A")
+p.Ery_TUBB2A$p.vln
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -433,6 +408,12 @@ autor(cp.corr@params$res$sig.corp)
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-dimension-plot-of-expression-level-of-the-genes
 autor(p.Ery$p.dim)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-violing-plot-of-expression-level-of-the-genes
+autor(p.Ery_TUBB2A$p.vln)
 ```
 
 ## Monocle3 拟时分析 (AA_ERY)
@@ -470,8 +451,6 @@ mn.aa_ery <- step4(
 )
 mn.aa_ery@plots$step4$genes_in_pseudotime$pseudo1
 
-p.Ery_TUBB2A <- focus(sr5n.aa, "TUBB2A")
-p.Ery_TUBB2A$p.vln
 ```
 
 
