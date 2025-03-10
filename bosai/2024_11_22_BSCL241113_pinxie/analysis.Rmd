@@ -217,7 +217,6 @@ sr5n.aa@params$contrasts
 
 p.cell_sample <- vis(sr5n.aa, "Cell_Sample", mode = "type")
 wrap(p.cell_sample, 10, 5)
-sr5n.aa@params$contrasts
 
 sr5n.aa <- map(sr5n.aa, fus.aa)
 

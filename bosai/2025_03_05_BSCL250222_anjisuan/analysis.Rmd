@@ -5,7 +5,7 @@
 info <- items(start = td("2025-02-27"), end = td("2025-03-05"), finish = td(NA),
   id = "BSCL250222", client = "汪光亮", inst = "",
   type = "生信分析",
-  title = "氨基酸分子对接",
+  title = "MYLK分子对接",
   save = ".items_analysis.rds"
 )
 show.ic(info)
@@ -52,13 +52,32 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
+## BindingDB 药物靶点数据获取 (MYLK)
+
+`r snap(bdb.mylk, 0:2)`
+
 ```{r}
+bdb.mylk <- job_bindingdb()
+#' @meth {get_meth(bdb.mylk)}
+bdb.mylk <- step1(bdb.mylk, symbol = "MYLK")
+bdb.mylk <- step2(bdb.mylk)
+bdb.mylk$annotation
+```
+
+## AutoDock vina 分子对接 (MYLK)
+
+`r snap(vn.mylk, 0:7)`
+
+```{r}
+vn.mylk <- asjob_vina(bdb.mylk)
+#' @meth {get_meth(vn.mylk)}
+vn.mylk <- step1(vn.mylk, FALSE)
+vn.mylk <- step2(vn.mylk, FALSE)
+
+vn.mylk <- step3(vn.mylk)
 
 ```
 
-```{r}
-vn.mylk <- job_vina()
-```
 
 # 总结 {#conclusion}
 
