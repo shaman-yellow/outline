@@ -1,0 +1,95 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-02-14"), end = td("2025-03-14"), finish = td("2025-03-12"),
+  id = "BSLL250203", client = "王东敏", inst = "",
+  type = "生信分析",
+  title = "网药分析-单味药+复方",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "中药复方:数据库BATMAN:所有成分:20%口服利用度预测:20%HOB_成分:已知靶点, 预测靶点:所有靶点",
+    "压力性损伤:DB_GeneCards, DB_GEO:疾病相关基因",
+    "疾病相关基因, 所有靶点:疾病靶点:中药-成分-靶点网络:PPI网络分析:Hub_Genes:富集分析:GO, KEGG:信号通路基因",
+    "信号通路基因:批量分子对接:对接分数, TOP对接可视化:成分-靶点"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+wrap(p.route, 10, 12, showtext = T)
+```
+
+```{r}
+dic(di("差异表达基因"),
+  di("中药复方"),
+  di("压力性损伤")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## GSE 数据搜索
+
+`r snap(gds.pi, 0:3)`
+
+```{r}
+gds.pi <- job_gds("pressure injury", n = 1:1000, force = TRUE)
+#' @meth {get_meth(gds.pi)}
+gds.pi
+```
+
+## 复方
+
+```{r}
+herbs.complex <- c("乳香", "没药", "血竭", "儿茶", "红花", "三七", "冰片")
+bt.complex <- job_batman(herbs.complex)
+
+```
+
+## 血竭
+
+# 总结 {#conclusion}
+

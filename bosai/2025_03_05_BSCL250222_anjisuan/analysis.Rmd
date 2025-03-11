@@ -56,12 +56,21 @@ collate_details("meth")
 
 `r snap(bdb.mylk, 0:2)`
 
+`r ref("MYLK-bindingdb-annotation-data")`
+<!-- LEGEND_END -->
+
 ```{r}
 bdb.mylk <- job_bindingdb()
 #' @meth {get_meth(bdb.mylk)}
 bdb.mylk <- step1(bdb.mylk, symbol = "MYLK")
 bdb.mylk <- step2(bdb.mylk)
 bdb.mylk$annotation
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MYLK-bindingdb-annotation-data
+autor(bdb.mylk$annotation)
 ```
 
 ## AutoDock vina 分子对接 (MYLK)
@@ -73,11 +82,23 @@ vn.mylk <- asjob_vina(bdb.mylk)
 #' @meth {get_meth(vn.mylk)}
 vn.mylk <- step1(vn.mylk, FALSE)
 vn.mylk <- step2(vn.mylk, FALSE)
+vn.mylk <- step3(
+  vn.mylk, forceAF = TRUE, select = select_pdb(
+    "Q15746", "A", 1:922
+  )
+)
+vn.mylk <- set_remote(vn.mylk, "~/vina_space")
+set_remoteRun.bosai()
+vn.mylk <- step4(vn.mylk, remoteTest = TRUE)
+vn.mylk <- upload(vn.mylk)
+vn.mylk <- pull(vn.mylk, TRUE)
 
-vn.mylk <- step3(vn.mylk)
+vn.mylk <- step5(vn.mylk)
+vn.mylk@plots$step5$p.res_vina
+vn.mylk@tables$step5$res_dock
+vn.mylk <- step6(vn.mylk)
 
 ```
-
 
 # 总结 {#conclusion}
 

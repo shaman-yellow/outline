@@ -1,0 +1,8 @@
+
+
+```{r}
+seq.mylk <- get_clipboard()
+seq.mylk <- gs(seq.mylk, "[0-9 \r]+", "")
+sum(nchar(seq.mylk))
+```
+
