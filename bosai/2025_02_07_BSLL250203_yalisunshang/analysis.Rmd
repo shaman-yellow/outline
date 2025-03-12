@@ -58,8 +58,13 @@ wrap(p.route, 10, 12, showtext = T)
 ```{r}
 dic(di("差异表达基因"),
   di("中药复方"),
-  di("压力性损伤")
+  di("压力性损伤"),
+  di("压力性溃疡")
 )
+# DEG: Differentially expressed genes 差异表达基因
+# CPOTCM: Compound prescription of traditional Chinese medicine 中药复方
+# PI: Pressure injury 压力性损伤
+# PU: Pressure ulcer 压力性溃疡
 
 ```
 
@@ -76,20 +81,373 @@ collate_details("meth")
 `r snap(gds.pi, 0:3)`
 
 ```{r}
-gds.pi <- job_gds("pressure injury", n = 1:1000, force = TRUE)
+gds.pi <- job_gds(
+  "(pressure ulcer[Description]) OR (pressure injury[Description])",
+  n = 1:1000, force = TRUE
+)
 #' @meth {get_meth(gds.pi)}
-gds.pi
+```
+
+## GeneCards 基因获取 (PU)
+
+`r snap(gn.pu, 0:1)`
+
+```{r}
+gn.pu <- job_genecard('"pressure ulcer" OR "pressure injury"')
+#' @meth {get_meth(gn.pu)}
+gn.pu <- step1(gn.pu, 0, restrict = FALSE)
+gn.pu@tables$step1$t.genecards
+```
+
+```{r}
+gt.ic <- job_gtopdb()
+gt.ic@object
 ```
 
 ## 复方
 
+### BATMAN 网络药理学 (COMPLEX)
+
+`r snap(bt.complex, 0:3)`
+
+`r ref("Intersection-of-herbs-compounds")`
+`r ref("Intersection-of-herbs-all-targets")`
+`r ref("Herbs-compounds-and-targets")`
+<!-- LEGEND_END -->
+
 ```{r}
 herbs.complex <- c("乳香", "没药", "血竭", "儿茶", "红花", "三七", "冰片")
 bt.complex <- job_batman(herbs.complex)
-
+#' @meth {get_meth(bt.complex)}
+bt.complex <- step1(bt.complex)
+bt.complex <- step2(bt.complex)
+bt.complex <- step3(bt.complex)
+bt.complex@plots$step3$p.herbs_compounds
+bt.complex@plots$step3$p.herbs_targets
+bt.complex@params$easyRead
 ```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-herbs-compounds
+autor(bt.complex@plots$step3$p.herbs_compounds)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Intersection-of-herbs-all-targets
+autor(bt.complex@plots$step3$p.herbs_targets)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets
+autor(bt.complex@params$easyRead)
+```
+
+### Network 中药-成分-疾病-靶点网络 (COMPLEX)
+
+`r snap(bt.complex, 0:3)`
+
+`r ref("COMPLEX-Targets-intersect-with-related-targets-dis")`
+`r ref("COMPLEX-network-pharmacology-with-filtered-type-dis")`
+`r ref("COMPLEX-network-pharmacology-with-filtered-type-original-data-dis")`
+<!-- LEGEND_END -->
+
+```{r}
+bt.complex <- map(bt.complex, feature(gn.pu), less.label = TRUE)
+bt.complex@params$p.venn2dis
+wrap(bt.complex@params$p.pharm2dis, 13, 10)
+bt.complex@params$t.pharm2dis
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-Targets-intersect-with-related-targets-dis
+autor(bt.complex@params$p.venn2dis)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-network-pharmacology-with-filtered-type-dis
+autor(wrap(bt.complex@params$p.pharm2dis, 13, 10))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-network-pharmacology-with-filtered-type-original-data-dis
+autor(bt.complex@params$t.pharm2dis)
+```
+
+### STRINGdb PPI 分析 (COMPLEX)
+
+`r snap(sdb.complex, 0:1)`
+
+`r ref("COMPLEX-raw-PPI-network")`
+`r ref("COMPLEX-Top30-MCC-score")`
+`r ref("COMPLEX-graph-MCC-layout-data")`
+<!-- LEGEND_END -->
+
+```{r}
+sdb.complex <- asjob_stringdb(feature(bt.complex))
+#' @meth {get_meth(sdb.complex)}
+sdb.complex <- step1(sdb.complex, 30, MCC = TRUE)
+sdb.complex@plots$step1$p.ppi
+sdb.complex@plots$step1$p.mcc
+sdb.complex@params$graph_mcc
+feature(sdb.complex)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-raw-PPI-network
+autor(sdb.complex@plots$step1$p.ppi)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-Top30-MCC-score
+autor(sdb.complex@plots$step1$p.mcc)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-graph-MCC-layout-data
+autor(sdb.complex@params$graph_mcc)
+```
+
+### ClusterProfiler 富集分析 (COMPLEX)
+
+`r snap(en.complex, 0:2)`
+
+`r ref("COMPLEX-KEGG-enrichment")`
+`r ref("COMPLEX-GO-enrichment")`
+`r ref("COMPLEX-KEGG-enrichment-data")`
+`r ref("COMPLEX-GO-enrichment-data")`
+<!-- LEGEND_END -->
+
+```{r}
+en.complex <- asjob_enrich(feature(sdb.complex))
+#' @meth {get_meth(en.complex)}
+en.complex <- step1(en.complex)
+en.complex@plots$step1$p.kegg$ids
+en.complex@plots$step1$p.go$ids
+en.complex@tables$step1$res.kegg$ids
+en.complex@tables$step1$res.go$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-KEGG-enrichment
+autor(en.complex@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-GO-enrichment
+autor(en.complex@plots$step1$p.go$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-KEGG-enrichment-data
+autor(en.complex@tables$step1$res.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-GO-enrichment-data
+autor(en.complex@tables$step1$res.go$ids)
+```
+
+### Pathview 通路可视化 (COMPLEX)
+
+`r ref("COMPLEX-pathviews-hsa04151")`
+<!-- LEGEND_END -->
+
+```{r}
+pat.complex <- asjob_pathview(en.complex)
+pat.complex <- step1(pat.complex, res(en.complex, "id"))
+pat.complex@plots$step1$p.pathviews$hsa04151
+feature(pat.complex)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-pathviews-hsa04151
+autor(pat.complex@plots$step1$p.pathviews$hsa04151)
+```
+
+
+```{r}
+vn.complex <- asjob_vina(bt.complex, feature(pat.complex))
+vn.complex@params$.layout
+```
+
 
 ## 血竭
 
+### BATMAN 网络药理学 (SINGLE)
+
+`r snap(bt.single, 0:3)`
+
+`r ref("Herbs-compounds-and-targets")`
+<!-- LEGEND_END -->
+
+```{r}
+bt.single <- job_batman("血竭")
+#' @meth {get_meth(bt.single)}
+bt.single <- step1(bt.single)
+bt.single <- step2(bt.single)
+bt.single <- step3(bt.single)
+bt.single@params$easyRead
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets
+autor(bt.single@params$easyRead)
+```
+
+### Network 中药-成分-疾病-靶点网络 (SINGLE)
+
+`r snap(bt.single, "m")`
+
+`r ref("SINGLE-Targets-intersect-with-related-targets-dis")`
+`r ref("SINGLE-network-pharmacology-with-filtered-type-dis")`
+`r ref("SINGLE-network-pharmacology-with-filtered-type-original-data-dis")`
+<!-- LEGEND_END -->
+
+```{r}
+bt.single <- map(bt.single, feature(gn.pu), less.label = FALSE, edge_width = 1)
+bt.single@params$p.venn2dis
+bt.single@params$p.pharm2
+bt.single@params$t.pharm2
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-Targets-intersect-with-related-targets-dis
+autor(bt.single@params$p.venn2dis)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-network-pharmacology-with-filtered-type-dis
+autor(bt.single@params$p.pharm2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-network-pharmacology-with-filtered-type-original-data-dis
+autor(bt.single@params$t.pharm2)
+```
+
+### STRINGdb PPI 分析 (SINGLE)
+
+`r snap(sdb.single, 0:1)`
+
+`r ref("SINGLE-raw-PPI-network")`
+`r ref("SINGLE-Top30-MCC-score")`
+`r ref("SINGLE-graph-MCC-layout-data")`
+<!-- LEGEND_END -->
+
+```{r}
+sdb.single <- asjob_stringdb(feature(bt.single))
+#' @meth {get_meth(sdb.single)}
+sdb.single <- step1(sdb.single, MCC = TRUE)
+sdb.single@plots$step1$p.ppi
+sdb.single@plots$step1$p.mcc
+sdb.single@params$graph_mcc
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-raw-PPI-network
+autor(sdb.single@plots$step1$p.ppi)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-Top30-MCC-score
+autor(sdb.single@plots$step1$p.mcc)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-graph-MCC-layout-data
+autor(sdb.single@params$graph_mcc)
+```
+
+### ClusterProfiler 富集分析 (SINGLE)
+
+`r snap(en.single, 0:2)`
+
+`r ref("SINGLE-KEGG-enrichment")`
+`r ref("SINGLE-GO-enrichment")`
+`r ref("SINGLE-KEGG-enrichment-data")`
+`r ref("SINGLE-GO-enrichment-data")`
+<!-- LEGEND_END -->
+
+```{r}
+en.single <- asjob_enrich(feature(sdb.single))
+#' @meth {get_meth(en.single)}
+en.single <- step1(en.single)
+en.single@plots$step1$p.kegg$ids
+en.single@plots$step1$p.go$ids
+en.single@tables$step1$res.kegg$ids
+en.single@tables$step1$res.go$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-KEGG-enrichment
+autor(en.single@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-GO-enrichment
+autor(en.single@plots$step1$p.go$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-KEGG-enrichment-data
+autor(en.single@tables$step1$res.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-GO-enrichment-data
+autor(en.single@tables$step1$res.go$ids)
+```
+
+### Pathview 通路可视化 (SINGLE)
+
+`r snap(pat.single, 0:2)`
+
+`r ref("SINGLE-pathviews-hsa04010")`
+<!-- LEGEND_END -->
+
+```{r}
+pat.single <- asjob_pathview(en.single)
+#' @meth {get_meth(pat.single)}
+pat.single <- step1(pat.single, res(en.single, "id", 2))
+pat.single@plots$step1$p.pathviews$hsa04010
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-pathviews-hsa04010
+autor(pat.single@plots$step1$p.pathviews$hsa04010)
+```
+
+```{r}
+es <- esearch.mj("virtual screening")
+dplyr::filter(es, grpl(.id, "Nature Methods|Nucleic Acids"))
+```
+
 # 总结 {#conclusion}
+
 

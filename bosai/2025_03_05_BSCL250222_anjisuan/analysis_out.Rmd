@@ -1,5 +1,13 @@
 ---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
 ---
+
 
 ```{r include = F, eval = F}
 info <- items(start = td("2025-02-27"), end = td("2025-03-05"), finish = td("2025-03-12"),
@@ -12,9 +20,7 @@ show.ic(info)
 
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
-order_packaging(
-  "./analysis_out.docx", idname = idname, external_file = NULL, extras = "./Reply_YRX.docx"
-)
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
 ```
 
 ```{r include = F}
@@ -206,6 +212,6 @@ autor(cf.mylk@tables$step2$t.class)
 
 ```{r}
 extract_anno("./order_material/BSCL250222-汪光亮-生信分析-MYLK分子对接-2025.03.12-YRX批注.docx")
-cdRun("pandoc ./order_material/comment_reply.md -o Reply_YRX.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_.docx")
 ```
 
