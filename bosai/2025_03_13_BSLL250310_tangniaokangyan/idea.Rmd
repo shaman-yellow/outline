@@ -1,0 +1,77 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-03-07"), end = td("2025-03-14"), finish = td("2025-03-13"),
+  id = "BSLL250310", client = "马佩芬", inst = "",
+  type = "思路设计",
+  title = "糖尿病创面",
+  save = ".items_idea.rds"
+)
+show.ic(info)
+
+order_publish.bosai("idea.Rmd", "idea_out.Rmd")
+formatName.bosai("./idea_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("糖尿病创面"),
+  di("降低血糖")
+)
+# DEG: Differentially expressed genes 差异表达基因
+# DW: Diabetes wound 糖尿病创面
+
+```
+
+## 思路 {#introduction}
+
+要求：
+
+- 降糖活性物：具备优异且较为明确的降糖作用，可在体外稳定发挥降糖效果，倾向于酶。对接的疾病可以是糖尿病
+- 抗炎活性物：具备显著的抗炎、促修复、抗氧化功能，倾向于选择具备此功能的中药材提取物中的某一单一组分，例如：大豆异黄酮中的染料木黄酮（Genistein），五味子提取物中的戈米辛A（Gomisin A）。对接的疾病糖尿病创面
+
+```{r}
+#| route
+route <- as_network(
+  list("降糖活性物_(酶):Database:BRENDA, UniProt, CAZy:物种筛选_(人共生):水解/氧化酶:评估",
+    "评估:免疫原性预测, 热稳定性, 毒性预测, 其他:活性酶:蛋白酶选择:与葡萄糖分子对接:可视化",
+    "抗炎活性物_(小分子化合物):BATMAN-TCM:常见中药:所有成分:所有靶点",
+    "GeneCards_相关靶点:抗炎, 促修复, 抗氧化:靶点集合:PPI分析, 交集靶点:疾病靶点",
+    "糖尿病创面:GeneCards, DB_GEO:靶点集合",
+    "所有靶点, 疾病靶点:中药-成分-疾病-靶点网络:富集分析:KEGG, GO",
+    "中药-成分-疾病-靶点网络:成分选择:分子对接:对接可视化"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 15, 8, showtext = TRUE))
+```
+
+

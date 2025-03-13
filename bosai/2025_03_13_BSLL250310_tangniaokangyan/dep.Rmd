@@ -1,0 +1,20 @@
+
+
+- **BRENDA**（https://www.brenda-enzymes.org）：按底物（Glucose）、反应类型（水解/氧化）筛选酶  
+- **UniProt**（https://www.uniprot.org）：过滤物种来源（优先人体共生菌或食品级微生物）、分子量（<100 kDa易递送
+- **CAZy**（http://www.cazy.org）：针对碳水化合物活性酶（如糖苷水解酶GH家族）  
+
+#### **(2) 结构分析与催化活性预测**  
+- **活性位点鉴定**：使用 **CASTp**（http://sts.bioe.uic.edu/castp）分析酶晶体结构（PDB）的底物结合口袋体积（需容纳葡萄糖分子，约7-9 Å³）  
+- **催化效率评估**：从 **BRENDA** 提取kcat/Km值（例：葡萄糖氧化酶kcat/Km ≈ 10^6 M⁻¹s⁻¹）  
+- **pH/温度适应性**：通过 **PROPKA** 预测酶的最适pH（肠道靶向需pH 5-7，血液靶向需pH 7.4）  
+
+#### **(3) 稳定性与免疫原性预测**  
+- **热稳定性**：用 **FoldX**（http://foldxsuite.crg.eu）计算ΔΔG（突变前后自由能变化，优选ΔΔG > -2 kcal/mol）  
+- **蛋白酶抗性**：预测胰蛋白酶切割位点（**PeptideCutter**，https://web.expasy.org/peptide_cutter）  
+- **免疫原性**：通过 **IEDB**（http://tools.iedb.org）筛选T细胞表位，剔除含人类HLA高亲和力肽段的酶  
+
+#### **(4) 跨物种同源性与安全性**  
+- **同源建模**：用 **SWISS-MODEL** 对比人源酶结构，避免交叉免疫反应（序列相似度<30%）  
+- **毒性预测**：在 **ToxinPred**（https://webs.iiitd.edu.in/raghava/toxinpred）中排除细菌内毒素结构域  
+

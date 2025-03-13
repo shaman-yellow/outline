@@ -12,3 +12,53 @@ collate_details("meth")
 
 # 参考文献和数据集 {#workflow}
 
+
+### Pathview 通路可视化 (COMPLEX)
+
+`r ref("COMPLEX-pathviews-hsa04151")`
+<!-- LEGEND_END -->
+
+```{r}
+pat.complex <- asjob_pathview(en.complex)
+pat.complex <- step1(pat.complex, res(en.complex, "id"))
+pat.complex@plots$step1$p.pathviews$hsa04151
+feature(pat.complex)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| COMPLEX-pathviews-hsa04151
+autor(pat.complex@plots$step1$p.pathviews$hsa04151)
+```
+
+
+```{r}
+vn.complex <- asjob_vina(bt.complex, feature(pat.complex))
+vn.complex@params$.layout
+```
+
+
+### Pathview 通路可视化 (SINGLE)
+
+`r snap(pat.single, 0:2)`
+
+`r ref("SINGLE-pathviews-hsa04010")`
+<!-- LEGEND_END -->
+
+```{r}
+pat.single <- asjob_pathview(en.single)
+#' @meth {get_meth(pat.single)}
+pat.single <- step1(pat.single, res(en.single, "id", 2))
+pat.single@plots$step1$p.pathviews$hsa04010
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-pathviews-hsa04010
+autor(pat.single@plots$step1$p.pathviews$hsa04010)
+```
+
+```{r}
+es <- esearch.mj("virtual screening")
+dplyr::filter(es, grpl(.id, "Nature Methods|Nucleic Acids"))
+```

@@ -1,0 +1,410 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-02-14"), end = td("2025-03-14"), finish = td("2025-03-13"),
+  id = "BSLL250203", client = "王东敏", inst = "",
+  type = "生信分析",
+  title = "网药分析-单味药血竭",
+  save = ".items_analysis_single.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis_single.Rmd", "analysis_single_out.Rmd")
+idname <- formatName.bosai("./analysis_single_out.docx")
+order_packaging("./analysis_single_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table_single", tabs = "Figure+Table_single"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "血竭:数据库BATMAN:所有成分:20%口服利用度预测:20%HOB_成分:已知靶点, 预测靶点:所有靶点",
+    "压力性损伤:DB_GeneCards, DB_GEO:疾病相关基因",
+    "疾病相关基因, 所有靶点:疾病靶点:中药-成分-靶点网络:PPI网络分析:Hub_Genes:富集分析:GO, KEGG",
+    "Hub_Genes:批量分子对接:对接分数, TOP对接可视化:成分-靶点",
+    "Ion_channels, 中药-成分-靶点网络:交集基因"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(p.route)
+```
+
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## GSE 数据搜索
+
+`r snap(gds.pi, 0:3)`
+
+```{r}
+gds.pi <- job_gds(
+  "(pressure ulcer[Description]) OR (pressure injury[Description])",
+  n = 1:1000, force = TRUE
+)
+#' @meth {get_meth(gds.pi)}
+```
+
+## GeneCards 基因获取 (PU)
+
+`r snap(gn.pu, 0:1)`
+
+`r ref("PU-disease-related-targets-from-GeneCards")`
+<!-- LEGEND_END -->
+
+```{r}
+gn.pu <- job_genecard('"pressure ulcer" OR "pressure injury"')
+#' @meth {get_meth(gn.pu)}
+gn.pu <- step1(gn.pu, 0, restrict = FALSE)
+gn.pu@tables$step1$t.genecards
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PU-disease-related-targets-from-GeneCards
+autor(gn.pu@tables$step1$t.genecards)
+```
+
+## GtoPdb 药理学靶点及实验配体数据 (IC)
+
+`r snap(gt.ic, 0:1)`
+
+`r ref("IC-distribution-of-ion-channels")`
+`r ref("GtoPdb-family-of-ion-channels")`
+<!-- LEGEND_END -->
+
+```{r}
+gt.ic <- job_gtopdb()
+#' @meth {get_meth(gt.ic)}
+gt.ic <- step1(gt.ic)
+gt.ic@plots$step1$p.distribution_of_ion_channels
+gt.ic@params$db
+feature(gt.ic)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| IC-distribution-of-ion-channels
+autor(gt.ic@plots$step1$p.distribution_of_ion_channels)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GtoPdb-family-of-ion-channels
+autor(gt.ic@params$db)
+```
+
+
+
+
+## 血竭
+
+### BATMAN 网络药理学 (SINGLE)
+
+`r snap(bt.single, 0:3)`
+
+`r ref("Herbs-compounds-and-targets")`
+<!-- LEGEND_END -->
+
+```{r}
+bt.single <- job_batman("血竭")
+#' @meth {get_meth(bt.single)}
+bt.single <- step1(bt.single)
+bt.single <- step2(bt.single)
+bt.single <- step3(bt.single)
+bt.single@params$easyRead
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Herbs-compounds-and-targets
+autor(bt.single@params$easyRead)
+```
+
+### Network 中药-成分-疾病-靶点网络 (SINGLE)
+
+`r snap(bt.single, "m")`
+
+`r ref("SINGLE-Targets-intersect-with-related-targets-dis")`
+`r ref("SINGLE-network-pharmacology-with-filtered-type-dis")`
+`r ref("SINGLE-network-pharmacology-with-filtered-type-original-data-dis")`
+<!-- LEGEND_END -->
+
+```{r}
+bt.single <- map(bt.single, feature(gn.pu), less.label = FALSE, edge_width = 1)
+bt.single@params$p.venn2dis
+bt.single@params$p.pharm2
+bt.single@params$t.pharm2
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-Targets-intersect-with-related-targets-dis
+autor(bt.single@params$p.venn2dis)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-network-pharmacology-with-filtered-type-dis
+autor(bt.single@params$p.pharm2)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-network-pharmacology-with-filtered-type-original-data-dis
+autor(bt.single@params$t.pharm2)
+```
+
+### STRINGdb PPI 分析 (SINGLE)
+
+`r snap(sdb.single, 0:1)`
+
+`r ref("SINGLE-raw-PPI-network")`
+`r ref("SINGLE-Top30-MCC-score")`
+`r ref("SINGLE-graph-MCC-layout-data")`
+<!-- LEGEND_END -->
+
+```{r}
+sdb.single <- asjob_stringdb(feature(bt.single))
+#' @meth {get_meth(sdb.single)}
+sdb.single <- step1(sdb.single, MCC = TRUE)
+sdb.single@plots$step1$p.ppi
+sdb.single@plots$step1$p.mcc
+sdb.single@params$graph_mcc
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-raw-PPI-network
+autor(sdb.single@plots$step1$p.ppi)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-Top30-MCC-score
+autor(sdb.single@plots$step1$p.mcc)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-graph-MCC-layout-data
+autor(sdb.single@params$graph_mcc)
+```
+
+### ClusterProfiler 富集分析 (SINGLE)
+
+`r snap(en.single, 0:2)`
+
+`r ref("SINGLE-KEGG-enrichment")`
+`r ref("SINGLE-GO-enrichment")`
+`r ref("SINGLE-KEGG-enrichment-data")`
+`r ref("SINGLE-GO-enrichment-data")`
+<!-- LEGEND_END -->
+
+```{r}
+en.single <- asjob_enrich(feature(sdb.single))
+#' @meth {get_meth(en.single)}
+en.single <- step1(en.single)
+en.single@plots$step1$p.kegg$ids
+en.single@plots$step1$p.go$ids
+en.single@tables$step1$res.kegg$ids
+en.single@tables$step1$res.go$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-KEGG-enrichment
+autor(en.single@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-GO-enrichment
+autor(en.single@plots$step1$p.go$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-KEGG-enrichment-data
+autor(en.single@tables$step1$res.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-GO-enrichment-data
+autor(en.single@tables$step1$res.go$ids)
+```
+
+### 汇总: Compounds_disease_targets + Ion_channels (SINGLE)
+
+`r snap(venn.single, 0:1)`
+
+`r ref("SINGLE-Intersection-of-Compounds-disease-targets-with-Ion-channels")`
+<!-- LEGEND_END -->
+
+```{r}
+venn.single <- job_venn(
+  Compounds_disease_targets = feature(bt.single),
+  Ion_channels = feature(gt.ic)
+)
+#' @meth {get_meth(venn.single)}
+venn.single <- step1(venn.single)
+venn.single@plots$step1$p.venn
+
+dplyr::filter(gt.ic$db, HGNC_symbol %in% feature(venn.single))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-Intersection-of-Compounds-disease-targets-with-Ion-channels
+autor(venn.single@plots$step1$p.venn)
+```
+
+### AutoDock vina 分子对接 (SINGLE)
+
+`r snap(vn.single, 0:7)`
+
+`r ref("SINGLE-Overall-combining-Affinity")`
+`r ref("SINGLE-All-combining-Affinity-data")`
+`r ref("Docking-25201251-into-P31025")`
+`r ref("Docking-10116-into-P02787")`
+`r ref("Docking-442048-into-P02787")`
+`r ref("Docking-25201251-into-P31025-detail")`
+`r ref("Docking-10116-into-P02787-detail")`
+`r ref("Docking-442048-into-P02787-detail")`
+<!-- LEGEND_END -->
+
+```{r}
+vn.single <- asjob_vina(bt.single, feature(sdb.single))
+#' @meth {get_meth(vn.single)}
+vn.single <- step1(vn.single)
+vn.single <- step2(vn.single)
+vn.single <- step3(vn.single, forceAF = TRUE)
+set_remoteRun.bosai()
+vn.single <- set_remote(vn.single)
+vn.single <- step4(vn.single)
+vn.single <- upload(vn.single)
+vn.single <- pull(vn.single)
+vn.single <- step5(vn.single)
+vn.single@plots$step5$p.res_vina
+vn.single@tables$step5$res_dock
+vn.single <- step6(vn.single)
+vn.single@plots$step6$Top1_25201251_into_P31025
+vn.single@plots$step6$Top2_10116_into_P02787
+vn.single@plots$step6$Top3_442048_into_P02787
+vn.single <- step7(vn.single)
+vn.single@plots$step7$Top1_25201251_into_P31025
+vn.single@plots$step7$Top2_10116_into_P02787
+vn.single@plots$step7$Top3_442048_into_P02787
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-Overall-combining-Affinity
+autor(vn.single@plots$step5$p.res_vina)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| SINGLE-All-combining-Affinity-data
+autor(vn.single@tables$step5$res_dock)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-25201251-into-P31025
+autor(vn.single@plots$step6$Top1_25201251_into_P31025)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-10116-into-P02787
+autor(vn.single@plots$step6$Top2_10116_into_P02787)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-442048-into-P02787
+autor(vn.single@plots$step6$Top3_442048_into_P02787)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-25201251-into-P31025-detail
+autor(vn.single@plots$step7$Top1_25201251_into_P31025)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-10116-into-P02787-detail
+autor(vn.single@plots$step7$Top2_10116_into_P02787)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Docking-442048-into-P02787-detail
+autor(vn.single@plots$step7$Top3_442048_into_P02787)
+```
+
+# 总结 {#conclusion}
+
+血竭的成分疾病靶点见`r ref("SINGLE-network-pharmacology-with-filtered-type-dis")` 
+未筛选到离子通道蛋白 (`r ref("SINGLE-Intersection-of-Compounds-disease-targets-with-Ion-channels")`) 。
+对 Hub Genes (实际上是所有靶点，因为只有 14 个) 批量分子对接，见
+`r ref("SINGLE-Overall-combining-Affinity")`，
+`r ref("SINGLE-All-combining-Affinity-data")`。
+
+Top 3 的对接可视化见
+`r ref("Docking-25201251-into-P31025-detail")` 
+`r ref("Docking-442048-into-P02787-detail")`
+`r ref("Docking-10116-into-P02787-detail")`
+
+
+
