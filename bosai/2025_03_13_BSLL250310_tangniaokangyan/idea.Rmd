@@ -39,7 +39,9 @@ set_index()
 ```{r}
 dic(di("差异表达基因"),
   di("糖尿病创面"),
-  di("降低血糖")
+  di("降低血糖"),
+  di("收束"),
+  di("发散")
 )
 # DEG: Differentially expressed genes 差异表达基因
 # DW: Diabetes wound 糖尿病创面

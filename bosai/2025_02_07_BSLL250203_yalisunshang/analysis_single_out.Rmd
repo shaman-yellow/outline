@@ -50,7 +50,7 @@ set_index()
 route <- as_network(
   list(
     "血竭:数据库BATMAN:所有成分:20%口服利用度预测:20%HOB_成分:已知靶点, 预测靶点:所有靶点",
-    "压力性损伤:DB_GeneCards, DB_GEO:疾病相关基因",
+    "压力性损伤:DB_GeneCards:疾病相关基因",
     "疾病相关基因, 所有靶点:疾病靶点:中药-成分-靶点网络:PPI网络分析:Hub_Genes:富集分析:GO, KEGG",
     "Hub_Genes:批量分子对接:对接分数, TOP对接可视化:成分-靶点",
     "Ion_channels, 中药-成分-靶点网络:交集基因"
@@ -79,18 +79,6 @@ collate_details("meth")
 ```
 
 # 分析结果 {#workflow}
-
-## GSE 数据搜索
-
-`r snap(gds.pi, 0:3)`
-
-```{r}
-gds.pi <- job_gds(
-  "(pressure ulcer[Description]) OR (pressure injury[Description])",
-  n = 1:1000, force = TRUE
-)
-#' @meth {get_meth(gds.pi)}
-```
 
 ## GeneCards 基因获取 (PU)
 
