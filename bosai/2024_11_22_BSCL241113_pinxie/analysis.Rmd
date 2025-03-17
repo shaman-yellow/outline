@@ -218,8 +218,6 @@ sr5n.aa@params$contrasts
 p.cell_sample <- vis(sr5n.aa, "Cell_Sample", mode = "type")
 wrap(p.cell_sample, 10, 5)
 
-sr5n.aa <- map(sr5n.aa, fus.aa)
-
 # sr5n.aa <- readRDS("./sr5n.aa.5.rds")
 # saveRDS(sr5n.aa, "sr5n.aa.3_cca.rds")
 ```
@@ -344,10 +342,9 @@ lm.aa_flux <- step2(lm.aa_flux,
   label = "name", use = "P", cut.fc = .5
 )
 lm.aa_flux <- step3(lm.aa_flux, use.gene = "name")
-lm.aa_flux@tables$step2$tops
 
-split(sr5n.aa@params$fusion_degs, ~ contrast) %>% names
-lm.aa_flux@tables$step2$tops %>% names
+lm.aa_flux@plots$step2$p.volcano$`B_cell_AA - B_cell_Normal`
+
 ```
 
 
@@ -356,6 +353,12 @@ lm.aa_flux@tables$step2$tops %>% names
 autor(lm.aa_flux@tables$step2$tops)
 ```
 
+```{r}
+sr5n.aa <- map(
+  sr5n.aa, sfea(feature(fus.aa), feature(lm.aa_flux)), 
+  list(sr5n.aa, lm.aa_flux), names = c("TWAS Genes", "Metabolic Flux")
+)
+```
 
 ## 关联分析
 
@@ -380,7 +383,6 @@ cp.corr <- cal_corp(
   names = c("TWAS associated DEGs", "Metabolic Flux"),
   use.x = "gene", use.y = "name", gname = FALSE
 )
-cp.corr@params$res$hp
 cp.corr@params$res$sig.corp
 ```
 

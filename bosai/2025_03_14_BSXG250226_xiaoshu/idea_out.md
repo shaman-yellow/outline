@@ -60,13 +60,36 @@ output:
 
 # 研究背景 {#abstract}
 
+炎症性肠病 (IBD)、溃疡性结肠炎 (UC) 和克罗恩病 (CD) 是胃肠道的慢性复发性炎症疾病。
+人类 IBD 的小鼠实验模型表现出类似于克罗恩病 (CD) 或溃疡性结肠炎 (UC) 的免疫病理特征。这些模型包括化学诱导的三硝基苯磺酸 (TNBS) 模型、恶唑酮和葡聚糖硫酸钠 (DSS) 模型、基因缺陷的 I-κB 激酶γ (Iκκ-γ) 和白细胞介素 (IL)-10 模型以及 CD4 + T 细胞转移模型 (2022, **IF:4.9**, Q2, International journal of molecular sciences)[@Inflammatory_Bo_Katsan_2022]。
+
 
 
 ## 思路 {#introduction}
 
+
+
+
+`<w:r><w:rPr/><w:drawing xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="5619793" cy="4572000"/><wp:docPr id="" name="" descr=""/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="" name=""/><pic:cNvPicPr><a:picLocks noChangeAspect="1" noChangeArrowheads="1"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip cstate="print" r:embed="/tmp/RtmpjMwKHg/file1b47d27294445.png"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr bwMode="auto"><a:xfrm><a:off x="0" y="0"/><a:ext cx="78053" cy="63500"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`{=openxml}
+
+
+
+
+::: {custom-style="Image Caption"}
+
+`<w:r><w:rPr><w:rFonts/><w:b w:val="true"/></w:rPr><w:t xml:space="preserve">Fig. </w:t></w:r><w:bookmarkStart w:id="14c6cf6d-886b-425d-896a-8c4b7c3e30ca" w:name="Route"/><w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"><w:rPr><w:rFonts/><w:b w:val="true"/></w:rPr><w:fldChar w:fldCharType="begin" w:dirty="true"/></w:r><w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"><w:rPr><w:rFonts/><w:b w:val="true"/></w:rPr><w:instrText xml:space="preserve" w:dirty="true">SEQ fig: \* Arabic</w:instrText></w:r><w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"><w:rPr><w:rFonts/><w:b w:val="true"/></w:rPr><w:fldChar w:fldCharType="end" w:dirty="true"/></w:r><w:bookmarkEnd w:id="14c6cf6d-886b-425d-896a-8c4b7c3e30ca"/><w:r><w:rPr><w:rFonts/><w:b w:val="true"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>`{=openxml}Route
+:::
+
 # 可行性 {#methods}
 
+参考 (2023, **IF:4.3**, Q1, Journal of drug targeting)[@Microanatomy_of_Wang_2023]。
+
 # 创新性 {#results}
+
+## 以 `"scRNA-seq" AND "bulk RNA-seq" AND "mice" AND "colitis"` 搜索文献。
+
+
+`<w:r><w:rPr/><w:drawing xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="5669280" cy="1521954"/><wp:docPr id="" name="" descr=""/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="" name=""/><pic:cNvPicPr><a:picLocks noChangeAspect="1" noChangeArrowheads="1"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip cstate="print" r:embed="/tmp/RtmpjMwKHg/file1b47d269894137.png"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr bwMode="auto"><a:xfrm><a:off x="0" y="0"/><a:ext cx="78740" cy="21138"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`{=openxml}
 
 # GEO 检索方法
 
@@ -153,12 +176,7 @@ output:
     - ceAF (n = 5)
     - DSS (n = 5)
 - **GSE239820**, **Type**:  RNA-seq
-    - cortex (n = 69)
-    - distal_colon (n = 66)
-    - hippocampus (n = 65)
-    - midbrain (n = 64)
-    - proximal_colon (n = 64)
-    - striatum (n = 67)
+...
 - **GSE214600**, **Type**:  RNA-seq
     - C (n = 199)
     - D (n = 204)
@@ -168,39 +186,9 @@ output:
     - day4__replicate (n = 3)
     - day6__replicate (n = 3)
 - **GSE166277**, **Type**:  RNA-seq
-    - C5KO_rep (n = 2)
-    - C5WT_rep (n = 2)
-    - C9KO_rep (n = 2)
-    - C9WT_rep (n = 2)
-    - P5KO_rep (n = 3)
-    - P5WT_rep (n = 3)
-    - P9KO_rep (n = 2)
-    - P9WT_rep (n = 2)
+...
 - **GSE42768**, **Type**:  Microarray
-    - A (n = 3)
-    - B (n = 3)
-    - C (n = 2)
-    - D4 (n = 1)
-    - D5 (n = 1)
-    - E2 (n = 1)
-    - E3 (n = 1)
-    - E4 (n = 1)
-    - F1 (n = 1)
-    - F3 (n = 1)
-    - F5 (n = 1)
-    - G2 (n = 1)
-    - G3 (n = 1)
-    - J1 (n = 1)
-    - J5 (n = 1)
-    - K1 (n = 1)
-    - K2 (n = 1)
-    - K3 (n = 1)
-    - L (n = 2)
-    - M1 (n = 1)
-    - M3 (n = 1)
-    - M5 (n = 1)
-    - N2 (n = 1)
-    - N3 (n = 1)
+...
 - **GSE35609**, **Type**:  Microarray
     - Healthy_Control (n = 4)
     - TNBS_colitis (n = 30)
@@ -208,7 +196,6 @@ output:
     - Colon_Saline_w (n = 1)
     - Colon_saline_w6 (n = 2)
     - Colon_TNBS_w (n = 4)
-
 
 
 

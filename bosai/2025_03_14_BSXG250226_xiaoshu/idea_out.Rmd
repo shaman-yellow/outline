@@ -10,7 +10,7 @@ output:
 
 
 ```{r include = F, eval = F}
-info <- items(start = td("2025-02-27"), end = td("2025-03-10"), finish = td(NA),
+info <- items(start = td("2025-02-27"), end = td("2025-03-10"), finish = td("2025-03-17"),
   id = "BSXG250226", client = "公司内部", inst = "",
   type = "思路设计",
   title = "小鼠结肠炎的单细胞测序数据",
@@ -44,6 +44,9 @@ set_index()
 
 # 研究背景 {#abstract}
 
+炎症性肠病 (IBD)、溃疡性结肠炎 (UC) 和克罗恩病 (CD) 是胃肠道的慢性复发性炎症疾病。
+人类 IBD 的小鼠实验模型表现出类似于克罗恩病 (CD) 或溃疡性结肠炎 (UC) 的免疫病理特征。这些模型包括化学诱导的三硝基苯磺酸 (TNBS) 模型、恶唑酮和葡聚糖硫酸钠 (DSS) 模型、基因缺陷的 I-κB 激酶γ (Iκκ-γ) 和白细胞介素 (IL)-10 模型以及 CD4 + T 细胞转移模型 `r cite_show("Inflammatory_Bo_Katsan_2022")`。
+
 ```{r}
 dic(di("差异表达基因"),
   di("结肠炎:")
@@ -55,9 +58,39 @@ dic(di("差异表达基因"),
 
 ## 思路 {#introduction}
 
+```{r}
+#| route
+route <- as_network(
+  list(
+    "colitis:DB_GEO:scRNA-seq:细胞聚类:细胞鉴定:免疫相关基因活性, 免疫细胞, 通讯分析",
+    "免疫相关基因活性:活性细胞:差异分析_1:active_DEGs:富集分析_1",
+    "免疫细胞:拟时分析:富集分析_2",
+    "bulk_RNA-seq:差异分析_2:bulk_DEGs",
+    "bulk_RNA-seq:免疫细胞比例分析",
+    "active_DEGs, bulk_DEGs:active_DEGs_in_bulk:富集分析_3, PPI_stringDB",
+    "PPI_stringDB:Hub_genes:qRT-PCR"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(p.route)
+```
+
 # 可行性 {#methods}
 
+参考 `r cite_show("Microanatomy_of_Wang_2023")`。
+
 # 创新性 {#results}
+
+## 以 `"scRNA-seq" AND "bulk RNA-seq" AND "mice" AND "colitis"` 搜索文献。
+
+```{r eval = T, echo = F, results = "asis"}
+autor("~/Pictures/Screenshots/Screenshot from 2025-03-14 17-29-07.png")
+```
 
 # GEO 检索方法
 
@@ -110,5 +143,4 @@ gds.colitis <- anno(gds.colitis)
 vis(gds.colitis)
 active(gds.colitis)
 ```
-
 
