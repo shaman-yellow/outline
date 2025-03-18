@@ -355,9 +355,15 @@ autor(lm.aa_flux@tables$step2$tops)
 
 ```{r}
 sr5n.aa <- map(
-  sr5n.aa, sfea(feature(fus.aa), feature(lm.aa_flux)), 
+  sr5n.aa, sfea(feature(fus.aa), feature(lm.aa_flux)),
   list(sr5n.aa, lm.aa_flux), names = c("TWAS Genes", "Metabolic Flux")
 )
+
+sr5n.aa@params$res_correlation$Mature_endothelial_cell$hp
+sr5n.aa@params$res_correlation$Platelet$hp
+sr5n.aa@params$res_correlation$Monocyte$hp
+sr5n.aa@params$res_correlation$Neural_stem_cell$hp
+
 ```
 
 ## 关联分析
