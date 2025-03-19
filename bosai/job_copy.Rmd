@@ -185,3 +185,18 @@ summary_week.bosai(rm = T, must_include = "BSXN240936")
 ```{r}
 summary_week.bosai(rm = TRUE)
 ```
+
+# 2025-03-19
+
+```{r}
+alls <- get_orders()
+alls
+records <- readRDS("~/disk_sda1/backup/records.rds")
+records <- dplyr::filter(records, finish < td("2025-02-08"))
+saveRDS(records, "~/disk_sda1/backup/records.rds")
+
+backup_jobs.bosai(
+  dplyr::filter(alls, finish <= td("2025-03-03")), 
+  "2025-03-13"
+)
+```

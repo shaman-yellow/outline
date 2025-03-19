@@ -1,0 +1,59 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2024-02-14"), end = td("2025-03-18"), finish = td("2025-03-19"),
+  id = "BSLL250203", client = "王东敏", inst = "",
+  type = "补充分析",
+  title = "图片调整",
+  note = "饼图2和韦恩图4",
+  save = ".items_supp.rds"
+)
+show.ic(info)
+
+order_publish.bosai("supp.Rmd", "supp_out.Rmd")
+idname <- formatName.bosai("./supp_out.docx")
+order_packaging("./supp_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+
+
+# 总结 {#conclusion}
+

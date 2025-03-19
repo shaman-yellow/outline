@@ -109,8 +109,7 @@ autor(gn.pu@tables$step1$t.genecards)
 gt.ic <- job_gtopdb()
 #' @meth {get_meth(gt.ic)}
 gt.ic <- step1(gt.ic)
-gt.ic@plots$step1$p.distribution_of_ion_channels
-gt.ic@params$db
+wrap(gt.ic@plots$step1$p.distribution_of_ion_channels, 13, 10)
 feature(gt.ic)
 ```
 
@@ -177,7 +176,9 @@ autor(bt.complex@params$easyRead)
 <!-- LEGEND_END -->
 
 ```{r}
-bt.complex <- map(bt.complex, feature(gn.pu), less.label = TRUE)
+bt.complex <- map(
+  bt.complex, feature(gn.pu), less.label = TRUE
+)
 bt.complex@params$p.venn2dis
 wrap(bt.complex@params$p.pharm2dis, 13, 10)
 bt.complex@params$t.pharm2dis

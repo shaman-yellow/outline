@@ -119,3 +119,78 @@ vis(gds.aa_bulk)
 sr5n.aa <- map(sr5n.aa, fus.aa)
 sr5n.aa@params$fusion_degs
 ```
+
+m <- feature(sr5n.aa)
+names(m) <- .get_versus_cell(names(m))
+n <- feature(sr5n.aa, "cfrom")
+names(n) <- gs(make.names(names(n)), "[.]+", "_")
+
+lapply(names(n), 
+  function(name) {
+    n[[name]] %in% m[[name]]
+  })
+
+
+## 关联分析
+
+聚焦于 Erythroblast 细胞 (在 TWAS 与 代谢通量分析中，都筛选出了差异变化) ，
+将 TWAS 风险基因 (见`r ref("AA-Filtered-TWAS-associated-genes-of-Cell-Cluster-DEGs", FALSE)` 中的 Erythroblast)
+与差异代谢通量关联分析 (见 `r ref("AA-FLUX-Erythroblast-AA-vs-Erythroblast-Normal")`)。
+
+`r ref("Correlation-heatmap")` 
+`r ref("Significant-correlation")` 
+`r ref("AA-dimension-plot-of-expression-level-of-the-genes")` 
+
+`r ref("AA-dimension-plot-of-expression-level-of-the-genes")` 中，'TUBB2A' 具有差异分布趋势。
+
+`r ref("AA-violing-plot-of-expression-level-of-the-genes")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.erythroblast <- asjob_limma(sr5n.aa, feature(fus.aa), cell_groups = "Erythroblast")
+cp.corr <- cal_corp(
+  lm.erythroblast, lm.aa_flux,
+  tbl_genesEry$gene, character_lm.aa_flux_name,
+  names = c("TWAS associated DEGs", "Metabolic Flux"),
+  use.x = "gene", use.y = "name", gname = FALSE
+)
+cp.corr@params$res$sig.corp
+```
+
+```{r}
+p.Ery <- focus(sr5n.aa, tbl_genesEry$gene)
+p.Ery$p.dim
+
+p.Ery_TUBB2A <- focus(sr5n.aa, "TUBB2A")
+p.Ery_TUBB2A$p.vln
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Correlation-heatmap
+autor(cp.corr@params$res$hp)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Significant-correlation
+autor(cp.corr@params$res$sig.corp)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-dimension-plot-of-expression-level-of-the-genes
+autor(p.Ery$p.dim)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-violing-plot-of-expression-level-of-the-genes
+autor(p.Ery_TUBB2A$p.vln)
+```
+
+
+```{r}
+en.cor_from <- asjob_enrich(feature(sr5n.aa, "cfrom"), FALSE)
+en.cor_from <- step1(en.cor_from)
+rm(en.cor_from)
+```
