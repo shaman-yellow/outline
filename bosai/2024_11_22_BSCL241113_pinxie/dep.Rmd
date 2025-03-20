@@ -194,3 +194,121 @@ en.cor_from <- asjob_enrich(feature(sr5n.aa, "cfrom"), FALSE)
 en.cor_from <- step1(en.cor_from)
 rm(en.cor_from)
 ```
+
+sr.b_cell <- mn.hsc@params$sr_sub
+sr.b_cell <- step4(sr.b_cell, "")
+sr.b_cell <- step5(sr.b_cell)
+sr.b_cell <- step6(sr.b_cell, "bone.*marrow")
+
+m <- feature(sr5n.aa)
+names(m) <- .get_versus_cell(names(m))
+n <- feature(sr5n.aa, "cfrom")
+names(n) <- gs(make.names(names(n)), "[.]+", "_")
+
+lapply(names(n), 
+  function(name) {
+    print(unlist(m[[name]]))
+    n[[name]] %in% unlist(m[[name]])
+  })
+
+
+## Monocle3 拟时分析 (PDC)
+
+`r snap(mn.pdc, 0:4)`
+
+```{r}
+mn.pdc <- do_monocle(sr5n.aa, "Plasmacytoid_dendritic_cell", group.by = "Cell_Sample")
+mn.pdc <- step1(mn.pdc, "Cell_Sample", pre = T)
+#' @meth {get_meth(mn.pdc)}
+mn.pdc@plots$step1$p.prin
+mn.pdc <- step2(mn.pdc, "Y_2")
+mn.pdc@plots$step2$p.pseu
+mn.pdc <- step3(mn.pdc, group.by = "seurat_clusters")
+mn.pdc@plots$step3$gene_module_heatdata$graph_test.sig
+mn.pdc@tables$step3$graph_test.sig
+```
+
+## Monocle3 拟时分析 (AA_ERY)
+
+`r snap(mn.aa_ery, 0:4)`
+
+`r ref("AA-ERY-principal-points")` 
+`r ref("AA-ERY-pseudotime")` 
+`r ref("AA-ERY-Graph-Test-Significant-genes")` 
+`r ref("AA-Graph-Test-of-associated-genes")` 
+`r ref("AA-ERY-Set1-genes-in-pseudotime")` 
+
+`r ref("AA-ERY-Set1-genes-in-pseudotime")` 表明，
+`TUBB2A` 是一种在 AA 中高表达的基因 (Erythroblast)。
+
+```{r}
+#' @meth {get_meth(mn.aa_ery)}
+mn.aa_ery <- do_monocle(sr5n.aa, "Erythroblast", group.by = "Cell_Sample")
+mn.aa_ery <- step1(mn.aa_ery, "Cell_Sample", pre = T)
+mn.aa_ery@plots$step1$p.prin
+mn.aa_ery <- step2(mn.aa_ery, c("Y_83", "Y_113"))
+mn.aa_ery@plots$step2$p.pseu
+mn.aa_ery <- step3(mn.aa_ery, group.by = "seurat_clusters")
+mn.aa_ery@tables$step3$graph_test.sig
+
+tbl_assGenes_GraphTest <- dplyr::filter(mn.aa_ery@tables$step3$graph_test.sig, gene_id %in% tbl_genesEry$gene)
+tbl_assGenes_GraphTest <- setLegend(
+  tbl_assGenes_GraphTest, "为 TWAS 风险相关、细胞群差异表达 (Erythroblast, AA vs Normal) 的 Graph Test 附表。"
+)
+tbl_assGenes_GraphTest <- .set_lab(tbl_assGenes_GraphTest, "AA", "Graph Test of associated genes")
+tbl_assGenes_GraphTest
+
+mn.aa_ery <- step4(
+  mn.aa_ery, NULL, group.by = "Cell_Sample", genes = "TUBB2A"
+)
+mn.aa_ery@plots$step4$genes_in_pseudotime$pseudo1
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-ERY-principal-points
+autor(mn.aa_ery@plots$step1$p.prin)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-ERY-pseudotime
+autor(mn.aa_ery@plots$step2$p.pseu)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-ERY-Graph-Test-Significant-genes
+autor(mn.aa_ery@tables$step3$graph_test.sig)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-Graph-Test-of-associated-genes
+autor(tbl_assGenes_GraphTest)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-ERY-Set1-genes-in-pseudotime
+autor(mn.aa_ery@plots$step4$genes_in_pseudotime$pseudo1)
+```
+
+
+## Monocle3 拟时分析 (PDC)
+
+`r snap(mn.pdc, 0:4)`
+
+```{r}
+mn.pdc <- do_monocle(sr5n.aa, "Plasmacytoid_dendritic_cell", group.by = "Cell_Sample")
+mn.pdc <- step1(mn.pdc, "Cell_Sample", pre = T)
+#' @meth {get_meth(mn.pdc)}
+mn.pdc@plots$step1$p.prin
+mn.pdc <- step2(mn.pdc, "Y_2")
+mn.pdc@plots$step2$p.pseu
+mn.pdc <- step3(mn.pdc, group.by = "seurat_clusters")
+mn.pdc@plots$step3$gene_module_heatdata$graph_test.sig
+mn.pdc@tables$step3$graph_test.sig
+```

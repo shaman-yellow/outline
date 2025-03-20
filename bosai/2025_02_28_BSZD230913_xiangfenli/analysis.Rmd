@@ -39,10 +39,27 @@ set_index()
 
 ```{r}
 dic(di("差异表达基因"),
-  di("")
+  di("相分离")
 )
 
 ```
+
+```{r}
+#| route
+route <- as_network(
+  list("Phase_separation:DB_PhaSepDB",
+    ":, ",
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(p.route)
+```
+
 
 # 材料和方法 {#introduction}
 
@@ -52,7 +69,18 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
+## PhaSepDB 相分离相关蛋白 (LLPS)
 
+`r snap(ps.llps, 0:1)`
+
+```{r}
+ps.llps <- job_ps()
+ps.llps <- step1(ps.llps)
+#' @meth {get_meth(ps.llps)}
+ps.llps@params$p.location
+ps.llps@params$p.org
+feature(ps.llps)
+```
 
 # 总结 {#conclusion}
 

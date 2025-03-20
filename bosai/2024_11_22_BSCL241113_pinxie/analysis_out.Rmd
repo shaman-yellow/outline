@@ -143,6 +143,10 @@ autor(fus.aa@tables$step3$TWAS_significant)
 `r snap(geo.aa_scRNA, 0:2)`
 
 ```{r}
+gds.aa <- job_gds("Aplastic anemia")
+vis(gds.aa)
+active(gds.aa)
+
 geo.aa_scRNA <- job_geo("GSE181989")
 geo.aa_scRNA <- step1(geo.aa_scRNA)
 #' @meth {get_meth(geo.aa_scRNA)}
@@ -171,7 +175,7 @@ autor(geo.aa_scRNA@params$prods)
 ## Seurat 集成单细胞数据分析 (AA)
 
 `r snap(sr5n.aa, 0:7)`
-`r snap(sr5n.aa, "d")`
+`r snap(sr5n.aa, "diff_contrasts")`
 
 `r ref("Pre-Quality-control")` 
 `r ref("AA-After-Quality-control")` 
@@ -179,11 +183,10 @@ autor(geo.aa_scRNA@params$prods)
 `r ref("AA-UMAP-Unintegrated")` 
 `r ref("AA-UMAP-Integrated")` 
 `r ref("AA-significant-markers-of-cell-clusters")` 
-`r ref("AA-ChatGPT-Cell-type-annotation")` 
-`r ref("AA-Markers-in-cell-types")` 
-`r ref("AA-ChatGPT4-Cell-Proportions-in-each-sample")` 
-`r ref("AA-The-Cell-Sample")` 
-`r ref("AA-DEGs-of-the-contrasts")` 
+`r ref("AA-SCSA-Cell-type-annotation")`
+`r ref("AA-CellMarker-Validation")`
+`r ref("AA-SCSA-Cell-Proportions-in-each-sample")`
+<!-- LEGEND_END -->
 
 ```{r}
 #' @meth {get_meth(sr5n.aa)}
@@ -191,35 +194,38 @@ sr5n.aa <- job_seurat5n(
   list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE), c("AA1", "AA2", "Normal1", "Normal2")
 )
 sr5n.aa@params$p.qc_pre
-sr5n.aa <- step1(sr5n.aa, 0, 5000, 20)
+sr5n.aa <- step1(sr5n.aa, 500, 5000, 10)
 sr5n.aa@params$p.qc_aft
 sr5n.aa <- step2(sr5n.aa)
 sr5n.aa@plots$step2$p.pca_rank
-sr5n.aa <- step3(sr5n.aa, use = "CCA")
+sr5n.aa <- step3(sr5n.aa, resolution = 1.2, use = "Har")
 sr5n.aa@plots$step3$p.umapUint
 sr5n.aa@plots$step3$p.umapInt
 sr5n.aa <- step4(sr5n.aa, "")
 sr5n.aa <- step5(sr5n.aa)
+clear(sr5n.aa)
 sr5n.aa@tables$step5$all_markers
-sr5n.aa <- step6(sr5n.aa, "bone marrow")
+sr5n.aa <- step6(
+  sr5n.aa, "bone.*marrow", extra = c(
+    "CD27", "CD34", "CD38"
+  )
+)
+sr5n.aa@plots$step6$p.map_scsa
+sr5n.aa@params$p.cellMarker
+sr5n.aa@plots$step6$p.props_scsa
 
 sr5n.aa <- mutate(
-  sr5n.aa, Cell_Sample = as_type_group(ChatGPT_cell, orig.ident)
+  sr5n.aa, Cell_Sample = as_type_group(scsa_cell, orig.ident)
 )
 sr5n.aa <- diff(
   sr5n.aa, "Cell_Sample", pattern_contrasts(
-    sr5n.aa@object@meta.data$Cell_Sample, AA - Normal, as.list = TRUE
+    sr5n.aa@object@meta.data$Cell_Sample, AA - Normal, 
+    as.list = TRUE, force = TRUE
   )
 )
-
-sr5n.aa@params$hp_cell_markers
-sr5n.aa@params$hp_cell_markers
-sr5n.aa@plots$step6$p.map_gpt
-sr5n.aa@plots$step6$p.markers
-sr5n.aa@plots$step6$p.props_gpt
-p.cell_sample <- vis(sr5n.aa, "Cell_Sample", mode = "type")
-wrap(p.cell_sample, 10, 5)
 sr5n.aa@params$contrasts
+p.cell_sample <- vis(sr5n.aa, "Cell_Sample", mode = "type")
+wrap(p.cell_sample, 8, 5)
 
 # sr5n.aa <- readRDS("./sr5n.aa.5.rds")
 # saveRDS(sr5n.aa, "sr5n.aa.3_cca.rds")
@@ -261,52 +267,22 @@ autor(sr5n.aa@tables$step5$all_markers)
 ```
 
 
+
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-ChatGPT-Cell-type-annotation
-autor(sr5n.aa@plots$step6$p.map_gpt)
+#| AA-SCSA-Cell-type-annotation
+autor(sr5n.aa@plots$step6$p.map_scsa)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-Markers-in-cell-types
-autor(sr5n.aa@plots$step6$p.markers)
+#| AA-CellMarker-Validation
+autor(sr5n.aa@params$p.cellMarker)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-ChatGPT4-Cell-Proportions-in-each-sample
-autor(sr5n.aa@plots$step6$p.props_gpt)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-The-Cell-Sample
-autor(wrap(p.cell_sample, 10, 5))
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-DEGs-of-the-contrasts
-autor(sr5n.aa@params$contrasts)
-```
-
-## Seurat 细胞群中的 TWAS 风险相关基因 (AA)
-
-`r snap(sr5n.aa, "m")`
-`r ref("AA-Filtered-TWAS-associated-genes-of-Cell-Cluster-DEGs")`
-
-```{r}
-sr5n.aa <- map(sr5n.aa, fus.aa)
-sr5n.aa@params$fusion_degs
-tbl_genesEry <- dplyr::filter(sr5n.aa@params$fusion_degs, grpl(contrast, "Erythroblast"))
-tbl_genesEry$gene
-
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-Filtered-TWAS-associated-genes-of-Cell-Cluster-DEGs
-autor(sr5n.aa@params$fusion_degs)
+#| AA-SCSA-Cell-Proportions-in-each-sample
+autor(sr5n.aa@plots$step6$p.props_scsa)
 ```
 
 ## scFEA 单细胞数据的代谢通量预测 (AA)
@@ -316,15 +292,19 @@ autor(sr5n.aa@params$fusion_degs)
 `r ref("AA-cells-metabolic-flux")` 
 `r ref("AA-metabolic-flux-matrix")` 
 
+`r ref("AA-annotation-of-metabolic-flux")`
+<!-- LEGEND_END -->
+
 ```{r}
 set_remoteRun.bosai()
-scf.aa <- asjob_scfea(sr5n.aa, org = "hu", dir = "scfea_aa_all")
-scf.aa <- set_remote(scf.aa, "scfea_aa_all")
+scf.aa <- asjob_scfea(sr5n.aa, org = "hu", dir = "scfea_aa_reset")
+scf.aa <- set_remote(scf.aa, "scfea_aa_reset")
 scf.aa <- step1(scf.aa)
 #' @meth {get_meth(scf.aa)}
 scf.aa <- step2(scf.aa)
 scf.aa@plots$step2$p.loss
 scf.aa@tables$step2$t.flux
+scf.aa@tables$step2$t.anno
 
 sr5n.aa <- map(sr5n.aa, scf.aa)
 sr5n.aa@params$p.map_flux
@@ -342,31 +322,36 @@ autor(sr5n.aa@params$p.map_flux)
 autor(scf.aa@tables$step2$t.flux)
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-annotation-of-metabolic-flux
+autor(scf.aa@tables$step2$t.anno)
+```
+
 ## Limma 代谢通量差异分析 (AA_FLUX)
 
 `r snap(lm.aa_flux, 0:3)`
-
 `r ref("AA-FLUX-Differential-Statistic-data")` 
-`r ref("AA-FLUX-Erythroblast-AA-vs-Erythroblast-Normal")` 
+`r ref("AA-FLUX-Hematopoietic-stem-cell-AA-vs-Hematopoietic-stem-cell-Normal")`
+`r ref("AA-FLUX-Plasmacytoid-dendritic-cell-AA-vs-Plasmacytoid-dendritic-cell-Normal")`
+<!-- LEGEND_END -->
 
 ```{r}
-scf.aa$metadata$ChatGPT_cell <- sr5n.aa@object@meta.data$ChatGPT_cell
-lm.aa_flux <- asjob_limma(scf.aa)
+scf.aa$metadata$Cell_Sample <- sr5n.aa@object@meta.data$Cell_Sample
+lm.aa_flux <- asjob_limma(scf.aa, group = "Cell_Sample")
 lm.aa_flux <- step1(lm.aa_flux)
 #' @meth {get_meth(lm.aa_flux)}
 lm.aa_flux <- step2(lm.aa_flux,
-  contrasts = pattern_contrasts(lm.aa_flux$metadata$group, AA - Normal),
+  contrasts = pattern_contrasts(
+    lm.aa_flux$metadata$group, AA - Normal, force = TRUE
+  ),
   label = "name", use = "P", cut.fc = .5
 )
-
 lm.aa_flux <- step3(lm.aa_flux, use.gene = "name")
-lm.aa_flux@tables$step2$tops$`Erythroblast_AA - Erythroblast_Normal`
-tbl_lm.aa_flux_Eryth <- lm.aa_flux@tables$step2$tops$`Erythroblast_AA - Erythroblast_Normal`
-less(tbl_lm.aa_flux_Eryth$name)
-lm.aa_flux@plots$step2$p.volcano$`Erythroblast_AA - Erythroblast_Normal`
+lm.aa_flux@tables$step2$tops
+lm.aa_flux@plots$step2$p.volcano$`Hematopoietic_stem_cell_AA - Hematopoietic_stem_cell_Normal`
+lm.aa_flux@plots$step2$p.volcano$`Plasmacytoid_dendritic_cell_AA - Plasmacytoid_dendritic_cell_N`
 
-character_lm.aa_flux_name <- lm.aa_flux@tables$step2$tops$`Erythroblast_AA - Erythroblast_Normal`$name
-character_lm.aa_flux_name
 ```
 
 
@@ -377,136 +362,184 @@ autor(lm.aa_flux@tables$step2$tops)
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-FLUX-Erythroblast-AA-vs-Erythroblast-Normal
-autor(lm.aa_flux@plots$step2$p.volcano$`Erythroblast_AA - Erythroblast_Normal`)
+#| AA-FLUX-Hematopoietic-stem-cell-AA-vs-Hematopoietic-stem-cell-Normal
+autor(lm.aa_flux@plots$step2$p.volcano$`Hematopoietic_stem_cell_AA - Hematopoietic_stem_cell_Normal`)
 ```
 
-## 关联分析
 
-聚焦于 Erythroblast 细胞 (在 TWAS 与 代谢通量分析中，都筛选出了差异变化) ，
-将 TWAS 风险基因 (见`r ref("AA-Filtered-TWAS-associated-genes-of-Cell-Cluster-DEGs", FALSE)` 中的 Erythroblast)
-与差异代谢通量关联分析 (见 `r ref("AA-FLUX-Erythroblast-AA-vs-Erythroblast-Normal")`)。
+```{r eval = T, echo = F, results = "asis"}
+#| AA-FLUX-Plasmacytoid-dendritic-cell-AA-vs-Plasmacytoid-dendritic-cell-Normal
+autor(lm.aa_flux@plots$step2$p.volcano$`Plasmacytoid_dendritic_cell_AA - Plasmacytoid_dendritic_cell_Normal`)
+```
 
-`r ref("Correlation-heatmap")` 
-`r ref("Significant-correlation")` 
-`r ref("AA-dimension-plot-of-expression-level-of-the-genes")` 
+## 细胞群 features 关联分析 (AA)
 
-`r ref("AA-dimension-plot-of-expression-level-of-the-genes")` 中，'TUBB2A' 具有差异分布趋势。
+`r snap(sr5n.aa, "sets_feature")`
+
+`r ref("Correlation-heatmap")`
+`r ref("AA-Hematopoietic-stem-cell-correlation-heatmap")`
+`r ref("AA-Plasmacytoid-dendritic-cell-correlation-heatmap")`
+`r ref("Hematopoietic-stem-cell-Cell-flux-ridge-plot")`
+`r ref("Plasmacytoid-dendritic-cell-Cell-flux-ridge-plot")`
+<!-- LEGEND_END -->
 
 ```{r}
-lm.erythroblast <- asjob_limma(sr5n.aa, feature(fus.aa), cell_groups = "Erythroblast")
-cp.corr <- cal_corp(
-  lm.erythroblast, lm.aa_flux,
-  tbl_genesEry$gene, character_lm.aa_flux_name,
-  names = c("TWAS associated DEGs", "Metabolic Flux"),
-  use.x = "gene", use.y = "name", gname = FALSE
+sr5n.aa <- map(
+  sr5n.aa, sfea(feature(fus.aa), feature(lm.aa_flux)),
+  list(sr5n.aa, lm.aa_flux), names = c("TWAS Genes", "Metabolic Flux")
 )
-cp.corr@params$res$hp
-cp.corr@params$res$sig.corp
+
+sr5n.aa@params$res_correlation$Hematopoietic_stem_cell$hp
+sr5n.aa@params$res_correlation$Plasmacytoid_dendritic_cell$hp
+
+scf.aa <- map(scf.aa, lm.aa_flux)
+scf.aa@params$p.fluxs$Hematopoietic_stem_cell
+scf.aa@params$p.fluxs$Plasmacytoid_dendritic_cell
+
 ```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-Hematopoietic-stem-cell-correlation-heatmap
+autor(sr5n.aa@params$res_correlation$Hematopoietic_stem_cell$hp)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-Plasmacytoid-dendritic-cell-correlation-heatmap
+autor(sr5n.aa@params$res_correlation$Plasmacytoid_dendritic_cell$hp)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Hematopoietic-stem-cell-Cell-flux-ridge-plot
+autor(scf.aa@params$p.fluxs$Hematopoietic_stem_cell)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Plasmacytoid-dendritic-cell-Cell-flux-ridge-plot
+autor(scf.aa@params$p.fluxs$Plasmacytoid_dendritic_cell)
+```
+
+## Monocle3 拟时分析 (HSC)
+
+(Plasmacytoid_dendritic_cell 数量较少，未展开分析)
+
+`r snap(mn.hsc, 0:4)`
+
+`r ref("HSC-principal-points")`
+`r ref("HSC-pseudotime")`
+`r ref("HSC-Graph-Test-Significant-genes")`
+`r ref("HSC-Set1-genes-in-pseudotime")`
+`r ref("AA-dimension-plot-of-expression-level-of-the-genes")`
+`r ref("AA-violing-plot-of-expression-level-of-the-genes")`
+<!-- LEGEND_END -->
+
+其中，`r fea.hsc@.Data` 在细胞群呈趋势表达变化。
 
 ```{r}
-p.Ery <- focus(sr5n.aa, tbl_genesEry$gene)
-p.Ery$p.dim
+mn.hsc <- do_monocle(sr5n.aa, "Hematopoietic_stem_cell", group.by = "Cell_Sample")
+mn.hsc <- step1(mn.hsc, "Cell_Sample", pre = T)
+#' @meth {get_meth(mn.hsc)}
+mn.hsc@plots$step1$p.prin
+mn.hsc <- step2(mn.hsc, "Y_60")
+mn.hsc@plots$step2$p.pseu
+mn.hsc <- step3(mn.hsc, group.by = "seurat_clusters")
+mn.hsc@tables$step3$graph_test.sig
+mn.hsc <- step4(mn.hsc, NULL, group.by = "Cell_Sample", genes = feature(sr5n.aa, "cfrom")[[1]])
+mn.hsc@plots$step4$genes_in_pseudotime$pseudo1
+
+fea.hsc <- as_feature(c("SELL", "TUBB2A", "LIMD2", "HIGD2A", "FIS1", "POLR2L"), mn.hsc)
+fea.hsc
+
+mn.hsc <- focus(
+  mn.hsc, fea.hsc, "orig.ident"
+)
+mn.hsc@params$focus_genes$p.dim
+mn.hsc@params$focus_genes$p.vln
+
 ```
 
+
 ```{r eval = T, echo = F, results = "asis"}
-#| Correlation-heatmap
-autor(cp.corr@params$res$hp)
+#| HSC-principal-points
+autor(mn.hsc@plots$step1$p.prin)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Significant-correlation
-autor(cp.corr@params$res$sig.corp)
+#| HSC-pseudotime
+autor(mn.hsc@plots$step2$p.pseu)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| HSC-Graph-Test-Significant-genes
+autor(mn.hsc@tables$step3$graph_test.sig)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| HSC-Set1-genes-in-pseudotime
+autor(mn.hsc@plots$step4$genes_in_pseudotime$pseudo1)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-dimension-plot-of-expression-level-of-the-genes
-autor(p.Ery$p.dim)
+autor(mn.hsc@params$focus_genes$p.dim)
 ```
 
-## Monocle3 拟时分析 (AA_ERY)
 
-`r snap(mn.aa_ery, 0:4)`
+```{r eval = T, echo = F, results = "asis"}
+#| AA-violing-plot-of-expression-level-of-the-genes
+autor(mn.hsc@params$focus_genes$p.vln)
+```
 
-`r ref("AA-ERY-principal-points")` 
-`r ref("AA-ERY-pseudotime")` 
-`r ref("AA-ERY-Graph-Test-Significant-genes")` 
-`r ref("AA-Graph-Test-of-associated-genes")` 
-`r ref("AA-ERY-Set1-genes-in-pseudotime")` 
+## TUBB2A 等在其它细胞中的表达
 
-`r ref("AA-ERY-Set1-genes-in-pseudotime")` 表明，`TUBB2A` 是一种在 AA 中高表达的基因 (Erythroblast)。
+`r ref("AA-violing-plot-of-expression-level-geneOthers")`
+<!-- LEGEND_END -->
 
 ```{r}
-#' @meth {get_meth(mn.aa_ery)}
-mn.aa_ery <- do_monocle(sr5n.aa, "Erythroblast", group.by = "Cell_Sample")
-mn.aa_ery <- step1(mn.aa_ery, "Cell_Sample", pre = T)
-mn.aa_ery@plots$step1$p.prin
-mn.aa_ery <- step2(mn.aa_ery, c("Y_83", "Y_113"))
-mn.aa_ery@plots$step2$p.pseu
-mn.aa_ery <- step3(mn.aa_ery, group.by = "seurat_clusters")
-mn.aa_ery@tables$step3$graph_test.sig
-
-tbl_assGenes_GraphTest <- dplyr::filter(mn.aa_ery@tables$step3$graph_test.sig, gene_id %in% tbl_genesEry$gene)
-tbl_assGenes_GraphTest <- setLegend(
-  tbl_assGenes_GraphTest, "为 TWAS 风险相关、细胞群差异表达 (Erythroblast, AA vs Normal) 的 Graph Test 附表。"
-)
-tbl_assGenes_GraphTest <- .set_lab(tbl_assGenes_GraphTest, "AA", "Graph Test of associated genes")
-tbl_assGenes_GraphTest
-
-mn.aa_ery <- step4(
-  mn.aa_ery, NULL, group.by = "Cell_Sample", genes = "TUBB2A"
-)
-mn.aa_ery@plots$step4$genes_in_pseudotime$pseudo1
-
-p.Ery_TUBB2A <- focus(sr5n.aa, "TUBB2A")
-p.Ery_TUBB2A$p.vln
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-ERY-principal-points
-autor(mn.aa_ery@plots$step1$p.prin)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-ERY-pseudotime
-autor(mn.aa_ery@plots$step2$p.pseu)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-ERY-Graph-Test-Significant-genes
-autor(mn.aa_ery@tables$step3$graph_test.sig)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-Graph-Test-of-associated-genes
-autor(tbl_assGenes_GraphTest)
+sr5n.aa <- focus(sr5n.aa, fea.hsc, "Cell_Sample", name = "geneOthers")
+wrap(sr5n.aa@params$focus_geneOthers$p.vln, 17, 14)
 ```
 
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-ERY-Set1-genes-in-pseudotime
-autor(mn.aa_ery@plots$step4$genes_in_pseudotime$pseudo1)
+#| AA-violing-plot-of-expression-level-geneOthers
+autor(wrap(sr5n.aa@params$focus_geneOthers$p.vln, 17, 14))
 ```
 
 # 总结 {#conclusion}
 
 本研究从遗传变异 (TWAS)，基因表达变化 (单细胞)，单细胞代谢通量变化三个维度，对 AA 的机制展开的探究。
-在 Erythroblast 细胞中发现了 `r less(tbl_lm.aa_flux_Eryth$name)` 等多数代谢通量变化。
-在 AA vs Normal 的差异分析中，Erythroblast 细胞中也发现了与 TWAS 风险一致的基因
-(见 `r ref("AA-Filtered-TWAS-associated-genes-of-Cell-Cluster-DEGs")`)。
-对差异代谢通量变化与这些风险相关基因的关联分析表明，'TUBB2A' 与所有的差异代谢通量改变有显著关联。
 
-'TUBB2A' 是一个首要表达于 Erythroblast 细胞中的基因，此外，AA 相较于 Normal 高表达。
-(见 `r ref("AA-dimension-plot-of-expression-level-of-the-genes")`)
-对 Erythroblast 细胞的拟时分析，明确了 'TUBB2A' 在 AA 中的高表达变化。
+首先从 GWAS Summary 数据，根据 TWAS 方法，筛选到 AA SNP 影响到表达水平变化的基因。
+再通过分析 AA 单细胞数据 (bone marrow)，鉴定主要细胞群，预测这些细胞的代谢通量变化，
+并分析各组细胞群之间的差异代谢通量。
+推测，基因 (突变) 水平的改变，不仅影响到某些基因表达水平的变化，还会改变细胞的代谢行为。
+因此，随后，本研究探究了 TWAS 筛选出的基因与代谢通量改变的关联性。
+从 Hematopoietic_stem_cell 中发现了大量与代谢通量改变呈正相关的基因
+(`r ref("AA-Hematopoietic-stem-cell-correlation-heatmap")`)。
+通过对这些基因的拟时分析 (`r ref("HSC-Set1-genes-in-pseudotime")`)，
+可以发现 TUBB2A、SELL 等基因在 AA 与 Normal 中显著差异表达
+(`r ref("AA-violing-plot-of-expression-level-of-the-genes")`，
+`r ref("AA-dimension-plot-of-expression-level-of-the-genes")`)。
+TUBB2A 在 AA 中高表达，而 SELL 在 AA 中低表达。
 
-局限：目前公开可得的 AA 数据集较少，难以多方面验证，该分析可能受限于当前数据集。
+
+```{r}
+extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫血-2025.02.06.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_.docx")
+
+
+cdRun(glue::glue("pandoc ./idea_out.docx -o test_track.md --track-changes=all"))
+```
+
 
