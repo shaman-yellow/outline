@@ -1,0 +1,38 @@
+
+
+### GEO 数据获取 (NORMAL_GSE87624)
+
+`r snap(geo.normal_GSE87624, 0:2)`
+
+```{r}
+rm(geo.normal_GSE87624, metadata.normal_GSE87624, lm.normal_GSE87624)
+geo.normal_GSE87624 <- job_geo("normal_GSE87624")
+#' @meth {get_meth(geo.normal_GSE87624)}
+geo.normal_GSE87624 <- step1(geo.normal_GSE87624)
+metadata.normal_GSE87624 <- expect(
+  geo.normal_GSE87624, geo_cols(group = "tumor.type.ch1")
+)
+metadata.normal_GSE87624$group %>% table
+geo.normal_GSE87624 <- step2(geo.normal_GSE87624)
+
+```
+
+### Limma 差异分析 (NORMAL_GSE87624)
+
+`r snap(lm.normal_GSE87624, 0:3)`
+
+```{r}
+lm.normal_GSE87624 <- asjob_limma(geo.normal_GSE87624, metadata.normal_GSE87624)
+lm.normal_GSE87624 <- filter(
+  lm.normal_GSE87624, type = "metadata", grpl(group, "primary|normal_bone")
+)
+lm.normal_GSE87624 <- step1(lm.normal_GSE87624)
+#' @meth {get_meth(lm.normal_GSE87624)}
+lm.normal_GSE87624 <- step2(
+  lm.normal_GSE87624, primary - normal_bone,
+  use = "P", cut.fc = .5
+)
+lm.normal_GSE87624 <- step3(lm.normal_GSE87624)
+```
+
+m <- strx(ls(pattern = "lm.normal_GSE.*"), "GSE.*")

@@ -200,3 +200,14 @@ backup_jobs.bosai(
   "2025-03-13"
 )
 ```
+
+```{r}
+summary_month.bosai(get_orders(), rm = TRUE)
+```
+
+# 2025-03-21
+
+```{r}
+summary_week.bosai(rm = TRUE, must_include = "BSCL241113")
+```
+

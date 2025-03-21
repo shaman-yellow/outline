@@ -255,3 +255,9 @@ lm.pb_GSE185263 <- step2(
 lm.pb_GSE185263 <- step3(lm.pb_GSE185263)
 ```
 
+
+sr.t_cell <- step6(
+  sr.t_cell, "Peripheral", include = "\\bT\\b", keep_markers = 5,
+  extra = c("PDCD1", "FOXP3", "CD4", "CTLA4", "IL2RA"), 
+  exclude_pattern = NULL, exclude = "Naive"
+)

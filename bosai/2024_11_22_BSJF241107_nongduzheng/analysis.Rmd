@@ -129,6 +129,7 @@ sr.sepsis@plots$step3$p.umap
 sr.sepsis <- mutate(
   sr.sepsis, Cell_Sample = paste0(Cell_Type, "_", orig.ident)
 )
+clear(sr.sepsis)
 
 cm.sc <- job_markers("blood")
 cm.sc <- step1(cm.sc, "megakary")
