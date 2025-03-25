@@ -58,30 +58,48 @@ collate_details("meth")
 ```{r}
 sr.sepsis <- readRDS("./sr.sepsis.4.rds")
 sr.t_cell <- getsub(sr.sepsis, cells = which(meta(sr.sepsis)$Cell_Type == "T"))
+rm(sr.sepsis)
+
+t_cell_markers <- list(
+  # T_cell_general = c("CD3D", "CD3E", "CD3G", "TRAC"),
+  CD4_naive = c("CD4", "CCR7", "LEF1", "SELL"),
+  CD4_memory = c("CD4", "IL7R", "CCR6"),
+  CD8_naive = c("CD8A", "CCR7", "LEF1"),
+  CD8_cytotoxic = c("CD8A", "GZMB", "PRF1", "IFNG"),
+  Treg = c("CD4", "FOXP3", "IL2RA", "CTLA4"),
+  Th1 = c("CD4", "TBX21", "CXCR3", "IFNG"),
+  Th2 = c("CD4", "GATA3", "CCR4", "IL4"),
+  Th17 = c("CD4", "RORC", "CCR6", "IL17A"),
+  Tfh = c("CD4", "BCL6", "CXCR5", "IL21"),
+  γδ_T = c("TRDC", "TRGC1", "TRGC2"),
+  MAIT = c("SLC4A1", "KLRB1", "RORC"),
+  NKT = c("CD3D", "KLRB1", "NKG7"),
+  Activated_T = c("CD69", "HLA-DRA", "CD38"),
+  Exhausted_T = c("PDCD1", "LAG3", "TIGIT")
+)
+
+ref.markers <- as_df.lst(t_cell_markers, "cell", "markers")
+ref.markers
 
 sr.t_cell@step <- 2L
-sr.t_cell <- step3(sr.t_cell, 1:20, 2)
-sr.t_cell <- step4(sr.t_cell, "")
-sr.t_cell <- step5(sr.t_cell)
-
-cells <- c("CD4+ T cells", "CD8+ T cells", "Treg cells",
-  "Memory T cells", "Exhausted T cells")
-markers <- c("CD4, IL7R, CCR7", "CD8A, CD8B, GZMB", "FOXP3, IL2RA",
-"CCR7, SELL", "PDCD1, LAG3, TIM3")
-ref.markers <- tibble::tibble(cells = cells, markers = markers)
-ref.markers <- reframe_col(
-  ref.markers, "markers", function(x) strsplit(x, ", ")[[1]]
+sr.t_cell <- step3(
+  sr.t_cell, 1:5, .5, reset = TRUE, force = TRUE, features = ref.markers$markers
 )
-ref.markers
+Seurat::ElbowPlot(object(sr.t_cell), reduction = "features_pca")
+
+sr.t_cell@plots$step3$p.umap
+sr.t_cell <- step4(sr.t_cell, "")
+
+# set_remoteRun.bosai()
+# sr.t_cell <- set_remote(sr.t_cell)
+sr.t_cell <- step5(sr.t_cell, 5, force = TRUE)
 
 sr.t_cell@step <- 5L
 sr.t_cell <- step6(
-  sr.t_cell, "blood", include = "\\bT\\b", keep_markers = 3,
-  exclude_pattern = NULL, exclude = "Naive|NKT",
-  extra = c("PDCD1", "CD4", "IL2RA")
+  sr.t_cell, "blood", ref.markers, keep_markers = 5
 )
-sr.t_cell@params$p.cellMarker
 sr.t_cell@plots$step6$p.map_scsa
+sr.t_cell@plots$step6$p.markers
 
 ```
 

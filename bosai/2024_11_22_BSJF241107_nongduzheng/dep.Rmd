@@ -261,3 +261,13 @@ sr.t_cell <- step6(
   extra = c("PDCD1", "FOXP3", "CD4", "CTLA4", "IL2RA"), 
   exclude_pattern = NULL, exclude = "Naive"
 )
+
+ref.markers <- tibble::tribble(
+  ~ cell, ~ markers,
+  "CD4+ T cells", "CD4, IL7R, CCR7",
+  "CD8+ T cells", "CD8A, CD8B, GZMB"
+)
+ref.markers <- reframe_col(
+  ref.markers, "markers", function(x) strsplit(x, ", ")[[1]]
+)
+ref.markers

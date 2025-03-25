@@ -71,34 +71,60 @@ lapply(list.files("./GSE152048/", "tar.gz$"),
 
 ## Seurat 集成单细胞数据分析 (OS)
 
+`r snap(srn.os, 0:7)`
+
 ```{r}
 sr.os <- job_seurat("./GSE152048/BC2")
 sr.os <- step1(sr.os)
 sr.os@plots$step1$p.qc
 
-dirs <- list.files("./GSE152048", "^BC", full.names = T)
 # useWhich <- strx(dirs, "BC[0-9]+") %in% paste0("BC", 2:3)
 # srn.os <- job_seurat5n(dirs[useWhich], strx(dirs, "BC[0-9]+")[useWhich])
 
+dirs <- list.files("./GSE152048", "^BC", full.names = T)
 srn.os <- job_seurat5n(dirs, strx(dirs, "BC[0-9]+"))
 srn.os@params$p.qc_pre
 
-srn.os <- step1(srn.os, 300, 8000, 10)
+srn.os <- step1(srn.os, 1000, 7000, 10)
+#' @meth {get_meth(srn.os)}
 srn.os@params$p.qc_pre
 srn.os@params$p.qc_aft
 srn.os <- step2(srn.os)
 srn.os@plots$step2$p.pca_rank
-srn.os <- step3(srn.os, 1:20, 2, use = "Har")
+srn.os <- step3(srn.os, 1:10, 1.2, use = "Har")
 srn.os@plots$step3$p.umapUint
 srn.os@plots$step3$p.umapInt
 srn.os <- step4(srn.os, "")
-srn.os <- step5(srn.os, NULL)
-srn.os@step <- 5L
+srn.os <- set_remote(srn.os)
+set_remoteRun.bosai()
+srn.os <- step5(srn.os, 5)
 srn.os@tables$step5$all_markers
-srn.os <- step6(srn.os, "Osteosarcoma")
 
-wrap(srn.os@plots$step6$p.map_gpt, 8, 6)
+cell_markers <- list(
+  Osteoblastic_OS = c("COL1A1", "CDH11", "RUNX2"),
+  Proliferating_osteoblastic_OS = c("COL1A1", "CDH11", "RUNX2", "TOP2A", "PCNA", "MKI67"),
+  Chondroblastic_OS = c("ACAN", "COL2A1", "SOX9"),
+  Osteoclastic = c("CTSK", "MMP9"),
+  T_NK_cells = c("IL7R", "CD3D", "NKG7"),
+  Myeloid = c("CD74", "CD14", "FCGR3A"),
+  Fibroblasts = c("COL1A1", "LUM", "DCN"),
+  Pericytes = c("ACTA2", "RGS5"),
+  MSCs = c("CXCL12", "SFRP2", "MME"),
+  Myoblasts = c("MYLPF", "MYL1"),
+  Endothelial = c("PECAM1", "VWF")
+)
+ref.markers <- as_df.lst(cell_markers, "cell", "markers")
+ref.markers
+
+srn.os@step <- 5L
+srn.os <- step6(
+  srn.os, "Osteosarcoma", ref.markers, keep_markers = 3,
+  notShow = c("COL1A1", "LUM")
+)
 srn.os@plots$step6$p.markers
+srn.os@plots$step6$p.map_scsa
+srn.os@plots$step6$p.props_scsa
+
 clear(srn.os)
 
 ```

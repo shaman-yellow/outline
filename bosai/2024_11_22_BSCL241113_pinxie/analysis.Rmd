@@ -13,7 +13,9 @@ show.ic(info)
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
 order_packaging(
-  "./analysis_out.docx", idname = idname, external_file = NULL, extras = "./Reply_FL.docx"
+  "./analysis_out.docx", idname = idname, external_file = NULL, extras = c(
+    "./Reply_FL.docx", "./Reply_FL2.docx"
+  )
 )
 ```
 
@@ -169,7 +171,6 @@ autor(geo.aa_scRNA@params$prods)
 ## Seurat 集成单细胞数据分析 (AA)
 
 `r snap(sr5n.aa, 0:7)`
-`r snap(sr5n.aa, "diff_contrasts")`
 
 `r ref("Pre-Quality-control")` 
 `r ref("AA-After-Quality-control")` 
@@ -199,27 +200,20 @@ sr5n.aa <- step4(sr5n.aa, "")
 sr5n.aa <- step5(sr5n.aa)
 clear(sr5n.aa)
 sr5n.aa@tables$step5$all_markers
+sr5n.aa@step <- 5L
 sr5n.aa <- step6(
-  sr5n.aa, "bone.*marrow", extra = c(
-    "CD27", "CD34", "CD38"
-  )
+  sr5n.aa, "bone.*marrow",
+  extra = c("CD27", "CD34", "CD38", "CD8A"), 
+  keep_markers = 3, reset = c("Myeloid cell" = "CD8+ T/NK/NKT cell")
 )
-sr5n.aa@plots$step6$p.map_scsa
+
 sr5n.aa@params$p.cellMarker
+sr5n.aa@plots$step6$p.map_scsa
 sr5n.aa@plots$step6$p.props_scsa
 
 sr5n.aa <- mutate(
   sr5n.aa, Cell_Sample = as_type_group(scsa_cell, orig.ident)
 )
-sr5n.aa <- diff(
-  sr5n.aa, "Cell_Sample", pattern_contrasts(
-    sr5n.aa@object@meta.data$Cell_Sample, AA - Normal, 
-    as.list = TRUE, force = TRUE
-  )
-)
-sr5n.aa@params$contrasts
-p.cell_sample <- vis(sr5n.aa, "Cell_Sample", mode = "type")
-wrap(p.cell_sample, 8, 5)
 
 # sr5n.aa <- readRDS("./sr5n.aa.5.rds")
 # saveRDS(sr5n.aa, "sr5n.aa.3_cca.rds")
@@ -528,9 +522,10 @@ autor(wrap(sr5n.aa@params$focus_geneOthers$p.vln, 17, 14))
 TUBB2A 在 AA 中高表达，而 SELL 在 AA 中低表达。
 
 
-```{r}
+r}
 extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫血-2025.02.06.docx")
-cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL.docx")
+cdRun("pandoc ./order_material/comment_reply_old.md -o Reply_FL.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL2.docx")
 
 ```
 
