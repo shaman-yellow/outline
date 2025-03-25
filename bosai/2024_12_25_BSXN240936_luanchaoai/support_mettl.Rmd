@@ -1,0 +1,111 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2024-09-27"), end = td("2025-03-26"), finish = td("2025-03-25"),
+  id = "BSXN240936", client = "李扬", inst = "中国医科大学附属盛京医院",
+  type = "生信协助",
+  title = "补充 METTL",
+  save = ".items_support_mettl.rds"
+)
+show.ic(info)
+
+order_publish.bosai("support_mettl.Rmd", "support_mettl_out.Rmd")
+idname <- formatName.bosai("./support_mettl_out.docx")
+order_packaging("./support_mettl_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table_mettl", tabs = "Figure+Table_mettl"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## METTL14 METTL16 (GSE146553)
+
+`r ref("HGSOC-Box-Plot-Of-DEGs-mettl")`
+`r ref("HGSOC-Statistic-of-Focused-genes-mettl")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.hgsoc <- readRDS("./lm.hgsoc3.rds")
+lm.hgsoc <- focus(lm.hgsoc, c("METTL14", "METTL16"), .name = "mettl", use = "P")
+lm.hgsoc@params$focusedDegs_mettl$p.BoxPlotOfDEGs
+lm.hgsoc@params$focusedDegs_mettl$data
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| HGSOC-Box-Plot-Of-DEGs-mettl
+autor(lm.hgsoc@params$focusedDegs_mettl$p.BoxPlotOfDEGs)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| HGSOC-Statistic-of-Focused-genes-mettl
+autor(lm.hgsoc@params$focusedDegs_mettl$data)
+```
+
+## Survival 生存分析 (OV_METTL) (TCGA-OV)
+
+`r snap(surv.ov_mettl, 0:1)`
+
+`r ref("OV-METTL-survival-curve-of-METTL14")`
+`r ref("OV-METTL-survival-curve-of-METTL16")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.ov <- readRDS("./lm.ov1.rds")
+surv.ov_mettl <- asjob_survival(lm.ov, c("METTL14", "METTL16"))
+surv.ov_mettl <- step1(surv.ov_mettl)
+#' @meth {get_meth(surv.ov_mettl)}
+surv.ov_mettl@plots$step1$p.surv$METTL14
+surv.ov_mettl@plots$step1$p.surv$METTL16
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OV-METTL-survival-curve-of-METTL14
+autor(surv.ov_mettl@plots$step1$p.surv$METTL14)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OV-METTL-survival-curve-of-METTL16
+autor(surv.ov_mettl@plots$step1$p.surv$METTL16)
+```
+
+# 总结 {#conclusion}
+

@@ -701,6 +701,7 @@ dian.bulk@params$self_res$p.lasso_coeffients$lambda.min
 dian.bulk@params$self_res$p.lasso_coeffients$lambda.1se
 dian.bulk@params$map_res$p.rocs$lambda.min
 dian.bulk@params$map_res$p.rocs$lambda.1se
+feature(dian.bulk)
 
 sr.sepsis <- focus(
   sr.sepsis, unlist(feature(dian.bulk)[[1]]),
@@ -884,4 +885,8 @@ extract_anno("./order_material/BSJF241107-许冠华-生信分析-脓毒症发病
 cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL.docx")
 ```
 
+```{r}
+clear(dian.bulk)
+saveRDS(feature(sr.sepsis), "feature_T_diff.rds")
+```
 

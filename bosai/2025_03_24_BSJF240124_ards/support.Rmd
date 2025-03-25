@@ -1,0 +1,92 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2024-08-30"), end = td("2025-03-24"), finish = td("2025-03-25"),
+  id = "BSJF240124", client = "蒋镥", inst = "",
+  type = "生信协助",
+  title = "预测结合转录子",
+  save = ".items_support.rds"
+)
+show.ic(info)
+
+order_publish.bosai("support.Rmd", "support_out.Rmd")
+idname <- formatName.bosai("./support_out.docx")
+order_packaging("./support_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+使用 hTFtarget 和 JASPAR 网站分析了可以与 BMP9 (GDF2) 启动子结合的转录因子（X）
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## Transcription Factor Target Gene Database (BMP9)
+
+`r snap(tf.bmp9, 0:1)`
+
+```{r}
+tf.bmp9 <- job_tfbs("GDF2")
+#' @meth {get_meth(tf.bmp9)}
+tf.bmp9 <- step1(tf.bmp9, cl = 5)
+tf.bmp9@tables$step1$res
+```
+
+## hTFtarget (BMP9)
+
+<http://bioinfo.life.hust.edu.cn/hTFtarget#!/quick_search?kw=BMP9>
+
+```{r}
+link <- start_drive()
+link$open()
+link$navigate("http://bioinfo.life.hust.edu.cn/hTFtarget#!/targets/gene?gene=ENSG00000263761")
+content <- link$getPageSource()
+end_drive()
+
+html <- rvest::read_html(content[[1]])
+tbl_htf <- rvest::html_table(html)[[1]]
+tbl_htf
+```
+
+## JASPAR
+
+无数据。
+
+<https://jaspar.elixir.no/search?q=BMP9&collection=all&tax_group=all&tax_id=all&type=all&class=all&family=all&version=all>
+
+
+# 总结 {#conclusion}
+

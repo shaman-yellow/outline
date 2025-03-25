@@ -522,7 +522,7 @@ autor(wrap(sr5n.aa@params$focus_geneOthers$p.vln, 17, 14))
 TUBB2A 在 AA 中高表达，而 SELL 在 AA 中低表达。
 
 
-r}
+```{r}
 extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫血-2025.02.06.docx")
 cdRun("pandoc ./order_material/comment_reply_old.md -o Reply_FL.docx")
 cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL2.docx")

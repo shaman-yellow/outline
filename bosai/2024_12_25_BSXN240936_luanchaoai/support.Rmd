@@ -565,6 +565,11 @@ p.cor
 autor(p.cor)
 ```
 
+```{r}
+clear(lm.hgsoc)
+clear(lm.ov)
+```
+
 # 总结 {#conclusion}
 
 `r ref("HGSOC-Box-Plot-Of-DEGs")`，

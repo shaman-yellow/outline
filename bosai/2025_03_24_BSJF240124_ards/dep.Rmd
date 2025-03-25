@@ -1,0 +1,6 @@
+
+
+```{r}
+test <- ftibble("./material/tf-target-infomation.txt")
+dplyr::filter(test, target == "GDF2")
+```

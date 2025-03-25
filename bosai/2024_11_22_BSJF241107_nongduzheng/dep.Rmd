@@ -271,3 +271,22 @@ ref.markers <- reframe_col(
   ref.markers, "markers", function(x) strsplit(x, ", ")[[1]]
 )
 ref.markers
+
+t_cell_markers <- list(
+  # T_cell_general = c("CD3D", "CD3E", "CD3G", "TRAC"),
+  CD4_naive = c("CD4", "CCR7", "LEF1", "SELL"),
+  CD4_memory = c("CD4", "IL7R", "CCR6"),
+  CD8_naive = c("CD8A", "CCR7", "LEF1"),
+  CD8_cytotoxic = c("CD8A", "GZMB", "PRF1", "IFNG"),
+  Treg = c("CD4", "FOXP3", "IL2RA", "CTLA4"),
+  Th1 = c("CD4", "TBX21", "CXCR3", "IFNG"),
+  Th2 = c("CD4", "GATA3", "CCR4", "IL4"),
+  Th17 = c("CD4", "RORC", "CCR6", "IL17A"),
+  Tfh = c("CD4", "BCL6", "CXCR5", "IL21"),
+  γδ_T = c("TRDC", "TRGC1", "TRGC2"),
+  MAIT = c("SLC4A1", "KLRB1", "RORC"),
+  NKT = c("CD3D", "KLRB1", "NKG7"),
+  Activated_T = c("CD69", "HLA-DRA", "CD38"),
+  Exhausted_T = c("PDCD1", "LAG3", "TIGIT")
+)
+
