@@ -4,3 +4,17 @@
 test <- ftibble("./material/tf-target-infomation.txt")
 dplyr::filter(test, target == "GDF2")
 ```
+
+plot_region(
+  dplyr::rename(
+    tf.bmp9@params$map_data_TF, symbol = target
+  ), 10, col.start = "Start", col.end = "Stop",
+  symbol = "GDF2"
+)
+
+require(Gviz)
+devtools::load_all("~/rtracklayer")
+Gviz::IdeogramTrack(genome = "hg37", chromosome = 10)
+
+test <- restfulr::RestUri("https://api.genome.ucsc.edu/list/ucscGenomes")
+restfulr::read(test)

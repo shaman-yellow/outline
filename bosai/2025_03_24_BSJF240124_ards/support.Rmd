@@ -5,7 +5,7 @@
 info <- items(start = td("2024-08-30"), end = td("2025-03-24"), finish = td("2025-03-25"),
   id = "BSJF240124", client = "蒋镥", inst = "",
   type = "生信协助",
-  title = "预测结合转录子",
+  title = "结合转录因子",
   save = ".items_support.rds"
 )
 show.ic(info)
@@ -54,39 +54,120 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
-## Transcription Factor Target Gene Database (BMP9)
+## TFBS 转录因子结合位点数据 (BMP9)
 
 `r snap(tf.bmp9, 0:1)`
+
+`r ref("BMP9-Transcription-Factor-binding-sites")`
+<!-- LEGEND_END -->
 
 ```{r}
 tf.bmp9 <- job_tfbs("GDF2")
 #' @meth {get_meth(tf.bmp9)}
 tf.bmp9 <- step1(tf.bmp9, cl = 5)
 tf.bmp9@tables$step1$res
+feature(tf.bmp9)
 ```
 
-## hTFtarget (BMP9)
 
-<http://bioinfo.life.hust.edu.cn/hTFtarget#!/quick_search?kw=BMP9>
+```{r eval = T, echo = F, results = "asis"}
+#| BMP9-Transcription-Factor-binding-sites
+autor(tf.bmp9@tables$step1$res)
+```
+
+## hTFtarget 转录因子数据 (BMP9)
+
+`r snap(htf.bmp9, 0:1)`
+
+`r ref("BMP9-transcription-factor-data")`
+<!-- LEGEND_END -->
 
 ```{r}
-link <- start_drive()
-link$open()
-link$navigate("http://bioinfo.life.hust.edu.cn/hTFtarget#!/targets/gene?gene=ENSG00000263761")
-content <- link$getPageSource()
-end_drive()
+htf.bmp9 <- job_htf("GDF2")
+#' @meth {get_meth(htf.bmp9)}
+htf.bmp9 <- step1(htf.bmp9)
+htf.bmp9@tables$step1$t.transcription_factor_data
+feature(htf.bmp9)
 
-html <- rvest::read_html(content[[1]])
-tbl_htf <- rvest::html_table(html)[[1]]
-tbl_htf
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BMP9-transcription-factor-data
+autor(htf.bmp9@tables$step1$t.transcription_factor_data)
 ```
 
 ## JASPAR
 
-无数据。
+无数据 (BMP9 或 GDF2)。
 
 <https://jaspar.elixir.no/search?q=BMP9&collection=all&tax_group=all&tax_id=all&type=all&class=all&family=all&version=all>
 
+## 汇总: TFDB + hTFtarget (BMP9)
+
+`r snap(venn.bmp9, 0:1)`
+
+`r ref("BMP9-Intersection-of-TFDB-with-hTFtarget")`
+<!-- LEGEND_END -->
+
+```{r}
+venn.bmp9 <- job_venn(TFDB = feature(tf.bmp9), hTFtarget = feature(htf.bmp9))
+#' @meth {get_meth(venn.bmp9)}
+venn.bmp9 <- step1(venn.bmp9)
+venn.bmp9@plots$step1$p.venn
+venn.bmp9@plots$step1$p.venn$ins
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| BMP9-Intersection-of-TFDB-with-hTFtarget
+autor(venn.bmp9@plots$step1$p.venn)
+```
+
+## TFBS 结合位点可视化 (BMP9)
+
+`r snap(tf.bmp9, "feature_char")`
+
+`r ref("BMP9-filtered-TF-binding-site")`
+`r ref("BMP9-STAT1-motif-sequence-logo")`
+<!-- LEGEND_END -->
+
+```{r}
+tf.bmp9 <- map(tf.bmp9, feature(venn.bmp9))
+tf.bmp9@params$map_data_TF
+tf.bmp9@params$p.logos_TF$STAT1
+plot_region(tf.bmp9@params$map_data_TF, "ch10")
+
+ranges <- lapply(c("promoters", "transcripts", "exons", "terminators"),
+  function(type) {
+    fun_get <- get_fun(type, envir = asNamespace("GenomicFeatures"))
+    range <- fun_get(
+      txdb, columns = c("gene_id"), 
+      filter = list(gene_id = tf.bmp9@params$map_data_TF$target_entrez)
+    )
+    range$type <- type
+    Gviz::GeneRegionTrack(range, name = Hmisc::capitalize(type))
+  })
+ranges
+
+gtrack <- Gviz::GenomeAxisTrack()
+atrack <- Gviz::AnnotationTrack()
+plotTracks(c(list(gtrack), ranges), sizes = c(1, rep(1, 4)))
+Gviz::UcscTrack()
+
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BMP9-filtered-TF-binding-site
+autor(tf.bmp9@params$map_data_TF)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| BMP9-STAT1-motif-sequence-logo
+autor(tf.bmp9@params$p.logos_TF$STAT1)
+```
 
 # 总结 {#conclusion}
 
