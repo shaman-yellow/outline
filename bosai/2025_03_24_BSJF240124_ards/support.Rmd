@@ -37,7 +37,7 @@ set_index()
 
 # 分析流程 {#abstract}
 
-使用 hTFtarget 和 JASPAR 网站分析了可以与 BMP9 (GDF2) 启动子结合的转录因子（X）
+使用 hTFtarget 和 JASPAR 网站分析可以与 BMP9 (GDF2) 启动子结合的转录因子（X）
 
 ```{r}
 dic(di("差异表达基因"),
