@@ -18,3 +18,72 @@ Gviz::IdeogramTrack(genome = "hg37", chromosome = 10)
 
 test <- restfulr::RestUri("https://api.genome.ucsc.edu/list/ucscGenomes")
 restfulr::read(test)
+
+GenomicFeatures::transcripts(
+  EnsDb.Hsapiens.v75::EnsDb.Hsapiens.v75, columns = c("gene_id", "tx_id", "gene_name",
+    "tx_biotype", "gene_biotype", "seq_name", "seq_strand",
+    "tx_seq_start", "tx_seq_end"),
+  filter = AnnotationFilter::GeneNameFilter("TP53")  # 替换目标基因名称
+) 
+
+data(geneModels, package = "Gviz")
+geneModels
+geneModels$feature <- NULL
+test <- Gviz::GeneRegionTrack(geneModels, chromosome = "chr7")
+Gviz::plotTracks(test)
+
+Gviz::BiomartGeneRegionTrack
+
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
+GenomicFeatures::genes(
+  txdb, columns = c("gene_id"), 
+  filter = list(gene_id = tf.bmp9@params$map_data_TF$target_entrez)
+)
+
+BSgenome.Hsapiens.UCSC.hg19::Hsapiens
+Gviz::SequenceTrack(Hsapiens, chromosome = chr)
+
+ranges <- lapply(c("promoters", "transcripts", "exons", "terminators"),
+  function(type) {
+    fun_get <- get_fun(type, envir = asNamespace("GenomicFeatures"))
+    range <- fun_get(
+      txdb, columns = c("gene_id"), 
+      filter = list(gene_id = tf.bmp9@params$map_data_TF$target_entrez)
+    )
+  })
+ranges
+
+
+atracks <- lapply(c("promoters", "transcripts"),
+  function(type) {
+    fun_get <- get_fun(type, envir = asNamespace("GenomicFeatures"))
+    range <- fun_get(
+      txdb, columns = c("gene_id"),
+      filter = list(gene_id = tf.bmp9@params$map_data_TF$target_entrez)
+    )
+    range$id <- Hmisc::capitalize(type)
+    Gviz::AnnotationTrack(range, shape = "box", name = "Region")
+  }
+)
+tracks <- Gviz::OverlayTrack(trackList = atracks)
+tracks
+
+range_bind <- as_GRanges(
+  tf.bmp9@params$map_data_TF, col.chr = "chr", col.start = "Start", col.end = "Stop"
+)
+atrack_bind <- Gviz::AnnotationTrack(range_bind)
+
+btrack <- Gviz::BiomartGeneRegionTrack(genome = "hg19", name = "Ens.", symbol = "GDF2")
+btrack@range <- btrack@range[btrack@range$symbol == "GDF2", ]
+btrack@range
+btrack_bind <- Gviz::OverlayTrack(
+  trackList = list(btrack, atrack_bind)
+)
+
+gtrack <- Gviz::GenomeAxisTrack()
+Gviz::plotTracks(
+  list(gtrack, btrack_bind), 
+  transcriptAnnotation = "symbol", featureAnnotation = "id",
+  sizes = c(1, 2)
+)
+

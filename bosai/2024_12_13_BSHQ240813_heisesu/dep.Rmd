@@ -477,3 +477,44 @@ grid.draw(
 p <- recordPlot()
 p
 
+
+## STRINGdb PPI 分析 (CAP2)
+
+`r snap(sdb.cap2, 0:1)`
+
+```{r}
+sdb.cap2 <- asjob_stringdb(feature(gsea.tcga_skcm), "CAP2")
+#' @meth {get_meth(sdb.cap2)}
+sdb.cap2 <- step1(sdb.cap2, network_type = "full")
+sdb.cap2@plots$step1$p.mcc
+```
+
+## 关联分析 (CAP2)
+
+`r snap(cp.cap2, 0:1)`
+
+```{r}
+cp.cap2 <- cal_corp(
+  lm.tcga_skcm, NULL, "CAP2", feature(gsea.tcga_skcm), 
+  mode = "linear"
+)
+cp.cap2 <- step1(cp.cap2)
+#' @meth {get_meth(cp.cap2)}
+cp.cap2@params$res$p.sig.corp
+```
+
+
+## Pathview 通路可视化 (TCGA_SKCM)
+
+`r snap(pt.tcga_skcm, 0:2)`
+
+```{r}
+pt.tcga_skcm <- asjob_pathview(gsea.tcga_skcm)
+#' @meth {get_meth(pt.tcga_skcm)}
+pt.tcga_skcm <- step1(
+  pt.tcga_skcm, res(gsea.tcga_skcm, "id", 1)
+)
+pt.tcga_skcm@plots$step1$p.pathviews$hsa04060
+feature(pt.tcga_skcm)
+```
+

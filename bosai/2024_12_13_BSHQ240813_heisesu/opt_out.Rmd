@@ -1,0 +1,251 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-03-27"), end = td("2025-03-28"), finish = td("2025-03-27"),
+  id = "BSHQ240813", client = "王凯", inst = "大连医科大学附属第二医院",
+  type = "分析优化",
+  title = "黑色素瘤",
+  save = ".items_opt.rds"
+)
+show.ic(info)
+
+order_publish.bosai("opt.Rmd", "opt_out.Rmd")
+idname <- formatName.bosai("./opt_out.docx")
+order_packaging("./opt_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+1. 通过生物信息分析分析 CAP2 在黑色素瘤异常表达且与预后相关。HPA数据库分析。
+2. 为了研究CAP2影响黑色素瘤进展的机制，进行GSEA等生物信息分析，寻找与CAP2R显著相关的下游信号通路
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## UCSCXenaTools 癌症相关数据获取 (SKCM)
+
+`r snap(xena.skcm, 0:1)`
+
+```{r}
+xena.skcm <- job_xena()
+#' @meth {get_meth(xena.skcm)}
+xena.skcm <- step1(xena.skcm, mode = "SKCM")
+xena.skcm <- step2(xena.skcm)
+xena.skcm@params$genes
+```
+
+## Limma 差异分析 (XENA_SKCM)
+
+`r snap(lm.xena_skcm, 0:3)`
+
+`r ref("XENA-SKCM-data-SKCM-vs-Normal")` 
+`r ref("XENA-SKCM-SKCM-vs-Normal")` 
+`r ref("XENA-SKCM-Box-Plot-Of-DEGs")` 
+
+```{r}
+lm.xena_skcm <- asjob_limma(xena.skcm)
+#' @meth {get_meth(lm.xena_skcm)}
+lm.xena_skcm <- step1(lm.xena_skcm)
+lm.xena_skcm <- step2(lm.xena_skcm, SKCM - Normal)
+lm.xena_skcm@tables$step2$tops$`SKCM - Normal`
+lm.xena_skcm@plots$step2$p.volcano$`SKCM - Normal`
+lm.xena_skcm <- step3(lm.xena_skcm)
+lm.xena_skcm <- map(lm.xena_skcm, "CAP2")
+lm.xena_skcm@plots$step2$p.BoxPlotOfDEGs
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| XENA-SKCM-data-SKCM-vs-Normal
+autor(lm.xena_skcm@tables$step2$tops$`SKCM - Normal`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| XENA-SKCM-SKCM-vs-Normal
+autor(lm.xena_skcm@plots$step2$p.volcano$`SKCM - Normal`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| XENA-SKCM-Box-Plot-Of-DEGs
+autor(lm.xena_skcm@plots$step2$p.BoxPlotOfDEGs)
+```
+
+## TCGA 数据获取 (TCGA_SKCM)
+
+`r snap(tc.tcga_skcm, 0:3)`
+
+```{r}
+tc.tcga_skcm <- job_tcga("TCGA-SKCM")
+#' @meth {get_meth(tc.tcga_skcm)}
+tc.tcga_skcm <- step1(tc.tcga_skcm)
+tc.tcga_skcm <- step2(tc.tcga_skcm)
+tc.tcga_skcm <- step3(tc.tcga_skcm)
+tc.tcga_skcm@plots$step3$p.vital
+```
+
+## Survival 生存分析 (TCGA_SKCM)
+
+`r snap(surv.tcga_skcm, 0:3)`
+
+`r ref("TCGA-SKCM-survival-curve-of-CAP2")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.tcga_skcm <- asjob_limma(tc.tcga_skcm)
+lm.tcga_skcm <- step1(lm.tcga_skcm)
+
+surv.tcga_skcm <- asjob_survival(lm.tcga_skcm, "CAP2", base_method = "median")
+#' @meth {get_meth(surv.tcga_skcm)}
+surv.tcga_skcm <- step1(
+  surv.tcga_skcm, only_keep_sig = FALSE, 
+)
+surv.tcga_skcm@plots$step1$p.surv$CAP2
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-survival-curve-of-CAP2
+autor(surv.tcga_skcm@plots$step1$p.surv$CAP2)
+```
+
+## Limma 差异分析 (TCGA_SKCM)
+
+`r snap(lm.tcga_skcm, 0:3)`
+
+`r ref("TCGA-SKCM-High-vs-Low")`
+`r ref("TCGA-SKCM-data-High-vs-Low")`
+<!-- LEGEND_END -->
+
+```{r}
+#' @meth {get_meth(lm.tcga_skcm)}
+lm.tcga_skcm <- regroup(lm.tcga_skcm, surv.tcga_skcm)
+lm.tcga_skcm <- step2(lm.tcga_skcm, High - Low)
+lm.tcga_skcm <- step3(lm.tcga_skcm)
+lm.tcga_skcm@plots$step2$p.volcano$`High - Low`
+lm.tcga_skcm@tables$step2$tops$`High - Low`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-High-vs-Low
+autor(lm.tcga_skcm@plots$step2$p.volcano$`High - Low`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-data-High-vs-Low
+autor(lm.tcga_skcm@tables$step2$tops$`High - Low`)
+```
+
+## ClusterProfiler GSEA 富集分析 (TCGA_SKCM)
+
+`r snap(gsea.tcga_skcm, 0:3)`
+
+`r ref("TCGA-SKCM-GSEA-GO-enrichment")`
+`r ref("TCGA-SKCM-KEGG-enrichment-with-enriched-genes")`
+`r ref("TCGA-SKCM-GSEA-plot-of-the-pathways")`
+`r ref("TCGA-SKCM-GSEA-pathway-list-of-H")`
+`r ref("GSEA-pathway-list-of-H-data")`
+<!-- LEGEND_END -->
+
+```{r}
+gsea.tcga_skcm <- asjob_gsea(lm.tcga_skcm)
+#' @meth {get_meth(gsea.tcga_skcm)}
+gsea.tcga_skcm <- step1(gsea.tcga_skcm)
+wrap(gsea.tcga_skcm@plots$step1$p.go, 6, 7)
+
+gsea.tcga_skcm <- step2(
+  gsea.tcga_skcm, res(gsea.tcga_skcm, "id", 1)
+)
+gsea.tcga_skcm@plots$step2$p.highlight
+gsea.tcga_skcm@plots$step2$p.code
+
+gsea.tcga_skcm <- step3(gsea.tcga_skcm, mode = "H")
+gsea.tcga_skcm@tables$step3$table_gsea
+gsea.tcga_skcm@plots$step3$p.gsea
+p.h1 <- vis(gsea.tcga_skcm, "Genes defining epithelial-mesenchymal transition")
+p.h1
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-GSEA-GO-enrichment
+autor(wrap(gsea.tcga_skcm@plots$step1$p.go, 6, 7))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-KEGG-enrichment-with-enriched-genes
+autor(gsea.tcga_skcm@plots$step2$p.highlight)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-GSEA-plot-of-the-pathways
+autor(gsea.tcga_skcm@plots$step2$p.code)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-SKCM-GSEA-pathway-list-of-H
+autor(gsea.tcga_skcm@plots$step3$p.gsea)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSEA-pathway-list-of-H-data
+autor(gsea.tcga_skcm@tables$step3$table_gsea)
+```
+
+# 总结 {#conclusion}
+
+按 CAP2 表达分组，筛选与 CAP2 显著相关的通路，GSEA 的 KEGG、GO 富集见
+`r ref("TCGA-SKCM-KEGG-enrichment-with-enriched-genes")`
+`r ref("TCGA-SKCM-GSEA-GO-enrichment")`。
+hallmark 基因集富集，见`r ref("TCGA-SKCM-GSEA-pathway-list-of-H")` 
+

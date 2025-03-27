@@ -1,8 +1,16 @@
 ---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
 ---
 
+
 ```{r include = F, eval = F}
-info <- items(start = td("2024-08-30"), end = td("2025-03-24"), finish = td("2025-03-27"),
+info <- items(start = td("2024-08-30"), end = td("2025-03-24"), finish = td("2025-03-25"),
   id = "BSJF240124", client = "蒋镥", inst = "",
   type = "生信协助",
   title = "结合转录因子",
@@ -135,6 +143,7 @@ autor(venn.bmp9@plots$step1$p.venn)
 ```{r}
 tf.bmp9 <- map(tf.bmp9, feature(venn.bmp9))
 tf.bmp9@params$map_data_TF
+tf.bmp9@params$p.tracks_TF$STAT1_GDF2
 tf.bmp9@params$p.tracks_TF$STAT1_GDF2
 ```
 

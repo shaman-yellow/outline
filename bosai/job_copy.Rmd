@@ -208,5 +208,7 @@ summary_week.bosai(rm = TRUE, must_include = "BSCL241113")
 ```
 
 ```{r}
-summary_month.bosai(get_orders(), rm = TRUE)
+summary_month.bosai(get_orders(), rm = TRUE, must_include = "BSJF241107")
+dplyr::filter(all, id == "BSJF241107")
 ```
+
