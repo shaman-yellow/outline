@@ -133,8 +133,8 @@ autor(venn.bmp9@plots$step1$p.venn)
 <!-- LEGEND_END -->
 
 ```{r}
-tf.bmp9 <- map(tf.bmp9, feature(venn.bmp9))
-tf.bmp9@params$map_data_TF
+tf.bmp9 <- map(tf.bmp9, feature(venn.bmp9), FALSE)
+tf.bmp9@params$map_data_TF$Start
 tf.bmp9@params$p.tracks_TF$STAT1_GDF2
 ```
 

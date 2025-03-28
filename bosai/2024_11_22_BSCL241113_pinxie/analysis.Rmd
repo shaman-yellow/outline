@@ -179,7 +179,7 @@ autor(geo.aa_scRNA@params$prods)
 `r ref("AA-UMAP-Integrated")` 
 `r ref("AA-significant-markers-of-cell-clusters")` 
 `r ref("AA-SCSA-Cell-type-annotation")`
-`r ref("AA-CellMarker-Validation")`
+`r ref("AA-Marker-Validation")`
 `r ref("AA-SCSA-Cell-Proportions-in-each-sample")`
 <!-- LEGEND_END -->
 
@@ -201,13 +201,26 @@ sr5n.aa <- step5(sr5n.aa)
 clear(sr5n.aa)
 sr5n.aa@tables$step5$all_markers
 sr5n.aa@step <- 5L
-sr5n.aa <- step6(
-  sr5n.aa, "bone.*marrow",
-  extra = c("CD27", "CD34", "CD38", "CD8A"), 
-  keep_markers = 3, reset = c("Myeloid cell" = "CD8+ T/NK/NKT cell")
-)
 
-sr5n.aa@params$p.cellMarker
+cell_markers <- list(
+  B_cells = c("CD19", "CD79A", "MS4A1", "CD22", "CD24", "CD38", "TCL1A"),  # 表面标记 + 功能基因
+  Erythroid_like_cells = c("HBA1", "HBB", "GYPA", "ALAS2", "GATA1", "KLF1"),  # 血红蛋白相关基因
+  Hematopoietic_stem_cell = c("CD34", "KIT", "PROM1", "THY1", "CD133", "MLLT3"),  # 干细胞标志
+  Monocytes = c("CD14", "FCGR3A", "LYZ", "S100A8", "S100A9", "CD68", "CSF1R"),  # 分经典/非经典单核细胞
+  Neutrophils = c("FCGR3B", "FCGR3B", "CSF3R", "S100A8", "S100A9", "CXCR2", "MMP8", "CEACAM8"),  # 中性粒细胞特异
+  T_NK_cells = c("CD3D", "CD3E", "CD8A", "CD4", "NKG7", "GNLY", "GZMB", "CD56", "KLRD1"),  # T细胞与NK共享标记
+  Plasma_cells = c("SDC1", "MZB1", "XBP1", "PRDM1", "JCHAIN", "IGKC", "IGHA1"),  # 浆细胞分泌抗体相关
+  Platelets = c("PPBP", "PF4", "TUBB1", "GP1BB", "ITGA2B", "CLU", "SPARC")  # 血小板活化标记
+)
+ref.markers <- as_df.lst(cell_markers, "cell", "markers")
+ref.markers
+
+sr5n.aa@step <- 5L
+sr5n.aa <- step6(
+  sr5n.aa, "bone.*marrow", ref.markers,
+  keep_markers = 3
+)
+sr5n.aa@plots$step6$p.markers
 sr5n.aa@plots$step6$p.map_scsa
 sr5n.aa@plots$step6$p.props_scsa
 
@@ -254,24 +267,21 @@ autor(sr5n.aa@plots$step3$p.umapInt)
 autor(sr5n.aa@tables$step5$all_markers)
 ```
 
-
-
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-SCSA-Cell-type-annotation
 autor(sr5n.aa@plots$step6$p.map_scsa)
 ```
 
-
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-CellMarker-Validation
-autor(sr5n.aa@params$p.cellMarker)
+#| AA-Marker-Validation
+autor(sr5n.aa@plots$step6$p.markers)
 ```
-
 
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-SCSA-Cell-Proportions-in-each-sample
 autor(sr5n.aa@plots$step6$p.props_scsa)
 ```
+
 
 ## scFEA 单细胞数据的代谢通量预测 (AA)
 
@@ -338,8 +348,6 @@ lm.aa_flux <- step2(lm.aa_flux,
 lm.aa_flux <- step3(lm.aa_flux, use.gene = "name")
 lm.aa_flux@tables$step2$tops
 lm.aa_flux@plots$step2$p.volcano$`Hematopoietic_stem_cell_AA - Hematopoietic_stem_cell_Normal`
-lm.aa_flux@plots$step2$p.volcano$`Plasmacytoid_dendritic_cell_AA - Plasmacytoid_dendritic_cell_N`
-
 ```
 
 
@@ -352,12 +360,6 @@ autor(lm.aa_flux@tables$step2$tops)
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-FLUX-Hematopoietic-stem-cell-AA-vs-Hematopoietic-stem-cell-Normal
 autor(lm.aa_flux@plots$step2$p.volcano$`Hematopoietic_stem_cell_AA - Hematopoietic_stem_cell_Normal`)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-FLUX-Plasmacytoid-dendritic-cell-AA-vs-Plasmacytoid-dendritic-cell-Normal
-autor(lm.aa_flux@plots$step2$p.volcano$`Plasmacytoid_dendritic_cell_AA - Plasmacytoid_dendritic_cell_Normal`)
 ```
 
 ## 细胞群 features 关联分析 (AA)

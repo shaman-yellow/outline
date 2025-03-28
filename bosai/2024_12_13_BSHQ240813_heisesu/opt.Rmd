@@ -176,39 +176,23 @@ autor(lm.tcga_skcm@tables$step2$tops$`High - Low`)
 
 `r snap(gsea.tcga_skcm, 0:3)`
 
-`r ref("TCGA-SKCM-GSEA-GO-enrichment")`
 `r ref("TCGA-SKCM-KEGG-enrichment-with-enriched-genes")`
-`r ref("TCGA-SKCM-GSEA-plot-of-the-pathways")`
-`r ref("TCGA-SKCM-GSEA-pathway-list-of-H")`
-`r ref("GSEA-pathway-list-of-H-data")`
+`r ref("TCGA-SKCM-GSEA-plot-hsa04151-hsa04064-hsa04668-hsa04062-hsa04657-hsa04020-hsa04625-hsa04630-hsa04015-hsa04621")`
+`r ref("TCGA-SKCM-GSEA-KEGG-enrichment-data")`
 <!-- LEGEND_END -->
 
 ```{r}
 gsea.tcga_skcm <- asjob_gsea(lm.tcga_skcm)
 #' @meth {get_meth(gsea.tcga_skcm)}
 gsea.tcga_skcm <- step1(gsea.tcga_skcm)
-wrap(gsea.tcga_skcm@plots$step1$p.go, 6, 7)
-
-gsea.tcga_skcm <- step2(
-  gsea.tcga_skcm, res(gsea.tcga_skcm, "id", 1)
-)
+gsea.tcga_skcm@plots$step1$p.kegg
+gsea.tcga_skcm@tables$step1$table_kegg
+gsea.tcga_skcm@step <- 1L
+gsea.tcga_skcm <- step2(gsea.tcga_skcm, 1:30)
 gsea.tcga_skcm@plots$step2$p.highlight
 gsea.tcga_skcm@plots$step2$p.code
-
-gsea.tcga_skcm <- step3(gsea.tcga_skcm, mode = "H")
-gsea.tcga_skcm@tables$step3$table_gsea
-gsea.tcga_skcm@plots$step3$p.gsea
-p.h1 <- vis(gsea.tcga_skcm, "Genes defining epithelial-mesenchymal transition")
-p.h1
+gsea.tcga_skcm@tables$step2$t.GSEA_KEGG_signaling_data
 ```
-
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| TCGA-SKCM-GSEA-GO-enrichment
-autor(wrap(gsea.tcga_skcm@plots$step1$p.go, 6, 7))
-```
-
 
 ```{r eval = T, echo = F, results = "asis"}
 #| TCGA-SKCM-KEGG-enrichment-with-enriched-genes
@@ -216,28 +200,21 @@ autor(gsea.tcga_skcm@plots$step2$p.highlight)
 ```
 
 
+
 ```{r eval = T, echo = F, results = "asis"}
-#| TCGA-SKCM-GSEA-plot-of-the-pathways
+#| TCGA-SKCM-GSEA-plot-hsa04151-hsa04064-hsa04668-hsa04062-hsa04657-hsa04020-hsa04625-hsa04630-hsa04015-hsa04621
 autor(gsea.tcga_skcm@plots$step2$p.code)
 ```
 
 
-
 ```{r eval = T, echo = F, results = "asis"}
-#| TCGA-SKCM-GSEA-pathway-list-of-H
-autor(gsea.tcga_skcm@plots$step3$p.gsea)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| GSEA-pathway-list-of-H-data
-autor(gsea.tcga_skcm@tables$step3$table_gsea)
+#| TCGA-SKCM-GSEA-KEGG-signaling-data
+autor(gsea.tcga_skcm@tables$step2$t.GSEA_KEGG_signaling_data)
 ```
 
 # 总结 {#conclusion}
 
-按 CAP2 表达分组，筛选与 CAP2 显著相关的通路，GSEA 的 KEGG、GO 富集见
+按 CAP2 表达分组，筛选与 CAP2 显著相关的通路，GSEA 的 KEGG (signaling) 富集见
 `r ref("TCGA-SKCM-KEGG-enrichment-with-enriched-genes")`
-`r ref("TCGA-SKCM-GSEA-GO-enrichment")`。
-hallmark 基因集富集，见`r ref("TCGA-SKCM-GSEA-pathway-list-of-H")` 
+`r ref("TCGA-SKCM-GSEA-plot-hsa04151-hsa04064-hsa04668-hsa04062-hsa04657-hsa04020-hsa04625-hsa04630-hsa04015-hsa04621")`
 

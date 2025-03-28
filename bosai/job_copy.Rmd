@@ -207,8 +207,12 @@ backup_jobs.bosai(
 summary_week.bosai(rm = TRUE, must_include = "BSCL241113")
 ```
 
+# 2025-03-28
+
 ```{r}
-summary_month.bosai(get_orders(), rm = TRUE, must_include = "BSJF241107")
+summary_month.bosai(get_orders(), rm = TRUE)
 dplyr::filter(all, id == "BSJF241107")
+
+summary_week.bosai(rm = TRUE)
 ```
 
