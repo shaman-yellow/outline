@@ -145,47 +145,84 @@ utils::download.file(
 prepare_10x("./order_material/Merged_count_matrix.txt.gz", single = TRUE)
 ```
 
-## Seurat 单细胞数据分析 (AA)
+## GEO 数据获取 (AA_SCRNA)
+
+`r snap(geo.aa_scRNA, 0:2)`
+
+```{r}
+gds.aa <- job_gds("Aplastic anemia")
+vis(gds.aa)
+active(gds.aa)
+
+geo.aa_scRNA <- job_geo("GSE181989")
+geo.aa_scRNA <- step1(geo.aa_scRNA)
+#' @meth {get_meth(geo.aa_scRNA)}
+geo.aa_scRNA <- expect(geo.aa_scRNA, geo_cols())
+geo.aa_scRNA$guess
+geo.aa_scRNA@params$prods
+geo.aa_scRNA <- step2(geo.aa_scRNA, rna = FALSE)
+
+utils::untar(
+  list.files(geo.aa_scRNA$dir, "RAW", full.names = TRUE), exdir = normalizePath(geo.aa_scRNA$dir)
+)
+
+lapply(c("AA1", "AA2", "Normal1", "Normal2"), 
+  function(pat) {
+    prepare_10x(geo.aa_scRNA$dir, pat)
+  })
+list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-SCRNA-GSE181989
+autor(geo.aa_scRNA@params$prods)
+```
+
+## Seurat 集成单细胞数据分析 (AA)
 
 `r snap(sr5n.aa, 0:7)`
 
+`r ref("Pre-Quality-control")` 
+`r ref("AA-After-Quality-control")` 
+`r ref("AA-Standard-deviations-of-PCs")` 
+`r ref("AA-UMAP-Unintegrated")` 
+`r ref("AA-UMAP-Integrated")` 
+`r ref("AA-significant-markers-of-cell-clusters")` 
+`r ref("AA-SCSA-Cell-type-annotation")`
+`r ref("AA-Marker-Validation")`
 `r ref("AA-SCSA-Cell-Proportions-in-each-sample")`
 <!-- LEGEND_END -->
 
 ```{r}
-sr5n.aa <- job_seurat("./order_material/Merged_count_matrix")
-sr5n.aa <- mutate(
-  sr5n.aa, group = ifelse(grpl(orig.ident, "H"), "Normal", "AA")
-)
 #' @meth {get_meth(sr5n.aa)}
-sr5n.aa <- step1(sr5n.aa)
+sr5n.aa <- job_seurat5n(
+  list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE), c("AA1", "AA2", "Normal1", "Normal2")
+)
 sr5n.aa@params$p.qc_pre
-sr5n.aa <- step2(sr5n.aa, 1000, 7500, 25)
+sr5n.aa <- step1(sr5n.aa, 500, 5000, 10)
 sr5n.aa@params$p.qc_aft
+sr5n.aa <- step2(sr5n.aa)
 sr5n.aa@plots$step2$p.pca_rank
-sr5n.aa <- step3(sr5n.aa)
-sr5n.aa@plots$step3$p.umap
+sr5n.aa <- step3(sr5n.aa, resolution = 1.2, use = "Har")
+sr5n.aa@plots$step3$p.umapUint
+sr5n.aa@plots$step3$p.umapInt
 sr5n.aa <- step4(sr5n.aa, "")
 
-set_remoteRun.bosai()
-sr5n.aa <- set_remote(sr5n.aa)
-sr5n.aa <- step5(sr5n.aa, 5, force = TRUE)
-
+sr5n.aa <- step5(sr5n.aa)
 clear(sr5n.aa)
 sr5n.aa@tables$step5$all_markers
 sr5n.aa@step <- 5L
 
 cell_markers <- list(
-  "CD4_T" = c("SELL", "IL6ST", "IL7R"),
-  "CD8_T" = c("CD8A", "GNLY", "GZMA"),
-  "B_cell" = c("CD19", "CD79A", "MS4A1"),
-  "Lymphoid_NK" = c("KLRF1", "CD7", "NCAM1", "NCR1", "PRF1"),
-  "Myeloid_cell" = c("CD14", "CD68"),
-  "Myeloid_NK" = c("FCGR3A"),
-  "EPC" = c("CD36", "GYPA", "GYPB"),
-  "HSC" = c("CD34", "PROM1", "ITGA6"),
-  "pDC" = c("IL3RA", "LILRA4"),
-  "MKC" = c("PPPBP", "PF4")
+  B_cells = c("CD19", "CD79A", "MS4A1", "CD22", "CD24", "CD38", "TCL1A"),  # 表面标记 + 功能基因
+  Erythroid_like_cells = c("HBA1", "HBB", "GYPA", "ALAS2", "GATA1", "KLF1"),  # 血红蛋白相关基因
+  Hematopoietic_stem_cell = c("CD34", "KIT", "PROM1", "THY1", "CD133", "MLLT3"),  # 干细胞标志
+  Monocytes = c("CD14", "FCGR3A", "LYZ", "S100A8", "S100A9", "CD68", "CSF1R"),  # 分经典/非经典单核细胞
+  Neutrophils = c("FCGR3B", "FCGR3B", "CSF3R", "S100A8", "S100A9", "CXCR2", "MMP8", "CEACAM8"),  # 中性粒细胞特异
+  T_NK_cells = c("CD3D", "CD3E", "CD8A", "CD4", "NKG7", "GNLY", "GZMB", "CD56", "KLRD1"),  # T细胞与NK共享标记
+  Plasma_cells = c("SDC1", "MZB1", "XBP1", "PRDM1", "JCHAIN", "IGKC", "IGHA1"),  # 浆细胞分泌抗体相关
+  Platelets = c("PPBP", "PF4", "TUBB1", "GP1BB", "ITGA2B", "CLU", "SPARC")  # 血小板活化标记
 )
 ref.markers <- as_df.lst(cell_markers, "cell", "markers")
 ref.markers
@@ -197,7 +234,7 @@ sr5n.aa <- step6(
 )
 sr5n.aa@plots$step6$p.markers
 sr5n.aa@plots$step6$p.map_scsa
-wrap(sr5n.aa@plots$step6$p.props_scsa, 7, 5)
+sr5n.aa@plots$step6$p.props_scsa
 
 sr5n.aa <- mutate(
   sr5n.aa, Cell_Sample = as_type_group(scsa_cell, orig.ident)
@@ -225,6 +262,18 @@ autor(sr5n.aa@params$p.qc_aft)
 autor(sr5n.aa@plots$step2$p.pca_rank)
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-UMAP-Unintegrated
+autor(sr5n.aa@plots$step3$p.umapUint)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-UMAP-Integrated
+autor(sr5n.aa@plots$step3$p.umapInt)
+```
+
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-significant-markers-of-cell-clusters
 autor(sr5n.aa@tables$step5$all_markers)
@@ -240,12 +289,11 @@ autor(sr5n.aa@plots$step6$p.map_scsa)
 autor(sr5n.aa@plots$step6$p.markers)
 ```
 
-
-
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-SCSA-Cell-Proportions-in-each-sample
-autor(wrap(sr5n.aa@plots$step6$p.props_scsa, 7, 5))
+autor(sr5n.aa@plots$step6$p.props_scsa)
 ```
+
 
 ## scFEA 单细胞数据的代谢通量预测 (AA)
 
@@ -258,12 +306,11 @@ autor(wrap(sr5n.aa@plots$step6$p.props_scsa, 7, 5))
 <!-- LEGEND_END -->
 
 ```{r}
-set_remoteRun.bosai(32)
+set_remoteRun.bosai()
 scf.aa <- asjob_scfea(sr5n.aa, org = "hu", dir = "scfea_aa_reset")
 scf.aa <- set_remote(scf.aa, "scfea_aa_reset")
 scf.aa <- step1(scf.aa)
 #' @meth {get_meth(scf.aa)}
-
 scf.aa <- step2(scf.aa)
 scf.aa@plots$step2$p.loss
 scf.aa@tables$step2$t.flux

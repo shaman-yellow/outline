@@ -79,12 +79,13 @@ xena.skcm@params$genes
 lm.xena_skcm <- asjob_limma(xena.skcm)
 #' @meth {get_meth(lm.xena_skcm)}
 lm.xena_skcm <- step1(lm.xena_skcm)
-lm.xena_skcm <- step2(lm.xena_skcm, SKCM - Normal)
+lm.xena_skcm <- step2(lm.xena_skcm, SKCM - Normal, HLs = "CAP2")
 lm.xena_skcm@tables$step2$tops$`SKCM - Normal`
 lm.xena_skcm@plots$step2$p.volcano$`SKCM - Normal`
 lm.xena_skcm <- step3(lm.xena_skcm)
 lm.xena_skcm <- map(lm.xena_skcm, "CAP2")
 lm.xena_skcm@plots$step2$p.BoxPlotOfDEGs
+autosv(lm.xena_skcm@plots$step2$p.volcano$`SKCM - Normal`, "annotate_cap2")
 ```
 
 
@@ -186,7 +187,12 @@ gsea.tcga_skcm <- asjob_gsea(lm.tcga_skcm)
 #' @meth {get_meth(gsea.tcga_skcm)}
 gsea.tcga_skcm <- step1(gsea.tcga_skcm)
 gsea.tcga_skcm@plots$step1$p.kegg
-gsea.tcga_skcm@tables$step1$table_kegg
+dplyr::filter(
+  gsea.tcga_skcm@tables$step1$table_kegg, grpl(
+    Description, "TLR", TRUE
+  )
+)
+
 gsea.tcga_skcm@step <- 1L
 gsea.tcga_skcm <- step2(gsea.tcga_skcm, 1:30)
 gsea.tcga_skcm@plots$step2$p.highlight

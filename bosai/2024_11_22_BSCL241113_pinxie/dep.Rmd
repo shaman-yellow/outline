@@ -312,3 +312,38 @@ mn.pdc <- step3(mn.pdc, group.by = "seurat_clusters")
 mn.pdc@plots$step3$gene_module_heatdata$graph_test.sig
 mn.pdc@tables$step3$graph_test.sig
 ```
+
+## GEO 数据获取 (AA_SCRNA)
+
+`r snap(geo.aa_scRNA, 0:2)`
+
+```{r}
+gds.aa <- job_gds("Aplastic anemia")
+vis(gds.aa)
+active(gds.aa)
+
+geo.aa_scRNA <- job_geo("GSE181989")
+geo.aa_scRNA <- step1(geo.aa_scRNA)
+#' @meth {get_meth(geo.aa_scRNA)}
+geo.aa_scRNA <- expect(geo.aa_scRNA, geo_cols())
+geo.aa_scRNA$guess
+geo.aa_scRNA@params$prods
+geo.aa_scRNA <- step2(geo.aa_scRNA, rna = FALSE)
+
+utils::untar(
+  list.files(geo.aa_scRNA$dir, "RAW", full.names = TRUE), exdir = normalizePath(geo.aa_scRNA$dir)
+)
+
+lapply(c("AA1", "AA2", "Normal1", "Normal2"), 
+  function(pat) {
+    prepare_10x(geo.aa_scRNA$dir, pat)
+  })
+list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-SCRNA-GSE181989
+autor(geo.aa_scRNA@params$prods)
+```
+

@@ -42,6 +42,15 @@ dic(di("差异表达基因"),
 # Osteosarcoma
 ```
 
+```{r}
+# Osteosarcoma AND "metabolic flux" AND "single cell"
+```
+
+```{r}
+
+```
+
+
 # 材料和方法 {#introduction}
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -51,7 +60,19 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
+<!-- 寻找能够预测免疫治疗反应性的生物标志物，筛选出可能从免疫治疗中获益的骨肉瘤患者群体 -->
+<!-- https://pubmed.ncbi.nlm.nih.gov/38629071/ -->
+<!-- https://pubmed.ncbi.nlm.nih.gov/39916962/ -->
+<!-- immune checkpoint inhibitors `r cite_show("Advances_on_imm_Yu_Sh_2024")` -->
+
 ```{r}
+je <- esearch.mj(c("single cell", "immune checkpoint"))
+dplyr::filter(je, grpl(Title, "immune checkpoint"))$Title
+```
+
+
+```{r}
+# Chimeric antigen receptor T (CAR-T) cells
 geo.os <- job_geo("GSE152048")
 geo.os <- step1(geo.os)
 geo.os@params$guess
