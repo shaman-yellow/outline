@@ -156,6 +156,26 @@ clear(srn.os)
 autor(srn.os@plots$step6$p.markers)
 ```
 
+## scFEA 单细胞数据的代谢通量预测 (OS)
+
+`r snap(scf.os, 0:2)`
+
+```{r}
+set_remoteRun.bosai(32)
+dim(srn.os@object)
+scf.os <- asjob_scfea(srn.os, org = "hu", dir = "scfea_os")
+scf.os <- set_remote(scf.os, "scfea_os")
+scf.os <- step1(scf.os)
+
+#' @meth {get_meth(scf.os)}
+scf.os <- step2(scf.os)
+scf.os@plots$step2$p.loss
+scf.os@tables$step2$t.anno
+scf.os@tables$step2$t.flux
+srn.os <- map(srn.os, scf.os)
+srn.os@params$p.map_flux
+```
+
 ```{r}
 srn.os@object@assays
 srn.os@object@meta.data
@@ -163,6 +183,8 @@ katn.os <- asjob_katn(srn.os)
 katn.os@object$BC10
 katn.os <- step1(katn.os)
 ```
+
+
 
 ## CopyKAT 癌细胞鉴定 (BC2)
 

@@ -347,3 +347,99 @@ list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE)
 autor(geo.aa_scRNA@params$prods)
 ```
 
+
+## Seurat 细胞亚群分析 (B_CELL)
+
+`r snap(sr5n.b_cell, 0:7)`
+
+```{r}
+sr5n.b_cell <- asjob_seurat_sub(sr5n.aa, grpl(scsa_cell, "B_cell"))
+#' @meth {get_meth(sr5n.b_cell)}
+sr5n.b_cell <- step1(sr5n.b_cell)
+sr5n.b_cell <- step2(sr5n.b_cell)
+sr5n.b_cell <- step3(sr5n.b_cell, 1:15, 1.2)
+sr5n.b_cell@plots$step3$p.umap
+sr5n.b_cell <- step4(sr5n.b_cell, "")
+
+set_remoteRun.bosai()
+sr5n.b_cell <- set_remote(sr5n.b_cell)
+sr5n.b_cell <- step5(sr5n.b_cell, 5)
+sr5n.b_cell@tables$step5$all_markers
+
+ref.markers.b_cell <- as_markers(
+  list(
+    "Mature_B" = c("IL3RA", "IL4R", "FCER2", "IL12A"),
+    "Immature_B" = c("MME"),
+    "Memory_B" = c("CD80", "CD86", "TNFRSF13B", "ATXN1", "CD27"),
+    "Plasma_B" = c("IGHGP", "IGHG4", "IGHG1")
+  )
+)
+
+sr5n.b_cell@step <- 5L
+sr5n.b_cell <- step6(
+  sr5n.b_cell, "", ref.markers.b_cell, filter.fc = .3, 
+  scale = TRUE, reset = c("Unknown" = "Mature_B")
+)
+sr5n.b_cell@plots$step6$p.map_scsa
+sr5n.b_cell@plots$step6$p.markers
+
+sr5n.aa <- map(
+  sr5n.aa, sr5n.b_cell, "scsa_cell", "scsa_cell"
+)
+sr5n.aa@object@meta.data$map_cell
+
+sr5n.aa <- mutate(
+  sr5n.aa, Cell_Sample = as_type_group(map_cell, group)
+)
+sr5n.aa@object@meta.data$Cell_Sample
+```
+
+## TUBB2A 等在其它细胞中的表达
+
+`r ref("AA-violing-plot-of-expression-level-geneOthers")`
+<!-- LEGEND_END -->
+
+```{r}
+sr5n.aa <- focus(sr5n.aa, fea.hsc, "Cell_Sample", name = "geneOthers")
+wrap(sr5n.aa@params$focus_geneOthers$p.vln, 17, 14)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-violing-plot-of-expression-level-geneOthers
+autor(wrap(sr5n.aa@params$focus_geneOthers$p.vln, 17, 14))
+```
+
+## Monocle3 拟时分析 (NKT)
+
+`r snap(mn.nkt, 0:4)`
+
+```{r}
+mn.nkt <- do_monocle(sr5n.aa, "NK_cytotoxic_T", group.by = "Cell_Sample")
+mn.nkt <- step1(mn.nkt, "Cell_Sample", pre = T)
+#' @meth {get_meth(mn.nkt)}
+mn.nkt@plots$step1$p.prin
+mn.nkt <- step2(mn.nkt, "Y_2")
+mn.nkt@plots$step2$p.pseu
+mn.nkt <- step3(mn.nkt, group.by = "seurat_clusters")
+mn.nkt@plots$step3$gene_module_heatdata$graph_test.sig
+mn.nkt@tables$step3$graph_test.sig
+```
+
+## Monocle3 拟时分析 (MC)
+
+`r snap(mn.mc, 0:4)`
+
+```{r}
+mn.mc <- do_monocle(sr5n.aa, "Myeloid_cell", group.by = "Cell_Sample")
+mn.mc <- step1(mn.mc, "Cell_Sample", pre = T)
+#' @meth {get_meth(mn.mc)}
+mn.mc@plots$step1$p.prin
+
+mn.mc <- step2(mn.mc, "Y_2")
+mn.mc@plots$step2$p.pseu
+mn.mc <- step3(mn.mc, group.by = "seurat_clusters")
+mn.mc@plots$step3$gene_module_heatdata$graph_test.sig
+mn.mc@tables$step3$graph_test.sig
+```

@@ -21,7 +21,9 @@ show.ic(info)
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
 order_packaging(
-  "./analysis_out.docx", idname = idname, external_file = NULL, extras = "./Reply_FL.docx"
+  "./analysis_out.docx", idname = idname, external_file = NULL, extras = c(
+    "./Reply_FL.docx", "./Reply_FL2.docx"
+  )
 )
 ```
 
@@ -140,86 +142,68 @@ autor(fus.aa@tables$step3$TWAS_statistic)
 autor(fus.aa@tables$step3$TWAS_significant)
 ```
 
-## GEO 数据获取 (AA_SCRNA)
+## CompBioLab 数据获取 (PMID:37908861)
 
-`r snap(geo.aa_scRNA, 0:2)`
+下载 AA 单细胞数据集 (<https://compbio.unist.ac.kr/UNIST-Aplastic_anemia-KRICT-2019-08/download.php?download=Merged_count_matrix.txt.gz>)
 
 ```{r}
-gds.aa <- job_gds("Aplastic anemia")
-vis(gds.aa)
-active(gds.aa)
-
-geo.aa_scRNA <- job_geo("GSE181989")
-geo.aa_scRNA <- step1(geo.aa_scRNA)
-#' @meth {get_meth(geo.aa_scRNA)}
-geo.aa_scRNA <- expect(geo.aa_scRNA, geo_cols())
-geo.aa_scRNA$guess
-geo.aa_scRNA@params$prods
-geo.aa_scRNA <- step2(geo.aa_scRNA, rna = FALSE)
-
-utils::untar(
-  list.files(geo.aa_scRNA$dir, "RAW", full.names = TRUE), exdir = normalizePath(geo.aa_scRNA$dir)
+utils::download.file(
+  "https://compbio.unist.ac.kr/UNIST-Aplastic_anemia-KRICT-2019-08/download.php?download=Merged_count_matrix.txt.gz", "./order_material/Merged_count_matrix.txt.gz"
 )
-
-lapply(c("AA1", "AA2", "Normal1", "Normal2"), 
-  function(pat) {
-    prepare_10x(geo.aa_scRNA$dir, pat)
-  })
-list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE)
+prepare_10x("./order_material/Merged_count_matrix.txt.gz", single = TRUE)
 ```
 
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-SCRNA-GSE181989
-autor(geo.aa_scRNA@params$prods)
-```
-
-## Seurat 集成单细胞数据分析 (AA)
+## Seurat 单细胞数据分析 (AA)
 
 `r snap(sr5n.aa, 0:7)`
 
-`r ref("Pre-Quality-control")` 
-`r ref("AA-After-Quality-control")` 
-`r ref("AA-Standard-deviations-of-PCs")` 
-`r ref("AA-UMAP-Unintegrated")` 
-`r ref("AA-UMAP-Integrated")` 
-`r ref("AA-significant-markers-of-cell-clusters")` 
-`r ref("AA-SCSA-Cell-type-annotation")`
-`r ref("AA-CellMarker-Validation")`
 `r ref("AA-SCSA-Cell-Proportions-in-each-sample")`
 <!-- LEGEND_END -->
 
 ```{r}
-#' @meth {get_meth(sr5n.aa)}
-sr5n.aa <- job_seurat5n(
-  list.files(geo.aa_scRNA$dir, "barcodes", full.names = TRUE), c("AA1", "AA2", "Normal1", "Normal2")
+sr5n.aa <- job_seurat("./order_material/Merged_count_matrix")
+sr5n.aa <- mutate(
+  sr5n.aa, group = ifelse(grpl(orig.ident, "H"), "Normal", "AA")
 )
+#' @meth {get_meth(sr5n.aa)}
+sr5n.aa <- step1(sr5n.aa)
 sr5n.aa@params$p.qc_pre
-sr5n.aa <- step1(sr5n.aa, 500, 5000, 10)
+sr5n.aa <- step2(sr5n.aa, 1000, 7500, 25)
 sr5n.aa@params$p.qc_aft
-sr5n.aa <- step2(sr5n.aa)
 sr5n.aa@plots$step2$p.pca_rank
-sr5n.aa <- step3(sr5n.aa, resolution = 1.2, use = "Har")
-sr5n.aa@plots$step3$p.umapUint
-sr5n.aa@plots$step3$p.umapInt
+sr5n.aa <- step3(sr5n.aa)
+sr5n.aa@plots$step3$p.umap
 sr5n.aa <- step4(sr5n.aa, "")
-sr5n.aa <- step5(sr5n.aa)
+
+set_remoteRun.bosai()
+sr5n.aa <- set_remote(sr5n.aa)
+sr5n.aa <- step5(sr5n.aa, 5, force = TRUE)
+
 clear(sr5n.aa)
 sr5n.aa@tables$step5$all_markers
 sr5n.aa@step <- 5L
-sr5n.aa <- step6(
-  sr5n.aa, "bone.*marrow",
-  extra = c("CD27", "CD34", "CD38", "CD8A"), 
-  keep_markers = 3, reset = c("Myeloid cell" = "CD8+ T/NK/NKT cell")
-)
 
-sr5n.aa@params$p.cellMarker
+cell_markers <- list(
+  "CD4_T" = c("SELL", "IL6ST", "IL7R"),
+  "CD8_T" = c("CD8A", "GNLY", "GZMA"),
+  "B_cell" = c("CD19", "CD79A", "MS4A1"),
+  "Lymphoid_NK" = c("KLRF1", "CD7", "NCAM1", "NCR1", "PRF1"),
+  "Myeloid_cell" = c("CD14", "CD68"),
+  "Myeloid_NK" = c("FCGR3A"),
+  "EPC" = c("CD36", "GYPA", "GYPB"),
+  "HSC" = c("CD34", "PROM1", "ITGA6"),
+  "pDC" = c("IL3RA", "LILRA4"),
+  "MKC" = c("PPPBP", "PF4")
+)
+ref.markers <- as_df.lst(cell_markers, "cell", "markers")
+ref.markers
+
+sr5n.aa@step <- 5L
+sr5n.aa <- step6(sr5n.aa, "bone.*marrow", ref.markers)
+sr5n.aa@plots$step6$p.markers
 sr5n.aa@plots$step6$p.map_scsa
-sr5n.aa@plots$step6$p.props_scsa
-
-sr5n.aa <- mutate(
-  sr5n.aa, Cell_Sample = as_type_group(scsa_cell, orig.ident)
-)
+p.cell_sample <- vis(sr5n.aa, mode = "sample", orig.ident = "group")
+p.cell_sample
 
 # sr5n.aa <- readRDS("./sr5n.aa.5.rds")
 # saveRDS(sr5n.aa, "sr5n.aa.3_cca.rds")
@@ -243,40 +227,103 @@ autor(sr5n.aa@params$p.qc_aft)
 autor(sr5n.aa@plots$step2$p.pca_rank)
 ```
 
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-UMAP-Unintegrated
-autor(sr5n.aa@plots$step3$p.umapUint)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-UMAP-Integrated
-autor(sr5n.aa@plots$step3$p.umapInt)
-```
-
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-significant-markers-of-cell-clusters
 autor(sr5n.aa@tables$step5$all_markers)
 ```
-
-
 
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-SCSA-Cell-type-annotation
 autor(sr5n.aa@plots$step6$p.map_scsa)
 ```
 
-
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-CellMarker-Validation
-autor(sr5n.aa@params$p.cellMarker)
+#| AA-Marker-Validation
+autor(sr5n.aa@plots$step6$p.markers)
 ```
+
 
 
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-SCSA-Cell-Proportions-in-each-sample
-autor(sr5n.aa@plots$step6$p.props_scsa)
+autor(wrap(sr5n.aa@plots$step6$p.props_scsa, 7, 5))
+```
+
+
+## Seurat 细胞亚群分析 (T_CELL)
+
+`r snap(sr5n.t_cell, 0:7)`
+
+`r ref("T-CELL-UMAP-Clustering")`
+`r ref("T-CELL-significant-markers-of-cell-clusters")`
+`r ref("T-CELL-SCSA-Cell-type-annotation")`
+`r ref("T-CELL-Marker-Validation")`
+<!-- LEGEND_END -->
+
+```{r}
+sr5n.t_cell <- asjob_seurat_sub(sr5n.aa, grpl(scsa_cell, "CD8_T|CD4_T"))
+#' @meth {get_meth(sr5n.t_cell)}
+sr5n.t_cell <- step1(sr5n.t_cell)
+sr5n.t_cell <- step2(sr5n.t_cell)
+sr5n.t_cell <- step3(sr5n.t_cell, 1:15, 1.2)
+sr5n.t_cell@plots$step3$p.umap
+sr5n.t_cell <- step4(sr5n.t_cell, "")
+
+set_remoteRun.bosai()
+sr5n.t_cell <- set_remote(sr5n.t_cell)
+sr5n.t_cell <- step5(sr5n.t_cell, 5, force = TRUE)
+sr5n.t_cell@tables$step5$all_markers
+
+ref.markers.t_cell <- as_markers(
+  list(
+    "CD4_memory_T" = c("CD4", "CD44", "CD69"),
+    "CD4_naive_T" = c("CD4", "CCR7", "SELL"),
+    "NK_cytotoxic_T" = c("NCAM1", "KLRD1", "GNLY", "PRF1"),
+    "CD8_exhausted_T" = c("CD8A", "PDCD1", "CTLA4", "LAG3"),
+    "CD8_cytotoxic_T" = c("CD8A", "GZMB", "PRF1")
+  )
+)
+sr5n.t_cell@step <- 5L
+sr5n.t_cell <- step6(
+  sr5n.t_cell, "", ref.markers.t_cell, filter.fc = .3, 
+  scale = TRUE, reset = c("Unknown" = "CD4_naive_T")
+)
+sr5n.t_cell@plots$step6$p.map_scsa
+sr5n.t_cell@plots$step6$p.markers
+
+sr5n.aa <- map(
+  sr5n.aa, sr5n.t_cell, "scsa_cell", "scsa_cell"
+)
+sr5n.aa@object@meta.data$map_cell
+
+sr5n.aa <- mutate(
+  sr5n.aa, Cell_Sample = as_type_group(map_cell, group)
+)
+sr5n.aa@object@meta.data$Cell_Sample
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| T-CELL-UMAP-Clustering
+autor(sr5n.t_cell@plots$step3$p.umap)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| T-CELL-significant-markers-of-cell-clusters
+autor(sr5n.t_cell@tables$step5$all_markers)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| T-CELL-SCSA-Cell-type-annotation
+autor(sr5n.t_cell@plots$step6$p.map_scsa)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| T-CELL-Marker-Validation
+autor(sr5n.t_cell@plots$step6$p.markers)
 ```
 
 ## scFEA 单细胞数据的代谢通量预测 (AA)
@@ -290,16 +337,15 @@ autor(sr5n.aa@plots$step6$p.props_scsa)
 <!-- LEGEND_END -->
 
 ```{r}
-set_remoteRun.bosai()
+set_remoteRun.bosai(32)
 scf.aa <- asjob_scfea(sr5n.aa, org = "hu", dir = "scfea_aa_reset")
 scf.aa <- set_remote(scf.aa, "scfea_aa_reset")
 scf.aa <- step1(scf.aa)
 #' @meth {get_meth(scf.aa)}
 scf.aa <- step2(scf.aa)
 scf.aa@plots$step2$p.loss
-scf.aa@tables$step2$t.flux
 scf.aa@tables$step2$t.anno
-
+scf.aa@tables$step2$t.flux
 sr5n.aa <- map(sr5n.aa, scf.aa)
 sr5n.aa@params$p.map_flux
 ```
@@ -326,12 +372,11 @@ autor(scf.aa@tables$step2$t.anno)
 
 `r snap(lm.aa_flux, 0:3)`
 `r ref("AA-FLUX-Differential-Statistic-data")` 
-`r ref("AA-FLUX-Hematopoietic-stem-cell-AA-vs-Hematopoietic-stem-cell-Normal")`
-`r ref("AA-FLUX-Plasmacytoid-dendritic-cell-AA-vs-Plasmacytoid-dendritic-cell-Normal")`
+`r ref("AA-FLUX-gathered-volcano-plot")`
 <!-- LEGEND_END -->
 
 ```{r}
-scf.aa$metadata$Cell_Sample <- sr5n.aa@object@meta.data$Cell_Sample
+scf.aa <- regroup(scf.aa, sr5n.aa)
 lm.aa_flux <- asjob_limma(scf.aa, group = "Cell_Sample")
 lm.aa_flux <- step1(lm.aa_flux)
 #' @meth {get_meth(lm.aa_flux)}
@@ -341,11 +386,10 @@ lm.aa_flux <- step2(lm.aa_flux,
   ),
   label = "name", use = "P", cut.fc = .5
 )
+lm.aa_flux@tables$step2$tops
 lm.aa_flux <- step3(lm.aa_flux, use.gene = "name")
 lm.aa_flux@tables$step2$tops
-lm.aa_flux@plots$step2$p.volcano$`Hematopoietic_stem_cell_AA - Hematopoietic_stem_cell_Normal`
-lm.aa_flux@plots$step2$p.volcano$`Plasmacytoid_dendritic_cell_AA - Plasmacytoid_dendritic_cell_N`
-
+lm.aa_flux@params$p.volcano_gather
 ```
 
 
@@ -355,26 +399,22 @@ autor(lm.aa_flux@tables$step2$tops)
 ```
 
 
-```{r eval = T, echo = F, results = "asis"}
-#| AA-FLUX-Hematopoietic-stem-cell-AA-vs-Hematopoietic-stem-cell-Normal
-autor(lm.aa_flux@plots$step2$p.volcano$`Hematopoietic_stem_cell_AA - Hematopoietic_stem_cell_Normal`)
-```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-FLUX-Plasmacytoid-dendritic-cell-AA-vs-Plasmacytoid-dendritic-cell-Normal
-autor(lm.aa_flux@plots$step2$p.volcano$`Plasmacytoid_dendritic_cell_AA - Plasmacytoid_dendritic_cell_Normal`)
+#| AA-FLUX-gathered-volcano-plot
+autor(lm.aa_flux@params$p.volcano_gather)
 ```
 
 ## 细胞群 features 关联分析 (AA)
 
 `r snap(sr5n.aa, "sets_feature")`
-
-`r ref("Correlation-heatmap")`
-`r ref("AA-Hematopoietic-stem-cell-correlation-heatmap")`
-`r ref("AA-Plasmacytoid-dendritic-cell-correlation-heatmap")`
-`r ref("Hematopoietic-stem-cell-Cell-flux-ridge-plot")`
-`r ref("Plasmacytoid-dendritic-cell-Cell-flux-ridge-plot")`
+`r ref("AA-EPC-correlation-heatmap")`
+`r ref("AA-Myeloid-cell-correlation-heatmap")`
+`r ref("AA-NK-cytotoxic-T-correlation-heatmap")`
+`r ref("AA-EPC-Cell-flux-ridge-plot")`
+`r ref("AA-Myeloid-cell-Cell-flux-ridge-plot")`
+`r ref("AA-NK-cytotoxic-T-Cell-flux-ridge-plot")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -383,131 +423,204 @@ sr5n.aa <- map(
   list(sr5n.aa, lm.aa_flux), names = c("TWAS Genes", "Metabolic Flux")
 )
 
-sr5n.aa@params$res_correlation$Hematopoietic_stem_cell$hp
-sr5n.aa@params$res_correlation$Plasmacytoid_dendritic_cell$hp
+sr5n.aa@params$res_correlation$EPC$hp
+sr5n.aa@params$res_correlation$Myeloid_cell$hp
+sr5n.aa@params$res_correlation$NK_cytotoxic_T$hp
 
 scf.aa <- map(scf.aa, lm.aa_flux)
-scf.aa@params$p.fluxs$Hematopoietic_stem_cell
-scf.aa@params$p.fluxs$Plasmacytoid_dendritic_cell
 
-```
+scf.aa@params$p.fluxs$EPC
+scf.aa@params$p.fluxs$Myeloid_cell
+scf.aa@params$p.fluxs$NK_cytotoxic_T
 
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-Hematopoietic-stem-cell-correlation-heatmap
-autor(sr5n.aa@params$res_correlation$Hematopoietic_stem_cell$hp)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-Plasmacytoid-dendritic-cell-correlation-heatmap
-autor(sr5n.aa@params$res_correlation$Plasmacytoid_dendritic_cell$hp)
-```
-
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| Hematopoietic-stem-cell-Cell-flux-ridge-plot
-autor(scf.aa@params$p.fluxs$Hematopoietic_stem_cell)
+#| AA-EPC-correlation-heatmap
+autor(sr5n.aa@params$res_correlation$EPC$hp)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| Plasmacytoid-dendritic-cell-Cell-flux-ridge-plot
-autor(scf.aa@params$p.fluxs$Plasmacytoid_dendritic_cell)
+#| AA-Myeloid-cell-correlation-heatmap
+autor(sr5n.aa@params$res_correlation$Myeloid_cell$hp)
 ```
 
-## Monocle3 拟时分析 (HSC)
 
-(Plasmacytoid_dendritic_cell 数量较少，未展开分析)
+```{r eval = T, echo = F, results = "asis"}
+#| AA-NK-cytotoxic-T-correlation-heatmap
+autor(sr5n.aa@params$res_correlation$NK_cytotoxic_T$hp)
+```
 
-`r snap(mn.hsc, 0:4)`
 
-`r ref("HSC-principal-points")`
-`r ref("HSC-pseudotime")`
-`r ref("HSC-Graph-Test-Significant-genes")`
-`r ref("HSC-Set1-genes-in-pseudotime")`
-`r ref("AA-dimension-plot-of-expression-level-of-the-genes")`
-`r ref("AA-violing-plot-of-expression-level-of-the-genes")`
+```{r eval = T, echo = F, results = "asis"}
+#| AA-EPC-Cell-flux-ridge-plot
+autor(scf.aa@params$p.fluxs$EPC)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-Myeloid-cell-Cell-flux-ridge-plot
+autor(scf.aa@params$p.fluxs$Myeloid_cell)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-NK-cytotoxic-T-Cell-flux-ridge-plot
+autor(scf.aa@params$p.fluxs$NK_cytotoxic_T)
+```
+
+## 细胞差异表达分析 (AA_EPC)
+
+(EPC, erythroid precursor cells)
+
+`r snap(sr5n.aa, "diff_epc")`
+
+`r ref("AA-cell-differential-expression-volcano-plot")`
+`r ref("AA-DEGs-of-the-contrasts")`
 <!-- LEGEND_END -->
 
-其中，`r fea.hsc@.Data` 在细胞群呈趋势表达变化。
-
 ```{r}
-mn.hsc <- do_monocle(sr5n.aa, "Hematopoietic_stem_cell", group.by = "Cell_Sample")
-mn.hsc <- step1(mn.hsc, "Cell_Sample", pre = T)
-#' @meth {get_meth(mn.hsc)}
-mn.hsc@plots$step1$p.prin
-mn.hsc <- step2(mn.hsc, "Y_60")
-mn.hsc@plots$step2$p.pseu
-mn.hsc <- step3(mn.hsc, group.by = "seurat_clusters")
-mn.hsc@tables$step3$graph_test.sig
-mn.hsc <- step4(mn.hsc, NULL, group.by = "Cell_Sample", genes = feature(sr5n.aa, "cfrom")[[1]])
-mn.hsc@plots$step4$genes_in_pseudotime$pseudo1
-
-fea.hsc <- as_feature(c("SELL", "TUBB2A", "LIMD2", "HIGD2A", "FIS1", "POLR2L"), mn.hsc)
-fea.hsc
-
-mn.hsc <- focus(
-  mn.hsc, fea.hsc, "orig.ident"
+sr5n.aa <- diff(
+  sr5n.aa, "Cell_Sample", "EPC_AA - EPC_Normal", name = "epc"
 )
-mn.hsc@params$focus_genes$p.dim
-mn.hsc@params$focus_genes$p.vln
+wrap(sr5n.aa@params$epc_volcano, 7, 5)
+sr5n.aa@params$epc_contrast
+feature(sr5n.aa)
+```
 
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-cell-differential-expression-volcano-plot
+autor(wrap(sr5n.aa@params$epc_volcano, 7, 5))
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| HSC-principal-points
-autor(mn.hsc@plots$step1$p.prin)
+#| AA-DEGs-of-the-contrasts
+autor(sr5n.aa@params$epc_contrast)
 ```
 
+## 汇总: EPC_DEG + EPC_sig (EPC)
 
-```{r eval = T, echo = F, results = "asis"}
-#| HSC-pseudotime
-autor(mn.hsc@plots$step2$p.pseu)
-```
+`r snap(venn.epc, 0:1)`
 
-
-```{r eval = T, echo = F, results = "asis"}
-#| HSC-Graph-Test-Significant-genes
-autor(mn.hsc@tables$step3$graph_test.sig)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| HSC-Set1-genes-in-pseudotime
-autor(mn.hsc@plots$step4$genes_in_pseudotime$pseudo1)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-dimension-plot-of-expression-level-of-the-genes
-autor(mn.hsc@params$focus_genes$p.dim)
-```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| AA-violing-plot-of-expression-level-of-the-genes
-autor(mn.hsc@params$focus_genes$p.vln)
-```
-
-## TUBB2A 等在其它细胞中的表达
-
-`r ref("AA-violing-plot-of-expression-level-geneOthers")`
+`r ref("EPC-Intersection-of-EPC-DEG-with-EPC-correlation")`
 <!-- LEGEND_END -->
 
 ```{r}
-sr5n.aa <- focus(sr5n.aa, fea.hsc, "Cell_Sample", name = "geneOthers")
-wrap(sr5n.aa@params$focus_geneOthers$p.vln, 17, 14)
+venn.epc <- job_venn(EPC_DEG = feature(sr5n.aa), EPC_correlation = feature(sr5n.aa, "cfrom")[[1]])
+#' @meth {get_meth(venn.epc)}
+venn.epc <- step1(venn.epc)
+venn.epc@plots$step1$p.venn
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPC-Intersection-of-EPC-DEG-with-EPC-correlation
+autor(venn.epc@plots$step1$p.venn)
+```
+
+## Monocle3 拟时分析 (EPC)
+
+`r snap(mn.epc, 0:4)`
+
+`r ref("EPC-principal-points")`
+`r ref("AA-The-Cell-Sample")`
+`r ref("EPC-pseudotime")`
+`r ref("EPC-Graph-Test-Significant-genes")`
+`r ref("EPC-Set1-genes-in-pseudotime")`
+`r ref("AA-dimension-plot-of-expression-level-genes")`
+`r ref("AA-violing-plot-of-expression-level-genes")`
+<!-- LEGEND_END -->
+
+```{r}
+mn.epc <- do_monocle(sr5n.aa, "EPC", group.by = "Cell_Sample")
+mn.epc <- step1(mn.epc, "Cell_Sample", pre = T)
+#' @meth {get_meth(mn.epc)}
+mn.epc@plots$step1$p.prin
+mn.epc@plots$step1$p.group
+mn.epc <- step2(mn.epc, "Y_15")
+mn.epc@plots$step2$p.pseu
+mn.epc <- step3(mn.epc, group.by = "seurat_clusters")
+mn.epc@tables$step3$graph_test.sig
+mn.epc <- step4(mn.epc, NULL, group.by = "Cell_Sample", genes = feature(venn.epc))
+mn.epc@plots$step4$genes_in_pseudotime$pseudo1
+
+fea.epc <- as_feature(c("S100A6", "TUBB2A", "POLR2L", "TXN2"), mn.epc)
+fea.epc
+
+mn.epc <- focus(
+  mn.epc, fea.epc, "Cell_Sample"
+)
+mn.epc@params$focus_genes$p.dim
+mn.epc@params$focus_genes$p.vln
+
 ```
 
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-violing-plot-of-expression-level-geneOthers
-autor(wrap(sr5n.aa@params$focus_geneOthers$p.vln, 17, 14))
+#| EPC-principal-points
+autor(mn.epc@plots$step1$p.prin)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-The-Cell-Sample
+autor(mn.epc@plots$step1$p.group)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPC-pseudotime
+autor(mn.epc@plots$step2$p.pseu)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPC-Graph-Test-Significant-genes
+autor(mn.epc@tables$step3$graph_test.sig)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPC-Set1-genes-in-pseudotime
+autor(mn.epc@plots$step4$genes_in_pseudotime$pseudo1)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-dimension-plot-of-expression-level-genes
+autor(mn.epc@params$focus_genes$p.dim)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-violing-plot-of-expression-level-genes
+autor(mn.epc@params$focus_genes$p.vln)
+```
+
+## ClusterProfiler 富集分析 (EPC)
+
+`r snap(en.epc, 0:2)`
+
+`r ref("EPC-GO-enrichment")`
+<!-- LEGEND_END -->
+
+```{r}
+en.epc <- asjob_enrich(fea.epc)
+#' @meth {get_meth(en.epc)}
+en.epc <- step1(en.epc)
+en.epc@plots$step1$p.go$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPC-GO-enrichment
+autor(en.epc@plots$step1$p.go$ids)
 ```
 
 # 总结 {#conclusion}
@@ -518,19 +631,27 @@ autor(wrap(sr5n.aa@params$focus_geneOthers$p.vln, 17, 14))
 再通过分析 AA 单细胞数据 (bone marrow)，鉴定主要细胞群，预测这些细胞的代谢通量变化，
 并分析各组细胞群之间的差异代谢通量。
 推测，基因 (突变) 水平的改变，不仅影响到某些基因表达水平的变化，还会改变细胞的代谢行为。
-因此，随后，本研究探究了 TWAS 筛选出的基因与代谢通量改变的关联性。
-从 Hematopoietic_stem_cell 中发现了大量与代谢通量改变呈正相关的基因
-(`r ref("AA-Hematopoietic-stem-cell-correlation-heatmap")`)。
-通过对这些基因的拟时分析 (`r ref("HSC-Set1-genes-in-pseudotime")`)，
-可以发现 TUBB2A、SELL 等基因在 AA 与 Normal 中显著差异表达
-(`r ref("AA-violing-plot-of-expression-level-of-the-genes")`，
-`r ref("AA-dimension-plot-of-expression-level-of-the-genes")`)。
-TUBB2A 在 AA 中高表达，而 SELL 在 AA 中低表达。
+因此，本研究探究了 TWAS 筛选出的基因与代谢通量改变的关联性。
 
+主要有三种类型的细胞 (`r names(feature(sr5n.aa, "cfrom"))`)，能检测到较高表达量 (至少包含一部分细胞 Expression &gt; 0) 的 TWAS 相关基因，并且存在代谢通量的差异变化。
+
+其中 EPC (erythroid precursor cells) 发现了大量与代谢通量改变呈正相关的基因 (TWAS)
+`r ref("AA-EPC-correlation-heatmap")`。
+进一步分析了 EPC 细胞中的差异表达基因 (DEGs，AA vs Normal)，并将这些与上述筛选的关联基因交集，
+`r ref("EPC-Intersection-of-EPC-DEG-with-EPC-correlation")`，
+得到 `r snap(feature(venn.epc))`。
+
+提取 EPC 细胞构建拟时分析。`r ref("AA-The-Cell-Sample")` 可以看出，Normal 类型 EPC 仅表达于一侧的亚群。
+将这部分的细胞选作拟时起点。
+拟时分析可以发现，`r snap(fea.epc)` 表达量梯度下降
+(`r ref("EPC-Set1-genes-in-pseudotime")`)。
+这些基因仅表达于分化类型接近于 Normal EPC 中，而在拟时末期中几乎不表达。
+这些基因在 AA 与 Normal 有显著差异。
 
 ```{r}
 extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫血-2025.02.06.docx")
-cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL.docx")
+cdRun("pandoc ./order_material/comment_reply_old.md -o Reply_FL.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL2.docx")
 
 ```
 
