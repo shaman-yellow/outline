@@ -139,21 +139,30 @@ ref.markers
 
 srn.os@step <- 5L
 srn.os <- step6(
-  srn.os, "Osteosarcoma", ref.markers, keep_markers = 3,
-  notShow = c("COL1A1", "LUM")
+  srn.os, "Osteosarcoma", ref.markers, notShow = c("LUM")
 )
 srn.os@plots$step6$p.markers
 srn.os@plots$step6$p.map_scsa
 srn.os@plots$step6$p.props_scsa
-
 clear(srn.os)
 
 ```
 
+## CopyKAT 癌细胞鉴定
 
-```{r eval = T, echo = F, results = "asis"}
-#| OS-Markers-in-cell-types
-autor(srn.os@plots$step6$p.markers)
+```{r}
+sr.bc20 <- asjob_seurat_sub(srn.os, orig.ident == "BC20")
+sr.bc20 <- step1(sr.bc20)
+
+
+sr.bc2 <- job_seurat("./GSE152048/BC2/", "BC2")
+kat.bc2 <- asjob_kat(sr.bc2)
+kat.bc2 <- step1(kat.bc2)
+kat.bc2 <- step2(kat.bc2)
+kat.bc2 <- step3(kat.bc2)
+kat.bc2@plots$step3$p.copykat
+clear(kat.bc2)
+# kat.bc2 <- readRDS("./kat.bc2.3.rds")
 ```
 
 ## scFEA 单细胞数据的代谢通量预测 (OS)
@@ -182,47 +191,6 @@ srn.os@object@meta.data
 katn.os <- asjob_katn(srn.os)
 katn.os@object$BC10
 katn.os <- step1(katn.os)
-```
-
-
-
-## CopyKAT 癌细胞鉴定 (BC2)
-
-```{r}
-sr.bc2 <- job_seurat("./GSE152048/BC2/", "BC2")
-kat.bc2 <- asjob_kat(sr.bc2)
-kat.bc2 <- step1(kat.bc2)
-kat.bc2 <- step2(kat.bc2)
-kat.bc2 <- step3(kat.bc2)
-kat.bc2@plots$step3$p.copykat
-clear(kat.bc2)
-# kat.bc2 <- readRDS("./kat.bc2.3.rds")
-```
-
-## CopyKAT 癌细胞鉴定 (BC3)
-
-```{r}
-sr.bc3 <- job_seurat("./GSE152048/BC3/", "BC3")
-kat.bc3 <- asjob_kat(sr.bc3)
-kat.bc3 <- step1(kat.bc3)
-kat.bc3 <- step2(kat.bc3)
-kat.bc3 <- step3(kat.bc3)
-kat.bc3@plots$step3$p.copykat
-clear(kat.bc3)
-# kat.bc3 <- readRDS("./kat.bc3.3.rds")
-```
-
-## Seurat 癌细胞注释 (OS)
-
-```{r}
-kat.bc2@tables$step2$res_copykat
-srn.os <- merge(srn.os, kat.bc2, "ChatGPT_cell")
-srn.os <- merge(srn.os, kat.bc3, "copykat_cell")
-srn.os <- mutate(srn.os, isCancer = ifelse(copykat_cell == "Cancer cell", "Cancer", "Normal"))
-wrap(srn.os$p.map_cancer, 8, 6)
-vis(srn.os, "isCancer")
-
-wrap(srn.os@plots$step6$p.map_gpt, 8, 6)
 ```
 
 ## CellChat 细胞通讯分析 (OS)
