@@ -44,3 +44,13 @@ wrap(srn.os@plots$step6$p.map_gpt, 8, 6)
 sr.cb_ob_pob <- asjob_seurat_sub(
   srn.os, grpl(scsa_cell, "Proliferating_osteoblastic_OS|Osteoblastic_OS|Chondroblastic_OS")
 )
+
+sr.bc20@object <- NULL
+sr.bc20 <- set_remote(sr.bc20)
+
+set_remoteRun.bosai(1)
+test <- run_job_remote(sr.bc20, {
+  x@object <- eg
+  x@step <- x@step + as.integer(1)
+})
+test@sig

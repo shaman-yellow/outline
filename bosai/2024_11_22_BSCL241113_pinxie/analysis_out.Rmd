@@ -158,6 +158,8 @@ prepare_10x("./order_material/Merged_count_matrix.txt.gz", single = TRUE)
 `r snap(sr5n.aa, 0:7)`
 
 `r ref("AA-SCSA-Cell-Proportions-in-each-sample")`
+`r ref("AA-UMAP-Clustering")`
+`r ref("AA-The-Cell-Sample")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -202,8 +204,9 @@ sr5n.aa@step <- 5L
 sr5n.aa <- step6(sr5n.aa, "bone.*marrow", ref.markers)
 sr5n.aa@plots$step6$p.markers
 sr5n.aa@plots$step6$p.map_scsa
+
 p.cell_sample <- vis(sr5n.aa, mode = "sample", orig.ident = "group")
-p.cell_sample
+wrap(p.cell_sample, 10, 7)
 
 # sr5n.aa <- readRDS("./sr5n.aa.5.rds")
 # saveRDS(sr5n.aa, "sr5n.aa.3_cca.rds")
@@ -233,6 +236,11 @@ autor(sr5n.aa@tables$step5$all_markers)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
+#| AA-UMAP-Clustering
+autor(sr5n.aa@plots$step3$p.umap)
+```
+
+```{r eval = T, echo = F, results = "asis"}
 #| AA-SCSA-Cell-type-annotation
 autor(sr5n.aa@plots$step6$p.map_scsa)
 ```
@@ -249,6 +257,11 @@ autor(sr5n.aa@plots$step6$p.markers)
 autor(wrap(sr5n.aa@plots$step6$p.props_scsa, 7, 5))
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| AA-The-Cell-Sample
+autor(wrap(p.cell_sample, 10, 7))
+```
 
 ## Seurat 细胞亚群分析 (T_CELL)
 
@@ -422,6 +435,7 @@ sr5n.aa <- map(
   sr5n.aa, sfea(feature(fus.aa), feature(lm.aa_flux)),
   list(sr5n.aa, lm.aa_flux), names = c("TWAS Genes", "Metabolic Flux")
 )
+get_meth(sr5n.aa)
 
 sr5n.aa@params$res_correlation$EPC$hp
 sr5n.aa@params$res_correlation$Myeloid_cell$hp
@@ -528,7 +542,7 @@ autor(venn.epc@plots$step1$p.venn)
 `r snap(mn.epc, 0:4)`
 
 `r ref("EPC-principal-points")`
-`r ref("AA-The-Cell-Sample")`
+`r ref("AA-EPC-The-Cell-Sample")`
 `r ref("EPC-pseudotime")`
 `r ref("EPC-Graph-Test-Significant-genes")`
 `r ref("EPC-Set1-genes-in-pseudotime")`
@@ -569,7 +583,7 @@ autor(mn.epc@plots$step1$p.prin)
 
 
 ```{r eval = T, echo = F, results = "asis"}
-#| AA-The-Cell-Sample
+#| AA-EPC-The-Cell-Sample
 autor(mn.epc@plots$step1$p.group)
 ```
 
@@ -641,7 +655,7 @@ autor(en.epc@plots$step1$p.go$ids)
 `r ref("EPC-Intersection-of-EPC-DEG-with-EPC-correlation")`，
 得到 `r snap(feature(venn.epc))`。
 
-提取 EPC 细胞构建拟时分析。`r ref("AA-The-Cell-Sample")` 可以看出，Normal 类型 EPC 仅表达于一侧的亚群。
+提取 EPC 细胞构建拟时分析。`r ref("AA-EPC-The-Cell-Sample")` 可以看出，Normal 类型 EPC 仅表达于一侧的亚群。
 将这部分的细胞选作拟时起点。
 拟时分析可以发现，`r snap(fea.epc)` 表达量梯度下降
 (`r ref("EPC-Set1-genes-in-pseudotime")`)。
@@ -653,6 +667,8 @@ extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫
 cdRun("pandoc ./order_material/comment_reply_old.md -o Reply_FL.docx")
 cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL2.docx")
 
+extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫血-2025.02.06-YRX批注.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_YRX.docx")
 ```
 
 

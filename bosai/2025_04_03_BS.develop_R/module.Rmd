@@ -1,0 +1,38 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-04-03"), end = td("2025-04-02"), finish = td("2025-04-03"),
+  id = "BS.develop", client = "", inst = "",
+  type = "模块开发",
+  title = "向服务器传输 R 指令和数据",
+  note = "简化使用服务器的R，直接通过本地电脑的R实现数据指令和数据传输和结果回收。",
+  save = ".items_module.rds"
+)
+show.ic(info)
+
+order_publish.bosai("module.Rmd", "module_out.Rmd")
+formatName.bosai("./module_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+
