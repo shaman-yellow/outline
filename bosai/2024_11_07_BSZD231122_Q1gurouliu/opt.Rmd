@@ -121,25 +121,26 @@ set_remoteRun.bosai()
 srn.os <- step5(srn.os, 5)
 srn.os@tables$step5$all_markers
 
-cell_markers <- list(
-  Osteoblastic_OS = c("COL1A1", "CDH11", "RUNX2"),
-  Proliferating_osteoblastic_OS = c("COL1A1", "CDH11", "RUNX2", "TOP2A", "PCNA", "MKI67"),
-  Chondroblastic_OS = c("ACAN", "COL2A1", "SOX9"),
-  Osteoclastic = c("CTSK", "MMP9"),
-  T_NK_cells = c("IL7R", "CD3D", "NKG7"),
-  Myeloid = c("CD74", "CD14", "FCGR3A"),
-  Fibroblasts = c("COL1A1", "LUM", "DCN"),
-  Pericytes = c("ACTA2", "RGS5"),
-  MSCs = c("CXCL12", "SFRP2", "MME"),
-  Myoblasts = c("MYLPF", "MYL1"),
-  Endothelial = c("PECAM1", "VWF")
+ref.markers <- as_markers(
+  list(
+    Osteoblastic_OS = c("COL1A1", "CDH11", "RUNX2"),
+    Proliferating_osteoblastic_OS = c("COL1A1", "CDH11", "RUNX2", "TOP2A", "PCNA", "MKI67"),
+    Chondroblastic_OS = c("ACAN", "COL2A1", "SOX9"),
+    Osteoclastic = c("CTSK", "MMP9"),
+    T_NK_cells = c("IL7R", "CD3D", "NKG7"),
+    Myeloid = c("CD74", "CD14", "FCGR3A"),
+    Fibroblasts = c("COL1A1", "LUM", "DCN"),
+    Pericytes = c("ACTA2", "RGS5"),
+    MSCs = c("CXCL12", "SFRP2", "MME"),
+    Myoblasts = c("MYLPF", "MYL1"),
+    Endothelial = c("PECAM1", "VWF")
+  )
 )
-ref.markers <- as_df.lst(cell_markers, "cell", "markers")
-ref.markers
 
 srn.os@step <- 5L
 srn.os <- step6(
-  srn.os, "Osteosarcoma", ref.markers, notShow = c("LUM")
+  srn.os, "Osteosarcoma", ref.markers, notShow = c("LUM"), 
+  keep_markers = 2
 )
 srn.os@plots$step6$p.markers
 srn.os@plots$step6$p.map_scsa
@@ -148,7 +149,16 @@ clear(srn.os)
 
 ```
 
-## CopyKAT 癌细胞鉴定
+```{r}
+katn.os <- asjob_katn(srn.os)
+set_remoteRun.bosai(10)
+katn.os <- set_remote(katn.os)
+katn.os <- step1(katn.os, 10)
+```
+
+## Seurat-copyKAT 癌细胞注释 (BC20)
+
+`r snap(sr.bc20, "job_kat")`
 
 ```{r}
 sr.bc20 <- asjob_seurat_sub(srn.os, orig.ident == "BC20")
@@ -158,9 +168,13 @@ kat.bc20 <- asjob_kat(sr.bc20)
 kat.bc20 <- set_remote(kat.bc20)
 set_remoteRun.bosai(10)
 kat.bc20 <- step1(kat.bc20, 10)
-kat.bc20 <- step2(kat.bc20)
-kat.bc20@params$res_copykat$prediction$copykat.pred %>% table
-kat.bc20 <- step3(kat.bc20)
+kat.bc20 <- step2(kat.bc20, 32, inherits = FALSE)
+kat.bc20@tables$step2$res_copykat
+kat.bc20@plots$step2$p.copykat
+
+sr.bc20 <- map(sr.bc20, kat.bc20)
+
+srn.os@object@meta.data
 
 sr.bc2 <- job_seurat("./GSE152048/BC2/", "BC2")
 kat.bc2 <- asjob_kat(sr.bc2)
