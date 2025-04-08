@@ -1,0 +1,66 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-04-08"), end = td("2025-04-30"), finish = td(NA),
+  id = "BSJF230109", client = "吴东蛟", inst = "",
+  type = "生信协助",
+  title = "图片修改",
+  save = ".items_support.rds"
+)
+show.ic(info)
+
+order_publish.bosai("support.Rmd", "support_out.Rmd")
+idname <- formatName.bosai("./support_out.docx")
+order_packaging("./support_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+```{r}
+data_go <- ftibble("./order_material/BSJF230109-╬т╢лЄ╘-═°╥й╜с╣√-═°┬ч╥й└э╤з╝░╖╓╫╙╢╘╜╙╖╓╬Ў╠╜╛┐╕┤╖╜╧─╠ь╬▐╤╙╗║└р╖ч╩к╣╪╜┌╤╫╝▓▓б╖в╒╣╡─╗·╓╞-2023-02-06/plot/enrichment/GO/GO.result_top15.csv")
+data_kegg <- ftibble("./order_material/BSJF230109-╬т╢лЄ╘-═°╥й╜с╣√-═°┬ч╥й└э╤з╝░╖╓╫╙╢╘╜╙╖╓╬Ў╠╜╛┐╕┤╖╜╧─╠ь╬▐╤╙╗║└р╖ч╩к╣╪╜┌╤╫╝▓▓б╖в╒╣╡─╗·╓╞-2023-02-06/plot/enrichment/KEGG/KEGG.result_top15.csv")
+data_net <- ftibble("./order_material/BSJF230109-╬т╢лЄ╘-═°╥й╜с╣√-═°┬ч╥й└э╤з╝░╖╓╫╙╢╘╜╙╖╓╬Ў╠╜╛┐╕┤╖╜╧─╠ь╬▐╤╙╗║└р╖ч╩к╣╪╜┌╤╫╝▓▓б╖в╒╣╡─╗·╓╞-2023-02-06/plot/enrichment/KEGG/kegg_net.csv")
+```
+
+```{r}
+data_net
+```
+
+# 总结 {#conclusion}
+

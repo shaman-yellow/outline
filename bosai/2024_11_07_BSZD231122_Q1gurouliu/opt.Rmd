@@ -149,69 +149,42 @@ clear(srn.os)
 
 ```
 
+## CopyKAT 癌细胞鉴定 (OS)
+
+`r snap(katn.os, 0:2)`
+
 ```{r}
+#' @meth {get_meth(katn.os)}
 katn.os <- asjob_katn(srn.os)
-set_remoteRun.bosai(10)
+set_remoteRun.bosai(16)
 katn.os <- set_remote(katn.os)
 katn.os <- step1(katn.os, 10)
+katn.os <- step2(katn.os, 20, ignore = TRUE)
+katn.os <- step3(katn.os)
 ```
 
-## Seurat-copyKAT 癌细胞注释 (BC20)
+## scFEA 单细胞数据的代谢通量预测 (OS_SAMPLE)
 
-`r snap(sr.bc20, "job_kat")`
-
-```{r}
-sr.bc20 <- asjob_seurat_sub(srn.os, orig.ident == "BC20")
-sr.bc20 <- step1(sr.bc20)
-
-kat.bc20 <- asjob_kat(sr.bc20)
-kat.bc20 <- set_remote(kat.bc20)
-set_remoteRun.bosai(10)
-kat.bc20 <- step1(kat.bc20, 10)
-kat.bc20 <- step2(kat.bc20, 32, inherits = FALSE)
-kat.bc20@tables$step2$res_copykat
-kat.bc20@plots$step2$p.copykat
-
-sr.bc20 <- map(sr.bc20, kat.bc20)
-
-srn.os@object@meta.data
-
-sr.bc2 <- job_seurat("./GSE152048/BC2/", "BC2")
-kat.bc2 <- asjob_kat(sr.bc2)
-kat.bc2 <- step1(kat.bc2)
-kat.bc2 <- step2(kat.bc2)
-kat.bc2 <- step3(kat.bc2)
-kat.bc2@plots$step3$p.copykat
-clear(kat.bc2)
-# kat.bc2 <- readRDS("./kat.bc2.3.rds")
-```
-
-## scFEA 单细胞数据的代谢通量预测 (OS)
-
-`r snap(scf.os, 0:2)`
+`r snap(srn.os_sample, 0:7)`
+`r snap(scf.os_sample, 0:2)`
 
 ```{r}
+srn.os_sample <- asjob_seurat_sub(srn.os, sample = .5)
+#' @meth {get_meth(srn.os_sample)}
+srn.os_sample <- step1(srn.os_sample)
+
 set_remoteRun.bosai(32)
-dim(srn.os@object)
-scf.os <- asjob_scfea(srn.os, org = "hu", dir = "scfea_os")
-scf.os <- set_remote(scf.os, "scfea_os")
-scf.os <- step1(scf.os)
+scf.os_sample <- asjob_scfea(srn.os_sample)
+scf.os_sample <- set_remote(scf.os_sample)
+scf.os_sample <- step1(scf.os_sample)
 
-#' @meth {get_meth(scf.os)}
-scf.os <- step2(scf.os)
-scf.os@plots$step2$p.loss
-scf.os@tables$step2$t.anno
-scf.os@tables$step2$t.flux
-srn.os <- map(srn.os, scf.os)
+#' @meth {get_meth(scf.os_sample)}
+scf.os_sample <- step2(scf.os_sample)
+scf.os_sample@plots$step2$p.loss
+scf.os_sample@tables$step2$t.anno
+scf.os_sample@tables$step2$t.flux
+srn.os <- map(srn.os, scf.os_sample)
 srn.os@params$p.map_flux
-```
-
-```{r}
-srn.os@object@assays
-srn.os@object@meta.data
-katn.os <- asjob_katn(srn.os)
-katn.os@object$BC10
-katn.os <- step1(katn.os)
 ```
 
 ## CellChat 细胞通讯分析 (OS)
@@ -250,18 +223,19 @@ en.cancerTarget@plots$step1$p.go
 ## scFEA 单细胞数据的代谢通量预测 (OS)
 
 ```{r}
-scf.os <- asjob_scfea(srn.os, org = "human")
-scf.os <- set_remote(scf.os)
-scf.os@step <- 0L
+scf.os_sample <- asjob_scfea(srn.os, org = "human")
+scf.os_sample <- set_remote(scf.os_sample)
+scf.os_sample@step <- 0L
 set_remoteRun("sbatch -p v6_384 -N 1 -n 1 -c 16", "#!/bin/bash")
-scf.os <- step1(scf.os)
-scf.os <- step2(scf.os)
-scf.os@plots$step2$p.loss
-scf.os@tables$step2$t.anno
+scf.os_sample <- step1(scf.os_sample)
+scf.os_sample <- step2(scf.os_sample)
+scf.os_sample@plots$step2$p.loss
+scf.os_sample@tables$step2$t.anno
 
 ```
 
 ```{r}
+gds.os
 ```
 
 # 总结 {#conclusion}
