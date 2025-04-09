@@ -183,8 +183,11 @@ scf.os_sample <- step2(scf.os_sample)
 scf.os_sample@plots$step2$p.loss
 scf.os_sample@tables$step2$t.anno
 scf.os_sample@tables$step2$t.flux
-srn.os <- map(srn.os, scf.os_sample)
-srn.os@params$p.map_flux
+
+p.os_sample <- vis(srn.os_sample, "scsa_cell")
+p.os_sample
+
+srn.os_sample <- map(srn.os_sample, scf.os_sample)
 ```
 
 ## CellChat 细胞通讯分析 (OS)

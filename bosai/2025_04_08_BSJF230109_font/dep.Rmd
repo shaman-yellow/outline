@@ -1,0 +1,59 @@
+
+
+# layout_tbl_graph_auto           layout_tbl_graph_linear
+# layout_tbl_graph_backbone       layout_tbl_graph_manual
+# layout_tbl_graph_cactustree     layout_tbl_graph_matrix
+# layout_tbl_graph_centrality     layout_tbl_graph_metro
+# layout_tbl_graph_circlepack     layout_tbl_graph_partition
+# layout_tbl_graph_dendrogram     layout_tbl_graph_pmds
+# layout_tbl_graph_eigen          layout_tbl_graph_sf
+# layout_tbl_graph_fabric         layout_tbl_graph_sparse_stress
+# layout_tbl_graph_focus          layout_tbl_graph_stress
+# layout_tbl_graph_hive           layout_tbl_graph_treemap
+# layout_tbl_graph_htree          layout_tbl_graph_unrooted
+# layout_tbl_graph_igraph         
+
+
+ggraph <- tidygraph::tbl_graph(nodes, edges, directed = TRUE)
+ggraph
+
+ggraph <- dplyr::mutate(ggraph,
+  weight = tidygraph::centrality_degree(),
+  centrality = tidygraph::centrality_pagerank(
+    damping = .1, weights = jitter(weight, 10)
+  )
+)
+ggraph
+
+p.net <- plot_network.shiny(
+  ggraph, "centrality", centrality = tibble::as_tibble(ggraph)$centrality,
+  shape = c(pathways = 15, genes = 16),
+  color = c(pathways = "#4DBBD5FF", genes = "#EFC000"),
+  size = c(pathways = 5, genes = 5),
+  font.size = 5
+)
+p.net <- p.net + theme(text = element_text(size = 15))
+p.net
+p.net <- set_lab_legend(
+  p.net,
+  glue::glue("genes network"),
+  glue::glue("基因网络图。")
+)
+p.net
+
+
+nodes <- tidyr::pivot_longer(data_net, 1:2, names_to = "type", values_to = "abbrev.name")
+nodes <- dplyr::distinct(nodes, abbrev.name, .keep_all = TRUE)
+nodes <- dplyr::mutate(nodes, name = abbrev.name, .before = 1)
+nodes <- dplyr::mutate(
+  nodes, input = type, weight = 1, abbrev.name = stringr::str_wrap(abbrev.name, 30)
+)
+nodes
+
+edges <- dplyr::select(data_net, from = genes, to = pathways)
+edges <- dplyr::mutate(edges, weight = 1)
+edges
+
+clearNodePropertyBypass(layout$id, "NODE_X_LOCATION")
+clearNodePropertyBypass(layout$id, "NODE_Y_LOCATION")
+RCy3::setNodePositionBypass()

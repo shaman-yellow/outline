@@ -1,5 +1,13 @@
 ---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
 ---
+
 
 ```{r include = F, eval = F}
 info <- items(start = td("2025-04-08"), end = td("2025-04-30"), finish = td("2025-04-09"),
@@ -98,9 +106,7 @@ ggraph <- dplyr::mutate(ggraph,
   )
 )
 layout <- ggraph::create_layout(ggraph, "centrality", centrality = tibble::as_tibble(ggraph)$centrality)
-layout
 
-RCy3::cytoscapePing()
 RCy3::createNetworkFromDataFrames(nodes, edges, title = "My Network", collection = "Demo")
 RCy3::layoutNetwork("force-directed")
 
