@@ -85,3 +85,84 @@ kat.bc2@plots$step3$p.copykat
 clear(kat.bc2)
 # kat.bc2 <- readRDS("./kat.bc2.3.rds")
 ```
+
+katn.os@tables$step3$t.res_copykat %<>%
+  dplyr::mutate(
+    copykat_cell = dplyr::recode(
+      copykat_cell, "Cancer cell" = "Malignant cell", "Normal cell" = "Benign cell"
+    )
+  )
+
+## scFEA 单细胞数据的代谢通量预测 (OS)
+
+```{r}
+scf.os_sample <- asjob_scfea(srn.os, org = "human")
+scf.os_sample <- set_remote(scf.os_sample)
+scf.os_sample@step <- 0L
+set_remoteRun("sbatch -p v6_384 -N 1 -n 1 -c 16", "#!/bin/bash")
+scf.os_sample <- step1(scf.os_sample)
+scf.os_sample <- step2(scf.os_sample)
+scf.os_sample@plots$step2$p.loss
+scf.os_sample@tables$step2$t.anno
+
+```
+
+```{r}
+gds.os
+```
+
+## CellChat 细胞通讯分析 (OS)
+
+```{r}
+ccn.os <- asjob_cellchat(srn.os, "copykat_cell")
+ccn.os <- step1(ccn.os)
+ccn.os@plots$step1
+ccn.os@plots$step1$p.aggre_count
+ccn.os@plots$step1$p.commHpAll
+ccn.os@plots$step1$p.showdb
+ccn.os@tables$step1$lp_net
+ccn.os <- step2(ccn.os)
+```
+
+## 富集分析 (CANCERSOURCE)
+
+```{r}
+cancerSourceGenes <- select_pathway(ccn.os, "Cancer", ".") %>% unique.lps
+en.cancerSource <- job_enrich(cancerSourceGenes)
+en.cancerSource <- step1(en.cancerSource)
+en.cancerSource@plots$step1$p.kegg
+en.cancerSource@plots$step1$p.go
+```
+
+## 富集分析 (CANCERTARGET)
+
+```{r}
+cancerTargetGenes <- select_pathway(ccn.os, ".", "Cancer") %>% unique.lps
+en.cancerTarget <- job_enrich(cancerTargetGenes)
+en.cancerTarget <- step1(en.cancerTarget)
+en.cancerTarget@plots$step1$p.go
+```
+
+## GEO 数据获取 (OS_GSE81892)
+
+`r snap(geo.os_GSE81892, 0:2)`
+
+```{r}
+geo.os_GSE81892 <- job_geo("os_GSE81892")
+#' @meth {get_meth(geo.os_GSE81892)}
+geo.os_GSE81892 <- step1(geo.os_GSE81892)
+geo.os_GSE81892$guess
+
+metadata.os_GSE81892 <- dplyr::mutate(
+  geo.os_GSE81892$guess, days_to_last_follow_up = as.double(follow.up.months.ch1) * 30,
+  vital_status = ifelse(
+    grpl(clinical_information.ch1, "died"), "Dead", "Alive"
+  ), group = vital_status
+)
+metadata.os_GSE81892$diseasestate.ch1
+```
+
+```{r}
+lm.os_GSE81892 <- asjob_limma(geo.os_GSE81892, metadata.os_GSE81892)
+```
+

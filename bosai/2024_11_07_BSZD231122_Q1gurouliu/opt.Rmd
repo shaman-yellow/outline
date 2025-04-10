@@ -94,6 +94,8 @@ lapply(list.files("./GSE152048/", "tar.gz$"),
 
 `r snap(srn.os, 0:7)`
 
+(鉴定所用 Markers 来源于原作文献 PMID:33303760)
+
 ```{r}
 sr.os <- job_seurat("./GSE152048/BC2")
 sr.os <- step1(sr.os)
@@ -161,6 +163,7 @@ katn.os <- set_remote(katn.os)
 katn.os <- step1(katn.os, 10)
 katn.os <- step2(katn.os, 20, ignore = TRUE)
 katn.os <- step3(katn.os)
+katn.os@plots$step3$all_heatmap
 ```
 
 ## scFEA 单细胞数据的代谢通量预测 (OS_SAMPLE)
@@ -188,58 +191,230 @@ p.os_sample <- vis(srn.os_sample, "scsa_cell")
 p.os_sample
 
 srn.os_sample <- map(srn.os_sample, scf.os_sample)
+srn.os_sample@params$p.map_flux
 ```
 
-## CellChat 细胞通讯分析 (OS)
+## Seurat 细胞亚群分析 (OS_CANCER)
+
+`r snap(srn.os_cancer, 0:7)`
 
 ```{r}
-ccn.os <- asjob_cellchat(srn.os, "copykat_cell")
-ccn.os <- step1(ccn.os)
-ccn.os@plots$step1
-ccn.os@plots$step1$p.aggre_count
-ccn.os@plots$step1$p.commHpAll
-ccn.os@plots$step1$p.showdb
-ccn.os@tables$step1$lp_net
-ccn.os <- step2(ccn.os)
+srn.os_cancer <- asjob_seurat_sub(srn.os, grpl(scsa_cell, "_OS$", TRUE))
+#' @meth {get_meth(srn.os_cancer)}
+srn.os_cancer <- step1(srn.os_cancer)
+srn.os_cancer <- step2(srn.os_cancer)
+srn.os_cancer@plots$step2$p.pca_rank
+srn.os_cancer <- step3(srn.os_cancer)
+p.os_cancer <- vis(srn.os_cancer, "scsa_cell")
+p.os_cancer
 ```
 
-## 富集分析 (CANCERSOURCE)
+### Seurat-copyKAT 癌细胞注释 (OS_CANCER)
+
+`r snap(srn.os_cancer, "job_kat")`
 
 ```{r}
-cancerSourceGenes <- select_pathway(ccn.os, "Cancer", ".") %>% unique.lps
-en.cancerSource <- job_enrich(cancerSourceGenes)
-en.cancerSource <- step1(en.cancerSource)
-en.cancerSource@plots$step1$p.kegg
-en.cancerSource@plots$step1$p.go
+srn.os_cancer <- map(srn.os_cancer, katn.os)
+srn.os_cancer@params$p.props_cancer
+srn.os_cancer@params$p.map_cancer
+meta(srn.os)
 ```
 
-## 富集分析 (CANCERTARGET)
+
+### Limma 代谢通量差异分析 (OS_CANCER_FLUX)
+
+`r snap(lm.os_cancer_flux, 0:3)`
 
 ```{r}
-cancerTargetGenes <- select_pathway(ccn.os, ".", "Cancer") %>% unique.lps
-en.cancerTarget <- job_enrich(cancerTargetGenes)
-en.cancerTarget <- step1(en.cancerTarget)
-en.cancerTarget@plots$step1$p.go
+scf.os_sample <- regroup(scf.os_sample, srn.os)
+scf.os_sample <- mutate(
+  scf.os_sample, Cancer_Sample = as_type_group(isCancer, orig.ident)
+)
+
+lm.os_cancer_flux <- asjob_limma(scf.os_sample, group = "Cancer_Sample")
+lm.os_cancer_flux <- filter(
+  lm.os_cancer_flux, type = "metadata", grpl(scsa_cell, "_OS$")
+)
+#' @meth {get_meth(lm.os_cancer_flux)}
+lm.os_cancer_flux <- step1(lm.os_cancer_flux)
+lm.os_cancer_flux <- step2(
+  lm.os_cancer_flux, Malignant_cell_BC - Benign_cell_BC, cut.fc = .5
+)
+
+lm.os_cancer_flux@plots$step2$p.volcano$`Malignant_cell_BC - Benign_cell_BC`
+lm.os_cancer_flux@tables$step2$tops$`Malignant_cell_BC - Benign_cell_BC`
+lm.os_cancer_flux <- step3(lm.os_cancer_flux)
+
+scf.os_sample <- map(scf.os_sample, lm.os_cancer_flux, "Cancer_Sample")
+scf.os_sample@params$p.fluxs$Malignant_cell_Benign_cell
+feature(scf.os_sample, "gene")
 ```
 
+## TCGA 数据获取 (OS)
 
-## scFEA 单细胞数据的代谢通量预测 (OS)
+`r snap(tcga.os, 0:3)`
 
 ```{r}
-scf.os_sample <- asjob_scfea(srn.os, org = "human")
-scf.os_sample <- set_remote(scf.os_sample)
-scf.os_sample@step <- 0L
-set_remoteRun("sbatch -p v6_384 -N 1 -n 1 -c 16", "#!/bin/bash")
-scf.os_sample <- step1(scf.os_sample)
-scf.os_sample <- step2(scf.os_sample)
-scf.os_sample@plots$step2$p.loss
-scf.os_sample@tables$step2$t.anno
+tcga.os <- job_tcga("TARGET-OS")
+#' @meth {get_meth(tcga.os)}
+tcga.os <- step1(tcga.os)
+tcga.os <- step2(tcga.os)
+tcga.os <- step3(tcga.os)
+```
 
+## COX 回归 (TCGA_OS)
+
+`r snap(cox.tcga_os, 0:5)`
+
+```{r}
+lm.tcga_os <- asjob_limma(tcga.os)
+lm.tcga_os <- step1(lm.tcga_os)
+cox.tcga_os <- asjob_lasso(lm.tcga_os, feature(scf.os_sample, "gene"))
+#' @meth {get_meth(cox.tcga_os)}
+cox.tcga_os <- step1(cox.tcga_os)
+cox.tcga_os <- step2(cox.tcga_os)
+cox.tcga_os <- step3(cox.tcga_os)
+cox.tcga_os@tables$step3$t.sigUnivariateCoxCoefficients
+feature(cox.tcga_os)
+
+cox.tcga_os@step <- 3L
+cox.tcga_os <- step4(
+  cox.tcga_os, fun = "cv.glmnet", inherit_unicox = TRUE, 
+  inherit_unicox.cut.p = .05,
+  type.measure = "C", nfold = 5
+)
+cox.tcga_os@plots$step4$p.lassoCOX_model
+cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.min
+cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.1se
+cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.min
+cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.1se
+```
+
+## Survival 生存分析 (TCGA_OS)
+
+`r snap(surv.tcga_os, 0:1)`
+
+```{r}
+surv.tcga_os <- asjob_survival(cox.tcga_os, lambda = "1se")
+#' @meth {get_meth(surv.tcga_os)}
+surv.tcga_os <- step1(surv.tcga_os)
+surv.tcga_os@plots$step1$p.surv
+surv.tcga_os@plots$step1$p.roc
+surv.tcga_os@params$p.surv_genes_hp
+```
+
+## GSE 数据搜索 (OS)
+
+`r snap(gds.os, 0:3)`
+
+```{r}
+gds.os <- job_gds("Osteosarcoma")
+#' @meth {get_meth(gds.os)}
+gds.os <- step1(gds.os, control = NULL)
+gds.os <- step2(gds.os, cl = 3, force = TRUE)
+gds.os <- step3(gds.os)
+vis(gds.os)
+
+sink("./tabs/test.md")
+gds.os@params$res$metas
+sink()
+
+gse.used <- extract_gse_from_text("./tabs/test.md")
+gse.used
+# "GSE16091" "GSE39055" "GSE39057"
+```
+
+## 外部数据集验证
+
+## GEO 数据获取 (OS_GSE39057)
+
+`r snap(geo.os_GSE39057, 0:2)`
+
+```{r}
+geo.os_GSE39057 <- job_geo("os_GSE39057")
+#' @meth {get_meth(geo.os_GSE39057)}
+geo.os_GSE39057 <- step1(geo.os_GSE39057)
+geo.os_GSE39057$guess
+
+metadata.os_GSE39057 <- dplyr::mutate(
+  geo.os_GSE39057$guess, vital_status = ifelse(death.ch1 == "Y", "Dead", "Alive"),
+  group = vital_status,
+  days_to_last_follow_up = as.double(time.until.first.recurrence.or.latest.follow.up..months..ch1) * 30
+)
+
+lm.os_GSE39057 <- asjob_limma(geo.os_GSE39057, metadata.os_GSE39057)
+lm.os_GSE39057 <- step1(lm.os_GSE39057)
+```
+
+## GEO 数据获取 (GSE39055)
+
+`r snap(geo.os_GSE39055, 0:2)`
+
+```{r}
+geo.os_GSE39055 <- job_geo("GSE39055")
+#' @meth {get_meth(geo.os_GSE39055)}
+geo.os_GSE39055 <- step1(geo.os_GSE39055)
+geo.os_GSE39055$guess
+
+metadata.os_GSE39055 <- dplyr::mutate(
+  geo.os_GSE39055$guess, vital_status = ifelse(death.ch1 == "Y", "Dead", "Alive"),
+  group = vital_status,
+  days_to_last_follow_up = as.double(time.until.first.recurrence.or.latest.follow.up..months..ch1) * 30
+)
+metadata.os_GSE39055
+
+lm.os_GSE39055 <- asjob_limma(geo.os_GSE39055, metadata.os_GSE39055)
+lm.os_GSE39055 <- step1(lm.os_GSE39055)
+```
+
+### GEO 数据获取 (OS_GSE16091)
+
+`r snap(geo.os_GSE16091, 0:2)`
+
+```{r}
+geo.os_GSE16091 <- job_geo("os_GSE16091")
+#' @meth {get_meth(geo.os_GSE16091)}
+geo.os_GSE16091 <- step1(geo.os_GSE16091)
+geo.os_GSE16091$guess
+metadata.os_GSE16091 <- dplyr::mutate(
+  geo.os_GSE16091$guess, vital_status = ifelse(
+    alive.or.dead.ch1 == "A", "Alive", "Dead"
+    ),
+  days_to_last_follow_up = as.integer(days.followup.ch1),
+  group = vital_status
+)
+metadata.os_GSE16091
+
+lm.os_GSE16091 <- asjob_limma(geo.os_GSE16091, metadata.os_GSE16091)
+lm.os_GSE16091 <- step1(lm.os_GSE16091)
 ```
 
 ```{r}
-gds.os
+# AADAT, PHYKPL, PGAM4
+# UPRT, UCK2, FDPS, CTPS1, NUDT16
+alias <- list(
+  UPRT = c("FUR1"),
+  AADAT = c("KAT2", "KATII", "KYAT2"),
+  PHYKPL = c("PHYHIPL"),
+  PGAM4 = c("PGAM-B", "PGAM1P5")
+)
+alias
+
+surv.os_outer <- do_survival(
+  list(lm.os_GSE16091, lm.os_GSE39055, lm.os_GSE39057), 
+  surv.tcga_os, alias = alias
+)
+
+surv.os_outer$not_cover
+surv.tcga_os$fea_coefs
+surv.os_outer <- step1(surv.os_outer)
+surv.os_outer@plots$step1$p.surv
+surv.os_outer@plots$step1$p.roc
+
+
 ```
+
+
 
 # 总结 {#conclusion}
 
