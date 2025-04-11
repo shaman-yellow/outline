@@ -166,3 +166,33 @@ metadata.os_GSE81892$diseasestate.ch1
 lm.os_GSE81892 <- asjob_limma(geo.os_GSE81892, metadata.os_GSE81892)
 ```
 
+
+test <- AnnotationDbi::mapIds(
+  org.Hs.eg.db::org.Hs.eg.db, c(names(alias), "DDX39B", "AHR"), 
+  "SYMBOL", c("ALIAS"), multiVals = "CharacterList"
+)
+test
+
+bm <- new_biomart()
+test <- filter_biomart(
+  bm, c("hgnc_symbol", "external_synonym"), "hgnc_symbol", names(alias)
+)
+alias2 <- nl(test$hgnc_symbol, test$external_synonym)
+alias2
+
+```{r}
+feature(scf.os_sample, "gene")
+stats <- get_high_expressed(
+  srn.os_cancer, feature(scf.os_sample, "gene"), group.by = "isCancer"
+)
+stats$features
+fea.stats <- as_feature(unique(stats$features), scf.os_sample)
+fea.stats
+```
+
+Sys.setlocale(locale = "C")
+raw_data <- limma::read.maimages(
+  "./material/GSM2177044_207AT.txt.gz", source = "scanarrayexpress"
+)
+raw_data
+

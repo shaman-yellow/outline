@@ -230,3 +230,13 @@ summary_week.bosai(
   rm = TRUE, must_include = c("BSZD231122", "BSCL241113")
 )
 ```
+
+# 2025-04-11
+
+```{r}
+backup_jobs.bosai(alls, td("2025-04-11"))
+
+summary_week.bosai(
+  rm = TRUE, must_include = c("BSZD231122")
+)
+```

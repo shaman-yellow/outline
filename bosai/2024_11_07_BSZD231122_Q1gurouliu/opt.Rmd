@@ -2,7 +2,7 @@
 ---
 
 ```{r include = F, eval = F}
-info <- items(start = td("20231124"), end = td("20241108"), finish = td(""),
+info <- items(start = td("20231124"), end = td("20241108"), finish = td("2025-04-11"),
   id = "BSZD231122", client = "杨立宇", type = "分析优化", title = "骨肉瘤",
   save = ".items_opt.rds"
 )
@@ -250,6 +250,7 @@ scf.os_sample@params$p.fluxs$Malignant_cell_Benign_cell
 feature(scf.os_sample, "gene")
 ```
 
+
 ## TCGA 数据获取 (OS)
 
 `r snap(tcga.os, 0:3)`
@@ -269,7 +270,11 @@ tcga.os <- step3(tcga.os)
 ```{r}
 lm.tcga_os <- asjob_limma(tcga.os)
 lm.tcga_os <- step1(lm.tcga_os)
-cox.tcga_os <- asjob_lasso(lm.tcga_os, feature(scf.os_sample, "gene"))
+
+cox.tcga_os <- asjob_lasso(
+  lm.tcga_os, feature(scf.os_sample, "gene"), 
+  exclude = c("NUDT16", "MGST1", "IDI2", "CYP2S1")
+)
 #' @meth {get_meth(cox.tcga_os)}
 cox.tcga_os <- step1(cox.tcga_os)
 cox.tcga_os <- step2(cox.tcga_os)
@@ -279,10 +284,11 @@ feature(cox.tcga_os)
 
 cox.tcga_os@step <- 3L
 cox.tcga_os <- step4(
-  cox.tcga_os, fun = "cv.glmnet", inherit_unicox = TRUE, 
-  inherit_unicox.cut.p = .05,
+  cox.tcga_os, fun = "cv.glmnet", inherit_unicox = TRUE,
+  inherit_unicox.cut.p = .01,
   type.measure = "C", nfold = 5
 )
+cox.tcga_os@params$multi_cox$coef
 cox.tcga_os@plots$step4$p.lassoCOX_model
 cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.min
 cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.1se
@@ -295,7 +301,7 @@ cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.1se
 `r snap(surv.tcga_os, 0:1)`
 
 ```{r}
-surv.tcga_os <- asjob_survival(cox.tcga_os, lambda = "1se")
+surv.tcga_os <- asjob_survival(cox.tcga_os, lambda = "min")
 #' @meth {get_meth(surv.tcga_os)}
 surv.tcga_os <- step1(surv.tcga_os)
 surv.tcga_os@plots$step1$p.surv
@@ -315,7 +321,7 @@ gds.os <- step2(gds.os, cl = 3, force = TRUE)
 gds.os <- step3(gds.os)
 vis(gds.os)
 
-sink("./tabs/test.md")
+sink("./tabs/test2.md")
 gds.os@params$res$metas
 sink()
 
@@ -326,7 +332,7 @@ gse.used
 
 ## 外部数据集验证
 
-## GEO 数据获取 (OS_GSE39057)
+### GEO 数据获取 (OS_GSE39057)
 
 `r snap(geo.os_GSE39057, 0:2)`
 
@@ -346,12 +352,13 @@ lm.os_GSE39057 <- asjob_limma(geo.os_GSE39057, metadata.os_GSE39057)
 lm.os_GSE39057 <- step1(lm.os_GSE39057)
 ```
 
-## GEO 数据获取 (GSE39055)
+
+### GEO 数据获取 (OS_GSE39055)
 
 `r snap(geo.os_GSE39055, 0:2)`
 
 ```{r}
-geo.os_GSE39055 <- job_geo("GSE39055")
+geo.os_GSE39055 <- job_geo("os_GSE39055")
 #' @meth {get_meth(geo.os_GSE39055)}
 geo.os_GSE39055 <- step1(geo.os_GSE39055)
 geo.os_GSE39055$guess
@@ -363,7 +370,9 @@ metadata.os_GSE39055 <- dplyr::mutate(
 )
 metadata.os_GSE39055
 
-lm.os_GSE39055 <- asjob_limma(geo.os_GSE39055, metadata.os_GSE39055)
+lm.os_GSE39055 <- asjob_limma(
+  geo.os_GSE39055, metadata.os_GSE39055, normed = FALSE
+)
 lm.os_GSE39055 <- step1(lm.os_GSE39055)
 ```
 
@@ -389,28 +398,46 @@ lm.os_GSE16091 <- asjob_limma(geo.os_GSE16091, metadata.os_GSE16091)
 lm.os_GSE16091 <- step1(lm.os_GSE16091)
 ```
 
+### GEO 数据获取 (OS_GSE21257)
+
+`r snap(geo.os_GSE21257, 0:2)`
+
 ```{r}
-# AADAT, PHYKPL, PGAM4
-# UPRT, UCK2, FDPS, CTPS1, NUDT16
-alias <- list(
-  UPRT = c("FUR1"),
-  AADAT = c("KAT2", "KATII", "KYAT2"),
-  PHYKPL = c("PHYHIPL"),
-  PGAM4 = c("PGAM-B", "PGAM1P5")
+geo.os_GSE21257 <- job_geo("os_GSE21257")
+#' @meth {get_meth(geo.os_GSE21257)}
+geo.os_GSE21257 <- step1(geo.os_GSE21257)
+geo.os_GSE21257$guess$status.ch1
+metadata.os_GSE21257 <- dplyr::mutate(
+  geo.os_GSE21257$guess, vital_status = ifelse(
+    grpl(status.ch1, "Alive"), "Alive", "Dead"
+  ), group = vital_status,
+  days_to_last_follow_up = as.integer(strx(status.ch1, "[0-9]+")) * 30
 )
-alias
+metadata.os_GSE21257
 
+lm.os_GSE21257 <- asjob_limma(geo.os_GSE21257, metadata.os_GSE21257)
+lm.os_GSE21257 <- step1(lm.os_GSE21257)
+```
+
+### Survival 生存分析 (OS_OUTER)
+
+`r snap(surv.os_outer, 0:1)`
+
+```{r}
 surv.os_outer <- do_survival(
-  list(lm.os_GSE16091, lm.os_GSE39055, lm.os_GSE39057), 
-  surv.tcga_os, alias = alias
+  list(lm.os_GSE16091, lm.os_GSE39055, lm.os_GSE39057, lm.os_GSE21257), 
+  # list(lm.os_GSE21257), 
+  surv.tcga_os, base_method = "surv"
 )
+#' @meth {get_meth(surv.os_outer)}
+surv.os_outer <- step1(surv.os_outer, roc_time = c(1, 3, 5))
+surv.os_outer@plots$step1$p.surv$risk_score
+surv.os_outer@plots$step1$p.roc$risk_score
 
-surv.os_outer$not_cover
-surv.tcga_os$fea_coefs
-surv.os_outer <- step1(surv.os_outer)
-surv.os_outer@plots$step1$p.surv
-surv.os_outer@plots$step1$p.roc
-
+surv.os_outer@step <- 1L
+surv.os_outer <- step2(surv.os_outer)
+surv.os_outer@plots$step2$p.survs
+surv.os_outer@plots$step2$p.rocs
 
 ```
 
