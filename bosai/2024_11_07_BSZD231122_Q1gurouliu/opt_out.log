@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.11.11)  14 NOV 2024 09:03
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.11.11)  14 APR 2025 15:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1126,8 +1126,9 @@ Package: titlesec 2021/07/05 v2.14 Sectioning titles
 \titlewidthlast=\dimen394
 \titlewidthfirst=\dimen395
 )
+\cslhangindent=\skip81
 Package translations Info: No language package found. I am going to use `englis
-h' as default language. on input line 74.
+h' as default language. on input line 79.
 
 Package xeCJK Warning: Fandol is being set as the default font for CJK text.
 (xeCJK)                Please make sure it has been properly installed.
@@ -1173,40 +1174,40 @@ guage=dflt;"
 (./opt_out.aux)
 \openout1 = `opt_out.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 74.
+(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 79.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 74.
+(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 79.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 74.
+(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 79.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 74.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 79.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 74.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 79.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 74.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 79.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 74.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 79.
 
 Package fontspec Info: latinmodern-math scale = 0.9999964596882403.
 
@@ -1235,7 +1236,7 @@ pt=math;language=dflt;"
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 74.
+(Font)              scaled to size 10.0pt on input line 79.
 
 Package fontspec Info: latinmodern-math scale = 0.9999964596882403.
 
@@ -1274,17 +1275,17 @@ pt=math;language=dflt;"
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 74.
+(Font)              scaled to size 10.0pt on input line 79.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 74.
+(Font)              `operators' in the math version `normal' on input line 79.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 74.
+ line 79.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 74.
+(Font)              `operators' in the math version `bold' on input line 79.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 74.
+t line 79.
 
 Package fontspec Info: latinmodern-math scale = 0.9999964596882403.
 
@@ -1371,15 +1372,15 @@ t=math;language=dflt;"
 (fontspec)             \fontdimen 21\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 74.
+(Font)              `symbols' in the math version `normal' on input line 79.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 74.
+t line 79.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 74.
+(Font)              `symbols' in the math version `bold' on input line 79.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 74.
+t line 79.
 
 Package fontspec Info: latinmodern-math scale = 0.9999964596882403.
 
@@ -1449,22 +1450,22 @@ pt=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 7
-4.
+9.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 74.
+t line 79.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 74.
+(Font)              `largesymbols' in the math version `bold' on input line 79.
 
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 74.
-LaTeX Info: Redefining \microtypecontext on input line 74.
-Package microtype Info: Applying patch `item' on input line 74.
-Package microtype Info: Applying patch `toc' on input line 74.
-Package microtype Info: Applying patch `eqnum' on input line 74.
+t line 79.
+LaTeX Info: Redefining \microtypecontext on input line 79.
+Package microtype Info: Applying patch `item' on input line 79.
+Package microtype Info: Applying patch `toc' on input line 79.
+Package microtype Info: Applying patch `eqnum' on input line 79.
 
-Package microtype Warning: Unable to apply patch `footnote' on input line 74.
+Package microtype Warning: Unable to apply patch `footnote' on input line 79.
 
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
@@ -1475,7 +1476,7 @@ Package microtype Info: No adjustment of kerning.
 File: mt-LatinModernRoman.cfg 2021/02/21 v1.1 microtype config. file: Latin Mod
 ern Roman (RS)
 )
-Package hyperref Info: Link coloring OFF on input line 74.
+Package hyperref Info: Link coloring OFF on input line 79.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
@@ -1485,9 +1486,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count415
 )
-LaTeX Info: Redefining \ref on input line 74.
-LaTeX Info: Redefining \pageref on input line 74.
-LaTeX Info: Redefining \nameref on input line 74.
+LaTeX Info: Redefining \ref on input line 79.
+LaTeX Info: Redefining \pageref on input line 79.
+LaTeX Info: Redefining \nameref on input line 79.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1529,7 +1530,7 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 74.
+or `english'. on input line 79.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 *geometry* verbose mode - [ newgeometry ] result:
@@ -1565,9 +1566,9 @@ Package caption Info: End \AtBeginDocument code.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 20.13269pt on input line 78.
+(Font)              scaled to size 20.13269pt on input line 83.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 13.97833pt on input line 82.
+(Font)              scaled to size 13.97833pt on input line 87.
 File: ~/outline/bosai//cover_page_analysis.pdf Graphic file (type pdf)
 <use ~/outline/bosai//cover_page_analysis.pdf>
 
@@ -1584,40 +1585,42 @@ f) (./opt_out.toc
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
 (Font)              scaled to size 9.70718pt on input line 1.
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 4.
+(Font)              scaled to size 10.0pt on input line 3.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 4.
+(Font)              scaled to size 7.0pt on input line 3.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 4.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 4
+(Font)              scaled to size 5.0pt on input line 3.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 3
 .
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 4.
+(Font)              scaled to size 10.00092pt on input line 3.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 4.
+(Font)              scaled to size 7.00064pt on input line 3.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 4.
+(Font)              scaled to size 5.00046pt on input line 3.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 4.
+(Font)              scaled to size 9.99893pt on input line 3.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 4.
+(Font)              scaled to size 6.99925pt on input line 3.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 4.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
+(Font)              scaled to size 4.99947pt on input line 3.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 3.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 3.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-))
+) [1
+
+])
 \tf@toc=\write4
 \openout4 = `opt_out.toc'.
 
@@ -1629,54 +1632,35 @@ f) (./opt_out.lof)
 
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
-f) (./opt_out.lot)
+f) [2] (./opt_out.lot)
 \tf@lot=\write6
 \openout6 = `opt_out.lot'.
 
-[1
-
-]
-LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
-(Font)              scaled to size 11.64862pt on input line 112.
-
+[3]
 (/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
 f)
-File: Figure+Table/OS-Markers-in-cell-types.pdf Graphic file (type pdf)
-<use Figure+Table/OS-Markers-in-cell-types.pdf>
+File: Figure+Table/Route.pdf Graphic file (type pdf)
+<use Figure+Table/Route.pdf>
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 118.
+(caption)                particular \caption on input line 116.
 See the caption package documentation for explanation.
 
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
 f)
-Overfull \hbox (629.68585pt too wide) in paragraph at lines 128--140
-\TU/lmr/m/n/10 FTL,APOC1,APOE,LGMN,C1QB,CTSD,CTSB,C1QA,PSAP,TYROBP,RNASE1,FTH1,
-TREM2,C1QC,IGSF6,FOLR2,FCER1G,FCGBP,TMEM176B,FCGRT,CYBA,GYPC,CTSZ,CAPG,LGALS3,M
-S4A7,AIF1,CD68,CTSS,GPNMB
- []
-
-
-Overfull \hbox (650.65585pt too wide) in paragraph at lines 128--140
-\TU/lmr/m/n/10 2. MMP9,PTMA,VIM,RPS2,RPS6,ENO1,EMP3,RPS12,NDUFS8,RPS23,MALAT1,R
-PL13A,RPLP2,RPS14,COX4I1,PKM,COX5A,RPL8,RGS10,RPL27A,HSPE1,S100A4,ANXA2,ATP5MC3
-,HSPD1,PFN1,CYC1,RPL21,ATP5F1B,RPL32
- []
-
-[1]
+LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/b/n' will be
+(Font)              scaled to size 11.64862pt on input line 125.
 
 Package fontspec Warning: Font "FandolFang-Regular" does not contain requested
 (fontspec)                Script "CJK".
 
 
-Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
+Package fontspec Info: FandolFang-Regular scale = 0.941043990458295.
 
 
-Package fontspec Info: FandolFang-Regular scale = 0.9694292301336638.
+Package fontspec Info: FandolFang-Regular scale = 0.941043990458295.
 
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 167.
 
 Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             'FandolFang-Regular' with options
@@ -1686,18 +1670,397 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <->s*[0.9694292301336638]"[FandolFang-Regular.otf]/OT:la
-nguage=dflt;"
+(fontspec)             <->s*[0.941043990458295]"[FandolFang-Regular.otf]/OT:lan
+guage=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
-[2] (./opt_out.aux) ) 
-Here is how much of TeX's memory you used:
- 42583 strings out of 476191
- 891323 string characters out of 5812071
- 1385811 words of memory out of 5000000
- 62577 multiletter control sequences out of 15000+600000
- 473442 words of font info for 73 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 93i,12n,121p,1677b,909s stack positions out of 5000i,500n,10000p,200000b,80000s
+[1]
+LaTeX Font Info:    Font shape `TU/FandolFang-Regular(0)/m/n' will be
+(Font)              scaled to size 9.4104pt on input line 168.
+[2] [3]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/Pre-Quality-control.pdf Graphic file (type pdf)
+<use Figure+Table/Pre-Quality-control.pdf>
 
-Output written on opt_out.pdf (4 pages).
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 228.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f) [4]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-After-Quality-control.pdf Graphic file (type pdf)
+<use Figure+Table/OS-After-Quality-control.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 239.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-Standard-deviations-of-PCs.pdf Graphic file (type pdf)
+<use Figure+Table/OS-Standard-deviations-of-PCs.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 250.
+See the caption package documentation for explanation.
+
+[5]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-UMAP-Unintegrated.pdf Graphic file (type pdf)
+<use Figure+Table/OS-UMAP-Unintegrated.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 261.
+See the caption package documentation for explanation.
+
+[6]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-UMAP-Integrated.pdf Graphic file (type pdf)
+<use Figure+Table/OS-UMAP-Integrated.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 272.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f) [7]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-Marker-Validation.pdf Graphic file (type pdf)
+<use Figure+Table/OS-Marker-Validation.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 308.
+See the caption package documentation for explanation.
+
+[8]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-SCSA-Cell-type-annotation.pdf Graphic file (type pdf)
+<use Figure+Table/OS-SCSA-Cell-type-annotation.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 319.
+See the caption package documentation for explanation.
+
+[9]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-SCSA-Cell-Proportions-in-each-sample.pdf Graphic file (ty
+pe pdf)
+<use Figure+Table/OS-SCSA-Cell-Proportions-in-each-sample.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 330.
+See the caption package documentation for explanation.
+
+[10]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-proportions-of-aneuploid-and-diploid.pdf Graphic file (ty
+pe pdf)
+<use Figure+Table/OS-proportions-of-aneuploid-and-diploid.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 346.
+See the caption package documentation for explanation.
+
+[11]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f) [12]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian85.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian85.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: scfea_OS_SAMPLE/loss_20250408-165632.png Graphic file (type bmp)
+<scfea_OS_SAMPLE/loss_20250408-165632.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 392.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f) [13]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f) [14]
+File: Figure+Table/OS-SAMPLE-cells-metabolic-flux.pdf Graphic file (type pdf)
+<use Figure+Table/OS-SAMPLE-cells-metabolic-flux.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 453.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-CANCER-The-scsa-cell.pdf Graphic file (type pdf)
+<use Figure+Table/OS-CANCER-The-scsa-cell.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 471.
+See the caption package documentation for explanation.
+
+[15]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-CANCER-Cancer-Cell-type-annotation.pdf Graphic file (type
+ pdf)
+<use Figure+Table/OS-CANCER-Cancer-Cell-type-annotation.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 487.
+See the caption package documentation for explanation.
+
+[16]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-CANCER-cancer-cell-proportions.pdf Graphic file (type pdf
+)
+<use Figure+Table/OS-CANCER-cancer-cell-proportions.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 496.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f) [17]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-CANCER-FLUX-Malignant-cell-BC-vs-Benign-cell-BC.pdf Graph
+ic file (type pdf)
+<use Figure+Table/OS-CANCER-FLUX-Malignant-cell-BC-vs-Benign-cell-BC.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 512.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 539.
+
+LaTeX Font Warning: Font shape `TU/FandolFang-Regular(0)/b/n' undefined
+(Font)              using `TU/FandolFang-Regular(0)/m/n' instead on input line 
+539.
+
+
+Overfull \hbox (179.80652pt too wide) in paragraph at lines 539--540
+[]\TU/lmr/bx/n/10 (See: \TU/lmtt/b/n/10 Figure+Table/3.4.2_Limma_ \TU/FandolFan
+g-Regular(0)/m/n/10 代 谢 通 量 差 异 分 析 \TU/lmtt/b/n/10 _(OS_CANCER_FLUX)/OS-CANCER
+-FLUX-Malignant-cell-BC-vs-Benign-cell-BC-content\TU/lmr/bx/n/10 ) 
+ []
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f) [18]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-SAMPLE-Malignant-cell-Benign-cell-Cell-flux-ridge-plot.pd
+f Graphic file (type pdf)
+<use Figure+Table/OS-SAMPLE-Malignant-cell-Benign-cell-Cell-flux-ridge-plot.pdf
+>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 572.
+See the caption package documentation for explanation.
+
+[19]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+Underfull \hbox (badness 1137) in paragraph at lines 587--588
+\TU/FandolSong-Regular(0)/m/n/10 将 \TU/FandolSong-Regular(0)/b/n/10 基 因 集 \TU/l
+mr/m/n/10 (Malignant_cell_Benign_cell, \TU/FandolSong-Regular(0)/m/n/10 来 自 于 \
+TU/lmr/m/n/10 scFEA \TU/FandolSong-Regular(0)/m/n/10 单 细 胞 数 据 的 代 谢 通 量 预 测 \T
+U/lmr/m/n/10 [Section:
+ []
+
+[20]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian89.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/TCGA-OS-lasso-COX-model.pdf Graphic file (type pdf)
+<use Figure+Table/TCGA-OS-lasso-COX-model.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 616.
+See the caption package documentation for explanation.
+
+[21]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/TCGA-OS-lasso-COX-coeffients-lambda-min.pdf Graphic file (ty
+pe pdf)
+<use Figure+Table/TCGA-OS-lasso-COX-coeffients-lambda-min.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 625.
+See the caption package documentation for explanation.
+
+[22]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/TCGA-OS-lasso-COX-coeffients-lambda-1se.pdf Graphic file (ty
+pe pdf)
+<use Figure+Table/TCGA-OS-lasso-COX-coeffients-lambda-1se.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 634.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f) [23]
+File: Figure+Table/TCGA-OS-lasso-COX-ROC-lambda-min.pdf Graphic file (type pdf)
+
+<use Figure+Table/TCGA-OS-lasso-COX-ROC-lambda-min.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 643.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/TCGA-OS-lasso-COX-ROC-lambda-1se.pdf Graphic file (type pdf)
+
+<use Figure+Table/TCGA-OS-lasso-COX-ROC-lambda-1se.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 652.
+See the caption package documentation for explanation.
+
+[24]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian85.pg
+f) [25]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian85.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian85.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian85.pg
+f) [26]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-OUTER-all-datasets-survival-plot.pdf Graphic file (type p
+df)
+<use Figure+Table/OS-OUTER-all-datasets-survival-plot.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 717.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/OS-OUTER-all-datasets-ROC-validation.pdf Graphic file (type 
+pdf)
+<use Figure+Table/OS-OUTER-all-datasets-ROC-validation.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 728.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f) [27]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/PROG-KEGG-enrichment.pdf Graphic file (type pdf)
+<use Figure+Table/PROG-KEGG-enrichment.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 744.
+See the caption package documentation for explanation.
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f)
+File: Figure+Table/PROG-GO-enrichment.pdf Graphic file (type pdf)
+<use Figure+Table/PROG-GO-enrichment.pdf>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 755.
+See the caption package documentation for explanation.
+
+[28]
+(/usr/share/texlive/texmf-dist/tex/generic/pgfornament/vectorian/vectorian88.pg
+f) [29] [30] (./opt_out.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 43187 strings out of 476191
+ 922708 string characters out of 5812071
+ 1431768 words of memory out of 5000000
+ 63007 multiletter control sequences out of 15000+600000
+ 473474 words of font info for 77 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 93i,12n,121p,1677b,1028s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on opt_out.pdf (34 pages).

@@ -8,9 +8,11 @@ info <- items(start = td("20231124"), end = td("20241108"), finish = td("2025-04
 )
 show.ic(info)
 
-order_publish("opt.Rmd", "opt_out.Rmd")
-file.rename("./opt_out.pdf", paste0(info$id, "分析优化.pdf"))
-idname <- order_packaging()
+order_publish.bosai("opt.Rmd", "opt_out.Rmd")
+idname <- formatName.bosai("./opt_out.docx")
+order_packaging(
+  "./opt_out.docx", idname = idname, external_file = NULL, extras = NULL
+)
 ```
 
 ```{r include = F}
@@ -22,7 +24,7 @@ autor_preset()
 ## if you want to run codes of this Rmarkdown,
 ## please install the package `utils.tool` and other related packages (run
 ## install.R)
-options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = TRUE)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -47,7 +49,25 @@ dic(di("差异表达基因"),
 ```
 
 ```{r}
+#| route
+route <- as_network(
+  list("Osteosarcoma:scRNA-seq:QC:Integration:Clustering:UMAP:细胞注释:OS亚群分析",
+    "QC:copyKAT_癌细胞鉴定:OS亚群分析",
+    "Integration:各细胞群内随机取样:代谢通量预测:OS亚群分析:代谢通量差异分析:差异代谢通量:对应基因模块",
+    "Osteosarcoma:TCGA_RNA-seq, GEO",
+    "GEO:生存数据全面检索:{bind(gse.used)}:Outer_dataset",
+    "对应基因模块, TCGA_RNA-seq:Univariate_COX:LASSO_COX:预后模型:Survival, ROC, 富集分析",
+    "Outer_dataset, 预后模型:Validation"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+# cytoscape_chart(route, -100)
+```
 
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 14, 9))
 ```
 
 
@@ -94,16 +114,20 @@ lapply(list.files("./GSE152048/", "tar.gz$"),
 
 `r snap(srn.os, 0:7)`
 
-(鉴定所用 Markers 来源于原作文献 PMID:33303760)
+`r ref("Pre-Quality-control")`
+`r ref("OS-After-Quality-control")`
+`r ref("OS-Standard-deviations-of-PCs")`
+`r ref("OS-UMAP-Unintegrated")`
+`r ref("OS-UMAP-Integrated")`
+`r ref("OS-significant-markers-of-cell-clusters")`
+`r ref("OS-Marker-Validation")`
+`r ref("OS-SCSA-Cell-type-annotation")`
+`r ref("OS-SCSA-Cell-Proportions-in-each-sample")`
+<!-- LEGEND_END -->
+
+(鉴定所用 Markers 来源于原作文献 PMID:33303760 `r cite_show("Single_cell_RNA_Zhou_2020")`)
 
 ```{r}
-sr.os <- job_seurat("./GSE152048/BC2")
-sr.os <- step1(sr.os)
-sr.os@plots$step1$p.qc
-
-# useWhich <- strx(dirs, "BC[0-9]+") %in% paste0("BC", 2:3)
-# srn.os <- job_seurat5n(dirs[useWhich], strx(dirs, "BC[0-9]+")[useWhich])
-
 dirs <- list.files("./GSE152048", "^BC", full.names = T)
 srn.os <- job_seurat5n(dirs, strx(dirs, "BC[0-9]+"))
 srn.os@params$p.qc_pre
@@ -151,9 +175,68 @@ clear(srn.os)
 
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| Pre-Quality-control
+autor(srn.os@params$p.qc_pre)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-After-Quality-control
+autor(srn.os@params$p.qc_aft)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-Standard-deviations-of-PCs
+autor(srn.os@plots$step2$p.pca_rank)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-UMAP-Unintegrated
+autor(srn.os@plots$step3$p.umapUint)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-UMAP-Integrated
+autor(srn.os@plots$step3$p.umapInt)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-significant-markers-of-cell-clusters
+autor(srn.os@tables$step5$all_markers)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-Marker-Validation
+autor(srn.os@plots$step6$p.markers)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-SCSA-Cell-type-annotation
+autor(srn.os@plots$step6$p.map_scsa)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-SCSA-Cell-Proportions-in-each-sample
+autor(srn.os@plots$step6$p.props_scsa)
+```
+
 ## CopyKAT 癌细胞鉴定 (OS)
 
 `r snap(katn.os, 0:2)`
+
+`r ref("OS-proportions-of-aneuploid-and-diploid")`
+`r ref("OS-all-malignant-cells-heatmap")`
+`r ref("OS-all-copyKAT-prediction-data")`
+<!-- LEGEND_END -->
 
 ```{r}
 #' @meth {get_meth(katn.os)}
@@ -162,14 +245,41 @@ set_remoteRun.bosai(16)
 katn.os <- set_remote(katn.os)
 katn.os <- step1(katn.os, 10)
 katn.os <- step2(katn.os, 20, ignore = TRUE)
+katn.os@step <- 2L
 katn.os <- step3(katn.os)
+katn.os@plots$step3$p.props
+katn.os@tables$step3$t.res_copykat
 katn.os@plots$step3$all_heatmap
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-proportions-of-aneuploid-and-diploid
+autor(katn.os@plots$step3$p.props)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-all-malignant-cells-heatmap
+autor(katn.os@plots$step3$all_heatmap)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-all-copyKAT-prediction-data
+autor(katn.os@tables$step3$t.res_copykat)
 ```
 
 ## scFEA 单细胞数据的代谢通量预测 (OS_SAMPLE)
 
 `r snap(srn.os_sample, 0:7)`
 `r snap(scf.os_sample, 0:2)`
+
+`r ref("OS-SAMPLE-Convergency-of-the-loss-terms-during-training")`
+`r ref("OS-SAMPLE-annotation-of-metabolic-flux")`
+`r ref("OS-SAMPLE-metabolic-flux-matrix")`
+`r ref("OS-SAMPLE-cells-metabolic-flux")`
+<!-- LEGEND_END -->
 
 ```{r}
 srn.os_sample <- asjob_seurat_sub(srn.os, sample = .5)
@@ -187,43 +297,95 @@ scf.os_sample@plots$step2$p.loss
 scf.os_sample@tables$step2$t.anno
 scf.os_sample@tables$step2$t.flux
 
-p.os_sample <- vis(srn.os_sample, "scsa_cell")
-p.os_sample
-
 srn.os_sample <- map(srn.os_sample, scf.os_sample)
 srn.os_sample@params$p.map_flux
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-SAMPLE-Convergency-of-the-loss-terms-during-training
+autor(scf.os_sample@plots$step2$p.loss)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-SAMPLE-annotation-of-metabolic-flux
+autor(scf.os_sample@tables$step2$t.anno)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-SAMPLE-metabolic-flux-matrix
+autor(scf.os_sample@tables$step2$t.flux)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-SAMPLE-cells-metabolic-flux
+autor(srn.os_sample@params$p.map_flux)
+```
+
 ## Seurat 细胞亚群分析 (OS_CANCER)
 
+成骨细胞和软骨细胞骨肉瘤是临床上常见的两种主要骨肉瘤类型`r cite_show("Single_cell_RNA_Zhou_2020")`。
+在这里，聚焦于注释结果中的 Proliferating_osteoblastic_OS, Chondroblastic_OS, Osteoblastic_OS 细胞，重新聚类分析。
 `r snap(srn.os_cancer, 0:7)`
+
+`r ref("OS-CANCER-The-scsa-cell")`
+<!-- LEGEND_END -->
 
 ```{r}
 srn.os_cancer <- asjob_seurat_sub(srn.os, grpl(scsa_cell, "_OS$", TRUE))
 #' @meth {get_meth(srn.os_cancer)}
 srn.os_cancer <- step1(srn.os_cancer)
 srn.os_cancer <- step2(srn.os_cancer)
-srn.os_cancer@plots$step2$p.pca_rank
 srn.os_cancer <- step3(srn.os_cancer)
 p.os_cancer <- vis(srn.os_cancer, "scsa_cell")
 p.os_cancer
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-The-scsa-cell
+autor(p.os_cancer)
 ```
 
 ### Seurat-copyKAT 癌细胞注释 (OS_CANCER)
 
 `r snap(srn.os_cancer, "job_kat")`
 
+`r ref("OS-CANCER-Cancer-Cell-type-annotation")`
+`r ref("OS-CANCER-cancer-cell-proportions")`
+<!-- LEGEND_END -->
+
 ```{r}
 srn.os_cancer <- map(srn.os_cancer, katn.os)
-srn.os_cancer@params$p.props_cancer
 srn.os_cancer@params$p.map_cancer
+srn.os_cancer@params$p.props_cancer
 meta(srn.os)
 ```
 
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-Cancer-Cell-type-annotation
+autor(srn.os_cancer@params$p.map_cancer)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-cancer-cell-proportions
+autor(srn.os_cancer@params$p.props_cancer)
+```
+
 ### Limma 代谢通量差异分析 (OS_CANCER_FLUX)
 
 `r snap(lm.os_cancer_flux, 0:3)`
+
+`r ref("OS-CANCER-FLUX-Malignant-cell-BC-vs-Benign-cell-BC")`
+`r ref("OS-CANCER-FLUX-data-Malignant-cell-BC-vs-Benign-cell-BC")`
+`r ref("OS-SAMPLE-Malignant-cell-Benign-cell-Cell-flux-ridge-plot")`
+<!-- LEGEND_END -->
 
 ```{r}
 scf.os_sample <- regroup(scf.os_sample, srn.os)
@@ -251,6 +413,25 @@ feature(scf.os_sample, "gene")
 ```
 
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-FLUX-Malignant-cell-BC-vs-Benign-cell-BC
+autor(lm.os_cancer_flux@plots$step2$p.volcano$`Malignant_cell_BC - Benign_cell_BC`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-FLUX-data-Malignant-cell-BC-vs-Benign-cell-BC
+autor(lm.os_cancer_flux@tables$step2$tops$`Malignant_cell_BC - Benign_cell_BC`)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-SAMPLE-Malignant-cell-Benign-cell-Cell-flux-ridge-plot
+autor(scf.os_sample@params$p.fluxs$Malignant_cell_Benign_cell)
+```
+
 ## TCGA 数据获取 (OS)
 
 `r snap(tcga.os, 0:3)`
@@ -266,6 +447,14 @@ tcga.os <- step3(tcga.os)
 ## COX 回归 (TCGA_OS)
 
 `r snap(cox.tcga_os, 0:5)`
+
+`r ref("TCGA-OS-sig-Univariate-Cox-Coefficients")`
+`r ref("TCGA-OS-lasso-COX-model")`
+`r ref("TCGA-OS-lasso-COX-coeffients-lambda-min")`
+`r ref("TCGA-OS-lasso-COX-coeffients-lambda-1se")`
+`r ref("TCGA-OS-lasso-COX-ROC-lambda-min")`
+`r ref("TCGA-OS-lasso-COX-ROC-lambda-1se")`
+<!-- LEGEND_END -->
 
 ```{r}
 lm.tcga_os <- asjob_limma(tcga.os)
@@ -288,7 +477,6 @@ cox.tcga_os <- step4(
   inherit_unicox.cut.p = .01,
   type.measure = "C", nfold = 5
 )
-cox.tcga_os@params$multi_cox$coef
 cox.tcga_os@plots$step4$p.lassoCOX_model
 cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.min
 cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.1se
@@ -296,9 +484,49 @@ cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.min
 cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.1se
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-OS-sig-Univariate-Cox-Coefficients
+autor(cox.tcga_os@tables$step3$t.sigUnivariateCoxCoefficients)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-OS-lasso-COX-model
+autor(cox.tcga_os@plots$step4$p.lassoCOX_model)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-OS-lasso-COX-coeffients-lambda-min
+autor(cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-OS-lasso-COX-coeffients-lambda-1se
+autor(cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.1se)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-OS-lasso-COX-ROC-lambda-min
+autor(cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-OS-lasso-COX-ROC-lambda-1se
+autor(cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.1se)
+```
+
 ## Survival 生存分析 (TCGA_OS)
 
 `r snap(surv.tcga_os, 0:1)`
+
+`r ref("TCGA-OS-Survival-plots")`
+`r ref("TCGA-OS-ROC-plots")`
+<!-- LEGEND_END -->
 
 ```{r}
 surv.tcga_os <- asjob_survival(cox.tcga_os, lambda = "min")
@@ -306,12 +534,28 @@ surv.tcga_os <- asjob_survival(cox.tcga_os, lambda = "min")
 surv.tcga_os <- step1(surv.tcga_os)
 surv.tcga_os@plots$step1$p.surv
 surv.tcga_os@plots$step1$p.roc
-surv.tcga_os@params$p.surv_genes_hp
+surv.tcga_os@params$fea_coefs
+feature(surv.tcga_os)
 ```
 
-## GSE 数据搜索 (OS)
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-OS-Survival-plots
+autor(surv.tcga_os@plots$step1$p.surv)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-OS-ROC-plots
+autor(surv.tcga_os@plots$step1$p.roc)
+```
+
+## 外部数据集验证
+
+### GSE 数据搜索 (OS)
 
 `r snap(gds.os, 0:3)`
+在检索匹配后，经人工确认，全部带有生存数据的 Osteosarcoma 为：`r bind(gse.used)`
 
 ```{r}
 gds.os <- job_gds("Osteosarcoma")
@@ -327,10 +571,9 @@ sink()
 
 gse.used <- extract_gse_from_text("./tabs/test.md")
 gse.used
-# "GSE16091" "GSE39055" "GSE39057"
+# "GSE16091" "GSE39055" "GSE39057" "GSE21257"
 ```
 
-## 外部数据集验证
 
 ### GEO 数据获取 (OS_GSE39057)
 
@@ -421,7 +664,12 @@ lm.os_GSE21257 <- step1(lm.os_GSE21257)
 
 ### Survival 生存分析 (OS_OUTER)
 
+对在 GEO 找到的所有具备生存信息的 Osteosarcoma 数据集做了外部验证。
 `r snap(surv.os_outer, 0:1)`
+
+`r ref("OS-OUTER-all-datasets-survival-plot")`
+`r ref("OS-OUTER-all-datasets-ROC-validation")`
+<!-- LEGEND_END -->
 
 ```{r}
 surv.os_outer <- do_survival(
@@ -431,18 +679,61 @@ surv.os_outer <- do_survival(
 )
 #' @meth {get_meth(surv.os_outer)}
 surv.os_outer <- step1(surv.os_outer, roc_time = c(1, 3, 5))
-surv.os_outer@plots$step1$p.surv$risk_score
-surv.os_outer@plots$step1$p.roc$risk_score
-
 surv.os_outer@step <- 1L
 surv.os_outer <- step2(surv.os_outer)
 surv.os_outer@plots$step2$p.survs
 surv.os_outer@plots$step2$p.rocs
-
 ```
 
 
+```{r eval = T, echo = F, results = "asis"}
+#| OS-OUTER-all-datasets-survival-plot
+autor(surv.os_outer@plots$step2$p.survs)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-OUTER-all-datasets-ROC-validation
+autor(surv.os_outer@plots$step2$p.rocs)
+```
+
+## ClusterProfiler 富集分析 (PROG)
+
+`r snap(en.prog, 0:2)`
+
+`r ref("PROG-KEGG-enrichment")`
+`r ref("PROG-GO-enrichment")`
+<!-- LEGEND_END -->
+
+```{r}
+en.prog <- asjob_enrich(feature(surv.tcga_os))
+en.prog <- step1(en.prog)
+#' @meth {get_meth(en.prog)}
+en.prog <- step2(en.prog)
+en.prog@plots$step1$p.kegg$ids
+en.prog@plots$step1$p.go$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PROG-KEGG-enrichment
+autor(en.prog@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| PROG-GO-enrichment
+autor(en.prog@plots$step1$p.go$ids)
+```
+
 
 # 总结 {#conclusion}
+
+癌症的本质特征与癌细胞自身代谢的改变息息相关 `r cite_show("Tumor_cell_meta_Kroeme_2008")`。
+对于骨肉瘤，目前仍缺少研究从单细胞水平探究癌症的代谢变化。
+本分析从单细胞水平鉴定的恶质细胞 (肿瘤细胞) 出发，分析正常细胞与癌症细胞之间的代谢通量差异，
+进而获取对应代谢模块的基因，建立预后模型，以代谢改变的角度，预测疾病的进展。
+模型以 TARGET-OS 数据集建立，进而在 GEO 数据库搜索了所有可用的带有生存信息的基因表达数据集，
+用以验证预后模型的可靠性。
 
 

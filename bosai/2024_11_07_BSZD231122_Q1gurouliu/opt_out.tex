@@ -67,6 +67,11 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage{tikz} \usepackage{auto-pst-pdf} \usepackage{pgfornament} \usepackage{pstricks-add} \usepackage{caption} \captionsetup{font={footnotesize},width=6in} \renewcommand{\dblfloatpagefraction}{.9} \makeatletter \renewenvironment{figure} {\def\@captype{figure}} \makeatother \@ifundefined{Shaded}{\newenvironment{Shaded}} \@ifundefined{snugshade}{\newenvironment{snugshade}} \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}} \definecolor{shadecolor}{RGB}{230,230,230} \usepackage{xeCJK} \usepackage{setspace} \setstretch{1.3} \usepackage{tcolorbox} \setcounter{secnumdepth}{4} \setcounter{tocdepth}{4} \usepackage{wallpaper} \usepackage[absolute]{textpos} \tcbuselibrary{breakable} \renewenvironment{Shaded} {\begin{tcolorbox}[colback = gray!10, colframe = gray!40, width = 16cm, arc = 1mm, auto outer arc, title = {R input}]} {\end{tcolorbox}} \usepackage{titlesec} \titleformat{\paragraph} {\fontsize{10pt}{0pt}\bfseries} {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}} {1em} {} []
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
 
 \author{}
 \date{\vspace{-2.5em}}
@@ -75,15 +80,17 @@
 
 \begin{titlepage} \newgeometry{top=6.5cm}
 \ThisCenterWallPaper{1.12}{~/outline/bosai//cover_page_analysis.pdf}
-\begin{center} \textbf{\huge 骨肉瘤} \vspace{4em}
-\begin{textblock}{10}(3,4.85) \Large
+\begin{center} \textbf{\huge 骨肉瘤}
+\vspace{4em} \begin{textblock}{10}(3,4.85) \Large
 \textbf{\textcolor{black}{BSZD231122}}
 \end{textblock} \begin{textblock}{10}(3,5.8)
 \Large \textbf{\textcolor{black}{黄礼闯}}
 \end{textblock} \begin{textblock}{10}(3,6.75)
-\Large \textbf{\textcolor{black}{分析优化}}
+\Large
+\textbf{\textcolor{black}{分析优化}}
 \end{textblock} \begin{textblock}{10}(3,7.7)
-\Large \textbf{\textcolor{black}{杨立宇}}
+\Large
+\textbf{\textcolor{black}{杨立宇}}
 \end{textblock} \end{center} \end{titlepage}
 \restoregeometry
 
@@ -102,80 +109,698 @@
 \hypertarget{abstract}{%
 \section{分析流程}\label{abstract}}
 
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Route.pdf}
+\caption{Route}\label{fig:Route}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
 \hypertarget{introduction}{%
 \section{材料和方法}\label{introduction}}
+
+\hypertarget{ux6570ux636eux5206ux6790ux5e73ux53f0}{%
+\subsection{数据分析平台}\label{ux6570ux636eux5206ux6790ux5e73ux53f0}}
+
+在 Linux pop-os x86\_64 (6.9.3-76060903-generic) 上，使用 R version 4.4.2 (2024-10-31) (\url{https://www.r-project.org/}) 对数据统计分析与整合分析。
+
+\hypertarget{seurat-ux96c6ux6210ux5355ux7ec6ux80deux6570ux636eux5206ux6790-dataset-os}{%
+\subsection{Seurat 集成单细胞数据分析 (Dataset: OS)}\label{seurat-ux96c6ux6210ux5355ux7ec6ux80deux6570ux636eux5206ux6790-dataset-os}}
+
+使用 Seurat R 包 (5.1.0) 进行单细胞数据质量控制 (QC) 和下游分析。依据 \url{https://satijalab.org/seurat/articles/integration_introduction} 为指导对单细胞数据预处理。
+一个细胞至少应有 1000 个基因，并且基因数量小于 7000。线粒体基因的比例小于 10\%。根据上述条件，获得用于下游分析的高质量细胞。
+执行标准 Seurat 分析工作流 (\texttt{NormalizeData}, \texttt{FindVariableFeatures}, \texttt{ScaleData}, \texttt{RunPCA})。以 \texttt{ElbowPlot} 判断后续分析的 PC 维度。
+以 \texttt{Seurat::IntegrateLayers} 集成数据，去除批次效应 (使用 HarmonyIntegration 方法)。在 1-10 PC 维度下，以 \texttt{Seurat::FindNeighbors} 构建 Nearest-neighbor Graph。随后在 1.2 分辨率下，以 \texttt{Seurat::FindClusters} 函数识别细胞群并以 \texttt{Seurat::RunUMAP} 进行 UMAP 聚类。
+以 \texttt{Seurat::FindAllMarkers} (LogFC 阈值 0.25; 最小检出率 0.01) 为所有细胞群寻找 Markers。
+以 Python 工具 \texttt{SCSA} ((2020, \textbf{IF:2.8}, Q2, Frontiers in genetics)\textsuperscript{\protect\hyperlink{ref-ScsaACellTyCaoY2020}{1}}) (\url{https://github.com/bioinfo-ibms-pumc/SCSA}) 对细胞群注释。
+
+\hypertarget{copykat-ux764cux7ec6ux80deux9274ux5b9a-dataset-os}{%
+\subsection{CopyKAT 癌细胞鉴定 (Dataset: OS)}\label{copykat-ux764cux7ec6ux80deux9274ux5b9a-dataset-os}}
+
+R 包 \texttt{CopyKAT} 用于鉴定恶性细胞 (2021, \textbf{IF:33.1}, Q1, Nature Biotechnology)\textsuperscript{\protect\hyperlink{ref-DelineatingCopGaoR2021}{2}}。\texttt{CopyKAT} 可以区分整倍体与非整倍体，其中非整倍体被认为是肿瘤细胞，而整倍体是正常细胞 (2012, \textbf{IF:39.1}, Q1, Nature Reviews Genetics)\textsuperscript{\protect\hyperlink{ref-CausesAndConsGordon2012}{3}}。由于 \texttt{CopyKAT} 不适用于多样本数据 (批次效应的存在) ，因此，对各个样本独立鉴定。
+
+\hypertarget{scfea-ux5355ux7ec6ux80deux6570ux636eux7684ux4ee3ux8c22ux901aux91cfux9884ux6d4b-dataset-os_sample}{%
+\subsection{scFEA 单细胞数据的代谢通量预测 (Dataset: OS\_SAMPLE)}\label{scfea-ux5355ux7ec6ux80deux6570ux636eux7684ux4ee3ux8c22ux901aux91cfux9884ux6d4b-dataset-os_sample}}
+
+将 Seurat 的 \texttt{RNA} Assay (`counts') 作为输入数据，以 \texttt{scFEA} 预测细胞的代谢通量 (2021, \textbf{IF:6.2}, Q1, Genome research)\textsuperscript{\protect\hyperlink{ref-AGraphNeuralAlgham2021}{4}}。参考 \url{https://github.com/changwn/scFEA/blob/master/scFEA_tutorial1.ipynb} 和 \url{https://github.com/changwn/scFEA/blob/master/scFEA_tutorial2.ipynb}。
+
+\hypertarget{seurat-ux7ec6ux80deux4e9aux7fa4ux5206ux6790-dataset-os_cancer}{%
+\subsection{Seurat 细胞亚群分析 (Dataset: OS\_CANCER)}\label{seurat-ux7ec6ux80deux4e9aux7fa4ux5206ux6790-dataset-os_cancer}}
+
+执行标准 Seurat 分析工作流 (\texttt{NormalizeData}, \texttt{FindVariableFeatures}, \texttt{ScaleData}, \texttt{RunPCA})。以 \texttt{ElbowPlot} 判断后续分析的 PC 维度。
+在 1-15 PC 维度下，以 Seurat::FindNeighbors 构建 Nearest-neighbor Graph。随后在 1.2 分辨率下，以 Seurat::FindClusters 函数识别细胞群并以 Seurat::RunUMAP 进行 UMAP 聚类。
+
+\hypertarget{limma-ux4ee3ux8c22ux901aux91cfux5deeux5f02ux5206ux6790-dataset-os_cancer_flux}{%
+\subsection{Limma 代谢通量差异分析 (Dataset: OS\_CANCER\_FLUX)}\label{limma-ux4ee3ux8c22ux901aux91cfux5deeux5f02ux5206ux6790-dataset-os_cancer_flux}}
+
+以 \texttt{limma} (3.62.2) (2005)\textsuperscript{\protect\hyperlink{ref-LimmaLinearMSmyth2005}{5}} 差异分析。分析方法参考 \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}。创建设计矩阵，对比矩阵，差异分析：Malignant\_cell\_BC vs Benign\_cell\_BC。使用 \texttt{limma::lmFit}, \texttt{limma::contrasts.fit}, \texttt{limma::eBayes} 拟合线形模型。以 \texttt{limma::topTable} 提取所有结果，并过滤得到 adj.P.Val 小于 0.05，\textbar Log2(FC)\textbar{} 大于 0.5 的统计结果。
+
+\hypertarget{tcga-ux6570ux636eux83b7ux53d6-dataset-os}{%
+\subsection{TCGA 数据获取 (Dataset: OS)}\label{tcga-ux6570ux636eux83b7ux53d6-dataset-os}}
+
+以 R 包 \texttt{TCGAbiolinks} (2.35.1) (2015, \textbf{IF:16.6}, Q1, Nucleic Acids Research)\textsuperscript{\protect\hyperlink{ref-TcgabiolinksAColapr2015}{6}} 获取 TARGET-OS 数据集。
+
+\hypertarget{cox-ux56deux5f52-dataset-tcga_os}{%
+\subsection{COX 回归 (Dataset: TCGA\_OS)}\label{cox-ux56deux5f52-dataset-tcga_os}}
+
+以 R 包 \texttt{survival} (3.8.3) 进行单因素 COX 回归 (\texttt{survival::coxph})。筛选 \texttt{Pr(\textgreater{}\textbar{}z\textbar{})} \textless{} .05\texttt{的基因。\ 以\ R\ 包}glmnet\texttt{(4.1.8)\ 作\ lasso\ 处罚的\ cox\ 回归，以}cv.glmnet` 函数作 5 交叉验证获得模型。
+
+\hypertarget{survival-ux751fux5b58ux5206ux6790-dataset-tcga_os}{%
+\subsection{Survival 生存分析 (Dataset: TCGA\_OS)}\label{survival-ux751fux5b58ux5206ux6790-dataset-tcga_os}}
+
+以 R 包 \texttt{survival} (3.8.3) 生存分析，以 R 包 \texttt{survminer} (0.5.0) 绘制生存曲线。
+
+\hypertarget{gse-ux6570ux636eux641cux7d22-dataset-os}{%
+\subsection{GSE 数据搜索 (Dataset: OS)}\label{gse-ux6570ux636eux641cux7d22-dataset-os}}
+
+使用 Entrez Direct (EDirect) \url{https://www.ncbi.nlm.nih.gov/books/NBK3837/} 搜索 GEO 数据库 (\texttt{esearch\ -db\ gds})，查询信息为: ((Osteosarcoma{[}Description{]}) AND ((6:300{[}Number of Samples{]}) AND (GSE{[}Entry Type{]}) AND (Homo sapiens{[}Organism{]}))，转化为数据表格。
+以正则匹配，滤除 `summary' 或 `title' 中包含 `single cell' 或 `scRNA' 的数据例。仅查询临床数据，因此滤除匹配到关键词 in vitro, cell line, CD{[}0-9{]}+, vehicle, vector, DMSO, /ml, nm 的数据例。
+(注：以上仅为查找合适的 GEO 数据所做的数据筛选，与实际分析无关) 。仅获取类型包含 `Expression profiling by high throughput sequencing' 或 `Expression profiling by array' 的数据例。此外，排除 summary 或 title 中匹配到字符集 EX (KO, WT, \emph{WT}, \emph{KO}, wildtype, mutant, knock, deficien, absen, SuperSeries, transgenic, CD{[}0-9{]}+) 的数据例。上述得到 147 个 GSE 数据集。以 R 抓取网页 (例如，\texttt{RCurl::getURL} 抓取 )，解析 `Overall design' 和 `Samples' 模块，匹配字符集 EX，排除匹配到的数据例。排除 `Overall design' 中包含 in vitro, cell line, CD{[}0-9{]}+, vehicle, vector, DMSO, /ml, nm 的数据例。仅获取包含 `protein coding' 测序的数据集，排除 `Samples' 和 `Overall design' 中包含 siRNA, miRNA, miR, lncRNA 字符的数据例。余下共 73 个。
+以 \texttt{GEOquery} 获取 GSE 数据集 (n=73)。
+从元数据中匹配包含关键词的数据：`Survival\textbar Event\textbar Dead\textbar Alive\textbar Status\textbar Day\textbar Time'，共得到 17 个数据集。
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-dataset-os_gse39057}{%
+\subsection{GEO 数据获取 (Dataset: OS\_GSE39057)}\label{geo-ux6570ux636eux83b7ux53d6-dataset-os_gse39057}}
+
+以 R 包 \texttt{GEOquery} (2.74.0) 获取 GSE39057 数据集。
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-dataset-os_gse39055}{%
+\subsection{GEO 数据获取 (Dataset: OS\_GSE39055)}\label{geo-ux6570ux636eux83b7ux53d6-dataset-os_gse39055}}
+
+以 R 包 \texttt{GEOquery} (2.74.0) 获取 GSE39055 数据集。
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-dataset-os_gse16091}{%
+\subsection{GEO 数据获取 (Dataset: OS\_GSE16091)}\label{geo-ux6570ux636eux83b7ux53d6-dataset-os_gse16091}}
+
+以 R 包 \texttt{GEOquery} (2.74.0) 获取 GSE16091 数据集。
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-dataset-os_gse21257}{%
+\subsection{GEO 数据获取 (Dataset: OS\_GSE21257)}\label{geo-ux6570ux636eux83b7ux53d6-dataset-os_gse21257}}
+
+以 R 包 \texttt{GEOquery} (2.74.0) 获取 GSE21257 数据集。
+
+\hypertarget{survival-ux751fux5b58ux5206ux6790-dataset-os_outer}{%
+\subsection{Survival 生存分析 (Dataset: OS\_OUTER)}\label{survival-ux751fux5b58ux5206ux6790-dataset-os_outer}}
+
+以 R 包 \texttt{survival} (3.8.3) 生存分析，以 R 包 \texttt{survminer} (0.5.0) 绘制生存曲线。
+
+\hypertarget{clusterprofiler-ux5bccux96c6ux5206ux6790-dataset-prog}{%
+\subsection{ClusterProfiler 富集分析 (Dataset: PROG)}\label{clusterprofiler-ux5bccux96c6ux5206ux6790-dataset-prog}}
+
+以 ClusterProfiler R 包 (4.15.0.2) (2021, \textbf{IF:33.2}, Q1, The Innovation)\textsuperscript{\protect\hyperlink{ref-ClusterprofilerWuTi2021}{7}}进行 KEGG 和 GO 富集分析。以 p.adjust 表示显著水平。
 
 \hypertarget{workflow}{%
 \section{分析结果}\label{workflow}}
 
-\hypertarget{seurat-ux5355ux7ec6ux80deux6570ux636eux5206ux6790-os}{%
-\subsection{Seurat 单细胞数据分析 (OS)}\label{seurat-ux5355ux7ec6ux80deux6570ux636eux5206ux6790-os}}
+\hypertarget{seurat-ux96c6ux6210ux5355ux7ec6ux80deux6570ux636eux5206ux6790-os}{%
+\subsection{Seurat 集成单细胞数据分析 (OS)}\label{seurat-ux96c6ux6210ux5355ux7ec6ux80deux6570ux636eux5206ux6790-os}}
+
+读取 BC10, BC11, BC16, BC17, BC2, BC20, BC21, BC22, BC3, BC5, BC6 样本的数据集。前期质量控制，一个细胞至少应有 1000 个基因，并且基因数量小于 7000。线粒体基因的比例小于 10\%。数据归一化，PCA 聚类 (Seurat 标准工作流，见方法章节) 后，绘制 PC standard deviations 图。去除批次效应后 (详见方法章节) ，在 1-10 PC 维度，1.2 分辨率下，对细胞群 UMAP 聚类。计算所有细胞群的 Marker。使用特异性 Marker，以 SCSA 对细胞群注释。
+
+(鉴定所用 Markers 来源于原作文献 \url{PMID:33303760} (2020, \textbf{IF:14.7}, Q1, Nature communications)\textsuperscript{\protect\hyperlink{ref-Single_cell_RNA_Zhou_2020}{8}})
 
 \begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
 \def\@captype{figure}
 \begin{center}
-\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-Markers-in-cell-types.pdf}
-\caption{OS Markers in cell types}\label{fig:OS-Markers-in-cell-types}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/Pre-Quality-control.pdf}
+\caption{Pre Quality control}\label{fig:Pre-Quality-control}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:Pre-Quality-control}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-After-Quality-control.pdf}
+\caption{OS After Quality control}\label{fig:OS-After-Quality-control}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-After-Quality-control}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-Standard-deviations-of-PCs.pdf}
+\caption{OS Standard deviations of PCs}\label{fig:OS-Standard-deviations-of-PCs}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-Standard-deviations-of-PCs}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-UMAP-Unintegrated.pdf}
+\caption{OS UMAP Unintegrated}\label{fig:OS-UMAP-Unintegrated}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-UMAP-Unintegrated}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-UMAP-Integrated.pdf}
+\caption{OS UMAP Integrated}\label{fig:OS-UMAP-Integrated}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-UMAP-Integrated}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:OS-significant-markers-of-cell-clusters}OS significant markers of cell clusters}\tabularnewline
+\toprule
+rownames & p\_val & avg\_log2FC & pct.1 & pct.2\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+rownames & p\_val & avg\_log2FC & pct.1 & pct.2\tabularnewline
+\midrule
+\endhead
+ALPL & 0 & 1.494 & 0.915 & 0.412\tabularnewline
+PANX3 & 0 & 2.181 & 0.645 & 0.156\tabularnewline
+IFITM5 & 0 & 2.458 & 0.802 & 0.323\tabularnewline
+LY6K & 0 & 1.191 & 0.77 & 0.314\tabularnewline
+RHBDL2 & 0 & 1.733 & 0.644 & 0.21\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+Tab. \ref{tab:OS-significant-markers-of-cell-clusters}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-Marker-Validation.pdf}
+\caption{OS Marker Validation}\label{fig:OS-Marker-Validation}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-Marker-Validation}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-SCSA-Cell-type-annotation.pdf}
+\caption{OS SCSA Cell type annotation}\label{fig:OS-SCSA-Cell-type-annotation}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-SCSA-Cell-type-annotation}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-SCSA-Cell-Proportions-in-each-sample.pdf}
+\caption{OS SCSA Cell Proportions in each sample}\label{fig:OS-SCSA-Cell-Proportions-in-each-sample}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-SCSA-Cell-Proportions-in-each-sample}
+
+\hypertarget{copykat-ux764cux7ec6ux80deux9274ux5b9a-os}{%
+\subsection{CopyKAT 癌细胞鉴定 (OS)}\label{copykat-ux764cux7ec6ux80deux9274ux5b9a-os}}
+
+以 \texttt{CopyKAT} 鉴定恶质细胞。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-proportions-of-aneuploid-and-diploid.pdf}
+\caption{OS proportions of aneuploid and diploid}\label{fig:OS-proportions-of-aneuploid-and-diploid}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-proportions-of-aneuploid-and-diploid}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:BC10-copyKAT-prediction-data}BC10 copyKAT prediction data}\tabularnewline
+\toprule
+orig.ident & cell.names & copykat.pred & copykat\_cell\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+orig.ident & cell.names & copykat.pred & copykat\_cell\tabularnewline
+\midrule
+\endhead
+BC10 & AAACCTGAGACTCGGA-1\_1 & aneuploid & Cancer cell\tabularnewline
+BC10 & AAACCTGAGGAACTGC-1\_1 & diploid & Normal cell\tabularnewline
+BC10 & AAACCTGAGGATGGAA-1\_1 & diploid & Normal cell\tabularnewline
+BC10 & AAACCTGAGGTGCTTT-1\_1 & diploid & Normal cell\tabularnewline
+BC10 & AAACCTGAGTAGCGGT-1\_1 & diploid & Normal cell\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+Tab. \ref{tab:BC10-copyKAT-prediction-data}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\hypertarget{scfea-ux5355ux7ec6ux80deux6570ux636eux7684ux4ee3ux8c22ux901aux91cfux9884ux6d4b-os_sample}{%
+\subsection{scFEA 单细胞数据的代谢通量预测 (OS\_SAMPLE)}\label{scfea-ux5355ux7ec6ux80deux6570ux636eux7684ux4ee3ux8c22ux901aux91cfux9884ux6d4b-os_sample}}
+
+根据样本和细胞类型分组，将细胞随机抽样 (各组比例为：0.5) (细胞数量较多，通过随机抽样的方式减少计算负担) (随机种子：987456)。
+将 \texttt{Seurat} (所有细胞) 以 \texttt{scFEA} 预测代谢通量。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{scfea_OS_SAMPLE/loss_20250408-165632.png}
+\caption{OS SAMPLE Convergency of the loss terms during training}\label{fig:OS-SAMPLE-Convergency-of-the-loss-terms-during-training}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-SAMPLE-Convergency-of-the-loss-terms-during-training}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:OS-SAMPLE-annotation-of-metabolic-flux}OS SAMPLE annotation of metabolic flux}\tabularnewline
+\toprule
+V1 & Module\_id & Compound\_IN\_name & Compound\_IN\_ID & Compound\_OUT\_name\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+V1 & Module\_id & Compound\_IN\_name & Compound\_IN\_ID & Compound\_OUT\_name\tabularnewline
+\midrule
+\endhead
+M\_1 & 1 & Glucose & C00267 & G6P\tabularnewline
+M\_2 & 2 & G6P & C00668 & G3P\tabularnewline
+M\_3 & 3 & G3P & C00118 & 3PD\tabularnewline
+M\_4 & 4 & 3PD & C00197 & Pyruvate\tabularnewline
+M\_5 & 5 & Pyruvate & C00022 & Acetyl-Coa\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+Tab. \ref{tab:OS-SAMPLE-annotation-of-metabolic-flux}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:OS-SAMPLE-metabolic-flux-matrix}OS SAMPLE metabolic flux matrix}\tabularnewline
+\toprule
+V1 & M\_1 & M\_2 & M\_3 & M\_4\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+V1 & M\_1 & M\_2 & M\_3 & M\_4\tabularnewline
+\midrule
+\endhead
+AAACCTGAGGATGGAA-1\_1 & 0.01224 & 0.01727 & 0.0649 & 0.1126\tabularnewline
+AAACCTGCACAACGCC-1\_1 & 0.01224 & 0.02175 & 0.06084 & 0.07629\tabularnewline
+AAACCTGTCATCATTC-1\_1 & 0.01618 & 0.02072 & 0.02948 & 0.03468\tabularnewline
+AAACCTGTCGTCCGTT-1\_1 & 0.01832 & 0.07996 & 0.1203 & 0.2113\tabularnewline
+AAACCTGTCTTGCATT-1\_1 & 0.01683 & 0.06143 & 0.09314 & 0.1331\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+Tab. \ref{tab:OS-SAMPLE-metabolic-flux-matrix}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-SAMPLE-cells-metabolic-flux.pdf}
+\caption{OS SAMPLE cells metabolic flux}\label{fig:OS-SAMPLE-cells-metabolic-flux}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-SAMPLE-cells-metabolic-flux}
+
+\hypertarget{seurat-ux7ec6ux80deux4e9aux7fa4ux5206ux6790-os_cancer}{%
+\subsection{Seurat 细胞亚群分析 (OS\_CANCER)}\label{seurat-ux7ec6ux80deux4e9aux7fa4ux5206ux6790-os_cancer}}
+
+成骨细胞和软骨细胞骨肉瘤是临床上常见的两种主要骨肉瘤类型(2020, \textbf{IF:14.7}, Q1, Nature communications)\textsuperscript{\protect\hyperlink{ref-Single_cell_RNA_Zhou_2020}{8}}。
+在这里，聚焦于注释结果中的 Proliferating\_osteoblastic\_OS, Chondroblastic\_OS, Osteoblastic\_OS 细胞，重新聚类分析。
+匹配 scsa\_cell 中包含"\_OS\$"的描述，最终得到 34230 例数据。分析其亚群。数据归一化，PCA 聚类 (Seurat 标准工作流，见方法章节) 后，绘制 PC standard deviations 图。在 1-15 PC 维度，1.2 分辨率下，对细胞群 UMAP 聚类。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-CANCER-The-scsa-cell.pdf}
+\caption{OS CANCER The scsa cell}\label{fig:OS-CANCER-The-scsa-cell}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-CANCER-The-scsa-cell}
+
+\hypertarget{seurat-copykat-ux764cux7ec6ux80deux6ce8ux91ca-os_cancer}{%
+\subsubsection{Seurat-copyKAT 癌细胞注释 (OS\_CANCER)}\label{seurat-copykat-ux764cux7ec6ux80deux6ce8ux91ca-os_cancer}}
+
+将 \texttt{CopyKAT} 的预测结果映射细胞注释中。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-CANCER-Cancer-Cell-type-annotation.pdf}
+\caption{OS CANCER Cancer Cell type annotation}\label{fig:OS-CANCER-Cancer-Cell-type-annotation}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-CANCER-cancer-cell-proportions.pdf}
+\caption{OS CANCER cancer cell proportions}\label{fig:OS-CANCER-cancer-cell-proportions}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-CANCER-cancer-cell-proportions}
+
+\hypertarget{limma-ux4ee3ux8c22ux901aux91cfux5deeux5f02ux5206ux6790-os_cancer_flux}{%
+\subsubsection{Limma 代谢通量差异分析 (OS\_CANCER\_FLUX)}\label{limma-ux4ee3ux8c22ux901aux91cfux5deeux5f02ux5206ux6790-os_cancer_flux}}
+
+匹配 scsa\_cell 中包含"\_OS\$"的描述，最终得到 17122 例数据。以 公式 \textasciitilde{} 0 + group 创建设计矩阵 (design matrix) 。差异分析：Malignant\_cell\_BC vs Benign\_cell\_BC。(若 A vs B，则为前者比后者，LogFC 大于 0 时，A 表达量高于 B)。上调或下调 DMFs 统计：up (n=29) , down (n=4)
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-CANCER-FLUX-Malignant-cell-BC-vs-Benign-cell-BC.pdf}
+\caption{OS CANCER FLUX Malignant cell BC vs Benign cell BC}\label{fig:OS-CANCER-FLUX-Malignant-cell-BC-vs-Benign-cell-BC}
 \end{center}
 
 \begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}\begin{center}\begin{tcolorbox}[colback=gray!10, colframe=gray!50, width=0.9\linewidth, arc=1mm, boxrule=0.5pt]
 \textbf{
-query
+adj.P.Val cut-off
 :}
 
 \vspace{0.5em}
 
-    Identify cell types of Osteosarcoma cells using the
-following markers separately for each row. Only provide the
-cell type name (for each row). Show numbers before the
-name. Some can be a mixture of multiple cell types
-(separated by ' \& '). Then, provide 3 classical markers
-that distinguish the cell type from other cells (separated
-by '; ').  (e.g., 1. X Cell \& Y Cell; Marker1; Marker2;
-Marker3) 1.
-FTL,APOC1,APOE,LGMN,C1QB,CTSD,CTSB,C1QA,PSAP,TYROBP,RNASE1,FTH1,TREM2,C1QC,IGSF6,FOLR2,FCER1G,FCGBP,TMEM176B,FCGRT,CYBA,GYPC,CTSZ,CAPG,LGALS3,MS4A7,AIF1,CD68,CTSS,GPNMB
-2.
-MMP9,PTMA,VIM,RPS2,RPS6,ENO1,EMP3,RPS12,NDUFS8,RPS23,MALAT1,RPL13A,RPLP2,RPS14,COX4I1,PKM,COX5A,RPL8,RGS10,RPL27A,HSPE1,S100A4,ANXA2,ATP5MC3,HSPD1,PFN1,CYC1,RPL21,ATP5F1B,RPL32
-3. LUM,RPL39,TIMP1,HLA-B,RPS27,ID3,RPL35,CLEC11...
+    0.05
 
 \vspace{2em}
 
 
 \textbf{
-feedback
+Log2(FC) cut-off
 :}
 
 \vspace{0.5em}
 
-    1. Macrophage; CD68; AIF1; FCGR1A 2. Mesenchymal Stem
-Cell; VIM; ENO1; S100A4 3. Fibroblast; TIMP1; DCN; THY1 4.
-Monocyte; CD14; HLA-DMA; TYROBP 5. Mesenchymal Stem Cell;
-STMN1; TUBB; TOP2A 6. Macrophage; CD68; TYROBP; FCGR1A 7.
-Dendritic Cell; HLA-DRA; CD74; CCL3 8. Osteoblast; IBSP;
-S100A13; RPL39 9. Osteoclast; CTSK; ACP5; MMP9 10.
-Osteoblast; COL1A1; SPARC; BGN 11. Pericyte; RGS5; ACTA2;
-MYL9 12. Endothelial Cell; CLDN5; ESAM; PLVAP 13. Dendritic
-Cell; HLA-DRA; HLA-DPA1; CD74 14. T Cell; CD2; GZMA; CCL5
-15. T Cell; CD3D; GZMA; CCL5 16. Dendritic Cell; HLA-DRA;
-CD74; APOE 17. Fibroblast; COL6A1; CLEC11A; SPARCL1 18.
-Mesenchymal Stem Cell; TUBA1B; STMN1; HMGB1
+    0.5
 
 \vspace{2em}
 \end{tcolorbox}
 \end{center}
 
-\textbf{(上述信息框内容已保存至 \texttt{Figure+Table/OS-Markers-in-cell-types-content})}
+\textbf{(See: \texttt{Figure+Table/3.4.2\_Limma\_代谢通量差异分析\_(OS\_CANCER\_FLUX)/OS-CANCER-FLUX-Malignant-cell-BC-vs-Benign-cell-BC-content})}
 
-\hypertarget{copykat-ux764cux7ec6ux80deux9274ux5b9a-bc2}{%
-\subsection{CopyKAT 癌细胞鉴定 (BC2)}\label{copykat-ux764cux7ec6ux80deux9274ux5b9a-bc2}}
+Fig. \ref{fig:OS-CANCER-FLUX-Malignant-cell-BC-vs-Benign-cell-BC}
 
-\hypertarget{copykat-ux764cux7ec6ux80deux9274ux5b9a-bc3}{%
-\subsection{CopyKAT 癌细胞鉴定 (BC3)}\label{copykat-ux764cux7ec6ux80deux9274ux5b9a-bc3}}
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
 
-\hypertarget{scfea-ux5355ux7ec6ux80deux6570ux636eux7684ux4ee3ux8c22ux901aux91cfux9884ux6d4b-os}{%
-\subsection{scFEA 单细胞数据的代谢通量预测 (OS)}\label{scfea-ux5355ux7ec6ux80deux6570ux636eux7684ux4ee3ux8c22ux901aux91cfux9884ux6d4b-os}}
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:OS-CANCER-FLUX-data-Malignant-cell-BC-vs-Benign-cell-BC}OS CANCER FLUX data Malignant cell BC vs Benign cell BC}\tabularnewline
+\toprule
+name & logFC & adj.P.Val & rownames & Module\_id\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+name & logFC & adj.P.Val & rownames & Module\_id\tabularnewline
+\midrule
+\endhead
+3PD -\textgreater{} Pyruvate & 1.227 & 0 & M\_4 & 4\tabularnewline
+G3P -\textgreater{} 3PD & 1.211 & 0 & M\_3 & 3\tabularnewline
+ADP -\textgreater{} Deoxyadeno\ldots{} & 1.015 & 0 & M\_140 & 140\tabularnewline
+lysine -\textgreater{} Acetyl-CoA & 1.07 & 0 & M\_60 & 60\tabularnewline
+Pyruvate -\textgreater{} Lactate & 1.147 & 0 & M\_6 & 6\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+Tab. \ref{tab:OS-CANCER-FLUX-data-Malignant-cell-BC-vs-Benign-cell-BC}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-SAMPLE-Malignant-cell-Benign-cell-Cell-flux-ridge-plot.pdf}
+\caption{OS SAMPLE Malignant cell Benign cell Cell flux ridge plot}\label{fig:OS-SAMPLE-Malignant-cell-Benign-cell-Cell-flux-ridge-plot}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-SAMPLE-Malignant-cell-Benign-cell-Cell-flux-ridge-plot}
+
+\hypertarget{tcga-ux6570ux636eux83b7ux53d6-os}{%
+\subsection{TCGA 数据获取 (OS)}\label{tcga-ux6570ux636eux83b7ux53d6-os}}
+
+获取 TARGET-OS 数据。
+
+\hypertarget{cox-ux56deux5f52-tcga_os}{%
+\subsection{COX 回归 (TCGA\_OS)}\label{cox-ux56deux5f52-tcga_os}}
+
+将\textbf{基因集} (Malignant\_cell\_Benign\_cell, 来自于scFEA 单细胞数据的代谢通量预测{[}Section: OS\_SAMPLE{]}) 用于模型建立。共 298 个基因在数据集 TARGET-OS 中找到 (根据基因名匹配)。所有数据生存状态 (去除生存状态未知的数据)，(Alive (n=57) , Dead (n=29) )。执行单因素 COX 回归，筛选 P 值 \textless{} 0.05，共筛选到 25 个基因。在单因素回归得到的基因 (P \textless{} 0.01) 的基础上，使用 \texttt{glmnet::cv.glmnet} 作 5 倍交叉验证 (评估方式为 C-index)，筛选 lambda 值。lambda.min, lambda.1se 值分别为 0.006, 0.07 (R 随机种子为 987456)。对应的特征数 (基因数) 分别为 10, 10。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\end{center}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:TCGA-OS-sig-Univariate-Cox-Coefficients}TCGA OS sig Univariate Cox Coefficients}\tabularnewline
+\toprule
+feature & coef & exp(coef) & se(coef) & z\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+feature & coef & exp(coef) & se(coef) & z\tabularnewline
+\midrule
+\endhead
+ACAT1 & 0.4221 & 1.525 & 0.2025 & 2.084\tabularnewline
+UPRT & -0.6027 & 0.5473 & 0.208 & -2.897\tabularnewline
+UGT2B10 & 0.3296 & 1.39 & 0.1409 & 2.339\tabularnewline
+PCCB & 0.4687 & 1.598 & 0.175 & 2.679\tabularnewline
+PGLS & -0.3914 & 0.6761 & 0.1773 & -2.207\tabularnewline
+\ldots{} & \ldots{} & \ldots{} & \ldots{} & \ldots{}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{89}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TCGA-OS-lasso-COX-model.pdf}
+\caption{TCGA OS lasso COX model}\label{fig:TCGA-OS-lasso-COX-model}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TCGA-OS-lasso-COX-coeffients-lambda-min.pdf}
+\caption{TCGA OS lasso COX coeffients lambda min}\label{fig:TCGA-OS-lasso-COX-coeffients-lambda-min}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TCGA-OS-lasso-COX-coeffients-lambda-1se.pdf}
+\caption{TCGA OS lasso COX coeffients lambda 1se}\label{fig:TCGA-OS-lasso-COX-coeffients-lambda-1se}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TCGA-OS-lasso-COX-ROC-lambda-min.pdf}
+\caption{TCGA OS lasso COX ROC lambda min}\label{fig:TCGA-OS-lasso-COX-ROC-lambda-min}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/TCGA-OS-lasso-COX-ROC-lambda-1se.pdf}
+\caption{TCGA OS lasso COX ROC lambda 1se}\label{fig:TCGA-OS-lasso-COX-ROC-lambda-1se}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+\hypertarget{survival-ux751fux5b58ux5206ux6790-tcga_os}{%
+\subsection{Survival 生存分析 (TCGA\_OS)}\label{survival-ux751fux5b58ux5206ux6790-tcga_os}}
+
+选择 lambda.min 时得到的特征集，包含 10 个基因，
+分别为: UPRT, PCCB, CYP2C8, UCK2, ALDH4A1, G6PD, FDPS, CTPS1, HSD11B2, ABAT。以回归系数构建风险评分模型。
+
+\[ Score = \sum(expr(Gene) \times coef) \]
+按 \texttt{survminer::surv\_cutpoint} 计算的 cutoff，
+将样本分为 Low 和 High 风险组 (cutoff: 0.55168695257864)
+(High (n=28) , Low (n=58) )， 随后进行生存分析。
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{85}\vspace{1.5cm}\end{center}
+
+\hypertarget{ux5916ux90e8ux6570ux636eux96c6ux9a8cux8bc1}{%
+\subsection{外部数据集验证}\label{ux5916ux90e8ux6570ux636eux96c6ux9a8cux8bc1}}
+
+\hypertarget{gse-ux6570ux636eux641cux7d22-os}{%
+\subsubsection{GSE 数据搜索 (OS)}\label{gse-ux6570ux636eux641cux7d22-os}}
+
+以 Entrez Direct (EDirect) 搜索 GEO 数据库 (检索条件见方法章节) 。
+在检索匹配后，经人工确认，全部带有生存数据的 Osteosarcoma 为：GSE16091, GSE39055, GSE39057, GSE21257
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-os_gse39057}{%
+\subsubsection{GEO 数据获取 (OS\_GSE39057)}\label{geo-ux6570ux636eux83b7ux53d6-os_gse39057}}
+
+以 \texttt{GEOquery} 获取 GSE39057 的数据信息。
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-os_gse39055}{%
+\subsubsection{GEO 数据获取 (OS\_GSE39055)}\label{geo-ux6570ux636eux83b7ux53d6-os_gse39055}}
+
+以 \texttt{GEOquery} 获取 GSE39055 的数据信息。
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-os_gse16091}{%
+\subsubsection{GEO 数据获取 (OS\_GSE16091)}\label{geo-ux6570ux636eux83b7ux53d6-os_gse16091}}
+
+以 \texttt{GEOquery} 获取 GSE16091 的数据信息。
+
+\hypertarget{geo-ux6570ux636eux83b7ux53d6-os_gse21257}{%
+\subsubsection{GEO 数据获取 (OS\_GSE21257)}\label{geo-ux6570ux636eux83b7ux53d6-os_gse21257}}
+
+以 \texttt{GEOquery} 获取 GSE21257 的数据信息。
+
+\hypertarget{survival-ux751fux5b58ux5206ux6790-os_outer}{%
+\subsubsection{Survival 生存分析 (OS\_OUTER)}\label{survival-ux751fux5b58ux5206ux6790-os_outer}}
+
+对在 GEO 找到的所有具备生存信息的 Osteosarcoma 数据集做了外部验证。
+合并数据集 (GSE16091, GSE39055, GSE39057, GSE21257)。对于不同注释来源的基因名，以 \texttt{org.Hs.eg.db::org.Hs.eg.db} 获取基因的别名 (ALIAS) ，根据 (ALIAS) 的一致性合并。查找预后模型中基因的 ALIAS，在未找到对应基因的情况下，使用该基因的 ALIAS 查找。 (原模型基因：UPRT, PCCB, CYP2C8, UCK2, ALDH4A1, G6PD, FDPS, CTPS1, HSD11B2, ABAT；以 ALIAS 匹配后，基因为：UPRT, PCCB, CYP2C8, UCK2, ALDH4A1, G6PD, FDPS, CTPS1, HSD11B2, ABAT) 。随后，将基因表达数据归一化 (Z-score)。按 \texttt{survminer::surv\_cutpoint} 计算的 cutoff，
+将样本分为 Low 和 High 风险组 (cutoff: 1.12270604442518)
+(High (n=15) , Low (n=94) )， 随后进行生存分析。此外，对于未合并前的各个数据集，以相同的方式生存分析。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-OUTER-all-datasets-survival-plot.pdf}
+\caption{OS OUTER all datasets survival plot}\label{fig:OS-OUTER-all-datasets-survival-plot}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-OUTER-all-datasets-survival-plot}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/OS-OUTER-all-datasets-ROC-validation.pdf}
+\caption{OS OUTER all datasets ROC validation}\label{fig:OS-OUTER-all-datasets-ROC-validation}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:OS-OUTER-all-datasets-ROC-validation}
+
+\hypertarget{clusterprofiler-ux5bccux96c6ux5206ux6790-prog}{%
+\subsection{ClusterProfiler 富集分析 (PROG)}\label{clusterprofiler-ux5bccux96c6ux5206ux6790-prog}}
+
+对\textbf{基因集} (UPRT, PCCB, CYP2C8, \ldots{[}n = 10{]}, 来自于Survival 生存分析{[}Section: TCGA\_OS{]}) 进行ClusterProfiler 富集分析。
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PROG-KEGG-enrichment.pdf}
+\caption{PROG KEGG enrichment}\label{fig:PROG-KEGG-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:PROG-KEGG-enrichment}
+
+\begin{center}\vspace{1.5cm}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\end{center}
+\def\@captype{figure}
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{Figure+Table/PROG-GO-enrichment.pdf}
+\caption{PROG GO enrichment}\label{fig:PROG-GO-enrichment}
+\end{center}
+
+\begin{center}\pgfornament[anchor=center,ydelta=0pt,width=9cm]{88}\vspace{1.5cm}\end{center}
+
+Fig. \ref{fig:PROG-GO-enrichment}
 
 \hypertarget{conclusion}{%
 \section{总结}\label{conclusion}}
+
+癌症的本质特征与癌细胞自身代谢的改变息息相关 (2008, \textbf{IF:48.8}, Q1, Cancer cell)\textsuperscript{\protect\hyperlink{ref-Tumor_cell_meta_Kroeme_2008}{9}}。
+对于骨肉瘤，目前仍缺少研究从单细胞水平探究癌症的代谢变化。
+本分析从单细胞水平鉴定的恶质细胞 (肿瘤细胞) 出发，分析正常细胞与癌症细胞之间的代谢通量差异，
+进而获取对应代谢模块的基因，建立预后模型，以代谢改变的角度，预测疾病的进展。
+模型以 TARGET-OS 数据集建立，进而在 GEO 数据库搜索了所有可用的带有生存信息的基因表达数据集，
+用以验证预后模型的可靠性。
+
+\hypertarget{bibliography}{%
+\section*{Reference}\label{bibliography}}
+\addcontentsline{toc}{section}{Reference}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-ScsaACellTyCaoY2020}{}%
+1. Cao, Y., Wang, X. \& Peng, G. SCSA: A cell type annotation tool for single-cell rna-seq data. \emph{Frontiers in genetics} \textbf{11}, (2020).
+
+\leavevmode\hypertarget{ref-DelineatingCopGaoR2021}{}%
+2. Gao, R. \emph{et al.} Delineating copy number and clonal substructure in human tumors from single-cell transcriptomes. \emph{Nature Biotechnology} \textbf{39}, 599--608 (2021).
+
+\leavevmode\hypertarget{ref-CausesAndConsGordon2012}{}%
+3. Gordon, D. J., Resio, B. \& Pellman, D. Causes and consequences of aneuploidy in cancer. \emph{Nature Reviews Genetics} \textbf{13}, 189--203 (2012).
+
+\leavevmode\hypertarget{ref-AGraphNeuralAlgham2021}{}%
+4. Alghamdi, N. \emph{et al.} A graph neural network model to estimate cell-wise metabolic flux using single-cell rna-seq data. \emph{Genome research} \textbf{31}, 1867--1884 (2021).
+
+\leavevmode\hypertarget{ref-LimmaLinearMSmyth2005}{}%
+5. Smyth, G. K. Limma: Linear models for microarray data. in \emph{Bioinformatics and Computational Biology Solutions Using R and Bioconductor} (eds. Gentleman, R., Carey, V. J., Huber, W., Irizarry, R. A. \& Dudoit, S.) 397--420 (Springer-Verlag, 2005). doi:\href{https://doi.org/10.1007/0-387-29362-0_23}{10.1007/0-387-29362-0\_23}.
+
+\leavevmode\hypertarget{ref-TcgabiolinksAColapr2015}{}%
+6. Colaprico, A. \emph{et al.} TCGAbiolinks: An r/bioconductor package for integrative analysis of tcga data. \emph{Nucleic Acids Research} \textbf{44}, (2015).
+
+\leavevmode\hypertarget{ref-ClusterprofilerWuTi2021}{}%
+7. Wu, T. \emph{et al.} ClusterProfiler 4.0: A universal enrichment tool for interpreting omics data. \emph{The Innovation} \textbf{2}, (2021).
+
+\leavevmode\hypertarget{ref-Single_cell_RNA_Zhou_2020}{}%
+8. Zhou, Y. \emph{et al.} Single-cell rna landscape of intratumoral heterogeneity and immunosuppressive microenvironment in advanced osteosarcoma. \emph{Nature communications} \textbf{11}, (2020).
+
+\leavevmode\hypertarget{ref-Tumor_cell_meta_Kroeme_2008}{}%
+9. Kroemer, G. \& Pouyssegur, J. Tumor cell metabolism: Cancers achillesheel. \emph{Cancer cell} \textbf{13}, 472--482 (2008).
+\end{cslreferences}
 
 \end{document}

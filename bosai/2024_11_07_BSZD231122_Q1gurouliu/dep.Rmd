@@ -196,3 +196,75 @@ raw_data <- limma::read.maimages(
 )
 raw_data
 
+
+test <- asjob_seurat_sub(srn.os, grpl(scsa_cell, "_OS$", TRUE))
+test <- step1(test)
+test <- step2(test)
+test <- step3(test)
+saveRDS(test, "srn.os_cancer.new.3.rds")
+test@plots$step3$p.umapInt
+test@plots$step3$p.umapUint
+
+test <- asjob_seurat_sub(srn.os, grpl(scsa_cell, "_os$", true))
+test <- step1(test)
+test <- step2(test)
+test <- step3(test)
+saverds(test, "srn.os_cancer.new.3.rds")
+test@plots$step3$p.umapint
+test@plots$step3$p.umapuint
+
+p.test <- vis(test, "scsa_cell")
+p.test
+test <- step1(test)
+test <- step2(test)
+test <- step3(test)
+test@plots$step3$p.umap
+
+
+### Monocle3 拟时分析 (OS_CANCER)
+
+`r snap(mn.os_cancer, 0:4)`
+
+```{r}
+mn.os_cancer <- do_monocle(srn.os_cancer, "Proliferating_osteoblastic_OS", group.by = "copykat_cell")
+rm(mn.os_cancer)
+mn.os_cancer <- step1(mn.os_cancer, "copykat_cell", pre = FALSE)
+#' @meth {get_meth(mn.os_cancer)}
+mn.os_cancer@plots$step1$p.prin
+mn.os_cancer <- step2(mn.os_cancer, "Y_2")
+mn.os_cancer@plots$step2$p.pseu
+mn.os_cancer <- step3(mn.os_cancer, group.by = "seurat_clusters")
+mn.os_cancer@plots$step3$gene_module_heatdata$graph_test.sig
+mn.os_cancer@tables$step3$graph_test.sig
+```
+
+
+```{r}
+srn.os_cancer <- focus(
+  srn.os_cancer, feature(surv.tcga_os), group.by = "copykat_cell"
+)
+srn.os_cancer@params$focus_genes$p.dim
+wrap(srn.os_cancer@params$focus_genes$p.vln, 15, 10)
+```
+
+p.os_sample <- vis(srn.os_sample, "scsa_cell")
+p.os_sample
+
+
+## Monocle3 拟时分析 (OS_CANCER)
+
+`r snap(mn.os_cancer, 0:4)`
+
+```{r}
+mn.os_cancer <- do_monocle(srn.os_cancer, "Proliferating_osteoblastic_OS", group.by = "scsa_cell")
+mn.os_cancer <- step1(mn.os_cancer, "isCancer", pre = T)
+#' @meth {get_meth(mn.os_cancer)}
+mn.os_cancer@plots$step1$p.prin
+mn.os_cancer@plots$step1$p.group
+mn.os_cancer <- step2(mn.os_cancer, c("Y_52", "Y_29"))
+mn.os_cancer@plots$step2$p.pseu
+mn.os_cancer <- step3(mn.os_cancer, group.by = "seurat_clusters")
+mn.os_cancer@plots$step3$gene_module_heatdata$graph_test.sig
+mn.os_cancer@tables$step3$graph_test.sig
+rm(mn.os_cancer)
+```
