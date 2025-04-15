@@ -1,0 +1,156 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-04-15"), end = td("2025-04-15"), finish = td("2025-04-15"),
+  id = "BSTF250417", client = "孙念政", inst = "",
+  type = "思路设计",
+  title = "SCG2 与神经母细胞瘤",
+  save = ".items_idea.rds"
+)
+show.ic(info)
+
+order_publish.bosai("idea.Rmd", "idea_out.Rmd")
+formatName.bosai("./idea_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = FALSE)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("骨髓瘤"),
+  di("嗜铬细胞瘤"),
+  di("神经母细胞瘤")
+)
+# DEG: Differentially expressed genes 差异表达基因
+# M: Myeloma 骨髓瘤
+# P: pheochromocytoma 嗜铬细胞瘤
+# N: Neuroblastoma 神经母细胞瘤
+
+```
+
+## 思路 {#introduction}
+
+- SCG2表达量与神经母细胞瘤分期呈线性负相关，其上调表达可以诱导神经母细胞瘤细胞进一步分化。
+- SCG2可以作为神经母细胞瘤危险度评估和预后预测的生物学标志。
+- SCG2可以作为鉴别嗜铬细胞瘤良恶性的生物学标志。
+- SCG2通过改变肿瘤微环境，从而诱导神经母细胞瘤细胞及嗜铬细胞瘤细胞进一步分化
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "Neuroblastoma:bulk_RNA-seq_nb, scRNA-seq_nb",
+    "scRNA-seq_nb:nb_细胞聚类:nb_细胞注释:nb_癌细胞鉴定:nb_癌细胞拟时分析:nb_SCG2_表达量关联分析",
+    "bulk_RNA-seq_nb:TARGET-NBL:肿瘤分期:SCG2_表达量关联分析",
+    "TARGET-NBL:差异分析, 生存分析",
+    "Pheochromocytoma:bulk_RNA-seq_pc, scRNA-seq_pc:肿瘤微环境分析:免疫评分, 基质评分:pc_SCG2_表达量关联分析",
+    "bulk_RNA-seq_pc:SCG2_表达量良性恶性诊断ROC",
+    "scRNA-seq_pc:pc_细胞聚类:pc_细胞注释:pc_癌细胞鉴定:pc_癌细胞拟时分析:pc_SCG2_表达量关联分析"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(wrap(p.route, 18, 6))
+```
+
+
+# GEO 检索方法
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 参考文献和数据集 {#workflow}
+
+## PCPG
+
+```{r}
+tcga.nb <- job_tcga("TARGET-NBL")
+tcga.nb <- step1(tcga.nb)
+```
+
+```{r}
+tcga.pc <- job_tcga("TCGA-PCPG")
+tcga.pc <- step1(tcga.pc)
+```
+
+### PCPG scRNA-seq
+
+- PMID: 38407266, <https://datadryad.org/dataset/doi:10.5061/dryad.rjdfn2zkg#citations>
+- PMID: 40190189, <https://ngdc.cncb.ac.cn/search/specific?db=hra&q=HRA005846> (不可获取)
+- ...
+
+### GSE 数据搜索 (SCRNA_PG)
+
+`r snap(gds.scRNA_pg, 0:3)`
+
+未检索到数据。
+
+```{r}
+gds.scRNA_pg <- job_gds(c("Paraganglioma", "single cell"), 3:20)
+#' @meth {get_meth(gds.scRNA_pg)}
+gds.scRNA_pg <- step1(gds.scRNA_pg)
+```
+
+### GSE 数据搜索 (SCRNA_PC)
+
+`r snap(gds.scRNA_pc, 0:3)`
+
+未检索到数据。
+
+```{r}
+gds.scRNA_pc <- job_gds(c("Pheochromocytoma", "single cell"), 3:20)
+#' @meth {get_meth(gds.scRNA_pc)}
+gds.scRNA_pc <- step1(gds.scRNA_pc)
+```
+
+## NB
+
+### GSE 数据搜索 (SCRNA_NB)
+
+`r snap(gds.scRNA_nb, 0:3)`
+`r snap(gds.scRNA_nb, "a")`
+
+```{r}
+gds.scRNA_nb <- job_gds(c("Neuroblastoma", "single cell"), 3:20)
+gds.scRNA_nb <- step1(gds.scRNA_nb, single_cell = TRUE)
+#' @meth {get_meth(gds.scRNA_nb)}
+vis(gds.scRNA_nb)
+gds.scRNA_nb <- step2(gds.scRNA_nb)
+gds.scRNA_nb <- expect(gds.scRNA_nb, geo_cols())
+gds.scRNA_nb <- anno(gds.scRNA_nb)
+```
+

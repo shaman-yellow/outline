@@ -52,7 +52,121 @@ collate_details("meth")
 
 # 分析结果 {#workflow}
 
+## UCSCXenaTools 癌症相关数据获取 (LUAD)
 
+`r snap(xena.luad, 0:2)`
+
+`r ref("LUAD-all-sample-metadata")`
+<!-- LEGEND_END -->
+
+```{r}
+xena.luad <- job_xena()
+#' @meth {get_meth(xena.luad)}
+xena.luad <- step1(xena.luad, mode = "LUAD")
+xena.luad <- step2(xena.luad)
+xena.luad@params$metadata
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-all-sample-metadata
+autor(xena.luad@params$metadata)
+```
+
+## Limma 差异分析 (LUAD)
+
+`r snap(lm.luad, 0:3)`
+
+```{r}
+lm.luad <- asjob_limma(xena.luad)
+lm.luad <- step1(lm.luad)
+#' @meth {get_meth(lm.luad)}
+lm.luad <- step2(lm.luad, LUAD - Normal)
+lm.luad <- step3(lm.luad)
+lm.luad@plots$step2$p.volcano$`LUAD - Normal`
+lm.luad@tables$step2$tops$`LUAD - Normal`
+```
+
+## ssGSEA 单样本GSEA富集分析 (LUAD)
+
+`r snap(ssg.luad, 0:1)`
+
+`r ref("LUAD-scores-LUAD-Normal")`
+<!-- LEGEND_END -->
+
+```{r}
+ssg.luad <- asjob_ssgsea(lm.luad)
+#' @meth {get_meth(ssg.luad)}
+ssg.luad <- step1(ssg.luad)
+ssg.luad@plots$step1$p.scores$`LUAD Normal`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-scores-LUAD-Normal
+autor(ssg.luad@plots$step1$p.scores$`LUAD Normal`)
+```
+
+## GEO 数据获取 (SC_LUAD)
+
+`r snap(geo.sc_luad, 0:2)`
+
+```{r}
+geo.sc_luad <- job_geo("GSE189357")
+#' @meth {get_meth(geo.sc_luad)}
+geo.sc_luad <- step1(geo.sc_luad)
+geo.sc_luad$guess
+geo.sc_luad <- step2(geo.sc_luad, rna = FALSE)
+geo.sc_luad@params$dir
+
+lapply(glue::glue("TD{1:9}"),
+  function(name) {
+    prepare_10x(geo.sc_luad@params$dir, name, FALSE)
+  })
+
+```
+
+## Seurat 集成单细胞数据分析 (LUAD)
+
+`r snap(srn.luad, 0:7)`
+(Marker 来自于原研究文献 PMID: GSE189357)
+
+```{r}
+files_scRNA <- list.files(geo.sc_luad$dir, "TD", full.names = TRUE)
+srn.luad <- job_seurat5n(files_scRNA, strx(files_scRNA, "TD[0-9]"))
+srn.luad@params$p.qc_pre
+#' @meth {get_meth(srn.luad)}
+srn.luad <- step1(srn.luad, 500, 7500, 10)
+srn.luad@params$p.qc_aft
+srn.luad <- step2(srn.luad)
+srn.luad@plots$step2$p.pca_rank
+srn.luad <- step3(srn.luad)
+srn.luad@plots$step3$p.umapUint
+srn.luad@plots$step3$p.umapInt
+srn.luad <- step4(srn.luad, "")
+
+set_remoteRun.bosai()
+srn.luad <- set_remote(srn.luad)
+srn.luad <- step5(srn.luad, 8)
+srn.luad@tables$step5$all_markers_no_filter
+
+ref.markers <- as_markers(
+  list(
+    epithelial_cells = c("EPCAM", "SCGB1A1"),
+    T_NK_cells = c("CD3D", "NKG7", "GZMK", "GNLY"),
+    B_cells = c("CD79A", "JCHAIN", "IGHG1"),
+    myeloid_cells = c("LYZ", "TPSB2", "AIF1", "HLA-DRA", "HLA-DRB1", "CPA3"),
+    endothelial_cells = c("CLDN5"),
+    fibroblasts = c("COL1A1", "DCN")
+  )
+)
+
+srn.luad@step <- 5L
+srn.luad <- step6(srn.luad, "", ref.markers)
+srn.luad@plots$step6$p.map_scsa
+srn.luad@plots$step6$p.markers
+srn.luad@plots$step6$p.props_scsa
+
+```
 
 # 总结 {#conclusion}
 

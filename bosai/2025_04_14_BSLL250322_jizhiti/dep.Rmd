@@ -1,0 +1,31 @@
+
+
+data <- lapply(seq_len(2L), 
+  function(n) {
+    x <- fxlsx("./order_material/mcp.M111.014647-4.xlsx", n, startRow = 3)
+    dplyr::filter(x, grpl(Division, "matrisome", TRUE))
+  })
+names(data) <- c("human", "mouse")
+data
+saveRDS(data, "../../data/matrisome_small.rds")
+
+## 基质体相关基因获取 (MATRISOME)
+
+`r snap(mts.matrisome, 0:1)`
+
+`r ref("MATRISOME-all-human-matrisome-data")`
+<!-- LEGEND_END -->
+
+```{r}
+mts.matrisome <- job_matrisome()
+#' @meth {get_meth(mts.matrisome)}
+mts.matrisome <- step1(mts.matrisome)
+mts.matrisome$db
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| MATRISOME-all-human-matrisome-data
+autor(mts.matrisome$db)
+```
+

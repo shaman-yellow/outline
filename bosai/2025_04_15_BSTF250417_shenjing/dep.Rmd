@@ -1,0 +1,22 @@
+
+
+## GSE 数据搜索 (BULK_NB)
+
+`r snap(gds.bulk_nb, 0:3)`
+
+`r ref("Unnamed-1")`
+<!-- LEGEND_END -->
+
+```{r}
+#' @meth {get_meth(gds.bulk_nb)}
+gds.bulk_nb <- job_gds(c("Neuroblastoma"))
+gds.bulk_nb <- step1(gds.bulk_nb, force = TRUE)
+gds.bulk_nb <- step2(gds.bulk_nb)
+object(gds.bulk_nb)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Unnamed-1
+autor(object(gds.bulk_nb))
+```
+
