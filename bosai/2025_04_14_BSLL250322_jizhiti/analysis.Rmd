@@ -106,6 +106,35 @@ ssg.luad@plots$step1$p.scores$`LUAD Normal`
 autor(ssg.luad@plots$step1$p.scores$`LUAD Normal`)
 ```
 
+
+## WGCNA 分析 (LUAD)
+
+`r snap(wgc.luad, 0:6)`
+
+`r ref("LUAD-sample-clustering")`
+<!-- LEGEND_END -->
+
+```{r}
+wgc.luad <- asjob_wgcna(lm.luad)
+#' @meth {get_meth(wgc.luad)}
+wgc.luad <- step1(wgc.luad)
+wgc.luad@plots$step1$raw_sample_tree
+wgc.luad <- step2(wgc.luad, 600, 10)
+
+set_remoteRun.bosai(16)
+wgc.luad <- set_remote(wgc.luad)
+wgc.luad <- step3(wgc.luad, 16)
+wgc.luad <- step4(wgc.luad, 16)
+
+# wgcna_local_LUAD/wgc.luad_45902c00144cdcc94994ee57c0f0f33e.rds
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-sample-clustering
+autor(wgc.luad@plots$step1$raw_sample_tree)
+```
+
 ## GEO 数据获取 (SC_LUAD)
 
 `r snap(geo.sc_luad, 0:2)`
@@ -165,6 +194,25 @@ srn.luad <- step6(srn.luad, "", ref.markers)
 srn.luad@plots$step6$p.map_scsa
 srn.luad@plots$step6$p.markers
 srn.luad@plots$step6$p.props_scsa
+
+```
+
+## AUCell 识别细胞的基因集活性 (LUAD)
+
+`r snap(auc.luad, 0:1)`
+
+```{r}
+fea.mat <- join(feature(ssg.luad), "matrisome")
+auc.luad <- asjob_aucell(srn.luad, fea.mat)
+
+set_remoteRun.bosai(8)
+#' @meth {get_meth(auc.luad)}
+auc.luad <- set_remote(auc.luad)
+auc.luad <- step1(auc.luad, 8)
+
+srn.luad <- map(srn.luad, auc.luad)
+srn.luad@params$focus_AUCell$p.dim
+srn.luad@params$focus_AUCell$p.vln
 
 ```
 

@@ -29,3 +29,7 @@ mts.matrisome$db
 autor(mts.matrisome$db)
 ```
 
+
+# harmony::RunHarmony(
+#   my_pca_embeddings, meta_data, c("dataset", "donor", "batch_id")
+# )

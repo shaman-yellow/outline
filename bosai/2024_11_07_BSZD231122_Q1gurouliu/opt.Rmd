@@ -91,9 +91,14 @@ dplyr::filter(je, grpl(Title, "immune checkpoint"))$Title
 ```
 
 
+## GEO 数据获取 (OS)
+
+`r snap(geo.os, 0:2)`
+
 ```{r}
 # Chimeric antigen receptor T (CAR-T) cells
 geo.os <- job_geo("GSE152048")
+#' @meth {get_meth(geo.os)}
 geo.os <- step1(geo.os)
 geo.os@params$guess
 # geo.os <- step2(geo.os)
@@ -736,4 +741,8 @@ autor(en.prog@plots$step1$p.go$ids)
 模型以 TARGET-OS 数据集建立，进而在 GEO 数据库搜索了所有可用的带有生存信息的基因表达数据集，
 用以验证预后模型的可靠性。
 
+```{r}
+extract_anno("./order_material/BSZD231122-杨立宇-方案2-生信分析[审核批注]-20250416.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_fxl.docx")
+```
 

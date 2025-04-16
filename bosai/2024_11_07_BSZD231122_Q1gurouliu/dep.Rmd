@@ -268,3 +268,5 @@ mn.os_cancer@plots$step3$gene_module_heatdata$graph_test.sig
 mn.os_cancer@tables$step3$graph_test.sig
 rm(mn.os_cancer)
 ```
+
+# srn.os@snap$step1 <- paste0(srn.os@snap$step1, "过滤后，所有样本共包含 72962 个细胞用于后续分析。")
