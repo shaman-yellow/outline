@@ -84,6 +84,7 @@ lm.luad <- step2(lm.luad, LUAD - Normal)
 lm.luad <- step3(lm.luad)
 lm.luad@plots$step2$p.volcano$`LUAD - Normal`
 lm.luad@tables$step2$tops$`LUAD - Normal`
+feature(lm.luad)
 ```
 
 ## ssGSEA 单样本GSEA富集分析 (LUAD)
@@ -125,6 +126,10 @@ set_remoteRun.bosai(16)
 wgc.luad <- set_remote(wgc.luad)
 wgc.luad <- step3(wgc.luad, 16)
 wgc.luad <- step4(wgc.luad, 16)
+wgc.luad@plots$step4$net
+wgc.luad <- step5(wgc.luad, group_levels = c("Normal", "LUAD"))
+wgc.luad@params$corp_group
+feature(wgc.luad)["ME0"]
 
 # wgcna_local_LUAD/wgc.luad_45902c00144cdcc94994ee57c0f0f33e.rds
 ```
@@ -133,6 +138,112 @@ wgc.luad <- step4(wgc.luad, 16)
 ```{r eval = T, echo = F, results = "asis"}
 #| LUAD-sample-clustering
 autor(wgc.luad@plots$step1$raw_sample_tree)
+```
+
+## 汇总: DEGs + All_matrisome + WGCNA_module (LUAD)
+
+`r snap(venn.luad, 0:1)`
+
+```{r}
+venn.luad <- job_venn(
+  DEGs = feature(lm.luad), 
+  All_matrisome = feature(ssg.luad),
+  WGCNA_module = feature(wgc.luad)["ME0"]
+)
+#' @meth {get_meth(venn.luad)}
+venn.luad <- step1(venn.luad)
+venn.luad@plots$step1$p.venn
+feature(venn.luad)
+```
+
+## TCGA 数据获取 (LUAD)
+
+`r snap(tcga.luad, 0:3)`
+
+```{r}
+tcga.luad <- job_tcga("TCGA-LUAD")
+#' @meth {get_meth(tcga.luad)}
+tcga.luad <- step1(tcga.luad)
+tcga.luad <- step2(tcga.luad)
+tcga.luad <- step3(tcga.luad)
+```
+
+
+## COX 回归 (TCGA_LUAD)
+
+`r snap(cox.tcga_luad, 0:5)`
+
+```{r}
+lm.tcga_luad <- asjob_limma(tcga.luad)
+lm.tcga_luad <- step1(lm.tcga_luad)
+lm.tcga_luad <- filter(
+  lm.tcga_luad, type = "metadata", isTumor == "tumor"
+)
+
+cox.tcga_luad <- asjob_lasso(lm.tcga_luad, feature(venn.luad))
+#' @meth {get_meth(cox.tcga_luad)}
+cox.tcga_luad <- step1(cox.tcga_luad)
+cox.tcga_luad <- step2(cox.tcga_luad)
+cox.tcga_luad <- step3(cox.tcga_luad)
+
+cox.tcga_luad@step <- 3L
+cox.tcga_luad <- step4(cox.tcga_luad, type.measure = "C", inherit_unicox.cut.p = .01)
+cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.min
+cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.1se
+```
+
+## Survival 生存分析 (TCGA_LUAD)
+
+`r snap(surv.tcga_luad, 0:1)`
+
+```{r}
+surv.tcga_luad <- asjob_survival(cox.tcga_luad, lambda = "1se")
+#' @meth {get_meth(surv.tcga_luad)}
+surv.tcga_luad <- step1(surv.tcga_luad)
+surv.tcga_luad@plots$step1$p.surv
+surv.tcga_luad@plots$step1$p.roc
+surv.tcga_luad@tables$step1$t.SurvivalPValue
+feature(surv.tcga_luad)
+```
+
+## 外部验证
+
+### GEO 数据获取 (LUAD_GSE31210)
+
+`r snap(geo.luad_GSE31210, 0:2)`
+
+```{r}
+geo.luad_GSE31210 <- job_geo("luad_GSE31210")
+#' @meth {get_meth(geo.luad_GSE31210)}
+geo.luad_GSE31210 <- step1(geo.luad_GSE31210)
+metadata.luad_GSE31210 <- expect(geo.luad_GSE31210, geo_cols())
+
+metadata.luad_GSE31210 <- dplyr::mutate(
+  metadata.luad_GSE31210, vital_status = R.utils::capitalize(death.ch1), 
+  group = vital_status,
+  days_to_last_follow_up = as.integer(days.before.death.censor.ch1)
+)
+metadata.luad_GSE31210$tissue.ch1
+```
+
+### Survival 生存分析 (LUAD_GSE31210)
+
+`r snap(surv.luad_GSE31210, 0:1)`
+
+```{r}
+lm.luad_GSE31210 <- asjob_limma(geo.luad_GSE31210, metadata.luad_GSE31210)
+lm.luad_GSE31210 <- filter(
+  lm.luad_GSE31210, type = "metadata", tissue.ch1 == "primary lung tumor"
+)
+lm.luad_GSE31210 <- step1(lm.luad_GSE31210)
+
+surv.luad_GSE31210 <- do_survival(lm.luad_GSE31210, surv.tcga_luad)
+#' @meth {get_meth(surv.luad_GSE31210)}
+surv.luad_GSE31210 <- step1(surv.luad_GSE31210)
+surv.luad_GSE31210@plots$step1$p.surv
+surv.luad_GSE31210@plots$step1$p.roc
+surv.luad_GSE31210@tables$step1$t.SignificantSurvivalPValue
+
 ```
 
 ## GEO 数据获取 (SC_LUAD)
@@ -197,24 +308,26 @@ srn.luad@plots$step6$p.props_scsa
 
 ```
 
-## AUCell 识别细胞的基因集活性 (LUAD)
+## CopyKAT 癌细胞鉴定 (LUAD)
 
-`r snap(auc.luad, 0:1)`
+`r snap(katn.luad, 0:3)`
 
 ```{r}
-fea.mat <- join(feature(ssg.luad), "matrisome")
-auc.luad <- asjob_aucell(srn.luad, fea.mat)
-
-set_remoteRun.bosai(8)
-#' @meth {get_meth(auc.luad)}
-auc.luad <- set_remote(auc.luad)
-auc.luad <- step1(auc.luad, 8)
-
-srn.luad <- map(srn.luad, auc.luad)
-srn.luad@params$focus_AUCell$p.dim
-srn.luad@params$focus_AUCell$p.vln
+katn.luad <- asjob_katn(srn.luad)
+set_remoteRun.bosai(10)
+katn.luad <- set_remote(katn.luad)
+#' @meth {get_meth(katn.luad)}
+katn.luad <- step1(katn.luad, 10, testLocal = TRUE)
+katn.luad <- step2(katn.luad, 10)
 
 ```
+
+```{r}
+srn.luad <- focus(srn.luad, feature(surv.tcga_luad))
+srn.luad@params$focus_genes$p.dim
+```
+
+
 
 # 总结 {#conclusion}
 

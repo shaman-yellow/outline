@@ -33,3 +33,40 @@ autor(mts.matrisome$db)
 # harmony::RunHarmony(
 #   my_pca_embeddings, meta_data, c("dataset", "donor", "batch_id")
 # )
+
+cdRun(glue::glue("scp remote:~/wgcna_LUAD/wgc.luad.rds ./wgcna_local_LUAD/wgc.luad_45902c00144cdcc94994ee57c0f0f33e.rds"))
+
+# wgc.luad <- step4(wgc.luad, 16, file_res = "./wgcna_local_LUAD/wgc.luad_45902c00144cdcc94994ee57c0f0f33e.rds")
+
+Terror
+genes <- "risk_score"
+test <- survival::coxph(
+  as.formula(glue::glue("survival::Surv(time, event = status) ~ `{genes}`")), data = Terror
+)
+test
+m <- survival::cox.zph(test)
+m$table[1, "p"]
+plot(m)
+
+srn.luad@snap$step1 <- paste0(srn.luad@snap$step1, "过滤后，所有样本共包含 107378 个细胞用于后续分析。")
+
+## AUCell 识别细胞的基因集活性 (LUAD)
+
+`r snap(auc.luad, 0:1)`
+
+```{r}
+# fea.mat <- join(feature(ssg.luad), "matrisome")
+auc.luad <- asjob_aucell(
+  srn.luad, join(feature(surv.tcga_luad), "risk_score")
+)
+
+set_remoteRun.bosai(8)
+#' @meth {get_meth(auc.luad)}
+auc.luad <- set_remote(auc.luad)
+auc.luad <- step1(auc.luad, 8)
+
+srn.luad <- map(srn.luad, auc.luad)
+srn.luad@params$focus_AUCell$p.dim
+srn.luad@params$focus_AUCell$p.vln
+
+```
