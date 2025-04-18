@@ -1,0 +1,609 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-03-31"), end = td("2025-04-18"), finish = td("2025-04-18"),
+  id = "BSLL250322", client = "田彩平", inst = "",
+  type = "生信分析",
+  title = "基于单细胞和普通转录组分析基质体相关基因是肺腺癌免疫治疗反应和预后的预测指标",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.bosai("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+## UCSCXenaTools 癌症相关数据获取 (LUAD)
+
+`r snap(xena.luad, 0:2)`
+
+`r ref("LUAD-all-sample-metadata")`
+<!-- LEGEND_END -->
+
+```{r}
+xena.luad <- job_xena()
+#' @meth {get_meth(xena.luad)}
+xena.luad <- step1(xena.luad, mode = "LUAD")
+xena.luad <- step2(xena.luad)
+xena.luad@params$metadata
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-all-sample-metadata
+autor(xena.luad@params$metadata)
+```
+
+## Limma 差异分析 (LUAD)
+
+`r snap(lm.luad, 0:3)`
+
+`r ref("LUAD-LUAD-vs-Normal")`
+`r ref("LUAD-data-LUAD-vs-Normal")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.luad <- asjob_limma(xena.luad)
+lm.luad <- step1(lm.luad)
+#' @meth {get_meth(lm.luad)}
+lm.luad <- step2(lm.luad, LUAD - Normal)
+lm.luad <- step3(lm.luad)
+lm.luad@plots$step2$p.volcano$`LUAD - Normal`
+lm.luad@tables$step2$tops$`LUAD - Normal`
+feature(lm.luad)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-LUAD-vs-Normal
+autor(lm.luad@plots$step2$p.volcano$`LUAD - Normal`)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-data-LUAD-vs-Normal
+autor(lm.luad@tables$step2$tops$`LUAD - Normal`)
+```
+
+## ssGSEA 单样本GSEA富集分析 (LUAD)
+
+`r snap(ssg.luad, 0:1)`
+
+`r ref("LUAD-scores-LUAD-Normal")`
+<!-- LEGEND_END -->
+
+```{r}
+ssg.luad <- asjob_ssgsea(lm.luad)
+#' @meth {get_meth(ssg.luad)}
+ssg.luad <- step1(ssg.luad)
+ssg.luad@plots$step1$p.scores$`LUAD Normal`
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-scores-LUAD-Normal
+autor(ssg.luad@plots$step1$p.scores$`LUAD Normal`)
+```
+
+
+## WGCNA 分析 (LUAD)
+
+`r snap(wgc.luad, 0:6)`
+
+`r ref("LUAD-sample-clustering")`
+`r ref("LUAD-co-expression-module")`
+`r ref("LUAD-correlation-of-module-with-group")`
+<!-- LEGEND_END -->
+
+```{r}
+wgc.luad <- asjob_wgcna(lm.luad)
+#' @meth {get_meth(wgc.luad)}
+wgc.luad <- step1(wgc.luad)
+wgc.luad@plots$step1$raw_sample_tree
+wgc.luad <- step2(wgc.luad, 600, 10)
+
+set_remoteRun.bosai(16)
+wgc.luad <- set_remote(wgc.luad)
+wgc.luad <- step3(wgc.luad, 16)
+wgc.luad <- step4(wgc.luad, 16)
+wgc.luad@plots$step4$net
+wgc.luad <- step5(wgc.luad, group_levels = c("Normal", "LUAD"))
+wgc.luad@params$corp_group
+feature(wgc.luad)["ME0"]
+
+# wgcna_local_LUAD/wgc.luad_45902c00144cdcc94994ee57c0f0f33e.rds
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-sample-clustering
+autor(wgc.luad@plots$step1$raw_sample_tree)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-co-expression-module
+autor(wgc.luad@plots$step4$net)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-correlation-of-module-with-group
+autor(wgc.luad@params$corp_group)
+```
+
+## 汇总: DEGs + All_matrisome + WGCNA_module (LUAD)
+
+`r snap(venn.luad, 0:1)`
+
+`r ref("LUAD-Intersection-of-DEGs-with-All-matrisome-with-WGCNA-module")`
+<!-- LEGEND_END -->
+
+```{r}
+venn.luad <- job_venn(
+  DEGs = feature(lm.luad), 
+  All_matrisome = feature(ssg.luad),
+  WGCNA_module = feature(wgc.luad)["ME0"]
+)
+#' @meth {get_meth(venn.luad)}
+venn.luad <- step1(venn.luad)
+venn.luad@plots$step1$p.venn
+feature(venn.luad)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-Intersection-of-DEGs-with-All-matrisome-with-WGCNA-module
+autor(venn.luad@plots$step1$p.venn)
+```
+
+## TCGA 数据获取 (LUAD)
+
+`r snap(tcga.luad, 0:3)`
+
+```{r}
+tcga.luad <- job_tcga("TCGA-LUAD")
+#' @meth {get_meth(tcga.luad)}
+tcga.luad <- step1(tcga.luad)
+tcga.luad <- step2(tcga.luad)
+tcga.luad <- step3(tcga.luad)
+```
+
+
+## COX 回归 (TCGA_LUAD)
+
+`r snap(cox.tcga_luad, 0:5)`
+
+`r ref("TCGA-LUAD-lasso-COX-model")`
+`r ref("TCGA-LUAD-lasso-COX-coeffients-lambda-min")`
+`r ref("TCGA-LUAD-lasso-COX-coeffients-lambda-1se")`
+`r ref("TCGA-LUAD-lasso-COX-ROC-lambda-min")`
+`r ref("TCGA-LUAD-lasso-COX-ROC-lambda-1se")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.tcga_luad <- asjob_limma(tcga.luad)
+lm.tcga_luad <- step1(lm.tcga_luad)
+lm.tcga_luad <- filter(
+  lm.tcga_luad, type = "metadata", isTumor == "tumor"
+)
+
+cox.tcga_luad <- asjob_lasso(lm.tcga_luad, feature(venn.luad))
+#' @meth {get_meth(cox.tcga_luad)}
+cox.tcga_luad <- step1(cox.tcga_luad)
+cox.tcga_luad <- step2(cox.tcga_luad)
+cox.tcga_luad <- step3(cox.tcga_luad)
+
+cox.tcga_luad@step <- 3L
+cox.tcga_luad <- step4(cox.tcga_luad, type.measure = "C", inherit_unicox.cut.p = .01)
+cox.tcga_luad@plots$step4$p.lassoCOX_model
+cox.tcga_luad@plots$step4$p.lassoCOX_coeffients$lambda.min
+cox.tcga_luad@plots$step4$p.lassoCOX_coeffients$lambda.1se
+cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.min
+cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.1se
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-lasso-COX-model
+autor(cox.tcga_luad@plots$step4$p.lassoCOX_model)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-lasso-COX-coeffients-lambda-min
+autor(cox.tcga_luad@plots$step4$p.lassoCOX_coeffients$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-lasso-COX-coeffients-lambda-1se
+autor(cox.tcga_luad@plots$step4$p.lassoCOX_coeffients$lambda.1se)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-lasso-COX-ROC-lambda-min
+autor(cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.min)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-lasso-COX-ROC-lambda-1se
+autor(cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.1se)
+```
+
+## Survival 生存分析 (TCGA_LUAD)
+
+`r snap(surv.tcga_luad, 0:1)`
+
+`r ref("TCGA-LUAD-risk-score-related-genes-heatmap")`
+`r ref("TCGA-LUAD-survival-curve-of-risk-score")`
+`r ref("TCGA-LUAD-time-ROC")`
+`r ref("TCGA-LUAD-Survival-PValue")`
+<!-- LEGEND_END -->
+
+```{r}
+surv.tcga_luad <- asjob_survival(cox.tcga_luad, lambda = "1se")
+#' @meth {get_meth(surv.tcga_luad)}
+surv.tcga_luad <- step1(surv.tcga_luad)
+surv.tcga_luad@params$p.surv_genes_hp
+surv.tcga_luad@plots$step1$p.surv$risk_score
+surv.tcga_luad@plots$step1$p.roc$risk_score
+surv.tcga_luad@tables$step1$t.SurvivalPValue
+feature(surv.tcga_luad)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-risk-score-related-genes-heatmap
+autor(surv.tcga_luad@params$p.surv_genes_hp)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-survival-curve-of-risk-score
+autor(surv.tcga_luad@plots$step1$p.surv$risk_score)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-time-ROC
+autor(surv.tcga_luad@plots$step1$p.roc$risk_score)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-Survival-PValue
+autor(surv.tcga_luad@tables$step1$t.SurvivalPValue)
+```
+
+## 外部验证
+
+### GEO 数据获取 (LUAD_GSE31210)
+
+`r snap(geo.luad_GSE31210, 0:2)`
+
+```{r}
+geo.luad_GSE31210 <- job_geo("luad_GSE31210")
+#' @meth {get_meth(geo.luad_GSE31210)}
+geo.luad_GSE31210 <- step1(geo.luad_GSE31210)
+metadata.luad_GSE31210 <- expect(geo.luad_GSE31210, geo_cols())
+
+metadata.luad_GSE31210 <- dplyr::mutate(
+  metadata.luad_GSE31210, vital_status = R.utils::capitalize(death.ch1), 
+  group = vital_status,
+  days_to_last_follow_up = as.integer(days.before.death.censor.ch1)
+)
+metadata.luad_GSE31210$tissue.ch1
+```
+
+### Survival 生存分析 (LUAD_GSE31210)
+
+`r snap(surv.luad_GSE31210, 0:1)`
+
+`r ref("Risk-score-related-genes-heatmap")`
+`r ref("LUAD-GSE31210-survival-curve-of-risk-score")`
+`r ref("LUAD-GSE31210-time-ROC")`
+`r ref("LUAD-GSE31210-Significant-Survival-PValue")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.luad_GSE31210 <- asjob_limma(geo.luad_GSE31210, metadata.luad_GSE31210)
+lm.luad_GSE31210 <- filter(
+  lm.luad_GSE31210, type = "metadata", tissue.ch1 == "primary lung tumor"
+)
+lm.luad_GSE31210 <- step1(lm.luad_GSE31210)
+
+surv.luad_GSE31210 <- do_survival(lm.luad_GSE31210, surv.tcga_luad)
+#' @meth {get_meth(surv.luad_GSE31210)}
+surv.luad_GSE31210 <- step1(surv.luad_GSE31210)
+surv.luad_GSE31210@params$p.surv_genes_hp
+surv.luad_GSE31210@plots$step1$p.surv$risk_score
+surv.luad_GSE31210@plots$step1$p.roc$risk_score
+surv.luad_GSE31210@tables$step1$t.SignificantSurvivalPValue
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Risk-score-related-genes-heatmap
+autor(surv.luad_GSE31210@params$p.surv_genes_hp)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-GSE31210-survival-curve-of-risk-score
+autor(surv.luad_GSE31210@plots$step1$p.surv$risk_score)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-GSE31210-time-ROC
+autor(surv.luad_GSE31210@plots$step1$p.roc$risk_score)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-GSE31210-Significant-Survival-PValue
+autor(surv.luad_GSE31210@tables$step1$t.SignificantSurvivalPValue)
+```
+
+## Survival 生存分析 (INDIVIDUALS)
+
+ (对预后模型中的各个基因做了生存分析) 
+`r snap(surv.individuals, 0:1)`
+
+`r ref("INDIVIDUALS-all-significant-genes-survival-curves")`
+`r ref("INDIVIDUALS-Significant-Survival-PValue")`
+<!-- LEGEND_END -->
+
+```{r}
+surv.individuals <- asjob_survival(lm.tcga_luad, feature(surv.tcga_luad))
+#' @meth {get_meth(surv.individuals)}
+surv.individuals <- step1(surv.individuals)
+surv.individuals <- step2(surv.individuals)
+wrap(surv.individuals@plots$step2$p.survs, 13, 9)
+surv.individuals@tables$step1$t.SignificantSurvivalPValue
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| INDIVIDUALS-all-significant-genes-survival-curves
+autor(wrap(surv.individuals@plots$step2$p.survs, 13, 9))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| INDIVIDUALS-Significant-Survival-PValue
+autor(surv.individuals@tables$step1$t.SignificantSurvivalPValue)
+```
+
+## estimate 免疫评分 (TCGA_LUAD_REGROUP)
+
+`r snap(est.tcga_luad_regroup, 0:3)`
+
+`r ref("TCGA-LUAD-REGROUP-Group-boxplot")`
+`r ref("TCGA-LUAD-REGROUP-immune-Scores")`
+<!-- LEGEND_END -->
+
+```{r}
+lm.tcga_luad_regroup <- regroup(lm.tcga_luad, surv.tcga_luad)
+est.tcga_luad_regroup <- asjob_estimate(lm.tcga_luad_regroup)
+#' @meth {get_meth(est.tcga_luad_regroup)}
+est.tcga_luad_regroup <- step1(est.tcga_luad_regroup)
+est.tcga_luad_regroup <- step2(est.tcga_luad_regroup)
+est.tcga_luad_regroup@plots$step2$p.immuneScores
+est.tcga_luad_regroup@tables$step2$t.immuneScores
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-REGROUP-Group-boxplot
+autor(est.tcga_luad_regroup@plots$step2$p.immuneScores)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-REGROUP-immune-Scores
+autor(est.tcga_luad_regroup@tables$step2$t.immuneScores)
+```
+
+## GEO 数据获取 (SC_LUAD)
+
+`r snap(geo.sc_luad, 0:2)`
+
+```{r}
+geo.sc_luad <- job_geo("GSE189357")
+#' @meth {get_meth(geo.sc_luad)}
+geo.sc_luad <- step1(geo.sc_luad)
+geo.sc_luad$guess
+geo.sc_luad <- step2(geo.sc_luad, rna = FALSE)
+geo.sc_luad@params$dir
+
+lapply(glue::glue("TD{1:9}"),
+  function(name) {
+    prepare_10x(geo.sc_luad@params$dir, name, FALSE)
+  })
+
+```
+
+## Seurat 集成单细胞数据分析 (LUAD)
+
+`r snap(srn.luad, 0:7)`
+
+`r ref("Pre-Quality-control")`
+`r ref("LUAD-After-Quality-control")`
+`r ref("LUAD-Standard-deviations-of-PCs")`
+`r ref("LUAD-UMAP-Unintegrated")`
+`r ref("LUAD-UMAP-Integrated")`
+`r ref("LUAD-significant-markers-of-cell-clusters")`
+`r ref("LUAD-SCSA-Cell-type-annotation")`
+`r ref("LUAD-Marker-Validation")`
+`r ref("LUAD-SCSA-Cell-Proportions-in-each-sample")`
+<!-- LEGEND_END -->
+(Marker 来自于原研究文献 PMID: GSE189357)
+
+```{r}
+files_scRNA <- list.files(geo.sc_luad$dir, "TD", full.names = TRUE)
+srn.luad <- job_seurat5n(files_scRNA, strx(files_scRNA, "TD[0-9]"))
+srn.luad@params$p.qc_pre
+#' @meth {get_meth(srn.luad)}
+srn.luad <- step1(srn.luad, 500, 7500, 10)
+srn.luad@params$p.qc_aft
+srn.luad <- step2(srn.luad)
+srn.luad@plots$step2$p.pca_rank
+srn.luad <- step3(srn.luad)
+srn.luad@plots$step3$p.umapUint
+srn.luad@plots$step3$p.umapInt
+srn.luad <- step4(srn.luad, "")
+
+set_remoteRun.bosai()
+srn.luad <- set_remote(srn.luad)
+srn.luad <- step5(srn.luad, 8)
+srn.luad@tables$step5$all_markers
+
+ref.markers <- as_markers(
+  list(
+    epithelial_cells = c("EPCAM", "SCGB1A1"),
+    T_NK_cells = c("CD3D", "NKG7", "GZMK", "GNLY"),
+    B_cells = c("CD79A", "JCHAIN", "IGHG1"),
+    myeloid_cells = c("LYZ", "TPSB2", "AIF1", "HLA-DRA", "HLA-DRB1", "CPA3"),
+    endothelial_cells = c("CLDN5"),
+    fibroblasts = c("COL1A1", "DCN")
+  )
+)
+
+srn.luad@step <- 5L
+srn.luad <- step6(srn.luad, "", ref.markers)
+srn.luad@plots$step6$p.map_scsa
+srn.luad@plots$step6$p.markers
+srn.luad@plots$step6$p.props_scsa
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| Pre-Quality-control
+autor(srn.luad@params$p.qc_pre)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-After-Quality-control
+autor(srn.luad@params$p.qc_aft)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-Standard-deviations-of-PCs
+autor(srn.luad@plots$step2$p.pca_rank)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-UMAP-Unintegrated
+autor(srn.luad@plots$step3$p.umapUint)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-UMAP-Integrated
+autor(srn.luad@plots$step3$p.umapInt)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-significant-markers-of-cell-clusters
+autor(srn.luad@tables$step5$all_markers)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-SCSA-Cell-type-annotation
+autor(srn.luad@plots$step6$p.map_scsa)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-Marker-Validation
+autor(srn.luad@plots$step6$p.markers)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-SCSA-Cell-Proportions-in-each-sample
+autor(srn.luad@plots$step6$p.props_scsa)
+```
+
+## (预后模型基因) 首要表达的细胞
+
+`r ref("LUAD-dimension-plot-of-expression-level-genes")`
+<!-- LEGEND_END -->
+
+```{r}
+srn.luad <- focus(srn.luad, feature(surv.tcga_luad))
+srn.luad@params$focus_genes$p.dim
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-dimension-plot-of-expression-level-genes
+autor(srn.luad@params$focus_genes$p.dim)
+```
+
+# 总结 {#conclusion}
+
+本分析聚焦于基质体，分析肺癌 (LUAD)，通过差异分析、WGCNA 等方式，筛选出关键基质体基因，随后以COX、LASSO 等 
+算法，构建预后模型，再以外部数据集验证。随后，我们在单细胞数据集 (LUAD) 中，确认了这些基因的表达。
+其中，EREG 集中表达于 myeloid_cells，该细胞类型可能是基质体在 LUAD 发挥作用的关键细胞。
+
+
+
+

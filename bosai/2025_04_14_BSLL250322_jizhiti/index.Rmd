@@ -1,1 +1,4 @@
 
+```{r}
+ssh_send(glue::glue("ssh remote 'echo {make.names(bind(readLines('./dep.Rmd')))}'"))
+```

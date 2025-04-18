@@ -1,0 +1,7 @@
+
+```{r}
+x <- readRDS("./surv.individuals.1.rds")
+x <- step2(x)
+x@plots$step2$p.survs
+saveRDS(x, "./surv.individuals.2.rds")
+```

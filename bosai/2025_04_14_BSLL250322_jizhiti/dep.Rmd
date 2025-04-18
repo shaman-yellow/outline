@@ -70,3 +70,52 @@ srn.luad@params$focus_AUCell$p.dim
 srn.luad@params$focus_AUCell$p.vln
 
 ```
+
+## CopyKAT 癌细胞鉴定 (LUAD)
+
+`r snap(katn.luad, 0:3)`
+
+```{r}
+katn.luad <- asjob_katn(srn.luad, "T_NK_cells")
+set_remoteRun.bosai(16)
+katn.luad <- set_remote(katn.luad)
+#' @meth {get_meth(katn.luad)}
+katn.luad <- step1(katn.luad, 16, cl = 9, force_continue = TRUE)
+katn.luad <- step2(katn.luad, 16, cl = 9)
+katn.luad <- step3(katn.luad)
+katn.luad@plots$step3$all_heatmap$TD9
+katn.luad@plots$step3$all_heatmap$TD8
+katn.luad@plots$step3$all_heatmap$TD7
+katn.luad@plots$step3$all_heatmap$TD6
+katn.luad@plots$step3$all_heatmap$TD5
+clear(katn.luad)
+```
+
+## Seurat 细胞亚群分析 (EPITHELIAL)
+
+`r snap(srn.epithelial, 0:7)`
+
+```{r}
+srn.epithelial <- asjob_seurat_sub(srn.luad, scsa_cell == "epithelial_cells")
+#' @meth {get_meth(srn.epithelial)}
+srn.epithelial <- step1(srn.epithelial)
+srn.epithelial <- step2(srn.epithelial)
+srn.epithelial <- step3(srn.epithelial)
+p.epithelial <- vis(srn.epithelial, "scsa_cell")
+p.epithelial
+```
+
+### Seurat-copyKAT 癌细胞注释 (EPITHELIAL)
+
+`r snap(srn.epithelial, "job_kat")`
+
+```{r}
+srn.epithelial <- map(srn.epithelial, katn.luad)
+srn.epithelial@params$p.map_cancer
+```
+
+```{r}
+srn.epithelial <- focus(srn.epithelial, feature(surv.tcga_luad), "copykat_cell")
+srn.epithelial@params$focus_genes$p.vln
+```
+
