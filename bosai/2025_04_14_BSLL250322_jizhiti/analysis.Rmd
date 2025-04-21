@@ -590,8 +590,24 @@ srn.luad@params$focus_genes$p.dim
 autor(srn.luad@params$focus_genes$p.dim)
 ```
 
-```{r}
+## InferCNV 变异拷贝数分析 (EPITHELIAL)
 
+`r snap(infe.epithelial, 0:1)`
+
+```{r}
+infe.epithelial <- asjob_infercnv(srn.luad, "endothelial_cells", "epithelial_cells")
+
+set_remoteRun.bosai(8)
+infe.epithelial <- set_remote(infe.epithelial)
+infe.epithelial <- step1(infe.epithelial, 8)
+
+infe.epithelial <- step2(infe.epithelial)
+
+infe.epithelial
+
+infe.epithelial <- step1(infe.epithelial, 5)
+infe.epithelial@object
+#' @meth {get_meth(infe.epithelial)}
 ```
 
 # 总结 {#conclusion}
