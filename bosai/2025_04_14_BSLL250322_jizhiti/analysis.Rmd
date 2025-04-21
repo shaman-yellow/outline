@@ -590,6 +590,10 @@ srn.luad@params$focus_genes$p.dim
 autor(srn.luad@params$focus_genes$p.dim)
 ```
 
+```{r}
+
+```
+
 # 总结 {#conclusion}
 
 本分析聚焦于基质体，分析肺癌 (LUAD)，通过差异分析、WGCNA 等方式，筛选出关键基质体基因，随后以COX、LASSO 等 
