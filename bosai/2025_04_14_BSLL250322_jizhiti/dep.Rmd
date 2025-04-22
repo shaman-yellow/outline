@@ -119,3 +119,12 @@ srn.epithelial <- focus(srn.epithelial, feature(surv.tcga_luad), "copykat_cell")
 srn.epithelial@params$focus_genes$p.vln
 ```
 
+
+test <- kmeans(t(infe.epithelial@object@expr.data[, use]), 10)
+test$cluster %>% table
+install.packages("ClusterR")
+test2 <- ClusterR::MiniBatchKmeans(
+  t(infe.epithelial@object@expr.data[, use]), 100
+)
+test2
+test3 <- ClusterR::predict_MBatchKMeans(t(infe.epithelial@object@expr.data[, use]), test2$centroids)
