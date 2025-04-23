@@ -128,3 +128,28 @@ test2 <- ClusterR::MiniBatchKmeans(
 )
 test2
 test3 <- ClusterR::predict_MBatchKMeans(t(infe.epithelial@object@expr.data[, use]), test2$centroids)
+
+infe.epithelial$kmean_group_indices
+
+test <- infe.epithelial@object
+test@observation_grouped_cell_indices <- infe.epithelial$kmean_group_indices
+test@observation_grouped_cell_indices
+
+test@expr.data %>% obj.size
+
+pngDpi("./order_material/infercnv.png")
+ComplexHeatmap::Heatmap(
+  test@expr.data, .get_col_fun(test@expr.data), "test",
+  use_raster = TRUE
+)
+dev.off()
+
+infercnv::plot_cnv(test, out_dir = "./order_material/")
+
+
+```{r}
+infe.epithelial <- readRDS("./infe.epithelial.2.rds")
+
+infe.epithelial@step <- 2L
+
+```

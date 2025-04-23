@@ -5,3 +5,23 @@ x <- step2(x)
 x@plots$step2$p.survs
 saveRDS(x, "./surv.individuals.2.rds")
 ```
+均方值（或二阶原点矩）的数学公式用 LaTeX 表示为：
+
+\[
+\text{均方值} = \frac{1}{n} \sum_{i=1}^{n} x_i^2
+\]
+
+其中：
+- \( n \) 为数据的总个数，
+- \( x_i \) 为第 \( i \) 个数据点，
+- \( \sum_{i=1}^{n} x_i^2 \) 表示所有数据点的平方和。
+
+---
+
+**对比平方平均数（RMS）**：  
+平方平均数是均方值的平方根，公式为：
+
+\[
+\text{RMS} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} x_i^2}
+\]
+

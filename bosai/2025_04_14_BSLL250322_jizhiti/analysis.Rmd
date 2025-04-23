@@ -592,34 +592,77 @@ autor(srn.luad@params$focus_genes$p.dim)
 
 ## InferCNV 变异拷贝数分析 (EPITHELIAL)
 
-`r snap(infe.epithelial, 0:1)`
+`r snap(infe.epithelial, 0:3)`
+
+`r ref("EPITHELIAL-infercnv-heatmap")`
+`r ref("EPITHELIAL-kmean-cluster-CNV-score-violin-plot")`
+`r ref("EPITHELIAL-kmean-cluster-CNV-score-wilcox-test")`
+<!-- LEGEND_END -->
 
 ```{r}
 infe.epithelial <- asjob_infercnv(
   srn.luad, c("endothelial_cells"), "epithelial_cells"
 )
-
 set_remoteRun.bosai(16)
 infe.epithelial <- set_remote(infe.epithelial)
+#' @meth {get_meth(infe.epithelial)}
 infe.epithelial <- step1(infe.epithelial, 16)
-infe.epithelial@step <- 1L
 infe.epithelial <- step2(infe.epithelial)
 infe.epithelial@plots$step2$p.infer
-infe.epithelial@object
-infe.epithelial@object@observation_grouped_cell_indices
+infe.epithelial <- step3(infe.epithelial)
+infe.epithelial@plots$step3$p.violin
+infe.epithelial$dataPvalue
 
-#' @meth {get_meth(infe.epithelial)}
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-infercnv-heatmap
+autor(infe.epithelial@plots$step2$p.infer)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-kmean-cluster-CNV-score-violin-plot
+autor(infe.epithelial@plots$step3$p.violin)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-kmean-cluster-CNV-score-wilcox-test
+autor(infe.epithelial$dataPvalue)
+```
+
+## Seurat-InferCNV 癌细胞注释 (LUAD)
+
+`r snap(srn.luad, "job_infercnv")`
+
 ```{r}
-infe.epithelial <- readRDS("./infe.epithelial.2.rds")
+srn.luad <- map(srn.luad, infe.epithelial)
+srn.luad@params$p.map_cancer
+```
 
-infe.epithelial@step <- 2L
-infe.epithelial <- step3(infe.epithelial)
-infe.epithelial
+## Monocle3 拟时分析 (EPITHELIAL)
 
-ggplot(Terror, aes(x = group, y = expr)) +
-  geom_violin()
+`r snap(mn.epithelial, 0:4)`
+
+```{r}
+mn.epithelial <- do_monocle(
+  srn.luad, "epithelial_cells", group.by = "scsa_cell", resolution = 1.2, dims = 1:15,
+  sct = TRUE
+)
+mn.epithelial@params$sr_sub@plots$step3$p.umapInt
+mn.epithelial <- step1(mn.epithelial, "infercnv_cell", pre = TRUE)
+#' @meth {get_meth(mn.epithelial)}
+mn.epithelial@plots$step1$p.prin
+mn.epithelial@step <- 1L
+mn.epithelial <- step2(
+  mn.epithelial, c("Y_228", "Y_28", "Y_141", "Y_209")
+)
+mn.epithelial@plots$step2$p.pseu
+mn.epithelial <- step3(mn.epithelial, group.by = "seurat_clusters")
+mn.epithelial@plots$step3$gene_module_heatdata$graph_test.sig
+mn.epithelial@tables$step3$graph_test.sig
 ```
 
 # 总结 {#conclusion}
@@ -627,7 +670,5 @@ ggplot(Terror, aes(x = group, y = expr)) +
 本分析聚焦于基质体，分析肺癌 (LUAD)，通过差异分析、WGCNA 等方式，筛选出关键基质体基因，随后以COX、LASSO 等 
 算法，构建预后模型，再以外部数据集验证。随后，我们在单细胞数据集 (LUAD) 中，确认了这些基因的表达。
 其中，EREG 集中表达于 myeloid_cells，该细胞类型可能是基质体在 LUAD 发挥作用的关键细胞。
-
-
 
 

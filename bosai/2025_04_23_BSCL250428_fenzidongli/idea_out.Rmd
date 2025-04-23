@@ -1,0 +1,115 @@
+---
+title: 
+bibliography: '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "bosai.docx", package = "utils.tool")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2025-04-22"), end = td("2025-04-23"), finish = td("2025-04-23"),
+  id = "BSCL250428", client = "方涛", inst = "",
+  type = "思路设计",
+  title = "网络药理学分析+分子动力模拟",
+  save = ".items_idea.rds"
+)
+show.ic(info)
+
+order_publish.bosai("idea.Rmd", "idea_out.Rmd")
+formatName.bosai("./idea_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"), autor_asis = F)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.bosai(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 研究背景 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("骨髓瘤"),
+  di("失眠症"),
+  di("睡眠障碍")
+)
+
+```
+
+## 思路 {#introduction}
+
+```{r}
+#| route
+route <- as_network(
+  list(
+    "复方:数据库BATMAN:所有成分:20%口服利用度预测:20%HOB_成分:已知靶点, 预测靶点:所有靶点",
+    "疾病:DB_GeneCards, DB_Others, DB_GEO:疾病相关基因",
+    "疾病相关基因, 所有靶点:疾病靶点:中药-成分-靶点网络:PPI网络分析:Hub_Genes:差异分析, 突变分析, 生存分析, 富集分析:显著基因",
+    "显著基因:批量分子对接:对接分数, TOP对接可视化:分子动力模拟:成分-靶点"
+    ), "sugiyama"
+)
+p.route <- flowChart(route, 1.1, 1)
+p.route
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| Route
+autor(p.route)
+```
+
+# GEO 检索方法
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 参考文献和数据集 {#workflow}
+
+## GSE 数据搜索 (INSOMNIA)
+
+`r snap(gds.Insomnia, 0:3)`
+`r snap(gds.Insomnia, "a")`
+
+```{r}
+gds.Insomnia <- job_gds("Insomnia")
+#' @meth {get_meth(gds.Insomnia)}
+gds.Insomnia <- step1(gds.Insomnia)
+gds.Insomnia@object
+gds.Insomnia <- step2(gds.Insomnia)
+gds.Insomnia <- expect(gds.Insomnia, geo_cols())
+gds.Insomnia <- anno(gds.Insomnia)
+
+```
+
+## GSE 数据搜索 (SD)
+
+`r snap(gds.sd, 0:3)`
+`r snap(gds.sd, "a")`
+
+```{r}
+gds.sd <- job_gds("Sleep disorders")
+vis(gds.sd)
+gds.sd <- step1(gds.sd)
+#' @meth {get_meth(gds.sd)}
+gds.sd <- step2(gds.sd)
+gds.sd <- expect(gds.sd, geo_cols())
+gds.sd <- anno(gds.sd)
+```
+
