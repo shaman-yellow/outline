@@ -170,6 +170,7 @@ autor(wgc.luad@plots$step4$net)
 autor(wgc.luad@params$corp_group)
 ```
 
+
 ## 汇总: DEGs + All_matrisome + WGCNA_module (LUAD)
 
 `r snap(venn.luad, 0:1)`
@@ -183,6 +184,7 @@ venn.luad <- job_venn(
   All_matrisome = feature(ssg.luad),
   WGCNA_module = feature(wgc.luad)["ME0"]
 )
+
 #' @meth {get_meth(venn.luad)}
 venn.luad <- step1(venn.luad)
 venn.luad@plots$step1$p.venn
@@ -192,8 +194,9 @@ feature(venn.luad)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUAD-Intersection-of-DEGs-with-All-matrisome-with-WGCNA-module
-autor(venn.luad@plots$step1$p.venn)
+autor(z7(venn.luad@plots$step1$p.venn, 1.5, 1.3))
 ```
+
 
 ## TCGA 数据获取 (LUAD)
 
@@ -492,7 +495,13 @@ srn.luad@params$p.qc_pre
 #' @meth {get_meth(srn.luad)}
 srn.luad <- step1(srn.luad, 500, 7500, 10)
 srn.luad@params$p.qc_aft
-srn.luad <- step2(srn.luad, sct = TRUE)
+
+# set_remoteRun.bosai()
+# srn.luad <- set_remote(srn.luad)
+# srn.luad <- step2(srn.luad, sct = TRUE, workers = 16)
+srn.luad <- step2(srn.luad)
+# sct: seurat5n_local_LUAD/srn.luad_8ea1869b222cc968d56a9ea7cf8fbc14.rds
+
 srn.luad@plots$step2$p.pca_rank
 srn.luad <- step3(srn.luad)
 srn.luad@plots$step3$p.umapUint
@@ -576,21 +585,6 @@ autor(srn.luad@plots$step6$p.markers)
 autor(srn.luad@plots$step6$p.props_scsa)
 ```
 
-## (预后模型基因) 首要表达的细胞
-
-`r ref("LUAD-dimension-plot-of-expression-level-genes")`
-<!-- LEGEND_END -->
-
-```{r}
-srn.luad <- focus(srn.luad, feature(surv.tcga_luad))
-srn.luad@params$focus_genes$p.dim
-```
-
-```{r eval = T, echo = F, results = "asis"}
-#| LUAD-dimension-plot-of-expression-level-genes
-autor(srn.luad@params$focus_genes$p.dim)
-```
-
 ## InferCNV 变异拷贝数分析 (EPITHELIAL)
 
 `r snap(infe.epithelial, 0:3)`
@@ -638,33 +632,94 @@ autor(infe.epithelial$dataPvalue)
 
 `r snap(srn.luad, "job_infercnv")`
 
+`r ref("LUAD-Cancer-Cell-type-annotation")`
+<!-- LEGEND_END -->
+
 ```{r}
 srn.luad <- map(srn.luad, infe.epithelial)
 srn.luad@params$p.map_cancer
 ```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-Cancer-Cell-type-annotation
+autor(srn.luad@params$p.map_cancer)
+```
+
 ## Monocle3 拟时分析 (EPITHELIAL)
 
 `r snap(mn.epithelial, 0:4)`
+该起点始自正常细胞，首要关注正常细胞向癌细胞的转化。
 
 ```{r}
 mn.epithelial <- do_monocle(
-  srn.luad, "epithelial_cells", group.by = "scsa_cell", resolution = 1.2, dims = 1:15,
+  srn.luad, "epithelial_cells", group.by = "scsa_cell", resolution = 1.2, dims = 1:30,
   sct = TRUE
 )
 mn.epithelial@params$sr_sub@plots$step3$p.umapInt
 mn.epithelial <- step1(mn.epithelial, "infercnv_cell", pre = TRUE)
 #' @meth {get_meth(mn.epithelial)}
 mn.epithelial@plots$step1$p.prin
+
 mn.epithelial@step <- 1L
 mn.epithelial <- step2(
-  mn.epithelial, c("Y_228", "Y_28", "Y_141", "Y_209")
+  mn.epithelial, c("Y_5")
+  # mn.epithelial, c("Y_228", "Y_28", "Y_141", "Y_209")
 )
 mn.epithelial@plots$step2$p.pseu
 mn.epithelial <- step3(mn.epithelial, group.by = "seurat_clusters")
-mn.epithelial@plots$step3$gene_module_heatdata$graph_test.sig
 mn.epithelial@tables$step3$graph_test.sig
+feature(mn.epithelial)
+
+mn.epithelial@step <- 3L
+mn.epithelial <- step4(
+  mn.epithelial, ids(mn.epithelial, "infercnv_cell"),
+  genes = feature(mn.epithelial)[1:20], group.by = "infercnv_cell"
+)
+mn.epithelial@plots$step4$genes_in_pseudotime$pseudo1
+feature(mn.epithelial)
+
 ```
+
+## ClusterProfiler 富集分析 (EPITHELIAL)
+
+`r snap(en.epithelial, 0:2)`
+
+```{r}
+en.epithelial <- asjob_enrich(feature(mn.epithelial)[1:500])
+#' @meth {get_meth(en.epithelial)}
+en.epithelial <- step1(en.epithelial)
+en.epithelial@plots$step1$p.kegg
+en.epithelial@plots$step1$p.go
+```
+
+```{r}
+cc.luad <- asjob_cellchat(srn.luad, "infercnv_cell")
+clear_others("cc.luad")
+
+set_remoteRun.bosai()
+cc.luad <- set_remote(cc.luad)
+cc.luad <- step1(cc.luad, 16, hasUpload = TRUE)
+
+cc.luad
+
+```
+
+## (预后模型基因) 首要表达的细胞
+
+`r ref("LUAD-dimension-plot-of-expression-level-genes")`
+<!-- LEGEND_END -->
+
+```{r}
+srn.luad <- focus(srn.luad, feature(surv.tcga_luad))
+srn.luad@params$focus_genes$p.dim
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-dimension-plot-of-expression-level-genes
+autor(srn.luad@params$focus_genes$p.dim)
+```
+
 
 # 总结 {#conclusion}
 

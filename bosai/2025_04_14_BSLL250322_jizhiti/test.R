@@ -5,3 +5,9 @@ p <- ggplot(Terror) +
   ggforce::facet_row(~ type, space = "free") +
   theme_minimal()
 p
+save
+
+ls(all.names = TRUE)
+digest::digest(eg, serialize = TRUE)
+
+
