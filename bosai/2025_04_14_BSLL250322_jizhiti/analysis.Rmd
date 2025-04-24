@@ -485,13 +485,14 @@ lapply(glue::glue("TD{1:9}"),
 (Marker 来自于原研究文献 PMID: GSE189357)
 
 ```{r}
-files_scRNA <- list.files(geo.sc_luad$dir, "TD", full.names = TRUE)
-srn.luad <- job_seurat5n(files_scRNA, strx(files_scRNA, "TD[0-9]"))
+files_scRNA <- list.files(geo.sc_luad@params$dir_files, "TD", full.names = TRUE)
+# srn.luad <- job_seurat5n(files_scRNA, strx(files_scRNA, "TD[0-9]"))
+srn.luad <- job_seurat5n(geo.sc_luad$dir_files, strx(geo.sc_luad$dir_files, "TD[0-9]"))
 srn.luad@params$p.qc_pre
 #' @meth {get_meth(srn.luad)}
 srn.luad <- step1(srn.luad, 500, 7500, 10)
 srn.luad@params$p.qc_aft
-srn.luad <- step2(srn.luad)
+srn.luad <- step2(srn.luad, sct = TRUE)
 srn.luad@plots$step2$p.pca_rank
 srn.luad <- step3(srn.luad)
 srn.luad@plots$step3$p.umapUint
