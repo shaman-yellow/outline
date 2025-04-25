@@ -245,6 +245,8 @@ summary_week.bosai(
 
 ```{r}
 alls <- get_orders()
-summary_week.bosai(rm = TRUE)
+summary_week.bosai(
+  rm = TRUE, must_include = c("BSCL241113", "BSLL250322")
+)
 ```
 

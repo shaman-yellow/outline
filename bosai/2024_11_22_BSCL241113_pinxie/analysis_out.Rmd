@@ -22,7 +22,7 @@ order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
 order_packaging(
   "./analysis_out.docx", idname = idname, external_file = NULL, extras = c(
-    "./Reply_FL.docx", "./Reply_FL2.docx"
+    "./Reply_FL.docx", "./Reply_FL2.docx", "./Reply_YRX.docx"
   )
 )
 ```
