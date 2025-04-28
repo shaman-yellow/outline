@@ -153,3 +153,33 @@ infe.epithelial <- readRDS("./infe.epithelial.2.rds")
 infe.epithelial@step <- 2L
 
 ```
+
+## TCGA 数据获取 (LUAD_MUTATION)
+
+`r snap(tcga.luad_mutation, 0:3)`
+
+```{r}
+tcga.luad_mutation <- job_tcga("TCGA-LUAD")
+tcga.luad_mutation <- step1(
+  tcga.luad_mutation, c("mutation", "clinical")
+#' @meth {get_meth(tcga.luad_mutation)}
+)
+tcga.luad_mutation <- step2(tcga.luad_mutation)
+tcga.luad_mutation <- step3(tcga.luad_mutation)
+```
+
+## Maftools 变异注释结果分析 (LUAD_MUTATION)
+
+`r snap(maf.luad_mutation, 0:1)`
+
+```{r}
+lm.tcga_luad_regroup@object %>% ncol
+
+maf.luad_mutation <- asjob_maf(tcga.luad_mutation)
+maf.luad_mutation <- step1(maf.luad_mutation)
+#' @meth {get_meth(maf.luad_mutation)}
+maf.luad_mutation@plots$step1$p.oncoplot
+maf.luad_mutation@plots$step1$p.snp_class
+maf.luad_mutation@plots$step1$p.summary
+```
+

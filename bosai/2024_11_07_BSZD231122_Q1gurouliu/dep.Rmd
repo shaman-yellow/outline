@@ -270,3 +270,21 @@ rm(mn.os_cancer)
 ```
 
 # srn.os@snap$step1 <- paste0(srn.os@snap$step1, "过滤后，所有样本共包含 72962 个细胞用于后续分析。")
+
+```{r}
+infer.os <- asjob_infercnv(
+  srn.os, "T_NK_cells", c(
+    "Proliferating_osteoblastic_OS", "Osteoblastic_OS", "Chondroblastic_OS"
+  )
+)
+clear(infer.os)
+set_remoteRun.bosai(32)
+infer.os <- set_remote(infer.os)
+
+infer.os <- step1(infer.os, 32)
+infer.os <- step2(infer.os)
+infer.os@step <- 2L
+infer.os <- step3(infer.os, 20)
+wrap(infer.os@plots$step3$p.violin, 14, 5)
+
+```

@@ -12,7 +12,9 @@ show.ic(info)
 
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
-order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+order_packaging(
+  "./analysis_out.docx", idname = idname, external_file = NULL, extras = "./Reply_FL.docx"
+)
 ```
 
 ```{r include = F}
@@ -131,6 +133,7 @@ autor(ssg.luad@plots$step1$p.scores$`LUAD Normal`)
 `r ref("LUAD-sample-clustering")`
 `r ref("LUAD-co-expression-module")`
 `r ref("LUAD-correlation-of-module-with-group")`
+`r ref("LUAD-correlation-heatmap")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -146,8 +149,8 @@ wgc.luad <- step3(wgc.luad, 16)
 wgc.luad <- step4(wgc.luad, 16)
 wgc.luad@plots$step4$net
 wgc.luad <- step5(wgc.luad, group_levels = c("Normal", "LUAD"))
-wgc.luad@params$corp_group
-feature(wgc.luad)["ME0"]
+wgc.luad@plots$step5$p.corhp
+
 
 # wgcna_local_LUAD/wgc.luad_45902c00144cdcc94994ee57c0f0f33e.rds
 ```
@@ -170,6 +173,12 @@ autor(wgc.luad@plots$step4$net)
 autor(wgc.luad@params$corp_group)
 ```
 
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-correlation-heatmap
+autor(wgc.luad@plots$step5$p.corhp)
+```
 
 ## 汇总: DEGs + All_matrisome + WGCNA_module (LUAD)
 
@@ -220,6 +229,7 @@ tcga.luad <- step3(tcga.luad)
 `r ref("TCGA-LUAD-lasso-COX-coeffients-lambda-1se")`
 `r ref("TCGA-LUAD-lasso-COX-ROC-lambda-min")`
 `r ref("TCGA-LUAD-lasso-COX-ROC-lambda-1se")`
+`r ref("TCGA-LUAD-sig-Univariate-Cox-Coefficients")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -234,6 +244,7 @@ cox.tcga_luad <- asjob_lasso(lm.tcga_luad, feature(venn.luad))
 cox.tcga_luad <- step1(cox.tcga_luad)
 cox.tcga_luad <- step2(cox.tcga_luad)
 cox.tcga_luad <- step3(cox.tcga_luad)
+cox.tcga_luad@tables$step3$t.sigUnivariateCoxCoefficients
 
 cox.tcga_luad@step <- 3L
 cox.tcga_luad <- step4(cox.tcga_luad, type.measure = "C", inherit_unicox.cut.p = .01)
@@ -244,6 +255,10 @@ cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.min
 cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.1se
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-sig-Univariate-Cox-Coefficients
+autor(cox.tcga_luad@tables$step3$t.sigUnivariateCoxCoefficients)
+```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| TCGA-LUAD-lasso-COX-model
@@ -273,6 +288,7 @@ autor(cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.min)
 #| TCGA-LUAD-lasso-COX-ROC-lambda-1se
 autor(cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.1se)
 ```
+
 
 ## Survival 生存分析 (TCGA_LUAD)
 
@@ -452,13 +468,39 @@ autor(est.tcga_luad_regroup@plots$step2$p.immuneScores)
 autor(est.tcga_luad_regroup@tables$step2$t.immuneScores)
 ```
 
+## IOBR 肿瘤免疫微环境分析 (TCGA_LUAD_REGROUP)
+
+`r snap(iobr.tcga_luad_regroup, 0:2)`
+
+`r ref("TCGA-LUAD-REGROUP-cibersort-Immune-infiltration")`
+`r ref("TCGA-LUAD-REGROUP-cibersort-wilcox-test-data")`
+<!-- LEGEND_END -->
+
 ```{r}
 clear_others("lm.tcga_luad_regroup")
 lm.tcga_luad_regroup
 
 iobr.tcga_luad_regroup <- asjob_iobr(lm.tcga_luad_regroup)
 iobr.tcga_luad_regroup <- step1(iobr.tcga_luad_regroup)
+#' @meth {get_meth(iobr.tcga_luad_regroup)}
+iobr.tcga_luad_regroup@step <- 1L
+iobr.tcga_luad_regroup <- step2(iobr.tcga_luad_regroup)
+iobr.tcga_luad_regroup@plots$step2$p.boxplot
+iobr.tcga_luad_regroup@tables$step2$t.dataSig
+
 ```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-REGROUP-cibersort-Immune-infiltration
+autor(iobr.tcga_luad_regroup@plots$step2$p.boxplot)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-REGROUP-cibersort-wilcox-test-data
+autor(iobr.tcga_luad_regroup@tables$step2$t.dataSig)
+```
+
 
 ## GEO 数据获取 (SC_LUAD)
 
@@ -826,5 +868,13 @@ autor(srn.luad@params$focus_genes$p.dim)
 本分析聚焦于基质体，分析肺癌 (LUAD)，通过差异分析、WGCNA 等方式，筛选出关键基质体基因，随后以COX、LASSO 等 
 算法，构建预后模型，再以外部数据集验证。随后，我们在单细胞数据集 (LUAD) 中，确认了这些基因的表达。
 其中，EREG 集中表达于 myeloid_cells，该细胞类型可能是基质体在 LUAD 发挥作用的关键细胞。
+此外，我们鉴定了癌细胞，通过拟时分析，探究正常细胞向癌细胞的转变，富集分析发现，"humoral immune response" 为 GO (BP) 首要富集通路。细胞通讯分析发现，"fibroblasts" 细胞与 "epithelial_cells" 以及 "Malignant cells" 存在强烈的通讯关系。
+
+```{r}
+extract_anno("./order_material/BSLL250322-田彩平-生信分析-基于单细胞和普通转录组分析基质体相关基因是肺腺癌免疫治疗反应和预后的预测指标-2025.04.18.docx")
+
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL.docx")
+```
+
 
 

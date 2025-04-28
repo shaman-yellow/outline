@@ -234,6 +234,7 @@ autor(srn.os@plots$step6$p.map_scsa)
 autor(srn.os@plots$step6$p.props_scsa)
 ```
 
+
 ## CopyKAT 癌细胞鉴定 (OS)
 
 `r snap(katn.os, 0:2)`
@@ -381,6 +382,22 @@ autor(srn.os_cancer@params$p.map_cancer)
 ```{r eval = T, echo = F, results = "asis"}
 #| OS-CANCER-cancer-cell-proportions
 autor(srn.os_cancer@params$p.props_cancer)
+```
+
+```{r}
+clear_others("srn.os_cancer")
+mn.os_cancer <- do_monocle(
+  srn.os_cancer, c("OS"), group.by = "scsa_cell", sct = TRUE
+)
+
+mn.os_cancer <- step1(mn.os_cancer, "scsa_cell", pre = TRUE)
+mn.os_cancer@plots$step1$p.prin
+
+mn.os_cancer <- step2(mn.os_cancer, "Y_2")
+mn.os_cancer@plots$step2$p.pseu
+mn.os_cancer <- step3(mn.os_cancer, group.by = "seurat_clusters")
+mn.os_cancer@plots$step3$gene_module_heatdata$graph_test.sig
+mn.os_cancer@tables$step3$graph_test.sig
 ```
 
 ### Limma 代谢通量差异分析 (OS_CANCER_FLUX)

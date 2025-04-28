@@ -20,7 +20,9 @@ show.ic(info)
 
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
-order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+order_packaging(
+  "./analysis_out.docx", idname = idname, external_file = NULL
+)
 ```
 
 ```{r include = F}
@@ -139,6 +141,7 @@ autor(ssg.luad@plots$step1$p.scores$`LUAD Normal`)
 `r ref("LUAD-sample-clustering")`
 `r ref("LUAD-co-expression-module")`
 `r ref("LUAD-correlation-of-module-with-group")`
+`r ref("LUAD-correlation-heatmap")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -154,8 +157,8 @@ wgc.luad <- step3(wgc.luad, 16)
 wgc.luad <- step4(wgc.luad, 16)
 wgc.luad@plots$step4$net
 wgc.luad <- step5(wgc.luad, group_levels = c("Normal", "LUAD"))
-wgc.luad@params$corp_group
-feature(wgc.luad)["ME0"]
+wgc.luad@plots$step5$p.corhp
+
 
 # wgcna_local_LUAD/wgc.luad_45902c00144cdcc94994ee57c0f0f33e.rds
 ```
@@ -178,6 +181,13 @@ autor(wgc.luad@plots$step4$net)
 autor(wgc.luad@params$corp_group)
 ```
 
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-correlation-heatmap
+autor(wgc.luad@plots$step5$p.corhp)
+```
+
 ## 汇总: DEGs + All_matrisome + WGCNA_module (LUAD)
 
 `r snap(venn.luad, 0:1)`
@@ -191,6 +201,7 @@ venn.luad <- job_venn(
   All_matrisome = feature(ssg.luad),
   WGCNA_module = feature(wgc.luad)["ME0"]
 )
+
 #' @meth {get_meth(venn.luad)}
 venn.luad <- step1(venn.luad)
 venn.luad@plots$step1$p.venn
@@ -200,8 +211,9 @@ feature(venn.luad)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| LUAD-Intersection-of-DEGs-with-All-matrisome-with-WGCNA-module
-autor(venn.luad@plots$step1$p.venn)
+autor(z7(venn.luad@plots$step1$p.venn, 1.5, 1.3))
 ```
+
 
 ## TCGA 数据获取 (LUAD)
 
@@ -225,6 +237,7 @@ tcga.luad <- step3(tcga.luad)
 `r ref("TCGA-LUAD-lasso-COX-coeffients-lambda-1se")`
 `r ref("TCGA-LUAD-lasso-COX-ROC-lambda-min")`
 `r ref("TCGA-LUAD-lasso-COX-ROC-lambda-1se")`
+`r ref("TCGA-LUAD-sig-Univariate-Cox-Coefficients")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -239,6 +252,7 @@ cox.tcga_luad <- asjob_lasso(lm.tcga_luad, feature(venn.luad))
 cox.tcga_luad <- step1(cox.tcga_luad)
 cox.tcga_luad <- step2(cox.tcga_luad)
 cox.tcga_luad <- step3(cox.tcga_luad)
+cox.tcga_luad@tables$step3$t.sigUnivariateCoxCoefficients
 
 cox.tcga_luad@step <- 3L
 cox.tcga_luad <- step4(cox.tcga_luad, type.measure = "C", inherit_unicox.cut.p = .01)
@@ -249,6 +263,10 @@ cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.min
 cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.1se
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-sig-Univariate-Cox-Coefficients
+autor(cox.tcga_luad@tables$step3$t.sigUnivariateCoxCoefficients)
+```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| TCGA-LUAD-lasso-COX-model
@@ -278,6 +296,7 @@ autor(cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.min)
 #| TCGA-LUAD-lasso-COX-ROC-lambda-1se
 autor(cox.tcga_luad@plots$step4$p.lassoCOX_ROC$lambda.1se)
 ```
+
 
 ## Survival 生存分析 (TCGA_LUAD)
 
@@ -457,6 +476,40 @@ autor(est.tcga_luad_regroup@plots$step2$p.immuneScores)
 autor(est.tcga_luad_regroup@tables$step2$t.immuneScores)
 ```
 
+## IOBR 肿瘤免疫微环境分析 (TCGA_LUAD_REGROUP)
+
+`r snap(iobr.tcga_luad_regroup, 0:2)`
+
+`r ref("TCGA-LUAD-REGROUP-cibersort-Immune-infiltration")`
+`r ref("TCGA-LUAD-REGROUP-cibersort-wilcox-test-data")`
+<!-- LEGEND_END -->
+
+```{r}
+clear_others("lm.tcga_luad_regroup")
+lm.tcga_luad_regroup
+
+iobr.tcga_luad_regroup <- asjob_iobr(lm.tcga_luad_regroup)
+iobr.tcga_luad_regroup <- step1(iobr.tcga_luad_regroup)
+#' @meth {get_meth(iobr.tcga_luad_regroup)}
+iobr.tcga_luad_regroup@step <- 1L
+iobr.tcga_luad_regroup <- step2(iobr.tcga_luad_regroup)
+iobr.tcga_luad_regroup@plots$step2$p.boxplot
+iobr.tcga_luad_regroup@tables$step2$t.dataSig
+
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-REGROUP-cibersort-Immune-infiltration
+autor(iobr.tcga_luad_regroup@plots$step2$p.boxplot)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| TCGA-LUAD-REGROUP-cibersort-wilcox-test-data
+autor(iobr.tcga_luad_regroup@tables$step2$t.dataSig)
+```
+
+
 ## GEO 数据获取 (SC_LUAD)
 
 `r snap(geo.sc_luad, 0:2)`
@@ -493,13 +546,20 @@ lapply(glue::glue("TD{1:9}"),
 (Marker 来自于原研究文献 PMID: GSE189357)
 
 ```{r}
-files_scRNA <- list.files(geo.sc_luad$dir, "TD", full.names = TRUE)
-srn.luad <- job_seurat5n(files_scRNA, strx(files_scRNA, "TD[0-9]"))
+files_scRNA <- list.files(geo.sc_luad@params$dir_files, "TD", full.names = TRUE)
+# srn.luad <- job_seurat5n(files_scRNA, strx(files_scRNA, "TD[0-9]"))
+srn.luad <- job_seurat5n(geo.sc_luad$dir_files, strx(geo.sc_luad$dir_files, "TD[0-9]"))
 srn.luad@params$p.qc_pre
 #' @meth {get_meth(srn.luad)}
 srn.luad <- step1(srn.luad, 500, 7500, 10)
 srn.luad@params$p.qc_aft
+
+# set_remoteRun.bosai()
+# srn.luad <- set_remote(srn.luad)
+# srn.luad <- step2(srn.luad, sct = TRUE, workers = 16)
 srn.luad <- step2(srn.luad)
+# sct: seurat5n_local_LUAD/srn.luad_8ea1869b222cc968d56a9ea7cf8fbc14.rds
+
 srn.luad@plots$step2$p.pca_rank
 srn.luad <- step3(srn.luad)
 srn.luad@plots$step3$p.umapUint
@@ -583,6 +643,218 @@ autor(srn.luad@plots$step6$p.markers)
 autor(srn.luad@plots$step6$p.props_scsa)
 ```
 
+## InferCNV 变异拷贝数分析 (EPITHELIAL)
+
+`r snap(infe.epithelial, 0:3)`
+
+`r ref("EPITHELIAL-infercnv-heatmap")`
+`r ref("EPITHELIAL-kmean-cluster-CNV-score-violin-plot")`
+`r ref("EPITHELIAL-kmean-cluster-CNV-score-wilcox-test")`
+<!-- LEGEND_END -->
+
+```{r}
+infe.epithelial <- asjob_infercnv(
+  srn.luad, c("endothelial_cells"), "epithelial_cells"
+)
+set_remoteRun.bosai(16)
+infe.epithelial <- set_remote(infe.epithelial)
+#' @meth {get_meth(infe.epithelial)}
+infe.epithelial <- step1(infe.epithelial, 16)
+infe.epithelial <- step2(infe.epithelial)
+infe.epithelial@plots$step2$p.infer
+infe.epithelial <- step3(infe.epithelial)
+infe.epithelial@plots$step3$p.violin
+infe.epithelial$dataPvalue
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-infercnv-heatmap
+autor(infe.epithelial@plots$step2$p.infer)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-kmean-cluster-CNV-score-violin-plot
+autor(infe.epithelial@plots$step3$p.violin)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-kmean-cluster-CNV-score-wilcox-test
+autor(infe.epithelial$dataPvalue)
+```
+
+## Seurat-InferCNV 癌细胞注释 (LUAD)
+
+`r snap(srn.luad, "job_infercnv")`
+
+`r ref("LUAD-Cancer-Cell-type-annotation")`
+<!-- LEGEND_END -->
+
+```{r}
+srn.luad <- map(srn.luad, infe.epithelial)
+srn.luad@params$p.map_cancer
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-Cancer-Cell-type-annotation
+autor(srn.luad@params$p.map_cancer)
+```
+
+## Monocle3 拟时分析 (EPITHELIAL)
+
+`r snap(mn.epithelial, 0:4)`
+
+`r ref("EPITHELIAL-principal-points")`
+`r ref("EPITHELIAL-pseudotime")`
+`r ref("EPITHELIAL-Graph-Test-Significant-genes")`
+`r ref("EPITHELIAL-Set1-genes-in-pseudotime")`
+<!-- LEGEND_END -->
+该起点始自正常细胞，首要关注正常细胞向癌细胞的转化。
+
+```{r}
+mn.epithelial <- do_monocle(
+  srn.luad, "epithelial_cells", group.by = "scsa_cell", resolution = 1.2, dims = 1:30,
+  sct = TRUE
+)
+mn.epithelial@params$sr_sub@plots$step3$p.umapInt
+mn.epithelial <- step1(mn.epithelial, "infercnv_cell", pre = TRUE)
+#' @meth {get_meth(mn.epithelial)}
+mn.epithelial@plots$step1$p.prin
+
+mn.epithelial@step <- 1L
+mn.epithelial <- step2(
+  mn.epithelial, c("Y_5")
+  # mn.epithelial, c("Y_228", "Y_28", "Y_141", "Y_209")
+)
+mn.epithelial@plots$step2$p.pseu
+mn.epithelial <- step3(mn.epithelial, group.by = "seurat_clusters")
+mn.epithelial@tables$step3$graph_test.sig
+feature(mn.epithelial)
+
+mn.epithelial <- step4(
+  mn.epithelial, ids(mn.epithelial, "infercnv_cell"),
+  genes = feature(mn.epithelial)[1:20], group.by = "infercnv_cell"
+)
+mn.epithelial@plots$step4$genes_in_pseudotime$pseudo1
+feature(mn.epithelial)
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-principal-points
+autor(mn.epithelial@plots$step1$p.prin)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-pseudotime
+autor(mn.epithelial@plots$step2$p.pseu)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-Graph-Test-Significant-genes
+autor(mn.epithelial@tables$step3$graph_test.sig)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-Set1-genes-in-pseudotime
+autor(mn.epithelial@plots$step4$genes_in_pseudotime$pseudo1)
+```
+
+## ClusterProfiler 富集分析 (EPITHELIAL)
+
+`r snap(en.epithelial, 0:2)`
+
+`r ref("EPITHELIAL-KEGG-enrichment")`
+`r ref("EPITHELIAL-GO-enrichment")`
+<!-- LEGEND_END -->
+
+```{r}
+en.epithelial <- asjob_enrich(feature(mn.epithelial)[1:500])
+#' @meth {get_meth(en.epithelial)}
+en.epithelial <- step1(en.epithelial)
+en.epithelial@plots$step1$p.kegg$ids
+en.epithelial@plots$step1$p.go$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-KEGG-enrichment
+autor(en.epithelial@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| EPITHELIAL-GO-enrichment
+autor(en.epithelial@plots$step1$p.go$ids)
+```
+
+## CellChat 细胞通讯分析 (LUAD)
+
+`r snap(cc.luad, 0:4)`
+fibroblasts 细胞与其他细胞通讯最密切。
+
+`r ref("LUAD-All-Cell-communication-heatmap")`
+`r ref("LUAD-communication-probability-and-significant")`
+`r ref("LUAD-incoming-ligand-receptor-role")`
+`r ref("LUAD-outgoing-ligand-receptor-role")`
+<!-- LEGEND_END -->
+
+```{r}
+cc.luad <- asjob_cellchat(srn.luad, "infercnv_cell")
+clear_others("cc.luad")
+
+set_remoteRun.bosai(32)
+#' @meth {get_meth(cc.luad)}
+cc.luad <- set_remote(cc.luad)
+cc.luad <- step1(
+  cc.luad, 8, python = "~/software/miniconda3/envs/r4-base/bin/python", testLocal = TRUE
+)
+wrap(cc.luad@plots$step1$p.commHpAll, 6, 4)
+cc.luad <- step2(cc.luad)
+
+cc.luad@plots$step2$gene_expr_violin
+cc.luad@plots$step2$role_comps_heatmap
+cc.luad@plots$step2$role_weight_scatter
+
+wrap(cc.luad@plots$step2$lr_comm_bubble, 14, 25, force = TRUE)
+cc.luad@plots$step2$lr_role_heatmap$incoming
+cc.luad@plots$step2$lr_role_heatmap$outgoing
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-All-Cell-communication-heatmap
+autor(wrap(cc.luad@plots$step1$p.commHpAll, 6, 4))
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-communication-probability-and-significant
+autor(wrap(cc.luad@plots$step2$lr_comm_bubble, 14, 25, force = TRUE))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-incoming-ligand-receptor-role
+autor(cc.luad@plots$step2$lr_role_heatmap$incoming)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LUAD-outgoing-ligand-receptor-role
+autor(cc.luad@plots$step2$lr_role_heatmap$outgoing)
+```
+
 ## (预后模型基因) 首要表达的细胞
 
 `r ref("LUAD-dimension-plot-of-expression-level-genes")`
@@ -598,12 +870,19 @@ srn.luad@params$focus_genes$p.dim
 autor(srn.luad@params$focus_genes$p.dim)
 ```
 
+
 # 总结 {#conclusion}
 
 本分析聚焦于基质体，分析肺癌 (LUAD)，通过差异分析、WGCNA 等方式，筛选出关键基质体基因，随后以COX、LASSO 等 
 算法，构建预后模型，再以外部数据集验证。随后，我们在单细胞数据集 (LUAD) 中，确认了这些基因的表达。
 其中，EREG 集中表达于 myeloid_cells，该细胞类型可能是基质体在 LUAD 发挥作用的关键细胞。
+此外，我们鉴定了癌细胞，通过拟时分析，探究正常细胞向癌细胞的转变，富集分析发现，"humoral immune response" 为 GO (BP) 首要富集通路。细胞通讯分析发现，"fibroblasts" 细胞与 "epithelial_cells" 以及 "Malignant cells" 存在强烈的通讯关系。
 
+```{r}
+extract_anno("./order_material/BSLL250322-田彩平-生信分析-基于单细胞和普通转录组分析基质体相关基因是肺腺癌免疫治疗反应和预后的预测指标-2025.04.18.docx")
+
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_.docx")
+```
 
 
 
