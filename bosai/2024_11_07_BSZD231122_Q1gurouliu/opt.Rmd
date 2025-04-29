@@ -384,16 +384,22 @@ autor(srn.os_cancer@params$p.map_cancer)
 autor(srn.os_cancer@params$p.props_cancer)
 ```
 
+### Monocle3 拟时分析 (OS_CANCER)
+
+`r snap(mn.os_cancer, 0:4)`
+ (依据正常细胞向癌细胞转变选择拟时起点) 
+
 ```{r}
 clear_others("srn.os_cancer")
 mn.os_cancer <- do_monocle(
   srn.os_cancer, c("OS"), group.by = "scsa_cell", sct = TRUE
 )
+mn.os_cancer@step <- 0L
 
-mn.os_cancer <- step1(mn.os_cancer, "scsa_cell", pre = TRUE)
+mn.os_cancer <- step1(mn.os_cancer, "copykat_cell", pre = TRUE)
+#' @meth {get_meth(mn.os_cancer)}
 mn.os_cancer@plots$step1$p.prin
-
-mn.os_cancer <- step2(mn.os_cancer, "Y_2")
+mn.os_cancer <- step2(mn.os_cancer, c("Y_375", "Y_255", "Y_167"))
 mn.os_cancer@plots$step2$p.pseu
 mn.os_cancer <- step3(mn.os_cancer, group.by = "seurat_clusters")
 mn.os_cancer@plots$step3$gene_module_heatdata$graph_test.sig
