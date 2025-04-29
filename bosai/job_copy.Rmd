@@ -250,3 +250,10 @@ summary_week.bosai(
 )
 ```
 
+```{r}
+summary_assess.bosai(
+  dplyr::filter(alls, finish >= td("2025-03-28"))
+)
+```
+
+

@@ -20,8 +20,9 @@ show.ic(info)
 
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
+
 order_packaging(
-  "./analysis_out.docx", idname = idname, external_file = NULL
+  "./analysis_out.docx", idname = idname, external_file = NULL, extras = "./Reply_FL.docx"
 )
 ```
 
@@ -270,7 +271,7 @@ autor(cox.tcga_luad@tables$step3$t.sigUnivariateCoxCoefficients)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| TCGA-LUAD-lasso-COX-model
-autor(cox.tcga_luad@plots$step4$p.lassoCOX_model)
+autor(wrap(cox.tcga_luad@plots$step4$p.lassoCOX_model, 8, 5))
 ```
 
 
@@ -881,7 +882,7 @@ autor(srn.luad@params$focus_genes$p.dim)
 ```{r}
 extract_anno("./order_material/BSLL250322-田彩平-生信分析-基于单细胞和普通转录组分析基质体相关基因是肺腺癌免疫治疗反应和预后的预测指标-2025.04.18.docx")
 
-cdRun("pandoc ./order_material/comment_reply.md -o Reply_.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL2.docx")
 ```
 
 
