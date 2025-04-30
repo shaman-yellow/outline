@@ -545,7 +545,8 @@ clear_others("cc.os")
 set_remoteRun.bosai(32)
 cc.os <- set_remote(cc.os)
 cc.os <- step1(
-  cc.os, 8, python = "~/software/miniconda3/envs/r4-base/bin/python"
+  cc.os, 8, python = "~/software/miniconda3/envs/r4-base/bin/python",
+  hasUpload = TRUE
 )
 
 ```
