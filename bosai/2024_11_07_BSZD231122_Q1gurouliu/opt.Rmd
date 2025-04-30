@@ -11,7 +11,8 @@ show.ic(info)
 order_publish.bosai("opt.Rmd", "opt_out.Rmd")
 idname <- formatName.bosai("./opt_out.docx")
 order_packaging(
-  "./opt_out.docx", idname = idname, external_file = NULL, extras = NULL
+  "./opt_out.docx", idname = idname, external_file = NULL, 
+  extras = c("./Reply_fxl.docx")
 )
 ```
 
@@ -536,6 +537,16 @@ autor(lm.os_cancer_flux@tables$step2$tops$`Malignant_cell_BC - Benign_cell_BC`)
 autor(scf.os_sample@params$p.fluxs$Malignant_cell_Benign_cell)
 ```
 
+### CellChat 细胞通讯分析 (OS)
+
+`r snap(cc.os, 0:4)`
+
+`r ref("OS-All-Cell-communication-heatmap")`
+`r ref("OS-communication-probability-and-significant")`
+`r ref("OS-incoming-ligand-receptor-role")`
+`r ref("OS-outgoing-ligand-receptor-role")`
+<!-- LEGEND_END -->
+
 ```{r}
 srn.os <- map(srn.os, srn.os_cancer, "scsa_cell", "copykat_cell")
 srn.os@object@meta.data$map_cell
@@ -544,11 +555,37 @@ clear_others("cc.os")
 
 set_remoteRun.bosai(32)
 cc.os <- set_remote(cc.os)
-cc.os <- step1(
-  cc.os, 8, python = "~/software/miniconda3/envs/r4-base/bin/python",
-  hasUpload = TRUE
-)
+#' @meth {get_meth(cc.os)}
+cc.os <- step1(cc.os, 8)
+cc.os@plots$step1$p.commHpAll
+cc.os <- step2(cc.os)
+wrap(cc.os@plots$step2$lr_comm_bubble, 14, 25, force = TRUE)
+wrap(cc.os@plots$step2$lr_role_heatmap$incoming, 8, 17, force = TRUE)
+wrap(cc.os@plots$step2$lr_role_heatmap$outgoing, 8, 17, force = TRUE)
+```
 
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-All-Cell-communication-heatmap
+autor(cc.os@plots$step1$p.commHpAll)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-communication-probability-and-significant
+autor(wrap(cc.os@plots$step2$lr_comm_bubble, 14, 25, force = TRUE))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-incoming-ligand-receptor-role
+autor(wrap(cc.os@plots$step2$lr_role_heatmap$incoming, 8, 17, force = TRUE))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-outgoing-ligand-receptor-role
+autor(wrap(cc.os@plots$step2$lr_role_heatmap$outgoing, 8, 17, force = TRUE))
 ```
 
 ## TCGA 数据获取 (OS)
@@ -569,10 +606,9 @@ tcga.os <- step3(tcga.os)
 
 `r ref("TCGA-OS-sig-Univariate-Cox-Coefficients")`
 `r ref("TCGA-OS-lasso-COX-model")`
-`r ref("TCGA-OS-lasso-COX-coeffients-lambda-min")`
-`r ref("TCGA-OS-lasso-COX-coeffients-lambda-1se")`
 `r ref("TCGA-OS-lasso-COX-ROC-lambda-min")`
 `r ref("TCGA-OS-lasso-COX-ROC-lambda-1se")`
+`r ref("TCGA-OS-lasso-Cox-coefficient")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -597,8 +633,7 @@ cox.tcga_os <- step4(
   type.measure = "C", nfold = 5
 )
 cox.tcga_os@plots$step4$p.lassoCOX_model
-cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.min
-cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.1se
+cox.tcga_os@plots$step4$p.lassoCox_coefficient
 cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.min
 cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.1se
 ```
@@ -615,18 +650,10 @@ autor(cox.tcga_os@tables$step3$t.sigUnivariateCoxCoefficients)
 autor(cox.tcga_os@plots$step4$p.lassoCOX_model)
 ```
 
-
 ```{r eval = T, echo = F, results = "asis"}
-#| TCGA-OS-lasso-COX-coeffients-lambda-min
-autor(cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.min)
+#| TCGA-OS-lasso-Cox-coefficient
+autor(cox.tcga_os@plots$step4$p.lassoCox_coefficient)
 ```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| TCGA-OS-lasso-COX-coeffients-lambda-1se
-autor(cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.1se)
-```
-
 
 ```{r eval = T, echo = F, results = "asis"}
 #| TCGA-OS-lasso-COX-ROC-lambda-min
@@ -639,12 +666,14 @@ autor(cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.min)
 autor(cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.1se)
 ```
 
+
 ## Survival 生存分析 (TCGA_OS)
 
 `r snap(surv.tcga_os, 0:1)`
 
 `r ref("TCGA-OS-Survival-plots")`
 `r ref("TCGA-OS-ROC-plots")`
+`r ref("TCGA-OS-time-ROC")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -652,7 +681,7 @@ surv.tcga_os <- asjob_survival(cox.tcga_os, lambda = "min")
 #' @meth {get_meth(surv.tcga_os)}
 surv.tcga_os <- step1(surv.tcga_os)
 surv.tcga_os@plots$step1$p.surv
-surv.tcga_os@plots$step1$p.roc
+surv.tcga_os@plots$step1$p.roc$risk_score
 surv.tcga_os@params$fea_coefs
 feature(surv.tcga_os)
 ```
@@ -660,13 +689,14 @@ feature(surv.tcga_os)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| TCGA-OS-Survival-plots
-autor(surv.tcga_os@plots$step1$p.surv)
+autor(surv.tcga_os@plots$step1$p.surv$risk_score)
 ```
 
 
+
 ```{r eval = T, echo = F, results = "asis"}
-#| TCGA-OS-ROC-plots
-autor(surv.tcga_os@plots$step1$p.roc)
+#| TCGA-OS-time-ROC
+autor(surv.tcga_os@plots$step1$p.roc$risk_score)
 ```
 
 ## 外部数据集验证

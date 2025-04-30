@@ -256,4 +256,19 @@ summary_assess.bosai(
 )
 ```
 
+# 2025-04-30
 
+```{r}
+alls <- get_orders()
+backup_jobs.bosai(dplyr::filter(alls, finish >= td("2025-04-11")), td("2025-04-30"))
+```
+
+```{r}
+allfiles <- list.files(".", ".", recursive = TRUE, full.names = TRUE)
+allfiles <- allfiles[!grpl(allfiles, "\\.rds$")]
+allfiles <- allfiles[ file.size(allfiles) < 100000 ]
+allfiles <- allfiles[ !grpl(allfiles, "report_picture|/scsa_|/scfea_|/GSE") ]
+allfiles <- allfiles[ grpl(allfiles, "^\\./202[45]") ]
+
+zip("bosai_all_data.zip", c(allfiles, "./utils.tool.zip"))
+```

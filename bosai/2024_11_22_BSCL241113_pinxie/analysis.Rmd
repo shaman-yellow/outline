@@ -14,7 +14,7 @@ order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
 order_packaging(
   "./analysis_out.docx", idname = idname, external_file = NULL, extras = c(
-    "./Reply_FL.docx", "./Reply_FL2.docx", "./Reply_YRX.docx"
+    "./Reply_FL.docx", "./Reply_FL2.docx", "./Reply_YRX.docx", "./Reply_YRX2.docx"
   )
 )
 ```
@@ -73,6 +73,10 @@ wrap(p.route)
 autor(wrap(p.route, 10, 9, showtext = T))
 ```
 
+参考：
+`r cite_show("@IdentifyingCauLiSh2023")`
+`r cite_show("@AGraphNeuralAlgham2021")`
+`r cite_show("A_cross_tissue_Gui_J_2024")`
 
 # 材料和方法 {#introduction}
 
@@ -152,6 +156,7 @@ prepare_10x("./order_material/Merged_count_matrix.txt.gz", single = TRUE)
 `r ref("AA-SCSA-Cell-Proportions-in-each-sample")`
 `r ref("AA-UMAP-Clustering")`
 `r ref("AA-The-Cell-Sample")`
+`r ref("AA-cell-Proportions-within-group")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -196,6 +201,17 @@ sr5n.aa@step <- 5L
 sr5n.aa <- step6(sr5n.aa, "bone.*marrow", ref.markers)
 sr5n.aa@plots$step6$p.markers
 sr5n.aa@plots$step6$p.map_scsa
+sr5n.aa@plots$step6$p.props_scsa
+
+p.props_group <- plot_cells_proportion(
+  sr5n.aa@object@meta.data, "group", "scsa_cell"
+)
+p.props_group <- set_lab_legend(
+  p.props_group,
+  glue::glue("{sr5n.aa@sig} cell Proportions within group"),
+  glue::glue("组间细胞比例。")
+)
+p.props_group
 
 p.cell_sample <- vis(sr5n.aa, mode = "sample", orig.ident = "group")
 wrap(p.cell_sample, 10, 7)
@@ -242,13 +258,15 @@ autor(sr5n.aa@plots$step6$p.map_scsa)
 autor(sr5n.aa@plots$step6$p.markers)
 ```
 
-
-
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-SCSA-Cell-Proportions-in-each-sample
 autor(wrap(sr5n.aa@plots$step6$p.props_scsa, 7, 5))
 ```
 
+```{r eval = T, echo = F, results = "asis"}
+#| AA-cell-Proportions-within-group
+autor(p.props_group)
+```
 
 ```{r eval = T, echo = F, results = "asis"}
 #| AA-The-Cell-Sample
@@ -659,8 +677,8 @@ extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫
 cdRun("pandoc ./order_material/comment_reply_old.md -o Reply_FL.docx")
 cdRun("pandoc ./order_material/comment_reply.md -o Reply_FL2.docx")
 
-extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫血-2025.02.06-YRX批注.docx")
-cdRun("pandoc ./order_material/comment_reply.md -o Reply_YRX.docx")
+extract_anno("./order_material/BSCL241113-邓姝-生信分析-再生障碍性贫血生信分析报告-YRX批注-2025.04.28.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_YRX2.docx")
 
 
 ```

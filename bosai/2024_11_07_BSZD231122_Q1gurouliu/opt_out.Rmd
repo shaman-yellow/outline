@@ -99,9 +99,14 @@ dplyr::filter(je, grpl(Title, "immune checkpoint"))$Title
 ```
 
 
+## GEO 数据获取 (OS)
+
+`r snap(geo.os, 0:2)`
+
 ```{r}
 # Chimeric antigen receptor T (CAR-T) cells
 geo.os <- job_geo("GSE152048")
+#' @meth {get_meth(geo.os)}
 geo.os <- step1(geo.os)
 geo.os@params$guess
 # geo.os <- step2(geo.os)
@@ -236,6 +241,7 @@ autor(srn.os@plots$step6$p.map_scsa)
 #| OS-SCSA-Cell-Proportions-in-each-sample
 autor(srn.os@plots$step6$p.props_scsa)
 ```
+
 
 ## CopyKAT 癌细胞鉴定 (OS)
 
@@ -386,6 +392,104 @@ autor(srn.os_cancer@params$p.map_cancer)
 autor(srn.os_cancer@params$p.props_cancer)
 ```
 
+### Monocle3 拟时分析 (OS_CANCER)
+
+`r snap(mn.os_cancer, 0:4)`
+
+`r ref("OS-CANCER-principal-points")`
+`r ref("OS-CANCER-pseudotime")`
+`r ref("OS-CANCER-Graph-Test-Significant-genes")`
+`r ref("OS-CANCER-Set1-genes-in-pseudotime")`
+<!-- LEGEND_END -->
+ (依据正常细胞向癌细胞转变选择拟时起点) 
+
+```{r}
+clear_others("srn.os_cancer")
+mn.os_cancer <- do_monocle(
+  srn.os_cancer, c("OS"), 
+  group.by = "scsa_cell", sct = TRUE
+)
+
+clear(mn.os_cancer)
+clear_others("mn.os_cancer")
+mn.os_cancer@step <- 0L
+
+# mn.os_cancer <- readRDS("./mn.os_cancer.0.rds")
+mn.os_cancer <- step1(mn.os_cancer, "copykat_cell", pre = TRUE)
+#' @meth {get_meth(mn.os_cancer)}
+mn.os_cancer@plots$step1$p.prin
+mn.os_cancer$sr_sub <- NULL
+
+mn.os_cancer <- step2(mn.os_cancer, c("Y_375", "Y_255", "Y_167"))
+mn.os_cancer@plots$step2$p.pseu
+mn.os_cancer <- step3(
+  mn.os_cancer, group.by = "seurat_clusters", workers = 2
+)
+clear(mn.os_cancer)
+
+mn.os_cancer@plots$step3$gene_module_heatdata$graph_test.sig
+mn.os_cancer@tables$step3$graph_test.sig
+
+mn.os_cancer <- step4(
+  mn.os_cancer, ids(mn.os_cancer, "copykat_cell"),
+  genes = feature(mn.os_cancer)[1:20], group.by = "copykat_cell"
+)
+mn.os_cancer@plots$step4$genes_in_pseudotime$pseudo1
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-principal-points
+autor(mn.os_cancer@plots$step1$p.prin)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-pseudotime
+autor(mn.os_cancer@plots$step2$p.pseu)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-Graph-Test-Significant-genes
+autor(mn.os_cancer@tables$step3$graph_test.sig)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-Set1-genes-in-pseudotime
+autor(mn.os_cancer@plots$step4$genes_in_pseudotime$pseudo1)
+```
+
+### ClusterProfiler 富集分析 (OS_CANCER)
+
+`r snap(en.os_cancer, 0:2)`
+
+`r ref("OS-CANCER-KEGG-enrichment")`
+`r ref("OS-CANCER-GO-enrichment")`
+<!-- LEGEND_END -->
+
+```{r}
+en.os_cancer <- asjob_enrich(feature(mn.os_cancer)[1:500])
+#' @meth {get_meth(en.os_cancer)}
+en.os_cancer <- step1(en.os_cancer)
+en.os_cancer@plots$step1$p.kegg$ids
+en.os_cancer@plots$step1$p.go$ids
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-KEGG-enrichment
+autor(en.os_cancer@plots$step1$p.kegg$ids)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-CANCER-GO-enrichment
+autor(en.os_cancer@plots$step1$p.go$ids)
+```
+
 ### Limma 代谢通量差异分析 (OS_CANCER_FLUX)
 
 `r snap(lm.os_cancer_flux, 0:3)`
@@ -440,6 +544,57 @@ autor(lm.os_cancer_flux@tables$step2$tops$`Malignant_cell_BC - Benign_cell_BC`)
 autor(scf.os_sample@params$p.fluxs$Malignant_cell_Benign_cell)
 ```
 
+### CellChat 细胞通讯分析 (OS)
+
+`r snap(cc.os, 0:4)`
+
+`r ref("OS-All-Cell-communication-heatmap")`
+`r ref("OS-communication-probability-and-significant")`
+`r ref("OS-incoming-ligand-receptor-role")`
+`r ref("OS-outgoing-ligand-receptor-role")`
+<!-- LEGEND_END -->
+
+```{r}
+srn.os <- map(srn.os, srn.os_cancer, "scsa_cell", "copykat_cell")
+srn.os@object@meta.data$map_cell
+cc.os <- asjob_cellchat(srn.os, "map_cell")
+clear_others("cc.os")
+
+set_remoteRun.bosai(32)
+cc.os <- set_remote(cc.os)
+#' @meth {get_meth(cc.os)}
+cc.os <- step1(cc.os, 8)
+cc.os@plots$step1$p.commHpAll
+cc.os <- step2(cc.os)
+wrap(cc.os@plots$step2$lr_comm_bubble, 14, 25, force = TRUE)
+wrap(cc.os@plots$step2$lr_role_heatmap$incoming, 8, 17, force = TRUE)
+wrap(cc.os@plots$step2$lr_role_heatmap$outgoing, 8, 17, force = TRUE)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-All-Cell-communication-heatmap
+autor(cc.os@plots$step1$p.commHpAll)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-communication-probability-and-significant
+autor(wrap(cc.os@plots$step2$lr_comm_bubble, 14, 25, force = TRUE))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-incoming-ligand-receptor-role
+autor(wrap(cc.os@plots$step2$lr_role_heatmap$incoming, 8, 17, force = TRUE))
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| OS-outgoing-ligand-receptor-role
+autor(wrap(cc.os@plots$step2$lr_role_heatmap$outgoing, 8, 17, force = TRUE))
+```
+
 ## TCGA 数据获取 (OS)
 
 `r snap(tcga.os, 0:3)`
@@ -458,10 +613,9 @@ tcga.os <- step3(tcga.os)
 
 `r ref("TCGA-OS-sig-Univariate-Cox-Coefficients")`
 `r ref("TCGA-OS-lasso-COX-model")`
-`r ref("TCGA-OS-lasso-COX-coeffients-lambda-min")`
-`r ref("TCGA-OS-lasso-COX-coeffients-lambda-1se")`
 `r ref("TCGA-OS-lasso-COX-ROC-lambda-min")`
 `r ref("TCGA-OS-lasso-COX-ROC-lambda-1se")`
+`r ref("TCGA-OS-lasso-Cox-coefficient")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -486,8 +640,7 @@ cox.tcga_os <- step4(
   type.measure = "C", nfold = 5
 )
 cox.tcga_os@plots$step4$p.lassoCOX_model
-cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.min
-cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.1se
+cox.tcga_os@plots$step4$p.lassoCox_coefficient
 cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.min
 cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.1se
 ```
@@ -504,18 +657,10 @@ autor(cox.tcga_os@tables$step3$t.sigUnivariateCoxCoefficients)
 autor(cox.tcga_os@plots$step4$p.lassoCOX_model)
 ```
 
-
 ```{r eval = T, echo = F, results = "asis"}
-#| TCGA-OS-lasso-COX-coeffients-lambda-min
-autor(cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.min)
+#| TCGA-OS-lasso-Cox-coefficient
+autor(cox.tcga_os@plots$step4$p.lassoCox_coefficient)
 ```
-
-
-```{r eval = T, echo = F, results = "asis"}
-#| TCGA-OS-lasso-COX-coeffients-lambda-1se
-autor(cox.tcga_os@plots$step4$p.lassoCOX_coeffients$lambda.1se)
-```
-
 
 ```{r eval = T, echo = F, results = "asis"}
 #| TCGA-OS-lasso-COX-ROC-lambda-min
@@ -528,12 +673,14 @@ autor(cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.min)
 autor(cox.tcga_os@plots$step4$p.lassoCOX_ROC$lambda.1se)
 ```
 
+
 ## Survival 生存分析 (TCGA_OS)
 
 `r snap(surv.tcga_os, 0:1)`
 
 `r ref("TCGA-OS-Survival-plots")`
 `r ref("TCGA-OS-ROC-plots")`
+`r ref("TCGA-OS-time-ROC")`
 <!-- LEGEND_END -->
 
 ```{r}
@@ -541,7 +688,7 @@ surv.tcga_os <- asjob_survival(cox.tcga_os, lambda = "min")
 #' @meth {get_meth(surv.tcga_os)}
 surv.tcga_os <- step1(surv.tcga_os)
 surv.tcga_os@plots$step1$p.surv
-surv.tcga_os@plots$step1$p.roc
+surv.tcga_os@plots$step1$p.roc$risk_score
 surv.tcga_os@params$fea_coefs
 feature(surv.tcga_os)
 ```
@@ -549,13 +696,14 @@ feature(surv.tcga_os)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| TCGA-OS-Survival-plots
-autor(surv.tcga_os@plots$step1$p.surv)
+autor(surv.tcga_os@plots$step1$p.surv$risk_score)
 ```
 
 
+
 ```{r eval = T, echo = F, results = "asis"}
-#| TCGA-OS-ROC-plots
-autor(surv.tcga_os@plots$step1$p.roc)
+#| TCGA-OS-time-ROC
+autor(surv.tcga_os@plots$step1$p.roc$risk_score)
 ```
 
 ## 外部数据集验证
@@ -744,4 +892,8 @@ autor(en.prog@plots$step1$p.go$ids)
 模型以 TARGET-OS 数据集建立，进而在 GEO 数据库搜索了所有可用的带有生存信息的基因表达数据集，
 用以验证预后模型的可靠性。
 
+```{r}
+extract_anno("./order_material/BSZD231122-杨立宇-方案2-生信分析[审核批注]-20250416.docx")
+cdRun("pandoc ./order_material/comment_reply.md -o Reply_fxl.docx")
+```
 
