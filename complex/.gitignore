@@ -1,3 +1,13 @@
 
-remote/**
-# !remote/r.*.r
+/*.zip
+/BindingDB_All*
+vina_space
+pdbqt
+pdb
+protein_pdb
+protein_pdbqt
+test
+results_*.zip
+!.items.rds
+
+/*/*/*
