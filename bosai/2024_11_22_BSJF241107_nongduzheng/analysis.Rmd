@@ -10,6 +10,10 @@ info <- items(start = td("2024-11-19"), end = td("2025-02-21"), finish = td("202
 )
 show.ic(info)
 
+build_completion_for_package("utils.tool")
+
+getNativeSymbolInfo("nvimcom_msg_to_nvim", PACKAGE = "nvimcom")
+
 order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.bosai("./analysis_out.docx")
 order_packaging(

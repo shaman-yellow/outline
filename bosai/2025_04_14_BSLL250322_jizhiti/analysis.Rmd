@@ -3,20 +3,19 @@
 
 ```{r include = F, eval = F}
 info <- items(start = td("2025-03-31"), end = td("2025-04-18"), finish = td("2025-04-18"),
-  id = "BSLL250322", client = "田彩平", inst = "",
+  id = "订单编号", client = "名字", inst = "",
   type = "生信分析",
   title = "基于单细胞和普通转录组分析基质体相关基因是肺腺癌免疫治疗反应和预后的预测指标",
   save = ".items_analysis.rds"
 )
 show.ic(info)
 
-order_publish.bosai("analysis.Rmd", "analysis_out.Rmd")
-idname <- formatName.bosai("./analysis_out.docx")
+order_publish.complex("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.complex("./analysis_out.docx")
 
-order_packaging(
-  "./analysis_out.docx", idname = idname, external_file = NULL, extras = c(
-    "./Reply_FL.docx", "./Reply_FL2.docx"
-  )
+order_packaging.complex(
+  "./analysis_out.docx", idname = idname
+  # , extras = c("./Reply_FL.docx", "./Reply_FL2.docx")
 )
 ```
 
@@ -33,7 +32,7 @@ options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
-set_cover.bosai(info)
+set_cover.complex(info)
 ```
 
 ```{r eval = T, echo = F, results = "asis"}
@@ -146,10 +145,10 @@ wgc.luad <- step1(wgc.luad)
 wgc.luad@plots$step1$raw_sample_tree
 wgc.luad <- step2(wgc.luad, 600, 10)
 
-set_remoteRun.bosai(16)
-wgc.luad <- set_remote(wgc.luad)
+# set_remoteRun.bosai(16)
+# wgc.luad <- set_remote(wgc.luad)
 wgc.luad <- step3(wgc.luad, 16)
-wgc.luad <- step4(wgc.luad, 16)
+wgc.luad <- step4(wgc.luad, 8)
 wgc.luad@plots$step4$net
 wgc.luad <- step5(wgc.luad, group_levels = c("Normal", "LUAD"))
 wgc.luad@plots$step5$p.corhp
@@ -486,7 +485,6 @@ lm.tcga_luad_regroup
 iobr.tcga_luad_regroup <- asjob_iobr(lm.tcga_luad_regroup)
 iobr.tcga_luad_regroup <- step1(iobr.tcga_luad_regroup)
 #' @meth {get_meth(iobr.tcga_luad_regroup)}
-iobr.tcga_luad_regroup@step <- 1L
 iobr.tcga_luad_regroup <- step2(iobr.tcga_luad_regroup)
 iobr.tcga_luad_regroup@plots$step2$p.boxplot
 iobr.tcga_luad_regroup@tables$step2$t.dataSig
@@ -514,8 +512,8 @@ geo.sc_luad <- job_geo("GSE189357")
 #' @meth {get_meth(geo.sc_luad)}
 geo.sc_luad <- step1(geo.sc_luad)
 geo.sc_luad$guess
-geo.sc_luad <- step2(geo.sc_luad, rna = FALSE)
-geo.sc_luad@params$dir
+geo.sc_luad <- step2(geo.sc_luad, rna = FALSE, hasFile = TRUE)
+geo.sc_luad@params$dir_files
 
 lapply(glue::glue("TD{1:9}"),
   function(name) {
@@ -541,9 +539,9 @@ lapply(glue::glue("TD{1:9}"),
 (Marker 来自于原研究文献 PMID: GSE189357)
 
 ```{r}
-files_scRNA <- list.files(geo.sc_luad@params$dir_files, "TD", full.names = TRUE)
+files_scRNA <- list.files(geo.sc_luad@params$dir, "TD", full.names = TRUE)
 # srn.luad <- job_seurat5n(files_scRNA, strx(files_scRNA, "TD[0-9]"))
-srn.luad <- job_seurat5n(geo.sc_luad$dir_files, strx(geo.sc_luad$dir_files, "TD[0-9]"))
+srn.luad <- job_seurat5n(files_scRNA, strx(files_scRNA, "TD[0-9]"))
 srn.luad@params$p.qc_pre
 #' @meth {get_meth(srn.luad)}
 srn.luad <- step1(srn.luad, 500, 7500, 10)
@@ -556,6 +554,7 @@ srn.luad <- step2(srn.luad)
 # sct: seurat5n_local_LUAD/srn.luad_8ea1869b222cc968d56a9ea7cf8fbc14.rds
 
 srn.luad@plots$step2$p.pca_rank
+
 srn.luad <- step3(srn.luad)
 srn.luad@plots$step3$p.umapUint
 srn.luad@plots$step3$p.umapInt
@@ -563,7 +562,8 @@ srn.luad <- step4(srn.luad, "")
 
 set_remoteRun.bosai()
 srn.luad <- set_remote(srn.luad)
-srn.luad <- step5(srn.luad, 8)
+
+srn.luad <- step5(srn.luad, NULL)
 srn.luad@tables$step5$all_markers
 
 ref.markers <- as_markers(
@@ -648,19 +648,24 @@ autor(srn.luad@plots$step6$p.props_scsa)
 <!-- LEGEND_END -->
 
 ```{r}
+
+clear_others("srn.luad")
+
 infe.epithelial <- asjob_infercnv(
   srn.luad, c("endothelial_cells"), "epithelial_cells"
 )
-set_remoteRun.bosai(16)
-infe.epithelial <- set_remote(infe.epithelial)
+# set_remoteRun.bosai(16)
+# infe.epithelial <- set_remote(infe.epithelial)
 #' @meth {get_meth(infe.epithelial)}
-infe.epithelial <- step1(infe.epithelial, 16)
+infe.epithelial <- step1(infe.epithelial, 8)
+clear(infe.epithelial)
 infe.epithelial <- step2(infe.epithelial)
 infe.epithelial@plots$step2$p.infer
 infe.epithelial <- step3(infe.epithelial)
 infe.epithelial@plots$step3$p.violin
 infe.epithelial$dataPvalue
 
+clear(infe.epithelial)
 ```
 
 
@@ -803,15 +808,15 @@ fibroblasts 细胞与其他细胞通讯最密切。
 <!-- LEGEND_END -->
 
 ```{r}
-cc.luad <- asjob_cellchat(srn.luad, "infercnv_cell")
+# clear(srn.luad)
+srn.luad <- readRDS("./srn.luad.6.rds")
+cc.luad <- asjob_cellchat(srn.luad, "infercnv_cell", sample = .05)
 clear_others("cc.luad")
 
-set_remoteRun.bosai(32)
+# set_remoteRun.bosai(32)
 #' @meth {get_meth(cc.luad)}
-cc.luad <- set_remote(cc.luad)
-cc.luad <- step1(
-  cc.luad, 8, python = "~/software/miniconda3/envs/r4-base/bin/python", testLocal = TRUE
-)
+# cc.luad <- set_remote(cc.luad)
+cc.luad <- step1(cc.luad, 4, testLocal = TRUE)
 wrap(cc.luad@plots$step1$p.commHpAll, 6, 4)
 cc.luad <- step2(cc.luad)
 

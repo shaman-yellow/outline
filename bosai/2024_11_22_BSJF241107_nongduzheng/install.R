@@ -73,10 +73,11 @@ install.packages(c("pander"))
 ## <https://satijalab.org/seurat/articles/install.html>
 
 BiocManager::install("SparseArray")
-install.packages(c("sva"))
+BiocManager::install(c("sva"))
 BiocManager::install(c('fastDummies', 'RcppHNSW', 'RSpectra'))
-# remotes::install_github("satijalab/seurat-object")
-# remotes::install_github("atijalab/sctransform")
+remotes::install_github("atijalab/sctransform")
+remotes::install_version("Matrix", version = "1.6-4")
+remotes::install_github("satijalab/seurat-object")
 remotes::install_github("satijalab/seurat")
 remotes::install_github("HenrikBengtsson/future", ref = "develop")
 # devtools::install_github("thomasp85/patchwork")
@@ -101,7 +102,7 @@ BiocManager::install(c('BiocGenerics', 'DelayedArray', 'DelayedMatrixStats',
     'terra', 'ggrastr'))
 BiocManager::install("rsample")
 
-# remotes::install_version("Matrix", version = "1.6-3")
+# remotes::install_version("Matrix", version = "1.6-4")
 # install.packages('irlba', force = T)
 remotes::install_github('cole-trapnell-lab/monocle3')
 
@@ -147,9 +148,7 @@ BiocManager::install("UniProt.ws")
 # BiocManager::install('biodbUniprot')
 
 install.packages("r3dmol")
-
 install.packages("ggpval")
-
 BiocManager::install("pathview")
 
 ## Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression
@@ -164,7 +163,10 @@ BiocManager::install("pathview")
 ## ST
 BiocManager::install("hdf5r")
 
-devtools::install_github("liuhong-jia/scAnno")
+pak::pkg_install("liuhong-jia/scAnno")
+# conda install conda-forge::jags
+# conda install -c conda-forge jags r-rjags 
+# BiocManager::install("rjags")
 BiocManager::install("infercnv")
 
 remotes::install_github("navinlabcode/copykat")
@@ -245,7 +247,7 @@ BiocManager::install(c("car", "ridge", "preprocessCore", "genefilter", "sva"))
 
 BiocManager::install("epidecodeR")
 
-BiocManager::install("ChemmineR")
+# BiocManager::install("ChemmineR")
 
 install.packages("openai")
 remotes::install_github("Winnie09/GPTCelltype")

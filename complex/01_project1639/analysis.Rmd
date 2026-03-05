@@ -1,0 +1,67 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2026-03-04"), end = td("2026-03-04"), finish = td("2026-03-04"),
+  id = "p1639", client = "", inst = "",
+  type = "生信分析",
+  title = "",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.complex("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.complex("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.complex(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+# 分析流程 {#abstract}
+
+```{r}
+dic(di("差异表达基因"),
+  di("")
+)
+
+```
+
+# 材料和方法 {#introduction}
+
+```{r eval = T, echo = F, results = "asis"}
+collate_details("meth")
+```
+
+# 分析结果 {#workflow}
+
+```{r}
+setup.hb()
+new_script.hb("DEG")
+.send_pkg_to_remote()
+
+file.copy(
+  "./remote/1639_rawdata/summary/1.GeneExpression", "./material", recursive = TRUE
+)
+如何取消挂载？
+```
+
+# 总结 {#conclusion}
+

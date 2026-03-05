@@ -227,7 +227,7 @@ en.common <- step1(en.common)
 
 pat.common <- asjob_pathview(en.common)
 pat.common <- step1(pat.common, "hsa04066")
-feature(en.common)
+feature(pat.common)
 pat.common@plots$step1$p.pathviews$hsa04066
 
 en.common@plots$step1$p.kegg$ids
@@ -275,11 +275,11 @@ vis(gds.ckd)
 geo.ckd <- job_geo("GSE66494")
 geo.ckd <- step1(geo.ckd)
 geo.ckd$prods
-metadata.ckd <- geo.ckd$guess
+metadata.ckd <- expect(geo.ckd, geo_cols())
 metadata.ckd <- dplyr::mutate(
   metadata.ckd, sample = rownames,
   group = strx(title, "CKD|Control"), 
-  batch = strx(title, "Discovery|Validation"), .before = 1
+  batch = strx(title, "Discovery|Validation")
 )
 metadata.ckd
 ```
@@ -303,7 +303,7 @@ autor(geo.ckd$prods)
 ```{r}
 #' @meth {get_meth(lm.ckd)}
 lm.ckd <- asjob_limma(geo.ckd, metadata.ckd)
-lm.ckd <- filter(lm.ckd, GENE_SYMBOL %in% feature(pat.common))
+lm.ckd <- filter(lm.ckd, GENE_SYMBOL %in% feature(pat.common)[[1]])
 
 lm.ckd <- step1(lm.ckd)
 lm.ckd <- step2(
@@ -353,18 +353,21 @@ vina.qingxin <- asjob_vina(bat.qingxin, as_feature("TLR4", pat.common))
 #' @meth {get_meth(vina.qingxin)}
 vina.qingxin <- step1(vina.qingxin)
 vina.qingxin <- step2(vina.qingxin)
+
 vina.qingxin <- step3(vina.qingxin)
+vina.qingxin@params$dock_layout
+
 vina.qingxin <- step4(vina.qingxin)
 vina.qingxin <- step5(vina.qingxin)
-vina.qingxin@step <- 5L
+vina.qingxin@plots$step5$p.res_vina
 vina.qingxin <- step6(vina.qingxin, top = 3)
 vina.qingxin <- step7(vina.qingxin)
 
 vina.qingxin@tables$step5$res_dock
 vina.qingxin@plots$step5$p.res_vina
-vina.qingxin@plots$step6$Top1_91424_into_2z62
-vina.qingxin@plots$step6
-vina.qingxin@plots$step7$Top1_91424_into_2z62
+vina.qingxin@plots$step6$Top1_11252659_into_2z62
+vina.qingxin@plots$step6$Top2_159655_into_2z62
+vina.qingxin@plots$step7$Top1_11252659_into_2z62
 
 ```
 
@@ -398,13 +401,13 @@ autor(vina.qingxin@tables$step5$res_dock)
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Docking-91424-into-2z62
-autor(vina.qingxin@plots$step6$Top1_91424_into_2z62)
+autor(vina.qingxin@plots$step6$Top1_11252659_into_2z62)
 ```
 
 
 ```{r eval = T, echo = F, results = "asis"}
 #| Docking-91424-into-2z62-detail
-autor(vina.qingxin@plots$step7$Top1_91424_into_2z62)
+autor(vina.qingxin@plots$step7$)
 ```
 
 # 总结 {#conclusion}
