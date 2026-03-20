@@ -1,0 +1,44 @@
+
+
+```{r}
+file.copy(
+  "./remote/1639_rawdata2/GeneExpression/1_genes_fpkm_expression.txt", "material"
+)
+file.copy(
+  "./remote/1639_rawdata2/group.csv", "material"
+)
+
+data <- ftibble("./material/1_genes_fpkm_expression.txt")
+data <- map_gene(data, "EntrezID")
+data <- dplyr::filter(data, !is.na(SYMBOL))
+data
+
+counts <- dplyr::select(data, gene_name, dplyr::starts_with("count"))
+
+metadata <- ftibble("./material/group.csv")
+metadata <- dplyr::select(metadata, sample, group)
+metadata$group
+
+# data[which(data$gene_name == data$gene_id), ]
+genes <- dplyr::select(data, gene_name, dplyr::where(is.character))
+genes
+
+counts <- dplyr::select(data, gene_name, dplyr::starts_with("count"))
+counts <- dplyr::rename_with(
+  counts, function(x) sub("count\\.", "", x), dplyr::starts_with("count")
+)
+counts
+
+  #   Endothelium = 16L, `B cells` = 27L, Macrophages = 9L,
+  #   DC = 28L, SMC = 12L, `Contractile PV` = 24L,
+  #   Perivascular = 13L, NK = 7L,
+  #   `CD8+ T cells` = 26L, `DN T cells` = 10L, 
+  #   Epithelium = 0L,
+  #   Epithelium = 6L, `CD8+ T cells` = 25L,
+  #   Stromal = 11L, Stromal = 2L, Stromal = 20L,
+  #   Stromal = 3L, `DN T cells` = 31L,
+  #   Epithelium = 15L, Epithelium = 19L, Epithelium = 17L,
+  #   `Cycling cells` = 13L, `AS Epithelium` = 33L,
+  #   Unknown = 29L, Unknown = 18L
+
+```

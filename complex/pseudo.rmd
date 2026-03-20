@@ -1,0 +1,204 @@
+---
+title: "singlecell"
+author: "sunsong"
+date: "2024-10-07"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 拟时序和细胞分化状态分析
+
+Monocle是用于分析single-cell RNA-seq的R包，能够将细胞按照模拟的时间顺序进行排列，显示它们的发展轨迹如细胞分化等生物学过程。Monocle从数据中用无监督或半监督聚类的方式直接获得这个轨迹。除此之外，它还能够做差异表达分析和聚类来揭示重要的基因和细胞。
+
+Monocle不是根据时间跟踪表达式的变化，而是根据轨迹上的进度跟踪变化，我们称之为pseudotime'。Pseudotime是一个抽象的进展单元：它只是一个单元格与轨迹起点之间的距离，沿着最短路径测量。轨迹的总长度是根据细胞从起始状态移动到最终状态时经历的转录变化的总量来定义的。
+
+拟时分析其实也是一种降维（排序）分析， 这个XY轴可以理解为一个降维空间，就像pc12,tsne12,umap12一样。这种图monocle可以做出来，给tsne坐标中每个细胞mapping颜色。
+
+在发育过程中，细胞会对刺激做出反应，在整个生命过程中，从一种功能性“状态”转变为另一种功能性“状态”。处于不同状态的细胞表达的基因不同，产生蛋白质和代谢物的动态重复序列，从而完成它们的工作。当细胞在不同状态间转变时，会经历转录重组的过程，其中一些基因被沉默，而另一些基因被激活。这些瞬时状态通常难以表征，因为在更稳定状态之间纯化细胞是困难或不可能的。单细胞RNA-Seq可以使您在不需要纯化细胞的情况下查看这些状态。然而，要做到这一点，我们必须确定每个细胞的可能状态范围。
+
+Monocle不是通过实验将细胞纯化成离散状态，而是使用一种算法来学习每个细胞必须经历的基因表达变化序列，作为动态生物学过程的一部分。一旦它了解了基因表达变化的整体“轨迹”，Monocle就可以将每个细胞放置在轨迹中的适当位置。Monocle依靠一种叫做反向图嵌入的机器学习技术来构建单细胞轨迹（算法参考文献：Reversed graph embedding resolves complex single-cell trajectories）。
+
+Monocle2分析主要基于以下3个步骤：
+
+1、基因筛选：Monocle寻找以“有趣”(即不只是嘈杂)方式变化的基因，并利用这些基因来构造数据。
+
+2、降低维度：一旦选择了用于细胞排序的基因，Monocle就会对数据进行降维处理。
+
+3、pseudotime对细胞排序：通过将表达数据投影到较低维空间，构建细胞间的分化轨迹。
+
+```{r packages_library}
+rm(list = ls())
+suppressMessages(library(Seurat))
+suppressMessages(library(monocle))
+suppressMessages(library(igraph))
+```
+
+
+```{r}
+#设置工作路径及读取所需数据
+load('D:/work/1object/2023/15_YQKM-20202-9/data/13_Single_Cell_Analysis/markgene_object.rda')
+PBMC.combined <- object
+```
+
+```{r}
+# 提取出巨噬细胞
+PBMC.combined.keycell <- subset(object,ident == c('Macrophage'))
+```
+
+```{r}
+# PCA分析降维 
+PBMC.combined.keycell <- ScaleData(PBMC.combined.keycell, verbose = FALSE,vars.to.regress = c('nCount_RNA','nFeature_RNA'))
+
+# PCA分析 
+PBMC.combined.keycell <- RunPCA(PBMC.combined.keycell, npcs = 50, verbose = FALSE, do.print = TRUE, 
+                                pcs.print = 1:5, genes.print = 5)
+
+# 细胞分群及可视化
+PBMC.combined.keycell$orig.ident <- factor(PBMC.combined.keycell$orig.ident)
+
+PBMC.combined.keycell <- FindNeighbors(PBMC.combined.keycell, reduction = "pca", dims = 1:30)
+
+PBMC.combined.keycell <- FindClusters(
+  object = PBMC.combined.keycell,
+  reduction = "pca",
+  resolution = 1,
+  dims= 1:30,
+  save.SNN = TRUE)
+
+# UMAP聚类
+PBMC.combined.keycell <- RunUMAP(PBMC.combined.keycell, reduction = "pca", dims = 1:30)
+
+# tSNE聚类
+# PBMC.combined.keycell <- RunTSNE(PBMC.combined.keycell, reduction = "pca", dims = 1:30)
+
+print(DimPlot(PBMC.combined.keycell, reduction = "umap", label = TRUE))
+
+```
+
+```{r}
+# 亚群注释
+object <- PBMC.combined.keycell
+features <- unique(c('TNF','IL1A',
+                     'CD163','SPP1','C1QC','MARCO','CD209','MERTK'))
+
+object@meta.data$ident <- object@active.ident
+DotPlot(object, features = features, group.by = 'ident',assay='RNA')+
+  theme(panel.grid = element_blank(), axis.text.x=element_text(hjust = 1,vjust=1,angle = 45))+
+  labs(x=NULL,y=NULL)+guides(size=guide_legend(order=3))+
+  scale_color_gradientn(values = seq(0,1,0.1),colours = c('#330066','#336699','#66CC66','#FFCC33'))
+
+Idents(object) <- "seurat_clusters"
+object <- RenameIdents(object,"0"= "M1_macrophages",
+                       "1"= "M2_macrophages")
+object@meta.data$ident <- Idents(object)
+
+DotPlot(object, features = features, group.by = 'ident',assay='RNA')+
+  theme(panel.grid = element_blank(), axis.text.x=element_text(hjust = 1,vjust=1,angle = 45))+
+  labs(x=NULL,y=NULL)+guides(size=guide_legend(order=3))+
+  scale_color_gradientn(values = seq(0,1,0.1),colours = c('#330066','#336699','#66CC66','#FFCC33'))
+
+print(DimPlot(object, reduction = "umap", label = TRUE))
+
+```
+
+图中横坐标表示marker基因，纵轴表示注释的细胞，每个点表示基因在细胞中的表达量，点的颜色越黄表达越高，点的大小表示基因在细胞中的表达量占比越多
+
+```{r}
+# Step1: 数据处理
+# 从SeuratObject中提取数据、表型数据和特征数据
+data <- as(as.matrix(PBMC.combined.keycell@assays$RNA@counts), 'sparseMatrix')
+p_data <- PBMC.combined.keycell@meta.data
+p_data$Cluster <- PBMC.combined.keycell@active.ident
+pd <- new('AnnotatedDataFrame', data = p_data)
+fData <- data.frame(gene_short_name = row.names(data), row.names = row.names(data))
+fd <- new('AnnotatedDataFrame', data = fData)
+# 构建对象
+clustered_pbmc_monocle <- newCellDataSet(data,
+                                         phenoData = pd,
+                                         featureData = fd)
+head(pData(clustered_pbmc_monocle))
+# 过滤低质量细胞
+clustered_pbmc_monocle <- detectGenes(clustered_pbmc_monocle, min_expr = 1)
+# 估计尺寸系数和分布
+clustered_pbmc_monocle <- estimateSizeFactors(clustered_pbmc_monocle)
+clustered_pbmc_monocle <- estimateDispersions(clustered_pbmc_monocle)
+
+print(head(fData(clustered_pbmc_monocle)))
+# 选择基因
+PBMC.combined.oli1000 <- FindVariableFeatures(PBMC.combined.keycell, selection.method = "vst", nfeatures = 1000)
+features <- VariableFeatures(PBMC.combined.oli1000)
+ordering_genes = unique(features)
+```
+
+在降维处理时设置参数reduceDimension='DDRTree'就行分析。
+
+```{r}
+#--------- Step2: 数据集降维
+clustered_pbmc_monocle = setOrderingFilter(clustered_pbmc_monocle,ordering_genes = ordering_genes) 
+# plot_ordering_genes(clustered_pbmc_monocle)
+
+clustered_pbmc_monocle = reduceDimension(
+  clustered_pbmc_monocle,
+  reduction_method = "DDRTree")
+# source('../../R/order_cells.R')
+
+```
+
+
+```{r}
+#--------- Step3: 按伪时间对单元格排序
+clustered_pbmc_monocle <- orderCells(clustered_pbmc_monocle)
+# 如果需要将另一端构建为根（起点），可以使用root_state参数进行调整
+# clustered_pbmc_monocle <- orderCells(clustered_pbmc_monocle,root_state = 1)
+```
+
+下图展示了拟时序分析之后M1和M2巨噬细胞在拟时序轨迹上的分布
+
+```{r}
+plot_cell_trajectory(clustered_pbmc_monocle, color_by = "Cluster")
+
+```
+
+下图展示了拟时序分析的分化时间，颜色越深表示越处于分化初期
+
+```{r}
+plot_cell_trajectory(clustered_pbmc_monocle,color_by = "Pseudotime")
+
+```
+
+下图展示了拟时序分析之后各个state在拟时序轨迹上的分布,从图中可以看出一共被分为了3个分支，其中1分支处于伪时间初期，2和3对应拟时序分化末期。
+
+```{r}
+plot_cell_trajectory(clustered_pbmc_monocle, color_by = "State")
+
+```
+
+
+```{r}
+#--------- Step4: 时间序列中关键基因的表达
+PMgenes <- c('IL1R2','IL1RN')
+
+clustered_pbmc_monocle_hubgene <- clustered_pbmc_monocle[PMgenes,]
+```
+
+以下三幅图的话，都表示基因在时序变化过程中，基因在细胞中的表达变化情况
+
+```{r}
+plot_genes_in_pseudotime(clustered_pbmc_monocle_hubgene, color_by = "Cluster")
+
+```
+
+```{r}
+plot_genes_in_pseudotime(clustered_pbmc_monocle_hubgene,color_by = "Pseudotime")
+
+```
+
+```{r}
+plot_genes_in_pseudotime(clustered_pbmc_monocle_hubgene, color_by = "State")
+```
+

@@ -1,0 +1,238 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2026-03-17"), end = td("2026-03-17"), finish = td("2026-03-17"),
+  id = "p1639", client = "", inst = "",
+  type = "issue",
+  title = "Issue",
+  save = ".items_issue.rds"
+)
+show.ic(info)
+
+order_publish.complex("issue.Rmd", "issue_out.Rmd")
+formatName.complex("./issue_out.docx")
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_cover.complex(info)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+set_index()
+```
+
+
+# 进展
+
+此前已正常通过组间比较(`r ref("IUA-ARLNC1-Intersection-of-IUA-Control-with-ARLNC1-HL", FALSE, FALSE, TRUE)`)
+获得的基因，用于机器学习 (`r ref("LEARN-Intersection-of-SVM-RFE-with-LASSO-with-Random-Forest")`) ，
+得到 4 个候选基因，然后在外部数据集中两个得到了验证 (`r ref("VALIDATE-GSE224093-Box-Plot-Of-DEGs-learn")`) 。
+
+列线图模型以 ROC 验证后有预测价值。(
+`r ref("IUA-ROC-evaluation-of-diagnostic-indicators")`) 
+
+到单细胞分析环节，细胞注释等也无问题。见 `r ref("GSE215968-SCSA-Cell-type-annotation")`，
+`r ref("GSE215968-Marker-Validation")`
+
+
+# 问题
+
+到了筛选关键细胞环节，
+`r ref("GSE215968-SCSA-annotation-Cell-Proportions-in-each-sample")`，
+有显著差异的细胞 (`r ref("GSE215968-Cell-Proportion-intergroup-comparison")`) 
+为 Cytotoxic NK 和 CD8+ T 细胞。
+但两类细胞的两个生物标识物在组间不存在显著差异。
+
+基因 H1-4 (HIST1H1E) 在 AS Epithelium 和 B 细胞中有显著差异 (
+`r ref("GSE215968-wilcox-test-of-HIST1H1E-in-Cells")`) 。
+
+拟以 B 细胞为关键细胞，但效果较差，不符和方案预期。
+预期为：“子宫内膜上皮细胞、子宫内膜基质成纤维细胞、M2 型巨噬细胞、活化型 CD4+ T 细胞、血管内皮细胞”
+
+ (FXYD7 在各细胞中的情况为 `r ref("GSE215968-wilcox-test-of-FXYD7-in-Cells")`) 
+<!-- LEGEND_END -->
+
+分析结果不符合预期，且疾病较为特殊，单细胞数据集目前只找到分析中的这个数据集，以及另一个相同作者的数据集，
+ (GSE216748，6个样本。) 
+是否需要先尝试改换该单细胞数据集来筛选关键细胞？
+
+
+```{r}
+take_positions({
+  des.iua@plots$step3$topDegs$`IUA vs control`$p.hp
+  des.iua@plots$step3$topDegs$`IUA vs control`$p.volcano
+  des.iua@params$focusedDegs_ARLNC1$p.BoxPlotOfDEGs
+  des.iua@params$focusedDegs_ARLNC1$roc$ARLNC1$p.roc
+  des.arlnc1@plots$step3$topDegs$`High vs Low`$p.hp
+  des.arlnc1@plots$step3$topDegs$`High vs Low`$p.volcano
+  vn.iua_arlnc1@plots$step1$p.venn
+})
+
+take_positions({
+  en.iua_arlnc1@plots$step1$p.kegg$id
+  en.iua_arlnc1@plots$step1$p.go$id
+})
+
+take_positions({
+  ml.iua_arlnc1@plots$step1$p.results
+  ml.iua_arlnc1@plots$step2$p.lasso_cv
+  ml.iua_arlnc1@plots$step2$p.coefs_path
+  ml.iua_arlnc1@plots$step3$p.error
+  vn.learn@plots$step1$p.venn
+})
+
+take_positions({
+  des.validate_train@params$focusedDegs_learn$p.BoxPlotOfDEGs
+  lm.validate_gse224093@plots$step2$p.BoxPlotOfDEGs_learn
+})
+
+take_positions({
+  corgsea.marker@plots$step1$p.gsea$`H1-4`
+  corgsea.marker@plots$step1$p.gsea$FXYD7
+})
+
+take_positions({
+  iobr.iua@plots$step2$p.boxplot
+  iobr.iua@plots$step2$p.cor
+  iobr.iua@plots$step3$p.GeneCellCor
+})
+
+take_positions({
+  rms.iua@plots$step1$p.nomo
+  rms.iua@plots$step1$p.rocs
+  rms.iua@plots$step1$p.cal
+  rms.iua@plots$step2$p.dcas
+})
+
+take_positions({
+  lc.markers@plots$step1$p.locateChr
+  lc.markers@plots$step2$p.locateScore
+})
+
+take_positions({
+  rn.markers@plots$step5$p.regNet
+})
+
+take_positions({
+# spsv(srn.GSE215968@plots$step2$p.pca_rank, "pca_rank")
+# spsv(z7(srn.GSE215968@plots$step3$p.umapUint, 1.5, 1), "umapUint")
+# spsv(z7(.vis_seurat_label(srn.GSE215968), 1.5, 1), "umapInt")
+# spsv(wrap(test$p.qc_aft, 20, 15), "qc_aft")
+# spsv(wrap(srn.GSE215968$p.qc_pre, 20, 15), "qc_pre")
+})
+
+take_positions({
+  srn.GSE215968@plots$step6$p.markers
+  srn.GSE215968@plots$step6$p.map_scsa
+  srn.GSE215968@plots$step6$p.props_scsa
+  srn.GSE215968@plots$step6$p.props_scsa_stat
+  # srn.GSE215968$focus_by_group$plist.vlnFacet$HIST1H1E
+})
+
+take_positions({
+  srn.GSE215968$focus_by_cell$p.dim
+  srn.GSE215968$focus_by_cell$p.dot
+  srn.GSE215968$focus_by_group$plist.vlnFacet$HIST1H1E
+  srn.GSE215968$focus_by_group$plist.vlnFacet$FXYD7
+})
+
+take_positions({
+  cc.comparison$args_inters
+  cc.comparison@plots$step1$p.inters_counts
+})
+
+graphics.off()
+
+
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| IUA-ARLNC1-Intersection-of-IUA-Control-with-ARLNC1-HL
+autor(vn.iua_arlnc1@plots$step1$p.venn)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| LEARN-Intersection-of-SVM-RFE-with-LASSO-with-Random-Forest
+autor(vn.learn@plots$step1$p.venn)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| VALIDATE-GSE224093-Box-Plot-Of-DEGs-learn
+autor(lm.validate_gse224093@plots$step2$p.BoxPlotOfDEGs_learn)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| IUA-nomogram
+# autor(rms.iua@plots$step1$p.nomo)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| IUA-ROC-evaluation-of-diagnostic-indicators
+autor(rms.iua@plots$step1$p.rocs)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE215968-SCSA-Cell-type-annotation
+autor(srn.GSE215968@plots$step6$p.map_scsa)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE215968-Marker-Validation
+autor(srn.GSE215968@plots$step6$p.markers)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE215968-SCSA-annotation-Cell-Proportions-in-each-sample
+autor(srn.GSE215968@plots$step6$p.props_scsa)
+```
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE215968-Cell-Proportion-intergroup-comparison
+autor(srn.GSE215968@plots$step6$p.props_scsa_stat)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE215968-dimension-plot-of-by-cell
+autor(srn.GSE215968$focus_by_cell$p.dim)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE215968-wilcox-test-of-HIST1H1E-in-Cells
+autor(srn.GSE215968$focus_by_group$plist.vlnFacet$HIST1H1E)
+```
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE215968-wilcox-test-of-FXYD7-in-Cells
+autor(srn.GSE215968$focus_by_group$plist.vlnFacet$FXYD7)
+```
+
+
+
+```{r eval = T, echo = F, results = "asis"}
+#| GSE215968-dot-plot-of-by-cell
+autor(srn.GSE215968$focus_by_cell$p.dot)
+```
+
