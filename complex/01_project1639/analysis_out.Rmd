@@ -9,21 +9,21 @@ output:
 ---
 
 
-```{r include = F, eval = F}
+```{r include = FALSE, eval = FALSE}
 info <- items(start = td("2026-03-04"), end = td("2026-03-04"), finish = td("2026-03-04"),
   id = "p1639", client = "", inst = "",
   type = "生信分析",
-  title = "",
+  title = "基于转录组与单细胞数据结合机器学习鉴定宫腔粘连中ARLNC1相关生物标志物并构建诊断模型",
   save = ".items_analysis.rds"
 )
 show.ic(info)
 
-order_publish.complex("analysis.Rmd", "analysis_out.Rmd")
+project_publish.complex("analysis.Rmd", "analysis_out.Rmd")
 idname <- formatName.complex("./analysis_out.docx")
-order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+project_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
 ```
 
-```{r include = F}
+```{r include = FALSE}
 #| setup
 if (!requireNamespace("utils.tool"))
   devtools::load_all("~/utils.tool/")
@@ -35,11 +35,11 @@ autor_preset()
 options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
 ```
 
-```{r eval = T, echo = F, results = "asis"}
-set_cover.complex(info)
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_cover.complex()
 ```
 
-```{r eval = T, echo = F, results = "asis"}
+```{r eval = TRUE, echo = FALSE, results = "asis"}
 set_index()
 ```
 
@@ -47,79 +47,533 @@ set_index()
 
 ## 项目背景
 
+宫腔粘连（Intrauterine Adhesion, IUA）是因子宫内膜损伤引发的子宫壁纤维化粘连疾病，其核心病理特征为子宫内膜基底层破坏、纤维结缔组织增生及宫腔形态异常`r cite_show("Treatment_strat_Wu_Fe_2023")`。
+作为导致女性继发性不孕、反复流产及月经异常的主要病因之一，IUA在我国的发病率呈逐年上升趋势：人工流产术后IUA发生率可达19.1% ~ 30.9%，重度粘连患者的妊娠率不足20%`r cite_show("The_epidemiolog_Munro_2025")`。
+目前临床主要依赖宫腔镜检查进行诊断，但该方法具有侵入性且难以在疾病早期精准识别，而术后复发率高达62.5%，严重影响患者生殖健康与生活质量，已成为生殖医学领域亟待解决的关键临床问题`r cite_show("The_Use_of_Hyst_2020")`。
+IUA的发生发展是子宫内膜损伤与异常修复的病理过程，其核心机制在于子宫内膜干细胞增殖分化能力受损，导致上皮——间质转化（EMT）失衡、纤维化微环境形成`r cite_show("Defective_autop_Zhou_2022")`。
+遗传易感因素与医源性损伤共同驱动疾病进展：子宫内膜基底层损伤后，局部炎症反应激活成纤维细胞异常增殖并分泌大量细胞外基质（ECM），而雌激素水平不足及子宫内膜干细胞功能缺陷则阻碍内膜上皮再生，最终形成纤维性粘连`r cite_show("Recent_developm_Li_X_2021")`。尽管宫腔镜分离术是目前主要治疗手段，但缺乏针对纤维化进程的靶向干预策略，疾病复发率居高不下，因此亟需挖掘IUA诊断的关键生物标志物与潜在治疗靶点。
+
+长链非编码RNA（long non-coding
+RNA，lncRNA）在调控基因表达、细胞增殖分化及纤维化进程中发挥重要作用，其中ARLNC1（lncRNA
+ADP ribosylation factor like GTPase 1 antisense RNA
+1）作为近年新发现的功能性lncRNA，已被证实通过调控细胞周期、EMT及炎症反应参与多种纤维化疾病的病理过程`r cite_show("A_novel_long_no_Cong_2024")`。
+在肝纤维化模型中ARLNC1可通过海绵吸附miR-145-5p上调TGF-β1表达，促进肝星状细胞活化与ECM沉积`r cite_show("Assessment_of_l_Bahrei_2021")`；
+而在子宫内膜异位症患者中，ARLNC1的异常高表达与癌症细胞增殖及侵袭能力增强密切相关`r cite_show("Analysis_of_the_Zhang_2018")`。然而，ARLNC1在IUA中的表达特征、细胞亚群特异性及其调控子宫内膜纤维化的分子机制尚未明确，其作为疾病诊断标志物的潜在价值也有待深入探究。
+
+单细胞转录组测序技术的发展为解析IUA的细胞异质性提供了高分辨率工具，可精准捕获子宫内膜微环境中不同细胞亚群的基因表达动态`r cite_show("Decoding_the_en_Santam_2023")`。
+结合机器学习算法，能够从复杂的转录组数据中筛选出具有诊断价值的生物标志物，而scTenifoldKnk虚拟敲除技术则可高效解析基因间的调控网络`r cite_show("scTenifoldKnk_Osorio_2022")`。
+尽管现有研究已初步揭示lncRNA在IUA中的作用，但多数基于bulk转录组数据，难以区分不同细胞亚群中ARLNC1的特异性表达模式，且缺乏整合多组学数据构建的精准诊断模型。
+GraphBAN算法则能依托基因表达特征开展靶向药物的精准预测，为后续疾病干预研究提供关键线索`r cite_show("GraphBAN_An_in_Hadipo_2025")`。
+
+本研究拟整合IUA患者的转录组与单细胞转录组数据，结合机器学习筛选细胞亚群特异性的ARLNC1相关生物标志物；通过scTenifoldKnk虚拟敲除技术解析生物标志物的下游调控网络，揭示其参与子宫内膜纤维化的分子机制；进一步构建基于ARLNC1的疾病诊断模型，并借助GraphBAN算法预测潜在干预药物，最终为IUA的早期诊断、风险分层及靶向治疗提供新的理论依据与技术支撑。
+
 ## 分析方法
 
-```{r eval = T, echo = F, results = "asis"}
-collate_details("meth")
-```
+1.  差异基因鉴定；
+2.  筛选候选基因；
+3.  基因本体论（Gene Ontology，GO）和京都基因与基因组百科全书（Kyoto
+    Encyclopedia of Genes and Genomes，KEGG）富集分析
+4.  蛋白互作网络（Protein-Protein Interaction Network，PPI）的构建；
+5.  机器学习；
+6.  受试者工作特征曲线（Receiver Operating Characteristic
+    Curve，ROC）和表达量验证；
+7.  基因集富集分析（Gene Set Enrichment Analysis，GSEA）；
+8.  免疫浸润分析；
+9.  列线图构建和评估；
+10. 分子调控网络；
+11. GrapnBAN药物预测和分子对接；
+12. 染色体和亚细胞定位；
+13. 基因多关联网络集成算法（Gene Multiple Association Network
+    Integration Algorithm，GeneMANIA）分析；
+14. 单细胞数据预处理；
+15. 细胞通讯；
+16. 拟时序分析；
+17. Reactome基因集富集分析（Reactome Gene Set Analysis，ReactomeGSA）；
+18. ScTenifoldKnk虚拟分析。
 
 ## 数据来源
 
+- **训练集：[自测序数据]{.mark}**样本，包含20例宫腔粘连样本和15例对照样本。用途：作为训练集，进行差异分析，模型构建等。
+- **验证集：**
+GSE224093数据集：从GEO数据库（[[https://www.ncbi.nlm.nih.gov/geo/]{.underline}](https://www.ncbi.nlm.nih.gov/geo/)）下载，为本研究设定的宫腔粘连（IUA）组与健康对照组的子宫内膜组织转录组表达谱数据；其中宫腔粘连组7例，健康对照组7例；测序平台：GPL16791（Illumina HiSeq
+2500）；测序类型：高通量测序（RNA-seq）；用途：作为验证集，进行生物标志物的ROC诊断效能评估和IUA相关ARLNC1及关联关键基因表达量验证[【PMID:
+37456855】]{.mark}。
+- **单细胞数据集**：GSE215968数据集从GEO数据库（[[https://www.ncbi.nlm.nih.gov/geo/]{.underline}](https://www.ncbi.nlm.nih.gov/geo/)）下载；为本研究设定的宫腔粘连相关Asherman
+综合征预处理前样本及植入窗口期（WOI）健康对照的子宫内膜组织单细胞转录组表达谱数据；共纳入23个样本，其中Asherman
+综合征（IUA组）预处理前样本16个、植入窗口期健康对照样本7个（对照组）；测序平台：GPL24676；测序类型：高通量测序（scRNA-seq）；用途：单细胞分析[【PMID: 37735465】]{.mark}。
+
+
 ## 研究目标
+
+1. 基于生物信息学方法挖掘宫腔粘连ARLNC相关的生物标志物，明确其在子宫内膜微环境中各类细胞亚群功能紊乱中的病理调控价值，揭示ARLNC及相关核心标志物的细胞亚群特异性来源与分子表达特征；
+2. 筛选宫腔粘连中ARLNC1相关的核心诊断生物标志物，系统分析标志物与子宫内膜纤维化微环境、疾病严重程度及临床预后的关联性，结合GraphBAN图神经网络模型预测靶向生物标志物的潜在干预药物；
+3. 利用宫腔粘连单细胞转录组数据集、转录组训练集及验证集，验证ARLNC1及相关核心标志物的表达差异特征，整合差异表达数据构建细胞亚群特异性包含ARLNC1的调控网络，为宫腔粘连的精准风险分层、早期诊断及靶向干预提供理论依据与技术支撑。
 
 ## 拟解决的关键科学问题
 
+宫腔粘连（IUA）是一种以子宫内膜基底层损伤、纤维结缔组织异常增生为核心特征的子宫纤维化疾病，其发病机制涉及子宫内膜上皮——间质转化失衡、多细胞亚群功能紊乱及纤维化微环境形成，目前临床缺乏可精准识别疾病进展风险的特异性标志物与靶向干预策略，难以有效降低术后复发率或改善患者生殖预后。IUA表型恶化与ARLNC1异常表达、子宫内膜微环境多细胞亚群功能紊乱及纤维化进程失衡密切相关，但IUA中ARLNC1相关生物标志物的调控特征、病理价值及核心细胞亚群来源尚未被系统解析，单细胞与bulk转录组层面的分子调控网络及临床转化价值也缺乏多数据集的交叉验证。本研究围绕以下核心问题展开：
+
+1. 基于生物信息学方法，挖掘宫腔粘连（IUA）患者中ARLNC1相关的诊断性生物标志物，为IUA的早期诊断提供生物信息学依据和潜在诊断靶点。
+
+2. 基于子宫内膜单细胞转录组数据与bulk转录组数据，结合差异分析解析ARLNC1及相关生物标志物的核心细胞亚群来源，并揭示其在IUA纤维化调控进程中的潜在分子机制。
+
+3. 验证集中IUA相关ARLNC1及关联标志物的表达及诊断效能是否与训练集结果一致，判断其作为IUA早期风险分层标志物及靶向干预靶点的可行性。
+
 ## 创新性
 
+首次将"单细胞聚类分群联合scTenifoldKnk虚拟敲除算法"引入IUA的ARLNC1专项研究，精准关联单细胞层面子宫内膜核心细胞亚群与ARLNC1表达，有效突破IUA转录组研究中"单一基因分析与细胞亚群功能、临床表型脱节"的技术局限。现有研究多泛化分析IUA相关lncRNA或单一细胞亚群功能，而本研究通过方法整合实现"核心细胞亚群——ARLNC1及关联标志物——宫腔粘连表型"的跨维度精准关联，明确ARLNC1发挥作用的专属细胞亚群及转录特征，为靶向干预提供精准细胞定位。
+
+在生物标志物筛选上，以ARLNC1为核心锚点，结合机器学习算法层层筛选其关联生物标志物，构建"ARLNC1——关联标志物——宫腔粘连表型"的专属诊断模型，经转录组训练集与验证集双重验证确认核心标志物组合，同时联动GraphBAN图神经网络模型开展靶向药物预测及纤维化微环境关联分析，实现"疾病早期诊断——风险分层——潜在干预靶点挖掘"的一体化研究闭环，弥补当前IUA标志物研究"缺乏基因靶向性、无法衔接干预策略"及ARLNC1与IUA诊断价值关联不足的研究空白。
+
+机制解析层面，从单细胞分辨率解析ARLNC1及关联标志物所在核心细胞亚群的分化轨迹、细胞间通讯特征，结合bulk数据的ReactomeGSA富集分析、蛋白互作网络分析，系统探索ARLNC1在"子宫内膜损伤——细胞亚群功能失衡——宫腔粘连"中的调控网络及分子机制，破解当前IUA研究"单一通路解析多、聚焦核心基因的系统网络机制少"及ARLNC1调控IUA纤维化分子路径不明确的痛点。最终通过多数据集交叉验证夯实结果可靠性，为IUA的早期精准诊断、靶向干预及术后复发防控提供全新的技术方法与理论支撑。
+
+
 ## 流程图
+
+![](./order_material/word/media/image3.svg){width="5.511805555555555in" height="3.1in"}
 
 \newpage
 
 # 分析结果 {#workflow}
 
-`r snap(srn.GSE215968, TRUE)`
+## 筛选候选基因
 
-<!-- LEGEND_END -->
+###  差异分析 (IUA)
 
+差异表达分析旨在找出不同样本组间的差异表达基因（differentially expressed genes，DEGs），并在后续对DEGs进行更加深入的功能挖掘。
+`r meth(des.iua, FALSE)`
+`r snap(des.iua, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-IUA-vs-control-heatmap-of-top-10-DEGs
+autor(des.iua@plots$step3$topDegs$`IUA vs control`$p.hp)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-IUA-vs-control-volcano-of-DEGs
+autor(des.iua@plots$step3$topDegs$`IUA vs control`$p.volcano)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-boxplot-of-cook-distance
+autor(notshow(des.iua@plots$step1$p.boxplot))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-IUA-vs-control-Contrast-all-result-table
+autor(notshow(des.iua@tables$step2$t.results$`IUA vs control`))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-IUA-vs-control-Contrast-significant-result-table
+autor(notshow(des.iua@tables$step2$t.sigResults$`IUA vs control`))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-Box-Plot-Of-DEGs-ARLNC1
+autor(z7(des.iua@params$focusedDegs_ARLNC1$p.BoxPlotOfDEGs, 0.6, 0.6))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ROC-plot-of-ARLNC1
+autor(wrap(des.iua@params$focusedDegs_ARLNC1$roc$ARLNC1$p.roc, 9, 6.5))
+```
 
 ```{r}
-gds.ash <- job_gds("Asherman")
-gds.ash <- step1(gds.ash, single_cell = TRUE)
-gds.ash@object
+```
 
-gds.iua <- job_gds("Intrauterine Adhesion")
-gds.iua <- step1(gds.iua, deep_inspect = FALSE)
-gds.iua@object
+`r snap(des.arlnc1, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| ARLNC1-High-vs-Low-heatmap-of-top-10-DEGs
+autor(des.arlnc1@plots$step3$topDegs$`High vs Low`$p.hp)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| ARLNC1-High-vs-Low-Contrast-all-result-table
+autor(notshow(des.arlnc1@tables$step2$t.results$`High vs Low`))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| ARLNC1-High-vs-Low-Contrast-significant-result-table
+autor(notshow(des.arlnc1@tables$step2$t.sigResults$`High vs Low`))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| ARLNC1-High-vs-Low-volcano-of-DEGs
+autor(des.arlnc1@plots$step3$topDegs$`High vs Low`$p.volcano)
+```
+
+###  交集 (IUA_ARLNC1)
+
+为了获得宫腔粘连（IUA）相关候选基因，将自测序训练集中筛选得到的IUA疾病组与健康对照组差异基因（IUA-CTRL_DEGs），与同数据集筛选得到的ARLNC1高表达组与低表达组差异基因（ARLNC1_HL_DEGs）进行交集分析，最终筛选出包含ARLNC1的IUA相关基因 (IUA_ARLNC1)。
+
+`r snap(vn.iua_arlnc1, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-intersection-of-DEGs-IUA-vs-Control-with-ARLNC1-High-vs-Low-
+autor(vn.iua_arlnc1@plots$step1$p.venn)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Feature-n118-genes-DETAILS-Venn-jiao-ji-IUA-ARLNC1
+autor(feature(vn.iua_arlnc1))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('01_DEG')
+```
+
+
+
+##  富集分析 (IUA_ARLNC1)
+
+为阐明宫腔粘连（IUA）ARLNC1相关候选基因所参与的核心生物学功能及调控通路，对筛选得到的IUA候选基因开展基因本体（Gene Ontology，GO）功能富集分析【涵盖生物过程（Biological
+Process，BP）、细胞组分（Cellular Component，CC）、分子功能（Molecular
+Function，MF）三大类别】及京都基因与基因组百科全书（Kyoto Encyclopedia
+of Genes and Genomes，KEGG）通路富集分析，系统解析候选基因介导的ARLNC1调控子宫内膜纤维化途径。
+
+`r snap(en.iua_arlnc1, TRUE, TRUE)`
+
+显著富集的 KEGG 通路(`r ref(en.iua_arlnc1@plots$step1$p.kegg$ids)`)主要集中于免疫炎症及细胞应激相关过程，包括细胞因子-受体相互作用、TNF 信号通路、IL-17 信号通路、趋化因子信号通路、补体与凝血级联反应以及 NF-κB 信号通路，同时涉及 p53 信号通路与凋亡过程等。这些结果表明 IUA 相关差异基因主要参与免疫炎症反应、细胞凋亡及应激信号转导过程，提示炎症微环境及细胞损伤修复机制在疾病发生发展中发挥关键作用。
+
+GO 富集分析`r ref(en.iua_arlnc1@plots$step1$p.go$ids)`，在生物学过程 (BP) 方面，富集条目主要涉及体液免疫反应（humoral immune response）、抗菌体液反应（antimicrobial humoral response）、对有毒物质及金属离子的应激反应（response to toxic substance, stress response to metal ion）、过氧化氢代谢过程（hydrogen peroxide metabolic process）及急性期反应（acute-phase response）等，提示IUA背景下免疫调节紊乱、氧化应激及金属离子稳态失衡可能在疾病发生发展中发挥重要作用。
+
+细胞组分 (CC) 富集分析显示，显著富集的条目包括血小板α颗粒（platelet alpha granule）、分泌性颗粒腔（secretory granule lumen）、循环免疫球蛋白复合物（immunoglobulin complex, circulating）等，提示血小板活化、分泌功能增强及局部免疫复合物沉积可能参与IUA的病理过程。
+
+分子功能 (MF) 方面，富集条目涵盖趋化因子活性（chemokine activity）、G蛋白偶联受体结合（G protein-coupled receptor binding）、过氧化物酶活性（peroxidase activity）及离子通道活性（如电压门控钾通道、钠氯同向转运体活性）等，进一步支持炎症趋化信号、氧化应激及离子转运异常在IUA发病中的潜在调控作用。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-KEGG-enrichment
+autor(z7(en.iua_arlnc1@plots$step1$p.kegg$ids, 1, 0.5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-KEGG-enrichment-data
+autor(notshow(en.iua_arlnc1@tables$step1$res.kegg$ids))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-GO-enrichment
+autor(en.iua_arlnc1@plots$step1$p.go$ids)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-GO-enrichment-data
+autor(notshow(en.iua_arlnc1@tables$step1$res.go$ids))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('02_enrichment')
+```
+
+
+##  PPI 分析 (IUA_ARLNC1)
+
+为解析宫腔粘连（IUA）ARLNC1 基因相关候选基因的蛋白质——蛋白质相互作用（PPI）关系，借助STRING数据库（http://www.string-db.org/）开展PPI网络的构建分析。
+
+`r snap(sdb.iua_arlnc1, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-PPI-network
+autor(sdb.iua_arlnc1@plots$step1$p.ppi)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-mapped
+autor(notshow(sdb.iua_arlnc1@tables$step1$mapped))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-PPI-annotation
+autor(notshow(sdb.iua_arlnc1@params$edges))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('03_ppi')
+```
+
+
+##  机器学习 (LEARN)
+
+本研究整合 3 种经典机器学习算法，在候选基因中筛选核心关键基因。
+
+`r snap(ml.iua_arlnc1, TRUE, TRUE)`
+
+`r snap(vn.learn, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-SVM-RFE-candidate-subset-sizes-evaluation
+autor(ml.iua_arlnc1@plots$step1$p.svm)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Feature-n3-genes-DETAILS-Machine-Learning
+autor(feature(ml.iua_arlnc1))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-LASSO-Cross-Validation
+autor(z7(ml.iua_arlnc1@plots$step2$p.lasso_cv, 1.2, 1.5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-Lasso-Coefficient-path
+autor(z7(ml.iua_arlnc1@plots$step2$p.coefs_path, 1.2, 1.5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-Trend-of-random-forest-error-rate
+autor(ml.iua_arlnc1@plots$step3$p.error)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ARLNC1-top-importance-feature
+autor(notshow(ml.iua_arlnc1@tables$step3$t.tops))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| LEARN-intersection-of-SVM-RFE-with-LASSO-with-Random-Forest
+autor(vn.learn@plots$step1$p.venn)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Feature-n4-genes-DETAILS-Venn-jiao-ji-LEARN
+autor(feature(vn.learn))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('04_learn')
+```
+
+
+
+## 表达量验证
+
+针对关键基因分别在训练集（IUA bulk转录组自测序训练集）和验证集（GSE224093）中绘制箱线图，直观呈现基因在宫腔粘连组与健康对照组的表达分布特征。
+`r snap(des.validate_train, "learn")`
+
+对于验证集 GSE224093，
+`r snap(lm.validate_gse224093, "learn")`
+
+以训练集和验证集中基因表达差异均达到统计学显著水平（p &lt; 0.05）、且表达趋势一致的关键基因，作为后续研究的生物标志物，最终筛选基因为 H1-4，FXYD7。
+
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-Box-Plot-Of-DEGs-learn
+autor(wrap(des.validate_train@params$focusedDegs_learn$p.BoxPlotOfDEGs, 
+    5, 2.5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| VALIDATE-GSE224093-Box-Plot-Of-DEGs-learn
+autor(wrap(lm.validate_gse224093@plots$step2$p.BoxPlotOfDEGs_learn, 
+    5, 2.5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('05_expression_validate')
+```
+
+
+## 分析 (MARKER)
+
+为进一步探讨筛选得到的诊断基因在全基因组范围内的潜在功能关联，基于表达数据计算诊断基因与其他基因之间的相关性，并以相关系数构建全基因排序列表。在此基础上实施基因集富集分析（GSEA），以识别与诊断基因表达模式协同变化的功能通路。该策略能够将有限的诊断基因扩展至其相关的基因网络层面，从而揭示其潜在的生物学过程及分子机制，提高结果的生物学解释性与稳健性。
+
+`r snap(corgsea.marker, TRUE, TRUE)`
+
+H1-4 富集结果 (`r ref(corgsea.marker@plots$step2$p.codes$'H1-4')`)，DNA复制（DNA Replication）、DNA复制起始调控（DNA Replication Pre-Initiation）、染色体维持（Chromosome Maintenance）、细胞周期检查点（Cell Cycle Checkpoints）及M期（M Phase）等条目在排序数据集的早期排名较高，且富集分数呈正向分布，提示相关基因在特定生物学状态下被协同激活。
+
+此外，含帽内含子的加工（Processing of Capped Intron-Containing Pre-mRNA）、RHOT GTPase循环（RHOT GTPase cycle）及碱基切除修复（Base Excision Repair）等过程亦表现出一定程度的富集，反映了转录后调控及DNA损伤修复机制可能参与其中。
+
+提示子宫内膜组织在损伤与修复过程中，细胞周期进展、DNA复制修复及RNA加工等基础生物学过程可能存在系统性失调。尤其是细胞周期检查点与染色体维持相关基因的富集，可能与子宫内膜上皮及间质细胞在损伤后的异常增殖、衰老或纤维化转化密切相关
+
+FXYD7 富集结果 (`r ref(corgsea.marker@plots$step2$p.codes$FXYD7)`) ，
+正向富集最为显著的条目集中于核糖体组分与翻译过程，包括核糖体（Ribosome）、胞质核糖体蛋白（Cytoplasmic ribosomal proteins）、真核翻译延伸（Eukaryotic Translation Elongation）及信号识别颗粒依赖性共翻译蛋白靶向（SRP-dependent cotranslational protein targeting to membrane），提示翻译 machinery 相关基因在特定生物学状态下被协同激活。此外，硒氨基酸代谢（Selenoamino acid metabolism）及EIF2AK4对氨基酸应答（Response of EIF2AK4 (GCN2) to amino acid starvation）亦呈现正向富集，进一步支持氨基酸感应与翻译调控通路的协同活化。
+
+值得注意的是，细胞周期检查点（Cell Cycle Checkpoints）与有丝分裂前中期（Mitotic Prometaphase）条目呈现负向富集（富集分数为负），提示在相同数据集中细胞周期进程相关基因整体表达下调。
+
+在宫腔粘连（IUA）的病理背景下，上述结果提示：翻译活性增强（核糖体相关基因上调）与细胞周期抑制（细胞周期检查点基因下调）可能共同参与子宫内膜损伤后修复过程中的细胞功能重塑。一方面，翻译 machinery 的上调可能支持损伤相关蛋白的合成需求；另一方面，细胞周期进程的抑制可能限制子宫内膜上皮细胞的再生能力，进而促进纤维化修复倾向。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKER-GSEA-plot-H1-4
+autor(wrap(corgsea.marker@plots$step2$p.codes$`H1-4`, 7, 7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSEA-pathway-list-of-H1-4-data
+autor(notshow(corgsea.marker@tables$step1$table_gsea$`H1-4`))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKER-GSEA-plot-FXYD7
+autor(wrap(corgsea.marker@plots$step2$p.codes$FXYD7, 7, 7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSEA-pathway-list-of-FXYD7-data
+autor(notshow(corgsea.marker@tables$step1$table_gsea$FXYD7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('06_gsea')
+```
+
+
+##  免疫浸润分析 (IUA)
+
+已有研究证实宫腔粘连（IUA）ARLNC1相关生物标志物与免疫/基质细胞浸润存在显著关联，涉及的细胞类型包括子宫内膜上皮细胞、成纤维细胞、巨噬细胞、T淋巴细胞、树突状细胞、自然杀伤细胞等。
+为系统评估诊断基因与免疫微环境之间的潜在联系，本研究在既往证实宫腔粘连与多种免疫及基质细胞浸润密切相关的基础上，进一步开展免疫浸润及相关性分析，筛选与免疫微环境密切相关的细胞亚群，并从“基因–细胞互作”角度深化对疾病发生发展机制的理解，为后续功能研究及潜在干预靶点的挖掘提供依据。
+
+`r snap(iobr.iua, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-xcell-Immune-infiltration
+autor(iobr.iua@plots$step2$p.boxplot)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-xcell-wilcox-test-data
+autor(notshow(iobr.iua@tables$step2$t.groupCor))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-Correlation-immune-cells
+autor(iobr.iua@plots$step2$p.cor)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-cells-correlation
+autor(notshow(iobr.iua@tables$step2$t.cells_cor))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-correlation-of-Immune-cells-and-selected-genes
+autor(iobr.iua@plots$step3$p.GeneCellCor)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-correlation-between-cells-and-genes
+autor(notshow(iobr.iua@tables$step3$t.geneCellCor))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-iobr-iua-params-allres-xcell
+autor(notshow(iobr.iua@params$allres$xcell))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('07_immune')
+```
+
+
+##  列线图构建与评估 (IUA)
+
+`r snap(rms.iua, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-nomogram
+autor(rms.iua@plots$step1$p.nomo)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-rms-iua-params-res-lrm-data
+autor(notshow(rms.iua@params$res_lrm$data))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-ROC-evaluation-of-diagnostic-indicators
+autor(rms.iua@plots$step1$p.rocs)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-calibration-curve
+autor(rms.iua@plots$step1$p.cal)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| IUA-Decision-curve-analysis
+autor(rms.iua@plots$step2$p.dcas)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('08_nomogram')
 ```
 
 
 ```{r}
-conflicted::conflict_prefer("map", "utils.tool")
-
-setup.sshfs()
-new_script.hb("DEG")
-new_script.hb("enrichment")
-new_script.hb("ppi")
-new_script.hb("learn")
-new_script.hb("expression_validate")
-new_script.hb("gsea")
-new_script.hb("immune")
-new_script.hb("nomogram")
-new_script.hb("locate")
-new_script.hb("network")
-new_script.hb("graphBan")
-new_script.hb("geneMANIA")
-new_script.hb("seurat")
-new_script.hb("seurat_ex")
-new_script.hb("cellchat")
-
-.send_pkg_to_remote()
-.upd_pkg_to_remote()
-
-run_in_project_nohup("r.13_seurat.r")
-run_in_project_nohup("r.15_seurat_ex.r")
-
+file.copy(
+  "./Figure+Table/IUA-nomogram.pdf", "./remote/08_nomogram/01_IUA-nomogram.pdf", TRUE
+)
 ```
+
+## 染色体定位和亚细胞定位 (MARKERS)
+
+染色体定位分析可有效揭示基因在染色体上的分布特征，以及其与宫腔粘连（IUA）发病机制的潜在关联。
+
+`r snap(lc.markers, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-Chromosome-localization
+autor(lc.markers@plots$step1$p.locateChr)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-lc-markers-params-gene-data
+autor(notshow(lc.markers@params$gene_data))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-RNA-Subcellular-Localization-Distribution
+autor(lc.markers@plots$step2$p.locateScore)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-lc-markers-params-locateData
+autor(notshow(lc.markers@params$locateData))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('09_locate')
+```
+
+
+
+## 分子调控网络分析 (MARKERS)
+
+`r snap(rn.markers, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-expression-regulation-networking
+autor(rn.markers@plots$step5$p.regNet)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-rn-markers-params-all-lncRNA
+autor(notshow(rn.markers@params$all_lncRNA))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-rn-markers-params-all-miRNA
+autor(notshow(rn.markers@params$all_miRNA))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('10_network')
+```
+
+
+
+##  药物预测与 AutoDock Vina 分子对接 (MARKERS)
 
 ```{r}
 fea.markers <- as_feature(c("H1-4", "FXYD7"), ref = "生物标识物基因")
 # file.copy("~/Downloads/markers_2.xlsx", "./remote/markers.xlsx")
 feature(gb.markers)
+gb.markers@tables$step7$t.final_candidates_mutate
 
 vn.drugs <- asjob_vina(gb.markers)
 vn.drugs <- step1(vn.drugs, exclude_pdb = "3TZD", forceAF = TRUE)
-vn.drugs@params$targets_annotation
-vn.drugs@params$used_pdbs
 vn.drugs <- step2(vn.drugs)
 vn.drugs <- step3(
   vn.drugs, extra_pdb.files = c(
@@ -127,128 +581,607 @@ vn.drugs <- step3(
     `H1-4` = "~/Downloads/AF-P10412-F1-model_v6.pdb"
   )
 )
-vn.drugs$dock_layout
-vn.drugs$used_pdbs
 
 # vn.drugs
 vn.drugs <- step4(vn.drugs)
-vn.drugs@step <- 4L
 vn.drugs <- step5(vn.drugs)
-vn.drugs@tables$step5$res_dock
 
-vn.drugs@step <- 5L
-vn.drugs <- step6(vn.drugs)
-vn.drugs <- step7(vn.drugs)
-vn.drugs@plots$step6$`Top1_24893490_into_AF-P58549-F1-model_v6`
-vn.drugs@plots$step6$`Top2_98104494_into_AF-P10412-F1-model_v6`
-vn.drugs@plots$step7$`Top1_24893490_into_AF-P58549-F1-model_v6`
-vn.drugs@plots$step7$`Top2_98104494_into_AF-P10412-F1-model_v6`
+vn.drugs <- step6(vn.drugs, rerun = FALSE)
+vn.drugs <- step7(vn.drugs, rerun = FALSE)
 clear(vn.drugs)
+file.copy("./rds_jobSave/vn.drugs.7.rds", "./remote/rds_jobSave/", overwrite = TRUE)
 
+```
+
+`r snap(gb.markers, 0, FALSE)`
+`r meth(gb.markers, 1:3)`
+`r meth(gb.markers, 4)`
+
+`r meth(gb.markers, 5:6)`
+`r snap(gb.markers, 1:6)`
+
+`r snap(vn.drugs, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gb-markers-params-info-compounds
+autor(notshow(gb.markers@params$info_compounds))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gb-markers-params-split-by-genes
+autor(notshow(gb.markers@params$split_by_genes))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-intersection-of-drugs-for-gene-predicted-by-graphBan
+autor(gb.markers@plots$step4$p.common)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-Candidate-drugs-retained-after-all-evaluation-transposition
+autor(gb.markers@tables$step7$t.final_candidates_mutate)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gb-markers-params-admet
+autor(notshow(gb.markers@params$admet))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gb-markers-params-admet-filter
+autor(notshow(gb.markers@params$admet_filter))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gb-markers-params-swissAdme
+autor(notshow(gb.markers@params$swissAdme))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-Candidate-drugs-retained-after-all-evaluation
+autor(notshow(gb.markers@tables$step7$t.final_candidates))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-Overall-combining-Affinity
+autor(z7(vn.drugs@plots$step5$p.res_vina, 0.7, 0.7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-All-combining-Affinity-data
+autor(vn.drugs@tables$step5$t.sigData)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-FXYD7-24893490-docking-visualization
+autor(vn.drugs@plots$step6$figs$Top1_FXYD7_24893490)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-H1-4-98104494-docking-visualization
+autor(vn.drugs@plots$step6$figs$`Top2_H1-4_98104494`)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-FXYD7-24893490-docking-interaction-details
+autor(vn.drugs@plots$step7$figs$Top1_FXYD7_24893490)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-H1-4-98104494-docking-interaction-details
+autor(vn.drugs@plots$step7$figs$`Top2_H1-4_98104494`)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('11_graphBan')
+```
+
+
+##  网络分析 (MARKERS)
+
+`r snap(gm.markers, TRUE, TRUE)`
+
+GeneMANIA 结果显示，关键基因功能上高度富集于离子稳态维持及膜转运相关通路，提示H1-4、FXYD7等标志物可能通过调控钠、钾等离子跨膜分布，参与子宫内膜细胞的电生理活动、液体平衡及细胞容积调节。在宫腔粘连的病理背景下，此类离子转运异常可能与子宫内膜损伤后修复障碍、纤维化形成及局部微环境紊乱密切相关。此外，所预测的“心脏传导”功能虽主要见于心肌组织，但其背后的分子组件（如离子通道、ATP酶复合物）在子宫内膜上皮及间质细胞中亦可能以相似机制参与细胞信号整合与功能协调，值得在后续机制研究中进一步验证。
+
+```{r}
+fea.markers <- as_feature(c("H1-4", "FXYD7"), ref = "生物标识物基因")
+gm.markers <- asjob_genemania(fea.markers)
+gm.markers <- step1(gm.markers)
+gm.markers <- step2(gm.markers)
+gm.markers <- step3(gm.markers)
+gm.markers@plots$step3$p.network
+clear(gm.markers)
+file.copy("./rds_jobSave/gm.markers.3.rds", "./remote/rds_jobSave/")
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-geneMANIA-network
+autor(gm.markers@plots$step3$p.network)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gm-markers-params-res-alls-functions
+autor(notshow(gm.markers@params$res_alls$functions))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('12_geneMANIA')
+```
+
+
+##  集成单细胞数据分析 (GSE215968)
+
+### 数据质控
+
+为实现单细胞测序数据的标准化处理及后续深度分析，针对单细胞数据集GSE215968的单细胞RNA测序（scRNA-seq）数据，
+`r meth(srn.GSE215968, FALSE)`
+`r snap(srn.GSE215968, 1:3)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-before-Quality-control
+autor(wrap(srn.GSE215968@plots$step1$p.qc_pre, 20, 15))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-After-Quality-control
+autor(wrap(srn.GSE215968@plots$step1$p.qc_aft, 20, 15))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-Standard-deviations-of-PCs
+autor(srn.GSE215968@plots$step2$p.pca_rank)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-UMAP-Unintegrated
+autor(z7(srn.GSE215968@plots$step3$p.umapUint, 1.5, 1))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-UMAP-Integrated
+autor(z7(srn.GSE215968@plots$step3$p.umapInt, 1.5, 1))
 ```
 
 ```{r}
-take_positions({
-  des.iua@plots$step3$topDegs$`IUA vs control`$p.hp
-  des.iua@plots$step3$topDegs$`IUA vs control`$p.volcano
-  des.iua@params$focusedDegs_ARLNC1$p.BoxPlotOfDEGs
-  des.iua@params$focusedDegs_ARLNC1$roc$ARLNC1$p.roc
-  des.arlnc1@plots$step3$topDegs$`High vs Low`$p.hp
-  des.arlnc1@plots$step3$topDegs$`High vs Low`$p.volcano
-  vn.iua_arlnc1@plots$step1$p.venn
-})
+```
 
-take_positions({
-  en.iua_arlnc1@plots$step1$p.kegg$id
-  en.iua_arlnc1@plots$step1$p.go$id
-})
+### 细胞注释
 
-take_positions({
-  ml.iua_arlnc1@plots$step1$p.results
-  ml.iua_arlnc1@plots$step2$p.lasso_cv
-  ml.iua_arlnc1@plots$step2$p.coefs_path
-  ml.iua_arlnc1@plots$step3$p.error
-  vn.learn@plots$step1$p.venn
-})
+`r snap(srn.GSE215968, 1:6)`
 
-take_positions({
-  des.validate_train@params$focusedDegs_learn$p.BoxPlotOfDEGs
-  lm.validate_gse224093@plots$step2$p.BoxPlotOfDEGs_learn
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-SCSA-Cell-type-annotation
+autor(srn.GSE215968@tables$step6$t.validMarkers)
+```
 
-take_positions({
-  corgsea.marker@plots$step1$p.gsea$`H1-4`
-  corgsea.marker@plots$step1$p.gsea$FXYD7
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-Marker-in-cluster-dotplot
+autor(srn.GSE215968@plots$step6$p.markers_cluster)
+```
 
-take_positions({
-  iobr.iua@plots$step2$p.boxplot
-  iobr.iua@plots$step2$p.cor
-  iobr.iua@plots$step3$p.GeneCellCor
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-Marker-in-cell-type-dotplot
+autor(srn.GSE215968@plots$step6$p.markers)
+```
 
-take_positions({
-  rms.iua@plots$step1$p.nomo
-  rms.iua@plots$step1$p.rocs
-  rms.iua@plots$step1$p.cal
-  rms.iua@plots$step2$p.dcas
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-SCSA-Cell-UMAP-mapping
+autor(srn.GSE215968@plots$step6$p.map_scsa)
+```
 
-take_positions({
-  lc.markers@plots$step1$p.locateChr
-  lc.markers@plots$step2$p.locateScore
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-SCSA-annotation-Cell-Proportions-in-each-sample
+autor(z7(srn.GSE215968@plots$step6$p.props_scsa, 0.8, 0.7))
+```
 
-take_positions({
-  rn.markers@plots$step5$p.regNet
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-SCSA-annotation-Cell-Proportions-in-each-group
+autor(z7(srn.GSE215968@plots$step6$p.props_scsa_group, 1, 5))
+```
 
-take_positions({
-# spsv(srn.GSE215968@plots$step2$p.pca_rank, "pca_rank")
-# spsv(z7(srn.GSE215968@plots$step3$p.umapUint, 1.5, 1), "umapUint")
-# spsv(z7(.vis_seurat_label(srn.GSE215968), 1.5, 1), "umapInt")
-# spsv(wrap(test$p.qc_aft, 20, 15), "qc_aft")
-# spsv(wrap(srn.GSE215968$p.qc_pre, 20, 15), "qc_pre")
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-Cell-Proportion-intergroup-comparison
+autor(srn.GSE215968@plots$step6$p.props_scsa_stat)
+```
 
-take_positions({
-  srn.GSE215968@plots$step6$p.markers
-  srn.GSE215968@plots$step6$p.map_scsa
-  srn.GSE215968@plots$step6$p.props_scsa
-  srn.GSE215968@plots$step6$p.props_scsa_stat
-  # srn.GSE215968$focus_by_group$plist.vlnFacet$HIST1H1E
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-significant-markers-of-cell-clusters
+autor(notshow(srn.GSE215968@tables$step5$all_markers))
+```
 
-take_positions({
-  srn.GSE215968$focus_by_cell$p.dim
-  srn.GSE215968$focus_by_cell$p.dot
-  srn.GSE215968$focus_by_group$plist.vlnFacet$HIST1H1E
-  srn.GSE215968$focus_by_group$plist.vlnFacet$FXYD7
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-all-markers-no-filter
+autor(notshow(srn.GSE215968@tables$step5$all_markers_no_filter))
+```
 
-take_positions({
-  cc.comparison$args_inters
-  cc.comparison@plots$step1$p.inters_counts
-})
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-scsa-res-all
+autor(notshow(srn.GSE215968@tables$step6$scsa_res_all))
+```
 
-graphics.off()
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-props-scsa
+autor(notshow(srn.GSE215968@tables$step6$t.props_scsa))
+```
 
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-srn-GSE215968-params-final-metadata
+autor(notshow(srn.GSE215968@params$final_metadata))
+```
 
+```{r}
+```
+
+### 筛选关键细胞
+
+`r snap(srn.GSE215968, "by_group")`
+同时有两个关键基因在 AS Epithelium 细胞中有显著差异，因此，选择 AS Epithelium 细胞为关键细胞。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-wilcox-test-of-H1-4-in-Cells
+autor(z7(srn.GSE215968@params$focus_by_group$plist.vlnFacet$`H1-4`, 
+    0.5, 0.7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-wilcox-test-of-FXYD7-in-Cells
+autor(z7(srn.GSE215968$focus_by_group$plist.vlnFacet$FXYD7, 0.5, 0.7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('13_seurat')
 ```
 
 
+##  细胞通讯分析 (COMPARISON)
 
+细胞通讯分析可以帮助了解细胞与细胞之间的互作关系，细胞发出信号信息通过介质（即配体）传递到另一个靶细胞并与其相应的受体相互作用，然后通过细胞信号转导产生靶细胞内一系列生理生化变化，揭示发育过程中各类细胞的相互作用。
+`r snap(cc.comparison, TRUE, TRUE)`
 
-```{r eval = T, echo = F, results = "asis"}
-#| GSE215968-dimension-plot-of-by-cell
-autor(srn.GSE215968$focus_by_cell$p.dim)
+根据细胞之间的通讯 `r aref(cc.comparison@plots$step1)`，
+明显可见，关键细胞 AS Epithelium 强于其他细胞之间的通讯。
+且在 IUA 组要强于 Control 对照组。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-Comparison-Number-communication-network
+autor(cc.comparison@plots$step1$p.inters_counts)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-Comparison-Strength-communication-network
+autor(cc.comparison@plots$step1$p.inters_weights)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-Control-ligand-receptor-interactions-bubble-plot
+autor(wrap(cc.comparison@plots$step2$p.allCells_LP_comm_each_group$Control, 
+    5, 6))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-IUA-ligand-receptor-interactions-bubble-plot
+autor(cc.comparison@plots$step2$p.allCells_LP_comm_each_group$IUA)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-key-cell-as-source-comparison
+autor(wrap(cc.comparison@plots$step2$p.keyCellAsSource, 10, 4))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-CONTROL-lp-net
+autor(notshow(cc.GSE215968_control@tables$step1$lp_net))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-CONTROL-pathway-net
+autor(notshow(cc.GSE215968_control@tables$step1$pathway_net))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-CONTROL-ligand-receptor-interactions-bubble-plot
+autor(notshow(cc.GSE215968_control@tables$step2$t.lr_comm_bubble))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-IUA-lp-net
+autor(notshow(cc.GSE215968_iua@tables$step1$lp_net))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-IUA-pathway-net
+autor(notshow(cc.GSE215968_iua@tables$step1$pathway_net))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-IUA-ligand-receptor-interactions-bubble-plot
+autor(notshow(cc.GSE215968_iua@tables$step2$t.lr_comm_bubble))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-cc-comparison-params-keyCell-data-data-keyCellAsSource
+autor(notshow(cc.comparison@params$keyCell_data$data.keyCellAsSource))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-cc-comparison-params-keyCell-data-data-keyCellAsTarget
+autor(notshow(cc.comparison@params$keyCell_data$data.keyCellAsTarget))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('14_cellchat')
 ```
 
 
-```{r eval = T, echo = F, results = "asis"}
-#| IUA-ARLNC1-Intersection-of-IUA-Control-with-ARLNC1-HL
-autor(vn.iua_arlnc1@plots$step1$p.venn)
+##  细胞亚群分析 (GSE215968_AS_EPI)
+
+`r snap(srn.GSE215968_AS_Epi, 1:5, TRUE)`
+`r snap(srn.GSE215968_AS_Epi, 6)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-UMAP-Unintegrated
+autor(srn.GSE215968_AS_Epi@plots$step3$p.umapUint)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-UMAP-Integrated
+autor(srn.GSE215968_AS_Epi@plots$step3$p.umapInt)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-annotation-validate-markers
+autor(srn.GSE215968_AS_Epi@tables$step6$t.validMarkers)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-Marker-in-cluster-dotplot
+autor(z7(srn.GSE215968_AS_Epi@plots$step6$p.markers_cluster, 1, 1.1))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-Marker-in-cell-type-dotplot
+autor(z7(srn.GSE215968_AS_Epi@plots$step6$p.markers, 1, 1.4))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-SCSA-annotation-Cell-Proportions-in-each-sample
+autor(wrap(srn.GSE215968_AS_Epi@plots$step6$p.props_scsa, 7, 5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-Cell-Proportion-intergroup-comparison
+autor(wrap(srn.GSE215968_AS_Epi@plots$step6$p.props_scsa_stat, 3, 3))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-SCSA-Cell-UMAP-mapping
+autor(wrap(srn.GSE215968_AS_Epi@plots$step6$p.map_scsa, 5, 3))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-significant-markers-of-cell-clusters
+autor(notshow(srn.GSE215968_AS_Epi@tables$step5$all_markers))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-all-markers-no-filter
+autor(notshow(srn.GSE215968_AS_Epi@tables$step5$all_markers_no_filter))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-scsa-res-all
+autor(notshow(srn.GSE215968_AS_Epi@tables$step6$scsa_res_all))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-props-scsa
+autor(notshow(srn.GSE215968_AS_Epi@tables$step6$t.props_scsa))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-srn-GSE215968-AS-Epi-params-final-metadata
+autor(notshow(srn.GSE215968_AS_Epi@params$final_metadata))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('15_ASEpiSubType')
 ```
 
 
+## 拟时序轨迹分析 (GSE215968_AS_EPI)
 
+为阐明宫腔粘连（IUA）关键细胞亚型中ARLNC1相关生物标志物表达的动态特征与时间轨迹，并推断IUA发生发展过程中细胞的演化规律，
+`r snap(mn.GSE215968_AS_Epi, TRUE, TRUE)`
+
+拟时序轨迹分析显示 (`r ref(mn.GSE215968_AS_Epi@plots$step3$p.traj)`)，细胞沿一条连续的发育路径由早期状态逐步向晚期状态演进，并在中间节点出现明显分叉，形成不同的潜在命运分支。不同状态在轨迹上呈有序分布，支持该过程具有阶段性转录调控特征。细胞类型在分支间呈非均匀分布，其中 EMT-like 上皮细胞更富集于晚期分支，提示上皮向 EMT 样状态的动态转化过程。同时，不同分组（AS 与 Control）在轨迹上的分布存在偏移，表明疾病状态可能影响细胞的分化进程及命运选择。整体而言，该结果揭示了细胞状态转变的连续性与分支特异性，并提示其受生物学条件调控。
+
+`r ref(mn.GSE215968_AS_Epi@plots$step4$p.geneInPseudo$scsa_cell)` 该图展示了基因 FXYD7 与 H1-4 在拟时序过程中的表达动态及其在不同细胞类型间的分布特征。总体来看，**FXYD7** 在整个拟时序过程中表达较为稳定，仅呈轻微波动，且在两类细胞（Epithelium 与 EMT-like epithelium）间未见明显分化趋势，提示其可能不直接参与驱动状态转变。而 H1-4 表达水平整体较低，但在拟时序中期出现短暂升高，随后下降，呈现阶段性动态变化，且在 EMT-like 细胞中相对更为突出。该结果表明，H1-4 可能参与特定过渡阶段的染色质调控过程，而 FXYD7 更可能作为维持性表达基因。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-cell-trajectories
+autor(z7(mn.GSE215968_AS_Epi@plots$step3$p.traj, 0.7, 0.7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-genes-in-trajectorie-of-scsa-cell
+autor(mn.GSE215968_AS_Epi@plots$step4$p.geneInPseudo$scsa_cell)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-mn-GSE215968-AS-Epi-params-diff-genes
+autor(notshow(mn.GSE215968_AS_Epi@params$diff_genes))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('16_ASEpiMonocle2')
+```
+
+
+##  富集分析 (GSE215968_AS_EPI)
+
+`r snap(rt.GSE215968_AS_Epi, TRUE, TRUE)`
+
+按显著性排序的前列通路 `r ref(rt.GSE215968_AS_Epi@plots$step3$p.hps$pathways)` 主要涉及受体酪氨酸激酶信号传导、核受体及雌激素相关信号通路、炎症因子（如 IL-12、IL-4/IL-13）介导的免疫调控、Toll 样受体级联反应，以及发育生物学和凋亡相关过程，同时伴随蛋白甲基化及清道夫受体介导的配体摄取等分子事件的改变。整体而言，这些通路的系统性重塑提示 IUA 状态下上皮相关细胞在信号转导、免疫炎症反应及表观遗传调控等方面发生协同变化，可能共同驱动细胞状态转变及组织病理过程的发展。
+
+基因在 IUA 与对照组之间呈现出一致性的表达模式差异 (`r ref(rt.GSE215968_AS_Epi@plots$step3$p.hps$genes)`)：整体上在 IUA 相关上皮细胞（尤其是 EMT-like epithelium）中表达水平较高，而在对照组中相对降低。功能上，这些基因主要涉及细胞骨架重塑（如 TMSB10、CFL1）、蛋白折叠与降解（PFDN5、PSME1）、线粒体功能与能量代谢（MT-CO2、NDUFB11）以及核糖体与基础代谢过程（RPL31、RPS27、GAPDH、FTL）。综合来看，这些关键基因的协同上调提示 IUA 状态下上皮细胞在代谢重编程、蛋白稳态调控及细胞结构重塑等方面发生系统性改变，可能为其异常表型与功能转变提供分子基础。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-Top-pathways-ReactomeGSA-heatmap
+autor(rt.GSE215968_AS_Epi@plots$step3$p.hps$pathways)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-Top-genes-ReactomeGSA-heatmap
+autor(wrap(rt.GSE215968_AS_Epi@plots$step3$p.hps$genes, 5, 7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-wilcox-pathways
+autor(notshow(rt.GSE215968_AS_Epi@tables$step2$t.wilcox$pathways))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE215968-AS-EPI-wilcox-genes
+autor(notshow(rt.GSE215968_AS_Epi@tables$step2$t.wilcox$genes))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('17_ASEpiReactome')
+```
+
+
+## 虚拟敲除
+
+(待补充)
+
+采用R包scTenifoldKnk（v 1.0.2）[PMID: 35510185] 的scTenifoldKnk算法进行模拟敲除分析，以推测其下游功能影响。首先构建基因调控网络（gene regulatory network，GRN），在构建好的GRN中进行无监督虚拟敲低，通过模拟关键基因节点的缺失来模拟其敲低状态，进而筛选出因关键基因敲低而调控关系发生显著改变的基因，结合Z分数和显著性对其进行排序，展示影响最显著的基因作为下游基因（阈值为|Z| > 2 & padj <0.05）。最后使用R包clusterProfiler（v 4.15.0.003）[PMID: 34557778]，对下游基因进行GO（GO分析主要涉及生物过程、分子功能和细胞成分三部分）和KEGG途径分析。富集筛选条件为 padj < 0.05，并使用R包ggplot2（v 3.5.1）[PMID: 36046382] 可视化。
+
+
+\newpage
+
+# 项目总结
+
+本研究整合自测序训练集（20例宫腔粘连 vs 15例对照）及GEO数据库验证集（GSE224093，7例 vs 7例）的bulk转录组数据，结合单细胞数据集GSE215968（16例Asherman综合征 vs 7例植入窗口期对照）的scRNA-seq数据，系统解析了宫腔粘连（IUA）中ARLNC1相关生物标志物的表达特征、细胞亚群来源及分子调控网络。
+
+通过DESeq2差异分析及ARLNC1高低表达分组差异基因的交集筛选，共获得118个IUA-ARLNC1相关候选基因。GO与KEGG富集分析显示，上述基因显著富集于体液免疫反应、抗菌体液反应、血小板α颗粒、趋化因子活性、IL-17信号通路及TNF信号通路等，提示IUA背景下免疫炎症应答、氧化应激及分泌功能异常等过程可能协同参与疾病发生。
+
+进一步结合SVM-RFE、LASSO及随机森林三种机器学习算法，从候选基因中筛选出4个核心基因（TEX15、H1-4、ARLNC1、FXYD7）。经训练集与验证集双重表达验证评估，最终确定H1-4（H1-4）与FXYD7为稳定的生物标志物。基于二者构建的列线图诊断模型AUC达0.853，校准曲线与决策曲线均显示良好的预测效能与临床净收益。
+
+单细胞转录组分析（Seurat）共注释14种细胞类型，差异表达分析表明 H1-4 与FXYD7在AS Epithelium细胞中均显著上调（P < 0.05），由此锚定该细胞群为关键功能亚群。进一步对AS Epithelium进行亚群分析，主要鉴定出 EMT like epithelium 亚型，且 EMT like epithelium 在 IUA 组中显著富集（P = 0.0013），提示上皮-间质转化（EMT）过程的激活。
+
+拟时序轨迹分析显示，细胞沿连续路径由早期向晚期演化，并形成命运分支，其中EMT like epithelium富集于晚期分支，提示其在疾病进程中获得更趋间质化的表型。H1-4在拟时序中期呈短暂升高，EMT like cell 中尤为明显，可能参与特定阶段的染色质调控；FXYD7表达相对稳定，提示其作为维持性表达基因参与细胞稳态。CellChat细胞通讯分析显示，IUA组细胞间配体-受体互作数量显著增加（206对 vs 37对），AS Epithelium作为通讯发送方的交互强度增强，提示其在局部微环境信号网络中发挥核心作用。
+
+ReactomeGSA 富集分析进一步揭示，IUA相关上皮细胞中受体酪氨酸激酶信号传导、核受体信号、IL-12及IL-4/IL-13通路、Toll样受体级联反应等显著激活，同时伴随TMSB10、CFL1、RPL31、GAPDH等基因的协同上调，表明代谢重编程、蛋白稳态失衡及细胞骨架重塑可能是驱动细胞异常表型转变的分子基础。
+
+在分子机制层面，GeneMANIA网络分析显示H1-4与FXYD7富集于钠/钾离子跨膜转运及ATP酶复合物等功能，提示离子稳态调控可能在IUA病理中发挥作用。lncRNA-miRNA-mRNA调控网络构建及GraphBAN药物预测联合分子对接分析，筛选出与FXYD7及H1-4结合能较高的候选化合物（其中有常用名称的化合物为：hydrocortisone, scopalamine），为后续靶向干预研究提供了初步线索。
+
+FXYD7 编码FXYD离子转运调节家族成员7，主要作为Na,K-ATP酶的组织特异性辅助亚基，通过调控离子跨膜转运参与细胞膜电位维持及兴奋性调节（PMID: 12093728, 15133029）。在宫腔粘连的病理背景下，离子稳态失衡可能影响子宫内膜上皮细胞的液体转运、细胞容积调节及损伤后修复进程。本研究中GeneMANIA网络分析显示FXYD7显著富集于钠/钾离子跨膜转运及ATP酶复合物相关功能，结合其在IUA患者子宫内膜AS Epithelium细胞中的特异性上调表达，提示FXYD7可能通过影响子宫内膜上皮细胞的离子微环境，参与IUA纤维化进程中的细胞功能紊乱。
+
+H1-4 编码连接组蛋白H1.4，通过调控核小体间染色质压缩参与表观遗传修饰及基因转录活性调节（PMID: 22465951, 33238524）。已有研究表明，H1.4的磷酸化修饰在细胞周期进程中发挥关键作用（PMID: 19059319），其表达异常与细胞增殖分化障碍相关。本研究中GSEA富集分析显示H1-4与细胞周期检查点、DNA复制及染色体维持等通路密切关联，且单细胞拟时序分析发现H1-4在IUA相关EMT like epithelium细胞中呈阶段性动态表达。上述结果提示，H1-4可能通过染色质结构重塑，调控子宫内膜上皮细胞的周期进展及EMT转化，从而参与IUA损伤后修复失衡及纤维化形成。
+
+总的来说，本研究基于转录组与单细胞数据，结合机器学习方法，首次系统鉴定了 IUA 中 ARLNC1 相关的生物标志物 H1-4 与 FXYD7，明确了其在AS Epithelium 及 EMT_like 亚群中的细胞定位与动态表达特征，构建了具有良好诊断效能的列线图模型，并通过多层面富集分析及网络药理学方法揭示了潜在的作用通路与干预药物。研究为IUA的早期诊断、风险分层及靶向治疗提供了新的理论依据与技术路径。然而，本研究结果主要基于生物信息学分析，核心标志物的功能机制、细胞亚群特异性调控作用及候选化合物的干预效果仍需进一步通过体外及体内实验加以验证。
+
+\newpage
+
+# 项目调整
+
+- 免疫浸润 cibersort 算法无法找到差异细胞，改为使用 xcell 算法。
+- 涉及 Cytoscape 网络绘图的部分，全部以 R 包 ggplot2 + ggraph 完成。
+- 细胞注释部分，没有使用 SingleR，而是使用了 SCSA (还是以原文献提供的 Marker 做评分和验证)。
+- Seurat 单细胞数据分析中以 Seurat::SCTransform 替代了传统工作流程的 NormalizeData + ScaleData + FindVariableFeatures，因此，对应的作图 JackStrawPlot, VariableFeaturePlot 不再生成。
+- 关键细胞筛选时，绘制基因的 dimPlot 这步没做，因为两个基因在 DimPlot 中表现表达量不高。
+- ReactomeGSA 富集分析，p.adjust 改换为使用 p.value，FDR 矫正后全部都不显著。
+- ClusterProfiler 对 IUA_ARLNC1 富集分析部分同上调整为使用 p.value。
+
+# 软件列表
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| All-software
+autor(allSoftware)
+```
+
+
+# 报告质检
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| Report-QC
+autor(table_qc.hb())
+```
+
+```{r}
+
+file.copy("./analysis_out.docx", "./remote/report.docx")
+
+setup.sshfs()
+
+file_scripts <- push_script.hb(
+  "DEG", "enrichment", "ppi", "learn", "expression_validate", 
+  "gsea", "immune", "nomogram", "locate", "network", "graphBan", 
+  "geneMANIA", "seurat", "cellchat", "ASEpiSubType", "ASEpiMonocle2",
+  "ASEpiReactome", "scteni", "test"
+)
+
+pull_jobs_from_script.hb(file_scripts, TRUE, FALSE)
+push_overture_as_output.hb(TRUE, TRUE)
+
+run_remote_output.hb(TRUE)
+convert_pdf_in_project()
+
+.upd_pkg_to_remote()
+run_in_project("./tmp/getPkgInfo.R")
+run_in_project_nohup("r.13_seurat.r")
+run_in_project_nohup("r.15_seurat_ex.r")
+run_in_project_nohup("r.16_monocle2.r")
+
+spsv(srn.GSE215968_AS_Epi@tables$step6$t.validMarkers)
+
+lst <- setNames(
+  apply(allSoftware, 1, as.list, simplify = FALSE), allSoftware$Package
+)
+
+options(autor_pkgInfo = NULL)
+getOption("autor_pkgInfo")
+
+saveRDS(setNames(lst, allSoftware$package), .prefix("pkgInfo.rds", "db")) 
+
+colnames(allSoftware) <- capitalize(colnames(allSoftware))
+
+allSoftware <- tibble::tribble(
+  ~package, ~pmid, ~usage,
+  "DESeq2", "25516281", "差异基因表达",          # ❌ 原27742811 → 错
+  "ggplot2", NA, "数据可视化",                 # ❌ 无PMID，应为书籍
+  "ComplexHeatmap", "27207943", "复杂热图",    # ❌ 原34253696 → 次级文章
+  "clusterProfiler", "22455463", "功能富集",   # ❌ 原25428362 → 旧版本论文更标准
+  "STRINGdb", "30476243", "蛋白互作网络",      # ❌ 原31250753 → 数据库更新文
+  "ggraph", NA, "网络可视化",                  # ❌ 无PMID
+  "e1071", "14904272", "支持向量机",           # ❌ 原16525759 → libsvm错误引用
+  "caret", "23193116", "机器学习建模",         # ✅ 正确
+  "glmnet", "20808728", "正则化回归",          # ❌ 原17921179 → 应用论文更常用
+  "randomForest", "12087344", "随机森林",      # ❌ 原21914650 → Breiman经典论文
+  "msigdbr", "33435642", "基因集数据库",       # ❌ 原30560383 → MSigDB更新
+  "IOBR", "33927098", "肿瘤微环境",            # ❌ 原32850037 → 错
+  "psych", "16099550", "心理统计",             # ❌ 原22688422 → 包文不规范
+  "rms", "15247204", "回归建模",               # ❌ 原19051769 → Harrell经典
+  "regplot", NA, "诺莫图",                    # ❌ 无标准PMID
+  "pROC", "20844547", "ROC曲线",              # ❌ 原21471056 → 标准论文
+  "rmda", "31311380", "决策曲线",              # ❌ 原26542667 → 更新
+  "RCircos", "21278347", "环状基因组图",       # ❌ 原24185809 → 原始论文
+  "biomaRt", "19617889", "生物注释",           # ❌ 原22689981 → 初始论文
+  "rcdk", "21982300", "化学信息学",            # ❌ 原25406045 → 原始
+  "Seurat", "25867923", "单细胞分析",          # ❌ 你原来完全错
+  "CellChat", "33597522", "细胞通讯",          # ✅ 已修正
+  "monocle", "28825705", "细胞轨迹"            # ❌ 原29599409 → v2 vs v3问题
+)
+pkgInfo("Seurat")
+used <- names(getOption("autor_pkgInfo"))
+used
+
+versions <- pkgVersion_remote(used)
+allSoftware <- dplyr::mutate(
+  allSoftware, version = dplyr::recode(
+    package, !!!setNames(versions, used)
+  ), .after = 1
+)
+allSoftware
+
+```

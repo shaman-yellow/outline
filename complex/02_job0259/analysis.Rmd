@@ -1,0 +1,184 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2026-04-01"), end = td("2026-04-01"), finish = td("2026-04-01"),
+  id = "job0259", client = "", inst = "",
+  type = "生信分析",
+  title = "整合单细胞和bulk转录组解析牙周炎微环境中的代谢物介导的细胞间通讯",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+project_publish.complex("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.complex("./analysis_out.docx")
+project_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_cover.complex()
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_index()
+```
+
+# 项目概述
+
+## 项目背景
+
+## 分析方法
+
+1. ...
+2. ...
+
+## 数据来源
+
+- **训练集：[自测序数据]{.mark}**
+
+## 研究目标
+
+1. ...
+2. ...
+
+## 拟解决的关键科学问题
+
+...
+
+1. ...
+2. ...
+
+## 创新性
+
+...
+
+## 流程图
+
+\newpage
+
+# 分析结果 {#workflow}
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  srn.GSE171213
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+table <- fxlsx("~/Downloads/thnov12p1074s3.xlsx", sheet = 2, startRow = 2)
+table$cluster %>% unique %>% writeLines
+
+file.copy("~/Downloads/thnov12p1074s3.xlsx", "./remote/GSE171213_markers_pmid_35154475.xlsx")
+```
+
+# 项目总结
+
+
+
+\newpage
+
+# 项目调整
+
+- ...
+- ...
+
+# 软件列表
+
+```{r}
+allSoftware <- tibble::tribble(
+  ~package, ~pmid, ~usage,
+  "DESeq2", "25516281", "差异基因表达",          # ❌ 原27742811 → 错
+  "ggplot2", NA, "数据可视化",                 # ❌ 无PMID，应为书籍
+  "ComplexHeatmap", "27207943", "复杂热图",    # ❌ 原34253696 → 次级文章
+  "clusterProfiler", "22455463", "功能富集",   # ❌ 原25428362 → 旧版本论文更标准
+  "STRINGdb", "30476243", "蛋白互作网络",      # ❌ 原31250753 → 数据库更新文
+  "ggraph", NA, "网络可视化",                  # ❌ 无PMID
+  "e1071", "14904272", "支持向量机",           # ❌ 原16525759 → libsvm错误引用
+  "caret", "23193116", "机器学习建模",         # ✅ 正确
+  "glmnet", "20808728", "正则化回归",          # ❌ 原17921179 → 应用论文更常用
+  "randomForest", "12087344", "随机森林",      # ❌ 原21914650 → Breiman经典论文
+  "msigdbr", "33435642", "基因集数据库",       # ❌ 原30560383 → MSigDB更新
+  "IOBR", "33927098", "肿瘤微环境",            # ❌ 原32850037 → 错
+  "psych", "16099550", "心理统计",             # ❌ 原22688422 → 包文不规范
+  "rms", "15247204", "回归建模",               # ❌ 原19051769 → Harrell经典
+  "regplot", NA, "诺莫图",                    # ❌ 无标准PMID
+  "pROC", "20844547", "ROC曲线",              # ❌ 原21471056 → 标准论文
+  "rmda", "31311380", "决策曲线",              # ❌ 原26542667 → 更新
+  "RCircos", "21278347", "环状基因组图",       # ❌ 原24185809 → 原始论文
+  "biomaRt", "19617889", "生物注释",           # ❌ 原22689981 → 初始论文
+  "rcdk", "21982300", "化学信息学",            # ❌ 原25406045 → 原始
+  "Seurat", "25867923", "单细胞分析",          # ❌ 你原来完全错
+  "CellChat", "33597522", "细胞通讯",          # ✅ 已修正
+  "monocle", "28825705", "细胞轨迹"            # ❌ 原29599409 → v2 vs v3问题
+)
+used <- names(getOption("autor_pkgInfo"))
+versions <- pkgVersion_remote(used)
+
+allSoftware <- dplyr::mutate(
+  allSoftware, version = dplyr::recode(
+    package, !!!setNames(versions, used)
+    ), .after = 1
+)
+allSoftware
+
+```
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| All-software
+autor(allSoftware)
+```
+
+
+# 报告质检
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| Report-QC
+autor(table_qc.hb())
+```
+
+```{r}
+create_remote_project.hb()
+setup.sshfs()
+.send_pkg_to_remote()
+
+file_scripts <- push_script.hb(
+  "seurat"
+)
+
+pull_jobs_from_script.hb(file_scripts, TRUE, FALSE)
+push_overture_as_output.hb(TRUE, TRUE)
+
+run_remote_output.hb(TRUE)
+convert_pdf_in_project()
+
+.upd_pkg_to_remote()
+
+run_in_project("./tmp/getPkgInfo.R")
+run_in_project_nohup("r.13_seurat.r")
+
+lst <- setNames(
+  apply(allSoftware, 1, as.list, simplify = FALSE), allSoftwarePackage
+)
+saveRDS(setNames(lst, allSoftwarepackage), .prefix("pkgInfo.rds", "db")) 
+colnames(allSoftware) <- capitalize(colnames(allSoftware))
+
+```
+
+```{r}
+data.table::fread("./remote/")
+```

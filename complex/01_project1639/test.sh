@@ -11,5 +11,4 @@ cdproject
 cp ./remote/GraphBAN_MARKERS/smiles_for_admet.txt -t .
 obabel ./smiles_for_admet.txt -ocan -O test.smi
 
-
-
+sed -i 's/ORIGINAL_DIR, "\/data\/nas1\/huanglichuang_OD\/project\/01_project1639\//ORIGINAL_DIR, "/g' *.r

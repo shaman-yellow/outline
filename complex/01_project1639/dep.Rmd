@@ -42,3 +42,48 @@ counts
   #   Unknown = 29L, Unknown = 18L
 
 ```
+
+```{r}
+gds.ash <- job_gds("Asherman")
+gds.ash <- step1(gds.ash, single_cell = TRUE)
+gds.ash@object
+
+gds.iua <- job_gds("Intrauterine Adhesion")
+gds.iua <- step1(gds.iua, deep_inspect = FALSE)
+gds.iua@object
+```
+
+```{r}
+
+srn.GSE215968 <- job_seurat5n(
+  metadata.GSE215968$target[c(1:2,18:19)], metadata.GSE215968$sample[c(1:2,18:19)]
+)
+
+srn.GSE215968 <- mutate(
+  srn.GSE215968, group = dplyr::recode(
+    orig.ident, !!!setNames(metadata.GSE215968$group, metadata.GSE215968$sample)
+  ), group = s(group, "_Pre$", "")
+)
+
+test.GSE215968 <- srn.GSE215968
+test.GSE215968@object@meta.data$orig.ident %>% split(seq_along(.), .) %>% head(n = 100) %>% unlist -> test
+object(test.GSE215968) <- object(test.GSE215968)[1:1000, test]
+
+test.GSE215968 <- step1(test.GSE215968, 200, 6000, 20000, 20)
+test.GSE215968 <- step2(test.GSE215968, 20, sct = TRUE)
+test.GSE215968 <- step3(test.GSE215968)
+clear(test.GSE215968)
+
+test.GSE215968 <- step4(test.GSE215968)
+test.GSE215968@step <- 4L
+test.GSE215968 <- step5(test.GSE215968, 5, dir_cache = "test")
+
+requireNamespace("Seurat")
+test.GSE215968 <- step6(
+  test.GSE215968, "", ref.markers, show.markers, filter.fc = .3, filter.p = .05
+)
+test.GSE215968
+clear(test.GSE215968)
+
+
+```

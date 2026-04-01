@@ -1,37 +1,300 @@
-C[NH+](CCC1CC[NH2+]CC1)[C@H]1CCOC2(CCC2)C1
-N#Cc1ccc2c(c1)OCCOCCOCCOc1ccc(C#N)cc1OCCOCCOCCO2
-[NH3+][C@@H](Cc1cccnc1)[C@H]1CCOC2(CCCCC2)C1
-C[C@H](CN1CCOCC1)[NH2+][C@H]1CCO[C@]2(CCOC2)C1
-CN(C[C@@H]1CCC[NH+]1C)CC1(C[NH2+]C2CC2)CCOCC1
-C[NH+](C)[C@H]1CC[C@@H](NC(=O)N2CC[C@]3(CCOC3)C2)C1
-CCC[C@H]1CC[C@H](O)[C@H]([C@@H]2CCOC3(CCOCC3)C2)C1
-CC(C)[NH2+]Cc1cnc(N2CC[C@H]3CC[C@@H](C2)[NH+]3C)s1
-CC(C)[C@@H]1C[NH+]2CCCC[C@@H]2CN1C[C@@H]1CCS(=O)(=O)C1
-COc1ccc(C2(C(=O)NCC3([NH+]4CCCCC4)CCOCC3)CCCCC2)cc1
-C[C@@H](C[C@H]1CCCC[NH2+]1)[NH2+]CC(C)(C)N1CCOCC1
-CC(C)(C)[C@H]1CC[C@@H](O)[C@H]([C@@H]2CCOC3(CCC3)C2)C1
-Cc1cccc(C[C@H]([NH3+])[C@@H]2CCOC3(CCCC3)C2)c1
-CC(C)N[C@@]1(C(N)=O)CCC[C@@H]([NH+](C)CC2CCC2)C1
-C[NH2+]CC[C@H]1CCCC[NH+]1[C@@H]1CCOC2(CCOCC2)C1
-CC(C)C[C@H]1[C@@H]2N=C3C=CC=C[C@H]3[C@@H]2CCN1Cc1[nH]cc[nH+]1
-C[NH+]1[C@H](C(=O)[O-])C[C@H](C(=O)NCC2(CO)CCCC2)[C@@H]1c1ccccc1F
-C[NH2+][C@H]([C@H]1CCOC2(CCCC2)C1)C(C)(C)[NH+](C)C
-C[C@@H]1CC[NH+]([C@@H]2CCOC3(CCCCC3)C2)C[C@@H]1[NH3+]
-[NH3+][C@H]1CCCC[C@@H]([C@@H]2CCOC3(CCOCC3)C2)C1
-[NH3+][C@H](CC[C@H]1CCOC2(CCOCC2)C1)c1ccccc1
-CC[C@H]1CCCC[NH+]1[C@@H]1CC2(CC[C@@H]1[NH3+])OCCO2
-CC[C@@H](C)[NH+](CC)[C@@H]1CC2(CC[C@@H]1[NH3+])OCCO2
-C[NH+](CC1CC[NH2+]CC1)[C@@H]1CCOC2(CCCC2)C1
-CC(C)CC[C@@H]([NH3+])[C@@H]1CCOC2(CCOCC2)C1
-CN[C@]1(C(N)=O)CCC[C@@H]([NH+](C)[C@@H](C)C2CC2)C1
-C[NH+](C)[C@@H]1CC[C@@H](NC(=O)C2(c3ccccc3)CCOCC2)C1
-CC[NH2+]CC1(CN2C[C@H]3CCC[NH+]3C[C@@H]2C)CCOCC1
-CC(C)[NH2+][C@]1(C(=O)[O-])CC[C@@H]([NH+](C)[C@@H](C)C(C)C)C1
-CCC[C@H]1CC[C@@H](O)[C@H]([C@@H]2CCO[C@]3(CCOC3)C2)C1
-CC(C)(C)[C@H]1CCC[C@](O)(C2(C[NH3+])CCOCC2)CC1
-CCC(CC)([C@H](O)[C@@H]1CCO[C@]2(CCOC2)C1)[NH+](C)C
-CCC(CC)([C@@H]([NH3+])[C@@H]1CCC[C@H](S(C)(=O)=O)C1)[NH+](C)C
-O=C(NCC1(CN2CCOCC2)CCCCC1)N1C[C@@H]2CC=CC[C@H]2C1
-CC(C)NC(=O)Cn1cc(CN2C[C@H]3CCC[NH+]3C[C@H]2C)c2ccccc21
-C[C@H]([NH3+])[C@@H]([NH+](C)C1CCC(C)(C)CC1)C(C)(C)C
-C[C@@]1(CO)[C@H]2[C@H](O)[C@]3(C)C[C@H](O)[C@H]2[C@]3(C)CC[C@H]1O
+---
+---
+
+```{r include = FALSE, eval = FALSE}
+info <- items(start = td("2026-03-04"), end = td("2026-03-04"), finish = td("2026-03-04"),
+  id = "p1639", client = "", inst = "",
+  type = "生信分析",
+  title = "",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+order_publish.complex("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.complex("./analysis_out.docx")
+order_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = FALSE}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_cover.complex(info)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_index()
+```
+
+# 项目概述
+
+## 项目背景
+
+## 分析方法
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+collate_details("meth")
+```
+
+## 数据来源
+
+## 研究目标
+
+## 拟解决的关键科学问题
+
+## 创新性
+
+## 流程图
+
+\newpage
+
+# 分析结果 {#workflow}
+
+`r snap(vn.test, TRUE)`
+
+这能被引用吗？`r ref(vn.test@plots$step1$p.venn)`
+
+
+```{r}
+vn.test <- job_venn(test = list(1:4), test2 = list(4:6))
+vn.test <- step1(vn.test)
+vn.test$.args
+vn.test@plots$step1$p.venn
+
+aref(vn.test@plots$step1$p.venn)
+
+```
+
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+
+
+2, 3, 4, 5
+
+
+```{r}
+test <- parse_overture_location(readLines("./analysis.Rmd"))
+test
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TEST-Intersection-of-test-with-test2
+autor(vn.test@plots$step1$p.venn)
+```
+
+
+# test
+
+<!-- LEGEND_END -->
+
+
+```{r}
+gds.ash <- job_gds("Asherman")
+gds.ash <- step1(gds.ash, single_cell = TRUE)
+gds.ash@object
+
+gds.iua <- job_gds("Intrauterine Adhesion")
+gds.iua <- step1(gds.iua, deep_inspect = FALSE)
+gds.iua@object
+```
+
+
+```{r}
+conflicted::conflict_prefer("map", "utils.tool")
+
+setup.sshfs()
+new_script.hb("DEG")
+new_script.hb("enrichment")
+new_script.hb("ppi")
+new_script.hb("learn")
+new_script.hb("expression_validate")
+new_script.hb("gsea")
+new_script.hb("immune")
+new_script.hb("nomogram")
+new_script.hb("locate")
+new_script.hb("network")
+new_script.hb("graphBan")
+new_script.hb("geneMANIA")
+new_script.hb("seurat")
+# new_script.hb("seurat_ex")
+new_script.hb("cellchat")
+new_script.hb("BCellSubType")
+new_script.hb("monocle2")
+new_script.hb("reactome")
+new_script.hb("scteni")
+
+.send_pkg_to_remote()
+.upd_pkg_to_remote()
+
+run_in_project_nohup("r.13_seurat.r")
+run_in_project_nohup("r.15_seurat_ex.r")
+run_in_project_nohup("r.16_monocle2.r")
+
+ReactomeGSA::analyse_sc_clusters()
+cell_ids <- as.character(Seurat::Idents(object))
+
+test <- knitr::("./analysis.Rmd")
+knitr::split_lines("./analysis.Rmd")
+test <- knitr::read_chunk(lines = readLines("./remote/r.01_DEG.r"))
+knitr::read_demo("help")
+test
+
+code = c("#@a", "1+1", "#@b", "#@a", "rnorm(10)", "#@b")
+knitr::read_chunk(lines = code, labels = "foo")
+
+```
+
+```{r}
+fea.markers <- as_feature(c("H1-4", "FXYD7"), ref = "生物标识物基因")
+# file.copy("~/Downloads/markers_2.xlsx", "./remote/markers.xlsx")
+feature(gb.markers)
+
+vn.drugs <- asjob_vina(gb.markers)
+vn.drugs <- step1(vn.drugs, exclude_pdb = "3TZD", forceAF = TRUE)
+vn.drugs@params$targets_annotation
+vn.drugs@params$used_pdbs
+vn.drugs <- step2(vn.drugs)
+vn.drugs <- step3(
+  vn.drugs, extra_pdb.files = c(
+    FXYD7 = "~/Downloads/AF-P58549-F1-model_v6.pdb",
+    `H1-4` = "~/Downloads/AF-P10412-F1-model_v6.pdb"
+  )
+)
+vn.drugs$dock_layout
+vn.drugs$used_pdbs
+
+# vn.drugs
+vn.drugs <- step4(vn.drugs)
+vn.drugs@step <- 4L
+vn.drugs <- step5(vn.drugs)
+vn.drugs@tables$step5$res_dock
+
+vn.drugs@step <- 5L
+vn.drugs <- step6(vn.drugs)
+vn.drugs <- step7(vn.drugs)
+vn.drugs@plots$step6$`Top1_24893490_into_AF-P58549-F1-model_v6`
+vn.drugs@plots$step6$`Top2_98104494_into_AF-P10412-F1-model_v6`
+vn.drugs@plots$step7$`Top1_24893490_into_AF-P58549-F1-model_v6`
+vn.drugs@plots$step7$`Top2_98104494_into_AF-P10412-F1-model_v6`
+clear(vn.drugs)
+
+```
+
+```{r}
+take_positions({
+  des.iua@plots$step3$topDegs$`IUA vs control`$p.hp
+  des.iua@plots$step3$topDegs$`IUA vs control`$p.volcano
+  des.iua@params$focusedDegs_ARLNC1$p.BoxPlotOfDEGs
+  des.iua@params$focusedDegs_ARLNC1$roc$ARLNC1$p.roc
+  des.arlnc1@plots$step3$topDegs$`High vs Low`$p.hp
+  des.arlnc1@plots$step3$topDegs$`High vs Low`$p.volcano
+  vn.iua_arlnc1@plots$step1$p.venn
+})
+
+take_positions({
+  en.iua_arlnc1@plots$step1$p.kegg$id
+  en.iua_arlnc1@plots$step1$p.go$id
+})
+
+take_positions({
+  ml.iua_arlnc1@plots$step1$p.results
+  ml.iua_arlnc1@plots$step2$p.lasso_cv
+  ml.iua_arlnc1@plots$step2$p.coefs_path
+  ml.iua_arlnc1@plots$step3$p.error
+  vn.learn@plots$step1$p.venn
+})
+
+take_positions({
+  des.validate_train@params$focusedDegs_learn$p.BoxPlotOfDEGs
+  lm.validate_gse224093@plots$step2$p.BoxPlotOfDEGs_learn
+})
+
+take_positions({
+  corgsea.marker@plots$step1$p.gsea$`H1-4`
+  corgsea.marker@plots$step1$p.gsea$FXYD7
+})
+
+take_positions({
+  iobr.iua@plots$step2$p.boxplot
+  iobr.iua@plots$step2$p.cor
+  iobr.iua@plots$step3$p.GeneCellCor
+})
+
+take_positions({
+  rms.iua@plots$step1$p.nomo
+  rms.iua@plots$step1$p.rocs
+  rms.iua@plots$step1$p.cal
+  rms.iua@plots$step2$p.dcas
+})
+
+take_positions({
+  lc.markers@plots$step1$p.locateChr
+  lc.markers@plots$step2$p.locateScore
+})
+
+take_positions({
+  rn.markers@plots$step5$p.regNet
+})
+
+take_positions({
+# spsv(srn.GSE215968@plots$step2$p.pca_rank, "pca_rank")
+# spsv(z7(srn.GSE215968@plots$step3$p.umapUint, 1.5, 1), "umapUint")
+# spsv(z7(.vis_seurat_label(srn.GSE215968), 1.5, 1), "umapInt")
+# spsv(wrap(test$p.qc_aft, 20, 15), "qc_aft")
+# spsv(wrap(srn.GSE215968$p.qc_pre, 20, 15), "qc_pre")
+})
+
+take_positions({
+  srn.GSE215968@plots$step6$p.markers
+  srn.GSE215968@plots$step6$p.map_scsa
+  srn.GSE215968@plots$step6$p.props_scsa
+  srn.GSE215968@plots$step6$p.props_scsa_stat
+  # srn.GSE215968$focus_by_group$plist.vlnFacet$HIST1H1E
+})
+scsa_check(srn.GSE215968, "B cells")
+
+take_positions({
+  srn.GSE215968$focus_by_cell$p.dim
+  srn.GSE215968$focus_by_cell$p.dot
+  srn.GSE215968$focus_by_group$plist.vlnFacet$HIST1H1E
+  srn.GSE215968$focus_by_group$plist.vlnFacet$FXYD7
+})
+
+take_positions({
+  cc.comparison@plots$step1$p.inters_counts
+  cc.comparison@plots$step1$p.inters_weights
+  cc.comparison@params$each_lr_comm$p.lr_comm_bubbles$IUA
+  cc.comparison@params$each_lr_comm$p.lr_comm_bubbles$Control
+  cc.comparison@params$each_lr_comm$t.lr_comm_bubble
+})
+
+take_positions({
+  srn.GSE215968_B_cells@plots$step6$p.markers
+  srn.GSE215968_B_cells@plots$step6$p.map_scsa
+})
+
+take_positions({
+  mn.GSE215968_B_cells@plots$step3$p.traj
+  # mn.GSE215968_B_cells@plots$step4$p.geneInPseudo$group
+  mn.GSE215968_B_cells@plots$step4$p.geneInPseudo$scsa_cell
+})
+
+take_positions({
+  rt.GSE215968_B_cells@plots$step3$p.hps$pathways
+  rt.GSE215968_B_cells@plots$step3$p.hps$genes
+})
+
+# cc.GSE215968_iua@tables$step2$t.lr_comm_bubble$prob
+# cc.GSE215968_control@tables$step2$t.lr_comm_bubble
+graphics.off()
+
+```
+

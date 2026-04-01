@@ -1,0 +1,149 @@
+
+## 筛选候选基因
+
+### DESeq2 差异分析 (IUA)
+
+`r meth(des.iua, FALSE)`
+`r snap(des.iua, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  des.iua@plots$step3$topDegs$`IUA vs control`$p.hp
+  des.iua@plots$step3$topDegs$`IUA vs control`$p.volcano
+  des.iua@params$focusedDegs_ARLNC1$p.BoxPlotOfDEGs
+  des.iua@params$focusedDegs_ARLNC1$roc$ARLNC1$p.roc
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+resolve_job_comments(des.iua)
+upd_all_job_comments()
+```
+
+`r snap(des.arlnc1, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  des.arlnc1@plots$step3$topDegs$`High vs Low`$p.hp
+  des.arlnc1@plots$step3$topDegs$`High vs Low`$p.volcano
+})
+```
+<!-- OVERTURE_END -->
+
+### Venn 交集 (IUA_ARLNC1)
+
+`r snap(vn.iua_arlnc1, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  vn.iua_arlnc1@plots$step1$p.venn
+})
+```
+<!-- OVERTURE_END -->
+
+
+## ClusterProfiler 富集分析 (IUA_ARLNC1)
+
+`r snap(en.iua_arlnc1, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  en.iua_arlnc1@plots$step1$p.kegg$id
+  en.iua_arlnc1@plots$step1$p.go$id
+})
+```
+<!-- OVERTURE_END -->
+
+## STRINGdb PPI 分析 (IUA_ARLNC1)
+
+`r snap(sdb.iua_arlnc1, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  sdb.iua_arlnc1@plots$step1$p.ppi
+})
+```
+<!-- OVERTURE_END -->
+
+## Machine-Learning 机器学习 (IUA_ARLNC1)
+
+`r snap(ml.iua_arlnc1, TRUE, TRUE)`
+
+对 3 种算法筛选结果取交集，见 `r ref(vn.learn@plots$step1$p.venn)`。
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  ml.iua_arlnc1@plots$step1$p.results
+  ml.iua_arlnc1@plots$step2$p.lasso_cv
+  ml.iua_arlnc1@plots$step2$p.coefs_path
+  ml.iua_arlnc1@plots$step3$p.error
+  vn.learn@plots$step1$p.venn
+})
+```
+<!-- OVERTURE_END -->
+
+## 表达量验证
+
+针对关键基因分别在训练集（IUA bulk转录组自测序训练集）和验证集（GSE224093）中绘制箱线图，直观呈现基因在宫腔粘连组与健康对照组的表达分布特征。
+`r snap(des.validate_train, "learn")`
+
+对于验证集 GSE224093，
+`r snap(lm.validate_gse224093, "learn")`
+
+以训练集和验证集中基因表达差异均达到统计学显著水平（p &lt; 0.05）、且表达趋势一致的关键基因，作为后续研究的生物标志物，最终筛选基因为 H1-4 (同义命为 HIST1H1E) ，FXYD7。
+
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  des.validate_train@params$focusedDegs_learn$p.BoxPlotOfDEGs
+  lm.validate_gse224093@plots$step2$p.BoxPlotOfDEGs_learn
+})
+```
+<!-- OVERTURE_END -->
+
+
+## GSEA分析 (MARKER)
+
+`r snap(corgsea.marker, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  corgsea.marker@plots$step2$p.codes$`H1-4`
+  corgsea.marker@plots$step2$p.codes$FXYD7
+})
+```
+<!-- OVERTURE_END -->
+
+
+## IOBR 免疫浸润分析 (IUA)
+
+`r snap(iobr.iua, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  iobr.iua@plots$step2$p.boxplot
+  iobr.iua@plots$step2$p.cor
+  iobr.iua@plots$step3$p.GeneCellCor
+})
+```
+<!-- OVERTURE_END -->
+
