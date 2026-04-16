@@ -1,0 +1,262 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2026-04-14"), end = td("2026-04-14"), finish = td("2026-04-14"),
+  id = "p1733", client = "", inst = "",
+  type = "生信分析",
+  title = "基于单细胞测序中Scissor算法探究血清素对于鼻咽癌高低瘤内菌群负荷的调控机制",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+project_publish.complex("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.complex("./analysis_out.docx")
+project_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("utils.tool"))
+  devtools::load_all("~/utils.tool/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_cover.complex()
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_index()
+```
+
+# 项目概述
+
+## 项目背景
+
+## 分析方法
+
+1. ...
+2. ...
+
+## 数据来源
+
+- **训练集：[自测序数据]{.mark}**
+
+## 研究目标
+
+1. ...
+2. ...
+
+## 拟解决的关键科学问题
+
+...
+
+1. ...
+2. ...
+
+## 创新性
+
+...
+
+## 流程图
+
+\newpage
+
+# 分析结果 {#workflow}
+
+## 集成单细胞数据分析
+
+### 数据质控
+
+`r meth(srn.GSE150825, FALSE)`
+`r snap(srn.GSE150825, 1:3)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  srn.GSE150825@plots$step1$p.qc_pre
+  srn.GSE150825@plots$step1$p.qc_aft
+  srn.GSE150825@plots$step2$p.pca_rank
+  z7(srn.GSE150825@plots$step3$p.umapUint, 1.5, 1)
+  z7(srn.GSE150825@plots$step3$p.umapInt, 1.5, 1)
+})
+```
+<!-- OVERTURE_END -->
+
+
+### 细胞注释
+
+`r snap(srn.GSE150825, 1:6)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  srn.GSE150825@plots$step3$p.umapLabel
+  srn.GSE150825@plots$step6$p.markers_cluster
+  srn.GSE150825@tables$step6$t.validMarkers
+  srn.GSE150825@plots$step6$p.markers
+  srn.GSE150825@plots$step6$p.map_scsa
+  z7(srn.GSE150825@plots$step6$p.props_scsa, .8, 1)
+  # z7(srn.GSE150825@plots$step6$p.props_scsa_group, 1, 5)
+  # srn.GSE150825@plots$step6$p.props_scsa_stat
+  notshow(srn.GSE150825@tables$step5$all_markers)
+  notshow(srn.GSE150825@tables$step5$all_markers_no_filter)
+  notshow(srn.GSE150825@tables$step6$scsa_res_all)
+  notshow(srn.GSE150825@tables$step6$t.props_scsa)
+  notshow(srn.GSE150825@params$final_metadata)
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+markers(srn.GSE150825, c(23), 20)
+```
+
+# 项目总结
+
+
+
+\newpage
+
+# 项目调整
+
+- 单细胞数据集 GSE150430 无法分析，没有 count 数据矩阵，且没有样本归属信息，换成使用 GSE150825，
+包含 11 个鼻咽癌患者样本 (去掉 VDJ-seq 和 lymphoid hyperplasia 之后)
+- ...
+- ...
+
+# 软件列表
+
+```{r}
+used <- names(getOption("autor_pkgInfo"))
+versions <- pkgVersion_remote(used)
+versions
+
+allSoftware <- tibble::tibble(
+  Package = used, Version = versions,
+  Usage = NA_character_
+)
+allSoftware
+
+allSoftware <- tibble::tribble(
+  ~Package, ~Version, ~Usage,
+
+  # --- single-cell ---
+  "Seurat", "5.1.0", "单细胞RNA-seq分析",
+  "monocle", "2.28.0", "细胞拟时序分析",
+  "scMetabolism", "0.2.1", "代谢通路活性分析",
+  "ReactomeGSA", "1.14.0", "通路富集分析",
+  "hdWGCNA", "0.4.0", "共表达网络分析",
+
+  # --- bulk / enrichment ---
+  "limma", "3.56.2", "差异表达分析",
+  "clusterProfiler", "4.15.0.3", "功能富集分析",
+  "msigdbr", "7.5.1", "基因集数据库",
+  "IOBR", "0.99.0", "免疫浸润分析",
+  "psych", "2.4.6.26", "相关性分析",
+
+  # --- machine learning ---
+  "glmnet", "4.1.8", "LASSO回归建模",
+  "randomForest", "4.7.1.2", "随机森林建模",
+  "xgboost", "2.1.1.1", "梯度提升树建模",
+
+  # --- network ---
+  "STRINGdb", "2.12.1", "蛋白互作网络分析",
+
+  # --- external tools ---
+  "MEBOCOST", NA, "代谢物介导细胞通讯分析（Python工具）",
+  "pySCENIC", NA, "转录调控网络分析（Python工具）",
+  "SCSA", NA, "细胞类型注释（Python工具）",
+  "MiMeDB", NA, "代谢物数据库（数据库）",
+  "AutoDock Vina", NA, "分子对接（分子对接软件）",
+  "AutoGridFR", NA, "对接网格计算（分子对接工具）",
+  "AlphaFold", NA, "蛋白结构预测（AI结构预测工具）"
+)
+
+```
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| All-software
+autor(allSoftware)
+```
+
+
+# 报告质检
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| Report-QC
+autor(table_qc.hb())
+```
+
+```{r}
+create_remote_project.hb()
+setup.sshfs()
+.send_pkg_to_remote()
+
+file_scripts <- push_script.hb(
+  "seurat", "scissor"
+)
+
+pull_jobs_from_script.hb(file_scripts, TRUE, FALSE)
+push_overture_as_output.hb(TRUE, TRUE)
+
+push_checkout_after_output.hb(FALSE)
+
+run_remote_output.hb(TRUE, skip = c(1, 3))
+convert_pdf_in_project(skip = 1:14)
+
+.upd_pkg_to_remote()
+
+run_in_project("./tmp/getPkgInfo.R")
+run_in_project_nohup("r.13_seurat.r")
+
+lst <- setNames(
+  apply(allSoftware, 1, as.list, simplify = FALSE), allSoftwarePackage
+)
+saveRDS(setNames(lst, allSoftwarepackage), .prefix("pkgInfo.rds", "db")) 
+colnames(allSoftware) <- capitalize(colnames(allSoftware))
+
+get_file_with_format_name(
+  "./order_material/诊断项目关键节点核对.docx", name.hb$check()
+)
+
+get_file_with_format_name(
+  "./analysis_out.docx", name.hb$report()
+)
+
+get_file_with_format_name(
+  "~/Documents/job0259_Report_0411_revise1.docx", name.hb$report()
+)
+
+get_contents_refered_from_fields("./order_material/test.md")
+
+build_completion_for_package("utils.tool")
+srn <- .job_seurat5n()
+focus(srn)
+match.arg()
+
+project_packaging.hb("~/Documents/test.docx", overwrite_report = FALSE)
+
+```
+
+```{r}
+gds.np <- job_gds("nasopharyngeal carcinoma", force = TRUE)
+gds.np <- step1(gds.np)
+
+# GSE150825
+
+GSE150825
+
+
+```
+
+
+

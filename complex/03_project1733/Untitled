@@ -1,0 +1,16 @@
+
+我在分析 NPC，即nasopharyngeal carcinoma 
+单细胞数据，现在要鉴定细胞，请仿照以下格式给我细胞marker 和对应文献的PMID
+此外，我给的图片是我分析的数据集的来源的文献的已经分析过的UMAP 聚类，
+也就是说，细胞类型大概就是这些了。应该没有什么需要补充的类型吧
+
+periodontitis_cell_markers <- list(
+
+  B_Cell = list(
+    markers = c("MS4A1", "CD79A", "CD79B", "CD19", "BANK1"),
+    pmid = c("37546811", "41143768")
+    )
+
+)
+
+

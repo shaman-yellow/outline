@@ -595,10 +595,6 @@ take_positions({
   notshow(srn.GSE215968_AS_Epi@params$final_metadata)
 })
 ```
-
-```{r}
-```
-
 <!-- OVERTURE_END -->
 
 ## 拟时序轨迹分析 (GSE215968_AS_EPI)
@@ -643,21 +639,26 @@ take_positions({
 
 ## scTenifoldKnk虚拟敲除
 
-```{r}
-test <- readRDS("./order_material/scTenifoldKnk_3000HVG_HIST1H1E.rds")
-hls <- dplyr::filter(test$diffRegulation, p.adj < .05, Z > 1)$gene
-hls
-p <- plot_volcano(
-  test$diffRegulation, "gene", use = "p.adj", use.fc = "Z", 
-  fc = 1, label.fc = "Z-score", mode_fc = 1, HLs = hls
-)
-spsv(p, "./remote/sct_results/volcanol_HIST1H1E.pdf")
+`r snap(sct.GSE215968_AS_Epi, TRUE, TRUE)`
+`r snap(en.H1_4_knk, TRUE, TRUE)`
+
+KEGG 分析表明，基因主要富集于经典信号转导与细胞结构调控相关通路，包括 PI3K-Akt、MAPK、Ras 及 JAK-STAT 等关键信号通路，同时涉及肌动蛋白骨架调控与黏附（如 focal adhesion）过程。此外，还显著富集于 NF-κB 信号通路、泛素介导蛋白降解以及凋亡等功能模块，并伴随部分代谢相关通路（如辅酶 A 生物合成、β-丙氨酸代谢）的变化。综合来看，H1-4 的扰动可能通过多层级信号网络影响细胞增殖、生存、炎症反应及细胞骨架重塑，从而在分子层面驱动 IUA 相关细胞功能异常与状态转变。
+
+GO 分析表明，基因在生物过程（BP）层面主要富集于细胞对环境及非生物刺激的响应、蛋白激酶 B（Akt）信号调控以及核苷酸分解代谢等过程；在细胞组分（CC）层面则显著定位于黏附相关结构（如 focal adhesion、cell-substrate junction）、内吞相关结构及肌动蛋白骨架体系；在分子功能（MF）层面主要涉及泛素样蛋白转移酶活性、激酶激活因子活性以及细胞黏附分子介导活性等功能。综合来看，H1-4 的扰动可能通过影响细胞应激响应、信号转导（尤其是 Akt 通路）、细胞骨架重塑及黏附过程，从而在转录调控层面驱动细胞状态改变，提示其在 IUA 相关细胞功能调控中具有潜在关键作用。
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  sct.GSE215968_AS_Epi@plots$step2$ps.volcano$`H1-4`
+  notshow(sct.GSE215968_AS_Epi@tables$step2$t.all_diff$`H1-4`)
+  z7(en.H1_4_knk@plots$step1$p.kegg$ids, 1, .5)
+  notshow(en.H1_4_knk@tables$step1$res.kegg$ids)
+  en.H1_4_knk@plots$step1$p.go$ids
+  notshow(en.H1_4_knk@tables$step1$res.go$ids)
+})
 ```
-
-(待补充)
-
-采用R包scTenifoldKnk（v 1.0.2）[PMID: 35510185] 的scTenifoldKnk算法进行模拟敲除分析，以推测其下游功能影响。首先构建基因调控网络（gene regulatory network，GRN），在构建好的GRN中进行无监督虚拟敲低，通过模拟关键基因节点的缺失来模拟其敲低状态，进而筛选出因关键基因敲低而调控关系发生显著改变的基因，结合Z分数和显著性对其进行排序，展示影响最显著的基因作为下游基因（阈值为|Z| > 2 & padj <0.05）。最后使用R包clusterProfiler（v 4.15.0.003）[PMID: 34557778]，对下游基因进行GO（GO分析主要涉及生物过程、分子功能和细胞成分三部分）和KEGG途径分析。富集筛选条件为 padj < 0.05，并使用R包ggplot2（v 3.5.1）[PMID: 36046382] 可视化。
-
+<!-- OVERTURE_END -->
 
 \newpage
 
@@ -722,7 +723,8 @@ allSoftware <- tibble::tribble(
   "rcdk", "21982300", "化学信息学",            # ❌ 原25406045 → 原始
   "Seurat", "25867923", "单细胞分析",          # ❌ 你原来完全错
   "CellChat", "33597522", "细胞通讯",          # ✅ 已修正
-  "monocle", "28825705", "细胞轨迹"            # ❌ 原29599409 → v2 vs v3问题
+  "monocle", "28825705", "细胞轨迹",            # ❌ 原29599409 → v2 vs v3问题
+  "scTenifoldKnk", "35510185", "虚拟敲除"
 )
 pkgInfo("Seurat")
 used <- names(getOption("autor_pkgInfo"))
@@ -760,14 +762,14 @@ file_scripts <- push_script.hb(
   "DEG", "enrichment", "ppi", "learn", "expression_validate", 
   "gsea", "immune", "nomogram", "locate", "network", "graphBan", 
   "geneMANIA", "seurat", "cellchat", "ASEpiSubType", "ASEpiMonocle2",
-  "ASEpiReactome", "scteni", "test"
+  "ASEpiReactome", "scteni"
 )
 
 pull_jobs_from_script.hb(file_scripts, TRUE, FALSE)
 push_overture_as_output.hb(TRUE, TRUE)
 
 run_remote_output.hb(TRUE)
-convert_pdf_in_project()
+convert_pdf_in_project(skip = 1:17)
 
 .upd_pkg_to_remote()
 run_in_project("./tmp/getPkgInfo.R")
@@ -787,7 +789,7 @@ saveRDS(setNames(lst, allSoftware$package), .prefix("pkgInfo.rds", "db"))
 ```
 
 ```{r}
-project_packaging.hb("~/Documents/test.docx")
+project_packaging.hb("~/Documents/test.docx", overwrite_report = FALSE)
 ```
 
 ```{r}

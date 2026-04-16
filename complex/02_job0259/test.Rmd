@@ -1,0 +1,35 @@
+
+
+
+```{r}
+
+mdb.test <- job_mimedb("^L-Glutamine$")
+mdb.test <- step1(mdb.test)
+
+
+test <- .format_mimedb_html_data("~/Downloads/MiMeDB_ Showing metabocard for L-Glutamine (MMDBc0000129).html")
+test
+
+id <- mdb.test$ids
+id
+
+link <- start_drive()
+link$open()
+url <- glue::glue("https://mimedb.org/metabolites/{id}")
+link$navigate(url)
+
+res <- pbapply::pbsapply(query, simplify = FALSE,
+  function(id) {
+    url <- glue::glue("http://bioinfo.life.hust.edu.cn/hTFtarget#!/targets/gene?gene={id}")
+    link$navigate(url)
+    message(glue::glue("Navigate: {url}"))
+    Sys.sleep(1.5)
+    content <- link$getPageSource()[[1]]
+    html <- e(rvest::read_html(content))
+    data <- e(rvest::html_table(html)[[1]])
+  }, cl = cl)
+res <- rbind_list(res, "target_ensembl")
+link$close()
+end_drive()
+
+```
