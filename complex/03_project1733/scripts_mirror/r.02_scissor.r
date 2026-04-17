@@ -42,9 +42,39 @@ srn.GSE150825 <- qs::qread("./rds_jobSave/srn.GSE150825.6.qs")
 ssr.GSE150825 <- do_scissor(srn.GSE150825, des.GSE189642)
 ssr.GSE150825 <- step1(ssr.GSE150825, "middle")
 
+
 test <- ssr.GSE150825$res_scissor[[2]]$Scissor_pos
 dplyr::filter(meta(srn.GSE150825), rownames %in% test)$scsa_cell %>% table
 
+Scissor::Scissor
+Scissor::APML1
+Scissor::LogL0
+
+space()
+
+.qsave_multi(X, Y, network, file = "tmp/test.qs")
+
+fun_get <- function() {
+  lapply(c("X", "Y", "network"), get)
+}
+args <- fun_get()
+
+ssr.GSE150825$res_scissor[[1]] %>% names
+
+fun_test <- function(res_scissor) {
+  Scissor::reliability.test(
+    X, Y, network, res_scissor$para$alpha,
+    cell_num = length(res_scissor$Scissor_pos) + length(res_scissor$Scissor_neg),
+    family = "binomial", n = 10, nfold = 10
+  )
+}
+
+fun_test(ssr.GSE150825$res_scissor[[1]])
+
+Scissor::Scissor
+
+
+names <- load(list.files("./tmp/scissor_cache_GSE150825", full.names = TRUE))
 
 # ==========================================================================
 # FIELD: output
