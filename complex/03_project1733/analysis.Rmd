@@ -120,6 +120,20 @@ take_positions({
 markers(srn.GSE150825, c(23), 20)
 ```
 
+## Scissor 表型关联单细胞亚群鉴定 (GSE150825)
+
+获取 GSE189642 用以肿瘤内细菌负荷 (Intratumoural Bacteria Load, IBL) 表型关联单细胞亚型分析。
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  ssr.GSE150825@plots$step2$p.alpha
+})
+```
+<!-- OVERTURE_END -->
+
+
 # 项目总结
 
 
@@ -252,9 +266,6 @@ gds.np <- job_gds("nasopharyngeal carcinoma", force = TRUE)
 gds.np <- step1(gds.np)
 
 # GSE150825
-
-GSE150825
-
 
 ```
 

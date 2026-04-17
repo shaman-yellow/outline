@@ -29,52 +29,26 @@ geo.GSE189642 <- step2(geo.GSE189642)
 clear(geo.GSE189642)
 
 metadata.GSE189642 <- expect(geo.GSE189642, geo_cols(group = "group.ch1"))
-metadata.GSE189642
+metadata.GSE189642 <- dplyr::mutate(
+  metadata.GSE189642, group = paste0("IBL_", group)
+)
 
 des.GSE189642 <- asjob_deseq2(geo.GSE189642, metadata.GSE189642)
 des.GSE189642 <- step1(des.GSE189642)
-des.GSE189642 <- step2(des.GSE189642, High - Low)
+des.GSE189642 <- step2(des.GSE189642, IBL_High - IBL_Low)
 des.GSE189642 <- step3(des.GSE189642)
 clear(des.GSE189642)
 
 srn.GSE150825 <- qs::qread("./rds_jobSave/srn.GSE150825.6.qs")
 
 ssr.GSE150825 <- do_scissor(srn.GSE150825, des.GSE189642)
-ssr.GSE150825 <- step1(ssr.GSE150825, "middle")
+ssr.GSE150825 <- step1(ssr.GSE150825, "small")
+ssr.GSE150825 <- step2(ssr.GSE150825, c(5e-3, 5e-4), k = 8, workers = 8)
+ssr.GSE150825 <- step3(ssr.GSE150825)
+Sys.time()
 
+clear(ssr.GSE150825, FALSE)
 
-test <- ssr.GSE150825$res_scissor[[2]]$Scissor_pos
-dplyr::filter(meta(srn.GSE150825), rownames %in% test)$scsa_cell %>% table
-
-Scissor::Scissor
-Scissor::APML1
-Scissor::LogL0
-
-space()
-
-.qsave_multi(X, Y, network, file = "tmp/test.qs")
-
-fun_get <- function() {
-  lapply(c("X", "Y", "network"), get)
-}
-args <- fun_get()
-
-ssr.GSE150825$res_scissor[[1]] %>% names
-
-fun_test <- function(res_scissor) {
-  Scissor::reliability.test(
-    X, Y, network, res_scissor$para$alpha,
-    cell_num = length(res_scissor$Scissor_pos) + length(res_scissor$Scissor_neg),
-    family = "binomial", n = 10, nfold = 10
-  )
-}
-
-fun_test(ssr.GSE150825$res_scissor[[1]])
-
-Scissor::Scissor
-
-
-names <- load(list.files("./tmp/scissor_cache_GSE150825", full.names = TRUE))
 
 # ==========================================================================
 # FIELD: output
