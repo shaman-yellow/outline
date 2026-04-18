@@ -42,10 +42,11 @@ clear(des.GSE189642)
 srn.GSE150825 <- qs::qread("./rds_jobSave/srn.GSE150825.6.qs")
 
 ssr.GSE150825 <- do_scissor(srn.GSE150825, des.GSE189642)
+
 ssr.GSE150825 <- step1(ssr.GSE150825, "small")
 ssr.GSE150825 <- step2(ssr.GSE150825, c(5e-3, 5e-4), k = 8, workers = 8)
 ssr.GSE150825 <- step3(ssr.GSE150825)
-Sys.time()
+
 
 clear(ssr.GSE150825, FALSE)
 
