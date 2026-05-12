@@ -639,6 +639,7 @@ vn.drugs_ex$savedir
 vn.drugs_ex <- step8(vn.drugs_ex)
 clear(vn.drugs_ex)
 
+file.copy("./rds_jobSave/vn.drugs_ex.8.rds", "./remote/rds_jobSave/", overwrite = TRUE)
 ```
 
 ## 代谢物-关键基因分子对接
@@ -691,12 +692,26 @@ vn.metabolite <- step8(vn.metabolite)
 clear(vn.metabolite)
 
 file.copy("./rds_jobSave/vn.metabolite.7.rds", "./remote/rds_jobSave/", overwrite = TRUE)
+
+file.copy("./rds_jobSave/vn.metabolite.8.rds", "./remote/rds_jobSave/", overwrite = TRUE)
 guess_project()
 ```
 
 ## 分子动力学模拟
 
-(待补充)
+`r snap(dy.drug_metabolite, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  dy.drug_metabolite@plots$step2$p.rmsd
+  dy.drug_metabolite@plots$step2$p.rmsf
+  dy.drug_metabolite@plots$step2$p.hbond
+  dy.drug_metabolite@plots$step2$p.energy
+})
+```
+<!-- OVERTURE_END -->
 
 ```{r}
 file_zip <- pdb_packaging.hb(vn.drugs_ex, vn.metabolite)
@@ -805,16 +820,20 @@ file_scripts <- push_script.hb(
   "seurat", "metabolite", "keyCell", "scenic",
   "scMeta", "reactome",
   "hdWGCNA", "DEG", "ppi", "learn", "validate", "monocle",
-  "gsea", "immune", "graphBan", "gutMGene", "autodock"
+  "gsea", "immune", "graphBan", "gutMGene", "autodock", "dynamics"
 )
 
 pull_jobs_from_script.hb(file_scripts, TRUE, FALSE)
 push_overture_as_output.hb(TRUE, TRUE)
 
 push_checkout_after_output.hb(FALSE)
+file.copy(
+  list.files("./scripts_mirror/", full.names = TRUE), 
+  "./remote", TRUE
+)
 
 run_remote_output.hb(TRUE, skip = c(1, 3))
-convert_pdf_in_project()
+convert_pdf_in_project(skip = 1:17)
 
 .upd_pkg_to_remote()
 
@@ -844,9 +863,9 @@ get_contents_refered_from_fields("./order_material/test.md")
 build_completion_for_package("utils.tool")
 
 project_packaging.hb(
-  "~/Documents/job0259_Report_0411_revise2.docx", TRUE, TRUE
+  "./analysis_out.docx", FALSE, TRUE
 )
-gett_file("./remote/job_0259_report_20260414.docx")
+gett_file("./remote/job_0259_report_20260501.docx")
 
 ```
 

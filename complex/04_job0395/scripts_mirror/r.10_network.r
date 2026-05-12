@@ -1,0 +1,490 @@
+# ==========================================================================
+# FIELD: setup
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+rm(list = ls()); gc()
+ORIGINAL_DIR <- "/data/nas1/huanglichuang_OD/project/04_job0395"
+output <- file.path(ORIGINAL_DIR, "10_network")
+if (!dir.exists(output)) {
+  dir.create(output, recursive = TRUE)
+}
+setwd(ORIGINAL_DIR)
+
+.libPaths(c('/data/nas2/software/miniconda3/envs/public_R/lib/R/library/', '/data/nas1/huanglichuang_OD/conda/envs/extra_pkgs/lib/R/library/'))
+
+myPkg <- "./union/union.utils"
+if (!dir.exists(myPkg)) {
+  stop('Can not found package: ', myPkg)
+}
+devtools::load_all(myPkg)
+load_unions()
+setup.huibang()
+
+# ==========================================================================
+# FIELD: analysis
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+fea.markers <- load_feature()
+rn.markers <- asjob_regNet(fea.markers)
+rn.markers <- step1(
+  rn.markers, miRNetR = TRUE, tbs = FALSE
+)
+rn.markers <- step2(rn.markers, 1:2)
+clear(rn.markers)
+
+rn.markers <- step3(rn.markers)
+rn.markers <- step4(rn.markers)
+rn.markers <- step5(rn.markers)
+rn.markers <- step6(rn.markers, FALSE, chipbase = TRUE)
+clear(rn.markers)
+
+
+
+# ==========================================================================
+# FIELD: output
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+setup_counting_in_directory(output)
+
+#| OVERTURE
+output_with_counting_number({
+  rn.markers@plots$step5$p.regNet
+  rn.markers@plots$step6$p.regTF
+  notshow(rn.markers@params$all_lncRNA)
+  notshow(rn.markers@params$all_miRNA)
+  notshow(rn.markers@params$all_tf$chipbase)
+})
+
+
+
+
+# ==========================================================================
+# FIELD: checkout
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# NOTE: 下方代码是以上分析代码中解析出来的，目前只解析一层，没有递归解析
+# 递归的话代码会变得非常多，而且会很乱。目前应该够了，method 内部大多都是普通 function
+# 查看起来比较方便，可以在加载了我的 R 包后直接输入后查看本体。
+# 
+# 下方的代码，我在定义的上方写明了在上方哪个分析代码用到了这个本体，
+# 希望对您有所帮助
+
+
+if (FALSE) {
+    # rn.markers <- asjob_regNet(fea.markers)
+    setMethod(f = "asjob_regNet", signature = c(x = "feature"), definition = function (x, 
+        ...) 
+    {
+        .local <- function (x) 
+        {
+            fea <- resolve_feature_snapAdd_onExit("x", x)
+            x <- .job_regNet(object = fea)
+            return(x)
+        }
+        .local(x, ...)
+    })
+    
+    
+    # rn.markers <- step1(rn.markers, miRNetR = TRUE, tbs = FALSE)
+    setMethod(f = "step1", signature = c(x = "job_regNet"), definition = function (x, 
+        ...) 
+    {
+        .local <- function (x, recode = NULL, tsh = TRUE, tbs = TRUE, 
+            miRNetR = FALSE, mdb = FALSE, miRNetR_cache = NULL) 
+        {
+            step_message("Get miRNA data.")
+            targets <- object(x)
+            if (!is.null(recode)) {
+                targets <- unique(c(targets, names(recode)))
+                recode <- as.list(recode)
+            }
+            fun_recode <- function(data, col, recode) {
+                if (!is.null(recode)) {
+                    data[[col]] <- dplyr::recode(data[[col]], !!!recode, 
+                      .default = data[[col]])
+                }
+                data
+            }
+            x$all_miRNA <- list()
+            if (tsh) {
+                targetScanHuman <- ftibble(get_url_data("Conserved_Family_Info.txt", 
+                    "https://www.targetscan.org/vert_80/vert_80_data_download/Conserved_Family_Info.txt.zip", 
+                    "targetScanHuman"))
+                colnames(targetScanHuman) <- formal_name(colnames(targetScanHuman))
+                targetScanHuman <- dplyr::filter(targetScanHuman, 
+                    Gene_Symbol %in% targets)
+                which_not_in_data(targetScanHuman, "Gene_Symbol", 
+                    targets)
+                targetScanHuman <- fun_recode(targetScanHuman, "Gene_Symbol", 
+                    recode)
+                targetScanHuman <- dplyr::rename(targetScanHuman, 
+                    mirna_name = miR_Family, gene_name = Gene_Symbol)
+                targetScanHuman <- reframe_split(targetScanHuman, 
+                    "mirna_name", "/")
+                targetScanHuman <- dplyr::mutate(targetScanHuman, 
+                    mirna_name = ifelse(grpl(mirna_name, "^miR"), 
+                      mirna_name, paste0("miR-", mirna_name)), mirna_name = paste0("hsa-", 
+                      mirna_name))
+                targetScanHuman <- dplyr::relocate(targetScanHuman, 
+                    mirna_name, gene_name)
+                targetScanHuman <- set_lab_legend(targetScanHuman, 
+                    glue::glue("{x@sig} miRNA-RNA data from targetScanHuman"), 
+                    glue::glue("从 targetScanHuman 获取的 miRNA-RNA 数据。"))
+                x$all_miRNA$targetScanHuman <- targetScanHuman
+                x <- methodAdd(x, "TargetScanHuman (<https://www.targetscan.org/cgi-bin/targetscan/data_download.vert80.cgi>)，")
+            }
+            if (tbs) {
+                tarbase <- ftibble(get_url_data("Homo_sapiens_TarBase-v9.tsv.gz", 
+                    "https://dianalab.e-ce.uth.gr/tarbasev9/data/Homo_sapiens_TarBase-v9.tsv.gz", 
+                    "tarbase", fun_decompress = NULL))
+                tarbase <- dplyr::filter(tarbase, gene_name %in% 
+                    targets)
+                which_not_in_data(tarbase, "gene_name", targets)
+                tarbase <- fun_recode(tarbase, "gene_name", recode)
+                tarbase <- dplyr::relocate(tarbase, mirna_name, gene_name)
+                tarbase <- set_lab_legend(tarbase, glue::glue("{x@sig} miRNA-RNA data from TarBase"), 
+                    glue::glue("从 Tarbase 获取的 miRNA-RNA 数据。"))
+                x$all_miRNA$tarbase <- tarbase
+                x <- methodAdd(x, "TarBase (<https://dianalab.e-ce.uth.gr/tarbasev9/downloads>)，")
+            }
+            if (FALSE && mdb) {
+                mirdb <- ftibble(get_url_data("miRDB_v6.0_prediction_result.txt.gz", 
+                    "https://mirdb.org/download/miRDB_v6.0_prediction_result.txt.gz", 
+                    "mirdb", fun_decompress = NULL))
+                x$all_miRNA$mirdb <- mirdb
+            }
+            if (miRNetR) {
+                if (!is.null(miRNetR_cache)) {
+                    miRNetR <- ftibble(miRNetR_cache)
+                }
+                else {
+                    miRNetR <- callr::r(map_genes_in_miRNetR, list(genes = targets, 
+                      wd = .prefix("miRNetR", "db"), extra = "--no-check-certificate"), 
+                      show = TRUE)$mir.res
+                    miRNetR <- tibble::as_tibble(miRNetR)
+                }
+                which_not_in_data(miRNetR, "Target", targets)
+                miRNetR <- fun_recode(miRNetR, "Target", recode)
+                miRNetR <- dplyr::relocate(miRNetR, mirna_name = ID, 
+                    gene_name = Target)
+                miRNetR <- dplyr::mutate(miRNetR, mirna_name = gs(mirna_name, 
+                    "hsa-mir", "hsa-miR"))
+                miRNetR <- set_lab_legend(miRNetR, glue::glue("{x@sig} miRNA-RNA data from miRNet"), 
+                    glue::glue("从 miRNet 获取的 miRNA-RNA 数据。"))
+                x$all_miRNA$miRNetR <- miRNetR
+                x <- methodAdd(x, "miRnet (<https://www.mirnet.ca/>)，")
+            }
+            x <- methodAdd(x, "以上数据库用于检索以基因集 (mRNA) 为靶点 miRNA 数据。")
+            return(x)
+        }
+        .local(x, ...)
+    })
+    
+    
+    # rn.markers <- step2(rn.markers, 1:2)
+    setMethod(f = "step2", signature = c(x = "job_regNet"), definition = function (x, 
+        ...) 
+    {
+        .local <- function (x, use = "all") 
+        {
+            step_message("miRNA intersection.")
+            sets <- x$all_miRNA
+            if (!identical(use, "all")) {
+                sets <- sets[use]
+            }
+            ins <- .merge_list_by_cols(sets, by = c("mirna_name", 
+                "gene_name"))
+            ins <- dplyr::distinct(ins, mirna_name, gene_name)
+            message(glue::glue("Got data: {try_snap(ins, 'gene_name', 'mirna_name')}"))
+            x$ins_mirna <- ins
+            ins.snap <- try_snap(ins, "gene_name", "mirna_name")
+            if (length(sets) > 1) {
+                x <- snapAdd(x, "将数据库 {bind(names(sets))} 预测或记录的 mRNA 的上游 miRNA，二者 mRNA-miRNA 关系对取交集，共得到 {nrow(ins)} 对调控关系【{ins.snap}】。")
+                x <- methodAdd(x, "取以上数据库的交集，确定高可信度的miRNA-mRNA调控配对。")
+            }
+            else {
+                x <- snapAdd(x, "将数据库 {bind(names(sets))} 预测或记录的 mRNA 的上游 miRNA 建立 mRNA-miRNA 关系对，共得到 {nrow(ins)} 对调控关系【{ins.snap}】。")
+            }
+            return(x)
+        }
+        .local(x, ...)
+    })
+    
+    
+    # clear(rn.markers)
+    setMethod(f = "clear", signature = c(x = "job"), definition = function (x, 
+        ...) 
+    {
+        .local <- function (x, save = TRUE, lite = TRUE, suffix = NULL, 
+            name = rlang::expr_text(substitute(x, parent.frame(1))), 
+            path_jobSave = getOption("path_jobSave", "."), path_lite = file.path(path_jobSave, 
+                "lite"), expr_lite = NULL, allow_qs = TRUE, nthreads = 5) 
+        {
+            dir.create(path_jobSave, FALSE)
+            filename <- paste0(name, ".", x@step, suffix, ".rds")
+            if (save) {
+                file <- file.path(path_jobSave, filename)
+                if (allow_qs && object.size(x) > 5e+08) {
+                    fileQs <- paste0(tools::file_path_sans_ext(file), 
+                      ".qs")
+                    message(glue::glue("Too large object ('{obj.size(x)}' > 478.6 Mb), use `qs::qsave`"))
+                    message("Save qs: ", fileQs)
+                    qs::qsave(x, fileQs, nthreads = nthreads)
+                }
+                else {
+                    message("Save RDS: ", file)
+                    saveRDS(x, file)
+                }
+            }
+            object(x) <- NULL
+            dir.create(path_lite, FALSE)
+            if (!is.null(expr_lite)) {
+                if (!is.expression(expr_lite)) {
+                    stop("!is.expression(expr_lite).")
+                }
+                eval(expr_lite)
+            }
+            if (lite) {
+                file <- file.path(path_lite, filename)
+                message("Save RDS: ", file)
+                saveRDS(x, file)
+            }
+            return(x)
+        }
+        .local(x, ...)
+    })
+    
+    
+    # rn.markers <- step3(rn.markers)
+    setMethod(f = "step3", signature = c(x = "job_regNet"), definition = function (x, 
+        ...) 
+    {
+        .local <- function (x, enc = TRUE, npi = TRUE, mi = unique(x$ins_mirna$mirna_name)) 
+        {
+            step_message("Got lncRNA.")
+            x$all_lncRNA <- list()
+            if (enc) {
+                encori <- get_encori_miRNA_lncRNA(mi)
+                encori <- dplyr::relocate(encori, mirna_name = miRNAname, 
+                    lncrna_name = geneName)
+                encori <- set_lab_legend(encori, glue::glue("{x@sig} miRNA-lncRNA data from ENCORI"), 
+                    glue::glue("从 ENCORI 获取的 miRNA-lncRNA 数据。"))
+                x$all_lncRNA$encori <- encori
+                x <- methodAdd(x, "ENCORI (<https://rna.sysu.edu.cn/encori>)，")
+            }
+            if (npi) {
+                npinter <- ftibble(get_url_data("miRNA_interaction.txt.gz", 
+                    "http://bigdata.ibp.ac.cn/npinter5/download/file/miRNA_interaction.txt.gz", 
+                    "npinter_miRNA_interaction", fun_decompress = NULL))
+                npinter <- dplyr::relocate(npinter, mirna_name = V5, 
+                    lncrna_name = V2)
+                if (!grpl(npinter[1, 1, drop = TRUE], "miR")) {
+                    stop("!grpl(npinter[1, 1, drop = TRUE], \"miR\")")
+                }
+                npinter <- dplyr::filter(npinter, mirna_name %in% 
+                    mi)
+                which_not_in_data(npinter, "mirna_name", mi)
+                npinter <- set_lab_legend(npinter, glue::glue("{x@sig} miRNA-lncRNA data from NPinter"), 
+                    glue::glue("从 NPinter 获取的 miRNA-lncRNA 数据。"))
+                x$all_lncRNA$npinter <- npinter
+                x <- methodAdd(x, "NPInter (<http://bigdata.ibp.ac.cn/npinter5>)，")
+            }
+            x <- methodAdd(x, "数据库用于获取与上述 miRNA 靶向结合的 lncRNA。")
+            return(x)
+        }
+        .local(x, ...)
+    })
+    
+    
+    # rn.markers <- step4(rn.markers)
+    setMethod(f = "step4", signature = c(x = "job_regNet"), definition = function (x, 
+        ...) 
+    {
+        .local <- function (x, use = "all") 
+        {
+            step_message("lncRNA intersection")
+            sets <- x$all_lncRNA
+            if (!identical(use, "all")) {
+                sets <- sets[use]
+            }
+            ins <- .merge_list_by_cols(sets, by = c("lncrna_name", 
+                "mirna_name"))
+            ins <- dplyr::distinct(ins, lncrna_name, mirna_name)
+            message(glue::glue("Got data: {try_snap(ins, 'mirna_name', 'lncrna_name')}"))
+            ins.snap <- try_snap(ins, "mirna_name", "lncrna_name")
+            x <- snapAdd(x, "将数据库 {bind(names(sets))} 预测或记录的 miRNA 的上游 lncRNA，二者 miRNA-lncRNA 关系对取交集，共得到 {nrow(ins)} 对调控关系【{ins.snap}】。")
+            x <- methodAdd(x, "取两个数据库结果的交集筛选出高可信度的 lncRNA-miRNA 调控配对。")
+            x$ins_lncrna <- ins
+            return(x)
+        }
+        .local(x, ...)
+    })
+    
+    
+    # rn.markers <- step5(rn.markers)
+    setMethod(f = "step5", signature = c(x = "job_regNet"), definition = function (x, 
+        ...) 
+    {
+        .local <- function (x, layout = "fr") 
+        {
+            step_message("Network.")
+            funName <- function(x) {
+                setNames(x, c("from", "to"))
+            }
+            edges <- rbind(funName(x$ins_mirna), funName(x$ins_lncrna))
+            nodes <- list(mRNA = x$ins_mirna$gene_name, miRNA = x$ins_mirna$mirna_name, 
+                lncRNA = x$ins_lncrna$lncrna_name)
+            nodes <- as_df.lst(lapply(nodes, unique), "type", "name")[, 
+                2:1]
+            graph <- igraph::graph_from_data_frame(edges, directed = TRUE, 
+                vertices = nodes)
+            set.seed(x$seed)
+            layout <- ggraph::create_layout(graph, layout = layout)
+            require(ggraph)
+            p.regNet <- ggraph(layout) + geom_edge_link(edge_width = 0.5, 
+                color = "grey80", show.legend = FALSE, end_cap = ggraph::circle(7, 
+                    "mm"), arrow = arrow(length = unit(1, "mm"))) + 
+                geom_node_point(aes(color = type, size = type, shape = type)) + 
+                ggrepel::geom_label_repel(aes(x = x, y = y, label = name), 
+                    size = 3) + guides(size = "none", shape = "none", 
+                color = guide_legend(override.aes = list(size = 4))) + 
+                scale_size_manual(values = c(mRNA = 10, miRNA = 6, 
+                    lncRNA = 6)) + scale_shape_manual(values = c(mRNA = 16, 
+                miRNA = 17, lncRNA = 18)) + labs(color = "Type") + 
+                theme_void()
+            p.regNet <- set_lab_legend(p.regNet, glue::glue("{x@sig} expression regulation networking"), 
+                glue::glue("lncRNA-miRNA-mRNA 表达网络分析|||图中的节点表示对应 RNA 类型，边代表相互作用。"))
+            x <- snapAdd(x, "构建 lncRNA-miRNA-mRNA 表达网络{aref(p.regNet)}，如图所示，共 {nrow(nodes)} 个节点，{nrow(edges)} 个边。")
+            x <- methodAdd(x, "以 R 包 `ggraph` ⟦pkgInfo('ggraph')⟧ 与 `ggplot2` ⟦pkgInfo('ggplot2')⟧ 对 lncRNA-miRNA-mRNA 转录后调控网络进行整合，可视化多层级分子调控网络的整体结构。")
+            x <- plotsAdd(x, p.regNet)
+            return(x)
+        }
+        .local(x, ...)
+    })
+    
+    
+    # rn.markers <- step6(rn.markers, FALSE, chipbase = TRUE)
+    setMethod(f = "step6", signature = c(x = "job_regNet"), definition = function (x, 
+        ...) 
+    {
+        .local <- function (x, trrust = TRUE, chipbase = FALSE, layout = "fr", 
+            filter_chipbase = TRUE, num_quantile = 0.9, n_min_support = 3L) 
+        {
+            targets <- object(x)
+            if (chipbase) {
+                file_chipbase <- get_url_data("hg38_network.bed.gz", 
+                    "https://rnasysu.com/chipbase3/data/download/network/hg38_network.bed.gz", 
+                    "chipbase", fun_decompress = NULL)
+                fun_read <- function(...) {
+                    .shFilter_read_table_by_id(file_chipbase, targets, 
+                      "gene_symbol", "\t")
+                }
+                chipbase <- expect_local_data("tmp", "chipbase_network", 
+                    fun_read, list(targets))
+                chipbase <- dplyr::filter(chipbase, protein_tf_type == 
+                    "tf")
+                which_not_in_data(chipbase, "gene_symbol", targets)
+                chipbase <- dplyr::rename(chipbase, TF = protein, 
+                    Target = gene_symbol)
+                if (nrow(chipbase)) {
+                    if (filter_chipbase) {
+                      chipbase <- .filter_chipbase_tf(chipbase, num_quantile = num_quantile, 
+                        n_min_support = n_min_support)
+                    }
+                    chipbase <- dplyr::relocate(chipbase, TF, Target)
+                    chipbase <- dplyr::distinct(chipbase, TF, Target, 
+                      .keep_all = TRUE)
+                }
+                x$all_tf$chipbase <- chipbase
+                x <- methodAdd(x, "\n\n基于 ChIPBase v3.0 数据库 <https://rnasysu.com/chipbase3/index.php> 获取转录因子与靶基因之间的潜在调控关系。该数据库整合了大量 ChIP-seq 数据，可用于系统分析转录因子在基因启动子或增强子区域的结合情况，并提供转录调控关系及表达相关性信息。通过将候选基因映射至 ChIPBase v3.0，可识别其潜在上游转录因子，并进一步构建 TF–target 调控网络，从而挖掘关键转录调控轴及其在相关生物学过程中的潜在作用机制。")
+                meth <- .description_filter_chipbase(num_quantile, 
+                    n_min_support)
+                x <- methodAdd(x, "{meth}")
+            }
+            if (trrust) {
+                trrust <- ftibble(get_url_data("trrust_rawdata.human.tsv", 
+                    "https://www.grnpedia.org/trrust/data/trrust_rawdata.human.tsv", 
+                    "trrust", fun_decompress = NULL))
+                trrust <- dplyr::rename(trrust, TF = V1, Target = V2, 
+                    Regulation = V3, PMID = V4)
+                trrust <- dplyr::filter(trrust, Target %in% !!targets)
+                which_not_in_data(trrust, "Target", targets)
+                x$all_tf$trrust <- trrust
+                x <- methodAdd(x, "基于 TRRUST 数据库 (<https://www.grnpedia.org>) 获取转录因子（TF）与靶基因之间的调控关系，用于构建转录调控网络并筛选关键调控因子。TRRUST 收录了经文献证据支持的人类和小鼠转录调控关系，包含转录因子、靶基因及其激活或抑制作用等信息。通过将基因映射至该数据库，可识别其上游调控转录因子，并进一步构建 TF–target 调控网络，挖掘核心转录因子及潜在调控轴，为解析基因表达调控机制提供依据。")
+            }
+            data <- .merge_list_by_cols(x$all_tf, by = c("TF", "Target"))
+            nodes <- list(TF = data$TF, mRNA = data$Target)
+            nodes <- as_df.lst(lapply(nodes, unique), "type", "name")[, 
+                2:1]
+            graph <- igraph::graph_from_data_frame(data, directed = TRUE, 
+                vertices = nodes)
+            set.seed(x$seed)
+            require(ggraph)
+            layout <- ggraph::create_layout(graph, layout = layout)
+            p.regTF <- ggraph(layout) + geom_edge_link(edge_width = 0.5, 
+                color = "grey80", show.legend = FALSE, end_cap = ggraph::circle(7, 
+                    "mm"), arrow = arrow(length = unit(1, "mm"))) + 
+                geom_node_point(aes(color = type, size = type, shape = type)) + 
+                ggrepel::geom_label_repel(aes(x = x, y = y, label = name), 
+                    size = 3) + guides(size = "none", shape = "none", 
+                color = guide_legend(override.aes = list(size = 4))) + 
+                scale_size_manual(values = c(mRNA = 10, TF = 6)) + 
+                scale_shape_manual(values = c(mRNA = 16, TF = 17)) + 
+                labs(color = "Type") + theme_void()
+            p.regTF <- set_lab_legend(p.regTF, glue::glue("{x@sig} TF regulation networking"), 
+                glue::glue("TF-mRNA 表达调控网络分析|||图中的节点表示对应 mRNA 或 TF，边代表相互作用。"))
+            x <- snapAdd(x, "以 TF、mRNA 构建 TF-mRNA 表达调控网络{aref(p.regTF)}，如图所示，共 {nrow(nodes)} 个节点，{nrow(data)} 个边。")
+            x <- plotsAdd(x, p.regTF)
+            return(x)
+        }
+        .local(x, ...)
+    })
+    
+    
+    # clear(rn.markers)
+    setMethod(f = "clear", signature = c(x = "job"), definition = function (x, 
+        ...) 
+    {
+        .local <- function (x, save = TRUE, lite = TRUE, suffix = NULL, 
+            name = rlang::expr_text(substitute(x, parent.frame(1))), 
+            path_jobSave = getOption("path_jobSave", "."), path_lite = file.path(path_jobSave, 
+                "lite"), expr_lite = NULL, allow_qs = TRUE, nthreads = 5) 
+        {
+            dir.create(path_jobSave, FALSE)
+            filename <- paste0(name, ".", x@step, suffix, ".rds")
+            if (save) {
+                file <- file.path(path_jobSave, filename)
+                if (allow_qs && object.size(x) > 5e+08) {
+                    fileQs <- paste0(tools::file_path_sans_ext(file), 
+                      ".qs")
+                    message(glue::glue("Too large object ('{obj.size(x)}' > 478.6 Mb), use `qs::qsave`"))
+                    message("Save qs: ", fileQs)
+                    qs::qsave(x, fileQs, nthreads = nthreads)
+                }
+                else {
+                    message("Save RDS: ", file)
+                    saveRDS(x, file)
+                }
+            }
+            object(x) <- NULL
+            dir.create(path_lite, FALSE)
+            if (!is.null(expr_lite)) {
+                if (!is.expression(expr_lite)) {
+                    stop("!is.expression(expr_lite).")
+                }
+                eval(expr_lite)
+            }
+            if (lite) {
+                file <- file.path(path_lite, filename)
+                message("Save RDS: ", file)
+                saveRDS(x, file)
+            }
+            return(x)
+        }
+        .local(x, ...)
+    })
+    
+    
+}
+

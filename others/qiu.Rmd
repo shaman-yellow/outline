@@ -1,0 +1,96 @@
+
+
+```{r}
+
+devtools::load_all("~/MCnebula2")
+
+mcn <- readRDS("~/Downloads/mcn1.Rds")
+
+which(duplicated(features_annotation(mcn)$.features_id))
+
+message("Detected duplicated rows in feature information (.f2_info).")
+message("Will merge these rows by column 'externalFeatureId'")
+
+ref <- specific_candidate(mcn)
+anno
+ref
+
+methods_read(project_api(mcn1))$read.f2_info <- MCnebula2:::.collate_features_via_sirius_api
+
+anno <- mcn@mcn_dataset@reference$features_annotation <- NULL
+features_annotation(mcn)
+mcn <- create_features_annotation(mcn)
+
+anno <- mcn@mcn_dataset@reference$features_annotation
+anno
+nrow(Terror)
+Terror 
+mcn@project_dataset@dataset$.f2_info <- NULL
+
+any(duplicated(Terror$.features_id))
+dplyr::filter(Terror, !duplicated(.features_id))
+dplyr::distinct(Terror, .features_id, .keep_all = TRUE)
+
+dplyr::filter(Terror, .features_id == "2")
+
+
+lapply(Terror, function(x) any(duplicated(x$.features_id)))
+lapply(Terror, function(x) nrow(x))
+
+any(duplicated(mcn@mcn_dataset@dataset$.f2_formula@entity$.features_id))
+
+which(duplicated(anno$.features_id))
+
+any(duplicated(ref$.features_id))
+
+
+mcn <- mcnebula()
+mcn <- initialize_mcnebula(mcn, "sirius.v6", "~/Downloads/SYQF6_neg.sirius")
+mcn <- filter_structure(mcn)
+mcn <- create_reference(mcn)
+
+mcn <- filter_formula(mcn, by_reference = TRUE)
+mcn <- filter_ppcp(mcn, by_reference = TRUE)
+
+mcn@project_dataset@dataset$.f2_info <- NULL
+mcn@mcn_dataset@reference$stardust_classes <- NULL
+mcn@mcn_dataset@reference$features_annotation <- NULL
+
+mcn <- create_stardust_classes(mcn)
+mcn <- create_features_annotation(mcn)
+mcn <- cross_filter_stardust(mcn, 5, .3)
+mcn <- create_nebula_index(mcn)
+
+mcn <- compute_spectral_similarity(mcn)
+
+mcn <- create_parent_nebula(mcn, 0.01, 5, FALSE)
+mcn <- create_child_nebulae(mcn, 0.01, 5)
+
+mcn <- create_parent_layout(mcn)
+mcn <- create_child_layouts(mcn)
+mcn <- activate_nebulae(mcn)
+
+p <- visualize(mcn, 'parent')
+p2 <- visualize_all(mcn)
+
+```
+
+```{r}
+workers <- getOption("mcn_collate_workers")
+if (!is.null(workers)) {
+  if (requireNamespace("...", quietly = TRUE)) {
+    ...
+    on.exit(...)
+  } else {
+    message("...")
+  }
+  ...
+}
+lst <- pbapply::pbsapply(
+  features, simplify = FALSE, cl = workers,
+  function(fea) {
+    myfun()
+  }
+)
+```
+

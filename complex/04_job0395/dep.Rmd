@@ -1,0 +1,223 @@
+
+```{r}
+
+data_cpd <- tibble::tribble(
+  ~ compound,        ~ pmid,
+  "Dopamine",        "24562381",
+  "D-Lactate",       "25694792",
+  "Lactic acid",     "37157850",
+  "Malondialdehyde", "Chinese",
+  "Diacylglycerol",  "Chinese"
+)
+
+cids <- PubChemR::get_cids(data_cpd$compound, namespace = "name")
+cids <- PubChemR::CIDs(cids)
+props <- PubChemR::get_properties(c("IsomericSMILES"), cids$CID)
+props <- PubChemR::retrieve(props, .combine.all = TRUE, .to.data.frame = TRUE)
+data_cpd <- dplyr::bind_cols(data_cpd, props[, -1])
+data_cpd
+data.table::fwrite(data_cpd, "./remote/compounds.csv")
+
+
+```
+
+```{r}
+download.file(
+  "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE167nnn/GSE167363/suppl//GSE167363_RAW.tar",
+  destfile = "GSE167363_RAW.tar" 
+)
+```
+
+## 针灸干预脓毒症潜在靶点预测
+
+`r snap(swi.cpd, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  notshow(swi.cpd$data_target)
+  notshow(swi.cpd$data_filter)
+  feature(swi.cpd, "target")
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+j.cpd <- .job(object = data_cpd)
+clear(j.cpd)
+
+swi.cpd <- job_swiss(
+  setNames(data_cpd$SMILES, data_cpd$compound), "针灸干预脓毒症活性成分"
+)
+swi.cpd <- step1(swi.cpd)
+swi.cpd <- step2(swi.cpd)
+clear(swi.cpd)
+
+dir.create("./remote/rds_jobSave", FALSE)
+file.copy(
+  "./rds_jobSave/swi.cpd.2.rds", "./remote/rds_jobSave", TRUE
+)
+feature(swi.cpd, "target")
+
+try_snap(swi.cpd$data_target, "Name", "symbols")
+```
+
+
+## Limma 差异分析
+
+`r snap(lm.GSE134347, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  lm.GSE134347@plots$step3$topDegs$`sepsis - healthy`$p.volcano
+  lm.GSE134347@plots$step3$topDegs$`sepsis - healthy`$p.hp
+  notshow(lm.GSE134347@tables$step2$tops$`sepsis - healthy`)
+  feature(lm.GSE134347)
+})
+```
+<!-- OVERTURE_END -->
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  ven.candidates@plots$step1$p.venn
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+
+db <- .hunt_representative_dataset_opengwas("sepsis", top_n = 5L)
+db[, 1:5]
+
+```
+
+```{r}
+srn.GSE167363_NK <- asjob_seurat_sub(
+  srn.GSE167363, metaCells, "NK_Cell"
+)
+clear(srn.GSE167363_NK)
+rm(srn.GSE167363)
+
+srn.GSE167363_NK <- step1(srn.GSE167363_NK)
+requireNamespace("Seurat")
+srn.GSE167363_NK <- step2(srn.GSE167363_NK, sct = TRUE)
+srn.GSE167363_NK <- step3(srn.GSE167363_NK, 1:15, 0.2)
+clear(srn.GSE167363_NK)
+
+# spsv(z7(srn.GSE167363_NK@plots$step3$p.umapInt, 1.3, 1))
+srn.GSE167363_NK <- step4(srn.GSE167363_NK)
+
+srn.GSE167363_NK <- step5(
+  srn.GSE167363_NK, 5, force = TRUE, min.pct = .1
+)
+
+nk_db <- list(
+
+  Cytotoxic_NK_CD56dim = list(
+    markers = c(
+      "FCGR3A",   # CD16
+      "NKG7",
+      "PRF1",
+      "GNLY",
+      "GZMB",
+      "KLRD1",
+      "TYROBP",
+      "TRAC"
+    ),
+    pmid = c(
+      "16316416", # CD56dim cytotoxic function
+      "33335526"  # receptor repertoire of CD56dim NK
+    )
+  ),
+
+  Cytokine_NK_CD56bright = list(
+    markers = c(
+      "NCAM1",    # CD56
+      "IL7R",
+      "XCL1",
+      "XCL2",
+      "KLRC1",
+      "IFNG",
+      "TNF",
+      "LTB"
+    ),
+    pmid = c(
+      "16316416",
+      "33335526"
+    )
+  ),
+
+  Activated_NK = list(
+    markers = c(
+      "CD69",
+      "IFNG",
+      "TNF",
+      "NFKBIA",
+      "CX3CR1"
+    ),
+    pmid = c(
+      "16316416"
+    )
+  ),
+
+  Proliferating_NK = list(
+    markers = c(
+      "MKI67",
+      "TOP2A",
+      "STMN1",
+      "TYMS",
+      "HMGB2"
+    ),
+    pmid = c(
+      "33335526"
+    )
+  ),
+
+  Exhausted_Dysfunctional_NK = list(
+    markers = c(
+      "TIGIT",
+      "LAG3",
+      "HAVCR2",   # TIM3
+      "PDCD1",
+      "CTLA4"
+    ),
+    pmid = c(
+      "33335526"
+    )
+  ),
+
+  NK_Cell = list(
+    markers = c(
+      "NKG7", "GNLY", "KLRD1",
+      "PRF1", "FCGR3A", "TYROBP"
+    ),
+    pmid = c("34558746", "25619264")
+  )
+
+)
+
+ref.markers <- as_markers(nk_db)
+
+requireNamespace("Seurat")
+srn.GSE167363_NK <- step6(
+  srn.GSE167363_NK, "", ref.markers, ref.markers, filter.fc = .3, 
+  filter.p = .05,
+  forceCluster = list(
+    NK_Cell = 1L, Activated_NK = 2L, Z_Others = c(3L, 7L, 8L, 9L)
+  )
+)
+# scsa_check(srn.GSE167363_NK, "", 0:6)
+clear(srn.GSE167363_NK, FALSE)
+
+recode = c(
+    "PSCTK2" = "ITK", "LYK" = "ITK", "EMT" = "ITK", "LPFS1" = "ITK",
+    "TSK" = "ITK"
+  )
+
+```
+

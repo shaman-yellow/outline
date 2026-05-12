@@ -35,6 +35,7 @@ clear(sce.GSE171213)
 srn.GSE171213_Den_Epi <- readRDS("./rds_jobSave/srn.GSE171213_Den_Epi.6.rds")
 
 # sce.GSE171213@step <- 3L
+# step4 is replaced with -> `diff`
 sce.GSE171213 <- step4(sce.GSE171213, srn.GSE171213_Den_Epi, "Dental_Epithelial_Cell")
 clear(sce.GSE171213)
 

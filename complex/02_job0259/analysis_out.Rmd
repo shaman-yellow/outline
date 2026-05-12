@@ -1,13 +1,13 @@
 ---
 title: 
 bibliography:
-  - '`r system.file("extdata", "library.bib", package = "utils.tool")`'
+  - '`r system.file("extdata", "library.bib", package = "union.publish")`'
   - library.bib
-csl: '`r system.file("extdata", "nature.csl", package = "utils.tool")`'
+csl: '`r system.file("extdata", "nature.csl", package = "union.publish")`'
 reference-section-title: "Reference"
 output:
   custom_docx_document2:
-    reference_docx: '`r system.file("extdata", "complex.docx", package = "utils.tool")`'
+    reference_docx: '`r system.file("extdata", "complex.docx", package = "union.publish")`'
 ---
 
 
@@ -537,7 +537,7 @@ autor(hdw.GSE171213_Den_Epi@plots$step7$p.network)
 ```
 
 ```{r eval = TRUE, echo = FALSE, results = "asis"}
-#| Feature-n2-genes-DETAILS-hdWGCNA-Genes
+#| Feature-n2-基因集-DETAILS-hdWGCNA-Genes
 autor(feature(hdw.GSE171213_Den_Epi))
 ```
 
@@ -573,7 +573,7 @@ autor(notshow(lm.GSE16134@tables$step2$tops$`PD vs HC`))
 ```
 
 ```{r eval = TRUE, echo = FALSE, results = "asis"}
-#| Feature-n1-genes-DETAILS-DEGs
+#| Feature-n1-基因集-DETAILS-DEGs
 autor(feature(lm.GSE16134))
 ```
 
@@ -585,7 +585,7 @@ autor(ven.GSE171213_candidates@plots$step1$p.venn)
 ```
 
 ```{r eval = TRUE, echo = FALSE, results = "asis"}
-#| Feature-n180-genes-DETAILS-Venn-jiao-ji-GSE171213-CANDIDATES
+#| Feature-n180-基因集-DETAILS-Venn-jiao-ji-GSE171213-CANDIDATES
 autor(feature(ven.GSE171213_candidates))
 ```
 
@@ -667,7 +667,7 @@ autor(ven.learn@plots$step1$p.venn)
 ```
 
 ```{r eval = TRUE, echo = FALSE, results = "asis"}
-#| Feature-n3-genes-DETAILS-Venn-jiao-ji-LEARN
+#| Feature-n3-基因集-DETAILS-Venn-jiao-ji-LEARN
 autor(feature(ven.learn))
 ```
 
@@ -1030,6 +1030,7 @@ vn.drugs_ex$savedir
 vn.drugs_ex <- step8(vn.drugs_ex)
 clear(vn.drugs_ex)
 
+file.copy("./rds_jobSave/vn.drugs_ex.8.rds", "./remote/rds_jobSave/", overwrite = TRUE)
 ```
 
 ## 代谢物-关键基因分子对接
@@ -1107,12 +1108,39 @@ vn.metabolite <- step8(vn.metabolite)
 clear(vn.metabolite)
 
 file.copy("./rds_jobSave/vn.metabolite.7.rds", "./remote/rds_jobSave/", overwrite = TRUE)
+
+file.copy("./rds_jobSave/vn.metabolite.8.rds", "./remote/rds_jobSave/", overwrite = TRUE)
 guess_project()
 ```
 
 ## 分子动力学模拟
 
-(待补充)
+`r snap(dy.drug_metabolite, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUG-METABOLITE-gromacs-RMSD-plot
+autor(dy.drug_metabolite@plots$step2$p.rmsd)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUG-METABOLITE-gromacs-RMSF-plot
+autor(dy.drug_metabolite@plots$step2$p.rmsf)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUG-METABOLITE-gromacs-hydrogen-bond-plot
+autor(dy.drug_metabolite@plots$step2$p.hbond)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUG-METABOLITE-gromacs-energy-plot
+autor(dy.drug_metabolite@plots$step2$p.energy)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('18_dynamics')
+```
+
 
 ```{r}
 file_zip <- pdb_packaging.hb(vn.drugs_ex, vn.metabolite)
@@ -1221,16 +1249,20 @@ file_scripts <- push_script.hb(
   "seurat", "metabolite", "keyCell", "scenic",
   "scMeta", "reactome",
   "hdWGCNA", "DEG", "ppi", "learn", "validate", "monocle",
-  "gsea", "immune", "graphBan", "gutMGene", "autodock"
+  "gsea", "immune", "graphBan", "gutMGene", "autodock", "dynamics"
 )
 
 pull_jobs_from_script.hb(file_scripts, TRUE, FALSE)
 push_overture_as_output.hb(TRUE, TRUE)
 
 push_checkout_after_output.hb(FALSE)
+file.copy(
+  list.files("./scripts_mirror/", full.names = TRUE), 
+  "./remote", TRUE
+)
 
 run_remote_output.hb(TRUE, skip = c(1, 3))
-convert_pdf_in_project()
+convert_pdf_in_project(skip = 1:17)
 
 .upd_pkg_to_remote()
 
@@ -1260,9 +1292,9 @@ get_contents_refered_from_fields("./order_material/test.md")
 build_completion_for_package("utils.tool")
 
 project_packaging.hb(
-  "~/Documents/job0259_Report_0411_revise2.docx", TRUE, TRUE
+  "./analysis_out.docx", FALSE, TRUE
 )
-gett_file("./remote/job_0259_report_20260414.docx")
+gett_file("./remote/job_0259_report_20260501.docx")
 
 ```
 

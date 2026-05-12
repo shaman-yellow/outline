@@ -1,0 +1,1564 @@
+---
+title: 
+bibliography:
+  - '`r system.file("extdata", "library.bib", package = "union.publish")`'
+  - library.bib
+csl: '`r system.file("extdata", "nature.csl", package = "union.publish")`'
+reference-section-title: "Reference"
+output:
+  custom_docx_document2:
+    reference_docx: '`r system.file("extdata", "complex.docx", package = "union.publish")`'
+---
+
+
+```{r include = F, eval = F}
+info <- items(start = td("2026-04-14"), end = td("2026-04-14"), finish = td("2026-04-14"),
+  id = "p1733", client = "", inst = "",
+  type = "生信分析",
+  title = "基于单细胞测序中Scissor算法探究血清素对于鼻咽癌高低瘤内菌群负荷的调控机制",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+project_publish.complex("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.complex("./analysis_out.docx")
+project_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/utils.tool>
+## if you want to run codes of this Rmarkdown,
+## please install the package `utils.tool` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_cover.complex()
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_index()
+```
+
+# 项目概述
+
+## 项目背景
+
+鼻咽癌（Nasopharyngeal carcinoma,
+NPC），是一种高度侵袭性的头颈恶性肿瘤，起源于鼻咽的上皮组织，具有独特的流行病学和病因特征[@luo2025reactivation]。它是一种在临床上较为常见的头颈部恶性肿瘤类型。在全球的大范围内来看，其发病率并非均匀分布，而是呈现出一定的地域差异特征[@su2024epidemiology]。值得特别指出的是，在东南亚地区，鼻咽癌的发病情况相较于其他地区更为突出，呈现出较为高发的态势。鼻咽癌从最初的发生到逐步发展的整个过程，并非由单一因素所决定，而是与多种不同的因素都存在着密切的关联[@liang2024nasopharyngeal]。目前的治疗手段主要包括放射治疗、化学治疗以及综合治疗等几种常见方式[@jiang2024enhancing]。然而，尽管现有的治疗方法在一定程度上能够控制病情进展，但鼻咽癌患者仍面临着复发、转移以及治疗相关副作用等诸多挑战[@huang2024pja1]。graphban基于图神经网络（GNN），通过构建药物和靶标分子的图结构，利用深度学习方法学习分子特征，从而实现高精度的药物-靶标相互作用预测[@hadipour2025graphban]。本研究利用graphban算法探究与关键基因密切相关的药物，使问题都亟待得到有效的解决。
+
+瘤内菌群，作为肿瘤微环境当中极为重要的一个组成部分，它的负荷高低情况其实是与肿瘤的发生、发展以及最终的预后状况都存在着密切且紧密的关联[@nio2022effect]。经过深入研究和大量的临床观察发现，这种关联体现在多个层面，例如影响肿瘤细胞的生长速度、侵袭转移能力等。而在鼻咽癌中，瘤内菌群负荷的差异更是可能会引发一系列不同的肿瘤生物学行为，这些行为包括肿瘤细胞的增殖特性、代谢方式等的改变。同时，还会导致不同的临床特征，像是症状表现的差异、治疗反应的不同以及复发转移的概率高低等[@su2025nasopharyngeal]。
+
+血清素作为一种在生物体内广泛分布的神经递质和血管活性物质，近年来在肿瘤发生发展过程中的作用逐渐受到关注[@li2025serotonin]。有研究表明，血清素可以通过多种信号通路参与肿瘤细胞的增殖、迁移、侵袭以及血管生成等过程，在肿瘤的进展和转移中发挥着复杂而重要的作用。目前，关于血清素如何调控鼻咽癌瘤内菌群负荷的研究尚处于起步阶段，其具体机制尚未明确，而单细胞测序技术能够从单个细胞水平对细胞的基因表达情况进行精准分析，揭示细胞间的异质性。Scissor算法作为一种新兴的单细胞数据分析方法[@tian2024prognostic]，可以有效地从复杂的单细胞数据中挖掘出具有特定生物学功能或特征的细胞亚群。sctenifoldknk是一款基于单细胞转录组数据、用于虚拟基因敲除（in-silico
+KO）的计算工具，通过构建单细胞基因调控网络（scGRN）并模拟基因缺失后的网络扰动，快速预测基因功能与调控作用[@osorio2022sctenifoldknk]，解析鼻咽癌等肿瘤中核心调控基因的功能，识别治疗靶点与耐药机制。因此，深入探究血清素对于鼻咽癌高低瘤内菌群负荷的调控机制，不仅有助于揭示鼻咽癌的发病新机制，还可能为鼻咽癌的临床治疗提供新的策略和靶点。
+
+本研究拟采用单细胞测序技术结合Scissor算法，系统探究血清素对鼻咽癌高低瘤内菌群负荷的调控机制。旨在深入探究血清素对于高低瘤内菌群负荷中的调控机制，通过这一研究有望为鼻咽癌的免疫治疗提供新的理论依据和潜在的治疗靶点，进一步推动鼻咽癌个体化精准治疗的发展。
+
+## 分析方法
+
+1. 单细胞测序数据处理；
+
+2. 降维聚类、细胞注释；
+
+3. Scissor分析；
+
+4. Scissor+ 细胞的二次分群与功能细分
+
+5. 瘤内菌群专属深度分析
+
+6. Hierarchical Weighted Gene Co-expression Network
+Analysis（hdWGCNA）分析；
+
+7. DEGs的获取；
+
+8. 候选基因的获取；
+
+9. 基因本体论（Gene Ontology，GO）和京都基因与基因组百科全书（Kyoto
+Encyclopedia of Genes and Genomes，KEGG）富集分析；
+
+10. 机器学习筛选特征基因；
+
+11. 关键基因筛选
+
+12. [针对关键基因的分析：]{.mark}
+    - GSEA分析；
+
+    - 列线图构建和评估；
+
+    - 相关性分析、染色体/亚细胞定位和Gene Multiple Association Network
+Integration Algorithm（GeneMANIA）；
+
+    - 分子调控网络；
+
+    - GraphBAN药物预测；
+
+    - 分子对接；
+    - [分子动力学模拟；]{.mark}
+
+13. 表达量分析、RT-qPCR（Reverse Transcription Quantitative Polymerase
+Chain Reaction）和两样本孟德尔随机化（MR）分析
+
+14. 免疫浸润；
+
+15. TIDE 和免疫检查点分析；
+
+16. [针对单细胞数据集的分析：]{.mark}
+    - 细胞通讯；
+    - 拟时序分析；
+    - 转录因子分析；
+    - sctenifoldknk虚拟敲除；
+    - 下游通路分析。
+
+
+## 数据来源
+
+- **bulk转录组：**
+    - **从GEO下载GSE53819数据集（样本及类型：18个鼻咽癌原发肿瘤和18个非癌性鼻咽组织（GPL6480））；测序类型：芯片；用途：差异基因的筛选和表达量验证【PMID：38532632】。**
+    - **从GEO下载GSE12452数据集（样本及类型：31例鼻咽癌，10例正常对照（GPL570））；测序类型：芯片；用途:差异基因【PMID：39707377】。**
+    - **从GEO下载GSE189642数据集（样本及类型：12个肿瘤内细菌负荷高样本，12个肿瘤内细菌负荷低样本（IBL_high vs IBL_low）（GPL24676））；测序类型：高通量；用途：scissor分析【PMID：35834269】**
+
+- **单细胞数据集**：从 GEO 下载 GSE150825 数据集（组织样本，11个患者肿瘤组织样本 (去掉 VDJ-seq 和 lymphoid hyperplasia 之后)（GPL24676））；测序类型：高通量；用途：单细胞分析【PMID：33750785】
+
+- **血清素相关基因**（Serotonin-related genes，SRGs）：
+    - 从Msigdb数据库中下载（<https://www.msigdb.org>）合并去重共162个基因【PMID: 40403728】。
+    - GeneCards  (<https://www.genecards.org/>) 获取【PMID: 27322403】。
+    - 对基因集 (基因集合: 合并后的 MSigDB Serotonin 相关基因, 从 GeneCards 获取的 Serotonin 相关基因集)去重、合并。该基因集共包含 1212 个基因。
+
+- 孟德尔随机化数据
+    - 暴露因素数据源于 eQTLGen 数据库 (从 OpenGWAS <https://opengwas.io/> 数据库获取)。
+    - 结局因素获取自 MiBioGen 数据库。MiBioGen (<https:www.mibiogen.org>) 数据由 Kurilshikov 等人领导，涵盖了来自 24 个队列的 18,340 名受试者，是目前肠道微生物群遗传学研究中最具权威性的数据集之一
+
+## 研究目标
+
+1. 明确血清素调控鼻咽癌高低瘤内菌群负荷分子机制。经单细胞测序获基因表达谱数据，用Scissor算法分析细胞亚群特征，找出菌群负荷调控关键基因和通路，揭示机制，为干预治疗提供靶点。
+
+2. 探究血清素调控鼻咽癌瘤内菌群负荷机制与患者临床预后的关联性。收集患者资料，结合机制和细胞亚群特征，分析与预后指标关系，评估预后价值，为临床判断提供关键基因和参考指标。
+
+## 拟解决的关键科学问题
+
+本研究将从以下几个方面进行探究：
+
+首先，利用单细胞测序技术获取鼻咽癌组织中单个细胞的基因表达谱数据，确保数据的全面性和准确性，为后续分析提供坚实基础。
+
+接着，运用Scissor算法对单细胞数据进行深入挖掘，识别出与血清素调控鼻咽癌瘤内菌群负荷密切相关的细胞亚群，并分析这些细胞亚群的特征和功能。然后，结合hdWGCNA等方法，构建基因共表达网络，找出在血清素调控过程中起关键作用的关键基因和信号通路，揭示其分子机制。
+
+此外，还将收集鼻咽癌患者的临床资料，结合上述机制和细胞亚群特征，探究血清素调控鼻咽癌瘤内菌群负荷机制与患者临床预后的关联性，评估其诊断价值，为临床判断提供可靠的菌群负荷调控关键基因和参考指标。
+
+
+## 创新性
+
+研究思路参照中科院二区以上文献进行，检索词"Nasopharyngeal carcinoma""TCGA""single cell RNA"在生信领域目前仅有4篇(PMID:
+40392335，32428547，40118861，40574357)。本研究所用数据集均有文献作为支撑，可信度高。此外样本选用组织样本，方便后续验证。样本量充足，可适用于多个分析方法。本方案设计到的分析方法中包含单细胞scissor分析、拟时序分析、细胞通讯和虚拟敲除分析等，这些方法可以推断关键基因在细胞分化中的作用、揭示细胞与细胞间的相互作用、关键基因在关键细胞中的作用等，体现了单细胞测序分析的生物学价值与广泛应用。
+
+
+## 流程图
+
+![](./order_material/route.png)
+
+\newpage
+
+# 分析结果 {#workflow}
+
+## 集成单细胞数据分析
+
+### 数据质控
+
+`r meth(srn.GSE150825, FALSE)`
+`r snap(srn.GSE150825, 1:3)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-before-Quality-control
+autor(srn.GSE150825@plots$step1$p.qc_pre)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-After-Quality-control
+autor(srn.GSE150825@plots$step1$p.qc_aft)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-Standard-deviations-of-PCs
+autor(srn.GSE150825@plots$step2$p.pca_rank)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-UMAP-Unintegrated
+autor(z7(srn.GSE150825@plots$step3$p.umapUint, 1.5, 1))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-UMAP-Integrated
+autor(z7(srn.GSE150825@plots$step3$p.umapInt, 1.5, 1))
+```
+
+
+### 细胞注释
+
+`r snap(srn.GSE150825, 1:6)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-UMAP-with-label
+autor(srn.GSE150825@plots$step3$p.umapLabel)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-Marker-in-cluster-dotplot
+autor(srn.GSE150825@plots$step6$p.markers_cluster)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-annotation-validate-markers
+autor(srn.GSE150825@tables$step6$t.validMarkers)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-Marker-in-cell-type-dotplot
+autor(srn.GSE150825@plots$step6$p.markers)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCSA-Cell-UMAP-mapping
+autor(srn.GSE150825@plots$step6$p.map_scsa)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCSA-annotation-Cell-Proportions-in-each-sample
+autor(z7(srn.GSE150825@plots$step6$p.props_scsa, 0.8, 1))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-significant-markers-of-cell-clusters
+autor(notshow(srn.GSE150825@tables$step5$all_markers))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-all-markers-no-filter
+autor(notshow(srn.GSE150825@tables$step5$all_markers_no_filter))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-scsa-res-all
+autor(notshow(srn.GSE150825@tables$step6$scsa_res_all))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-props-scsa
+autor(notshow(srn.GSE150825@tables$step6$t.props_scsa))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-srn-GSE150825-params-final-metadata
+autor(notshow(srn.GSE150825@params$final_metadata))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('01_seurat')
+```
+
+
+```{r}
+markers(srn.GSE150825, c(23), 20)
+```
+
+## Scissor 表型关联单细胞亚群鉴定 
+
+### 表型关联单细胞亚群
+
+获取 GSE189642 用以肿瘤内细菌负荷 (Intratumoural Bacteria Load, IBL) 表型关联单细胞亚型分析。
+`r snap(ssr.GSE150825, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-scissor-alpha-selection
+autor(ssr.GSE150825@plots$step2$p.alpha)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-Scissor-Cell-UMAP-mapping
+autor(ssr.GSE150825@params$map_seurat$p.map)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-Scissor-Cell-Proportions-in-each-sample
+autor(ssr.GSE150825@params$map_seurat$p.props)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-Scissor-Cell-Proportions-in-each-group
+autor(ssr.GSE150825@params$map_seurat$p.props_group)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-Scissor-Cell-Proportion-intergroup-comparison
+autor(ssr.GSE150825@params$map_seurat$p.props_stat)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-ssr-GSE150825-params-stat-alphas-all
+autor(notshow(ssr.GSE150825@params$stat_alphas_all))
+```
+
+`r snap(mdb.serotonin, TRUE, TRUE)`
+`r snap(gn.serotonin, TRUE, TRUE)`
+
+### 血清素相关基因 AUCell 活性分析
+
+`r snap(au.GSE150825, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-Mean-AUCell-Activity
+autor(au.GSE150825@plots$step1$p.aucell_mean)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-AUCell-Activity-UMAP-mapping
+autor(au.GSE150825@params$map_seurat$p.map)
+```
+
+### 关键细胞筛选
+
+为了筛选关键细胞，本研究综合考虑了 Scissor+ 占比高的细胞类型
+以及 Serotonin 活性高的细胞类型，
+`r snap(ven.key_cell, TRUE, TRUE)`
+因此，本研究⟦mark$red('选择 Fibroblast 为关键细胞')⟧。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| KEY-CELL-intersection-of-High-Scissor-ratio-from-All-with-High-Serotonin-activity
+autor(z7(ven.key_cell@plots$step1$p.venn, 2.5, 1.5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Feature-n1-cells-DETAILS-guan-jian-xi-bao
+autor(feature(ven.key_cell))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('02_scissor')
+```
+
+
+## 细胞亚群分析
+
+`r snap(srn.GSE150825_sciPos_FibroClean, 1:5, TRUE)`
+`r snap(srn.GSE150825_sciPos_FibroClean, 6)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-UMAP-Unintegrated
+autor(srn.GSE150825_sciPos_FibroClean@plots$step3$p.umapUint)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-UMAP-Integrated
+autor(srn.GSE150825_sciPos_FibroClean@plots$step3$p.umapInt)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-annotation-validate-markers
+autor(srn.GSE150825_sciPos_FibroClean@tables$step6$t.validMarkers)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-Marker-in-cluster-dotplot
+autor(z7(srn.GSE150825_sciPos_FibroClean@plots$step6$p.markers_cluster, 
+    1, 1.3))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-Marker-in-cell-type-dotplot
+autor(z7(srn.GSE150825_sciPos_FibroClean@plots$step6$p.markers, 1, 
+    1.8))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-SCSA-annotation-Cell-Proportions-in-each-sample
+autor(wrap(srn.GSE150825_sciPos_FibroClean@plots$step6$p.props_scsa, 
+    7, 5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-SCSA-Cell-UMAP-mapping
+autor(wrap(srn.GSE150825_sciPos_FibroClean@plots$step6$p.map_scsa, 
+    5, 3))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-significant-markers-of-cell-clusters
+autor(notshow(srn.GSE150825_sciPos_FibroClean@tables$step5$all_markers))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-all-markers-no-filter
+autor(notshow(srn.GSE150825_sciPos_FibroClean@tables$step5$all_markers_no_filter))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-props-scsa
+autor(notshow(srn.GSE150825_sciPos_FibroClean@tables$step6$t.props_scsa))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-srn-GSE150825-sciPos-FibroClean-params-final-metadata
+autor(notshow(srn.GSE150825_sciPos_FibroClean@params$final_metadata))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('03_keyCell')
+```
+
+
+```{r}
+markers(srn.GSE150825_sciPos_FibroClean, 0:1, 20)
+```
+
+## hdWGCNA 加权基因共表达分析
+
+`r snap(hdw.GSE150825_sciPos_FibroClean, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-hdWGCNA-soft-power
+autor(hdw.GSE150825_sciPos_FibroClean@plots$step2$p.sft)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-Gene-co-expression-network-module
+autor(hdw.GSE150825_sciPos_FibroClean@plots$step3$p.dg)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN
+autor(hdw.GSE150825_sciPos_FibroClean@plots$step4$p.cor_hMEs)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-module-membership-ranking
+autor(hdw.GSE150825_sciPos_FibroClean@plots$step5$p.kme)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-hMEs-in-UMAP
+autor(hdw.GSE150825_sciPos_FibroClean@plots$step5$p.umap_hMEs)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-hdw-GSE150825-sciPos-FibroClean-modules
+autor(notshow(hdw.GSE150825_sciPos_FibroClean$modules))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Feature-n5-基因集-DETAILS-Top-100-kME
+autor(feature(hdw.GSE150825_sciPos_FibroClean, "kme"))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('04_hdWGCNA')
+```
+
+
+
+## Limma 差异分析
+
+`r snap(lm.GSE53819, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE53819-NPC-vs-control-volcano-of-DEGs
+autor(lm.GSE53819@plots$step3$topDegs$`NPC vs control`$p.volcano)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE53819-NPC-vs-control-heatmap-of-top-10-DEGs
+autor(lm.GSE53819@plots$step3$topDegs$`NPC vs control`$p.hp)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE53819-NPC-vs-control-limma-DEGs-data
+autor(notshow(lm.GSE53819@tables$step2$tops$`NPC vs control`))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Feature-n1-genes-DETAILS-DEGs-GSE53819-NPC-vs-control-
+autor(feature(lm.GSE53819))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('05_DEGs')
+```
+
+
+
+## 候选基因获取
+
+综合单细胞与 bulk 转录组水平分析，
+`r snap(ven.candidates, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| CANDIDATES-intersection-of-DEGs-NPC-vs-control-with-DEGs-IBL-High-vs-IBL-Low-with-Serotonin-Genes-with-Module-Genes
+autor(z7(ven.candidates@plots$step1$p.venn, 2, 2))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Feature-n14-genes-DETAILS-hou-xuan-ji-yin
+autor(feature(ven.candidates))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('06_candidate')
+```
+
+
+## 富集分析
+
+`r snap(en.candidates, TRUE, TRUE)`
+
+KEGG通路富集结果显示 (`r ref(en.candidates@plots$step1$p.kegg$ids)`)，候选基因主要集中于炎症反应、免疫调控以及外源物代谢相关通路。其中，NF-κB信号通路的显著富集提示该分组差异与经典炎症信号轴的激活密切相关。NF-κB作为连接微生物刺激与宿主免疫反应的关键枢纽，其激活通常反映肿瘤微环境中存在持续的炎症或免疫应答压力。同时，细胞色素P450介导的外源物代谢通路及药物代谢相关通路的富集，提示肿瘤组织在代谢层面发生了显著重编程，这种改变可能与瘤内菌群产生的代谢产物或宿主对微生物来源分子的解毒反应相关。此外，B细胞受体信号通路的富集进一步表明适应性免疫系统被激活，尤其是体液免疫反应的参与增强。整体来看，该图揭示出一个以炎症反应、免疫激活及代谢适应为特征的分子图谱，提示瘤内菌群负荷可能通过多层级调控参与鼻咽癌的生物学过程。
+
+GO功能富集分析从生物过程、细胞组分及分子功能三个层面进一步细化了候选基因的功能特征 (`r ref(en.candidates@plots$step1$p.go$ids)`)。在生物过程层面，基因显著富集于对活性氧、缺氧以及氧化应激的响应，同时伴随NF-κB信号及MAPK通路调控的增强，提示肿瘤微环境中存在显著的应激反应与炎症驱动状态。这种以氧化应激与缺氧为特征的环境通常有利于肿瘤细胞获得更强的生存与适应能力。在细胞组分层面，富集结果主要定位于分泌颗粒腔、血小板α颗粒以及神经致密核心囊泡等结构，提示候选基因与细胞分泌功能密切相关，尤其涉及神经内分泌样分泌系统。在分子功能层面，血清素结合活性、肽类结合以及转运相关功能的富集尤为突出，其中“血清素结合”这一结果具有重要意义，提示血清素信号轴在该分组差异中发挥关键作用。综合来看，GO分析表明差异不仅体现在炎症与应激反应层面，还涉及神经递质相关的分泌与信号转导过程，为血清素参与菌群-肿瘤互作提供了功能层面的支持。
+
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| CANDIDATES-KEGG-enrichment
+autor(z7(en.candidates@plots$step1$p.kegg$ids, 1, 0.7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| CANDIDATES-GO-enrichment
+autor(en.candidates@plots$step1$p.go$ids)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| CANDIDATES-KEGG-enrichment-data
+autor(notshow(en.candidates@tables$step1$res.kegg$ids))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| CANDIDATES-GO-enrichment-data
+autor(notshow(en.candidates@tables$step1$res.go$ids))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('07_enrich')
+```
+
+
+## 机器学习
+
+### 模型训练与评估
+
+`r snap(ml10.train, 0:2, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TRAIN-RFE-feature-importance
+autor(ml10.train@plots$step1$p.rfe_imp)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TRAIN-RFE-performance-Kappa-curve
+autor(notshow(ml10.train@plots$step1$p.rfe_kappa))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TRAIN-RFE-performance-accuracy-curve
+autor(notshow(ml10.train@plots$step1$p.rfe_acc))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Feature-n10-genes-DETAILS-RFE-shai-xuan-hou-yong-yu-ge-mo-xing-xun-lian-de-ji-yin
+autor(feature(ml10.train, "rfe"))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TRAIN-ROC-evaluation-of-models
+autor(ml10.train@plots$step1$p.rocs)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TRAIN-confusion-matrix-of-models
+autor(ml10.train@plots$step1$p.confusions)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TRAIN-prediction-comprehensive-comparison
+autor(ml10.train@plots$step1$p.evaluation)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-ml10-train-params-res-roc-summary
+autor(notshow(ml10.train@params$res_roc$summary))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-ml10-train-params-res-evaluation-summary
+autor(notshow(ml10.train@params$res_evaluation$summary))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TRAIN-comprehensive-score-evaluation-cross-models
+autor(ml10.train@plots$step2$p.score)
+```
+
+```{r}
+ml10.train@params$res_ml_train10$rfes
+ml10.train@params$res_confusion
+```
+
+### SHAP 分析最优模型
+
+`r snap(ml10.train, 3)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TRAIN-Global-SHAP-Feature-Importance
+autor(ml10.train@plots$step3$p.importance)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| TRAIN-SHAP-Summary-Distribution
+autor(ml10.train@plots$step3$p.summary)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('08_learn')
+```
+
+
+## 表达量验证
+
+`r snap(des.validate_GSE189642, "learn")`
+`r snap(ven.marker, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-Box-Plot-Of-DEGs-learn
+autor(z7(des.validate_GSE189642@params$focusedDegs_learn$p.BoxPlotOfDEGs, 
+    0.7, 1.3))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-ROC-of-genes-CD9-and-CXCL12-and-NME1-and-PTPN6
+autor(des.validate_GSE189642@params$focusedDegs_learn$p.rocs)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Feature-n4-genes-DETAILS-guan-jian-ji-yin
+autor(feature(ven.marker))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('09_validate')
+```
+
+
+## GSEA分析
+
+`r snap(corgsea.marker, TRUE, TRUE)`
+
+GSEA结果显示（`r ref(corgsea.marker@plots$step2$p.codes$CD9)`），基于CD9与全基因表达相关性排序的富集分析表明，与线粒体功能及能量代谢相关的通路呈显著正向富集，包括氧化磷酸化、三羧酸循环以及呼吸电子传递链等核心代谢过程。该结果提示，与CD9表达呈正相关的基因集合在功能上高度聚焦于线粒体驱动的能量代谢活动，反映出CD9可能与细胞氧化代谢增强密切相关。同时，帕金森病和亨廷顿病等通路的富集，本质上源于其包含大量线粒体功能与氧化应激相关基因，而非疾病特异性过程，进一步支持该相关基因集合具有显著的线粒体活性及活性氧代谢特征。此外，外源物代谢相关通路的富集提示，这一相关网络可能还涉及对内外源代谢压力的适应过程。整体而言，该结果揭示出以CD9为核心的相关基因网络呈现出明显的线粒体代谢重编程特征。
+
+在另一组GSEA结果中（`r ref(corgsea.marker@plots$step2$p.codes$CXCL12)`），基于CXCL12与全基因表达相关性构建的排序分析显示，与DNA复制、S期进程及G2/M检查点等细胞周期相关通路呈显著负向富集趋势。这表明，与CXCL12表达呈负相关的基因主要集中于细胞周期调控与DNA合成过程，即随着CXCL12相关性增强，这些增殖相关功能呈现相对降低的趋势。该结果提示CXCL12相关基因网络在功能上更倾向于非增殖特征，可能与微环境调控、细胞迁移或信号转导等过程相关，而非直接驱动细胞分裂。结合整体分析可以推测，CXCL12所代表的分子网络更偏向于调控细胞适应性行为，而非经典的增殖程序。
+
+GSEA分析结果显示（`r ref(corgsea.marker@plots$step2$p.codes$PTPN6)`），基于PTPN6相关性排序的富集分析揭示，多条免疫调控路径显著富集，包括B细胞受体信号通路、Fcγ受体介导的吞噬作用、补体系统以及免疫细胞间相互作用等。这些通路的协同富集表明，与PTPN6表达正相关的基因集合在功能上高度参与免疫调控过程，涵盖体液免疫与先天免疫的多个层面。同时，钙离子信号通路的富集提示该相关网络在细胞信号转导层面具有较高活性，而钙信号不仅在免疫细胞激活中发挥关键作用，也参与神经递质释放等过程。该结果整体反映出PTPN6相关基因网络呈现出典型的免疫活化特征，提示其在肿瘤免疫微环境调控中可能具有重要作用。
+
+另一组GSEA结果显示（`r ref(corgsea.marker@plots$step2$p.codes$NME1)`），基于NME1与全基因表达相关性的排序分析表明，细胞周期相关通路呈显著正向富集，包括DNA复制、有丝分裂过程以及姐妹染色单体分离等关键生物学过程。这表明，与NME1表达呈正相关的基因主要集中于细胞增殖与分裂相关功能，提示NME1可能参与或反映细胞周期调控活动的增强。与其他以代谢或免疫为特征的相关网络相比，NME1相关基因集合更明确地指向经典的增殖程序，体现出其在肿瘤细胞增殖过程中的潜在作用。
+
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKER-GSEA-plot-CD9
+autor(wrap(corgsea.marker@plots$step2$p.codes$CD9, 10, 7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSEA-pathway-list-of-CD9-data
+autor(notshow(corgsea.marker@tables$step1$table_gsea$CD9))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKER-GSEA-plot-CXCL12
+autor(wrap(corgsea.marker@plots$step2$p.codes$CXCL12, 10, 7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSEA-pathway-list-of-CXCL12-data
+autor(notshow(corgsea.marker@tables$step1$table_gsea$CXCL12))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKER-GSEA-plot-PTPN6
+autor(wrap(corgsea.marker@plots$step2$p.codes$PTPN6, 10, 7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSEA-pathway-list-of-PTPN6-data
+autor(notshow(corgsea.marker@tables$step1$table_gsea$PTPN6))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKER-GSEA-plot-NME1
+autor(wrap(corgsea.marker@plots$step2$p.codes$NME1, 10, 7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSEA-pathway-list-of-NME1-data
+autor(notshow(corgsea.marker@tables$step1$table_gsea$NME1))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('10_GSEA')
+```
+
+
+## 关键基因关联分析、染色体定位、亚细胞定位和 GeneMANIA 分析
+
+### 关键基因关联分析
+
+`r snap(cp.markers, TRUE)`
+这些关键基因并非独立发挥作用，而是在转录调控层面形成一定的拮抗或互补关系。负相关关系通常反映潜在的功能对立或不同生物学过程的分化，例如免疫调控与细胞增殖之间的平衡，或趋化信号与结构相关分子的差异表达模式。因此，该图从整体上揭示了关键基因之间存在明显的调控网络结构，为后续功能分析提供了基础。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-gene-n4-with-n4-correlation-heatmap
+autor(cp.markers@params$p.cor)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-cp-markers-params-res
+autor(notshow(cp.markers@params$res))
+```
+
+### 关键基因定位分析
+
+染色体定位分析可有效揭示基因在染色体上的分布特征，以及其与疾病机制的潜在关联。
+`r snap(lc.markers, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-Chromosome-localization
+autor(lc.markers@plots$step1$p.locateChr)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-lc-markers-params-gene-data
+autor(notshow(lc.markers@params$gene_data))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-RNA-Subcellular-Localization-Distribution
+autor(lc.markers@plots$step2$p.locateScore)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-lc-markers-params-locateData
+autor(notshow(lc.markers@params$locateData))
+```
+
+### GeneMANIA 网络分析
+
+`r snap(gm.markers, TRUE, TRUE)`
+关键基因（CD9、CXCL12、NME1、PTPN6）与20个功能相关基因构建形成复杂的相互作用网络，涉及共同表达、物理相互作用、遗传互作、共享蛋白结构域、共定位及通路富集等多种关系类型。功能富集分析进一步表明，该网络显著富集于趋化因子相关过程，包括细胞对趋化因子的反应、细胞趋化、白细胞趋化及中性粒细胞迁移等。这些结果提示，关键基因整体上参与免疫细胞募集与炎症反应调控，尤其是在趋化信号轴中发挥重要作用。该网络不仅反映了基因之间的直接或间接联系，也揭示了其在免疫微环境调控中的潜在功能模块。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-geneMANIA-network
+autor(gm.markers@plots$step3$p.network)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gm-markers-params-res-alls-functions
+autor(notshow(gm.markers@params$res_alls$functions))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('11_geneAnalysis')
+```
+
+
+```{r}
+fea.markers <- load_feature(remote = "remote")
+gm.markers <- asjob_genemania(fea.markers)
+gm.markers <- step1(gm.markers)
+file.copy(file.path("~/Downloads", gm.markers$file_used), gm.markers$dir_save)
+gm.markers <- step2(gm.markers)
+gm.markers <- step3(gm.markers)
+gm.markers@plots$step3$p.network
+clear(gm.markers)
+file.copy("./rds_jobSave/gm.markers.3.rds", "./remote/rds_jobSave/")
+
+
+```
+
+
+## 分子调控网络分析
+
+`r snap(rn.markers, 0:5, TRUE)`
+该网络系统性展示了关键基因的上游miRNA及其对应lncRNA调控关系，反映出复杂的多层级调控结构。具体而言，不同关键基因对应的miRNA数量存在明显差异（如NME1对应miRNA数量最多），提示其在转录后调控层面可能受到更为复杂的调控。lncRNA通过竞争性结合miRNA（ceRNA机制）调节mRNA表达，从而构建精细的调控网络。该结果表明，关键基因不仅在转录层面具有重要作用，同时在转录后调控层面也受到广泛调控。
+
+`r snap(rn.markers, 6)`
+该网络揭示了关键基因的上游转录调控机制，反映其表达可能受到特定转录因子的激活或抑制调控。通过该网络可以识别潜在的核心转录因子及关键调控轴，为进一步解析基因表达调控机制提供依据。与转录后调控网络相比，该结果从转录层面补充了关键基因的调控信息，表明其表达调控具有多层级、多维度的特点。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-expression-regulation-networking
+autor(rn.markers@plots$step5$p.regNet)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-rn-markers-params-all-lncRNA
+autor(notshow(rn.markers@params$all_lncRNA))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-rn-markers-params-all-miRNA
+autor(notshow(rn.markers@params$all_miRNA))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-TF-regulation-networking
+autor(z7(rn.markers@plots$step6$p.regTF, 0.5, 0.5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-rn-markers-params-all-tf
+autor(notshow(rn.markers@params$all_tf))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('12_network')
+```
+
+
+## GraphBAN 药物预测
+
+`r snap(gb.markers, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gb-markers-params-info-compounds
+autor(notshow(gb.markers@params$info_compounds))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gb-markers-params-split-by-genes
+autor(notshow(gb.markers@params$split_by_genes))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-Candidate-drugs-retained-after-all-evaluation
+autor(notshow(gb.markers@tables$step7$t.final_candidates))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-Candidate-drugs-retained-after-all-evaluation-transposition
+autor(gb.markers@tables$step7$t.final_candidates_mutate)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gb-markers-params-admet
+autor(notshow(gb.markers@params$admet))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-gb-markers-params-admet-filter
+autor(notshow(gb.markers@params$admet_filter))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('13_graphBan')
+```
+
+
+
+```{r}
+file.copy("~/Downloads/dgidb.tsv", "./remote/")
+gb.markers <- readRDS("./remote/rds_jobSave/lite/gb.markers.3.rds")
+
+run_remote_graphBan.huibang(gb.markers)
+get_remote_graphBan.huibang(gb.markers)
+
+file.copy(
+  "~/Downloads/admet.csv", "./remote/GraphBAN_MARKERS/res_admet.csv", TRUE
+)
+
+test <- ftibble(
+  "./GraphBAN_MARKERS/graphBan_res_bindingdb.csv.gz", fill = TRUE
+)
+# file.copy("~/local_db/dgidb/interactions.tsv", "./remote/")
+```
+
+## AutoDock vina 分子对接
+
+`r snap(vn.drugs, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-Overall-combining-Affinity
+autor(vn.drugs@plots$step5$p.res_vina)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-Overall-combining-Affinity-data
+autor(vn.drugs@tables$step5$t.showData)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-CD9-3000322-docking-visualization
+autor(vn.drugs@plots$step6$figs$Top_CD9_3000322)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-CD9-3000322-docking-interaction-details
+autor(vn.drugs@plots$step7$figs$Top_CD9_3000322)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-CXCL12-5754-docking-visualization
+autor(vn.drugs@plots$step6$figs$Top_CXCL12_5754)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-CXCL12-5754-docking-interaction-details
+autor(vn.drugs@plots$step7$figs$Top_CXCL12_5754)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-PTPN6-3000322-docking-visualization
+autor(vn.drugs@plots$step6$figs$Top_PTPN6_3000322)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-PTPN6-3000322-docking-interaction-details
+autor(vn.drugs@plots$step7$figs$Top_PTPN6_3000322)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-NME1-5754-docking-visualization
+autor(vn.drugs@plots$step6$figs$Top_NME1_5754)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-NME1-5754-docking-interaction-details
+autor(vn.drugs@plots$step7$figs$Top_NME1_5754)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| DRUGS-All-combining-Affinity-data
+autor(notshow(vn.drugs@tables$step5$res_dock))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('14_docking')
+```
+
+
+
+```{r}
+vn.drugs <- asjob_vina(gb.markers)
+vn.drugs$.layout
+vn.drugs <- step1(vn.drugs, forceAF = TRUE)
+vn.drugs <- step2(vn.drugs)
+vn.drugs <- step3(
+  vn.drugs, extra_pdb.files = c(
+    NME1 = "~/Downloads/AF-P15531-F1-model_v6.pdb",
+    CD9 = "~/Downloads/AF-P21926-F1-model_v6.pdb",
+    CXCL12 = "~/Downloads/AF-P48061-3-F1-model_v6.pdb",
+    PTPN6 = "~/Downloads/AF-P29350-2-F1-model_v6.pdb"
+  )
+)
+clear(vn.drugs)
+
+# vn.drugs
+vn.drugs <- step4(vn.drugs)
+vn.drugs <- step5(vn.drugs)
+vn.drugs@plots$step5$p.res_vina
+
+vn.drugs <- step6(vn.drugs, rerun = FALSE)
+vn.drugs <- step7(vn.drugs, rerun = FALSE)
+clear(vn.drugs)
+file.copy("./rds_jobSave/vn.drugs.7.rds", "./remote/rds_jobSave/", overwrite = TRUE)
+```
+
+## 分子动力学模拟
+
+(待补充)
+
+```{r}
+# `r snap(dy.drug_metabolite, TRUE, TRUE)`
+
+dy.drug_metabolite@params$ps$p.rmsd
+dy.drug_metabolite@params$ps$p.rmsf
+dy.drug_metabolite@params$ps$p.hbond
+dy.drug_metabolite@params$ps$p.energy
+```
+
+## rms 列线图构建与评估
+
+`r snap(rms.GSE189642, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-nomogram
+autor(rms.GSE189642@plots$step1$p.nomo)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-rms-GSE189642-params-res-lrm-data
+autor(notshow(rms.GSE189642@params$res_lrm$data))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-ROC-evaluation-of-diagnostic-indicators
+autor(rms.GSE189642@plots$step1$p.rocs)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-calibration-curve
+autor(rms.GSE189642@plots$step1$p.cal)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-Decision-curve-analysis
+autor(rms.GSE189642@plots$step2$p.dcas)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('16_nomogram')
+```
+
+
+
+## 免疫浸润分析
+
+`r snap(iobr.GSE189642, TRUE, TRUE)`
+CD9与MEP的强正相关提示该基因可能参与髓系/巨核偏向性分化调控，而PTPN6与MEP的负相关以及与Pericytes的正相关则暗示PTPN6可能在免疫信号与血管周细胞功能中发挥差异化调控作用。上述基因–免疫细胞关联模式为关键基因在高IBL微环境中的免疫调控功能提供了证据。
+
+`r snap(des.checkpoint, "checkpoint")`
+CD244（2B4）是一种表达于NK细胞和部分T细胞上的免疫调节受体，其下调可能影响NK细胞的杀伤功能；TMIGD2作为一种共刺激分子，其降低可能削弱T细胞活化信号。该结果进一步支持高IBL状态下存在免疫抑制性微环境的重塑。
+
+`r snap(cp.checkpoint, TRUE)`
+PTPN6编码的SHP-1是免疫细胞信号传导的关键磷酸酶，其与PD-1（PDCD1编码）的高度共表达模式强烈提示，SHP-1可能参与PD-1介导的T细胞耗竭信号通路，从而协同维持高IBL环境的免疫抑制状态。这一结果为后续以PTPN6/PD-1轴为靶点的免疫治疗策略提供了生信依据。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-xcell-Immune-infiltration
+autor(iobr.GSE189642@plots$step2$p.boxplot)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-xcell-wilcox-test-data
+autor(notshow(iobr.GSE189642@tables$step2$t.groupCor))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-Correlation-immune-cells
+autor(iobr.GSE189642@plots$step2$p.cor)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-cells-correlation
+autor(notshow(iobr.GSE189642@tables$step2$t.cells_cor))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-correlation-of-Immune-cells-and-selected-genes
+autor(iobr.GSE189642@plots$step3$p.GeneCellCor)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-correlation-between-cells-and-genes
+autor(notshow(iobr.GSE189642@tables$step3$t.geneCellCor))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-iobr-GSE189642-params-allres-xcell
+autor(notshow(iobr.GSE189642@params$allres$xcell))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-Box-Plot-Of-DEGs-checkpoint
+autor(des.checkpoint@params$focusedDegs_checkpoint$p.BoxPlotOfDEGs)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE189642-gene-n4-with-n15-correlation-heatmap
+autor(z7(cp.checkpoint@params$p.cor, 1.2, 1.2))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('17_immune')
+```
+
+
+
+## 细胞通讯分析
+
+`r snap(cc.comparison, TRUE, TRUE)`
+
+综上， 单细胞通讯分析揭示，在高瘤内菌群负荷的鼻咽癌微环境中，成纤维细胞获得了增强的信号输出能力，主要通过MDK、HLA-C等通路主动干预免疫细胞功能，同时减少了接收免疫调节信号的敏感性，从细胞通讯层面为高IBL组的免疫抑制与肿瘤进展提供了新的机制解释。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-Comparison-Number-communication-network
+autor(cc.comparison@plots$step1$p.inters_counts)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-Comparison-Strength-communication-network
+autor(cc.comparison@plots$step1$p.inters_weights)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-scissor-neg-ligand-receptor-interactions-bubble-plot
+autor(cc.comparison@plots$step2$p.allCells_LP_comm_each_group$scissor_neg)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-scissor-pos-ligand-receptor-interactions-bubble-plot
+autor(cc.comparison@plots$step2$p.allCells_LP_comm_each_group$scissor_pos)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-Fibroblast-as-source-comparison
+autor(cc.comparison@plots$step2$p.keyCellAsSource)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| COMPARISON-key-cell-as-target-comparison
+autor(cc.comparison@plots$step2$p.keyCellAsTarget)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCISSOR-NEG-lp-net
+autor(notshow(cc.GSE150825_scissor_neg@tables$step1$lp_net))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCISSOR-NEG-pathway-net
+autor(notshow(cc.GSE150825_scissor_neg@tables$step1$pathway_net))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCISSOR-NEG-ligand-receptor-interactions-bubble-plot
+autor(notshow(cc.GSE150825_scissor_neg@tables$step2$t.lr_comm_bubble))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCISSOR-POS-lp-net
+autor(notshow(cc.GSE150825_scissor_pos@tables$step1$lp_net))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCISSOR-POS-pathway-net
+autor(notshow(cc.GSE150825_scissor_pos@tables$step1$pathway_net))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCISSOR-POS-ligand-receptor-interactions-bubble-plot
+autor(notshow(cc.GSE150825_scissor_pos@tables$step2$t.lr_comm_bubble))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-cc-comparison-params-keyCell-data-data-keyCellAsSource
+autor(notshow(cc.comparison@params$keyCell_data$data.keyCellAsSource))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-cc-comparison-params-keyCell-data-data-keyCellAsTarget
+autor(notshow(cc.comparison@params$keyCell_data$data.keyCellAsTarget))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('18_cellchat')
+```
+
+
+
+## 拟时序轨迹分析
+
+`r snap(mn.GSE150825_sciPos_FibroClean, TRUE, TRUE)`
+
+拟时序轨迹分析显示 (`r ref(mn.GSE150825_sciPos_FibroClean@plots$step3$p.traj)`)，
+成纤维细胞的拟时轨迹并非单一线性轴，而是呈现出明显的分支结构。轨迹从共同起点出发后，分岔为两个不同的命运分支，表明所捕获的成纤维细胞在活化过程中可能面临至少两种可选的转录程序或功能方向。值得注意的是，Activated_Matrix_Fibroblast与Non_Matrix_Fibroblast两种细胞并非沿拟时间呈单向顺序分布，而是广泛交织于各分支及拟时间节点中。这一分布特征提示，在高菌群负荷微环境的塑造下，成纤维细胞的转录表型可能存在比简单“静息→活化”二分更为复杂的异质性——即便是被注释为同一亚群的细胞，在分化轨迹上也处于不完全同步的状态。两个分支的产生可能反映成纤维细胞响应不同微环境信号后，走向基质合成主导、免疫调节主导或其他功能方向的命运离散。
+ 
+沿拟时间推进方向观察 (`r ref(mn.GSE150825_sciPos_FibroClean@plots$step4$p.geneInPseudo$scsa_cell)`)，CD9与NME1呈现整体逐渐上调的表达趋势，NME1的上扬斜率尤为明显；而CXCL12与PTPN6则在拟时间早期相对高表达，随拟时间延长呈持续下调态势。值得特别关注的是，这些基于单细胞动态渐变所揭示的表达方向，与前文基于GSE189642数据集的组间差异验证结果形成了呼应——前文表达量验证表明，在IBL_High组中CD9和NME1的mRNA水平显著升高，
+而CXCL12和PTPN6则显著下降
+(`r ref(des.validate_GSE189642@params$focusedDegs_learn$p.BoxPlotOfDEGs)`)。
+
+这种“单细胞轨迹动态”与“bulk组间静态差异”的双维一致，强化了以下结论：CD9与NME1的上调，以及CXCL12与PTPN6的下调，不仅是高瘤内菌群负荷的表型伴随现象，更是成纤维细胞响应微环境刺激而发生转录重编程的核心组成部分。鉴于两种注释细胞在拟时轨迹中广泛交织，这些基因的表达变化更应被理解为成纤维细胞群体在活化过程中所经历的共性分子事件，而非特定亚群的专属特征。这种共性程序与高IBL状态的紧密耦合，提示瘤内菌群负荷可能通过持续驱动成纤维细胞沿特定活化方向演进，从而系统性地重塑肿瘤间质功能。
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-cell-trajectories
+autor(z7(mn.GSE150825_sciPos_FibroClean@plots$step3$p.traj, 0.7, 0.7))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-genes-in-trajectorie-of-scsa-cell
+autor(mn.GSE150825_sciPos_FibroClean@plots$step4$p.geneInPseudo$scsa_cell)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-pseudotime-significant-genes-in-heatmap
+autor(mn.GSE150825_sciPos_FibroClean@plots$step5$p.hp)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-mn-GSE150825-sciPos-FibroClean-params-diff-test-pseudotime
+autor(notshow(mn.GSE150825_sciPos_FibroClean@params$diff_test_pseudotime))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('19_monocle')
+```
+
+
+## SCENIC 转录因子分析
+
+将 GSE150825 单细胞数据集以 SCENIC 转录因子分析。
+`r snap(sce.GSE150825, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-AUCell-top-regulon-heatmap
+autor(sce.GSE150825@params$map_seurat$p.hp_top)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-sce-GSE150825-params-map-seurat-data
+autor(notshow(sce.GSE150825@params$map_seurat$data))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('20_SCENIC')
+```
+
+
+
+## scTenifoldKnk 虚拟敲除
+
+`r snap(sct.GSE150825_sciPos_FibroClean, TRUE, TRUE)`
+
+对上述关键基因敲除后受扰动的基因取交集，得到 (`r ref(ven.knk@plots$step1$p.venn)`)：
+`r bind(feature(ven.knk))`。
+
+对这些交集基因
+`r meth(en.knk, FALSE)`
+
+基于 sctenifoldknk 虚拟敲除分析，CD9、CXCL12、NME1 与 PTPN6 敲除后均引起显著网络扰动，并共同影响以核糖体/蛋白翻译相关基因为主的表达模块，提示上述基因可能参与维持该细胞亚群的活化状态与生物合成能力
+(`r ref(en.knk@plots$step1$p.kegg$ids)`)。
+在高菌群负荷微环境中，成纤维细胞向活化基质合成表型转变，这一过程必然伴随大量胞外基质蛋白、细胞因子及趋化因子的合成需求，对翻译机器的依赖显著增强。上述核糖体蛋白基因作为四个关键基因的共同下游靶标，提示CD9、CXCL12、NME1及PTPN6可能通过不同的上游途径汇聚至翻译调控节点。
+
+GO富集分析从生物过程、细胞组分及分子功能三个层面系统刻画了共同扰动基因的功能特征 (`r ref(en.knk@plots$step1$p.go$ids)`)。
+
+**在细胞组分层面，** 共同扰动基因显著富集于核糖体亚基及核糖核蛋白复合体等胞质翻译装置结构。具体而言，胞质大亚基、胞质小亚基以及完整核糖体的结构组分为主要富集条目，同时核糖核蛋白颗粒、多聚核糖体等翻译延伸复合物也有显著富集。该结果明确指示，四个关键基因敲除后所扰动的基因集合在物理空间上高度定位于蛋白质翻译的执行场所。
+
+**在分子功能层面，** 富集条目集中于核糖体的结构分子活性及rRNA结合能力。核糖体结构组成活性是形成翻译复合体的基础，而rRNA结合则反映这些蛋白与核糖体核酸骨架的直接互作。此外，肽基转移酶活性等相关条目亦有富集，涉及翻译延伸过程中肽键形成的催化支持功能。该层面的结果表明，扰动基因编码的蛋白主要作为翻译机器的结构元件而非调控因子参与蛋白质合成。
+
+**在生物过程层面，** 富集条目高度集中于细胞质翻译、肽生物合成及酰胺生物合成等核心翻译事件。从翻译起始、肽链延伸至完整蛋白质的生成，构成了富集图谱中最显著的信号。此外，基因表达调控相关的上游过程亦有一定程度的关联富集，提示这四个关键基因的扰动可能从转录后水平影响基因表达的整体效率。
+
+三个层面的GO富集结果共同传递一个清晰的生物学信息：CD9、CXCL12、NME1及PTPN6尽管在已知功能上各不相同，但其共同的下游效应高度聚焦于核糖体介导的蛋白质翻译机器。在成纤维细胞向活化基质合成表型转变的过程中，大量胞外基质蛋白和效应分子的合成需求急剧增加，翻译能力的维持成为细胞功能执行的关键限速环节。四个关键基因的敲除均能显著扰动这一过程，从网络层面证明了它们对于成纤维细胞活化状态的调控作用。
+
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-genes-affected-by-CD9-knockout
+autor(sct.GSE150825_sciPos_FibroClean@plots$step2$ps.volcano$CD9)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-genes-affected-by-CXCL12-knockout
+autor(sct.GSE150825_sciPos_FibroClean@plots$step2$ps.volcano$CXCL12)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-genes-affected-by-NME1-knockout
+autor(sct.GSE150825_sciPos_FibroClean@plots$step2$ps.volcano$NME1)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| GSE150825-SCIPOS-FIBROCLEAN-genes-affected-by-PTPN6-knockout
+autor(sct.GSE150825_sciPos_FibroClean@plots$step2$ps.volcano$PTPN6)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-sct-GSE150825-sciPos-FibroClean-tables-step2-t-all-diff
+autor(notshow(sct.GSE150825_sciPos_FibroClean@tables$step2$t.all_diff))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| KNK-intersection-of-CD9-with-CXCL12-with-NME1-with-PTPN6
+autor(z7(ven.knk@plots$step1$p.venn, 2, 2))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| KNK-KEGG-enrichment
+autor(z7(en.knk@plots$step1$p.kegg$ids, 1, 0.5))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| KNK-KEGG-enrichment-data
+autor(notshow(en.knk@tables$step1$res.kegg$ids))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| KNK-GO-enrichment
+autor(en.knk@plots$step1$p.go$ids)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| KNK-GO-enrichment-data
+autor(notshow(en.knk@tables$step1$res.go$ids))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('21_scTenifoldKnk')
+```
+
+
+```{r}
+run_remote_sctenifoldknk.huibang(sct.GSE150825_sciPos_FibroClean)
+get_remote_sctenifoldknk.huibang(sct.GSE150825_sciPos_FibroClean)
+```
+
+## 双样本孟德尔随机化 (MR) 分析
+
+`r snap(mr.markers, TRUE, TRUE)`
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-MR-forest-plot
+autor(mr.markers@plots$step5$p.forest)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-MR-scatter-plot
+autor(mr.markers@plots$step5$p.scatter)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-MR-funnel-plot
+autor(mr.markers@plots$step5$p.funnel)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-MR-leave-one-out-plot
+autor(mr.markers@plots$step5$p.leaveoneout)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-MR-summary
+autor(mr.markers@tables$step5$t.main)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-Heterogeneity-test
+autor(mr.markers@tables$step5$t.heterogeneity)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-Horizontal-pleiotropy-test
+autor(mr.markers@tables$step5$t.pleiotropy)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| MARKERS-Steiger-directionality-test
+autor(mr.markers@tables$step5$t.steiger)
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-mr-markers-params-fTest-data-f
+autor(notshow(mr.markers@params$fTest$data_f))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+#| Other-Data-mr-markers-params-table-with-all-columns
+autor(notshow(mr.markers@params$table_with_all_columns))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+autor_locate_dir('22_mr')
+```
+
+
+```{r}
+```
+
+# 项目总结
+
+本研究整合单细胞转录组数据集GSE150825（11例鼻咽癌肿瘤组织）与bulk转录组数据集GSE189642（12例高瘤内菌群负荷 vs 12例低瘤内菌群负荷）及GSE53819（18例鼻咽癌 vs 18例正常对照），结合Scissor表型关联分析、血清素相关基因AUCell活性评估、hdWGCNA加权基因共表达网络、机器学习筛选、免疫浸润分析、细胞通讯分析、拟时序轨迹分析、scTenifoldKnk虚拟敲除及双样本孟德尔随机化等多层次计算策略，系统解析了血清素调控鼻咽癌高低瘤内菌群负荷的分子机制及关键基因的功能网络。
+
+通过单细胞质控、降维聚类与细胞注释，共鉴定8种主要细胞类型。Scissor算法将单细胞数据与瘤内菌群负荷（IBL）表型关联，结合血清素相关基因集的AUCell活性评分，**成纤维细胞（Fibroblast）**被锁定为兼具高Scissor+占比与高血清素活性的关键细胞。对Scissor+成纤维细胞进行亚群细分，获得Activated_Matrix_Fibroblast与Non_Matrix_Fibroblast两种功能亚型。
+
+hdWGCNA加权共表达网络分析获得5个基因模块。联合鼻咽癌差异表达基因、IBL高低组差异基因、血清素相关基因及模块基因取交集，筛选出14个候选基因。经10种机器学习算法综合评估，**岭回归（RR）模型**以AUC=0.938、准确率0.875的最优性能被确定为最佳预测模型，其对应的**CD9、CXCL12、NME1、PTPN6**被定义为关键基因。四者在IBL_High组中表达差异显著（P<0.05），ROC曲线下面积均超过0.77，具有独立区分IBL高低的诊断价值。
+
+候选基因KEGG富集分析显示其集中于NF-κB信号通路、细胞色素P450外源物代谢及B细胞受体信号通路；GO分析进一步在分子功能层面揭示“血清素结合”活性的显著富集，为血清素参与菌群-肿瘤互作提供了功能层面的直接支持。GSEA分析揭示四个关键基因的协同功能网络：CD9相关基因富集于线粒体氧化代谢，NME1指向细胞周期与增殖程序，CXCL12负向关联DNA复制，PTPN6正向富集于B细胞受体信号及FcγR介导的吞噬等免疫活化通路，共同刻画了高IBL微环境中代谢重编程与免疫重塑并存的分子特征。
+
+免疫浸润分析揭示高IBL组中B细胞、CD4⁺ naïve T细胞、HSC及周细胞丰度显著降低，CD8⁺ T细胞与MEP丰度升高。PTPN6与PDCD1呈现强正相关（cor=0.862），提示SHP-1可能参与PD-1介导的T细胞耗竭信号，协同维持免疫抑制状态。细胞通讯分析表明，高IBL环境下成纤维细胞信号输出增强（以MDK-NCL、HLA-C-CD8A为优势轴），而信号接收减弱，呈现主动塑造免疫抑制微环境的通讯特征。
+
+拟时序轨迹分析描绘了成纤维细胞沿分支轨迹的命运分化，关键基因沿拟时间的表达趋势与bulk组间差异在一定程度上相互吻合。
+
+scTenifoldKnk虚拟敲除显示，四个关键基因敲除后均引起以核糖体/翻译相关基因为主的共同扰动模块。对16个交集基因的富集分析表明，其在细胞组分定位于核糖体亚基，分子功能富集于rRNA结合与核糖体结构组成，生物过程集中于细胞质翻译与肽生物合成。该结果将四个功能各异的关键基因统一到蛋白质翻译机器的调控框架内，提示成纤维细胞活化依赖翻译稳态的维持。
+
+孟德尔随机化分析以CD9与NME1的表达量为暴露因素，以MiBioGen肠道微生物丰度为结局，经严格质控共保留7组显著因果关联。其中4组证据最为充分，包括CD9与Eubacterium oxidoreducens group、Fusicatenibacter、Ruminococcaceae UCG004及Bacillales的因果关联。Steiger检验确认因果方向正确，多效性与异质性检验均未显著，为CD9表达与菌群丰度之间的因果调控提供了遗传学证据支持。
+
+GraphBAN药物预测从11913个化合物中经多轮筛选，最终获得Reversionex、Aldosterona、Hydrocortisone、Scopace及Weisserton共5个同时靶向四个关键蛋白且符合ADMET药代特征的候选药物。AutoDock Vina分子对接显示，12对配体-受体组合的结合能低于-5 kcal/mol，其中Scopace与CD9的结合亲和度最高（-6.757 kcal/mol），Hydrocortisone可同时与全部四个靶蛋白稳定结合，为后续多靶点干预策略提供了候选化合物线索。
+
+rms列线图整合四个关键基因构建风险评估模型，AUC达0.917，校准曲线与决策曲线分析均证实其良好的预测效能与临床净收益，为鼻咽癌瘤内菌群负荷分层的个体化评估提供了定量工具。
+
+综上，本研究从单细胞分辨率系统揭示了血清素相关活性与瘤内菌群负荷通过成纤维细胞偶联的关键细胞基础，鉴定了CD9、CXCL12、NME1及PTPN6四个协同调控翻译稳态与免疫微环境的核心基因，构建了基于双组学的IBL诊断模型；结合虚拟敲除与富集分析阐明了关键基因共同汇聚于核糖体/翻译调控的功能轴，通过孟德尔随机化提供了CD9与特定菌群因果关联的遗传学证据，并经药物预测与分子对接筛选出兼具多靶点结合潜力与良好成药特征的候选化合物。上述发现为鼻咽癌瘤内菌群-血清素交互作用的分子机制提供了多层次生信证据，为后续靶向治疗策略的开发奠定了理论基础。然而，上述结论主要源于生物信息学推断与计算模拟，关键基因的功能角色、核心调控轴的因果关系及候选化合物的体内外干预效果仍需后续实验研究进一步确证。
+
+
+\newpage
+
+# 项目调整
+
+- 单细胞数据集 GSE150430 无法分析，没有 count 数据矩阵，且没有样本归属信息，换成使用 GSE150825，
+包含 11 个鼻咽癌患者样本 (去掉 VDJ-seq 和 lymphoid hyperplasia 之后)
+- graphBan 候选药物数据库更换为 Drugbank。
+- 免疫浸润 cibersort 算法效果不好，换成 xcell
+- 16s 分析部分删除。
+- RNA 速率部分删除。
+
+# 软件列表
+
+```{r}
+used <- names(getOption("autor_pkgInfo"))
+versions <- pkgVersion_remote(used)
+versions
+
+allSoftware <- tibble::tibble(
+  Package = used, Version = versions,
+  Usage = NA_character_
+)
+allSoftware
+
+allSoftware <- tibble::tribble(
+  ~Package, ~Version, ~Usage,
+
+  # --- differential / bulk ---
+  "DESeq2", "1.40.2", "RNA-seq差异表达分析（基于负二项分布）",
+
+  # --- visualization ---
+  "ggplot2", "3.5.2", "数据可视化（通用绘图系统）",
+  "ComplexHeatmap", "2.16.0", "高级热图绘制（支持多注释与分组）",
+  "ggraph", "2.2.1", "基于graph对象的网络可视化",
+  "ggVennDiagram", "1.5.2", "韦恩图绘制",
+
+  # --- network / interaction ---
+  "STRINGdb", "2.12.1", "蛋白互作网络查询与构建",
+
+  # --- machine learning / modeling ---
+  "caret", "6.0.94", "机器学习流程整合（训练、调参、交叉验证）",
+  "e1071", "1.7.16", "支持向量机（SVM）等经典算法",
+  "glmnet", "4.1.8", "正则化回归（LASSO / Ridge / Elastic Net）",
+  "randomForest", "4.7.1.2", "随机森林模型",
+  "rpart", "4.1.23", "决策树建模",
+  "kernlab", "0.9.33", "核方法建模（SVM等）",
+  "class", "7.3.22", "KNN分类算法",
+  "MASS", "7.3.60.0.1", "统计建模（LDA/QDA等）",
+  "nnet", "7.3.19", "神经网络与多项Logistic回归",
+  "klaR", "1.7.3", "分类与判别分析工具集",
+
+  # --- model interpretation ---
+  "DALEX", "2.4.3", "模型解释（特征贡献、可解释AI）",
+
+  # --- statistics / clinical modeling ---
+  "rms", "6.8.1", "回归建模策略（临床预测模型、列线图）",
+  "regplot", "1.1", "回归模型可视化（列线图等）",
+  "pROC", "1.18.5", "ROC曲线分析与AUC计算",
+  "rmda", "1.6", "决策曲线分析（DCA）",
+
+  # --- omics / annotation ---
+  "biomaRt", "2.56.1", "基因注释与ID转换（Ensembl接口）",
+  "org.Hs.eg.db", "3.17.0", "人类基因注释数据库",
+  "AnnotationDbi", "1.62.2", "注释数据库操作框架",
+
+  # --- metabolite / chemoinformatics ---
+  "rcdk", "3.8.2", "化学信息学分析（分子结构处理）",
+  "PubChemR", "2.1.4", "PubChem数据库接口（化合物查询）",
+
+  # --- single-cell advanced ---
+  "CellChat", "1.6.1", "细胞通讯分析（配体-受体）",
+  "Scissor", "2.0.0", "单细胞与表型数据整合（表型相关细胞识别）",
+  "AUCell", "1.22.0", "单细胞基因集活性评分",
+  "scTenifoldKnk", "1.0.2", "基因敲除效应模拟（单细胞网络）",
+
+  # --- circular / genome visualization ---
+  "RCircos", "1.2.2", "Circos图绘制（基因组环形可视化）",
+
+  # --- Mendelian Randomization ---
+  "TwoSampleMR", "0.6.8", "双样本孟德尔随机化分析",
+  "MRPRESSO", "1.0", "MR异常值检测与校正（水平多效性）",
+
+  # --- base ---
+  "stats", "4.3.3", "基础统计函数（回归、检验等）"
+)
+
+```
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| All-software
+autor(allSoftware)
+```
+
+
+# 报告质检
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| Report-QC
+autor(table_qc.hb())
+```
+
+```{r}
+create_remote_project.hb()
+setup.sshfs()
+.send_pkg_to_remote()
+
+file_scripts <- push_script.hb(
+  "seurat", "scissor", "keyCell", "hdWGCNA",
+  "DEGs", "candidate", "enrich", "learn",
+  "validate", "GSEA", "geneAnalysis", "network",
+  "graphBan", "docking", "dynamic", "nomogram",
+  "immune", "cellchat", "monocle", "SCENIC",
+  "scTenifoldKnk", "mr"
+)
+
+pull_jobs_from_script.hb(file_scripts, TRUE, FALSE)
+push_overture_as_output.hb(TRUE, TRUE)
+
+push_checkout_after_output.hb(FALSE)
+push_mirror_to_remote.hb()
+
+run_remote_output.hb(TRUE)
+# convert_pdf_in_project()
+
+.upd_pkg_to_remote()
+
+run_in_project("./tmp/getPkgInfo.R")
+run_in_project_nohup("r.13_seurat.r")
+
+file.copy(
+  list.files("./scripts_mirror/", full.names = TRUE),
+  "./remote/", overwrite = TRUE
+)
+
+lst <- setNames(
+  apply(allSoftware, 1, as.list, simplify = FALSE), allSoftwarePackage
+)
+saveRDS(setNames(lst, allSoftwarepackage), .prefix("pkgInfo.rds", "db")) 
+colnames(allSoftware) <- capitalize(colnames(allSoftware))
+
+get_file_with_format_name(
+  "~/Documents/review.docx", name.hb$check()
+)
+
+get_file_with_format_name(
+  "./analysis_out.docx", name.hb$report()
+)
+
+get_file_with_format_name(
+  "~/Documents/job0259_Report_0411_revise1.docx", name.hb$report()
+)
+
+get_file_with_format_name(
+  "./tmp/test.pdf", "heatmap"
+)
+
+get_contents_refered_from_fields("./order_material/test.md")
+.clHbFo$format_file("list.md")
+
+build_completion_for_package("utils.tool")
+
+project_packaging.hb("~/Documents/test.docx", overwrite_report = FALSE)
+
+get_file_with_format_name("~/regplot/R/regplot.R", "regplot2")
+
+new_workflow("dynamic")
+
+gett_file("./order_material/project1733_Report_0430-revise.docx")
+
+```
+

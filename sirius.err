@@ -1,0 +1,128 @@
+May 05, 2026 11:42:23 AM org.apache.commons.beanutils.FluentPropertyBeanIntrospector introspect
+INFO: Error when creating PropertyDescriptor for public final void org.apache.commons.configuration2.AbstractConfiguration.setProperty(java.lang.String,java.lang.Object)! Ignoring this property.
+May 05, 2026 11:42:23 AM de.unijena.bioinf.ms.frontend.core.ApplicationCore <clinit>
+INFO: Sirius Workspace Successfully initialized at: /home/echo/.sirius-6.3
+May 05, 2026 11:42:23 AM de.unijena.bioinf.ms.frontend.core.ApplicationCore <clinit>
+INFO: You run SIRIUS 6.3.4 on linux_amd64
+May 05, 2026 11:42:23 AM de.unijena.bioinf.ms.frontend.core.ApplicationCore <clinit>
+INFO: You run SIRIUS in 'SERVICE' mode.
+May 05, 2026 11:42:23 AM de.unijena.bioinf.ms.frontend.core.ApplicationCore <clinit>
+INFO: Sirius was compiled with the following ILP solvers: GLPK-v1.7.0 (included), Gurobi-v9.1.1, CPLEX-v12.7.1, COIN-OR-v2.10.12.1
+May 05, 2026 11:42:23 AM de.unijena.bioinf.ms.frontend.core.ApplicationCore <clinit>
+INFO: Treebuilder priorities loaded from 'sirius.properties' are: [CLP, GUROBI, CPLEX]
+May 05, 2026 11:42:23 AM de.unijena.bioinf.ms.frontend.core.ApplicationCore <clinit>
+INFO: CPU check done. 16 cores that handle 32 threads were found.
+May 05, 2026 11:42:23 AM de.unijena.bioinf.ChemistryBase.jobs.SiriusJobs getGlobalJobManager
+INFO: Job manager successful initialized with 24 CPU thread(s) and 2 IO thread(s).
+May 05, 2026 11:42:23 AM de.unijena.bioinf.ms.middleware.SiriusMiddlewareApplication main
+INFO: Starting Application Core
+May 05, 2026 11:42:23 AM de.unijena.bioinf.rest.ProxyManager decorateWithPoolSettings
+INFO: Starting http Client with MaxPerRoute=3 / maxTotal=5 (CPU-Threads=24).
+May 05, 2026 11:42:24 AM de.unijena.bioinf.ms.frontend.Run parseArgs
+INFO: Running with following arguments: [rest, --port, 8080]
+May 05, 2026 11:42:24 AM org.springframework.boot.StartupInfoLogger logStarting
+INFO: Starting SiriusMiddlewareApplication v6.3.4 using Java 21.0.10 with PID 7525 (/home/echo/Downloads/sirius/sirius/lib/app/sirius_rest_service-6.3.4-boot.jar started by echo in /home/echo/outline)
+May 05, 2026 11:42:24 AM org.springframework.boot.SpringApplication logStartupProfileInfo
+INFO: The following 1 profile is active: "local"
+May 05, 2026 11:42:25 AM org.springframework.boot.web.embedded.tomcat.TomcatWebServer initialize
+INFO: Tomcat initialized with port 8080 (http)
+May 05, 2026 11:42:25 AM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["http-nio-8080"]
+May 05, 2026 11:42:25 AM org.apache.catalina.core.StandardService startInternal
+INFO: Starting service [Tomcat]
+May 05, 2026 11:42:25 AM org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet engine: [Apache Tomcat/10.1.44]
+May 05, 2026 11:42:25 AM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring embedded WebApplicationContext
+May 05, 2026 11:42:25 AM org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext prepareWebApplicationContext
+INFO: Root WebApplicationContext: initialization completed in 1155 ms
+May 05, 2026 11:42:28 AM de.unijena.bioinf.ms.frontend.core.ApplicationCore WEB_API
+INFO: Web API initialized in 00:00:04.365. Started loading active subscription in background...
+May 05, 2026 11:42:28 AM de.unijena.bioinf.ms.middleware.service.databases.ChemDbServiceImpl <init>
+INFO: Scanning for custom databases...
+May 05, 2026 11:42:30 AM de.unijena.bioinf.ms.frontend.core.ApplicationCore lambda$WEB_API$3
+INFO: Custom databases loaded.
+May 05, 2026 11:42:30 AM org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver <init>
+INFO: Exposing 1 endpoint beneath base path '/actuator'
+May 05, 2026 11:42:30 AM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["http-nio-8080"]
+May 05, 2026 11:42:30 AM org.springframework.boot.web.embedded.tomcat.TomcatWebServer start
+INFO: Tomcat started on port 8080 (http) with context path '/'
+May 05, 2026 11:42:30 AM de.unijena.bioinf.ms.middleware.SiriusMiddlewareApplication lambda$main$7
+INFO: SIRIUS Service is running on port: 8080
+May 05, 2026 11:42:30 AM de.unijena.bioinf.ms.middleware.SiriusMiddlewareApplication lambda$main$7
+INFO: SIRIUS Service started successfully!
+May 05, 2026 11:42:30 AM org.springframework.boot.StartupInfoLogger logStarted
+INFO: Started SiriusMiddlewareApplication in 6.58 seconds (process running for 7.466)
+May 05, 2026 11:42:31 AM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring DispatcherServlet 'dispatcherServlet'
+May 05, 2026 11:42:31 AM org.springframework.web.servlet.FrameworkServlet initServletBean
+INFO: Initializing Servlet 'dispatcherServlet'
+May 05, 2026 11:42:31 AM org.springframework.web.servlet.FrameworkServlet initServletBean
+INFO: Completed initialization in 1 ms
+May 05, 2026 11:42:32 AM org.springdoc.core.models.ParameterInfo lambda$new$0
+WARNING: Using the following default value : APEX_HEIGHT, without spring conversionService
+May 05, 2026 11:42:32 AM org.springdoc.core.models.ParameterInfo lambda$new$0
+WARNING: Using the following default value : APEX_HEIGHT, without spring conversionService
+May 05, 2026 11:42:32 AM org.springdoc.core.models.ParameterInfo lambda$new$0
+WARNING: Using the following default value : APEX_HEIGHT, without spring conversionService
+May 05, 2026 11:42:32 AM org.springdoc.core.models.ParameterInfo lambda$new$0
+WARNING: Using the following default value : APEX_HEIGHT, without spring conversionService
+May 05, 2026 11:42:32 AM org.springdoc.api.AbstractOpenApiResource getOpenApi
+INFO: Init duration for springdoc-openapi is: 836 ms
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: Dropping index: [searchResult.candidateInChiKey]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: Dropping index: [alignedFeatureId]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: Dropping index: [searchResult.rank]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [alignedFeatureId, searchResult.rank]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [alignedFeatureId, searchResult.candidateInChiKey, searchResult.rank]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [groupName]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [groupType]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [id]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: Dropping index: [formulaRank]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: Dropping index: [alignedFeatureId]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [alignedFeatureId, formulaRank]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [tagDefId]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [tagType]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [tagName]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [tagId]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [taggedObjectClass, tagName]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [taggedObjectClass, taggedObjectId, tagName]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [tagName]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [id]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [compoundId]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [alignedFeatureId]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [id]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: Dropping index: [structureRank]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [alignedFeatureId, structureRank]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: Dropping index: [structureRank]
+May 05, 2026 11:42:36 AM de.unijena.bioinf.storage.db.nosql.nitrite.NitriteDatabase initIndex
+INFO: (Re)building index: [alignedFeatureId, structureRank]
+May 05, 2026 11:42:37 AM de.unijena.bioinf.projectspace.NitriteProjectSpaceManagerFactory updateProjectSourceFormats
+INFO: Updating project source information...
+May 05, 2026 11:42:37 AM de.unijena.bioinf.projectspace.NitriteProjectSpaceManagerFactory lambda$updateProjectSourceFormats$4
+INFO: Updating project source information done in 00:00:00.020.

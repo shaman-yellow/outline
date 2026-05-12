@@ -1,16 +1,16 @@
 
-我在分析 NPC，即nasopharyngeal carcinoma 
-单细胞数据，现在要鉴定细胞，请仿照以下格式给我细胞marker 和对应文献的PMID
-此外，我给的图片是我分析的数据集的来源的文献的已经分析过的UMAP 聚类，
-也就是说，细胞类型大概就是这些了。应该没有什么需要补充的类型吧
+我在研究 NPC 鼻咽癌，筛选了关键细胞 Fibroblast，现在要注释亚群。
+请提供marker 和对应的文献的PMID。PMID 要求你仔细上网核查过之后才能提供给我！
+格式要求如下：
 
-periodontitis_cell_markers <- list(
+as_epithelium_db <- list(
 
-  B_Cell = list(
-    markers = c("MS4A1", "CD79A", "CD79B", "CD19", "BANK1"),
-    pmid = c("37546811", "41143768")
-    )
+  Dental_Epithelial_Cell = list(
+    markers = c("EPCAM", "KRT14", "KRT17", "KRT19", "ODAM", "SPRR2F"),
+    pmid = c("41143768", "12905270")
+    ),
 
 )
+
 
 

@@ -1,0 +1,223 @@
+
+
+```{r}
+
+devtools::install("~/MCnebula2")
+devtools::check("~/MCnebula2")
+lapply(c("glue", "tidygraph"), usethis::use_package)
+usethis::use_package()
+
+test <- list_files_top.sirius.v6(
+  "/home/echo/Downloads/SYQF6_neg.sirius"
+)
+test
+
+devtools::load_all("~/MCnebula2/")
+api <- initialize_sirius_api("~/Downloads/sirius/sirius/bin/sirius")
+
+mcn <- mcnebula()
+mcn <- initialize_mcnebula(mcn, "sirius.v6", "~/Downloads/SYQF6_neg.sirius")
+mcn <- filter_structure(mcn)
+mcn <- create_reference(mcn)
+
+mcn <- filter_formula(mcn, by_reference = TRUE)
+mcn <- filter_ppcp(mcn, by_reference = TRUE)
+
+mcn <- create_stardust_classes(mcn)
+mcn <- create_features_annotation(mcn)
+mcn <- cross_filter_stardust(mcn, 5, .3)
+mcn <- create_nebula_index(mcn)
+
+mcn <- compute_spectral_similarity(mcn)
+
+mcn <- create_parent_nebula(mcn, 0.01, 5, FALSE)
+mcn <- create_child_nebulae(mcn, 0.01, 5)
+
+mcn <- create_parent_layout(mcn)
+mcn <- create_child_layouts(mcn)
+mcn <- activate_nebulae(mcn)
+
+p <- visualize(mcn, 'parent')
+p2 <- visualize_all(mcn)
+
+mcn <- MCnebula2:::.simulate_quant_set(mcn)
+sample_metadata(mcn)
+
+features_quantification(mcn)
+
+mcn <- binary_comparison(mcn, model - control)
+top_data <- top_table(statistic_set(mcn))[[ 1 ]]
+top_data
+
+tops <- top_data$.features_id[1:5]
+mcn2 <- set_tracer(mcn, tops)
+
+
+mcn2 <- create_child_nebulae(mcn2)
+mcn2 <- create_child_layouts(mcn2)
+mcn2 <- activate_nebulae(mcn2)
+mcn2 <- set_nodes_color(mcn2, use_tracer = TRUE)
+
+visualize_all(mcn2)
+
+
+devtools::load_all("~/MCnebula2/")
+api <- initialize_sirius_api("~/Downloads/sirius/sirius/bin/sirius")
+methods_read(project_api(mcn))$read.f3_spectra <- .collate_spectra_annotated_via_sirius_api
+mcn@project_dataset@dataset$.f3_spectra <- NULL
+mcn <- collate_data(mcn, ".f3_spectra", reference = specific_candidate(mcn))
+mcn@project_dataset@dataset$.f3_spectra@entity
+
+
+
+qs::qsave(mcn, "~/Downloads/mcn.qs")
+mcn <- qs::qread("~/Downloads/mcn.qs")
+mcn
+
+
+devtools::load_all("~/MCnebula2/")
+api <- initialize_sirius_api("~/Downloads/sirius/sirius/bin/sirius")
+# methods_read(project_api(mcn))$read.f2_info <- .collate_features_via_sirius_api
+
+test <- .env_api$v6$features_api$GetAlignedFeatures(.env_api$projectID[[1]])
+ms2 <- .env_api$v6$features_api$GetMsData(.env_api$projectID[[1]], test[[2]]$alignedFeatureId)
+ms1 <- .env_api$v6$features_api$GetMsData(.env_api$projectID[[1]], test[[1]]$alignedFeatureId)
+
+.env_api$v6$features_api$GetSpectralLibraryMatches(.env_api$projectID[[1]], test[[3]]$alignedFeatureId)
+
+
+
+specific_candidate(mcn)
+test2 <- .env_api$v6$features_api$GetFormulaAnnotatedSpectrum(
+  .env_api$projectID[[1]], test[[2]]$alignedFeatureId, "832525344135083396"
+)
+
+test3 <- .env_api$v6$features_api$GetFormulaAnnotatedSpectrum(
+  .env_api$projectID[[1]], test[[3]]$alignedFeatureId, "832525344135083396"
+)
+
+test1 <- .env_api$v6$features_api$GetFormulaAnnotatedMsMsData(
+  .env_api$projectID[[1]], test[[2]]$alignedFeatureId, "832525344135083396"
+)
+
+format(test1$ms2Spectra)
+
+ms2
+
+identical(ms2$mergedMs2$peaks[1:5], test1$peaks[1:5], ignore.environment = TRUE)
+format <- function(x) {
+  dplyr::bind_rows(lapply(x, function(x) x$toList()))
+}
+x1 <- format(ms2$mergedMs2$peaks)
+x2 <- format(test1$peaks)
+identical(x1, x2)
+
+ms2$ms2Spectra %>% class
+ms1$ms2Spectra %>% class
+
+ms$mergedMs2$peaks
+
+
+devtools::load_all("~/MCnebula2/")
+api <- initialize_sirius_api("~/Downloads/sirius/sirius/bin/sirius")
+mcn <- mcnebula()
+mcn <- initialize_mcnebula(mcn, "sirius.v6", "/home/echo/Downloads/SYQF6_neg.sirius")
+mcn <- collate_data(mcn, ".f2_info")
+
+id <- digest::digest(
+  "/home/echo/Downloads/SYQF6_neg.sirius", "xxhash64", 3L
+)
+
+do.call(fun, Terror)
+
+test <- .env_api$v6$features_api$GetMsData(
+  id, "832524880949693933"
+)
+test
+
+
+mcn@project_version
+
+mcn <- collate_data(mcn, ".f3_fingerid")
+mcn <- collate_data(mcn, ".f2_formula")
+
+mcn <- collate_data(mcn, ".f3_canopus")
+
+
+```
+
+
+
+
+```{r}
+
+load_unions()
+
+list.files("~/Downloads/test/SYQF6_neg.sirius")
+file.copy(
+  "~/Downloads/test/SYQF6_neg.sirius", "~/Downloads/test/SYQF6_neg.mv.db", TRUE
+)
+
+download.file(
+  "https://github.com/h2database/h2database/releases/download/version-2.4.240/h2-2.4.240.jar",
+  "~/Downloads/h2.jar"
+)
+
+drv <- RJDBC::JDBC(
+  driverClass = "org.h2.Driver",
+  classPath = "~/Downloads/h2.jar"
+)
+
+con <- DBI::dbConnect(
+  drv,
+  "jdbc:h2:/home/echo/Downloads/test/SYQF6_neg;IFEXISTS=TRUE"
+)
+
+DBI::dbListTables(con)
+
+data_schema <- DBI::dbGetQuery(
+  con,
+  "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA"
+)
+data_schema
+
+data_schema
+
+data_tables <- DBI::dbGetQuery(
+  con,
+  "
+  SELECT
+    TABLE_SCHEMA,
+    TABLE_NAME
+  FROM INFORMATION_SCHEMA.TABLES
+  WHERE TABLE_SCHEMA NOT IN ('INFORMATION_SCHEMA')
+  "
+)
+data_tables
+
+data <- DBI::dbGetQuery(
+  con,
+  "SELECT * FROM INFORMATION_SCHEMA.TABLES"
+)
+data$TABLE_CLASS
+
+DBI::dbGetQuery(
+  con,
+  "
+  SELECT DISTINCT TABLE_SCHEMA
+  FROM INFORMATION_SCHEMA.TABLES
+  "
+)
+
+DBI::dbGetQuery(
+  con,
+  "
+  SELECT *
+  FROM INFORMATION_SCHEMA.COLUMNS
+  WHERE TABLE_SCHEMA NOT IN ('INFORMATION_SCHEMA')
+  "
+)
+
+```
+
+

@@ -1,0 +1,488 @@
+
+```{r}
+ml10.candidates <- asjob_mlearn10(ml.candidates)
+ml10.candidates <- step1(ml10.candidates, 5L)
+ml10.candidates$res_ml_train10$summary
+ml10.candidates$res_ml_train10$features
+
+
+ml10.candidates$res_ml_train10
+
+```
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  srn.GSE150825@plots$step3$p.umapLabel
+  srn.GSE150825@plots$step6$p.markers_cluster
+  srn.GSE150825@plots$step6$p.map_scsa
+  srn.GSE150825@plots$step6$p.markers
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+
+srn.GSE150825 <- qs::qread("./rds_jobSave/srn.GSE150825.1.qs")
+
+srn.GSE150825_scissor_pos <- asjob_seurat_sub(
+  srn.GSE150825, ssr.GSE150825$metadata, "scissor_pos", group.by = "scissor_cell"
+)
+srn.GSE150825_scissor_pos$group.by <- "scsa_cell"
+rm(srn.GSE150825)
+
+srn.GSE150825_scissor_pos <- step1(srn.GSE150825_scissor_pos)
+requireNamespace("Seurat")
+srn.GSE150825_scissor_pos <- step2(srn.GSE150825_scissor_pos)
+srn.GSE150825_scissor_pos <- step3(srn.GSE150825_scissor_pos, 1:15, 0.2)
+srn.GSE150825_scissor_pos <- step4(srn.GSE150825_scissor_pos)
+
+srn.GSE150825_scissor_pos <- step5(
+  srn.GSE150825_scissor_pos, 5, force = TRUE, min.pct = .1
+)
+clear(srn.GSE150825_scissor_pos)
+
+
+
+srn.GSE150825 <- qs::qread("./rds_jobSave/srn.GSE150825.1.qs")
+
+srn.GSE150825_scissor <- asjob_seurat_sub(
+  srn.GSE150825, ssr.GSE150825$metadata,
+  c("scissor_pos", "scissor_neg"),
+  group.by = "scissor_cell"
+)
+
+srn.GSE150825_scissor$group.by <- "scsa_cell"
+rm(srn.GSE150825)
+
+srn.GSE150825_scissor <- step1(srn.GSE150825_scissor)
+requireNamespace("Seurat")
+srn.GSE150825_scissor <- step2(srn.GSE150825_scissor)
+srn.GSE150825_scissor <- step3(srn.GSE150825_scissor, 1:15, 0.8)
+srn.GSE150825_scissor <- step4(srn.GSE150825_scissor)
+
+srn.GSE150825_scissor <- step5(
+  srn.GSE150825_scissor, 5, min.pct = .1
+)
+clear(srn.GSE150825_scissor)
+
+au.GSE150825_scissor <- asjob_aucell(srn.GSE150825_scissor)
+au.GSE150825_scissor <- step1(au.GSE150825_scissor, 8)
+au.GSE150825_scissor <- step2(au.GSE150825_scissor)
+au.GSE150825_scissor <- step3(au.GSE150825_scissor, "scissor_cell")
+
+au.GSE150825_scissor <- map(
+  au.GSE150825_scissor, srn.GSE150825_scissor, "scissor_cell", pal = pal(ssr.GSE150825)
+)
+clear(au.GSE150825_scissor, FALSE)
+
+
+```
+
+
+
+### Scissor 细胞二次聚类 AUCell 分析
+
+`r meth(srn.GSE150825_scissor, 0:3)`
+
+`r snap(au.GSE150825_scissor, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  srn.GSE150825_scissor@plots$step3$p.umapUint
+  srn.GSE150825_scissor@plots$step3$p.umapInt
+  z7(au.GSE150825_scissor@plots$step2$p.hp, 1.2, 1)
+  z7(au.GSE150825_scissor@plots$step3$p.cor_trait_aucell, 2, 1.1)
+  au.GSE150825_scissor@params$cor_trait_aucell
+  au.GSE150825_scissor@params$map_seurat$p.map
+})
+```
+<!-- OVERTURE_END -->
+
+
+```{r}
+srn.GSE150825_sciPos_FibroClean <- readRDS(
+  "./rds_jobSave/srn.GSE150825_sciPos_FibroClean.5.rds"
+)
+
+hdw.GSE150825_sciPos_FibroClean <- asjob_hdwgcna(srn.GSE150825_sciPos_FibroClean)
+
+hdw.GSE150825_sciPos_FibroClean <- step1(
+  hdw.GSE150825_sciPos_FibroClean, auto = FALSE
+)
+
+hdw.GSE150825_sciPos_FibroClean <- step2(
+  hdw.GSE150825_sciPos_FibroClean, NULL, .8
+)
+hdw.GSE150825_sciPos_FibroClean <- step3(hdw.GSE150825_sciPos_FibroClean, 50, .75)
+hdw.GSE150825_sciPos_FibroClean <- step4(hdw.GSE150825_sciPos_FibroClean)
+
+hdw.GSE150825_sciPos_FibroClean@step <- 4L
+hdw.GSE150825_sciPos_FibroClean <- step5(
+  hdw.GSE150825_sciPos_FibroClean, 500L, debug = TRUE
+)
+feature(hdw.GSE150825_sciPos_FibroClean, "kme")
+
+clear(hdw.GSE150825_sciPos_FibroClean)
+
+au.GSE150825 <- asjob_aucell(
+  srn.GSE150825, "C2", pattern = "serotonin", "Serotonin"
+)
+```
+
+```{r}
+
+```
+
+### AUCell 活性分析
+
+`r snap(au.GSE150825, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  au.GSE150825@plots$step1$p.aucell_mean
+  au.GSE150825@params$map_seurat$p.map
+  feature(au.GSE150825, "genesSets")
+  notshow(au.GSE150825@params$res_aucell_mean)
+})
+```
+<!-- OVERTURE_END -->
+
+
+```{r}
+
+srn.GSE150825 <- qs::qread("./rds_jobSave/srn.GSE150825.1.qs")
+
+srn.GSE150825_scissor <- asjob_seurat_sub(
+  srn.GSE150825, ssr.GSE150825$metadata,
+  c("scissor_pos", "scissor_neg"),
+  group.by = "scissor_cell"
+)
+
+srn.GSE150825_scissor$group.by <- "scsa_cell"
+rm(srn.GSE150825)
+
+srn.GSE150825_scissor <- step1(srn.GSE150825_scissor)
+requireNamespace("Seurat")
+srn.GSE150825_scissor <- step2(srn.GSE150825_scissor)
+srn.GSE150825_scissor <- step3(srn.GSE150825_scissor, 1:15, 0.8)
+srn.GSE150825_scissor <- step4(srn.GSE150825_scissor)
+
+srn.GSE150825_scissor <- step5(
+  srn.GSE150825_scissor, 5, min.pct = .1
+)
+clear(srn.GSE150825_scissor)
+
+au.GSE150825_scissor_serotonin <- asjob_aucell(srn.GSE150825_scissor, feature(gn.serotonin))
+au.GSE150825_scissor_serotonin <- step1(au.GSE150825_scissor_serotonin, 8)
+quantile(au.GSE150825_scissor_serotonin)
+
+au.GSE150825_scissor <- asjob_aucell(srn.GSE150825_scissor, "H")
+au.GSE150825_scissor <- step1(au.GSE150825_scissor, 8)
+au.GSE150825_scissor <- step2(au.GSE150825_scissor)
+au.GSE150825_scissor <- step3(au.GSE150825_scissor, "scissor_cell")
+clear(au.GSE150825_scissor)
+
+au.GSE150825_scissor <- map(
+  au.GSE150825_scissor, srn.GSE150825_scissor, "scissor_cell", pal = pal(ssr.GSE150825)
+)
+clear(au.GSE150825_scissor, FALSE)
+
+quantile(au.GSE150825_scissor, "MYC_TARGETS_V1", cut = .9)
+
+
+```
+
+```{r}
+
+srn.GSE150825_sciPos_Fibro <- asjob_seurat_sub(
+  srn.GSE150825, metaCells, "scissor_pos_Fibroblast", group.by = "celltypes_scissor"
+)
+clear(srn.GSE150825_sciPos_Fibro)
+rm(srn.GSE150825)
+
+# srn.GSE150825_sciPos_Fibro <- readRDS("./rds_jobSave/srn.GSE150825_sciPos_Fibro.0.rds")
+srn.GSE150825_sciPos_Fibro <- step1(srn.GSE150825_sciPos_Fibro)
+requireNamespace("Seurat")
+srn.GSE150825_sciPos_Fibro <- step2(
+  srn.GSE150825_sciPos_Fibro, sct = TRUE
+)
+srn.GSE150825_sciPos_Fibro <- step3(srn.GSE150825_sciPos_Fibro, 1:15, 0.2)
+
+fib_refine <- refine(srn.GSE150825_sciPos_Fibro,
+  pos = c("COL1A1", "COL1A2", "DCN", "LUM"),
+  neg = c("EPCAM", "KRT5", "RSPH1", "PTPRC")
+)
+
+srn.GSE150825 <- qs::qread("./rds_jobSave/srn.GSE150825.1.qs")
+
+srn.GSE150825_sciPos_FibroClean <- asjob_seurat_sub(
+  srn.GSE150825, metaCells, "scissor_pos_Fibroblast", group.by = "celltypes_scissor",
+  refine = fib_refine
+)
+
+srn.GSE150825_sciPos_FibroClean <- step1(srn.GSE150825_sciPos_FibroClean)
+requireNamespace("Seurat")
+srn.GSE150825_sciPos_FibroClean <- step2(
+  srn.GSE150825_sciPos_FibroClean, sct = TRUE
+)
+srn.GSE150825_sciPos_FibroClean <- step3(srn.GSE150825_sciPos_FibroClean, 1:15, 0.1)
+srn.GSE150825_sciPos_FibroClean <- step4(srn.GSE150825_sciPos_FibroClean)
+
+srn.GSE150825_sciPos_FibroClean <- step5(
+  srn.GSE150825_sciPos_FibroClean, 5, min.pct = .1
+)
+
+# scsa_check(srn.GSE150825_sciPos_FibroClean, "", 0:6)
+clear(srn.GSE150825_sciPos_FibroClean)
+
+
+```
+
+
+```{r}
+au.GSE150825_hallmark <- asjob_aucell(
+  srn.GSE150825, "H"
+)
+au.GSE150825_hallmark <- step1(au.GSE150825_hallmark, 8)
+au.GSE150825_hallmark <- step2(au.GSE150825_hallmark)
+au.GSE150825_hallmark <- step3(au.GSE150825_hallmark, "scissor_cell")
+au.GSE150825_hallmark <- map(
+  au.GSE150825_hallmark, srn.GSE150825, "scissor_cell", pal = pal(ssr.GSE150825)
+)
+clear(au.GSE150825_hallmark)
+
+
+
+```
+
+
+```{r}
+
+srn.GSE150825 <- qs::qread("rds_jobSave/srn.GSE150825.6.qs")
+ssr.GSE150825 <- readRDS("./rds_jobSave/lite/ssr.GSE150825.3.rds")
+srn.GSE150825 <- map(srn.GSE150825, ssr.GSE150825)
+
+srn.GSE150825 <- mutate(
+  srn.GSE150825, celltypes_scissor = paste0(
+    scissor_cell, "_", scsa_cell
+  )
+)
+srn.GSE150825$group.by <- "celltypes_scissor"
+
+hdw.GSE150825 <- asjob_hdwgcna(srn.GSE150825)
+hdw.GSE150825 <- step1(
+  hdw.GSE150825, auto = FALSE
+)
+
+hdw.GSE150825 <- step2(
+  hdw.GSE150825, "scissor_pos_Tumor_Associated", .8
+)
+hdw.GSE150825 <- step3(hdw.GSE150825, 50, .3)
+hdw.GSE150825 <- step4(hdw.GSE150825)
+clear(hdw.GSE150825)
+
+hdw.GSE150825@step <- 4L
+hdw.GSE150825 <- step5(
+  hdw.GSE150825, 100L, debug = TRUE
+)
+feature(hdw.GSE150825, "kme")
+
+clear(hdw.GSE150825, FALSE)
+
+```
+
+```{r}
+ml.candidates <- step1(ml.candidates, 5:15, 5L)
+ml.candidates <- step2(ml.candidates, 5L, seed = 1234L)
+ml.candidates <- step3(ml.candidates, top = 10L)
+clear(ml.candidates)
+
+ven.learn <- asjob_venn(ml.candidates)
+ven.learn <- step1(ven.learn)
+clear(ven.learn)
+feature(ven.learn)
+
+```
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+lm.validate_train@params$focusedDegs_learn$p.BoxPlotOfDEGs
+lm.validate_GSE12452@plots$step2$p.BoxPlotOfDEGs_learn
+des.validate_GSE189642@params$focusedDegs_learn$p.BoxPlotOfDEGs
+})
+```
+<!-- OVERTURE_END -->
+
+
+```{r}
+# des.GSE189642 <- readRDS("./rds_jobSave/des.GSE189642.3.rds")
+lm.GSE53819 <- readRDS("./rds_jobSave/lm.GSE53819.3.rds")
+ven.candidates <- readRDS("./rds_jobSave/ven.candidates.1.rds")
+
+# ==========================================================================
+
+geo.GSE12452 <- job_geo("GSE12452")
+geo.GSE12452 <- step1(geo.GSE12452)
+
+metadata.GSE12452 <- expect(geo.GSE12452, geo_cols())
+metadata.GSE12452 <- dplyr::mutate(
+  metadata.GSE12452, group = ifelse(
+    grpl(group, "normal"), "control", "NPC"
+  )
+)
+
+lm.validate_GSE12452 <- asjob_limma(geo.GSE12452, metadata.GSE12452)
+lm.validate_GSE12452 <- step1(lm.validate_GSE12452)
+clear(lm.validate_GSE12452)
+
+ml.validate <- asjob_mlearn(
+  lm.validate_GSE12452, feature(ven.candidates),
+  levels = c("control", "NPC")
+)
+
+```
+
+```{r}
+lm.GSE53819 <- readRDS("./rds_jobSave/lm.GSE53819.3.rds")
+lm.validate_train <- focus(
+  lm.GSE53819, fea,
+  .name = "learn", run_roc = TRUE, test = "wilcox.test"
+)
+clear(lm.validate_train, FALSE)
+
+lm.validate_GSE12452 <- readRDS("./rds_jobSave/lm.validate_GSE12452.1.rds")
+lm.validate_GSE12452 <- focus(
+  lm.validate_GSE12452, fea,
+  .name = "learn", test = "wilcox.test",
+  levels = c("NPC", "control"), run_roc = TRUE
+)
+clear(lm.validate_GSE12452)
+
+```
+
+针对关键基因分别在训练集和验证集中绘制箱线图，直观呈现关键基因组间表达分布特征。
+训练集为 GSE53819。
+`r snap(lm.validate_train, "learn")`
+
+对于验证集 GSE12452，
+`r snap(lm.validate_GSE12452, "learn")`
+
+此外，我们针对包含 IBL_High, IBL_Low 分组的 GSE189642 数据集做了表达量验证以及 ROC 评估。
+`r snap(des.validate_GSE189642, "learn")`
+
+以三个数据集的基因表达差异均达到统计学显著水平（p &lt; 0.05）、且表达趋势一致的关键基因，作为后续研究的生物标志物，⟦mark$red('最终筛选关键基因为 NME1, PTPN6')⟧。
+
+```{r}
+
+lm.validate_train@params$focusedDegs_learn$p.BoxPlotOfDEGs
+lm.validate_train@params$focusedDegs_learn$p.rocs
+lm.validate_GSE12452@plots$step2$p.BoxPlotOfDEGs_learn
+lm.validate_GSE12452@params$focusedDegs_learn$p.rocs
+```
+
+
+```{r}
+cc.GSE150825_scissor_neg <- asjob_cellchat(
+  getsub(srn.GSE150825, scissor_cell == "scissor_neg")
+)
+cc.GSE150825_scissor_neg <- step1(cc.GSE150825_scissor_neg)
+cc.GSE150825_scissor_neg <- step2(cc.GSE150825_scissor_neg)
+clear(cc.GSE150825_scissor_neg)
+
+cc.GSE150825_scissor_pos <- asjob_cellchat(
+  getsub(srn.GSE150825, scissor_cell == "scissor_pos")
+)
+cc.GSE150825_scissor_pos <- step1(cc.GSE150825_scissor_pos)
+cc.GSE150825_scissor_pos <- step2(cc.GSE150825_scissor_pos)
+clear(cc.GSE150825_scissor_pos)
+
+cc.comparison <- asjob_cellchatn(
+  list(scissor_neg = cc.GSE150825_scissor_neg, scissor_pos = cc.GSE150825_scissor_pos)
+)
+cc.comparison <- step1(cc.comparison)
+cc.comparison <- step2(cc.comparison, "Fibroblast")
+clear(cc.comparison)
+
+
+
+```
+
+
+
+```{r}
+mn.GSE150825_sciPos_FibroClean <- asjob_monocle2(
+  srn.GSE150825_sciPos_FibroClean,
+  compare = c("Activated_Matrix_Fibroblast", "Non_Matrix_Fibroblast"),
+  compare.by = c("scsa_cell")
+)
+
+mn.GSE150825_sciPos_FibroClean <- step1(mn.GSE150825_sciPos_FibroClean)
+mn.GSE150825_sciPos_FibroClean <- step2(
+  mn.GSE150825_sciPos_FibroClean, mode = "diff", top = 100
+)
+mn.GSE150825_sciPos_FibroClean <- step3(
+  mn.GSE150825_sciPos_FibroClean, extra = NULL
+)
+
+fea.markers <- load_feature()
+
+mn.GSE150825_sciPos_FibroClean@step <- 3L
+mn.GSE150825_sciPos_FibroClean <- step4(
+  mn.GSE150825_sciPos_FibroClean, fea.markers,
+  # recode = c("HIST1H1E" = "H1-4"),
+  relative_expr = FALSE
+)
+mn.GSE150825_sciPos_FibroClean <- step5(mn.GSE150825_sciPos_FibroClean)
+clear(mn.GSE150825_sciPos_FibroClean)
+
+
+```
+
+```{r}
+vn.drugs_ex <- readRDS("../02_job0259/rds_jobSave/vn.drugs_ex.8.rds")
+vn.metabolite <- readRDS("../02_job0259/rds_jobSave/vn.metabolite.8.rds")
+
+dy.drug_metabolite <- asjob_dynamic(list(Drug = vn.drugs_ex, Metabolite = vn.metabolite))
+dy.drug_metabolite <- step1(dy.drug_metabolite)
+dy.drug_metabolite@step <- 1L
+dy.drug_metabolite <- step2(dy.drug_metabolite, "./tmp/test")
+clear(dy.drug_metabolite)
+```
+
+### 血清素相关基因获取
+
+`r snap(mdb.serotonin, TRUE, TRUE)`
+
+`r snap(gn.serotonin, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  feature(mdb.serotonin)
+  feature(gn.serotonin)
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+gn.serotonin <- job_genecard("Serotonin")
+gn.serotonin <- step1(gn.serotonin, 1L)
+feature(gn.serotonin)
+clear(gn.serotonin)
+
+file.copy(
+  "./rds_jobSave/gn.serotonin.1.rds", "./remote/rds_jobSave", TRUE
+)
+```
+
+
+

@@ -1,0 +1,875 @@
+---
+---
+
+```{r include = F, eval = F}
+info <- items(start = td("2026-05-07"), end = td("2026-05-07"), finish = td("2026-05-07"),
+  id = "job0395", client = "", inst = "",
+  type = "生信分析",
+  title = "基于转录组与单细胞测序联合实验验证探究脓毒症中针灸调控内源性活性物质及核心基因的生物标志物与作用机制",
+  save = ".items_analysis.rds"
+)
+show.ic(info)
+
+project_publish.complex("analysis.Rmd", "analysis_out.Rmd")
+idname <- formatName.complex("./analysis_out.docx")
+project_packaging("./analysis_out.docx", idname = idname, external_file = NULL)
+```
+
+```{r include = F}
+#| setup
+if (!requireNamespace("union.publish"))
+  devtools::load_all("~/union/union.publish/")
+autor_preset()
+## the package are available at <https://github.com/shaman-yellow/union.publish>
+## if you want to run codes of this Rmarkdown,
+## please install the package `union.publish` and other related packages (run
+## install.R)
+options(savedir = list(figs = "Figure+Table", tabs = "Figure+Table"))
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_cover.complex()
+```
+
+```{r eval = TRUE, echo = FALSE, results = "asis"}
+set_index()
+```
+
+# 项目概述
+
+## 项目背景
+
+脓毒症（Sepsis）是由感染触发的全身炎症反应综合征，可快速进展为感染性休克、多器官功能障碍综合征（Multiple
+organ dysfunction
+syndrome,MODS），是重症医学领域致死率极高的疾病之一。全球范围内，脓毒症每年影响数百万人，约1/4患者死于疾病进展，且幸存者常伴随长期器官功能损伤与生活质量下降，给医疗系统和社会造成沉重负担[@desposito2024review; @martinloeches2024sepsis; @srdi2024from]。其病理生理机制复杂，涉及过度炎症风暴、免疫细胞功能紊乱、凝血系统异常激活及内皮屏障破坏等多个环节，尽管液体复苏、广谱抗感染等经典治疗方案不断优化，脓毒症的临床预后仍未得到根本性改善，因此挖掘新型治疗靶点与干预策略具有迫切的临床需求[@srzi2022sepsis]。
+
+针灸作为传统中医特色外治法，在危重症辅助治疗中展现出独特优势。临床与基础研究证实，针灸可通过刺激特定穴位，调控机体内源性活性物质（如抗炎细胞因子、神经肽、抗氧化分子等）及核心基因表达，进而抑制过度炎症反应、调节免疫平衡、保护器官功能[@formenti2023role]。例如，电针刺激可诱导内源性阿片肽释放，减轻脓毒症小鼠的炎症损伤；同时，针灸还能调控炎症相关信号通路（如NF-κB、MAPK）的核心基因表达，缓解器官功能衰竭[@luo2020crosstalk]。然而，针灸调控脓毒症的关键内源性活性物质、核心靶基因及分子调控网络尚未被系统阐明，限制了其临床精准化应用与机制转化。
+
+内源性活性物质是机体在生理或病理状态下产生的一类具有生物活性的分子，包括细胞因子、趋化因子、神经递质、代谢小分子等，在脓毒症的炎症调控与免疫平衡中发挥核心作用[@benameur2023emerging]。研究表明，脓毒症发生时，促炎细胞因子（如TNF-α、IL-6）与抗炎细胞因子（如IL-10）的失衡是驱动炎症风暴的关键环节；而内源性神经肽（如VIP、CGRP）、抗氧化分子（如谷胱甘肽）等则可通过调节免疫细胞功能、减轻氧化应激，参与脓毒症的病理进程[@kotsovolis2010role]。此外，部分内源性活性物质还可通过调控组蛋白修饰、非编码RNA表达等表观遗传机制，影响下游核心基因的转录，进而参与脓毒症的发生发展[@giamarellosbourboulis2024pathophysiology]。尽管内源性活性物质在脓毒症中的作用已被初步证实，但其在针灸干预下的动态变化规律、与核心基因的协同调控模式，以及在不同疾病阶段的功能差异仍不明确。深入解析针灸调控内源性活性物质的分子机制，将为脓毒症的精准治疗提供新的理论依据。
+
+转录组测序（RNA-seq）可全面解析疾病状态下的基因表达谱，已广泛应用于脓毒症的差异表达基因（Differentially
+expressed
+genes,DEGs）筛选、通路富集及分子亚型分析[@withanage2022experiment]。而单细胞RNA测序（Single-cell
+RNA
+sequencing,scRNA-seq）技术则突破了传统bulk测序的局限性，能够在单细胞分辨率水平揭示脓毒症中免疫细胞、实质细胞的异质性，识别疾病相关的稀有细胞类型及动态表达特征[@cheng2023review]。例如，通过scRNA-seq分析脓毒症患者外周血样本，可精准区分促炎巨噬细胞、免疫抑制中性粒细胞等关键细胞类型，并揭示其在疾病进展中的功能变化[@sun2025single]。
+
+机器学习（Machine
+Learning,ML）作为数据驱动的分析工具，可高效从高维组学数据中挖掘核心生物标志物与调控模式。随机森林、LASSO回归、SVM-RFE等算法已被用于脓毒症的风险分层、预后预测及靶点筛选[@yan2024association]。通过整合转录组数据与临床信息，机器学习模型可精准筛选出与脓毒症发病、治疗响应相关的核心基因，为疾病的早期诊断与个性化治疗提供支撑[@lei2025supervised]。结合转录组、单细胞测序与机器学习技术，将为系统解析针灸调控脓毒症的分子机制提供高效的技术路径。
+
+目前，尚未有研究整合转录组、单细胞测序及机器学习方法，系统探究针灸干预脓毒症中内源性活性物质及核心基因的调控机制。因此，本研究基于公共脓毒症转录组数据集（如GSE134347）筛选疾病相关DEGs，并通过文献检索与数据库挖掘获取内源性活性物质相关基因集，取二者交集作为候选基因。随后，通过随机森林、LASSO及SVM-RFE三种机器学习算法筛选关键生物标志物，并利用独立数据集（如GSE131761）进行表达验证。对核心标志物开展GSEA富集分析、免疫浸润分析、转录因子-mRNA调控网络构建及潜在药物预测，同时借助scRNA-seq解析其在脓毒症关键细胞类型中的表达分布。最后，通过动物实验验证针灸干预对核心标志物及下游通路的调控效应，以期明确针灸调控脓毒症的分子机制，为脓毒症的临床治疗提供新的生物标志物与潜在干预靶点。
+
+## 分析方法
+
+1. 文献检索与靶点获取：检索PubMed、CNKI、WebofScience、万方数据库，获取"脓毒症+针灸+内源性活性物质"相关靶点；结合PharmMapper、SwissTargetPrediction数据库，得到针灸干预脓毒症的潜在靶点集合。
+
+2. 转录组数据下载：下载脓毒症公共转录组数据集（如GSE134347），进行数据预处理与标准化。
+
+3. 差异表达分析：筛选脓毒症组与对照组的差异表达基因（DEGs），并与针灸和内源性活性物质靶点取交集，得到交集候选基因。
+
+4. GO/KEGG富集分析：对交集候选基因进行GO功能富集（MF/CC/BP）及KEGG通路富集分析，解析核心生物学功能与通路。
+
+5. PPI网络构建：构建交集候选基因的蛋白互作（PPI）网络，可视化展示候选基因间的蛋白互作关系，分析网络中基因的互作特征，明确基因在整个互作网络中的核心调控地位，为后续核心生物标志物的筛选提供蛋白互作层面的支撑（注：PPI网络仅用于展示基因间互作关系，不用于筛选新的候选基因）。
+
+6. 机器学习关键基因筛选：采用支持向量机（SVM）、随机森林（RF）、梯度提升机（GBM）、极端梯度提升（XGBoost）、朴素贝叶斯（NaiveBayes）算法，筛选并获得Hub基因。
+
+7. 表达水平验证：利用独立脓毒症转录组数据集（如GSE131761），验证关键核心基因的表达差异，确定关键基因。
+
+8. MR分析：对候选生物标志物进行孟德尔随机化（MR）分析，筛选具有显著因果关联的基因，最终确定核心生物标志物。
+
+9. GSEA富集分析：对核心生物标志物进行基因集富集分析，挖掘其参与的关键信号通路。
+
+10. 免疫浸润分析：采用CIBERSORT等算法，分析核心生物标志物与免疫细胞浸润的关联。
+
+11. 列线图构建：基于核心生物标志物表达与临床特征，构建脓毒症预后或针灸响应预测列线图。
+
+12. mRNA-TF调控网络构建：构建核心生物标志物与转录因子（TF）的调控网络，揭示上游调控机制。
+
+13. 单细胞数据下载：下载脓毒症单细胞RNA测序数据集（如GSE157363），进行质量控制与标准化。
+
+14. 单细胞数据预处理与聚类：对单细胞数据进行降维、聚类，划分细胞类型并完成细胞类型注释。
+
+15. 差异细胞类型筛选：筛选脓毒症组与对照组间的差异表达细胞类型。
+
+16. 生物标志物细胞定位分析：解析核心生物标志物在不同关键细胞类型中的表达分布，明确细胞特异性。
+
+17. 拟时序分析：构建关键细胞类型动态变化轨迹，揭示核心生物标志物在疾病进展中的表达动态。
+
+18. 细胞通讯分析：分析关键细胞类型间的通讯模式，阐明核心生物标志物参与的细胞间信号传递。
+
+19. 基因调控网络分析：构建关键细胞类型的基因调控网络，解析核心生物标志物的核心调控作用。
+
+20. 实验验证：通过动物或细胞实验，验证针灸干预对核心生物标志物及下游通路的调控效应。
+
+## 数据来源
+
+1. 训练集：从GEO数据库（<https://www.ncbi.nlm.nih.gov/geo>）下载GSE134347数据集。该数据集原始总样本量为298例，剔除59例非感染性ICU对照样本后，最终纳入156例脓毒症患者样本与83例健康对照样本进行后续分析（全血样本，平台：GPL17586）；测序类型：表达谱芯片；用途：差异表达基因（DEGs）的鉴定、候选基因筛选及机器学习模型构建【参考文献：PMID:35903199】。
+
+2. 验证集：从GEO数据库（<https://www.ncbi.nlm.nih.gov/geo>）下载GSE131761数据集。该数据集原始总样本量为114例，剔除33例非感染性休克样本后，最终纳入81例脓毒症患者样本与15例健康对照样本进行后续分析（全血样本，平台：GPL13497）；测序类型：表达谱芯片；用途：Hub基因表达水平验证【参考文献：PMID:34144116】。
+
+3. 针灸干预脓毒症相关靶点及内源性活性物质基因集：通过PubMed (<https://pubmed.ncbi.nlm.nih.gov/>)、CNKI (<https://cnki.net/>)、WebofScience (<https://clarivate.com/academia-government/scientific-and-academic-research/research-discovery-and-referencing/web-of-science/>)、万方数据库 (<https://www.wanfangdata.com.cn/>) 检索"脓毒症+针灸+内源性活性物质" (Sepsis, acupuncture, Endogenous active components) 相关文献，结合 Super-PRED (<https://prediction.charite.de/>)、SwissTargetPrediction (<http://www.swisstargetprediction.ch/>) 数据库预测，获取初始针灸干预脓毒症靶点集合及内源性活性物质相关基因集。
+
+4. 单细胞数据集：从GEO数据库（<https://www.ncbi.nlm.nih.gov/geo>）下载GSE167363数据集（外周血单核细胞样本，样本及类型：10例脓毒症患者样本与2例健康对照样本，平台：GPL24676）；测序类型：**高通量测序（High-throughput
+scRNA-seq）**；用途：细胞类型注释、生物标志物细胞定位及动态变化分析【PMID：34749888】。
+
+5. 在 OpenGWAS (<https://opengwas.io/>) 数据库中检索本研究经机器学习筛选得到的候选生物标志物表达水平（eQTL）相关 GWAS 数据集作为暴露因素（exposure）；同时检索脓毒症（Sepsis）相关 GWAS 数据集（traitID:ieu-b-5088），该数据集包含11,568例脓毒症病例与451,301例健康对照，总计462,869例欧洲个体，涵盖12,243,540个SNP，作为结局变量（outcome）用于后续两样本孟德尔随机化分析。（参考文献：PMID:41060947）
+
+## 研究目标
+
+1. 基于生物信息学方法，整合脓毒症转录组数据集，筛选针灸调控下与内源性活性物质相关的候选基因，明确针灸干预脓毒症过程中内源性活性物质相关基因的表达特征。
+
+2. 运用机器学习（随机森林、LASSO、SVM-RFE等）算法，对候选基因进行筛选与验证，精准识别出脓毒症中受针灸调控的关键核心基因，构建针灸调控脓毒症的核心基因特征集。
+
+3. 结合孟德尔随机化分析结果与临床样本的表达水平检测，对筛选得到的关键核心基因进行表达验证与因果可靠性验证，最终确定能够反映针灸调控脓毒症效应的稳定核心生物标志物。
+
+4. 对筛选出的生物标志物开展系统的生物信息学深度分析，包括GSEA富集分析、免疫浸润分析、mRNA-TF调控网络构建、列线图模型搭建及潜在药物预测，明确生物标志物在脓毒症病理进程及针灸调控中的作用通路与调控机制，为发掘脓毒症针灸治疗的潜在策略提供理论支撑。
+
+5. 依托单细胞RNA测序数据，解析生物标志物在脓毒症关键细胞类型（如免疫细胞、实质细胞等）中的表达分布与动态变化轨迹，揭示疾病进展中细胞异质性特征，阐明生物标志物通过调控特定细胞类型参与脓毒症发生发展及针灸干预的分子特征与作用模式。
+
+
+## 拟解决的关键科学问题
+
+脓毒症（Sepsis）是由感染触发的全身炎症反应综合征，可快速进展为感染性休克与多器官功能衰竭，是重症医学领域致死率极高的疾病之一，其复杂的病理生理机制与有限的治疗手段给临床带来了巨大挑战。针灸作为传统中医特色外治法，已被证实可通过调控机体内源性活性物质与核心基因表达，在脓毒症的炎症调控与器官保护中展现出潜在价值，但其具体分子靶点与调控网络尚未被系统阐明。内源性活性物质在脓毒症的炎症平衡、免疫调节及器官损伤修复中发挥核心作用，是针灸干预脓毒症的关键媒介，然而其在针灸调控下的动态变化规律、与核心基因的协同作用模式仍不明确。此外，机器学习与单细胞测序技术在脓毒症针灸研究中的应用仍处于起步阶段，借助多组学与人工智能技术挖掘针灸调控脓毒症的生物标志物与作用机制，具有重要的科学探索空间与临床转化价值。
+
+本研究将从以下几个方面进行探究：
+
+1. 通过生物信息学方法对脓毒症公共转录组数据集进行分析，识别脓毒症相关差异表达基因（DEGs）；结合文献检索与数据库挖掘获取针灸干预相关内源性活性物质基因集，将二者取交集得到候选基因。
+
+2. 利用多种机器学习算法（随机森林、LASSO、SVM‑RFE等）对候选基因进行特征筛选，获得与脓毒症及针灸干预相关的hub基因；随后通过独立数据集GSE131761对hub基因进行表达水平验证，确定表达趋势稳健的基因；在此基础上开展孟德尔随机化（MR）分析，以基因表达为暴露、脓毒症为结局，筛选与脓毒症存在显著因果关联且无水平多效性的稳健基因位点，最终确定兼具差异表达特征与因果关联证据的核心生物标志物。
+
+3. 对核心生物标志物开展GSEA富集分析、免疫浸润分析、mRNA-TF调控网络构建、列线图模型搭建及药物预测等系统分析，以阐明其在脓毒症病理进程及针灸干预中的分子特征与调控机制。
+
+4. 采用单细胞RNA测序技术，解析核心生物标志物在脓毒症关键细胞类型中的表达分布、动态变化轨迹及细胞间通讯模式，揭示疾病进展中的细胞异质性与调控规律。
+
+5. 通过动物或细胞实验验证针灸干预对核心生物标志物及下游通路的调控效应，确认生物信息学分析结果的可靠性。旨在发现脓毒症针灸治疗的新型潜在生物标志物与干预靶点，明确针灸调控内源性活性物质及核心基因的分子机制，为脓毒症的临床精准治疗提供重要的理论依据与实验支撑。
+
+## 创新性
+
+1. 本方案聚焦脓毒症针灸干预研究，在生信分析思路上充分借鉴前沿研究方法，参考多篇相关中科院二区文献（PMID:38404591，PMID:41339491）构建分析框架，其中PMID:38404591（FrontImmunol.2024,IF=5.9）采用单细胞RNA测序与转录组联合分析，结合机器学习筛选脓毒症关键生物标志物，与本研究多组学整合思路高度一致；另一篇相关文献（参考文献：PMID:41339491）通过单细胞与转录组数据挖掘脓毒症生物标志物及分子机制，研究设计与本研究多组学结合思路契合。目前以脓毒症、针灸、Bulk转录组、单细胞转录组和机器学习为关键词进行检索的生信领域报道不足10篇，不存在同类型系统整合多组学与针灸干预机制的研究，研究创新性突出。
+
+2. 所选用的脓毒症转录组数据集（如训练集GSE134347、验证集GSE131761）及单细胞数据集（GSE157363）均有权威文献支撑，数据来源可靠、可信度高。引入独立验证集进行表达水平验证，进一步提升了生物标志物筛选结果的稳健性与可重复性；以脓毒症相关血液/外周血单核细胞样本为样本来源的设计，贴合临床实际，便于后续开展动物/细胞实验及临床验证；充足的样本量可支撑差异表达分析、机器学习筛选、单细胞聚类等多维度分析，保障研究结果的稳定性与可靠性。
+
+3. 本分析方案涵盖多维度研究：含转录组差异表达筛选、GO/KEGG功能富集、PPI网络构建等基础分子分析，单细胞测序数据质控、细胞类型注释、拟时序分析、细胞通讯分析等单细胞研究；同时分析免疫浸润特征、免疫检查点关联，开展mRNA-TF调控网络构建、列线图预测、药物敏感性分析及分子对接，为脓毒症针灸干预的分子机制研究及临床转化提供全面支撑。
+
+## 流程图
+
+![](./order_material/word/media/image1.png)
+
+\newpage
+
+# 分析结果 {#workflow}
+
+## 针灸干预脓毒症潜在靶点预测
+
+### 文献挖掘
+
+通过PubMed、CNKI、WebofScience、万方数据库检索"脓毒症+针灸+内源性活性物质"相关文献，得到 16 篇相关文献。
+随后，通过确认文献内容，得到内源性小分子化合物用于靶点预测【`r feature(swi.cpd, "compound")`】。
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  j.search@params$fig.search
+})
+```
+<!-- OVERTURE_END -->
+
+
+### 使用 swissTargetPrediction 预测
+
+`r snap(swi.cpd, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  notshow(swi.cpd$data_target)
+  notshow(swi.cpd$data_filter)
+  feature(swi.cpd, "target")
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+j.cpd <- .job(object = data_cpd)
+clear(j.cpd)
+
+swi.cpd <- job_swiss(
+  setNames(data_cpd$SMILES, data_cpd$compound), "针灸干预脓毒症活性成分"
+)
+swi.cpd <- step1(swi.cpd)
+swi.cpd <- step2(swi.cpd)
+clear(swi.cpd)
+
+dir.create("./remote/rds_jobSave", FALSE)
+send_job_to_remote("./rds_jobSave/swi.cpd.2.rds")
+```
+
+### 使用 SuperPred 预测
+
+`r snap(sup.cpd, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  notshow(sup.cpd@params$data_target)
+  feature(sup.cpd, "target")
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+sup.cpd <- job_superpred(
+  setNames(data_cpd$SMILES, data_cpd$compound), "针灸干预脓毒症活性成分"
+)
+sup.cpd <- step1(sup.cpd)
+sup.cpd <- step2(sup.cpd)
+clear(sup.cpd)
+
+send_job_to_remote("./rds_jobSave/sup.cpd.2.rds")
+```
+
+## 候选基因的获取
+
+### Limma 差异分析
+
+`r snap(lm.GSE134347, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  lm.GSE134347@plots$step3$topDegs$`sepsis vs healthy`$p.hp
+  lm.GSE134347@plots$step3$topDegs$`sepsis vs healthy`$p.volcano
+  notshow(lm.GSE134347@tables$step2$tops$`sepsis vs healthy`)
+  feature(lm.GSE134347)
+})
+```
+<!-- OVERTURE_END -->
+
+### 基因交集
+
+`r snap(ven.candidates, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  ven.candidates@plots$step1$p.venn
+  feature(ven.candidates)
+  feature(ven.candidates, "sets")
+})
+```
+<!-- OVERTURE_END -->
+
+## 富集分析
+
+`r snap(en.candidates, TRUE, TRUE)`
+
+KEGG 富集分析显示 (`r ref(en.candidates@plots$step1$p.kegg$ids)`)，候选基因显著富集于 Neutrophil extracellular trap formation、Chemokine signaling pathway、Leukocyte transendothelial migration、TNF signaling pathway 及 Toll-like receptor signaling pathway 等免疫炎症相关通路。其中，NETs 形成通路的富集提示候选基因可能与中性粒细胞活化及炎症放大过程相关；趋化因子信号通路及白细胞跨内皮迁移通路则提示这些基因可能参与炎症细胞募集及免疫细胞迁移。此外，TNF signaling pathway 与 Toll-like receptor signaling pathway 的富集进一步表明候选基因与炎症因子释放及病原识别相关。
+
+同时，HIF-1 signaling pathway、AMPK signaling pathway 及 Autophagy - animal 等通路亦显著富集，提示候选基因可能涉及细胞代谢调控、自噬及低氧应激反应。此外，Fc gamma R-mediated phagosome、T cell receptor signaling pathway 等通路的富集，则说明候选基因可能还参与吞噬作用及适应性免疫调控过程。
+
+GO 富集分析结果进一步支持了上述发现 (`r ref(en.candidates@plots$step1$p.go$ids)`)。在 Biological Process（BP）中，候选基因主要富集于 wound healing、blood coagulation、coagulation、hemostasis、platelet activation 及 platelet aggregation 等生物过程，提示这些基因可能参与凝血激活及血小板功能调控。此外，cellular response to environmental stimulus、cellular response to abiotic stimulus 及 homotypic cell-cell adhesion 等过程的富集，则提示候选基因可能参与细胞应激反应及细胞黏附调控。
+
+在 Cellular Component（CC）分析中，候选基因主要富集于 tertiary granule 与 ficolin-1-rich granule，提示这些基因与中性粒细胞颗粒相关结构存在一定联系。
+
+在 Molecular Function（MF）分析中，protein serine/threonine kinase activity、protein tyrosine kinase activity、metallopeptidase activity 及 metalloaminopeptidase activity 等功能显著富集，提示候选基因可能参与细胞信号转导及蛋白酶活性调控。
+
+整体而言，GO 与 KEGG 富集分析结果表明，候选基因主要涉及炎症免疫反应、凝血功能异常、中性粒细胞相关过程及细胞应激反应等生物学功能，为后续核心基因筛选及机制研究提供了理论依据。
+
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  z7(en.candidates@plots$step1$p.kegg$ids, 1, .7)
+  en.candidates@plots$step1$p.go$ids
+  notshow(en.candidates@tables$step1$res.kegg$ids)
+  notshow(en.candidates@tables$step1$res.go$ids)
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+en.candidates <- asjob_enrich(feature(ven.candidates))
+en.candidates <- step1(en.candidates)
+clear(en.candidates)
+send_job_to_remote("./rds_jobSave/en.candidates.1.rds")
+```
+
+## STRINGdb PPI 分析
+
+`r snap(sdb.candidates, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  z7(sdb.candidates@plots$step1$p.ppi, 2.5, 2)
+  notshow(sdb.candidates@tables$step1$mapped)
+  notshow(sdb.candidates@params$edges)
+})
+```
+<!-- OVERTURE_END -->
+
+
+## 机器学习
+
+本研究整合 3 种经典机器学习算法，在候选基因中筛选候选关键基因。
+
+`r snap(ml.candidates, TRUE, TRUE)`
+
+`r snap(ven.learn, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  ml.candidates@plots$step1$p.svm
+  feature(ml.candidates)
+  z7(ml.candidates@plots$step2$p.lasso_cv, 1.2, 1.5)
+  z7(ml.candidates@plots$step2$p.coefs_path, 1.2, 1.5)
+  ml.candidates@plots$step3$p.error
+  ml.candidates@plots$step3$p.tops
+  notshow(ml.candidates@tables$step3$t.tops)
+  ven.learn@plots$step1$p.venn
+  feature(ven.learn)
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+qpdf::pdf_length("./Figure+Table/CANDIDATES-LASSO-Cross-Validation.pdf")
+```
+
+## 表达量验证
+
+针对关键基因分别在训练集和验证集中绘制箱线图，直观呈现关键基因组间表达分布特征。
+
+`r snap(lm.validate_train, "learn")`
+
+对于验证集 GSE131761，
+`r snap(lm.validate_GSE131761, "learn")`
+
+`r snap(ven.key, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+lm.validate_train@params$focusedDegs_learn$p.BoxPlotOfDEGs
+z7(lm.validate_train@params$focusedDegs_learn$p.rocs, 1, 1.3)
+lm.validate_GSE131761@plots$step2$p.BoxPlotOfDEGs_learn
+z7(lm.validate_GSE131761@params$focusedDegs_learn$p.rocs, 1, 1.3)
+feature(ven.key)
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+get_file_with_format_name(
+  "../诊断项目关键节点核对.docx", name.hb$check()
+)
+```
+
+## 双样本孟德尔随机化 (MR) 分析
+
+`r snap(mr.key, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  mr.key@plots$step5$p.forest
+  mr.key@plots$step5$p.scatter
+  mr.key@plots$step5$p.funnel
+  mr.key@plots$step5$p.leaveoneout
+  mr.key@tables$step5$t.main
+  mr.key@tables$step5$t.heterogeneity
+  mr.key@tables$step5$t.pleiotropy
+  mr.key@tables$step5$t.steiger
+  notshow(mr.key@params$data_exposure_raw)
+  notshow(mr.key@params$data_exposure)
+  notshow(mr.key@params$data_outcome)
+  notshow(mr.key@params$fTest$data_f)
+  notshow(mr.key@params$table_with_all_columns)
+  feature(mr.key, "exposure")
+})
+```
+<!-- OVERTURE_END -->
+
+## rms 列线图构建与评估
+
+`r snap(rms.GSE134347, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  rms.GSE134347@plots$step1$p.nomo
+  notshow(rms.GSE134347@params$res_lrm$data)
+  rms.GSE134347@plots$step1$p.rocs
+  rms.GSE134347@plots$step1$p.cal
+  rms.GSE134347@plots$step2$p.dcas
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+```
+
+## GeneMANIA 网络分析
+
+`r snap(gm.markers, TRUE, TRUE)`
+
+Fc receptor signaling pathway 与 antigen receptor-mediated signaling pathway 的富集提示核心生物标志物可能参与免疫受体相关信号转导过程，包括免疫细胞活化、抗原识别及下游炎症信号放大等过程。
+
+此外，MAP kinase activity 调控相关功能显著富集，提示该网络可能与 MAPK 信号通路活化密切相关。网络中同时包含 MAPK14、MAPK1 及 MAPK11 等 MAPK 家族成员，进一步支持该功能模块在整个网络中的重要性。与此同时，stress-activated protein kinase signaling cascade 的富集表明这些基因可能参与细胞应激相关信号调控。
+
+网络中还可见多个典型 T 细胞受体信号相关基因，包括 ITK、LAT、LCP2、ZAP70 及 CD3D，提示核心生物标志物可能与免疫细胞活化及受体介导信号转导存在较强关联。此外，EGFR、EGF、ATF1 及 ATF2 等基因的连接，则提示该网络可能同时涉及生长因子信号及转录调控过程。
+
+```{r}
+fea.markers <- load_feature("./remote/key.rds")
+gm.markers <- asjob_genemania(fea.markers)
+gm.markers <- step1(gm.markers)
+file.copy(
+  file.path("~/Downloads", gm.markers$file_used), gm.markers$dir_save, TRUE
+)
+gm.markers <- step2(gm.markers)
+gm.markers <- step3(gm.markers)
+gm.markers@plots$step3$p.network
+clear(gm.markers)
+send_job_to_remote("./rds_jobSave/gm.markers.3.rds")
+```
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  gm.markers@plots$step3$p.network
+  notshow(gm.markers@params$res_alls$functions)
+})
+```
+<!-- OVERTURE_END -->
+
+## 分子调控网络分析
+
+`r snap(rn.markers, 0:5, TRUE)`
+`r snap(rn.markers, 6)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  rn.markers@plots$step5$p.regNet
+  rn.markers@plots$step6$p.regTF
+  notshow(rn.markers@params$all_lncRNA)
+  notshow(rn.markers@params$all_miRNA)
+  notshow(rn.markers@params$all_tf$chipbase)
+})
+```
+<!-- OVERTURE_END -->
+
+## GSEA分析
+
+`r snap(corgsea.marker, TRUE, TRUE)`
+
+ITK 与 RPS6KA5 相关基因网络主要涉及 RNA 加工、mRNA 剪接、核糖体功能及蛋白翻译等生物学过程，提示核心生物标志物可能通过影响转录后调控及蛋白合成相关过程参与疾病发生发展。与此同时，两者富集通路具有较高一致性，也进一步支持其可能处于部分共同的功能调控网络之中。
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  wrap(corgsea.marker@plots$step2$p.codes$ITK, 9, 7)
+  notshow(corgsea.marker@tables$step1$table_gsea$ITK)
+  wrap(corgsea.marker@plots$step2$p.codes$RPS6KA5, 9, 7)
+  notshow(corgsea.marker@tables$step1$table_gsea$RPS6KA5)
+})
+```
+<!-- OVERTURE_END -->
+
+## 免疫浸润分析
+
+`r snap(iobr.GSE134347, TRUE, TRUE)`
+
+核心生物标志物与多种免疫细胞亚群存在不同程度相关性。其中，ITK 与 T 细胞相关免疫细胞亚群呈现较强关联，提示其可能参与免疫受体介导的信号转导过程。结合前述 GeneMANIA 分析中 antigen receptor-mediated signaling pathway 及 Fc receptor signaling pathway 的富集结果，进一步说明 ITK 可能与免疫细胞活化过程存在联系。
+
+此外，RPS6KA5 与部分炎症相关免疫细胞亦表现出一定相关性，提示其可能参与炎症状态下的细胞信号调控过程。整体来看，核心生物标志物与免疫细胞浸润之间存在较为明显的关联，说明其不仅参与分子层面的信号调控，同时可能与脓毒症免疫微环境变化密切相关。
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  iobr.GSE134347@plots$step2$p.boxplot
+  iobr.GSE134347@plots$step2$p.stack
+  notshow(iobr.GSE134347@tables$step2$t.groupCor)
+  iobr.GSE134347@plots$step2$p.cor
+  notshow(iobr.GSE134347@tables$step2$t.cells_cor)
+  z7(iobr.GSE134347@plots$step3$p.GeneCellCor, 1, 1.2)
+  notshow(iobr.GSE134347@tables$step3$t.geneCellCor)
+  notshow(iobr.GSE134347@params$allres$cibersort)
+})
+```
+<!-- OVERTURE_END -->
+
+
+
+## 集成单细胞数据分析
+
+### 数据质控
+
+`r meth(srn.GSE167363, FALSE)`
+`r snap(srn.GSE167363, 1:3)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  srn.GSE167363@plots$step1$p.qc_pre
+  srn.GSE167363@plots$step1$p.qc_aft
+  srn.GSE167363@plots$step2$p.pca_rank
+  z7(srn.GSE167363@plots$step3$p.umapUint, 1.5, 1)
+  z7(srn.GSE167363@plots$step3$p.umapInt, 1.5, 1)
+})
+```
+<!-- OVERTURE_END -->
+
+```{r}
+get_file_with_format_name("./analysis_out.docx", name.hb$sc())
+```
+
+### 细胞注释
+
+`r snap(srn.GSE167363, 1:6)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  srn.GSE167363@tables$step6$t.validMarkers
+  srn.GSE167363@plots$step3$p.umapLabel
+  srn.GSE167363@plots$step6$p.markers_cluster
+  srn.GSE167363@plots$step6$p.markers
+  srn.GSE167363@plots$step6$p.map_scsa
+  srn.GSE167363@plots$step6$p.props_scsa
+  srn.GSE167363@plots$step6$p.props_scsa_group
+  srn.GSE167363@plots$step6$p.props_scsa_stat
+  notshow(srn.GSE167363@tables$step5$all_markers)
+  notshow(srn.GSE167363@tables$step5$all_markers_no_filter)
+  notshow(srn.GSE167363@tables$step6$scsa_res_all)
+  notshow(srn.GSE167363@tables$step6$t.props_scsa)
+  notshow(srn.GSE167363@params$final_metadata)
+})
+```
+<!-- OVERTURE_END -->
+
+### 关键细胞筛选
+
+`r snap(srn.GSE167363, "by_group")`
+
+我们注意到，基因 ITK、RPS6KA5 在 T 细胞中表达程度较高
+(`r ref(srn.GSE167363@params$focus_by_cell$p.dot)`)，
+尤其是 ITK 在 T 细胞中的整体表达水平 (`r ref(srn.GSE167363@params$focus_by_cell$p.dim)`)。
+因此，⟦mark$red('以 ITK 基因的表达为依据，选择 T 细胞为关键细胞')⟧。
+
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  srn.GSE167363@params$focus_by_cell$p.dim
+  srn.GSE167363@params$focus_by_cell$p.dot
+  srn.GSE167363@params$focus_by_group$plist.vlnFacet$ITK
+  srn.GSE167363@params$focus_by_group$plist.vlnFacet$RPS6KA5
+})
+```
+<!-- OVERTURE_END -->
+
+## 细胞亚群分析
+
+`r snap(srn.GSE167363_T, 1:5, TRUE)`
+`r snap(srn.GSE167363_T, 6)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  srn.GSE167363_T@plots$step3$p.umapUint
+  srn.GSE167363_T@plots$step3$p.umapInt
+  srn.GSE167363_T@tables$step6$t.validMarkers
+  srn.GSE167363_T@plots$step3$p.umapLabel
+  z7(srn.GSE167363_T@plots$step6$p.markers_cluster, 1, 1.1)
+  z7(srn.GSE167363_T@plots$step6$p.markers, 1, 1.4)
+  wrap(srn.GSE167363_T@plots$step6$p.props_scsa, 7, 5)
+  wrap(srn.GSE167363_T@plots$step6$p.props_scsa_stat, 5, 5)
+  wrap(srn.GSE167363_T@plots$step6$p.map_scsa, 5, 3)
+  notshow(srn.GSE167363_T@tables$step5$all_markers)
+  notshow(srn.GSE167363_T@tables$step5$all_markers_no_filter)
+  notshow(srn.GSE167363_T@tables$step6$scsa_res_all)
+  notshow(srn.GSE167363_T@tables$step6$t.props_scsa)
+  notshow(srn.GSE167363_T@params$final_metadata)
+})
+```
+
+<!-- OVERTURE_END -->
+
+```{r}
+scsa_check(srn.GSE167363_T, "", 0:9)
+markers(srn.GSE167363_T, 0:10, 10)
+```
+
+## ReactomeGSA 富集分析
+
+`r snap(rt.GSE167363_T, TRUE, TRUE)`
+其中，Complement cascade、Initial triggering of complement 及 Creation of C4 and C2 activators 等补体相关通路显著富集，提示补体系统在免疫细胞功能调控中可能具有重要作用。与此同时，Cell surface interactions at the vascular wall 的富集提示免疫细胞与血管壁之间的相互作用可能增强，反映炎症状态下免疫细胞迁移及黏附相关过程的活跃。
+
+此外，FCGR activation、FCERI mediated MAPK activation 及 Antigen activates B Cell Receptor (BCR) leading to generation of second messengers 等免疫受体相关通路的富集，提示免疫细胞受体介导的信号转导过程明显活化。其中，FCGR 与 FCERI 相关通路主要涉及 Fc 受体介导的免疫应答及下游 MAPK 信号激活，而 BCR 相关通路则提示适应性免疫应答相关功能发生改变。
+
+值得注意的是，Role of LAT2/NTAL/LAB on calcium mobilization 通路亦显著富集，提示细胞内钙离子信号转导过程可能参与免疫细胞活化调控。结合前述 GeneMANIA 分析中 MAPK 活性调控及抗原受体介导信号通路的富集结果，说明核心生物标志物相关网络可能与免疫细胞信号转导异常存在一定联系。
+
+整体而言，ReactomeGSA 富集分析结果表明，脓毒症相关 T 细胞亚群主要涉及补体激活、免疫受体信号转导、MAPK 相关通路及细胞黏附等功能过程，提示免疫细胞功能异常及炎症信号激活可能在疾病发生发展过程中发挥重要作用。
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  rt.GSE167363_T@plots$step3$p.hps$pathways
+  notshow(rt.GSE167363_T@tables$step2$t.wilcox$pathways)
+})
+```
+<!-- OVERTURE_END -->
+
+## 拟时序轨迹分析
+
+`r snap(mn.GSE167363_T_Clean, TRUE, TRUE)`
+
+拟时序结果显示 (`r ref(mn.GSE167363_T_Clean@plots$step3$p.traj)`)，轨迹起始位于右侧主干区域，随后细胞逐渐向中心分支点聚集，并进一步向不同 state 分化。其中，右侧上方分支对应 State 1，右侧下方分支对应 State 5；左上与左下终末分支分别对应 State 3 与 State 4。第四张子图显示，healthy 组细胞主要集中于轨迹右侧早期区域，而 sepsis 组细胞则更多分布于左侧终末分支以及 State 5 分支中，提示随着拟时间推进，细胞逐渐由健康相关状态向脓毒症相关异常状态演化 (由于用于排序的基因本身来源于疾病差异，因此该拟时间轴不仅反映细胞状态变化，也在一定程度上映射了疾病相关转录状态的演化过程) 。
+
+结合细胞类型分布进一步分析可见，不同 T 细胞亚群在疾病演化过程中呈现明显不同的状态偏向。Naive_CD4_T 细胞（蓝色）在左侧 State 3 与 State 4 两个终末分支中占比明显更高，提示该类细胞在疾病进展过程中可能逐渐向终末异常状态迁移。尤其是左上 State 3 分支中，大量 Naive_CD4_T 细胞聚集，并同时对应 sepsis 组富集区域，提示脓毒症状态下 Naive_CD4_T 细胞可能发生明显的转录状态重塑。
+
+相比之下，Memory_CD4_T 细胞（绿色）的分布模式更具特点。该细胞群虽然在左侧终末分支中比例相对较低，但在右侧 State 1 与 State 5 分支中均存在明显分布，尤其在 State 5 分支中富集较为明显。由于 State 5 同样对应 sepsis 组细胞富集区域，因此提示 Memory_CD4_T 细胞可能并非简单向终末耗竭状态演化，而是沿另一条疾病相关轨迹发生状态转换。这种现象说明，在脓毒症相关免疫重塑过程中，Memory_CD4_T 细胞可能具有不同于 Naive_CD4_T 的演化方向及功能状态。
+
+此外，Cytotoxic_CD8_T 细胞（红色）主要集中于右侧 State 1 主干区域，与 healthy 组细胞分布具有较高一致性，而在左侧终末分支中的比例相对较低。这提示 Cytotoxic_CD8_T 细胞在当前拟时轨迹中可能更接近相对稳定或早期状态，而并未像 Naive_CD4_T 那样明显向左侧终末状态迁移。
+
+进一步分析 ITK 与 RPS6KA5 在拟时间轴上的表达动态
+(`r ref(mn.GSE167363_T_Clean@plots$step4$p.geneInPseudo$scsa_cell)`)。
+ITK 在拟时间早期整体表达相对较低，随后随着拟时间推进逐渐升高，并在时间后期达到较高表达水平，提示其在疾病相关后期状态中表达增强。相比之下，RPS6KA5 的整体表达变化相对平缓。
+
+在 Cell state 3 与 Cell state 5 的分支比较中
+(`r ref(mn.GSE167363_T_Clean@plots$step5$p.hp)`)，
+ITK 在 pre-branch 阶段整体表达相对较低，而随着细胞向两侧分支演化，其表达逐渐升高，颜色由蓝色逐渐转为红色。其中，State 5 分支后期的升高趋势相对更明显。结合前述拟时轨迹结果来看，State 5 分支中存在较多 Memory_CD4_T 细胞分布，同时也对应较多 sepsis 组细胞，因此 ITK 在该分支中的升高提示其表达变化可能与疾病相关后期状态存在一定联系。相比之下，RPS6KA5 的表达模式则相对缺乏连续性。
+
+在 Cell state 4 与 Cell state 5 的比较中，ITK 同样表现出从 pre-branch 向分支末端逐渐升高的趋势，但其在 State 4 分支中的变化更加明显。尤其在分支后期，State 4 末端区域整体转变为高表达模式 (红色区域)，而 State 5 分支中的升高则相对较弱。对于 RPS6KA5，其热图并未呈现稳定连续的表达趋势。
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  z7(mn.GSE167363_T_Clean@plots$step3$p.traj, .7, .7)
+  mn.GSE167363_T_Clean@plots$step4$p.geneInPseudo$scsa_cell
+  z7(mn.GSE167363_T_Clean@plots$step5$p.hp, .7, .3)
+  notshow(mn.GSE167363_T_Clean@params$diff_genes)
+})
+```
+<!-- OVERTURE_END -->
+
+
+## 细胞通讯分析
+
+`r snap(cc.comparison, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  cc.comparison@plots$step1$p.inters_counts
+  cc.comparison@plots$step1$p.inters_weights
+  cc.comparison@plots$step2$p.allCells_LP_comm_each_group$healthy
+  cc.comparison@plots$step2$p.allCells_LP_comm_each_group$sepsis
+  cc.comparison@plots$step2$p.keyCellAsSource
+  cc.comparison@plots$step2$p.keyCellAsTarget
+  notshow(cc.GSE167363_healthy@tables$step1$lp_net)
+  notshow(cc.GSE167363_healthy@tables$step1$pathway_net)
+  notshow(cc.GSE167363_healthy@tables$step2$t.lr_comm_bubble)
+  notshow(cc.GSE167363_sepsis@tables$step1$lp_net)
+  notshow(cc.GSE167363_sepsis@tables$step1$pathway_net)
+  notshow(cc.GSE167363_sepsis@tables$step2$t.lr_comm_bubble)
+  notshow(cc.comparison@params$keyCell_data$data.keyCellAsSource)
+  notshow(cc.comparison@params$keyCell_data$data.keyCellAsTarget)
+})
+```
+<!-- OVERTURE_END -->
+
+## SCENIC 转录因子分析
+
+`r snap(sce.GSE167363, TRUE, TRUE)`
+
+<!-- OVERTURE_START -->
+```{r eval = FALSE, echo = FALSE}
+#| OVERTURE
+take_positions({
+  sce.GSE167363$diff_seurat$p.hp
+  sce.GSE167363$diff_seurat$p.map
+  notshow(sce.GSE167363$diff_seurat$diff_regulon)
+})
+```
+<!-- OVERTURE_END -->
+
+
+# 项目总结
+
+本研究整合脓毒症公共转录组数据集GSE134347（156例脓毒症 vs 83例健康对照）与GSE131761（81例脓毒症 vs 15例健康对照），结合单细胞RNA测序数据集GSE167363（10例脓毒症 vs 2例健康对照），通过文献挖掘、数据库预测、差异表达分析、三种机器学习算法（SVM-RFE、LASSO、随机森林）联合筛选、双样本孟德尔随机化因果推断、免疫浸润分析、单细胞转录组解析、拟时序轨迹分析、细胞通讯分析及SCENIC转录因子调控网络构建等多层次生信策略，系统探究了针灸调控脓毒症中内源性活性物质及核心基因的生物标志物与潜在分子机制。
+
+通过文献检索与SwissTargetPrediction、SuperPred数据库预测，获得针灸干预脓毒症相关内源性活性物质（Dopamine、D-Lactate、Lactic acid、Malondialdehyde、Diacylglycerol）的231个靶向基因。与脓毒症差异表达基因取交集，筛选出48个候选基因，其功能主要集中于中性粒细胞胞外陷阱形成、趋化因子信号通路、TNF信号通路及Toll样受体信号通路等免疫炎症相关过程，并涉及凝血激活与血小板功能调控。
+
+经SVM-RFE、LASSO及随机森林三种机器学习算法联合筛选，获得10个Hub基因（NR3C2、MMP8、RPS6KA5、CAMKK2、S1PR5、CYSLTR2、TLR8、ITK、ALOX5、MMP9）。上述基因在训练集与验证集中均呈现一致的显著性差异表达（P < 0.05），ROC曲线下面积均超过0.7，具有稳健的区分脓毒症与健康状态的能力。进一步通过双样本孟德尔随机化分析，以基因表达数量性状位点为暴露、脓毒症全基因组关联数据为结局，经逆方差加权法主分析及多维度质控（MR-Egger截距检验、MR-PRESSO全局检验、Cochran's Q异质性检验及Steiger方向性检验），最终确定**ITK与RPS6KA5**为与脓毒症存在显著因果关联的核心生物标志物。其中，ITK遗传预测高表达与脓毒症风险增加显著相关（IVW OR = 1.092, P = 0.0037），RPS6KA5遗传预测高表达则与脓毒症风险降低显著相关（IVW OR = 0.9556, P = 0.0433），且两者均通过水平多效性与异质性检验，证据稳健性良好。
+
+基于ITK与RPS6KA5构建的rms列线图风险评估模型，AUC达0.999，校准曲线与决策曲线分析证实其优异的预测效能与临床净收益。GeneMANIA网络分析显示两者功能相关网络显著富集于Fc受体信号通路、抗原受体介导信号通路及MAPK活性调控等免疫相关过程。分子调控网络进一步构建了涵盖48个节点、76条边的lncRNA-miRNA-mRNA调控网络及79个节点、81条边的TF-mRNA调控网络。GSEA分析揭示ITK与RPS6KA5相关基因网络共同汇聚于RNA加工、mRNA剪接及蛋白翻译等转录后调控过程。免疫浸润分析表明两者与T细胞亚群（尤其是CD8⁺ T细胞及CD4⁺记忆静息T细胞）呈强正相关，提示其可能参与脓毒症中适应性免疫细胞的功能调控。
+
+单细胞转录组分析共鉴定8种主要细胞类型，ITK与RPS6KA5在T细胞中表达程度最高。拟时序轨迹分析显示Naive_CD4_T细胞在脓毒症相关终末状态分支中显著富集，而Memory_CD4_T细胞则沿另一疾病相关轨迹发生状态转换；ITK在拟时间后期及终末分支中表达明显升高，提示其与T细胞疾病相关状态演化存在密切联系。ReactomeGSA富集分析揭示T细胞亚群中补体级联反应、Fc受体信号及MAPK活化等通路的显著激活。细胞通讯分析显示脓毒症组T细胞通讯事件整体减少，以ADGRE5-CD55、HLA-CD8及MIF-CD74_CD44为优势配体-受体轴。SCENIC分析进一步鉴定了35个在脓毒症T细胞中显著差异活性的转录因子调控模块，包括RFX2、NR4A1及STAT5A等活性显著下降的调控子。
+
+综上，本研究从转录组与单细胞双组学层面，系统鉴定了针灸干预脓毒症中与内源性活性物质相关的候选基因集，经机器学习与孟德尔随机化联合筛选，确定了ITK与RPS6KA5作为兼具差异表达特征与因果关联证据的核心生物标志物；揭示了其参与免疫受体信号转导、T细胞功能调控及转录后加工过程的潜在分子机制；通过单细胞分析阐明了关键基因在T细胞亚群命运分化中的表达动态及免疫微环境通讯特征；并构建了高准确度的脓毒症风险评估列线图模型。上述发现为针灸调控脓毒症中内源性活性物质的分子机制提供了多层次生信证据，为脓毒症的生物标志物筛选与潜在干预靶点开发奠定了理论基础。然而，当前结论主要源于生物信息学推断与公共数据挖掘，ITK与RPS6KA5在针灸干预中的具体调控效应、上下游分子机制及临床转化价值仍需后续体内外实验与前瞻性临床研究进一步验证。
+
+\newpage
+
+# 项目调整
+
+- Seurat 单细胞数据分析中以 Seurat::SCTransform 替代了传统工作流程的 NormalizeData + ScaleData + FindVariableFeatures，因此，对应的作图 JackStrawPlot, VariableFeaturePlot (高变基因示意图) 不再生成。
+
+# 软件列表
+
+```{r}
+used <- names(getOption("autor_pkgInfo"))
+versions <- pkgVersion_remote(used)
+
+allSoftware <- tibble::tibble(
+  Package = used, Version = versions,
+  Usage = NA_character_
+)
+allSoftware
+upd_cache_pkgInfo(allSoftware)
+
+allSoftware <- tibble::tribble(
+  ~Package, ~Version, ~Usage,
+
+  # --- differential expression / visualization ---
+  "DESeq2", "1.40.2", "差异表达分析",
+  "limma", "3.56.2", "差异表达分析",
+  "ggplot2", "3.5.2", "数据可视化",
+  "ComplexHeatmap", "2.16.0", "复杂热图绘制",
+  "ggVennDiagram", "1.5.2", "韦恩图绘制",
+  "ggraph", "2.2.1", "网络图可视化",
+  "RCircos", "1.2.2", "Circos图绘制",
+
+  # --- enrichment / database ---
+  "clusterProfiler", "4.15.0.3", "功能富集分析",
+  "msigdbr", "7.5.1", "基因集数据库",
+  "ReactomeGSA", "1.14.0", "通路富集分析",
+  "STRINGdb", "2.12.1", "蛋白互作网络分析",
+  "biomaRt", "2.56.1", "基因注释与ID转换",
+
+  # --- machine learning / statistics ---
+  "e1071", "1.7.16", "支持向量机分析",
+  "caret", "6.0.94", "机器学习建模与特征筛选",
+  "glmnet", "4.1.8", "LASSO回归建模",
+  "randomForest", "4.7.1.2", "随机森林建模",
+  "psych", "2.4.6.26", "相关性分析",
+  "stats", "4.3.3", "统计分析",
+  "rms", "6.8.1", "回归建模与列线图分析",
+  "regplot", "1.1", "列线图可视化",
+  "pROC", "1.18.5", "ROC曲线分析",
+  "rmda", "1.6", "决策曲线分析",
+
+  # --- Mendelian randomization ---
+  "TwoSampleMR", "0.6.8", "孟德尔随机化分析",
+  "MRPRESSO", "1.0", "孟德尔随机化异常值检测",
+
+  # --- single-cell ---
+  "Seurat", "5.1.0", "单细胞RNA-seq分析",
+  "CellChat", "1.6.1", "细胞间通讯分析",
+  "monocle", "2.28.0", "细胞拟时序分析",
+
+  # --- immunology ---
+  "IOBR", "0.99.0", "免疫浸润分析",
+
+  "pySCENIC", NA, "转录调控网络分析（Python工具）",
+  "SCSA", NA, "细胞类型注释（Python工具）"
+)
+
+```
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| All-software
+autor(allSoftware)
+```
+
+
+# 报告质检
+
+```{r eval = TRUE, echo = FALSE, results = 'asis'}
+#| Report-QC
+autor(table_qc.hb())
+```
+
+```{r}
+create_remote_project.hb()
+setup.sshfs()
+.send_pkg_to_remote()
+
+file_scripts <- push_script.hb(
+  "target", "DEGs", "enrich", "ppi",
+  "learn", "validate", "mr", "nomogram", "genemania",
+  "network", "gsea", "immune", "seurat",
+  "keyCell", "reactome", "monocle", "cellchat", "SCENIC"
+)
+
+pull_jobs_from_script.hb(file_scripts, TRUE, FALSE)
+push_overture_as_output.hb(TRUE, TRUE)
+
+push_checkout_after_output.hb(FALSE)
+push_mirror_to_remote.hb()
+
+run_remote_output.hb(TRUE)
+# convert_pdf_in_project(skip = 1:14)
+
+.upd_pkg_to_remote()
+
+run_in_project("./tmp/getPkgInfo.R")
+run_in_project_nohup("r.16_monocle.r")
+
+lst <- setNames(
+  apply(allSoftware, 1, as.list, simplify = FALSE), allSoftwarePackage
+)
+saveRDS(setNames(lst, allSoftwarepackage), .prefix("pkgInfo.rds", "db")) 
+colnames(allSoftware) <- capitalize(colnames(allSoftware))
+
+get_file_with_format_name(
+  "./order_material/诊断项目关键节点核对.docx", name.hb$check()
+)
+
+get_file_with_format_name(
+  "./analysis_out.docx", name.hb$report()
+)
+
+get_file_with_format_name(
+  "~/Documents/job0259_Report_0411_revise1.docx", name.hb$report()
+)
+
+get_contents_refered_from_fields("./order_material/test.md")
+.clHbFo$format_file("list.md")
+
+build_completion_for_package("union.publish")
+srn <- .job_seurat5n()
+focus(srn)
+match.arg()
+
+project_packaging.hb("~/Documents/test.docx", overwrite_report = FALSE)
+
+gett_file("./issue.docx")
+gett_file("./analysis_out.docx")
+gett_file("./order_material/job0395_Report_0511_revise1.docx")
+
+```
+
